@@ -1,0 +1,6 @@
+translation:
+  # Default language for translations
+  defaultLanguage: 'en'
+
+  # Path to all translations
+  pathWithTranslations: 'resources/Translations'

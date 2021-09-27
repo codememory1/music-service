@@ -1,0 +1,12 @@
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-class-static-block",
+    "@babel/plugin-proposal-private-property-in-object",
+    "@babel/plugin-syntax-top-level-await",
+    "@babel/plugin-proposal-logical-assignment-operators",
+    "@babel/plugin-proposal-numeric-separator"
+  ]
+}

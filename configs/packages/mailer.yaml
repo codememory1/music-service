@@ -1,0 +1,24 @@
+mailer:
+  # List of servers and their settings
+  servers:
+    defaultServer:                        # Server name
+      host: smtp.gmail.com                # Server host
+      port: 587                           # Server port
+      encryption: tls                     # Type Encryption
+
+  # List of all users and their settings
+  users:
+    defaultUser:                          # User Alias
+      username: "%env(mail.username)%"    # User login
+      password: "%env(mail.password)%"    # User password
+      server: defaultServer               # Server name
+
+      # List of users from whom the message will be sent
+      from:
+        - {
+          email: "%env(mail.username)%",
+          name: "%env(mail.name)%"
+        }
+
+  # Active user who will be authorized by default
+  activeUser: defaultUser

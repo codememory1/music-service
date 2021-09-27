@@ -1,0 +1,5 @@
+console:
+  # List of all commands
+  - Kernel\Commands\ChangeApplicationModeCommand
+  - Kernel\Commands\GenerateSecretCommand
+  - Kernel\Commands\ShowSecretKeyCommand

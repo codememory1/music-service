@@ -1,0 +1,27 @@
+database:
+  # Orm settings
+  orm:
+    pathWithEntities: app/Orm/Entities # The path to all entities
+    entityNamespace: App\Orm\Entities  # The namespace in which all entities are located
+    entitySuffix: Entity # File suffix that denotes the entity
+    pathWithRepositories: app/Orm/Repositories # The path to all repositories
+    repositoryNamespace: App\Orm\Repositories # The namespace in which all repositories are located
+    repositorySuffix: Repository # File suffix that denotes the repository
+
+  # Migration settings
+  migrations:
+    pathWithMigrations: migrations # Path to all migrations
+    namespaceMigration: Migrations # The namespace in which all migrations are located
+
+  # Database settings
+  pack:
+    defaultConnection: default # Default connection name
+
+    # List of all connectors and their settings
+    connectors:
+      default:
+        host: '%env(db.host)%'
+        dbname: '%env(db.name)%'
+        username: '%env(db.username)%'
+        password: '%env(db.password)%'
+        driver: 'Codememory\Components\Database\Connection\Drivers\MySQLDriver'

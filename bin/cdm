@@ -1,0 +1,90 @@
+#!/usr/bin/env php
+<?php
+
+use Codememory\Components\Configuration\Commands\AllBindsCommand;
+use Codememory\Components\Configuration\Commands\BindCacheStateCommand;
+use Codememory\Components\Configuration\Commands\ConfigurationCacheStateCommand;
+use Codememory\Components\Configuration\Commands\RefreshConfigCacheCommand;
+use Codememory\Components\Configuration\Configuration;
+use Codememory\Components\Database\Connection\Connection;
+use Codememory\Components\Database\Pack\Console as DatabasePackConsole;
+use Codememory\Components\Environment\Commands\DeleteEnvCacheCommand;
+use Codememory\Components\Environment\Commands\UpdateEnvCacheCommand;
+use Codememory\Components\Environment\Environment;
+use Codememory\Components\Event\Commands\ListenerListCommand;
+use Codememory\Components\Event\Commands\ListEventsCommand;
+use Codememory\Components\Event\Commands\MakeEventCommand;
+use Codememory\Components\GlobalConfig\Commands\BackupCommand;
+use Codememory\Components\GlobalConfig\Commands\InitConfigCommand;
+use Codememory\Components\GlobalConfig\Commands\InitFromBackupCommand;
+use Codememory\Components\GlobalConfig\Commands\MergeConfigCommand;
+use Codememory\Components\Services\Commands\MakeServiceCommand;
+use Codememory\Components\Translator\Commands\RefreshTranslationsCacheCommand;
+use Codememory\Components\Validator\Commands\MakeValidationCommand;
+use Codememory\FileSystem\File;
+use Codememory\Routing\Commands\MakeSoftwareCommand;
+use Codememory\Routing\Commands\RouteListCommand;
+use Kernel\Commands\MakeControllerCommand;
+use Kernel\ConfigurationModeHandlers\DevelopmentMode;
+use Kernel\ConfigurationModeHandlers\ProductionMode;
+use Symfony\Component\Console\Application;
+
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+$connection = new Connection();
+$filesystem = new File();
+$application = new Application('Codememory');
+
+Environment::__constructStatic($filesystem);
+
+Configuration::getInstance()->addModeHandler(DevelopmentMode::class);
+Configuration::getInstance()->addModeHandler(ProductionMode::class);
+
+
+// Config
+$application->add(new ConfigurationCacheStateCommand());
+$application->add(new AllBindsCommand());
+$application->add(new RefreshConfigCacheCommand());
+$application->add(new BindCacheStateCommand());
+
+// ENV
+$application->add(new DeleteEnvCacheCommand());
+$application->add(new UpdateEnvCacheCommand());
+
+// Routing
+$application->add(new MakeSoftwareCommand());
+$application->add(new RouteListCommand());
+
+// Global Config
+$application->add(new BackupCommand());
+$application->add(new InitConfigCommand());
+$application->add(new InitFromBackupCommand());
+$application->add(new MergeConfigCommand());
+
+// Controller
+$application->add(new MakeControllerCommand());
+
+// Services
+$application->add(new MakeServiceCommand());
+
+// Translations
+$application->add(new RefreshTranslationsCacheCommand());
+
+// Validator
+$application->add(new MakeValidationCommand());
+
+// Event Dispatcher
+$application->add(new MakeEventCommand());
+$application->add(new ListEventsCommand());
+$application->add(new ListenerListCommand());
+
+// Database
+$databasePackConsole = new DatabasePackConsole($application, $connection);
+
+$databasePackConsole->addCommands();
+
+foreach (Configuration::getInstance()->open('console')->all() ?: [] as $command) {
+    $application->add(new $command());
+}
+
+$application->run();

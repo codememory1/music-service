@@ -1,0 +1,19 @@
+caching:
+  binds:
+    caching.path: "storage"
+  #! The path where the cache will be saved
+  path: "storage"
+
+  #! File name encryption algorithm
+  fileEncryption: sha256
+
+  #! The extension of the main file from which the cache data can be retrieved
+  mainFileExtension: cache
+
+  #! Cache history configuration
+  history:
+    #! The path where the cache history file should be generated
+    path: "storage"
+
+    #! History file name
+    filename: cacheHistory

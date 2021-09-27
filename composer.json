@@ -1,0 +1,84 @@
+{
+    "name": "codememory/framework",
+    "type": "project",
+    "description": "Codememory framework",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Danil",
+            "email": "kostynd1@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "ext-pdo": "*",
+        "ext-redis": "*",
+        "ext-xhprof": "*",
+        "codememory/asset": "^1.0",
+        "codememory/caching": "^1.1",
+        "codememory/config": "2.0",
+        "codememory/database-pack": "^1.0",
+        "codememory/date-time": "^1.0",
+        "codememory/environment": "^1.0",
+        "codememory/event-dispatcher": "^1.0",
+        "codememory/finder": "^1.1",
+        "codememory/fs": "^1.1",
+        "codememory/global-config": "^1.1",
+        "codememory/http-foundation": "^2.2",
+        "codememory/json-parser": "^1.0",
+        "codememory/logging": "2.1",
+        "codememory/mailer": "^1.0",
+        "codememory/markup": "^2.0",
+        "codememory/profiling": "^2.0",
+        "codememory/redis": "^1.0",
+        "codememory/routing": "^1.3",
+        "codememory/service-provider": "^1.0",
+        "codememory/services": "^1.0",
+        "codememory/support": "^1.2",
+        "codememory/toolbar": "^1.0",
+        "codememory/translator": "^1.1",
+        "codememory/unit-conversion": "^2.0",
+        "codememory/validator": "^1.2",
+        "codememory/view": "^1.0",
+        "illuminate/collections": "^8.58",
+        "mcaskill/composer-exclude-files": "^2.0",
+        "twig/twig": "^3.3"
+    },
+    "extra": {
+        "exclude-from-files": [
+            "symfony/var-dumper/Resources/functions/dump.php"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Migrations\\": "migrations/",
+            "Kernel\\": "kernel/"
+        },
+        "files": [
+            "kernel/helpers.php"
+        ]
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.3"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "@php -r \"copy('.env.example', '.env');\"",
+            "@php bin/cdm g-config:merge --all",
+            "@php bin/cdm cache:update:config",
+            "@php bin/cdm app:secret-key:generate",
+            "@php bin/cdm cache:update:env",
+            "chmod 777 storage/ -R",
+            "chmod 711 bin/cdm"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

@@ -1,0 +1,19 @@
+profiling:
+  mode: "%env(app.mode)%"
+
+  # Error handler settings
+  errorHandler:
+    pathLogs: "%logger.path%"
+    logFilename: "server.log"
+
+  profiler:
+    enabled: false                             # Enable profiler work
+
+    # List of pages to be profiled, by default, if the list is empty,
+    # all open pages will be profiled, except for service pages
+    profilingPages: {}
+
+    # Profiler access security
+    security:
+      subdomain: "profiler-%env(app.secret)%"  # The subdomain for which the profiler will be available
+      enabledInProduction: false               # Allow access to the profiler in production mode

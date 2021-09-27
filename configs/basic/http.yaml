@@ -1,0 +1,11 @@
+http:
+  session:
+    # The type of where to save sessions
+    typeSave: file
+
+    redis:
+      # Session persistence handler namespace
+      handlerNamespace: Codememory\HttpFoundation\Client\Session\Storages\RedisStorage
+    file:
+      handlerNamespace: Codememory\HttpFoundation\Client\Session\Storages\FileStorage
+      pathSave: "%caching.path%/session"

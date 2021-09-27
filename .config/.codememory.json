@@ -1,0 +1,112 @@
+{
+    "big": {
+        "configName": "big",
+        "defaultPathWithTemplates": "\/",
+        "useCache": false,
+        "allowPhpTags": false,
+        "debugger": {
+            "lines": 20,
+            "template": "vendor\/codememory\/big\/Debugger\/templates\/white"
+        }
+    },
+    "caching": {
+        "fileConfig": "configs\/caching"
+    },
+    "environment": {
+        "pathWithFile": null,
+        "filename": ".env",
+        "defaultAppMode": "dev",
+        "useCache": true
+    },
+    "http": {
+        "configName": "http"
+    },
+    "controlHttpStatus": {
+        "configName": "controlResponseCode"
+    },
+    "routing": {
+        "configName": "routing",
+        "settings": {
+            "pathWithRoutes": "App\/Routing\/Routes",
+            "softwareNamespace": "App\\Routing\\Software",
+            "routesFileSuffix": "-routes"
+        }
+    },
+    "serviceProvider": {
+        "configName": "services"
+    },
+    "view": {
+        "configName": "view",
+        "pathWithTemplates": "\/",
+        "engine": "Codememory\\Components\\View\\Engines\\BigEngine"
+    },
+    "logging": {
+        "configName": "logging"
+    },
+    "profiler": {
+        "configName": "profiling",
+        "mode": "dev",
+        "enabled": true,
+        "security": {
+            "subdomain": "profiler",
+            "enabledInProduction": false
+        }
+    },
+    "asset": {
+        "configName": "asset"
+    },
+    "database-pack": {
+        "defaultHost": "localhost",
+        "defaultUsername": "root",
+        "defaultPassword": "",
+        "defaultDbname": "mysql",
+        "defaultDriver": "Codememory\\Components\\Database\\Connection\\Drivers\\MySQLDriver",
+        "configName": "database"
+    },
+    "migrations": {
+        "pathWithMigrations": "Migrations\/",
+        "namespaceMigration": "Migrations\\",
+        "configName": "database"
+    },
+    "service": {
+        "configName": "service",
+        "pathWithServices": "app\/Services",
+        "namespaceService": "App\\Services",
+        "serviceSuffix": "Service"
+    },
+    "orm": {
+        "pathWithEntities": "App\/Entity",
+        "entityNamespace": "App\\Entity\\",
+        "pathWithRepositories": "app\/Repositories",
+        "repositoryNamespace": "App\\Repositories\\",
+        "entitySuffix": "Entity",
+        "repositorySuffix": "Repository",
+        "configName": "database"
+    },
+    "validator": {
+        "configName": "validator",
+        "checkExistRules": true
+    },
+    "event-dispatcher": {
+        "configName": "event",
+        "pathWithEvents": "Events",
+        "eventNamespace": "Events",
+        "eventSuffix": "Event",
+        "pathWithListeners": "Listeners",
+        "listenerNamespace": "Listeners",
+        "listenerSuffix": "Listener"
+    },
+    "mail": {
+        "configName": "mailer"
+    },
+    "translation": {
+        "defaultLanguage": "en",
+        "pathWithTranslations": "translations\/",
+        "configName": "translation"
+    },
+    "version": "4.0.1",
+    "configuration": {
+        "pathWithConfigs": "configs\/",
+        "mode": "development"
+    }
+}

@@ -1,0 +1,12 @@
+validator:
+  # The path with all validations
+  pathWithValidations: app/Validations
+
+  # The namespace with all validations
+  namespaceWithValidations: App\Validations
+
+  # Filename and validation class suffix
+  suffix: Validation
+
+  # Whether to check for the existence of rules when using them
+  checkExistRules: true

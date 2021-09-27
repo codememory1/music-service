@@ -1,0 +1,12 @@
+controlResponseCode:
+  # Settings that will apply to all codes if they are not overridden in the code itself
+  _general:
+    #  Priority, says what will be executed if there is a valid response status
+    priority: view
+
+    # The name of the template engine with which the template will be loaded
+    engine: twig
+
+  # Response code
+  404:
+    view: default.404

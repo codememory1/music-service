@@ -1,0 +1,15 @@
+framework:
+  # Path to all controllers
+  pathWithControllers: app/Controllers
+
+  # Controller namespace
+  namespaceForControllers: App\Controllers
+
+  # Toolbar settings
+  toolbar:
+    # Show toolbar
+    enabled: true
+
+    # Show toolbar in production mode
+    # Note! The page loading speed may decrease if the value is "true"
+    enabledInProduction: false

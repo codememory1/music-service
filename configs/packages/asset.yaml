@@ -1,0 +1,26 @@
+asset:
+  # Resource paths
+  paths:
+    dist: public/dist/
+    assets: public/assets/
+
+  # Active path that will be substituted as a prefix
+  activeOutput: assets
+
+  # File aliases
+  aliases:
+    - "images/codememory.svg@cdm-svg-logo"
+    - "images/codememory_icon.png@cdm-icon"
+
+  # Webpack builder settings
+  webpack:
+    # The webpack input files will also be the release files.
+    entryFiles:
+      js: js/app.js
+      sass: scss/app.scss
+
+    # Aliases for modules. Key and value
+    moduleAliases: {}
+
+    # Whether comments shall be extracted to a separate file
+    extractJsComments: false

@@ -1,0 +1,16 @@
+logger:
+  binds:
+    logger.path: "storage/logs"
+
+  # Log handlers
+  handlers:
+    streamError:
+      handler: Codememory\Components\Logging\Handlers\StreamHandler
+      forLevel: ERROR
+
+  # Logs
+  loggers:
+    logs:
+      handlerName: streamError
+      handlerParameters:
+        path: "%logger.path%/logs.log"

@@ -1,0 +1,8 @@
+event:
+  # Events
+  pathWithEvents: app/Events # Path with all events
+  eventNamespace: App\Events # Namespace events
+
+  # Listeners
+  pathWithListeners: app/Listeners # Path with all event listeners
+  listenerNamespace: App\Listeners # Namespace event listeners
