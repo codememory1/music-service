@@ -42,7 +42,7 @@
         "codememory/toolbar": "^1.0",
         "codememory/translator": "^1.1",
         "codememory/unit-conversion": "^2.0",
-        "codememory/validator": "^1.2",
+        "codememory/validator": "^1.3",
         "codememory/view": "^1.0",
         "illuminate/collections": "^8.58",
         "mcaskill/composer-exclude-files": "^2.0",
