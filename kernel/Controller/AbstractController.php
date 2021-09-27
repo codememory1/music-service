@@ -86,6 +86,8 @@ abstract class AbstractController extends AbstractCdmController
     protected function validatorManager(): ValidatorManager
     {
 
+        $this->validatorManager->addArgument('translation', $this->get('translator'));
+
         return $this->validatorManager;
 
     }
