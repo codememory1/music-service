@@ -1,1 +1,7 @@
-providers: {}
+services:
+  api-response:
+    class: App\Services\ResponseApiCollectorService
+  password-hashing:
+    class: App\Services\PasswordHashingService
+  activation-token:
+    class: App\Services\Tokens\ActivationTokenService
