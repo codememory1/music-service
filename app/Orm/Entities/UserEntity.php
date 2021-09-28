@@ -5,13 +5,13 @@ namespace App\Orm\Entities;
 use Codememory\Components\Database\Orm\Constructions as ORM;
 
 /**
- * Class UsersEntity
+ * Class UserEntity
  *
  * @package App\Orm\Entities
  */
 #[ORM\Entity(tableName: 'users')]
 #[ORM\Repository(repository: 'App\Orm\Repositories\UsersRepository')]
-class UsersEntity
+class UserEntity
 {
 
 	/**
@@ -26,6 +26,12 @@ class UsersEntity
 	 */
     #[ORM\Column(name: 'userid', type: 'int', length: null, nullable: false)]
     private mixed $userid = null;
+
+    /**
+     * @var mixed|null
+     */
+    #[ORM\Column(name: 'name', type: 'varchar', length: 32, nullable: false)]
+    private mixed $name = null;
 
 	/**
 	 * @var mixed
@@ -140,6 +146,30 @@ class UsersEntity
     
 		return $this->userid;
     
+    }
+
+    /**
+     * @param mixed $name
+     *
+     * @return UserEntity
+     */
+    public function setName(mixed $name): static
+    {
+
+        $this->name = $name;
+
+        return $this;
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName(): mixed
+    {
+
+        return $this->name;
+
     }
 
 	/**
