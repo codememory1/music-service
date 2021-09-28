@@ -84,6 +84,7 @@ class UserEntity
 	 */
     #[ORM\Column(name: 'role', type: 'int', length: null, nullable: false)]
     #[ORM\DefaultValue(value: '1')]
+    #[ORM\Reference(entity: RoleEntity::class, referencedColumnName: 'id')]
     private mixed $role = null;
 
 	/**
@@ -91,7 +92,6 @@ class UserEntity
 	 */
     #[ORM\Column(name: 'status', type: 'int', length: null, nullable: false)]
     #[ORM\DefaultValue(value: '0')]
-    #[ORM\Reference(entity: RoleEntity::class, referencedColumnName: 'id')]
     private mixed $status = null;
 
 	/**
