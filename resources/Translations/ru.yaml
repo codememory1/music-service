@@ -7,3 +7,5 @@ register:
   samePassword: 'Пароли не совпадают'
   accountWithEmailExist: 'Аккаунт с таким Email уже существует'
   successRegister: 'Регистрация прошла успешно! На почту отправлено сообщение с активацией аккаунта'
+  invalidTokenActivation: 'Недействительный токен активации'
+  successAccountActivate: 'Аккаунт активирован'
