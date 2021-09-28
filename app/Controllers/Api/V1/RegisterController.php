@@ -4,7 +4,12 @@ namespace App\Controllers\Api\V1;
 
 use App\Services\Registration\RegisterService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
+use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
+use Codememory\Components\Event\Exceptions\EventExistException;
+use Codememory\Components\Event\Exceptions\EventNotExistException;
+use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
 use Codememory\Components\JsonParser\Exceptions\JsonErrorException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
@@ -53,10 +58,16 @@ class RegisterController extends AbstractController
     }
 
     /**
-     * @throws QueryNotGeneratedException
+     * @throws BuilderNotCurrentSectionException
      * @throws JsonErrorException
-     * @throws ServiceNotExistException
+     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws NotSelectedStatementException
+     * @throws InvalidTimezoneException
+     * @throws EventExistException
+     * @throws EventNotExistException
+     * @throws EventNotImplementInterfaceException
      */
     #[NoReturn]
     public function register(): void
