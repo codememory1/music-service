@@ -30,7 +30,7 @@ class ActivationTokenService
         $jwtToken = JWT::encode([
             'sub' => Uuid::uuid4()->toString(),
             'exp' => $exp
-        ], env('jwt.confirm-secret'));
+        ], env('jwt.secret-activation'));
 
         return base64_encode($jwtToken);
 

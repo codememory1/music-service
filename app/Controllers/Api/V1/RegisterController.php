@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Api\V1;
 
+use App\Services\Registration\AccountActivationService;
 use App\Services\Registration\RegisterService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
@@ -80,6 +81,27 @@ class RegisterController extends AbstractController
         $registrationResponse = $registerService->register($this->validatorManager(), $this->em);
 
         $this->response->json($registrationResponse->getResponse(), $registrationResponse->getStatus());
+
+    }
+
+    /**
+     * @param string $token
+     *
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     */
+    public function activation(string $token): void
+    {
+
+        /** @var AccountActivationService $registerService */
+        $registerService = $this->getService('Registration\AccountActivation');
+
+        // Receiving an account activation response
+        $activationResponse = $registerService->activate($this->em, $token);
+
+        $this->response->json($activationResponse->getResponse(), $activationResponse->getStatus());
 
     }
 
