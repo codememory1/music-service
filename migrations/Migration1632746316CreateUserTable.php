@@ -6,11 +6,11 @@ use Codememory\Components\Database\Migrations\AbstractMigration;
 use Codememory\Components\Database\Migrations\Interfaces\SchemaInterface as MigrationSchemaInterface;
 
 /**
- * Class Migration1632746316CreateUsersTable
+ * Class Migration1632746316CreateUserTable
  *
  * @package Migrations
  */
-final class Migration1632746316CreateUsersTable extends AbstractMigration
+final class Migration1632746316CreateUserTable extends AbstractMigration
 {
 
     /**
