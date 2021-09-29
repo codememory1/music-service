@@ -14,8 +14,8 @@ use Codememory\Routing\Router;
 
 Router::group('api/', function () {
     Router::post('register/', RegisterController::class . '#register')->name('register');
-    Router::get('register/activate/:token', RegisterController::class . '#activation')
+    Router::get('register/activate/:token/', RegisterController::class . '#activation')
         ->with('token', '.+')
         ->name('account-activation');
-    Router::post('auth', AuthController::class . '#auth')->name('auth');
+    Router::post('auth/', AuthController::class . '#auth')->name('auth');
 });
