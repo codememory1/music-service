@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\Api\V1\AuthController;
 use App\Controllers\Api\V1\RegisterController;
 use Codememory\Routing\Router;
 
@@ -16,4 +17,5 @@ Router::group('api/', function () {
     Router::get('register/activate/:token', RegisterController::class . '#activation')
         ->with('token', '.+')
         ->name('account-activation');
+    Router::post('auth', AuthController::class . '#auth')->name('auth');
 });
