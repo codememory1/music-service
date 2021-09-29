@@ -74,7 +74,7 @@ class MakeControllerCommand extends Command
             return self::FAILURE;
         }
 
-        return $this->createController($filesystem, Str::trimToSymbol($controllerNameWithSuffix, '/', false), $controllerNamespace, $fullPathWithController, $stubController);
+        return $this->createController($filesystem, $filesystem->basename($controllerNameWithSuffix), $controllerNamespace, $fullPathWithController, $stubController);
 
     }
 
