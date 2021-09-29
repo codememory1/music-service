@@ -9,3 +9,10 @@ register:
   successRegister: 'Регистрация прошла успешно! На почту отправлено сообщение с активацией аккаунта'
   invalidTokenActivation: 'Недействительный токен активации'
   successAccountActivate: 'Аккаунт активирован'
+auth:
+  requiredUsername: 'Укажите имя пользователя или Email'
+  requiredPassword: 'Укажите пароль от аккаунта'
+  badIdentification: 'Пользователя с данным username не существует'
+  invalidPassword: 'Некорректный пароль от аккаунта'
+  emailNotActivate: 'Данный аккаунт не активирован'
+  success: 'Авторизация успешно выполнена'
