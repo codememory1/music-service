@@ -5,3 +5,7 @@ services:
     class: App\Services\PasswordHashingService
   activation-token:
     class: App\Services\Tokens\ActivationTokenService
+  session-token:
+    class: App\Services\Tokens\SessionTokenService
+    construct:
+      time: '@provider=time'
