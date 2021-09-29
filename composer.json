@@ -27,6 +27,7 @@
         "codememory/event-dispatcher": "^1.0",
         "codememory/finder": "^1.1",
         "codememory/fs": "^1.1",
+        "codememory/geo": "^1.0",
         "codememory/global-config": "^1.1",
         "codememory/http-foundation": "^2.2",
         "codememory/json-parser": "^1.0",
