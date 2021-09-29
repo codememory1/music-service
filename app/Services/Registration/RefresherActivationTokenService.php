@@ -4,7 +4,7 @@ namespace App\Services\Registration;
 
 use App\Events\UserRegisterEventEvent;
 use App\Orm\Entities\UserEntity;
-use App\Orm\Repositories\UsersRepository;
+use App\Orm\Repositories\UserRepository;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
@@ -28,8 +28,8 @@ class RefresherActivationTokenService extends AbstractService
 {
 
     /**
-     * @param UsersRepository $usersRepository
-     * @param UserEntity      $userEntity
+     * @param UserRepository $usersRepository
+     * @param UserEntity     $userEntity
      *
      * @return RefresherActivationTokenService
      * @throws NotSelectedStatementException
@@ -40,7 +40,7 @@ class RefresherActivationTokenService extends AbstractService
      * @throws BuilderNotCurrentSectionException
      * @throws ReflectionException
      */
-    final public function refresh(UsersRepository $usersRepository, UserEntity $userEntity): RefresherActivationTokenService
+    final public function refresh(UserRepository $usersRepository, UserEntity $userEntity): RefresherActivationTokenService
     {
 
         /** @var ActivationTokenService $activationTokenService */

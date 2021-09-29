@@ -5,7 +5,7 @@ namespace App\Services\Auth;
 use App\Orm\Dto\UserDto;
 use App\Orm\Entities\UserEntity;
 use App\Orm\Entities\UserSessionEntity;
-use App\Orm\Repositories\UsersRepository;
+use App\Orm\Repositories\UserRepository;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\SessionTokenService;
 use App\Validations\AuthValidation;
@@ -93,7 +93,7 @@ class AuthorizationService extends AbstractService
         /** @var VerificationsService $verificationsService */
         $verificationsService = $this->getService('Auth\Verifications');
 
-        /** @var UsersRepository $userRepository */
+        /** @var UserRepository $userRepository */
         $userRepository = $entityManager->getRepository(UserEntity::class);
         $validationManager = $validatorManager->create(new AuthValidation(), $this->request->post()->all());
 
@@ -120,7 +120,7 @@ class AuthorizationService extends AbstractService
     /**
      * @param ValidationManagerInterface $validationManager
      * @param IdentificationService      $identificationService
-     * @param UsersRepository            $userRepository
+     * @param UserRepository             $userRepository
      * @param VerificationsService       $verificationsService
      * @param AuthenticationService      $authenticationService
      *
@@ -130,7 +130,7 @@ class AuthorizationService extends AbstractService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
-    private function authorizationConditions(ValidationManagerInterface $validationManager, IdentificationService $identificationService, UsersRepository $userRepository, VerificationsService $verificationsService, AuthenticationService $authenticationService): ResponseApiCollectorService|UserEntity
+    private function authorizationConditions(ValidationManagerInterface $validationManager, IdentificationService $identificationService, UserRepository $userRepository, VerificationsService $verificationsService, AuthenticationService $authenticationService): ResponseApiCollectorService|UserEntity
     {
 
         // Input validation check

@@ -3,7 +3,7 @@
 namespace App\Services\Registration;
 
 use App\Orm\Entities\UserEntity;
-use App\Orm\Repositories\UsersRepository;
+use App\Orm\Repositories\UserRepository;
 use App\Services\ResponseApiCollectorService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
@@ -92,7 +92,7 @@ class RegisterService extends AbstractService
         /** @var RefresherActivationTokenService $refresherActivationTokenService */
         $refresherActivationTokenService = $this->getService('Registration\RefresherActivationToken');
 
-        /** @var UsersRepository $userRepository */
+        /** @var UserRepository $userRepository */
         $userRepository = $entityManager->getRepository(UserEntity::class);
         $finedUser = $userRepository->findOne([
             'email' => $request->post()->get('email')

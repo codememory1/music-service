@@ -4,7 +4,7 @@ namespace App\Services\Registration;
 
 use App\Events\UserRegisterEventEvent;
 use App\Orm\Entities\UserEntity;
-use App\Orm\Repositories\UsersRepository;
+use App\Orm\Repositories\UserRepository;
 use App\Services\PasswordHashingService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
@@ -67,7 +67,7 @@ class AccountCreatorService extends AbstractService
     final public function createAccount(EntityManagerInterface $entityManager): ResponseApiCollectorService
     {
 
-        /** @var UsersRepository $userRepository */
+        /** @var UserRepository $userRepository */
         $userRepository = $entityManager->getRepository(UserEntity::class);
         $collectedUserEntity = $this->getCollectedUserEntity($userRepository);
 
@@ -76,14 +76,14 @@ class AccountCreatorService extends AbstractService
     }
 
     /**
-     * @param UsersRepository $usersRepository
+     * @param UserRepository $usersRepository
      *
      * @return UserEntity
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      * @throws InvalidTimezoneException
      */
-    private function getCollectedUserEntity(UsersRepository $usersRepository): UserEntity
+    private function getCollectedUserEntity(UserRepository $usersRepository): UserEntity
     {
 
         /** @var PasswordHashingService $passwordHashing */

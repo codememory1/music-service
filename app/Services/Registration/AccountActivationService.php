@@ -3,7 +3,7 @@
 namespace App\Services\Registration;
 
 use App\Orm\Entities\UserEntity;
-use App\Orm\Repositories\UsersRepository;
+use App\Orm\Repositories\UserRepository;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
@@ -64,7 +64,7 @@ class AccountActivationService extends AbstractService
     final public function activate(EntityManagerInterface $entityManager, string $token): ResponseApiCollectorService
     {
 
-        /** @var UsersRepository $userRepository */
+        /** @var UserRepository $userRepository */
         $userRepository = $entityManager->getRepository(UserEntity::class);
 
         /** @var ActivationTokenService $activationToken */
@@ -88,14 +88,14 @@ class AccountActivationService extends AbstractService
     }
 
     /**
-     * @param UsersRepository $usersRepository
-     * @param UserEntity      $userEntity
+     * @param UserRepository $usersRepository
+     * @param UserEntity     $userEntity
      *
      * @return ResponseApiCollectorService
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      */
-    private function activationHandler(UsersRepository $usersRepository, UserEntity $userEntity): ResponseApiCollectorService
+    private function activationHandler(UserRepository $usersRepository, UserEntity $userEntity): ResponseApiCollectorService
     {
 
         // Updating user data

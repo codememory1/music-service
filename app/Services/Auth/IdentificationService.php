@@ -3,7 +3,7 @@
 namespace App\Services\Auth;
 
 use App\Orm\Entities\UserEntity;
-use App\Orm\Repositories\UsersRepository;
+use App\Orm\Repositories\UserRepository;
 use App\Services\ResponseApiCollectorService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
@@ -23,14 +23,14 @@ class IdentificationService extends AbstractService
 {
 
     /**
-     * @param UsersRepository $userRepository
+     * @param UserRepository $userRepository
      *
      * @return bool|UserEntity
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
      */
-    final public function identify(UsersRepository $userRepository): bool|UserEntity
+    final public function identify(UserRepository $userRepository): bool|UserEntity
     {
 
         /** @var RequestInterface $request */

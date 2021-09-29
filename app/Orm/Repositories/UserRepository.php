@@ -10,13 +10,13 @@ use Codememory\Components\Database\QueryBuilder\Interfaces\QueryBuilderInterface
 use ReflectionException;
 
 /**
- * Class UsersRepository
+ * Class UserRepository
  *
  * @package App\Orm\Repositories
  *
  * @author  Danil
  */
-class UsersRepository extends AbstractEntityRepository
+class UserRepository extends AbstractEntityRepository
 {
 
     /**

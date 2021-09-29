@@ -10,7 +10,7 @@ use Codememory\Components\Database\Orm\Constructions as ORM;
  * @package App\Orm\Entities
  */
 #[ORM\Entity(tableName: 'users')]
-#[ORM\Repository(repository: 'App\Orm\Repositories\UsersRepository')]
+#[ORM\Repository(repository: 'App\Orm\Repositories\UserRepository')]
 class UserEntity
 {
 

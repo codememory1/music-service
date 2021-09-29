@@ -3,7 +3,7 @@
 namespace App\Services\Registration;
 
 use App\Orm\Entities\UserEntity;
-use App\Orm\Repositories\UsersRepository;
+use App\Orm\Repositories\UserRepository;
 use App\Services\ResponseApiCollectorService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
@@ -84,7 +84,7 @@ class RegistrationValidationService extends AbstractService
         /** @var RegistrationInputValidationService $inputValidationService */
         $inputValidationService = $this->getService('Registration\RegistrationInputValidation');
 
-        /** @var UsersRepository $userRepository */
+        /** @var UserRepository $userRepository */
         $userRepository = $entityManager->getRepository(UserEntity::class);
 
         // Checking the result of validation of input data
@@ -111,8 +111,8 @@ class RegistrationValidationService extends AbstractService
     }
 
     /**
-     * @param UsersRepository $userRepository
-     * @param Request         $request
+     * @param UserRepository $userRepository
+     * @param Request        $request
      *
      * @return bool
      * @throws JsonErrorException
@@ -120,7 +120,7 @@ class RegistrationValidationService extends AbstractService
      * @throws ReflectionException
      * @throws NotSelectedStatementException
      */
-    private function existNotActivatedEmail(UsersRepository $userRepository, Request $request): bool
+    private function existNotActivatedEmail(UserRepository $userRepository, Request $request): bool
     {
 
         // We are looking for a record by input Email
@@ -133,8 +133,8 @@ class RegistrationValidationService extends AbstractService
     }
 
     /**
-     * @param UsersRepository $userRepository
-     * @param Request         $request
+     * @param UserRepository $userRepository
+     * @param Request        $request
      *
      * @return bool
      * @throws JsonErrorException
@@ -142,7 +142,7 @@ class RegistrationValidationService extends AbstractService
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
      */
-    private function existActivatedEmail(UsersRepository $userRepository, Request $request): bool
+    private function existActivatedEmail(UserRepository $userRepository, Request $request): bool
     {
 
         // We are looking for a record by input Email
