@@ -6,6 +6,7 @@ use App\Orm\Entities\UserEntity;
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Interfaces\QueryBuilderInterface;
 use ReflectionException;
 
 /**
@@ -30,17 +31,35 @@ class UsersRepository extends AbstractEntityRepository
     {
 
         $qb = $this->createQueryBuilder();
-        $conditions = [];
-
-        foreach ($by as $column => $value) {
-            $conditions[] = $qb->expression()->condition($column, '=', ':' . $column);
-        }
-
         $qb
             ->setParameters($by)
             ->select()
             ->from($this->getEntityData()->getTableName())
-            ->where($qb->expression()->exprAnd(...$conditions));
+            ->where($qb->expression()->exprAnd(...$this->getConditionsFromBy($qb, $by)));
+
+        $result = $qb->generateQuery()->toEntity();
+
+        return [] !== $result ? $result[0] : false;
+
+    }
+
+    /**
+     * @param array $by
+     *
+     * @return bool|UserEntity
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    public function findOneByOr(array $by): bool|UserEntity
+    {
+
+        $qb = $this->createQueryBuilder();
+        $qb
+            ->setParameters($by)
+            ->select()
+            ->from($this->getEntityData()->getTableName())
+            ->where($qb->expression()->exprOr(...$this->getConditionsFromBy($qb, $by)));
 
         $result = $qb->generateQuery()->toEntity();
 
@@ -91,6 +110,25 @@ class UsersRepository extends AbstractEntityRepository
             );
 
         $qb->generateQuery()->execute();
+
+    }
+
+    /**
+     * @param QueryBuilderInterface $queryBuilder
+     * @param array                 $by
+     *
+     * @return array
+     */
+    private function getConditionsFromBy(QueryBuilderInterface $queryBuilder, array $by): array
+    {
+
+        $conditions = [];
+
+        foreach ($by as $column => $value) {
+            $conditions[] = $queryBuilder->expression()->condition($column, '=', ':' . $column);
+        }
+
+        return $conditions;
 
     }
 
