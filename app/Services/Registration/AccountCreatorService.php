@@ -98,23 +98,11 @@ class AccountCreatorService extends AbstractService
             ->setUserid($usersRepository->getCountUsers() + 1 . rand(1000, 9999))
             ->setName($inputData->get('name'))
             ->setEmail($inputData->get('email'))
-            ->setUsername($this->getUsernameFromEmail($inputData->get('email')))
+            ->setUsername($inputData->get('email'))
             ->setPassword($passwordHashing->encode($inputData->get('password')))
             ->setActivationToken($activationToken->encode());
 
         return $userEntity;
-
-    }
-
-    /**
-     * @param string $email
-     *
-     * @return string
-     */
-    private function getUsernameFromEmail(string $email): string
-    {
-
-        return explode('@', $email, 2)[0];
 
     }
 
