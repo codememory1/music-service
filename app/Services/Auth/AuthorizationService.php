@@ -118,6 +118,36 @@ class AuthorizationService extends AbstractService
     }
 
     /**
+     * @param EntityManagerInterface $entityManager
+     *
+     * @return UserEntity|bool
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    final public function isAuth(EntityManagerInterface $entityManager): UserEntity|bool
+    {
+
+        [, $accessToken] = explode(' ', $this->request->getHeader('Authorization'), 2);
+
+        /** @var SessionTokenService $sessionToken */
+        $sessionToken = $this->get('session-token');
+
+        if($sessionToken->verifyAccess($accessToken)) {
+            /** @var UserRepository $userRepository */
+            $userRepository = $entityManager->getRepository(UserEntity::class);
+            $userDataFromAccessToken = $sessionToken->decodeAccess($accessToken);
+
+            return $userRepository->findOne([
+                'userid' => $userDataFromAccessToken->userid
+            ]);
+        }
+
+        return false;
+
+    }
+
+    /**
      * @param ValidationManagerInterface $validationManager
      * @param IdentificationService      $identificationService
      * @param UserRepository             $userRepository
