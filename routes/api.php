@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\Api\V1\AuthController;
+use App\Controllers\Api\V1\PlaylistController;
 use App\Controllers\Api\V1\RegisterController;
 use Codememory\Routing\Router;
 
@@ -18,4 +19,9 @@ Router::group('api/', function () {
         ->with('token', '.+')
         ->name('account-activation');
     Router::post('auth/', AuthController::class . '#auth')->name('auth');
+
+    // Playlist routes
+    Router::group('playlist/', function () {
+        Router::post('create/', PlaylistController::class . '#create')->name('create-playlist');
+    });
 });
