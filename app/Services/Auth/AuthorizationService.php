@@ -6,6 +6,7 @@ use App\Orm\Dto\UserDto;
 use App\Orm\Entities\UserEntity;
 use App\Orm\Entities\UserSessionEntity;
 use App\Orm\Repositories\UserRepository;
+use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\SessionTokenService;
 use App\Validations\AuthValidation;
@@ -14,13 +15,9 @@ use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementE
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\GEO\Geolocation;
-use Codememory\Components\Services\AbstractService;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
-use Codememory\Components\Translator\Interfaces\TranslationInterface;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidatorManager;
-use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
-use Codememory\HttpFoundation\Interfaces\RequestInterface;
 use ReflectionException;
 
 /**
@@ -30,45 +27,8 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class AuthorizationService extends AbstractService
+class AuthorizationService extends AbstractApiService
 {
-
-    /**
-     * @var ResponseApiCollectorService
-     */
-    private ResponseApiCollectorService $apiResponse;
-
-    /**
-     * @var TranslationInterface
-     */
-    private TranslationInterface $translation;
-
-    /**
-     * @var RequestInterface
-     */
-    private RequestInterface $request;
-
-    /**
-     * @param ServiceProviderInterface $serviceProvider
-     */
-    public function __construct(ServiceProviderInterface $serviceProvider)
-    {
-
-        parent::__construct($serviceProvider);
-
-        /** @var ResponseApiCollectorService $apiResponse */
-        $apiResponse = $this->get('api-response');
-        $this->apiResponse = $apiResponse;
-
-        /** @var TranslationInterface $translation */
-        $translation = $this->get('translator');
-        $this->translation = $translation;
-
-        /** @var RequestInterface $request */
-        $request = $this->get('request');
-        $this->request = $request;
-
-    }
 
     /**
      * @param ValidatorManager       $validatorManager
@@ -133,7 +93,7 @@ class AuthorizationService extends AbstractService
         /** @var SessionTokenService $sessionToken */
         $sessionToken = $this->get('session-token');
 
-        if($sessionToken->verifyAccess($accessToken)) {
+        if ($sessionToken->verifyAccess($accessToken)) {
             /** @var UserRepository $userRepository */
             $userRepository = $entityManager->getRepository(UserEntity::class);
             $userDataFromAccessToken = $sessionToken->decodeAccess($accessToken);
@@ -170,7 +130,7 @@ class AuthorizationService extends AbstractService
 
         // We check the user's identification by the input email or username
         if (false === $identificationResponse = $identificationService->identify($userRepository)) {
-            return $identificationService->getResponse($this->apiResponse, $this->translation);
+            return $identificationService->getResponse();
         }
 
         // Checking the activation status of the identified user's account
@@ -204,9 +164,7 @@ class AuthorizationService extends AbstractService
         // Save the user's session
         $this->saveSession($entityManager, $userEntity, $sessionToken, $refreshToken);
 
-        return $this->apiResponse->create(200, [
-            $this->translation->getTranslationActiveLang('auth.success')
-        ], [
+        return $this->createApiResponse(200, 'auth.success', [
             'access_token'  => $accessToken,
             'refresh_token' => $refreshToken
         ]);

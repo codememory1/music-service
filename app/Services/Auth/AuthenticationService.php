@@ -3,8 +3,8 @@
 namespace App\Services\Auth;
 
 use App\Orm\Entities\UserEntity;
+use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
-use Codememory\Components\Services\AbstractService;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
 
@@ -15,7 +15,7 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class AuthenticationService extends AbstractService
+class AuthenticationService extends AbstractApiService
 {
 
     /**

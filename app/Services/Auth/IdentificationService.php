@@ -4,6 +4,7 @@ namespace App\Services\Auth;
 
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\UserRepository;
+use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
@@ -19,7 +20,7 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class IdentificationService extends AbstractService
+class IdentificationService extends AbstractApiService
 {
 
     /**
@@ -33,9 +34,7 @@ class IdentificationService extends AbstractService
     final public function identify(UserRepository $userRepository): bool|UserEntity
     {
 
-        /** @var RequestInterface $request */
-        $request = $this->get('request');
-        $inputUsernameOrEmail = $request->post()->get('username');
+        $inputUsernameOrEmail = $this->request->post()->get('username');
 
         // Checking the existence of a user by the input email or username
         return $userRepository->findOneByOr([
@@ -46,17 +45,12 @@ class IdentificationService extends AbstractService
     }
 
     /**
-     * @param ResponseApiCollectorService $apiResponse
-     * @param TranslationInterface        $translation
-     *
      * @return ResponseApiCollectorService
      */
-    public function getResponse(ResponseApiCollectorService $apiResponse, TranslationInterface $translation): ResponseApiCollectorService
+    public function getResponse(): ResponseApiCollectorService
     {
 
-        return $apiResponse->create(400, [
-            $translation->getTranslationActiveLang('auth.badIdentification')
-        ]);
+        return $this->createApiResponse(400, 'auth.badIdentification');
 
     }
 
