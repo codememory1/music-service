@@ -77,6 +77,26 @@ class PlaylistRepository extends AbstractEntityRepository
     }
 
     /**
+     * @param array $by
+     *
+     * @return void
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     */
+    public function delete(array $by): void
+    {
+
+        $qb = $this->createQueryBuilder();
+        $qb
+            ->setParameters($by)
+            ->delete($this->getEntityData()->getTableName())
+            ->where($qb->expression()->exprAnd(...$this->getConditionsFromBy($qb, $by)));
+
+        $qb->generateQuery()->execute();
+
+    }
+
+    /**
      * @param QueryBuilderInterface $queryBuilder
      * @param array                 $by
      *
