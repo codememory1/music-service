@@ -4,14 +4,12 @@ namespace App\Services\Registration;
 
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\UserRepository;
+use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
-use Codememory\Components\Services\AbstractService;
-use Codememory\Components\Translator\Interfaces\TranslationInterface;
-use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use ReflectionException;
 
 /**
@@ -21,36 +19,8 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class AccountActivationService extends AbstractService
+class AccountActivationService extends AbstractApiService
 {
-
-    /**
-     * @var ResponseApiCollectorService
-     */
-    private ResponseApiCollectorService $apiResponse;
-
-    /**
-     * @var TranslationInterface
-     */
-    private TranslationInterface $translation;
-
-    /**
-     * @param ServiceProviderInterface $serviceProvider
-     */
-    public function __construct(ServiceProviderInterface $serviceProvider)
-    {
-
-        parent::__construct($serviceProvider);
-
-        /** @var ResponseApiCollectorService $apiResponse */
-        $apiResponse = $this->get('api-response');
-        $this->apiResponse = $apiResponse;
-
-        /** @var TranslationInterface $translation */
-        $translation = $this->get('translator');
-        $this->translation = $translation;
-
-    }
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -76,9 +46,7 @@ class AccountActivationService extends AbstractService
 
         // Check the token for validity and existence in the database
         if (!$activationToken->verify($token) || false === $finedUserByToken) {
-            return $this->apiResponse->create(400, [
-                $this->translation->getTranslationActiveLang('register.invalidTokenActivation')
-            ]);
+            return $this->createApiResponse(400, 'register.invalidTokenActivation');
         }
 
         // The token is valid and was found in the database
@@ -104,9 +72,7 @@ class AccountActivationService extends AbstractService
             'activation_token' => ''
         ], $userEntity->getEmail());
 
-        return $this->apiResponse->create(200, [
-            $this->translation->getTranslationActiveLang('register.successAccountActivate')
-        ]);
+        return $this->createApiResponse(200, 'register.successAccountActivate');
 
     }
 

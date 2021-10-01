@@ -4,6 +4,7 @@ namespace App\Services\Registration;
 
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\UserRepository;
+use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
@@ -14,10 +15,8 @@ use Codememory\Components\Event\Exceptions\EventNotExistException;
 use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
 use Codememory\Components\JsonParser\Exceptions\JsonErrorException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
-use Codememory\Components\Services\AbstractService;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Manager as ValidatorManager;
-use Codememory\HttpFoundation\Interfaces\RequestInterface;
 use ReflectionException;
 
 /**
@@ -25,9 +24,9 @@ use ReflectionException;
  *
  * @package App\Services
  *
- * @author  Codememory
+ * @author  Danil
  */
-class RegisterService extends AbstractService
+class RegisterService extends AbstractApiService
 {
 
     /**
@@ -86,16 +85,13 @@ class RegisterService extends AbstractService
     private function refreshActivationToken(EntityManagerInterface $entityManager): ResponseApiCollectorService
     {
 
-        /** @var RequestInterface $request */
-        $request = $this->get('request');
-
         /** @var RefresherActivationTokenService $refresherActivationTokenService */
         $refresherActivationTokenService = $this->getService('Registration\RefresherActivationToken');
 
         /** @var UserRepository $userRepository */
         $userRepository = $entityManager->getRepository(UserEntity::class);
         $finedUser = $userRepository->findOne([
-            'email' => $request->post()->get('email')
+            'email' => $this->request->post()->get('email')
         ]);
 
         // We update the activation token and return a response about a successful update

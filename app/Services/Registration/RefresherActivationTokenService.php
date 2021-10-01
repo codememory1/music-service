@@ -5,6 +5,7 @@ namespace App\Services\Registration;
 use App\Events\UserRegisterEventEvent;
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\UserRepository;
+use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
@@ -13,8 +14,6 @@ use Codememory\Components\Event\Exceptions\EventExistException;
 use Codememory\Components\Event\Exceptions\EventNotExistException;
 use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
-use Codememory\Components\Services\AbstractService;
-use Codememory\Components\Translator\Interfaces\TranslationInterface;
 use ReflectionException;
 
 /**
@@ -24,7 +23,7 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class RefresherActivationTokenService extends AbstractService
+class RefresherActivationTokenService extends AbstractApiService
 {
 
     /**
@@ -49,6 +48,7 @@ class RefresherActivationTokenService extends AbstractService
 
         $userEntity->setActivationToken($tokenForActivation);
 
+        // Updating the activation token in the database
         $usersRepository->update([
             'activation_token' => $userEntity->getActivationToken()
         ], $userEntity->getEmail());
@@ -69,15 +69,7 @@ class RefresherActivationTokenService extends AbstractService
     final public function getResponse(): ResponseApiCollectorService
     {
 
-        /** @var ResponseApiCollectorService $apiResponse */
-        $apiResponse = $this->get('api-response');
-
-        /** @var TranslationInterface $translation */
-        $translation = $this->get('translator');
-
-        return $apiResponse->create(200, [
-            $translation->getTranslationActiveLang('register.successRegister')
-        ]);
+        return $this->createApiResponse(200, 'register.successRegister');
 
     }
 

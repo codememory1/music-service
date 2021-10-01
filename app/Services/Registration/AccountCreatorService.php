@@ -5,6 +5,7 @@ namespace App\Services\Registration;
 use App\Events\UserRegisterEventEvent;
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\UserRepository;
+use App\Services\AbstractApiService;
 use App\Services\PasswordHashingService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
@@ -16,10 +17,6 @@ use Codememory\Components\Event\Exceptions\EventExistException;
 use Codememory\Components\Event\Exceptions\EventNotExistException;
 use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
-use Codememory\Components\Services\AbstractService;
-use Codememory\Components\Translator\Interfaces\TranslationInterface;
-use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
-use Codememory\HttpFoundation\Interfaces\RequestInterface;
 use ReflectionException;
 
 /**
@@ -29,27 +26,8 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class AccountCreatorService extends AbstractService
+class AccountCreatorService extends AbstractApiService
 {
-
-    /**
-     * @var RequestInterface
-     */
-    private RequestInterface $request;
-
-    /**
-     * @param ServiceProviderInterface $serviceProvider
-     */
-    public function __construct(ServiceProviderInterface $serviceProvider)
-    {
-
-        parent::__construct($serviceProvider);
-
-        /** @var RequestInterface $request */
-        $request = $this->get('request');
-        $this->request = $request;
-
-    }
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -120,12 +98,6 @@ class AccountCreatorService extends AbstractService
     private function pushUser(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
     {
 
-        /** @var ResponseApiCollectorService $apiResponse */
-        $apiResponse = $this->get('api-response');
-
-        /** @var TranslationInterface $translation */
-        $translation = $this->get('translator');
-
         // Saving a user to the database
         $entityManager->commit($userEntity)->flush();
 
@@ -135,9 +107,7 @@ class AccountCreatorService extends AbstractService
             $userEntity
         ]);
 
-        return $apiResponse->create(200, [
-            $translation->getTranslationActiveLang('register.successRegister')
-        ]);
+        return $this->createApiResponse(200, 'register.successRegister');
 
     }
 
