@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Api\V1;
 
+use App\Orm\Entities\PlaylistEntity;
+use App\Orm\Repositories\PlaylistRepository;
 use App\Services\Playlist\PlaylistCreatorService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
@@ -18,6 +20,25 @@ use ReflectionException;
  */
 class PlaylistController extends AbstractAuthorizationController
 {
+
+    /**
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    public function all(): void
+    {
+
+        if (false != $authorizedUser = $this->isAuthWithResponse()) {
+            /** @var PlaylistRepository $playlistRepository */
+            $playlistRepository = $this->getDatabase()->getEntityManager()->getRepository(PlaylistEntity::class);
+
+            $this->response->json($playlistRepository->findAllAsArray([
+                'userid' => $authorizedUser->getUserid()
+            ]));
+        }
+
+    }
 
     /**
      * @throws NotSelectedStatementException
