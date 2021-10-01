@@ -44,6 +44,29 @@ class PlaylistRepository extends AbstractEntityRepository
     }
 
     /**
+     * @param array $by
+     *
+     * @return array
+     * @throws NotSelectedStatementException
+     */
+    public function findAllAsArray(array $by = []): array
+    {
+
+        $qb = $this->createQueryBuilder();
+        $statement = $qb
+            ->select()
+            ->from($this->getEntityData()->getTableName());
+
+        if ([] !== $by) {
+            $statement->where($qb->expression()->exprAnd(...$this->getConditionsFromBy($qb, $by)));
+            $qb->setParameters($by);
+        }
+
+        return $qb->generateResult()->toArray();
+
+    }
+
+    /**
      * @param QueryBuilderInterface $queryBuilder
      * @param array                 $by
      *
