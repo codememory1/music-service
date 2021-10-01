@@ -5,6 +5,7 @@ namespace App\Controllers\Api\V1;
 use App\Orm\Entities\PlaylistEntity;
 use App\Orm\Repositories\PlaylistRepository;
 use App\Services\Playlist\PlaylistCreatorService;
+use App\Services\Playlist\PlaylistRemoverService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
@@ -97,10 +98,30 @@ class PlaylistController extends AbstractAuthorizationController
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
             /** @var PlaylistCreatorService $playlistCreatorService */
             $playlistCreatorService = $this->getService('Playlist\PlaylistCreator');
-
             $playlistCreationResponse = $playlistCreatorService->create($this->validatorManager(), $this->getDatabase()->getEntityManager(), $authorizedUser);
 
             $this->response->json($playlistCreationResponse->getResponse(), $playlistCreationResponse->getStatus());
+        }
+
+    }
+
+    /**
+     * @param int $id
+     *
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     */
+    public function delete(int $id): void
+    {
+
+        if (false != $authorizedUser = $this->isAuthWithResponse()) {
+            /** @var PlaylistRemoverService $playlistRemover */
+            $playlistRemover = $this->getService('Playlist\PlaylistRemover');
+            $playlistDeleteResponse = $playlistRemover->delete($this->playlistRepository, $authorizedUser, $id);
+
+            $this->response->json($playlistDeleteResponse->getResponse(), $playlistDeleteResponse->getStatus());
         }
 
     }
