@@ -24,5 +24,8 @@ Router::group('api/', function () {
     Router::group('playlist/', function () {
         Router::post('create/', PlaylistController::class . '#create')->name('create-playlist');
         Router::get('all/', PlaylistController::class . '#all')->name('all-playlists');
+        Router::get('show/:id', PlaylistController::class . '#show')
+            ->with('id', '[0-9]+')
+            ->name('show-playlist');
     });
 });
