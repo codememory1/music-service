@@ -3,6 +3,7 @@
 namespace App\Orm\Repositories;
 
 use App\Orm\Entities\PlaylistEntity;
+use Codememory\Components\Database\Orm\QueryBuilder\ExtendedQueryBuilder;
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
@@ -30,16 +31,9 @@ class PlaylistRepository extends AbstractEntityRepository
     public function findOne(array $by): bool|PlaylistEntity
     {
 
-        $qb = $this->createQueryBuilder();
-        $qb
-            ->setParameters($by)
-            ->select()
-            ->from($this->getEntityData()->getTableName())
-            ->where($qb->expression()->exprAnd(...$this->getConditionsFromBy($qb, $by)));
+        $findOne = $this->findOneHandler($by)->toEntity();
 
-        $result = $qb->generateQuery()->toEntity();
-
-        return [] !== $result ? $result[0] : false;
+        return [] !== $findOne ? $findOne[0] : false;
 
     }
 
@@ -67,6 +61,22 @@ class PlaylistRepository extends AbstractEntityRepository
     }
 
     /**
+     * @param array $by
+     *
+     * @return array
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     */
+    public function findOneAsArray(array $by): array
+    {
+
+        $findOne = $this->findOneHandler($by)->getResult()->toArray();
+
+        return [] !== $findOne ? $findOne[0] : [];
+
+    }
+
+    /**
      * @param QueryBuilderInterface $queryBuilder
      * @param array                 $by
      *
@@ -82,6 +92,26 @@ class PlaylistRepository extends AbstractEntityRepository
         }
 
         return $conditions;
+
+    }
+
+    /**
+     * @param array $by
+     *
+     * @return QueryBuilderInterface|ExtendedQueryBuilder
+     * @throws NotSelectedStatementException
+     */
+    private function findOneHandler(array $by): QueryBuilderInterface|ExtendedQueryBuilder
+    {
+
+        $qb = $this->createQueryBuilder();
+        $qb
+            ->setParameters($by)
+            ->select()
+            ->from($this->getEntityData()->getTableName())
+            ->where($qb->expression()->exprAnd(...$this->getConditionsFromBy($qb, $by)));
+
+        return $qb->generateQuery();
 
     }
 
