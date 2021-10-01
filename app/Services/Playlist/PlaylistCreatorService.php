@@ -5,6 +5,7 @@ namespace App\Services\Playlist;
 use App\Orm\Entities\PlaylistEntity;
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\PlaylistRepository;
+use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\PlaylistCreationValidation;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
@@ -12,12 +13,8 @@ use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementE
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\DateTime\DateTime;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
-use Codememory\Components\Services\AbstractService;
-use Codememory\Components\Translator\Interfaces\TranslationInterface;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidationManager;
-use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
-use Codememory\HttpFoundation\Interfaces\RequestInterface;
 use ReflectionException;
 
 /**
@@ -27,45 +24,8 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class PlaylistCreatorService extends AbstractService
+class PlaylistCreatorService extends AbstractApiService
 {
-
-    /**
-     * @var RequestInterface
-     */
-    private RequestInterface $request;
-
-    /**
-     * @var ResponseApiCollectorService
-     */
-    private ResponseApiCollectorService $apiResponse;
-
-    /**
-     * @var TranslationInterface
-     */
-    private TranslationInterface $translation;
-
-    /**
-     * @param ServiceProviderInterface $serviceProvider
-     */
-    public function __construct(ServiceProviderInterface $serviceProvider)
-    {
-
-        parent::__construct($serviceProvider);
-
-        /** @var RequestInterface $request */
-        $request = $this->get('request');
-        $this->request = $request;
-
-        /** @var ResponseApiCollectorService $apiResponse */
-        $apiResponse = $this->get('api-response');
-        $this->apiResponse = $apiResponse;
-
-        /** @var TranslationInterface $translation */
-        $translation = $this->get('translator');
-        $this->translation = $translation;
-
-    }
 
     /**
      * @param ValidationManager      $validationManager
@@ -132,9 +92,7 @@ class PlaylistCreatorService extends AbstractService
         ]);
 
         if (false !== $finedPlaylist) {
-            return $this->apiResponse->create(400, [
-                $this->translation->getTranslationActiveLang('playlist.exist')
-            ]);
+            return $this->createApiResponse(400, 'playlist.exist');
         }
 
         return true;
@@ -179,9 +137,7 @@ class PlaylistCreatorService extends AbstractService
         // Save the data of the generated playlist to the database
         $entityManager->commit($playlistEntity)->flush();
 
-        return $this->apiResponse->create(201, [
-            $this->translation->getTranslationActiveLang('playlist.successCreated')
-        ]);
+        return $this->createApiResponse(201, 'playlist.successCreated');
 
     }
 
