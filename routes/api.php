@@ -27,5 +27,8 @@ Router::group('api/', function () {
         Router::get('show/:id', PlaylistController::class . '#show')
             ->with('id', '[0-9]+')
             ->name('show-playlist');
+        Router::delete('delete/:id', PlaylistController::class . '#delete')
+            ->with('id', '[0-9]+')
+            ->name('delete-playlist');
     });
 });
