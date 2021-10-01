@@ -30,6 +30,11 @@ abstract class AbstractAuthorizationController extends AbstractController
     private AuthorizationService $authorizationService;
 
     /**
+     * @var ResponseInterface
+     */
+    protected ResponseInterface $response;
+
+    /**
      * @param ServiceProviderInterface $serviceProvider
      *
      * @throws BuilderNotCurrentSectionException
@@ -44,6 +49,10 @@ abstract class AbstractAuthorizationController extends AbstractController
         /** @var AuthorizationService $authorizationService */
         $authorizationService = $this->getService('Auth\Authorization');
         $this->authorizationService = $authorizationService;
+
+        /** @var ResponseInterface $response */
+        $response = $this->get('response');
+        $this->response = $response;
 
     }
 
@@ -70,13 +79,10 @@ abstract class AbstractAuthorizationController extends AbstractController
     {
 
         if (false === $authUser = $this->isAuthWithData()) {
-            /** @var ResponseInterface $response */
-            $response = $this->get('response');
-
             /** @var ResponseApiCollectorService $apiResponse */
             $apiResponse = $this->get('api-response');
 
-            $response->json($apiResponse->create(401, ['Unauthorized'])->getResponse(), 401);
+            $this->response->json($apiResponse->create(401, ['Unauthorized'])->getResponse(), 401);
         }
 
         return $authUser;
