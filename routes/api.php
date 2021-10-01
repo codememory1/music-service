@@ -23,5 +23,6 @@ Router::group('api/', function () {
     // Playlist routes
     Router::group('playlist/', function () {
         Router::post('create/', PlaylistController::class . '#create')->name('create-playlist');
+        Router::get('all/', PlaylistController::class . '#all')->name('all-playlists');
     });
 });
