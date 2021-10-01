@@ -2,5 +2,7 @@
 /.idea/
 composer.lock
 /storage/
-.htaccess
 .env
+node_modules/
+mix-manifest.json
+package-lock.json

@@ -13,7 +13,6 @@ const notifier = require('node-notifier');
 mix.disableNotifications();
 
 // Packages
-const NodeExternals = require('webpack-node-externals');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
@@ -83,8 +82,6 @@ mix
         ]
     })
     .webpackConfig({
-        target: 'node',
-        externals: [NodeExternals()],
         mode: APP_MODE,
         resolve: {
             extensions: [

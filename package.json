@@ -41,7 +41,6 @@
     "sass-loader": "^12.1.0",
     "svg-spritemap-webpack-plugin": "^4.3.2",
     "terser-webpack-plugin": "^5.2.4",
-    "webpack-node-externals": "^3.0.0",
     "yaml": "^1.10.2"
   },
   "dependencies": {
