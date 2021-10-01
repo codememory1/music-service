@@ -98,7 +98,11 @@ class PlaylistController extends AbstractAuthorizationController
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
             /** @var PlaylistCreatorService $playlistCreatorService */
             $playlistCreatorService = $this->getService('Playlist\PlaylistCreator');
-            $playlistCreationResponse = $playlistCreatorService->create($this->validatorManager(), $this->getDatabase()->getEntityManager(), $authorizedUser);
+            $playlistCreationResponse = $playlistCreatorService->create(
+                $this->validatorManager(),
+                $this->getDatabase()->getEntityManager(),
+                $authorizedUser
+            );
 
             $this->response->json($playlistCreationResponse->getResponse(), $playlistCreationResponse->getStatus());
         }
