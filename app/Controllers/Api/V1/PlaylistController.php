@@ -6,6 +6,7 @@ use App\Orm\Entities\PlaylistEntity;
 use App\Orm\Repositories\PlaylistRepository;
 use App\Services\Playlist\PlaylistCreatorService;
 use App\Services\Playlist\PlaylistRemoverService;
+use App\Services\Playlist\PlaylistUpdaterService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
@@ -105,6 +106,32 @@ class PlaylistController extends AbstractAuthorizationController
             );
 
             $this->response->json($playlistCreationResponse->getResponse(), $playlistCreationResponse->getStatus());
+        }
+
+    }
+
+    /**
+     * @param int $id
+     *
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     */
+    public function update(int $id): void
+    {
+
+        if (false != $authorizedUser = $this->isAuthWithResponse()) {
+            /** @var PlaylistUpdaterService $playlistUpdaterService */
+            $playlistUpdaterService = $this->getService('Playlist\PlaylistUpdater');
+            $playlistUpdateResponse = $playlistUpdaterService->update(
+                $this->validatorManager(),
+                $this->playlistRepository,
+                $authorizedUser,
+                $id
+            );
+
+            $this->response->json($playlistUpdateResponse->getResponse(), $playlistUpdateResponse->getStatus());
         }
 
     }
