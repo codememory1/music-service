@@ -97,6 +97,32 @@ class PlaylistRepository extends AbstractEntityRepository
     }
 
     /**
+     * @param array $data
+     * @param array $by
+     *
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     */
+    public function update(array $data, array $by): void
+    {
+
+        $qb = $this->createQueryBuilder();
+        $columns = array_keys($data);
+        $values = array_map(function (string $key) {
+            return ':' . $key;
+        }, $columns);
+
+        $qb
+            ->setParameters(array_merge($data, $by))
+            ->update($this->getEntityData()->getTableName())
+            ->setData($columns, $values)
+            ->where($qb->expression()->exprAnd(...$this->getConditionsFromBy($qb, $by)));
+
+        $qb->generateQuery()->execute();
+
+    }
+
+    /**
      * @param QueryBuilderInterface $queryBuilder
      * @param array                 $by
      *
