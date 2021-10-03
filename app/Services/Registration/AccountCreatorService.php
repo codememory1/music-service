@@ -73,7 +73,7 @@ class AccountCreatorService extends AbstractApiService
 
         $userEntity = new UserEntity();
         $userEntity
-            ->setUserid($usersRepository->getCountUsers() + 1 . rand(1000, 9999))
+            ->setUserid($usersRepository->getCount() + 1 . rand(1000, 9999))
             ->setName($inputData->get('name'))
             ->setEmail($inputData->get('email'))
             ->setUsername($inputData->get('email'))
