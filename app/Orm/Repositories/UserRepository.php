@@ -2,6 +2,7 @@
 
 namespace App\Orm\Repositories;
 
+use App\Orm\Entities\SubscriptionEntity;
 use App\Orm\Entities\UserEntity;
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
@@ -31,6 +32,8 @@ class UserRepository extends AbstractEntityRepository
 
         $result = $this->findBy($by)->toEntity();
 
+        $this->setSubscription($result);
+
         return [] !== $result ? $result[0] : false;
 
     }
@@ -47,6 +50,8 @@ class UserRepository extends AbstractEntityRepository
     {
 
         $result = $this->findBy($by, 'or')->toEntity();
+
+        $this->setSubscription($result);
 
         return [] !== $result ? $result[0] : false;
 
@@ -65,6 +70,27 @@ class UserRepository extends AbstractEntityRepository
     {
 
         $this->update($data, ['email' => $email]);
+
+    }
+
+    /**
+     * @param UserEntity[] $users
+     *
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    private function setSubscription(array &$users): void
+    {
+
+        /** @var SubscriptionRepository $subscriptionRepository */
+        $subscriptionRepository = $this->getRepository(SubscriptionEntity::class);
+
+        foreach ($users as &$userEntity) {
+            $subscriptionData = $subscriptionRepository->findOneWithOptions($userEntity->getSubscription());
+
+            $userEntity->setSubscriptionData($subscriptionData);
+        }
 
     }
 

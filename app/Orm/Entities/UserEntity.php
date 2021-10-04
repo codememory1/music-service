@@ -115,6 +115,11 @@ class UserEntity
     #[ORM\DefaultValue(value: 'CURRENT_TIMESTAMP')]
     private mixed $updated_at = null;
 
+    /**
+     * @var SubscriptionEntity|null
+     */
+    private ?SubscriptionEntity $subscriptionData = null;
+
 	/**
 	 * @return mixed
 	 */
@@ -446,6 +451,30 @@ class UserEntity
     
 		return $this->updated_at;
     
+    }
+
+    /**
+     * @param SubscriptionEntity $subscriptionEntity
+     *
+     * @return $this
+     */
+    public function setSubscriptionData(SubscriptionEntity $subscriptionEntity): static
+    {
+
+        $this->subscriptionData = $subscriptionEntity;
+
+        return $this;
+
+    }
+
+    /**
+     * @return SubscriptionEntity|null
+     */
+    public function getSubscriptionData(): ?SubscriptionEntity
+    {
+
+        return $this->subscriptionData;
+
     }
 
 }
