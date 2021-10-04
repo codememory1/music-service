@@ -62,6 +62,11 @@ class SubscriptionEntity
     private mixed $created_at = null;
 
     /**
+     * @var array
+     */
+    private array $options = [];
+
+    /**
      * @return mixed
      */
     public function getId(): mixed
@@ -212,6 +217,30 @@ class SubscriptionEntity
     {
 
         return $this->created_at;
+
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return SubscriptionEntity
+     */
+    public function setOptions(array $options): static
+    {
+
+        $this->options = $options;
+
+        return $this;
+
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+
+        return $this->options;
 
     }
 

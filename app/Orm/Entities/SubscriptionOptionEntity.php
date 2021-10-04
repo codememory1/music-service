@@ -32,7 +32,7 @@ class SubscriptionOptionEntity
         on: [RelationshipInterface::ON_DELETE],
         onOptions: [RelationshipInterface::DEFAULT_ON_OPTION]
     )]
-    private mixed $option = null;
+    private mixed $option_name_id = null;
 
     /**
      * @var mixed
@@ -45,6 +45,12 @@ class SubscriptionOptionEntity
         onOptions: [RelationshipInterface::DEFAULT_ON_OPTION]
     )]
     private mixed $subscription = null;
+
+    /**
+     * @var SubscriptionOptionNameEntity|null
+     */
+    #[ORM\Join(entity: SubscriptionOptionNameEntity::class, columns: ['option_name', 'option_title'], as: ['name', 'title'])]
+    private ?SubscriptionOptionNameEntity $option_name = null;
 
     /**
      * @return mixed
@@ -64,7 +70,7 @@ class SubscriptionOptionEntity
     public function setOption(mixed $value): static
     {
 
-        $this->option = $value;
+        $this->option_name_id = $value;
 
         return $this;
 
@@ -76,7 +82,7 @@ class SubscriptionOptionEntity
     public function getOption(): mixed
     {
 
-        return $this->option;
+        return $this->option_name_id;
 
     }
 
@@ -101,6 +107,16 @@ class SubscriptionOptionEntity
     {
 
         return $this->subscription;
+
+    }
+
+    /**
+     * @return SubscriptionOptionNameEntity|null
+     */
+    public function getOptionName(): ?SubscriptionOptionNameEntity
+    {
+
+        return $this->option_name;
 
     }
 
