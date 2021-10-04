@@ -113,6 +113,7 @@ class PlaylistController extends AbstractAuthorizationController
     /**
      * @param int $id
      *
+     * @throws InvalidTimezoneException
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
