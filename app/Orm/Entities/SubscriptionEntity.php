@@ -62,7 +62,7 @@ class SubscriptionEntity
     private mixed $created_at = null;
 
     /**
-     * @var array
+     * @var SubscriptionOptionEntity[]
      */
     private array $options = [];
 
@@ -235,7 +235,7 @@ class SubscriptionEntity
     }
 
     /**
-     * @return array
+     * @return SubscriptionOptionEntity[]
      */
     public function getOptions(): array
     {
