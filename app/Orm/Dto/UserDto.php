@@ -3,6 +3,7 @@
 namespace App\Orm\Dto;
 
 use App\Orm\Entities\UserEntity;
+use Codememory\Patterns\DTO\AbstractDTO;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
@@ -13,7 +14,7 @@ use JetBrains\PhpStorm\Pure;
  *
  * @author  Danil
  */
-final class UserDto
+final class UserDto extends AbstractDTO
 {
 
     /**
@@ -32,7 +33,7 @@ final class UserDto
     }
 
     /**
-     * @return array
+     * @inheritDoc
      */
     #[Pure]
     #[ArrayShape([
