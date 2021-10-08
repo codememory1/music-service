@@ -87,9 +87,13 @@ class UserRepository extends AbstractEntityRepository
         $subscriptionRepository = $this->getRepository(SubscriptionEntity::class);
 
         foreach ($users as &$userEntity) {
-            $subscriptionData = $subscriptionRepository->findOneWithOptions($userEntity->getSubscription());
+            $subscriptionId = $userEntity->getSubscription();
 
-            $userEntity->setSubscriptionData($subscriptionData);
+            if(null !== $subscriptionId) {
+                $subscriptionData = $subscriptionRepository->findOneWithOptions($userEntity->getSubscription());
+
+                $userEntity->setSubscriptionData($subscriptionData);
+            }
         }
 
     }
