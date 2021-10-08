@@ -38,7 +38,6 @@ final class UserDto extends AbstractDTO
     #[Pure]
     #[ArrayShape([
         'id'           => "int",
-        'userid'       => "int",
         'name'         => "string",
         'surname'      => "string|null",
         'patronymic'   => "string|null",
@@ -51,7 +50,6 @@ final class UserDto extends AbstractDTO
 
         return [
             'id'           => $this->entity->getId(),
-            'userid'       => $this->entity->getUserid(),
             'name'         => $this->entity->getName(),
             'surname'      => $this->entity->getSurname(),
             'patronymic'   => $this->entity->getPatronymic(),
