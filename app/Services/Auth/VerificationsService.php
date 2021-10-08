@@ -3,6 +3,7 @@
 namespace App\Services\Auth;
 
 use App\Orm\Entities\UserEntity;
+use App\Orm\Repositories\Enums\StatusEnum;
 use App\Services\AbstractApiService;
 use App\Services\PasswordHashingService;
 use App\Services\ResponseApiCollectorService;
@@ -46,7 +47,7 @@ class VerificationsService extends AbstractApiService
     {
 
         // Checking the status of an identified user for non-activation
-        if (0 === (int) $userEntity->getStatus()) {
+        if (StatusEnum::NOT_ACTIVATED === (int) $userEntity->getStatus()) {
             return $this->createApiResponse(400, 'auth.emailNotActivate');
         }
 

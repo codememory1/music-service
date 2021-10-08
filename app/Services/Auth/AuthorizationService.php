@@ -88,12 +88,13 @@ class AuthorizationService extends AbstractApiService
     final public function isAuth(EntityManagerInterface $entityManager): UserEntity|bool
     {
 
-        [, $accessToken] = explode(' ', $this->request->getHeader('Authorization'), 2);
+        $authorizationHeader = $this->request->getHeader('Authorization');
+        $accessToken = explode(' ', $authorizationHeader, 2)[1] ?? null;
 
         /** @var SessionTokenService $sessionToken */
         $sessionToken = $this->get('session-token');
 
-        if ($sessionToken->verifyAccess($accessToken)) {
+        if (!empty($accessToken) && $sessionToken->verifyAccess($accessToken)) {
             /** @var UserRepository $userRepository */
             $userRepository = $entityManager->getRepository(UserEntity::class);
             $userDataFromAccessToken = $sessionToken->decodeAccess($accessToken);
@@ -193,6 +194,7 @@ class AuthorizationService extends AbstractApiService
             ->setIp($this->request->getIp())
             ->setValidTo($refreshTokenValidTo);
 
+        // We set information about the ip address, if there is information for this ip
         if ($geolocation->isSuccess()) {
             $location = $geolocation->getLocation();
             $country = $location->getCountry();
