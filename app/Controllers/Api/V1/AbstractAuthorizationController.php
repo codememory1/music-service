@@ -5,6 +5,7 @@ namespace App\Controllers\Api\V1;
 use App\Orm\Entities\UserEntity;
 use App\Services\Auth\AuthorizationService;
 use App\Services\ResponseApiCollectorService;
+use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
@@ -35,6 +36,11 @@ abstract class AbstractAuthorizationController extends AbstractController
     protected ResponseInterface $response;
 
     /**
+     * @var EntityManagerInterface
+     */
+    protected EntityManagerInterface $em;
+
+    /**
      * @param ServiceProviderInterface $serviceProvider
      *
      * @throws BuilderNotCurrentSectionException
@@ -53,6 +59,8 @@ abstract class AbstractAuthorizationController extends AbstractController
         /** @var ResponseInterface $response */
         $response = $this->get('response');
         $this->response = $response;
+        
+        $this->em = $this->getDatabase()->getEntityManager();
 
     }
 
