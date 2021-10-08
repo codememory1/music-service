@@ -48,10 +48,9 @@ class AccountCreatorService extends AbstractApiService
 
         /** @var UserRepository $userRepository */
         $userRepository = $entityManager->getRepository(UserEntity::class);
-        $nextId = $userRepository->getMaxId() + 1;
 
         // Push the user to the database
-        $registeredUser = $this->pushUser($entityManager, $userRepository, $this->getCollectedUserEntity($nextId));
+        $registeredUser = $this->pushUser($entityManager, $userRepository, $this->getCollectedUserEntity());
 
         // Saving an activation token for a registered user
         $activationTokenEntity = $this->pushActivationToken($entityManager, $registeredUser);
@@ -64,11 +63,9 @@ class AccountCreatorService extends AbstractApiService
     }
 
     /**
-     * @param int $nextId
-     *
      * @return UserEntity
      */
-    private function getCollectedUserEntity(int $nextId): UserEntity
+    private function getCollectedUserEntity(): UserEntity
     {
 
         /** @var PasswordHashingService $passwordHashing */
@@ -77,7 +74,6 @@ class AccountCreatorService extends AbstractApiService
 
         $userEntity = new UserEntity();
         $userEntity
-            ->setUserid($nextId . rand(1000, 9999))
             ->setName($inputData->get('name'))
             ->setEmail($inputData->get('email'))
             ->setUsername($inputData->get('email'))
