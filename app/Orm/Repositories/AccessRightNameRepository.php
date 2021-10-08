@@ -3,15 +3,50 @@
 namespace App\Orm\Repositories;
 
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
+use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use ReflectionException;
 
 /**
  * Class AccessRightNameRepository
  *
  * @package App\Orm\Repositories
+ *
+ * @author  Danil
  */
 class AccessRightNameRepository extends AbstractEntityRepository
 {
 
+    public const AUTH_TO_AP = 'authorization_to_admin_panel';
+    public const ADD_MUSIC_FROM_AP = 'add_music_from_admin_panel';
+    public const REMOVE_MUSIC_FROM_AP = 'remove_music_from_admin_panel';
+    public const CHANGE_MUSIC_FROM_AP = 'change_music_data_from_admin_panel';
+    public const VIEW_USERS = 'view_users_to_admin_panel';
+    public const EDIT_USER_DATA = 'edit_user_data';
+    public const VIEW_STATISTICS = 'view_statistics';
+    public const ADD_MUSIC_AS_EXECUTOR = 'add_music_as_executor';
+    public const REMOVE_MUSIC_AS_EXECUTOR = 'remove_music_as_executor';
+    public const CHANGE_MUSIC_AS_EXECUTOR = 'change_music_as_executor';
 
+    /**
+     * @param string $name
+     *
+     * @return bool|int
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    public function getIdByName(string $name): bool|int
+    {
+
+        $result = $this->findBy(['name' => $name])->toArray();
+
+        if ([] !== $result) {
+            return $result[0]['id'];
+        }
+
+        return false;
+
+    }
 
 }
