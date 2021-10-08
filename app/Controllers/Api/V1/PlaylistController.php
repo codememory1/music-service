@@ -43,7 +43,7 @@ class PlaylistController extends AbstractAuthorizationController
         parent::__construct($serviceProvider);
 
         /** @var PlaylistRepository $playlistRepository */
-        $playlistRepository = $this->getDatabase()->getEntityManager()->getRepository(PlaylistEntity::class);
+        $playlistRepository = $this->em->getRepository(PlaylistEntity::class);
         $this->playlistRepository = $playlistRepository;
 
     }
@@ -57,10 +57,7 @@ class PlaylistController extends AbstractAuthorizationController
     {
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            /** @var PlaylistRepository $playlistRepository */
-            $playlistRepository = $this->getDatabase()->getEntityManager()->getRepository(PlaylistEntity::class);
-
-            $this->response->json($playlistRepository->findAllAsArray([
+            $this->response->json($this->playlistRepository->findAllAsArray([
                 'userid' => $authorizedUser->getUserid()
             ]));
         }
@@ -99,11 +96,9 @@ class PlaylistController extends AbstractAuthorizationController
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
             /** @var PlaylistCreatorService $playlistCreatorService */
             $playlistCreatorService = $this->getService('Playlist\PlaylistCreator');
-            $playlistCreationResponse = $playlistCreatorService->create(
-                $this->validatorManager(),
-                $this->getDatabase()->getEntityManager(),
-                $authorizedUser
-            );
+
+            // Calling the playlist creation method from the service
+            $playlistCreationResponse = $playlistCreatorService->create($this->validatorManager(), $this->em, $authorizedUser);
 
             $this->response->json($playlistCreationResponse->getResponse(), $playlistCreationResponse->getStatus());
         }
@@ -125,6 +120,8 @@ class PlaylistController extends AbstractAuthorizationController
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
             /** @var PlaylistUpdaterService $playlistUpdaterService */
             $playlistUpdaterService = $this->getService('Playlist\PlaylistUpdater');
+
+            // Calling the playlist update method
             $playlistUpdateResponse = $playlistUpdaterService->update(
                 $this->validatorManager(),
                 $this->playlistRepository,
@@ -151,6 +148,8 @@ class PlaylistController extends AbstractAuthorizationController
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
             /** @var PlaylistRemoverService $playlistRemover */
             $playlistRemover = $this->getService('Playlist\PlaylistRemover');
+
+            // Delete playlist entry
             $playlistDeleteResponse = $playlistRemover->delete($this->playlistRepository, $authorizedUser, $id);
 
             $this->response->json($playlistDeleteResponse->getResponse(), $playlistDeleteResponse->getStatus());
