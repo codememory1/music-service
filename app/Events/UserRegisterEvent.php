@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Listeners\RegistrationMailSenderListener;
+use App\Orm\Entities\ActivationTokenEntity;
 use App\Orm\Entities\UserEntity;
 use Codememory\Components\Event\Interfaces\EventInterface;
 use Codememory\Components\Mail\Interfaces\MailerInterface;
@@ -29,13 +30,19 @@ class UserRegisterEventEvent implements EventInterface
     public UserEntity $userEntity;
 
     /**
+     * @var ActivationTokenEntity
+     */
+    public ActivationTokenEntity $activationTokenEntity;
+
+    /**
      * UserRegisterEvent Construct
      */
-    public function __construct(MailerPackInterface $mailerPack, UserEntity $userEntity)
+    public function __construct(MailerPackInterface $mailerPack, UserEntity $userEntity, ActivationTokenEntity $activationTokenEntity)
     {
 
         $this->mailer = $mailerPack->getMailer();
         $this->userEntity = $userEntity;
+        $this->activationTokenEntity = $activationTokenEntity;
 
     }
 

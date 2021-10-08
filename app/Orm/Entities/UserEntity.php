@@ -97,13 +97,6 @@ class UserEntity
 	/**
 	 * @var mixed
 	 */
-    #[ORM\Column(name: 'activation_token', type: 'text', length: null, nullable: true)]
-    #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $activation_token = null;
-
-	/**
-	 * @var mixed
-	 */
     #[ORM\Column(name: 'created_at', type: 'datetime', length: null, nullable: true)]
     #[ORM\DefaultValue(value: 'CURRENT_TIMESTAMP')]
     private mixed $created_at = null;
@@ -381,29 +374,6 @@ class UserEntity
     {
     
 		return $this->status;
-    
-    }
-
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setActivationToken(mixed $value): static
-    {
-    
-		$this->activation_token = $value;
-		
-		return $this;
-    
-    }
-
-	/**
-	 * @return mixed
-	 */
-    public function getActivationToken(): mixed
-    {
-    
-		return $this->activation_token;
     
     }
 
