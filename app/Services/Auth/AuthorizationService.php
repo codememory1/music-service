@@ -163,7 +163,7 @@ class AuthorizationService extends AbstractApiService
         [$accessToken, $refreshToken] = $sessionToken->generateTokens((new UserDto($userEntity))->getTransformedData());
 
         // Save the user's session
-        $this->saveSession($entityManager, $userEntity, $sessionToken, $refreshToken);
+        $this->saveSession($entityManager, $sessionToken, $refreshToken);
 
         return $this->createApiResponse(200, 'auth.success', [
             'access_token'  => $accessToken,
@@ -174,13 +174,12 @@ class AuthorizationService extends AbstractApiService
 
     /**
      * @param EntityManagerInterface $entityManager
-     * @param UserEntity             $userEntity
      * @param SessionTokenService    $sessionToken
      * @param string                 $refreshToken
      *
      * @return void
      */
-    private function saveSession(EntityManagerInterface $entityManager, UserEntity $userEntity, SessionTokenService $sessionToken, string $refreshToken): void
+    private function saveSession(EntityManagerInterface $entityManager, SessionTokenService $sessionToken, string $refreshToken): void
     {
 
         $refreshTokenValidTo = date('Y-m-d H:i:s', $sessionToken->decodeRefresh($refreshToken)->exp);
@@ -189,7 +188,6 @@ class AuthorizationService extends AbstractApiService
         $userSessionEntity = new UserSessionEntity();
 
         $userSessionEntity
-            ->setUserid($userEntity->getUserid())
             ->setRefreshToken($refreshToken)
             ->setIp($this->request->getIp())
             ->setValidTo($refreshTokenValidTo);
