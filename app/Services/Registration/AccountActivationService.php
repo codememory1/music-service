@@ -2,7 +2,10 @@
 
 namespace App\Services\Registration;
 
+use App\Orm\Entities\ActivationTokenEntity;
 use App\Orm\Entities\UserEntity;
+use App\Orm\Repositories\ActivationTokenRepository;
+use App\Orm\Repositories\Enums\StatusEnum;
 use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
@@ -34,24 +37,67 @@ class AccountActivationService extends AbstractApiService
     final public function activate(EntityManagerInterface $entityManager, string $token): ResponseApiCollectorService
     {
 
+        /** @var ActivationTokenRepository $activationTokenRepository */
+        $activationTokenRepository = $entityManager->getRepository(ActivationTokenEntity::class);
+
         /** @var UserRepository $userRepository */
         $userRepository = $entityManager->getRepository(UserEntity::class);
 
         /** @var ActivationTokenService $activationToken */
         $activationToken = $this->get('activation-token');
-        $finedUserByToken = $userRepository->findOne([
-            'activation_token' => $token,
-            'status'           => 0
-        ]);
+
+        // Search for a record by activation token
+        $finedRecordByToken = $activationTokenRepository->findOne(['token' => $token]);
 
         // Check the token for validity and existence in the database
-        if (!$activationToken->verify($token) || false === $finedUserByToken) {
+        if (!$activationToken->verify($token) || false === $finedRecordByToken) {
             return $this->createApiResponse(400, 'register.invalidTokenActivation');
         }
 
+        // Search for a user by user_id from a found token record
+        $finedUserByToken = $userRepository->findOne(['id' => $finedRecordByToken->getUserId()]);
+
         // The token is valid and was found in the database
         // We activate a user account with this token
-        return $this->activationHandler($userRepository, $finedUserByToken);
+        return $this->activationHandler($activationTokenRepository, $userRepository, $finedUserByToken);
+
+    }
+
+    /**
+     * @param ActivationTokenRepository $activationTokenRepository
+     * @param UserRepository            $usersRepository
+     * @param UserEntity                $userEntity
+     *
+     * @return ResponseApiCollectorService
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    private function activationHandler(ActivationTokenRepository $activationTokenRepository, UserRepository $usersRepository, UserEntity $userEntity): ResponseApiCollectorService
+    {
+
+        // Removing an activation token
+        $this->deleteActivationToken($activationTokenRepository, $userEntity);
+
+        // Account activation
+        $this->changeStatus($usersRepository, $userEntity);
+
+        return $this->createApiResponse(200, 'register.successAccountActivate');
+
+    }
+
+    /**
+     * @param ActivationTokenRepository $activationTokenRepository
+     * @param UserEntity                $userEntity
+     *
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    private function deleteActivationToken(ActivationTokenRepository $activationTokenRepository, UserEntity $userEntity): void
+    {
+
+        $activationTokenRepository->delete(['user_id' => $userEntity->getId()]);
 
     }
 
@@ -59,20 +105,14 @@ class AccountActivationService extends AbstractApiService
      * @param UserRepository $usersRepository
      * @param UserEntity     $userEntity
      *
-     * @return ResponseApiCollectorService
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
+     * @throws ReflectionException
      */
-    private function activationHandler(UserRepository $usersRepository, UserEntity $userEntity): ResponseApiCollectorService
+    private function changeStatus(UserRepository $usersRepository, UserEntity $userEntity): void
     {
 
-        // Updating user data
-        $usersRepository->update([
-            'status'           => 1,
-            'activation_token' => ''
-        ], $userEntity->getEmail());
-
-        return $this->createApiResponse(200, 'register.successAccountActivate');
+        $usersRepository->update(['status' => StatusEnum::ACTIVATED], ['email' => $userEntity->getEmail()]);
 
     }
 

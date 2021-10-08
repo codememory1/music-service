@@ -13,7 +13,6 @@ use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Event\Exceptions\EventExistException;
 use Codememory\Components\Event\Exceptions\EventNotExistException;
 use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
-use Codememory\Components\JsonParser\Exceptions\JsonErrorException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Manager as ValidatorManager;
@@ -38,12 +37,11 @@ class RegisterService extends AbstractApiService
      * @throws EventExistException
      * @throws EventNotExistException
      * @throws EventNotImplementInterfaceException
-     * @throws JsonErrorException
+     * @throws InvalidTimezoneException
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws InvalidTimezoneException
      */
     final public function register(ValidatorManager $validatorManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
     {
@@ -95,7 +93,7 @@ class RegisterService extends AbstractApiService
         ]);
 
         // We update the activation token and return a response about a successful update
-        return $refresherActivationTokenService->refresh($userRepository, $finedUser)->getResponse();
+        return $refresherActivationTokenService->refresh($entityManager, $finedUser)->getResponse();
 
     }
 

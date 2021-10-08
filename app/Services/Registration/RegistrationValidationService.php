@@ -3,6 +3,7 @@
 namespace App\Services\Registration;
 
 use App\Orm\Entities\UserEntity;
+use App\Orm\Repositories\Enums\StatusEnum;
 use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
@@ -79,7 +80,7 @@ class RegistrationValidationService extends AbstractApiService
             'email' => $this->request->post()->get('email')
         ]);
 
-        return false !== $finedUser && (int) $finedUser->getStatus() === 0;
+        return false !== $finedUser && (int) $finedUser->getStatus() === StatusEnum::NOT_ACTIVATED;
 
     }
 
@@ -99,7 +100,7 @@ class RegistrationValidationService extends AbstractApiService
             'email' => $this->request->post()->get('email')
         ]);
 
-        return false !== $finedUser && (int) $finedUser->getStatus() === 1;
+        return false !== $finedUser && (int) $finedUser->getStatus() === StatusEnum::ACTIVATED;
 
     }
 

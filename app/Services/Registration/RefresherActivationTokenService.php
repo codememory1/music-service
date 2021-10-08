@@ -2,12 +2,14 @@
 
 namespace App\Services\Registration;
 
-use App\Events\UserRegisterEventEvent;
+use App\Events\UserRegisterEvent;
+use App\Orm\Entities\ActivationTokenEntity;
 use App\Orm\Entities\UserEntity;
-use App\Orm\Repositories\UserRepository;
+use App\Orm\Repositories\ActivationTokenRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
+use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\Event\Exceptions\EventExistException;
@@ -27,36 +29,32 @@ class RefresherActivationTokenService extends AbstractApiService
 {
 
     /**
-     * @param UserRepository $usersRepository
-     * @param UserEntity     $userEntity
+     * @param EntityManagerInterface $entityManager
+     * @param UserEntity             $userEntity
      *
      * @return RefresherActivationTokenService
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
+     * @throws BuilderNotCurrentSectionException
      * @throws EventExistException
      * @throws EventNotExistException
      * @throws EventNotImplementInterfaceException
-     * @throws BuilderNotCurrentSectionException
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      */
-    final public function refresh(UserRepository $usersRepository, UserEntity $userEntity): RefresherActivationTokenService
+    final public function refresh(EntityManagerInterface $entityManager, UserEntity $userEntity): RefresherActivationTokenService
     {
 
-        /** @var ActivationTokenService $activationTokenService */
-        $activationToken = $this->get('activation-token');
-        $tokenForActivation = $activationToken->encode();
+        /** @var ActivationTokenRepository $activationTokenRepository */
+        $activationTokenRepository = $entityManager->getRepository(ActivationTokenEntity::class);
 
-        $userEntity->setActivationToken($tokenForActivation);
-
-        // Updating the activation token in the database
-        $usersRepository->update([
-            'activation_token' => $userEntity->getActivationToken()
-        ], $userEntity->getEmail());
+        // Change the user activation token and return the token activation entity
+        $activationTokenEntity = $this->changeToken($activationTokenRepository, $userEntity);
 
         // Raising the user registration event
-        $this->dispatchEvent(UserRegisterEventEvent::class, [
+        $this->dispatchEvent(UserRegisterEvent::class, [
             $this->get('mailer'),
-            $userEntity
+            $userEntity,
+            $activationTokenEntity
         ]);
 
         return $this;
@@ -70,6 +68,35 @@ class RefresherActivationTokenService extends AbstractApiService
     {
 
         return $this->createApiResponse(200, 'register.successRegister');
+
+    }
+
+    /**
+     * @param ActivationTokenRepository $activationTokenRepository
+     * @param UserEntity                $userEntity
+     *
+     * @return ActivationTokenEntity
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    private function changeToken(ActivationTokenRepository $activationTokenRepository, UserEntity $userEntity): ActivationTokenEntity
+    {
+
+        /** @var ActivationTokenService $activationTokenService */
+        $activationToken = $this->get('activation-token');
+
+        $activationTokenEntity = new ActivationTokenEntity();
+        $activationTokenEntity->setToken($activationToken->encode());
+
+        // Updating a token in the table of all activation tokens
+        $activationTokenRepository->update([
+            'token' => $activationTokenEntity->getToken()
+        ], [
+            'user_id' => $userEntity->getId()
+        ]);
+
+        return $activationTokenEntity;
 
     }
 

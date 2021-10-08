@@ -2,7 +2,8 @@
 
 namespace App\Services\Registration;
 
-use App\Events\UserRegisterEventEvent;
+use App\Events\UserRegisterEvent;
+use App\Orm\Entities\ActivationTokenEntity;
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
@@ -47,38 +48,40 @@ class AccountCreatorService extends AbstractApiService
 
         /** @var UserRepository $userRepository */
         $userRepository = $entityManager->getRepository(UserEntity::class);
-        $collectedUserEntity = $this->getCollectedUserEntity($userRepository);
+        $nextId = $userRepository->getMaxId() + 1;
 
-        return $this->pushUser($entityManager, $collectedUserEntity);
+        // Push the user to the database
+        $registeredUser = $this->pushUser($entityManager, $userRepository, $this->getCollectedUserEntity($nextId));
+
+        // Saving an activation token for a registered user
+        $activationTokenEntity = $this->pushActivationToken($entityManager, $registeredUser);
+
+        // Calling the user registration event
+        $this->triggerRegistrationEvent($registeredUser, $activationTokenEntity);
+
+        return $this->createApiResponse(200, 'register.successRegister');
 
     }
 
     /**
-     * @param UserRepository $usersRepository
+     * @param int $nextId
      *
      * @return UserEntity
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
-     * @throws InvalidTimezoneException
      */
-    private function getCollectedUserEntity(UserRepository $usersRepository): UserEntity
+    private function getCollectedUserEntity(int $nextId): UserEntity
     {
 
         /** @var PasswordHashingService $passwordHashing */
         $passwordHashing = $this->get('password-hashing');
         $inputData = $this->request->post();
 
-        /** @var ActivationTokenService $activationToken */
-        $activationToken = $this->get('activation-token');
-
         $userEntity = new UserEntity();
         $userEntity
-            ->setUserid($usersRepository->getCount() + 1 . rand(1000, 9999))
+            ->setUserid($nextId . rand(1000, 9999))
             ->setName($inputData->get('name'))
             ->setEmail($inputData->get('email'))
             ->setUsername($inputData->get('email'))
-            ->setPassword($passwordHashing->encode($inputData->get('password')))
-            ->setActivationToken($activationToken->encode());
+            ->setPassword($passwordHashing->encode($inputData->get('password')));
 
         return $userEntity;
 
@@ -88,26 +91,66 @@ class AccountCreatorService extends AbstractApiService
      * @param EntityManagerInterface $entityManager
      * @param UserEntity             $userEntity
      *
-     * @return ResponseApiCollectorService
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
-     * @throws BuilderNotCurrentSectionException
+     * @return ActivationTokenEntity
+     * @throws InvalidTimezoneException
+     */
+    private function pushActivationToken(EntityManagerInterface $entityManager, UserEntity $userEntity): ActivationTokenEntity
+    {
+
+        /** @var ActivationTokenService $activationToken */
+        $activationToken = $this->get('activation-token');
+
+        $activationTokenEntity = new ActivationTokenEntity();
+        $activationTokenEntity
+            ->setUserId($userEntity->getId())
+            ->setToken($activationToken->encode());
+
+        // Saving a token to the database
+        $entityManager->commit($activationTokenEntity)->flush();
+
+        return $activationTokenEntity;
+
+    }
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param UserRepository         $userRepository
+     * @param UserEntity             $userEntity
+     *
+     * @return UserEntity
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      */
-    private function pushUser(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
+    private function pushUser(EntityManagerInterface $entityManager, UserRepository $userRepository, UserEntity $userEntity): UserEntity
     {
 
         // Saving a user to the database
         $entityManager->commit($userEntity)->flush();
 
-        // Raising the user registration event
-        $this->dispatchEvent(UserRegisterEventEvent::class, [
-            $this->get('mailer'),
-            $userEntity
-        ]);
+        return $userRepository->findOne(['email' => $userEntity->getEmail()]);
 
-        return $this->createApiResponse(200, 'register.successRegister');
+    }
+
+    /**
+     * @param UserEntity            $userEntity
+     * @param ActivationTokenEntity $activationTokenEntity
+     *
+     * @throws BuilderNotCurrentSectionException
+     * @throws EventExistException
+     * @throws EventNotExistException
+     * @throws EventNotImplementInterfaceException
+     * @throws ReflectionException
+     */
+    private function triggerRegistrationEvent(UserEntity $userEntity, ActivationTokenEntity $activationTokenEntity): void
+    {
+
+        // Raising the user registration event
+        $this->dispatchEvent(UserRegisterEvent::class, [
+            $this->get('mailer'),
+            $userEntity,
+            $activationTokenEntity
+        ]);
 
     }
 
