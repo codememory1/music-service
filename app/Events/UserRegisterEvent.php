@@ -10,13 +10,13 @@ use Codememory\Components\Mail\Interfaces\MailerInterface;
 use Codememory\Components\Mail\Interfaces\MailerPackInterface;
 
 /**
- * Class UserRegisterEventEvent
+ * Class UserRegisterEvent
  *
  * @package App\Events
  *
  * @after   Danil
  */
-class UserRegisterEventEvent implements EventInterface
+class UserRegisterEvent implements EventInterface
 {
 
     /**
