@@ -21,12 +21,6 @@ class UserEntity
     #[ORM\Identifier]
     private mixed $id = null;
 
-	/**
-	 * @var mixed
-	 */
-    #[ORM\Column(name: 'userid', type: 'int', length: null, nullable: false)]
-    private mixed $userid = null;
-
     /**
      * @var mixed|null
      */
@@ -120,29 +114,6 @@ class UserEntity
     {
     
 		return $this->id;
-    
-    }
-
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setUserid(mixed $value): static
-    {
-    
-		$this->userid = $value;
-		
-		return $this;
-    
-    }
-
-	/**
-	 * @return mixed
-	 */
-    public function getUserid(): mixed
-    {
-    
-		return $this->userid;
     
     }
 
