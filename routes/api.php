@@ -3,6 +3,7 @@
 use App\Controllers\Api\V1\AuthController;
 use App\Controllers\Api\V1\PlaylistController;
 use App\Controllers\Api\V1\RegisterController;
+use App\Controllers\Api\V1\SubscriptionController;
 use Codememory\Routing\Router;
 
 /**
@@ -13,7 +14,7 @@ use Codememory\Routing\Router;
  *
  */
 
-Router::group('api/', function () {
+Router::subdomainGroup('api', function () {
     Router::post('register/', RegisterController::class . '#register')->name('register');
     Router::get('register/activate/:token/', RegisterController::class . '#activation')
         ->with('token', '.+')
@@ -33,5 +34,10 @@ Router::group('api/', function () {
         Router::delete('delete/:id', PlaylistController::class . '#delete')
             ->with('id', '[0-9]+')
             ->name('delete-playlist');
+    });
+
+    // Subscription routes
+    Router::group('subscription/', function () {
+        Router::get('all/', SubscriptionController::class . '#all')->name('all-subscriptions');
     });
 });
