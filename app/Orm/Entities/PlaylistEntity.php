@@ -24,8 +24,8 @@ class PlaylistEntity
     /**
      * @var mixed
      */
-    #[ORM\Column(name: 'userid', type: 'int', length: null, nullable: false)]
-    private mixed $userid = null;
+    #[ORM\Column(name: 'user_id', type: 'int', length: null, nullable: false)]
+    private mixed $user_id = null;
 
 	/**
 	 * @var mixed
@@ -75,10 +75,10 @@ class PlaylistEntity
      * @param mixed $value
      * @return static
      */
-    public function setUserid(mixed $value): static
+    public function setUserId(mixed $value): static
     {
 
-        $this->userid = $value;
+        $this->user_id = $value;
 
         return $this;
 
@@ -87,10 +87,10 @@ class PlaylistEntity
     /**
      * @return mixed
      */
-    public function getUserid(): mixed
+    public function getUserId(): mixed
     {
 
-        return $this->userid;
+        return $this->user_id;
 
     }
 
