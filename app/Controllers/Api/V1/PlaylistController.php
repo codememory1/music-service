@@ -58,7 +58,7 @@ class PlaylistController extends AbstractAuthorizationController
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
             $this->response->json($this->playlistRepository->findAllAsArray([
-                'userid' => $authorizedUser->getUserid()
+                'user_id' => $authorizedUser->getId()
             ]));
         }
 
@@ -76,8 +76,8 @@ class PlaylistController extends AbstractAuthorizationController
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
             $this->response->json($this->playlistRepository->findOneAsArray([
-                'userid' => $authorizedUser->getUserid(),
-                'id'     => $id
+                'user_id' => $authorizedUser->getId(),
+                'id'      => $id
             ]));
         }
 

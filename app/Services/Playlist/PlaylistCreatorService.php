@@ -87,8 +87,8 @@ class PlaylistCreatorService extends AbstractApiService
 
         // Checking the existence of a playlist with an input name for an authorized user
         $finedPlaylist = $playlistRepository->findOne([
-            'userid' => $userEntity->getUserid(),
-            'name'   => $this->request->post()->get('name')
+            'user_id' => $userEntity->getId(),
+            'name'    => $this->request->post()->get('name')
         ]);
 
         if (false !== $finedPlaylist) {
@@ -117,7 +117,7 @@ class PlaylistCreatorService extends AbstractApiService
         }
 
         $playlistEntity
-            ->setUserid($userEntity->getUserid())
+            ->setUserId($userEntity->getId())
             ->setName($this->request->post()->get('name'))
             ->setTemporary($temporary);
 

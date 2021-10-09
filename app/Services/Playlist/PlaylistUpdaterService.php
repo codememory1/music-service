@@ -85,8 +85,8 @@ class PlaylistUpdaterService extends AbstractApiService
 
         // Checking the existence of a playlist with an input name for an authorized user
         $finedPlaylist = $playlistRepository->findOne([
-            'userid' => $userEntity->getUserid(),
-            'id'     => $id
+            'user_id' => $userEntity->getId(),
+            'id'      => $id
         ]);
 
         if (false === $finedPlaylist) {
@@ -102,9 +102,10 @@ class PlaylistUpdaterService extends AbstractApiService
      * @param int                $id
      *
      * @return ResponseApiCollectorService
+     * @throws InvalidTimezoneException
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
-     * @throws InvalidTimezoneException
+     * @throws ReflectionException
      */
     private function updatePlaylistData(PlaylistRepository $playlistRepository, int $id): ResponseApiCollectorService
     {
