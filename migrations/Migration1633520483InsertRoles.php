@@ -37,18 +37,7 @@ final class Migration1633520483InsertRoles extends AbstractMigration
      */
     public function down(MigrationSchemaInterface $schema): void
     {
-
-        $schema->selectTable('roles');
-
-        $schema->deleteRecords()->where(
-            $schema->expression()->exprAnd(
-                $schema->expression()->condition('id', '=', 1),
-                $schema->expression()->condition('id', '=', 2),
-                $schema->expression()->condition('id', '=', 3),
-                $schema->expression()->condition('id', '=', 4),
-                $schema->expression()->condition('id', '=', 5)
-            )
-        );
+        
 
     }
 
