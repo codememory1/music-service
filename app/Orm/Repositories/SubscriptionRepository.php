@@ -2,6 +2,7 @@
 
 namespace App\Orm\Repositories;
 
+use App\Orm\Dto\SubscriptionDto;
 use App\Orm\Entities\SubscriptionEntity;
 use App\Orm\Entities\SubscriptionOptionEntity;
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
@@ -16,6 +17,24 @@ use ReflectionException;
  */
 class SubscriptionRepository extends AbstractEntityRepository
 {
+
+    /**
+     * @return array
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    public function findAllAsEntity(): array
+    {
+
+        $qb = $this->createQueryBuilder();
+        $qb
+            ->select()
+            ->from($this->getEntityData()->getTableName());
+
+        return $qb->generateQuery()->toEntity();
+
+    }
 
     /**
      * @param array $by
@@ -76,6 +95,31 @@ class SubscriptionRepository extends AbstractEntityRepository
         }
 
         return false;
+
+    }
+
+    /**
+     * @return array
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    public function findAllWithOptions(): array
+    {
+
+        $subscriptions = [];
+
+        /** @var SubscriptionEntity $subscription */
+        foreach ($this->findAllAsEntity() as $subscription) {
+            /** @var SubscriptionOptionRepository $subscriptionOptionsRepository */
+            $subscriptionOptionsRepository = $this->getRepository(SubscriptionOptionEntity::class);
+
+            $subscription->setOptions($subscriptionOptionsRepository->findBySubscriptionWithName($subscription->getId()));
+
+            $subscriptions[] = (new SubscriptionDto($subscription))->getTransformedData();
+        }
+
+        return $subscriptions;
 
     }
 
