@@ -10,5 +10,10 @@ routing:
     # Suffix for files that will contain routes
     routesFileSuffix: ''
 
+  defaultHeaders:
+    Access-Control-Allow-Origin: "account.%env(app.host)%,player.%env(app.host)%"
+    Access-Control-Allow-Headers: "*"
+    Origin: "api.%env(app.host)%"
+
   # Created routes
   _routes: {}
