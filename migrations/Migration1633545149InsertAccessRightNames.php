@@ -43,22 +43,6 @@ final class Migration1633545149InsertAccessRightNames extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->selectTable('roles');
-
-        $schema->deleteRecords()->where(
-            $schema->expression()->exprAnd(
-                $schema->expression()->condition('id', '=', 1),
-                $schema->expression()->condition('id', '=', 2),
-                $schema->expression()->condition('id', '=', 3),
-                $schema->expression()->condition('id', '=', 4),
-                $schema->expression()->condition('id', '=', 5),
-                $schema->expression()->condition('id', '=', 6),
-                $schema->expression()->condition('id', '=', 7),
-                $schema->expression()->condition('id', '=', 8),
-                $schema->expression()->condition('id', '=', 9),
-                $schema->expression()->condition('id', '=', 10)
-            )
-        );
 
     }
 
