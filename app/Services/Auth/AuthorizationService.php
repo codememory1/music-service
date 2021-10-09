@@ -4,7 +4,6 @@ namespace App\Services\Auth;
 
 use App\Orm\Dto\UserDto;
 use App\Orm\Entities\UserEntity;
-use App\Orm\Entities\UserSessionEntity;
 use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
@@ -14,7 +13,6 @@ use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
-use Codememory\Components\GEO\Geolocation;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidatorManager;
@@ -100,7 +98,7 @@ class AuthorizationService extends AbstractApiService
             $userDataFromAccessToken = $sessionToken->decodeAccess($accessToken);
 
             return $userRepository->findOne([
-                'userid' => $userDataFromAccessToken->userid
+                'id' => $userDataFromAccessToken->id
             ]);
         }
 
@@ -154,6 +152,10 @@ class AuthorizationService extends AbstractApiService
      *
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     private function handlerAuthorize(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
     {
@@ -163,7 +165,7 @@ class AuthorizationService extends AbstractApiService
         [$accessToken, $refreshToken] = $sessionToken->generateTokens((new UserDto($userEntity))->getTransformedData());
 
         // Save the user's session
-        $this->saveSession($entityManager, $sessionToken, $refreshToken);
+        $this->saveSessionAuth($entityManager, $userEntity, $refreshToken);
 
         return $this->createApiResponse(200, 'auth.success', [
             'access_token'  => $accessToken,
@@ -174,39 +176,22 @@ class AuthorizationService extends AbstractApiService
 
     /**
      * @param EntityManagerInterface $entityManager
-     * @param SessionTokenService    $sessionToken
+     * @param UserEntity             $userEntity
      * @param string                 $refreshToken
      *
      * @return void
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
-    private function saveSession(EntityManagerInterface $entityManager, SessionTokenService $sessionToken, string $refreshToken): void
+    private function saveSessionAuth(EntityManagerInterface $entityManager, UserEntity $userEntity, string $refreshToken): void
     {
 
-        $refreshTokenValidTo = date('Y-m-d H:i:s', $sessionToken->decodeRefresh($refreshToken)->exp);
+        /** @var SaveSessionService $saveSessionService */
+        $saveSessionService = $this->getService('Auth\SaveSession');
 
-        $geolocation = (new Geolocation())->setIp($this->request->getIp());
-        $userSessionEntity = new UserSessionEntity();
-
-        $userSessionEntity
-            ->setRefreshToken($refreshToken)
-            ->setIp($this->request->getIp())
-            ->setValidTo($refreshTokenValidTo);
-
-        // We set information about the ip address, if there is information for this ip
-        if ($geolocation->isSuccess()) {
-            $location = $geolocation->getLocation();
-            $country = $location->getCountry();
-
-            $userSessionEntity
-                ->setCountry($country->getName())
-                ->setCodeCountry($country->getCode())
-                ->setRegion($location->getRegion()->getName())
-                ->setCity($location->getCity()->getName())
-                ->setLatitude($country->getLatitude())
-                ->setLongitude($country->getLongitude());
-        }
-
-        $entityManager->commit($userSessionEntity)->flush();
+        $saveSessionService->save($entityManager, $userEntity, $refreshToken);
 
     }
 
