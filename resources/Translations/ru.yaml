@@ -25,3 +25,7 @@ playlist:
   notExist: 'Плейлист не найден'
   successDelete: 'Плейлист успешно удален'
   successUpdate: 'Плейлист успешно обновлен'
+subscription:
+  requiredNameRule: 'Укажите имя подписки'
+  numericPriceRule: 'Цена должна быть указана в числовом типе'
+  activeRule: 'Некорректный статус активации подписки'
