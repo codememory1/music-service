@@ -4,7 +4,7 @@ namespace App\Services\Registration;
 
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
-use App\Validations\UserRegistrationValidation;
+use App\Validations\Security\UserRegistrationValidation;
 use Codememory\Components\Validator\Manager as ValidatorManager;
 
 /**

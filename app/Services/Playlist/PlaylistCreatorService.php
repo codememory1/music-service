@@ -7,7 +7,7 @@ use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\PlaylistRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
-use App\Validations\PlaylistCreationValidation;
+use App\Validations\Playlist\PlaylistCreationValidation;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
