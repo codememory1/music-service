@@ -17,30 +17,40 @@ class RoleRightEntity
 {
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
     #[ORM\Identifier]
-    private mixed $id = null;
+    private ?int $id = null;
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'access_right', type: 'int', length: null, nullable: false)]
-    #[ORM\Reference(entity: AccessRightNameEntity::class, referencedColumnName: 'id', on: [RelationshipInterface::ON_DELETE], onOptions: [ReferenceDefinition::RD_CASCADE])]
-    private mixed $access_right = null;
+    #[ORM\Reference(
+        entity: AccessRightNameEntity::class,
+        referencedColumnName: 'id',
+        on: [RelationshipInterface::ON_DELETE],
+        onOptions: [ReferenceDefinition::RD_CASCADE]
+    )]
+    private ?int $access_right = null;
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'role_id', type: 'int', length: null, nullable: false)]
-    #[ORM\Reference(entity: RoleEntity::class, referencedColumnName: 'id', on: [RelationshipInterface::ON_DELETE], onOptions: [ReferenceDefinition::RD_CASCADE])]
-    private mixed $role_id = null;
+    #[ORM\Reference(
+        entity: RoleEntity::class,
+        referencedColumnName: 'id',
+        on: [RelationshipInterface::ON_DELETE],
+        onOptions: [ReferenceDefinition::RD_CASCADE]
+    )]
+    private ?int $role_id = null;
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getId(): mixed
+    public function getId(): ?int
     {
 
         return $this->id;
@@ -48,11 +58,11 @@ class RoleRightEntity
     }
 
     /**
-     * @param mixed $value
+     * @param int $value
      *
      * @return static
      */
-    public function setAccessRight(mixed $value): static
+    public function setAccessRight(int $value): static
     {
 
         $this->access_right = $value;
@@ -62,9 +72,9 @@ class RoleRightEntity
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getAccessRight(): mixed
+    public function getAccessRight(): ?int
     {
 
         return $this->access_right;
@@ -72,11 +82,11 @@ class RoleRightEntity
     }
 
     /**
-     * @param mixed $value
+     * @param int $value
      *
      * @return static
      */
-    public function setRoleId(mixed $value): static
+    public function setRoleId(int $value): static
     {
 
         $this->role_id = $value;
@@ -86,9 +96,9 @@ class RoleRightEntity
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getRoleId(): mixed
+    public function getRoleId(): ?int
     {
 
         return $this->role_id;

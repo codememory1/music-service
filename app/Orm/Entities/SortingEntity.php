@@ -8,86 +8,96 @@ use Codememory\Components\Database\Orm\Constructions as ORM;
  * Class SortingEntity
  *
  * @package App\Orm\Entities
+ *
+ * @author  Danil
  */
 #[ORM\Entity(tableName: 'sorting')]
 #[ORM\Repository(repository: 'App\Orm\Repositories\SortingRepository')]
 class SortingEntity
 {
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var int|null
+     */
     #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
     #[ORM\Identifier]
-    private mixed $id = null;
+    private ?int $id = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'table', type: 'varchar', length: 64, nullable: false)]
     #[ORM\Unique]
-    private mixed $table = null;
+    private ?string $table = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'columns', type: 'json', length: null, nullable: false)]
-    private mixed $columns = null;
+    private ?string $columns = null;
 
-	/**
-	 * @return mixed
-	 */
-    public function getId(): mixed
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
     {
-    
-		return $this->id;
-    
+
+        return $this->id;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setTable(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setTable(string $value): static
     {
-    
-		$this->table = $value;
-		
-		return $this;
-    
+
+        $this->table = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getTable(): mixed
+    /**
+     * @return string|null
+     */
+    public function getTable(): ?string
     {
-    
-		return $this->table;
-    
+
+        return $this->table;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setColumns(mixed $value): static
+    /**
+     * @param array $value
+     *
+     * @return static
+     */
+    public function setColumns(array $value): static
     {
-    
-		$this->columns = $value;
-		
-		return $this;
-    
+
+        $this->columns = json_encode($value);
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getColumns(): mixed
+    /**
+     * @param bool $asArray
+     *
+     * @return string|array|null
+     */
+    public function getColumns(bool $asArray = true): null|string|array
     {
-    
-		return $this->columns;
-    
+
+        if ($asArray) {
+            return json_decode($this->columns);
+        }
+
+        return $this->columns;
+
     }
 
 }

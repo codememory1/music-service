@@ -8,121 +8,123 @@ use Codememory\Components\Database\Orm\Constructions as ORM;
  * Class UserEntity
  *
  * @package App\Orm\Entities
+ *
+ * @author  Danil
  */
 #[ORM\Entity(tableName: 'users')]
 #[ORM\Repository(repository: 'App\Orm\Repositories\UserRepository')]
 class UserEntity
 {
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var int|null
+     */
     #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
     #[ORM\Identifier]
-    private mixed $id = null;
+    private ?int $id = null;
 
     /**
-     * @var mixed|null
+     * @var string|null
      */
     #[ORM\Column(name: 'name', type: 'varchar', length: 32, nullable: false)]
-    private mixed $name = null;
+    private ?string $name = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'email', type: 'varchar', length: 255, nullable: false)]
-    private mixed $email = null;
+    private ?string $email = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'username', type: 'varchar', length: 255, nullable: false)]
-    private mixed $username = null;
+    private ?string $username = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'password', type: 'text', length: null, nullable: false)]
-    private mixed $password = null;
+    private ?string $password = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'surname', type: 'varchar', length: 32, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $surname = null;
+    private ?string $surname = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'patronymic', type: 'varchar', length: 32, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $patronymic = null;
+    private ?string $patronymic = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'birth', type: 'date', length: null, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $birth = null;
+    private ?string $birth = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var int|null
+     */
     #[ORM\Column(name: 'subscription', type: 'int', length: null, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $subscription = null;
+    private ?int $subscription = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var int|null
+     */
     #[ORM\Column(name: 'role', type: 'int', length: null, nullable: false)]
     #[ORM\DefaultValue(value: '1')]
     #[ORM\Reference(entity: RoleEntity::class, referencedColumnName: 'id')]
-    private mixed $role = null;
+    private ?int $role = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var int|null
+     */
     #[ORM\Column(name: 'status', type: 'int', length: null, nullable: false)]
     #[ORM\DefaultValue(value: '0')]
-    private mixed $status = null;
+    private ?int $status = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'created_at', type: 'datetime', length: null, nullable: true)]
     #[ORM\DefaultValue(value: 'CURRENT_TIMESTAMP')]
-    private mixed $created_at = null;
+    private ?string $created_at = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'updated_at', type: 'datetime', length: null, nullable: true)]
     #[ORM\DefaultValue(value: 'CURRENT_TIMESTAMP')]
-    private mixed $updated_at = null;
+    private ?string $updated_at = null;
 
     /**
      * @var SubscriptionEntity|null
      */
     private ?SubscriptionEntity $subscriptionData = null;
 
-	/**
-	 * @return mixed
-	 */
-    public function getId(): mixed
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
     {
-    
-		return $this->id;
-    
+
+        return $this->id;
+
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      *
      * @return UserEntity
      */
-    public function setName(mixed $name): static
+    public function setName(string $name): static
     {
 
         $this->name = $name;
@@ -132,272 +134,283 @@ class UserEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getName(): mixed
+    public function getName(): ?string
     {
 
         return $this->name;
 
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setEmail(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setEmail(string $value): static
     {
-    
-		$this->email = $value;
-		
-		return $this;
-    
+
+        $this->email = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getEmail(): mixed
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
     {
-    
-		return $this->email;
-    
+
+        return $this->email;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setUsername(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setUsername(string $value): static
     {
-    
-		$this->username = $value;
-		
-		return $this;
-    
+
+        $this->username = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getUsername(): mixed
+    /**
+     * @return string|null
+     */
+    public function getUsername(): ?string
     {
-    
-		return $this->username;
-    
+
+        return $this->username;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setPassword(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setPassword(string $value): static
     {
-    
-		$this->password = $value;
-		
-		return $this;
-    
+
+        $this->password = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getPassword(): mixed
+    /**
+     * @return string|null
+     */
+    public function getPassword(): ?string
     {
-    
-		return $this->password;
-    
+
+        return $this->password;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setSurname(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setSurname(string $value): static
     {
-    
-		$this->surname = $value;
-		
-		return $this;
-    
+
+        $this->surname = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getSurname(): mixed
+    /**
+     * @return string|null
+     */
+    public function getSurname(): ?string
     {
-    
-		return $this->surname;
-    
+
+        return $this->surname;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setPatronymic(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setPatronymic(string $value): static
     {
-    
-		$this->patronymic = $value;
-		
-		return $this;
-    
+
+        $this->patronymic = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getPatronymic(): mixed
+    /**
+     * @return string|null
+     */
+    public function getPatronymic(): ?string
     {
-    
-		return $this->patronymic;
-    
+
+        return $this->patronymic;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setBirth(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setBirth(string $value): static
     {
-    
-		$this->birth = $value;
-		
-		return $this;
-    
+
+        $this->birth = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getBirth(): mixed
+    /**
+     * @return string|null
+     */
+    public function getBirth(): ?string
     {
-    
-		return $this->birth;
-    
+
+        return $this->birth;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setSubscription(mixed $value): static
+    /**
+     * @param int $value
+     *
+     * @return static
+     */
+    public function setSubscription(int $value): static
     {
-    
-		$this->subscription = $value;
-		
-		return $this;
-    
+
+        $this->subscription = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getSubscription(): mixed
+    /**
+     * @return int|null
+     */
+    public function getSubscription(): ?int
     {
-    
-		return $this->subscription;
-    
+
+        return $this->subscription;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setRole(mixed $value): static
+    /**
+     * @param int $value
+     *
+     * @return static
+     */
+    public function setRole(int $value): static
     {
-    
-		$this->role = $value;
-		
-		return $this;
-    
+
+        $this->role = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getRole(): mixed
+    /**
+     * @return int|null
+     */
+    public function getRole(): ?int
     {
-    
-		return $this->role;
-    
+
+        return $this->role;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setStatus(mixed $value): static
+    /**
+     * @param int $value
+     *
+     * @return static
+     */
+    public function setStatus(int $value): static
     {
-    
-		$this->status = $value;
-		
-		return $this;
-    
+
+        $this->status = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getStatus(): mixed
+    /**
+     * @return int|null
+     */
+    public function getStatus(): ?int
     {
-    
-		return $this->status;
-    
+
+        return $this->status;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setCreatedAt(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setCreatedAt(string $value): static
     {
-    
-		$this->created_at = $value;
-		
-		return $this;
-    
+
+        $this->created_at = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getCreatedAt(): mixed
+    /**
+     * @return string|null
+     */
+    public function getCreatedAt(): ?string
     {
-    
-		return $this->created_at;
-    
+
+        return $this->created_at;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setUpdatedAt(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setUpdatedAt(string $value): static
     {
-    
-		$this->updated_at = $value;
-		
-		return $this;
-    
+
+        $this->updated_at = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getUpdatedAt(): mixed
+    /**
+     * @return string|null
+     */
+    public function getUpdatedAt(): ?string
     {
-    
-		return $this->updated_at;
-    
+
+        return $this->updated_at;
+
     }
 
     /**
      * @param SubscriptionEntity $subscriptionEntity
      *
-     * @return $this
+     * @return static
      */
     public function setSubscriptionData(SubscriptionEntity $subscriptionEntity): static
     {

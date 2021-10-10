@@ -8,74 +8,77 @@ use Codememory\Components\Database\Orm\Constructions as ORM;
  * Class PlaylistEntity
  *
  * @package App\Orm\Entities
+ *
+ * @author  Danil
  */
 #[ORM\Entity(tableName: 'playlists')]
 #[ORM\Repository(repository: 'App\Orm\Repositories\PlaylistRepository')]
 class PlaylistEntity
 {
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var int|null
+     */
     #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
     #[ORM\Identifier]
-    private mixed $id = null;
+    private ?int $id = null;
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'user_id', type: 'int', length: null, nullable: false)]
-    private mixed $user_id = null;
+    private ?int $user_id = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'name', type: 'varchar', length: 100, nullable: false)]
-    private mixed $name = null;
+    private ?string $name = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var int|null
+     */
     #[ORM\Column(name: 'reserved', type: 'tinyint', length: 1, nullable: false)]
     #[ORM\DefaultValue(value: '0')]
-    private mixed $reserved = null;
+    private ?int $reserved = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'temporary', type: 'datetime', length: null, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $temporary = null;
+    private ?string $temporary = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'created_at', type: 'datetime', length: null, nullable: false)]
     #[ORM\DefaultValue(value: 'CURRENT_TIMESTAMP')]
-    private mixed $created_at = null;
+    private ?string $created_at = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'updated_at', type: 'datetime', length: null, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $updated_at = null;
+    private ?string $updated_at = null;
 
-	/**
-	 * @return mixed
-	 */
-    public function getId(): mixed
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
     {
-    
-		return $this->id;
-    
+
+        return $this->id;
+
     }
 
     /**
-     * @param mixed $value
+     * @param int $value
+     *
      * @return static
      */
-    public function setUserId(mixed $value): static
+    public function setUserId(int $value): static
     {
 
         $this->user_id = $value;
@@ -85,128 +88,133 @@ class PlaylistEntity
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getUserId(): mixed
+    public function getUserId(): ?int
     {
 
         return $this->user_id;
 
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setName(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setName(string $value): static
     {
-    
-		$this->name = $value;
-		
-		return $this;
-    
+
+        $this->name = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getName(): mixed
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
     {
-    
-		return $this->name;
-    
+
+        return $this->name;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setReserved(mixed $value): static
+    /**
+     * @param bool $value
+     *
+     * @return static
+     */
+    public function setReserved(bool $value): static
     {
-    
-		$this->reserved = $value;
-		
-		return $this;
-    
+
+        $this->reserved = $value ? 1 : 0;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getReserved(): mixed
+    /**
+     * @return bool
+     */
+    public function getReserved(): bool
     {
-    
-		return $this->reserved;
-    
+
+        return $this->reserved > 1;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setTemporary(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setTemporary(string $value): static
     {
-    
-		$this->temporary = $value;
-		
-		return $this;
-    
+
+        $this->temporary = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getTemporary(): mixed
+    /**
+     * @return string|null
+     */
+    public function getTemporary(): ?string
     {
-    
-		return $this->temporary;
-    
+
+        return $this->temporary;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setCreatedAt(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setCreatedAt(string $value): static
     {
-    
-		$this->created_at = $value;
-		
-		return $this;
-    
+
+        $this->created_at = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getCreatedAt(): mixed
+    /**
+     * @return string|null
+     */
+    public function getCreatedAt(): ?string
     {
-    
-		return $this->created_at;
-    
+
+        return $this->created_at;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setUpdatedAt(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setUpdatedAt(string $value): static
     {
-    
-		$this->updated_at = $value;
-		
-		return $this;
-    
+
+        $this->updated_at = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getUpdatedAt(): mixed
+    /**
+     * @return string|null
+     */
+    public function getUpdatedAt(): ?string
     {
-    
-		return $this->updated_at;
-    
+
+        return $this->updated_at;
+
     }
 
 }

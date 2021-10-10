@@ -9,6 +9,8 @@ use Codememory\Components\Database\Orm\Interfaces\RelationshipInterface;
  * Class SubscriptionOptionEntity
  *
  * @package App\Orm\Entities
+ *
+ * @author  Danil
  */
 #[ORM\Entity(tableName: 'subscription_options')]
 #[ORM\Repository(repository: 'App\Orm\Repositories\SubscriptionOptionRepository')]
@@ -16,14 +18,14 @@ class SubscriptionOptionEntity
 {
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
     #[ORM\Identifier]
-    private mixed $id = null;
+    private ?int $id = null;
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'option_name_id', type: 'int', length: null, nullable: false)]
     #[ORM\Reference(
@@ -32,10 +34,10 @@ class SubscriptionOptionEntity
         on: [RelationshipInterface::ON_DELETE],
         onOptions: [RelationshipInterface::DEFAULT_ON_OPTION]
     )]
-    private mixed $option_name_id = null;
+    private ?int $option_name_id = null;
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'subscription', type: 'int', length: null, nullable: false)]
     #[ORM\Reference(
@@ -44,7 +46,7 @@ class SubscriptionOptionEntity
         on: [RelationshipInterface::ON_DELETE],
         onOptions: [RelationshipInterface::DEFAULT_ON_OPTION]
     )]
-    private mixed $subscription = null;
+    private ?int $subscription = null;
 
     /**
      * @var SubscriptionOptionNameEntity|null
@@ -53,9 +55,9 @@ class SubscriptionOptionEntity
     private ?SubscriptionOptionNameEntity $option_name = null;
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getId(): mixed
+    public function getId(): ?int
     {
 
         return $this->id;
@@ -63,11 +65,11 @@ class SubscriptionOptionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param int $value
      *
      * @return static
      */
-    public function setOption(mixed $value): static
+    public function setOption(int $value): static
     {
 
         $this->option_name_id = $value;
@@ -77,9 +79,9 @@ class SubscriptionOptionEntity
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getOption(): mixed
+    public function getOption(): ?int
     {
 
         return $this->option_name_id;
@@ -87,11 +89,11 @@ class SubscriptionOptionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param int $value
      *
      * @return static
      */
-    public function setSubscription(mixed $value): static
+    public function setSubscription(int $value): static
     {
 
         $this->subscription = $value;
@@ -101,9 +103,9 @@ class SubscriptionOptionEntity
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getSubscription(): mixed
+    public function getSubscription(): ?int
     {
 
         return $this->subscription;

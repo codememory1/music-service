@@ -8,6 +8,8 @@ use Codememory\Components\Database\Orm\Constructions as ORM;
  * Class RoleEntity
  *
  * @package App\Orm\Entities
+ *
+ * @author  Danil
  */
 #[ORM\Entity(tableName: 'roles')]
 #[ORM\Repository(repository: 'App\Orm\Repositories\RoleRepository')]
@@ -15,23 +17,23 @@ class RoleEntity
 {
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
     #[ORM\Identifier]
-    private mixed $id = null;
+    private ?int $id = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'name', type: 'varchar', length: 100, nullable: false)]
     #[ORM\Unique]
-    private mixed $name = null;
+    private ?string $name = null;
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getId(): mixed
+    public function getId(): ?int
     {
 
         return $this->id;
@@ -39,11 +41,11 @@ class RoleEntity
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return static
      */
-    public function setName(mixed $value): static
+    public function setName(string $value): static
     {
 
         $this->name = $value;
@@ -53,9 +55,9 @@ class RoleEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getName(): mixed
+    public function getName(): ?string
     {
 
         return $this->name;

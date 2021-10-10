@@ -8,6 +8,8 @@ use Codememory\Components\Database\Orm\Constructions as ORM;
  * Class SubscriptionEntity
  *
  * @package App\Orm\Entities
+ *
+ * @author  Danil
  */
 #[ORM\Entity(tableName: 'subscriptions')]
 #[ORM\Repository(repository: 'App\Orm\Repositories\SubscriptionRepository')]
@@ -15,51 +17,51 @@ class SubscriptionEntity
 {
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
     #[ORM\Identifier]
-    private mixed $id = null;
+    private ?int $id = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'name', type: 'varchar', length: 32, nullable: false)]
-    private mixed $name = null;
+    private ?string $name = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'description', type: 'varchar', length: 255, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $description = null;
+    private ?string $description = null;
 
     /**
-     * @var mixed
+     * @var int|float|null
      */
     #[ORM\Column(name: 'old_price', type: 'decimal', length: 10, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $old_price = null;
+    private int|float|null $old_price = null;
 
     /**
-     * @var mixed
+     * @var int|float|null
      */
     #[ORM\Column(name: 'price', type: 'decimal', length: 10, nullable: false)]
-    private mixed $price = null;
+    private int|float|null $price = null;
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'is_active', type: 'tinyint', length: 1, nullable: false)]
     #[ORM\DefaultValue(value: '0')]
-    private mixed $is_active = null;
+    private ?int $is_active = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'created_at', type: 'datetime', length: null, nullable: false)]
     #[ORM\DefaultValue(value: 'CURRENT_TIMESTAMP')]
-    private mixed $created_at = null;
+    private ?string $created_at = null;
 
     /**
      * @var SubscriptionOptionEntity[]
@@ -67,9 +69,9 @@ class SubscriptionEntity
     private array $options = [];
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getId(): mixed
+    public function getId(): ?int
     {
 
         return $this->id;
@@ -77,11 +79,11 @@ class SubscriptionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return static
      */
-    public function setName(mixed $value): static
+    public function setName(string $value): static
     {
 
         $this->name = $value;
@@ -91,9 +93,9 @@ class SubscriptionEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getName(): mixed
+    public function getName(): ?string
     {
 
         return $this->name;
@@ -101,11 +103,11 @@ class SubscriptionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return static
      */
-    public function setDescription(mixed $value): static
+    public function setDescription(string $value): static
     {
 
         $this->description = $value;
@@ -115,9 +117,9 @@ class SubscriptionEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getDescription(): mixed
+    public function getDescription(): ?string
     {
 
         return $this->description;
@@ -125,11 +127,11 @@ class SubscriptionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param int|float $value
      *
      * @return static
      */
-    public function setOldPrice(mixed $value): static
+    public function setOldPrice(int|float $value): static
     {
 
         $this->old_price = $value;
@@ -139,9 +141,9 @@ class SubscriptionEntity
     }
 
     /**
-     * @return mixed
+     * @return int|float|null
      */
-    public function getOldPrice(): mixed
+    public function getOldPrice(): int|null|float
     {
 
         return $this->old_price;
@@ -149,11 +151,11 @@ class SubscriptionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param int|float $value
      *
      * @return static
      */
-    public function setPrice(mixed $value): static
+    public function setPrice(int|float $value): static
     {
 
         $this->price = $value;
@@ -163,9 +165,9 @@ class SubscriptionEntity
     }
 
     /**
-     * @return mixed
+     * @return int|float|null
      */
-    public function getPrice(): mixed
+    public function getPrice(): int|null|float
     {
 
         return $this->price;
@@ -173,26 +175,26 @@ class SubscriptionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param bool $value
      *
      * @return static
      */
-    public function setIsActive(mixed $value): static
+    public function setIsActive(bool $value): static
     {
 
-        $this->is_active = $value;
+        $this->is_active = $value ? 1 : 0;
 
         return $this;
 
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getIsActive(): mixed
+    public function getIsActive(): bool
     {
 
-        return $this->is_active;
+        return $this->is_active > 1;
 
     }
 
@@ -211,9 +213,9 @@ class SubscriptionEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getCreatedAt(): mixed
+    public function getCreatedAt(): ?string
     {
 
         return $this->created_at;

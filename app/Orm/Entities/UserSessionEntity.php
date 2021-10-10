@@ -8,6 +8,8 @@ use Codememory\Components\Database\Orm\Constructions as ORM;
  * Class UserSessionEntity
  *
  * @package App\Orm\Entities
+ *
+ * @author  Danil
  */
 #[ORM\Entity(tableName: 'user_sessions')]
 #[ORM\Repository(repository: 'App\Orm\Repositories\UserSessionRepository')]
@@ -15,82 +17,82 @@ class UserSessionEntity
 {
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
     #[ORM\Identifier]
-    private mixed $id = null;
+    private ?int $id = null;
 
     /**
-     * @var mixed
+     * @var int|null
      */
     #[ORM\Column(name: 'user_id', type: 'int', length: null, nullable: false)]
-    private mixed $user_id = null;
+    private ?int $user_id = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'refresh_token', type: 'text', length: null, nullable: false)]
-    private mixed $refresh_token = null;
+    private ?string $refresh_token = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'ip', type: 'varchar', length: 32, nullable: false)]
-    private mixed $ip = null;
+    private ?string $ip = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'country', type: 'varchar', length: 100, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $country = null;
+    private ?string $country = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'code_country', type: 'tinytext', length: 5, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $code_country = null;
+    private ?string $code_country = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'region', type: 'varchar', length: 100, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $region = null;
+    private ?string $region = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'city', type: 'varchar', length: 100, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $city = null;
+    private ?string $city = null;
 
     /**
-     * @var mixed
+     * @var int|float|null
      */
     #[ORM\Column(name: 'latitude', type: 'float', length: null, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $latitude = null;
+    private int|float|null $latitude = null;
 
     /**
-     * @var mixed
+     * @var int|float|null
      */
     #[ORM\Column(name: 'longitude', type: 'float', length: null, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private mixed $longitude = null;
+    private int|float|null $longitude = null;
 
     /**
-     * @var mixed
+     * @var string|null
      */
     #[ORM\Column(name: 'valid_to', type: 'datetime', length: null, nullable: false)]
-    private mixed $valid_to = null;
+    private ?string $valid_to = null;
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getId(): mixed
+    public function getId(): ?int
     {
 
         return $this->id;
@@ -98,11 +100,11 @@ class UserSessionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param int $value
      *
      * @return static
      */
-    public function setUserId(mixed $value): static
+    public function setUserId(int $value): static
     {
 
         $this->user_id = $value;
@@ -112,9 +114,9 @@ class UserSessionEntity
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getUserId(): mixed
+    public function getUserId(): ?int
     {
 
         return $this->user_id;
@@ -122,11 +124,11 @@ class UserSessionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return static
      */
-    public function setRefreshToken(mixed $value): static
+    public function setRefreshToken(string $value): static
     {
 
         $this->refresh_token = $value;
@@ -136,9 +138,9 @@ class UserSessionEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getRefreshToken(): mixed
+    public function getRefreshToken(): ?string
     {
 
         return $this->refresh_token;
@@ -146,11 +148,11 @@ class UserSessionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return static
      */
-    public function setIp(mixed $value): static
+    public function setIp(string $value): static
     {
 
         $this->ip = $value;
@@ -160,9 +162,9 @@ class UserSessionEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getIp(): mixed
+    public function getIp(): ?string
     {
 
         return $this->ip;
@@ -170,11 +172,11 @@ class UserSessionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return static
      */
-    public function setCountry(mixed $value): static
+    public function setCountry(string $value): static
     {
 
         $this->country = $value;
@@ -184,9 +186,9 @@ class UserSessionEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getCountry(): mixed
+    public function getCountry(): ?string
     {
 
         return $this->country;
@@ -194,11 +196,11 @@ class UserSessionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return static
      */
-    public function setCodeCountry(mixed $value): static
+    public function setCodeCountry(string $value): static
     {
 
         $this->code_country = $value;
@@ -208,9 +210,9 @@ class UserSessionEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getCodeCountry(): mixed
+    public function getCodeCountry(): ?string
     {
 
         return $this->code_country;
@@ -218,11 +220,11 @@ class UserSessionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return static
      */
-    public function setRegion(mixed $value): static
+    public function setRegion(string $value): static
     {
 
         $this->region = $value;
@@ -232,9 +234,9 @@ class UserSessionEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getRegion(): mixed
+    public function getRegion(): ?string
     {
 
         return $this->region;
@@ -242,11 +244,11 @@ class UserSessionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return static
      */
-    public function setCity(mixed $value): static
+    public function setCity(string $value): static
     {
 
         $this->city = $value;
@@ -256,9 +258,9 @@ class UserSessionEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getCity(): mixed
+    public function getCity(): ?string
     {
 
         return $this->city;
@@ -266,11 +268,11 @@ class UserSessionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param int|float $value
      *
      * @return static
      */
-    public function setLatitude(mixed $value): static
+    public function setLatitude(int|float $value): static
     {
 
         $this->latitude = $value;
@@ -280,9 +282,9 @@ class UserSessionEntity
     }
 
     /**
-     * @return mixed
+     * @return int|float|null
      */
-    public function getLatitude(): mixed
+    public function getLatitude(): int|null|float
     {
 
         return $this->latitude;
@@ -290,11 +292,11 @@ class UserSessionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param int|float $value
      *
      * @return static
      */
-    public function setLongitude(mixed $value): static
+    public function setLongitude(int|float $value): static
     {
 
         $this->longitude = $value;
@@ -304,9 +306,9 @@ class UserSessionEntity
     }
 
     /**
-     * @return mixed
+     * @return int|float|null
      */
-    public function getLongitude(): mixed
+    public function getLongitude(): int|null|float
     {
 
         return $this->longitude;
@@ -314,11 +316,11 @@ class UserSessionEntity
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      *
      * @return static
      */
-    public function setValidTo(mixed $value): static
+    public function setValidTo(string $value): static
     {
 
         $this->valid_to = $value;
@@ -328,9 +330,9 @@ class UserSessionEntity
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getValidTo(): mixed
+    public function getValidTo(): ?string
     {
 
         return $this->valid_to;

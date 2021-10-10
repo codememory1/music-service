@@ -8,57 +8,60 @@ use Codememory\Components\Database\Orm\Constructions as ORM;
  * Class AccessRightNameEntity
  *
  * @package App\Orm\Entities
+ *
+ * @author  Danil
  */
 #[ORM\Entity(tableName: 'access_right_names')]
 #[ORM\Repository(repository: 'App\Orm\Repositories\AccessRightNameRepository')]
 class AccessRightNameEntity
 {
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var null|int
+     */
     #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
     #[ORM\Identifier]
-    private mixed $id = null;
+    private ?int $id = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var ?string
+     */
     #[ORM\Column(name: 'name', type: 'varchar', length: 50, nullable: false)]
     #[ORM\Unique]
-    private mixed $name = null;
+    private ?string $name = null;
 
-	/**
-	 * @return mixed
-	 */
-    public function getId(): mixed
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
     {
-    
-		return $this->id;
-    
+
+        return $this->id;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setName(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setName(string $value): static
     {
-    
-		$this->name = $value;
-		
-		return $this;
-    
+
+        $this->name = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getName(): mixed
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
     {
-    
-		return $this->name;
-    
+
+        return $this->name;
+
     }
 
 }

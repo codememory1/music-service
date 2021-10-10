@@ -10,86 +10,90 @@ use Codememory\Components\Database\Schema\StatementComponents\ReferenceDefinitio
  * Class ActivationTokenEntity
  *
  * @package App\Orm\Entities
+ *
+ * @author  Danil
  */
 #[ORM\Entity(tableName: 'activation_tokens')]
 #[ORM\Repository(repository: 'App\Orm\Repositories\ActivationTokenRepository')]
 class ActivationTokenEntity
 {
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var int|null
+     */
     #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
     #[ORM\Identifier]
-    private mixed $id = null;
+    private ?int $id = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var int|null
+     */
     #[ORM\Column(name: 'user_id', type: 'int', length: null, nullable: false)]
     #[ORM\Reference(entity: UserEntity::class, referencedColumnName: 'id', on: [RelationshipInterface::ON_DELETE], onOptions: [ReferenceDefinition::RD_CASCADE])]
-    private mixed $user_id = null;
+    private ?int $user_id = null;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'token', type: 'text', length: null, nullable: false)]
-    private mixed $token = null;
+    private ?string $token = null;
 
-	/**
-	 * @return mixed
-	 */
-    public function getId(): mixed
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
     {
-    
-		return $this->id;
-    
+
+        return $this->id;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setUserId(mixed $value): static
+    /**
+     * @param int $value
+     *
+     * @return static
+     */
+    public function setUserId(int $value): static
     {
-    
-		$this->user_id = $value;
-		
-		return $this;
-    
+
+        $this->user_id = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getUserId(): mixed
+    /**
+     * @return int|null
+     */
+    public function getUserId(): ?int
     {
-    
-		return $this->user_id;
-    
+
+        return $this->user_id;
+
     }
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-    public function setToken(mixed $value): static
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setToken(string $value): static
     {
-    
-		$this->token = $value;
-		
-		return $this;
-    
+
+        $this->token = $value;
+
+        return $this;
+
     }
 
-	/**
-	 * @return mixed
-	 */
-    public function getToken(): mixed
+    /**
+     * @return string|null
+     */
+    public function getToken(): ?string
     {
-    
-		return $this->token;
-    
+
+        return $this->token;
+
     }
 
 }
