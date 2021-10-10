@@ -3,7 +3,6 @@
 namespace App\Orm\Repositories;
 
 use App\Orm\Entities\PlaylistEntity;
-use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use ReflectionException;
@@ -15,7 +14,7 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class PlaylistRepository extends AbstractEntityRepository
+class PlaylistRepository extends AbstractRepositoryWithSorting
 {
 
     /**
@@ -36,17 +35,19 @@ class PlaylistRepository extends AbstractEntityRepository
     }
 
     /**
-     * @param array $by
+     * @param array  $by
+     * @param array  $sortBy
+     * @param string $sortingType
      *
      * @return array
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
      */
-    public function findAllAsArray(array $by = []): array
+    public function findAllAsArray(array $by = [], array $sortBy = [], string $sortingType = 'desc'): array
     {
 
-        return $this->findBy($by)->getResult()->toArray();
+        return $this->findByWithSorting($by, $sortBy, $sortingType)->toArray();
 
     }
 
