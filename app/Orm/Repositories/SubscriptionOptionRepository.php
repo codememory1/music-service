@@ -11,6 +11,8 @@ use ReflectionException;
  * Class SubscriptionOptionRepository
  *
  * @package App\Orm\Repositories
+ *
+ * @author  Danil
  */
 class SubscriptionOptionRepository extends AbstractEntityRepository
 {

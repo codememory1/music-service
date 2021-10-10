@@ -89,7 +89,7 @@ class UserRepository extends AbstractEntityRepository
         foreach ($users as &$userEntity) {
             $subscriptionId = $userEntity->getSubscription();
 
-            if(null !== $subscriptionId) {
+            if (null !== $subscriptionId) {
                 $subscriptionData = $subscriptionRepository->findOneWithOptions($userEntity->getSubscription());
 
                 $userEntity->setSubscriptionData($subscriptionData);
