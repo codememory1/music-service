@@ -3,8 +3,9 @@
 namespace App\Controllers\Api\V1;
 
 use App\Orm\Entities\SubscriptionEntity;
+use App\Orm\Repositories\RoleRepository;
 use App\Orm\Repositories\SubscriptionRepository;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
+use App\Services\Subscription\CreatorService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
@@ -56,6 +57,31 @@ class SubscriptionController extends AbstractAuthorizationController
 
         if (false != $this->isAuthWithResponse()) {
             $this->response->json($this->subscriptionRepository->findAllWithOptions());
+        }
+
+    }
+
+    /**
+     * @return void
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     */
+    public function create(): void
+    {
+
+        if (false != $authorizedUser = $this->isAuthWithResponse()) {
+            $this->isRoles($authorizedUser, [RoleRepository::ADMIN_ROLE, RoleRepository::DEV_ROLE]);
+
+            /** @var CreatorService $subscriptionCreatorService */
+            $subscriptionCreatorService = $this->getService('Subscription\Creator');
+
+            // Create a subscription and receive a response about creation
+            $subscriptionCreationResponse = $subscriptionCreatorService->create($this->validatorManager(), $this->em);
+
+            $this->response->json($subscriptionCreationResponse->getResponse(), $subscriptionCreationResponse->getStatus());
+
         }
 
     }
