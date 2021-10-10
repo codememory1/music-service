@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validations;
+namespace App\Validations\Playlist;
 
 use Codememory\Components\Translator\Interfaces\TranslationInterface;
 use Codememory\Components\Validator\Interfaces\ValidateInterface;
