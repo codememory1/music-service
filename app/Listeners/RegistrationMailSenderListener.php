@@ -10,6 +10,8 @@ use Codememory\Components\Mail\Interfaces\MessageInterface;
  * Class RegistrationMailSenderListener
  *
  * @package App\Listeners
+ *
+ * @author  Danil
  */
 class RegistrationMailSenderListener implements ListenerInterface
 {
