@@ -14,7 +14,7 @@ use Codememory\Components\Mail\Interfaces\MailerPackInterface;
  *
  * @package App\Events
  *
- * @after   Danil
+ * @author  Danil
  */
 class UserRegisterEvent implements EventInterface
 {
