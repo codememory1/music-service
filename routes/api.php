@@ -39,5 +39,6 @@ Router::subdomainGroup('api', function () {
     // Subscription routes
     Router::group('subscription/', function () {
         Router::get('all/', SubscriptionController::class . '#all')->name('all-subscriptions');
+        Router::post('create/', SubscriptionController::class . '#create')->name('create-subscriptions');
     });
 });
