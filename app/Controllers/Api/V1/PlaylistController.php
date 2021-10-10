@@ -7,6 +7,7 @@ use App\Orm\Repositories\PlaylistRepository;
 use App\Services\Playlist\PlaylistCreatorService;
 use App\Services\Playlist\PlaylistRemoverService;
 use App\Services\Playlist\PlaylistUpdaterService;
+use App\Services\Sorting\DataService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
@@ -52,14 +53,20 @@ class PlaylistController extends AbstractAuthorizationController
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     public function all(): void
     {
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->response->json($this->playlistRepository->findAllAsArray([
-                'user_id' => $authorizedUser->getId()
-            ]));
+            /** @var DataService $sortingDataService */
+            $sortingDataService = $this->getService('Sorting\Data');
+            $playlists = $this->playlistRepository->findAllAsArray(
+                ['user_id' => $authorizedUser->getId()],
+                $sortingDataService->getColumns(),
+                $sortingDataService->getType()
+            );
+            $this->response->json($playlists);
         }
 
     }
