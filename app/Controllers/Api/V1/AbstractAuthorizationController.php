@@ -41,6 +41,11 @@ abstract class AbstractAuthorizationController extends AbstractController
     protected EntityManagerInterface $em;
 
     /**
+     * @var ResponseApiCollectorService
+     */
+    protected ResponseApiCollectorService $apiResponse;
+
+    /**
      * @param ServiceProviderInterface $serviceProvider
      *
      * @throws BuilderNotCurrentSectionException
@@ -61,6 +66,10 @@ abstract class AbstractAuthorizationController extends AbstractController
         $this->response = $response;
 
         $this->em = $this->getDatabase()->getEntityManager();
+
+        /** @var ResponseApiCollectorService $apiResponse */
+        $apiResponse = $this->get('api-response');
+        $this->apiResponse = $apiResponse;
 
     }
 
@@ -87,10 +96,7 @@ abstract class AbstractAuthorizationController extends AbstractController
     {
 
         if (false === $authUser = $this->isAuthWithData()) {
-            /** @var ResponseApiCollectorService $apiResponse */
-            $apiResponse = $this->get('api-response');
-
-            $this->response->json($apiResponse->create(401, ['Unauthorized'])->getResponse(), 401);
+            $this->response->json($this->apiResponse->create(401, ['Unauthorized'])->getResponse(), 401);
         }
 
         return $authUser;
@@ -107,6 +113,50 @@ abstract class AbstractAuthorizationController extends AbstractController
     {
 
         return false !== $this->isAuthWithData();
+
+    }
+
+    /**
+     * @param UserEntity $userEntity
+     * @param string[]   $roles
+     *
+     * @return bool
+     */
+    protected function isNotRoles(UserEntity $userEntity, array $roles): bool
+    {
+
+        if (in_array($userEntity->getRole(), $roles)) {
+            $this->response->json($this->responseIncorrectRole()->getResponse(), 403);
+        }
+
+        return true;
+
+    }
+
+    /**
+     * @param UserEntity $userEntity
+     * @param string[]   $roles
+     *
+     * @return bool
+     */
+    protected function isRoles(UserEntity $userEntity, array $roles): bool
+    {
+
+        if (!in_array($userEntity->getRole(), $roles)) {
+            $this->response->json($this->responseIncorrectRole()->getResponse(), 403);
+        }
+
+        return true;
+
+    }
+
+    /**
+     * @return ResponseApiCollectorService
+     */
+    private function responseIncorrectRole(): ResponseApiCollectorService
+    {
+
+        return $this->apiResponse->create(403, ['Incorrect role']);
 
     }
 
