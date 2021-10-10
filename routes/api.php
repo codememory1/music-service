@@ -1,9 +1,9 @@
 <?php
 
-use App\Controllers\Api\V1\AuthController;
-use App\Controllers\Api\V1\PlaylistController;
-use App\Controllers\Api\V1\RegisterController;
-use App\Controllers\Api\V1\SubscriptionController;
+use App\Controllers\V1\AuthController;
+use App\Controllers\V1\PlaylistController;
+use App\Controllers\V1\RegisterController;
+use App\Controllers\V1\SubscriptionController;
 use Codememory\Routing\Router;
 
 /**
