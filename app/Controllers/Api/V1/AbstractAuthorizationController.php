@@ -59,7 +59,7 @@ abstract class AbstractAuthorizationController extends AbstractController
         /** @var ResponseInterface $response */
         $response = $this->get('response');
         $this->response = $response;
-        
+
         $this->em = $this->getDatabase()->getEntityManager();
 
     }
