@@ -10,6 +10,7 @@ use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementE
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
+use Codememory\Components\Translator\Interfaces\TranslationInterface;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use Codememory\HttpFoundation\Interfaces\ResponseInterface;
 use Kernel\Controller\AbstractController;
@@ -46,6 +47,11 @@ abstract class AbstractAuthorizationController extends AbstractController
     protected ResponseApiCollectorService $apiResponse;
 
     /**
+     * @var TranslationInterface
+     */
+    protected TranslationInterface $translation;
+
+    /**
      * @param ServiceProviderInterface $serviceProvider
      *
      * @throws BuilderNotCurrentSectionException
@@ -70,6 +76,10 @@ abstract class AbstractAuthorizationController extends AbstractController
         /** @var ResponseApiCollectorService $apiResponse */
         $apiResponse = $this->get('api-response');
         $this->apiResponse = $apiResponse;
+
+        /** @var TranslationInterface $translation */
+        $translation = $this->get('translator');
+        $this->translation = $translation;
 
     }
 
@@ -102,7 +112,11 @@ abstract class AbstractAuthorizationController extends AbstractController
     {
 
         if (false === $authUser = $this->isAuthWithData()) {
-            $this->response->json($this->apiResponse->create(401, ['Unauthorized'])->getResponse(), 401);
+            $apiResponse = $this->apiResponse->create(401, [
+               $this->translation->getTranslationActiveLang('security.unauthorized')
+            ]);
+
+            $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
         }
 
         return $authUser;
@@ -136,7 +150,9 @@ abstract class AbstractAuthorizationController extends AbstractController
     {
 
         if (in_array($userEntity->getRole(), $roles)) {
-            $this->response->json($this->responseIncorrectRole()->getResponse(), 403);
+            $apiResponse = $this->responseIncorrectRole();
+
+            $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
         }
 
         return true;
@@ -155,10 +171,31 @@ abstract class AbstractAuthorizationController extends AbstractController
     {
 
         if (!in_array($userEntity->getRole(), $roles)) {
-            $this->response->json($this->responseIncorrectRole()->getResponse(), 403);
+            $apiResponse = $this->responseIncorrectRole();
+
+            $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
         }
 
         return true;
+
+    }
+
+    /**
+     * Throw out a reply with a message from translations
+     *
+     * @param int    $status
+     * @param string $translationKey
+     *
+     * @return void
+     */
+    protected function responseWithTranslation(int $status, string $translationKey): void
+    {
+
+        $apiResponse = $this->apiResponse->create($status, [
+            $this->translation->getTranslationActiveLang($translationKey)
+        ]);
+
+        $this->response->json($apiResponse->getResponse(), $status);
 
     }
 
@@ -168,7 +205,9 @@ abstract class AbstractAuthorizationController extends AbstractController
     private function responseIncorrectRole(): ResponseApiCollectorService
     {
 
-        return $this->apiResponse->create(403, ['Incorrect role']);
+        return $this->apiResponse->create(403, [
+            $this->translation->getTranslationActiveLang('security.incorrectRole')
+        ]);
 
     }
 
