@@ -62,6 +62,29 @@ class SubscriptionController extends AbstractAuthorizationController
     }
 
     /**
+     * @param int $id
+     *
+     * @return void
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    public function show(int $id): void
+    {
+
+        if (false != $this->isAuthWithResponse()) {
+            $subscription = $this->subscriptionRepository->findOneWithOptions($id);
+
+            if([] === $subscription) {
+                $this->responseWithTranslation(404, 'subscription.subscriptionNotExist');
+            }
+
+            $this->response->json($subscription);
+        }
+
+    }
+
+    /**
      * @return void
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
@@ -81,7 +104,6 @@ class SubscriptionController extends AbstractAuthorizationController
             $subscriptionCreationResponse = $subscriptionCreatorService->create($this->validatorManager(), $this->em);
 
             $this->response->json($subscriptionCreationResponse->getResponse(), $subscriptionCreationResponse->getStatus());
-
         }
 
     }
