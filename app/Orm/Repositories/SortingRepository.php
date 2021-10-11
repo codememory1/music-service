@@ -34,7 +34,7 @@ class SortingRepository extends AbstractEntityRepository
         $result = $this->findBy(['table' => $table])->toEntity();
 
         if ([] != $result) {
-            return json_decode($result[0]->getColumns());
+            return $result[0]->getColumns();
         }
 
         return [];
