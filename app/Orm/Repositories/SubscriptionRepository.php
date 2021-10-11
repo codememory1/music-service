@@ -56,33 +56,17 @@ class SubscriptionRepository extends AbstractEntityRepository
     }
 
     /**
-     * @param array $by
-     *
-     * @return array|bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
-     * @throws ReflectionException
-     */
-    public function findOneAsArray(array $by): array|bool
-    {
-
-        $result = $this->findBy($by)->getResult()->toArray();
-
-        return [] !== $result ? $result[0] : false;
-
-    }
-
-    /**
      * @param int $subscription
      *
-     * @return SubscriptionEntity|bool
+     * @return array
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
      */
-    public function findOneWithOptions(int $subscription): SubscriptionEntity|bool
+    public function findOneWithOptions(int $subscription): array
     {
 
+        $subscriptionData = [];
         $subscriptionEntity = $this->findOne([
             'id' => $subscription
         ]);
@@ -93,10 +77,10 @@ class SubscriptionRepository extends AbstractEntityRepository
 
             $subscriptionEntity->setOptions($subscriptionOptionsRepository->findBySubscriptionWithName($subscription));
 
-            return $subscriptionEntity;
+            $subscriptionData = (new SubscriptionDto($subscriptionEntity))->getTransformedData();
         }
 
-        return false;
+        return $subscriptionData;
 
     }
 
