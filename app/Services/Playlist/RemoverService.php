@@ -11,13 +11,13 @@ use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedExce
 use ReflectionException;
 
 /**
- * Class PlaylistRemoverService
+ * Class RemoverService
  *
  * @package App\Services\Playlist
  *
  * @author  Danil
  */
-class PlaylistRemoverService extends AbstractApiService
+class RemoverService extends AbstractApiService
 {
 
     /**

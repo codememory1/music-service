@@ -18,13 +18,13 @@ use Codememory\Components\Validator\Manager as ValidationManager;
 use ReflectionException;
 
 /**
- * Class PlaylistCreatorService
+ * Class CreatorService
  *
  * @package App\Services\Playlist
  *
  * @author  Danil
  */
-class PlaylistCreatorService extends AbstractApiService
+class CreatorService extends AbstractApiService
 {
 
     /**

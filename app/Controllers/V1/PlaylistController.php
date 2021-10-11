@@ -4,9 +4,9 @@ namespace App\Controllers\V1;
 
 use App\Orm\Entities\PlaylistEntity;
 use App\Orm\Repositories\PlaylistRepository;
-use App\Services\Playlist\PlaylistCreatorService;
-use App\Services\Playlist\PlaylistRemoverService;
-use App\Services\Playlist\PlaylistUpdaterService;
+use App\Services\Playlist\CreatorService;
+use App\Services\Playlist\RemoverService;
+use App\Services\Playlist\UpdaterService;
 use App\Services\Sorting\DataService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
@@ -103,8 +103,8 @@ class PlaylistController extends AbstractAuthorizationController
     {
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            /** @var PlaylistCreatorService $playlistCreatorService */
-            $playlistCreatorService = $this->getService('Playlist\PlaylistCreator');
+            /** @var CreatorService $playlistCreatorService */
+            $playlistCreatorService = $this->getService('Playlist\Creator');
 
             // Calling the playlist creation method from the service
             $playlistCreationResponse = $playlistCreatorService->create($this->validatorManager(), $this->em, $authorizedUser);
@@ -127,8 +127,8 @@ class PlaylistController extends AbstractAuthorizationController
     {
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            /** @var PlaylistUpdaterService $playlistUpdaterService */
-            $playlistUpdaterService = $this->getService('Playlist\PlaylistUpdater');
+            /** @var UpdaterService $playlistUpdaterService */
+            $playlistUpdaterService = $this->getService('Playlist\Updater');
 
             // Calling the playlist update method
             $playlistUpdateResponse = $playlistUpdaterService->update(
@@ -155,8 +155,8 @@ class PlaylistController extends AbstractAuthorizationController
     {
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            /** @var PlaylistRemoverService $playlistRemover */
-            $playlistRemover = $this->getService('Playlist\PlaylistRemover');
+            /** @var RemoverService $playlistRemover */
+            $playlistRemover = $this->getService('Playlist\Remover');
 
             // Delete playlist entry
             $playlistDeleteResponse = $playlistRemover->delete($this->playlistRepository, $authorizedUser, $id);
