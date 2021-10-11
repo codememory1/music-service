@@ -30,3 +30,7 @@ subscription:
   numericPriceRule: 'Цена должна быть указана в числовом типе'
   activeRule: 'Некорректный статус активации подписки'
   successCreate: 'Подписка успешно создана'
+  subscriptionNotExist: 'Подписка не найдена'
+security:
+  incorrectRole: 'Некорректная роль'
+  unauthorized: 'Не авторизован'
