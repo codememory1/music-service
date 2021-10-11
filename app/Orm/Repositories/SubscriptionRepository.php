@@ -61,15 +61,14 @@ class SubscriptionRepository extends AbstractRepositoryWithSorting
     /**
      * @param int $subscription
      *
-     * @return array
+     * @return SubscriptionEntity|bool
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
      */
-    public function findOneWithOptions(int $subscription): array
+    public function findOneWithOptionsAsEntity(int $subscription): SubscriptionEntity|bool
     {
 
-        $subscriptionData = [];
         $subscriptionEntity = $this->findOne([
             'id' => $subscription
         ]);
@@ -80,10 +79,31 @@ class SubscriptionRepository extends AbstractRepositoryWithSorting
 
             $subscriptionEntity->setOptions($subscriptionOptionsRepository->findBySubscriptionWithName($subscription));
 
-            $subscriptionData = (new SubscriptionDto($subscriptionEntity))->getTransformedData();
+            return $subscriptionEntity;
         }
 
-        return $subscriptionData;
+        return false;
+
+    }
+
+    /**
+     * @param int $subscription
+     *
+     * @return array
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    public function findOneWithOptions(int $subscription): array
+    {
+
+        $subscriptionEntity = $this->findOneWithOptionsAsEntity($subscription);
+
+        if (false !== $subscriptionEntity) {
+            return (new SubscriptionDto($subscriptionEntity))->getTransformedData();
+        }
+
+        return [];
 
     }
 
@@ -112,6 +132,28 @@ class SubscriptionRepository extends AbstractRepositoryWithSorting
         }
 
         return $subscriptions;
+
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return void
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    public function deleteById(int $id): void
+    {
+
+        /** @var SubscriptionOptionRepository $subscriptionOptionRepository */
+        $subscriptionOptionRepository = $this->getRepository(SubscriptionOptionEntity::class);
+
+        $subscriptionOptionRepository->delete([
+            'subscription' => $id
+        ]);
+
+        $this->delete(['id' => $id]);
 
     }
 
