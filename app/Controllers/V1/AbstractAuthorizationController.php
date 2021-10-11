@@ -13,6 +13,7 @@ use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Translator\Interfaces\TranslationInterface;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use Codememory\HttpFoundation\Interfaces\ResponseInterface;
+use JetBrains\PhpStorm\NoReturn;
 use Kernel\Controller\AbstractController;
 use ReflectionException;
 
@@ -113,7 +114,7 @@ abstract class AbstractAuthorizationController extends AbstractController
 
         if (false === $authUser = $this->isAuthWithData()) {
             $apiResponse = $this->apiResponse->create(401, [
-               $this->translation->getTranslationActiveLang('security.unauthorized')
+                $this->translation->getTranslationActiveLang('security.unauthorized')
             ]);
 
             $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
@@ -181,6 +182,29 @@ abstract class AbstractAuthorizationController extends AbstractController
     }
 
     /**
+     * @param UserEntity $userEntity
+     * @param string     $rightName
+     *
+     * @return bool
+     */
+    protected function isExistRight(UserEntity $userEntity, string $rightName): bool
+    {
+
+        foreach ($userEntity->getRoleData()->getRights() as $right) {
+            if ($right->getAccessRightName()->getName() === $rightName) {
+                return true;
+            }
+        }
+
+        $apiResponse = $this->responseIncorrectRole();
+
+        $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
+
+        return false;
+
+    }
+
+    /**
      * Throw out a reply with a message from translations
      *
      * @param int    $status
@@ -188,6 +212,7 @@ abstract class AbstractAuthorizationController extends AbstractController
      *
      * @return void
      */
+    #[NoReturn]
     protected function responseWithTranslation(int $status, string $translationKey): void
     {
 
