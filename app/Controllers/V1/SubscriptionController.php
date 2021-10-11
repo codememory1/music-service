@@ -5,6 +5,7 @@ namespace App\Controllers\V1;
 use App\Orm\Entities\SubscriptionEntity;
 use App\Orm\Repositories\RoleRepository;
 use App\Orm\Repositories\SubscriptionRepository;
+use App\Services\Sorting\DataService;
 use App\Services\Subscription\CreatorService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
@@ -48,15 +49,22 @@ class SubscriptionController extends AbstractAuthorizationController
 
     /**
      * @return void
-     * @throws ReflectionException
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     public function all(): void
     {
 
         if (false != $this->isAuthWithResponse()) {
-            $this->response->json($this->subscriptionRepository->findAllWithOptions());
+            /** @var DataService $sortingDataService */
+            $sortingDataService = $this->getService('Sorting\Data');
+
+            $this->response->json($this->subscriptionRepository->findAllWithOptions(
+                $sortingDataService->getColumns(),
+                $sortingDataService->getType()
+            ));
         }
 
     }

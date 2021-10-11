@@ -5,7 +5,6 @@ namespace App\Orm\Repositories;
 use App\Orm\Dto\SubscriptionDto;
 use App\Orm\Entities\SubscriptionEntity;
 use App\Orm\Entities\SubscriptionOptionEntity;
-use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use ReflectionException;
@@ -17,22 +16,26 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class SubscriptionRepository extends AbstractEntityRepository
+class SubscriptionRepository extends AbstractRepositoryWithSorting
 {
 
     /**
+     * @param array  $sortBy
+     * @param string $sortingType
+     *
      * @return array
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
      */
-    public function findAllAsEntity(): array
+    public function findAllAsEntity(array $sortBy = [], string $sortingType = 'desc'): array
     {
 
         $qb = $this->createQueryBuilder();
-        $qb
-            ->select()
-            ->from($this->getEntityData()->getTableName());
+        $tableName = $this->getEntityData()->getTableName();
+        $statement = $qb->select()->from($tableName);
+
+        $this->sortingRepository->addSorting($statement, $tableName, $sortBy, $sortingType);
 
         return $qb->generateQuery()->toEntity();
 
@@ -85,18 +88,21 @@ class SubscriptionRepository extends AbstractEntityRepository
     }
 
     /**
+     * @param array  $sortBy
+     * @param string $sortingType
+     *
      * @return array
      * @throws NotSelectedStatementException
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
      */
-    public function findAllWithOptions(): array
+    public function findAllWithOptions(array $sortBy = [], string $sortingType = 'desc'): array
     {
 
         $subscriptions = [];
 
         /** @var SubscriptionEntity $subscription */
-        foreach ($this->findAllAsEntity() as $subscription) {
+        foreach ($this->findAllAsEntity($sortBy, $sortingType) as $subscription) {
             /** @var SubscriptionOptionRepository $subscriptionOptionsRepository */
             $subscriptionOptionsRepository = $this->getRepository(SubscriptionOptionEntity::class);
 
