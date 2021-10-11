@@ -3,10 +3,11 @@
 namespace App\Controllers\V1;
 
 use App\Orm\Entities\SubscriptionEntity;
-use App\Orm\Repositories\RoleRepository;
+use App\Orm\Repositories\AccessRightNameRepository;
 use App\Orm\Repositories\SubscriptionRepository;
 use App\Services\Sorting\DataService;
 use App\Services\Subscription\CreatorService;
+use App\Services\Subscription\RemoverService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
@@ -83,7 +84,7 @@ class SubscriptionController extends AbstractAuthorizationController
         if (false != $this->isAuthWithResponse()) {
             $subscription = $this->subscriptionRepository->findOneWithOptions($id);
 
-            if([] === $subscription) {
+            if ([] === $subscription) {
                 $this->responseWithTranslation(404, 'subscription.subscriptionNotExist');
             }
 
@@ -103,7 +104,7 @@ class SubscriptionController extends AbstractAuthorizationController
     {
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->isRoles($authorizedUser, [RoleRepository::ADMIN_ROLE, RoleRepository::DEV_ROLE]);
+            $this->isExistRight($authorizedUser, AccessRightNameRepository::CREATE_SUBSCRIPTION);
 
             /** @var CreatorService $subscriptionCreatorService */
             $subscriptionCreatorService = $this->getService('Subscription\Creator');
@@ -112,6 +113,30 @@ class SubscriptionController extends AbstractAuthorizationController
             $subscriptionCreationResponse = $subscriptionCreatorService->create($this->validatorManager(), $this->em);
 
             $this->response->json($subscriptionCreationResponse->getResponse(), $subscriptionCreationResponse->getStatus());
+        }
+
+    }
+
+    /**
+     * @param int $id
+     *
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     */
+    public function delete(int $id): void
+    {
+
+        if (false != $authorizedUser = $this->isAuthWithResponse()) {
+            $this->isExistRight($authorizedUser, AccessRightNameRepository::REMOVE_SUBSCRIPTION);
+
+            /** @var RemoverService $subscriptionRemoverService */
+            $subscriptionRemoverService = $this->getService('Subscription\Remover');
+
+            $subscriptionRemovingResponse = $subscriptionRemoverService->delete($this->subscriptionRepository, $id);
+
+            $this->response->json($subscriptionRemovingResponse->getResponse(), $subscriptionRemovingResponse->getStatus());
         }
 
     }
