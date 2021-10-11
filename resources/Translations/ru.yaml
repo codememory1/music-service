@@ -32,6 +32,7 @@ subscription:
   activeRule: 'Некорректный статус активации подписки'
   successCreate: 'Подписка успешно создана'
   subscriptionNotExist: 'Подписка не найдена'
+  successDelete: 'Подписка успешно удалена'
 security:
   incorrectRole: 'Некорректная роль'
   unauthorized: 'Не авторизован'
