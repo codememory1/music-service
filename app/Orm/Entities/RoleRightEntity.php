@@ -48,6 +48,12 @@ class RoleRightEntity
     private ?int $role_id = null;
 
     /**
+     * @var AccessRightNameEntity|null
+     */
+    #[ORM\Join(entity: AccessRightNameEntity::class, columns: ['right_name', 'arn_id'], as: ['name', 'id'])]
+    private ?AccessRightNameEntity $accessRightName = null;
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -102,6 +108,16 @@ class RoleRightEntity
     {
 
         return $this->role_id;
+
+    }
+
+    /**
+     * @return AccessRightNameEntity|null
+     */
+    public function getAccessRightName(): ?AccessRightNameEntity
+    {
+
+        return $this->accessRightName;
 
     }
 

@@ -31,6 +31,11 @@ class RoleEntity
     private ?string $name = null;
 
     /**
+     * @var RoleRightEntity[]
+     */
+    private array $rights = [];
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -61,6 +66,30 @@ class RoleEntity
     {
 
         return $this->name;
+
+    }
+
+    /**
+     * @param RoleRightEntity[] $rights
+     *
+     * @return static
+     */
+    public function setRights(array $rights): static
+    {
+
+        $this->rights = $rights;
+
+        return $this;
+
+    }
+
+    /**
+     * @return RoleRightEntity[]
+     */
+    public function getRights(): array
+    {
+
+        return $this->rights;
 
     }
 

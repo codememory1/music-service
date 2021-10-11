@@ -110,6 +110,11 @@ class UserEntity
     private ?SubscriptionEntity $subscriptionData = null;
 
     /**
+     * @var RoleEntity|null
+     */
+    private ?RoleEntity $roleData = null;
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -428,6 +433,30 @@ class UserEntity
     {
 
         return $this->subscriptionData;
+
+    }
+
+    /**
+     * @param RoleEntity|null $roleData
+     *
+     * @return UserEntity
+     */
+    public function setRoleData(?RoleEntity $roleData): static
+    {
+
+        $this->roleData = $roleData;
+
+        return $this;
+
+    }
+
+    /**
+     * @return RoleEntity|null
+     */
+    public function getRoleData(): ?RoleEntity
+    {
+
+        return $this->roleData;
 
     }
 

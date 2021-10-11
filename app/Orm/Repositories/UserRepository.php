@@ -2,6 +2,7 @@
 
 namespace App\Orm\Repositories;
 
+use App\Orm\Entities\RoleEntity;
 use App\Orm\Entities\SubscriptionEntity;
 use App\Orm\Entities\UserEntity;
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
@@ -32,7 +33,7 @@ class UserRepository extends AbstractEntityRepository
 
         $result = $this->findBy($by)->toEntity();
 
-        $this->setSubscription($result);
+        $this->addReferences($result);
 
         return [] !== $result ? $result[0] : false;
 
@@ -51,7 +52,7 @@ class UserRepository extends AbstractEntityRepository
 
         $result = $this->findBy($by, 'or')->toEntity();
 
-        $this->setSubscription($result);
+        $this->addReferences($result);
 
         return [] !== $result ? $result[0] : false;
 
@@ -80,20 +81,26 @@ class UserRepository extends AbstractEntityRepository
      * @throws QueryNotGeneratedException
      * @throws ReflectionException
      */
-    private function setSubscription(array &$users): void
+    private function addReferences(array &$users): void
     {
 
         /** @var SubscriptionRepository $subscriptionRepository */
         $subscriptionRepository = $this->getRepository(SubscriptionEntity::class);
 
+        /** @var RoleRepository $roleRepository */
+        $roleRepository = $this->getRepository(RoleEntity::class);
+
         foreach ($users as &$userEntity) {
             $subscriptionId = $userEntity->getSubscription();
 
+            // Check if the user has a subscription
             if (null !== $subscriptionId) {
-                $subscriptionData = $subscriptionRepository->findOneWithOptions($userEntity->getSubscription());
+                $subscriptionData = $subscriptionRepository->findOneWithOptionsAsEntity($userEntity->getSubscription());
 
                 $userEntity->setSubscriptionData($subscriptionData);
             }
+
+            $userEntity->setRoleData($roleRepository->findOne($userEntity->getRole()));
         }
 
     }
