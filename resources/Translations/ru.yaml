@@ -33,6 +33,7 @@ subscription:
   successCreate: 'Подписка успешно создана'
   subscriptionNotExist: 'Подписка не найдена'
   successDelete: 'Подписка успешно удалена'
+  successUpdate: 'Подписка успешно обновлена'
 security:
   incorrectRole: 'Некорректная роль'
   unauthorized: 'Не авторизован'
