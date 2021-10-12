@@ -8,6 +8,7 @@ use App\Orm\Repositories\SubscriptionRepository;
 use App\Services\Sorting\DataService;
 use App\Services\Subscription\CreatorService;
 use App\Services\Subscription\RemoverService;
+use App\Services\Subscription\UpdaterService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
 use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
@@ -111,6 +112,37 @@ class SubscriptionController extends AbstractAuthorizationController
 
             // Create a subscription and receive a response about creation
             $subscriptionCreationResponse = $subscriptionCreatorService->create($this->validatorManager(), $this->em);
+
+            $this->response->json($subscriptionCreationResponse->getResponse(), $subscriptionCreationResponse->getStatus());
+        }
+
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return void
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     */
+    public function update(int $id): void
+    {
+
+        if (false != $authorizedUser = $this->isAuthWithResponse()) {
+            $this->isExistRight($authorizedUser, AccessRightNameRepository::UPDATE_SUBSCRIPTION);
+
+            /** @var UpdaterService $subscriptionUpdaterService */
+            $subscriptionUpdaterService = $this->getService('Subscription\Updater');
+
+            // We update the subscription data and receive a response about the update
+            $subscriptionCreationResponse = $subscriptionUpdaterService->update(
+                $this->validatorManager(),
+                $this->em,
+                $this->subscriptionRepository,
+                $id
+            );
 
             $this->response->json($subscriptionCreationResponse->getResponse(), $subscriptionCreationResponse->getStatus());
         }
