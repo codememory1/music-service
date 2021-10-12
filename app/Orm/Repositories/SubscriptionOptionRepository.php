@@ -51,4 +51,21 @@ class SubscriptionOptionRepository extends AbstractEntityRepository
 
     }
 
+    /**
+     * @param array $by
+     *
+     * @return bool
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws ReflectionException
+     */
+    public function exist(array $by): bool
+    {
+
+        $result = $this->findBy($by)->toEntity();
+
+        return [] !== $result;
+
+    }
+
 }
