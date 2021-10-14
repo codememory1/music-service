@@ -2,6 +2,7 @@
 
 namespace App\Controllers\V1;
 
+use App\Services\Auth\AuthorizationService;
 use App\Services\Registration\AccountActivationService;
 use App\Services\Registration\RegisterService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
@@ -20,13 +21,13 @@ use Kernel\Controller\AbstractController;
 use ReflectionException;
 
 /**
- * Class RegisterController
+ * Class SecurityController
  *
- * @package App\Controllers\Api\v1
+ * @package App\Controllers\V1
  *
  * @author  Danil
  */
-class RegisterController extends AbstractController
+class SecurityController extends AbstractController
 {
 
     /**
@@ -54,6 +55,27 @@ class RegisterController extends AbstractController
         $this->response = $response;
 
         $this->em = $this->getDatabase()->getEntityManager();
+
+    }
+
+    /**
+     * @throws NotSelectedStatementException
+     * @throws QueryNotGeneratedException
+     * @throws InvalidTimezoneException
+     * @throws ServiceNotExistException
+     * @throws ReflectionException
+     */
+    #[NoReturn]
+    public function auth(): void
+    {
+
+        /** @var AuthorizationService $authorizationService */
+        $authorizationService = $this->getService('Auth\Authorization');
+
+        // Try to authorize the user and give an authorization response
+        $authorizationResponse = $authorizationService->authorize($this->validatorManager(), $this->em);
+
+        $this->response->json($authorizationResponse->getResponse(), $authorizationResponse->getStatus());
 
     }
 
@@ -90,7 +112,7 @@ class RegisterController extends AbstractController
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
-    public function activation(string $token): void
+    public function accountActivation(string $token): void
     {
 
         /** @var AccountActivationService $registerService */
