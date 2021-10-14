@@ -1,8 +1,7 @@
 <?php
 
-use App\Controllers\V1\AuthController;
 use App\Controllers\V1\PlaylistController;
-use App\Controllers\V1\RegisterController;
+use App\Controllers\V1\SecurityController;
 use App\Controllers\V1\SubscriptionController;
 use Codememory\Routing\Router;
 
@@ -15,9 +14,9 @@ use Codememory\Routing\Router;
  */
 
 Router::subdomainGroup('api', function () {
-    Router::post('/register', RegisterController::class . '#register');
-    Router::get('/register/activate/:token', RegisterController::class . '#activation')->with('token', '.+');
-    Router::post('/auth', AuthController::class . '#auth');
+    Router::post('/register', SecurityController::class . '#register');
+    Router::get('/register/activate/:token', SecurityController::class . '#accountActivation')->with('token', '.+');
+    Router::post('/auth', SecurityController::class . '#auth');
 
     Router::resource('/playlist', PlaylistController::class);
     Router::resource('/subscription', SubscriptionController::class);
