@@ -5,8 +5,7 @@ namespace App\Orm\Repositories;
 use App\Orm\Dto\SubscriptionDto;
 use App\Orm\Entities\SubscriptionEntity;
 use App\Orm\Entities\SubscriptionOptionEntity;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use ReflectionException;
 
 /**
@@ -24,20 +23,20 @@ class SubscriptionRepository extends AbstractRepositoryWithSorting
      * @param string $sortingType
      *
      * @return array
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function findAllAsEntity(array $sortBy = [], string $sortingType = 'desc'): array
     {
 
         $qb = $this->createQueryBuilder();
         $tableName = $this->getEntityData()->getTableName();
-        $statement = $qb->select()->from($tableName);
 
-        $this->sortingRepository->addSorting($statement, $tableName, $sortBy, $sortingType);
+        $qb->select()->from($tableName);
 
-        return $qb->generateQuery()->toEntity();
+        $this->sortingRepository->addSorting($qb, $tableName, $sortBy, $sortingType);
+
+        return $qb->generateTo()->entity()->all();
 
     }
 
@@ -45,16 +44,13 @@ class SubscriptionRepository extends AbstractRepositoryWithSorting
      * @param array $by
      *
      * @return SubscriptionEntity|bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function findOne(array $by): SubscriptionEntity|bool
     {
 
-        $result = $this->findBy($by)->toEntity();
-
-        return [] !== $result ? $result[0] : false;
+        return $this->customFindBy($by)->entity()->first();
 
     }
 
@@ -62,9 +58,8 @@ class SubscriptionRepository extends AbstractRepositoryWithSorting
      * @param int $subscription
      *
      * @return SubscriptionEntity|bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function findOneWithOptionsAsEntity(int $subscription): SubscriptionEntity|bool
     {
@@ -90,9 +85,8 @@ class SubscriptionRepository extends AbstractRepositoryWithSorting
      * @param int $subscription
      *
      * @return array
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function findOneWithOptions(int $subscription): array
     {
@@ -112,9 +106,8 @@ class SubscriptionRepository extends AbstractRepositoryWithSorting
      * @param string $sortingType
      *
      * @return array
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function findAllWithOptions(array $sortBy = [], string $sortingType = 'desc'): array
     {
@@ -139,9 +132,8 @@ class SubscriptionRepository extends AbstractRepositoryWithSorting
      * @param int $id
      *
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function deleteById(int $id): void
     {

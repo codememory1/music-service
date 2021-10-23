@@ -6,8 +6,7 @@ use App\Orm\Entities\UserEntity;
 use App\Services\Auth\AuthorizationService;
 use App\Services\ResponseApiCollectorService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Translator\Interfaces\TranslationInterface;
@@ -90,8 +89,7 @@ abstract class AbstractAuthorizationController extends AbstractController
      *
      * @return UserEntity|bool
      * @throws ReflectionException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
+     * @throws StatementNotSelectedException
      */
     protected function isAuthWithData(): UserEntity|bool
     {
@@ -105,9 +103,8 @@ abstract class AbstractAuthorizationController extends AbstractController
      * otherwise return a response with 401 status
      *
      * @return UserEntity
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     protected function isAuthWithResponse(): UserEntity
     {
@@ -128,9 +125,8 @@ abstract class AbstractAuthorizationController extends AbstractController
      * Check user authorization
      *
      * @return bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     protected function isAuth(): bool
     {
@@ -199,8 +195,6 @@ abstract class AbstractAuthorizationController extends AbstractController
         $apiResponse = $this->responseIncorrectRole();
 
         $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
-
-        return false;
 
     }
 

@@ -4,9 +4,8 @@ namespace App\Orm\Repositories;
 
 use App\Orm\Entities\SortingEntity;
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
-use Codememory\Components\Database\Schema\Interfaces\SelectInterface;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
+use Codememory\Components\Database\QueryBuilder\QueryBuilder;
 use ReflectionException;
 
 /**
@@ -23,18 +22,17 @@ class SortingRepository extends AbstractEntityRepository
      * @param string $table
      *
      * @return array
-     * @throws NotSelectedStatementException
      * @throws ReflectionException
-     * @throws QueryNotGeneratedException
+     * @throws StatementNotSelectedException
      */
     public function getColumns(string $table): array
     {
 
-        /** @var SortingEntity[] $result */
-        $result = $this->findBy(['table' => $table])->toEntity();
+        /** @var SortingEntity] $result */
+        $result = $this->customFindBy(['table' => $table])->entity()->first();
 
-        if ([] != $result) {
-            return $result[0]->getColumns();
+        if (false != $result) {
+            return $result->getColumns();
         }
 
         return [];
@@ -46,9 +44,8 @@ class SortingRepository extends AbstractEntityRepository
      * @param string $column
      *
      * @return bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function existColumn(string $table, string $column): bool
     {
@@ -58,16 +55,15 @@ class SortingRepository extends AbstractEntityRepository
     }
 
     /**
-     * @param SelectInterface $select
-     * @param string          $table
-     * @param array           $sortBy
-     * @param string          $sortingType
+     * @param QueryBuilder $queryBuilder
+     * @param string       $table
+     * @param array        $sortBy
+     * @param string       $sortingType
      *
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
-    public function addSorting(SelectInterface $select, string $table, array $sortBy, string $sortingType): void
+    public function addSorting(QueryBuilder $queryBuilder, string $table, array $sortBy, string $sortingType): void
     {
 
         $allowedColumns = $this->getColumns($table);
@@ -78,10 +74,7 @@ class SortingRepository extends AbstractEntityRepository
         });
 
         if ([] !== $allowedColumnsForSorting) {
-            // Create sort
-            $order = $this->createQueryBuilder()->order($allowedColumnsForSorting, $sortingType);
-
-            $select->orderBy($order);
+            $queryBuilder->order($allowedColumnsForSorting, $sortingType);
         }
 
     }

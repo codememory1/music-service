@@ -8,8 +8,7 @@ use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Manager as ValidatorManager;
 use ReflectionException;
@@ -31,10 +30,9 @@ class RegistrationValidationService extends AbstractApiService
      * @param EntityManagerInterface $entityManager
      *
      * @return ResponseApiCollectorService|bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     final public function validate(ValidatorManager $validatorManager, EntityManagerInterface $entityManager): ResponseApiCollectorService|bool
     {
@@ -68,9 +66,8 @@ class RegistrationValidationService extends AbstractApiService
      * @param UserRepository $userRepository
      *
      * @return bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function existNotActivatedEmail(UserRepository $userRepository): bool
     {
@@ -88,9 +85,8 @@ class RegistrationValidationService extends AbstractApiService
      * @param UserRepository $userRepository
      *
      * @return bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function existActivatedEmail(UserRepository $userRepository): bool
     {

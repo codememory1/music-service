@@ -6,8 +6,7 @@ use App\Orm\Entities\SubscriptionOptionEntity;
 use App\Orm\Repositories\SubscriptionOptionRepository;
 use App\Services\AbstractApiService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Illuminate\Support\Collection;
 use ReflectionException;
 
@@ -26,9 +25,8 @@ class UpdateSubscriptionOptionsService extends AbstractApiService
      * @param Collection             $options
      * @param int                    $subscriptionId
      *
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     final public function update(EntityManagerInterface $entityManager, Collection $options, int $subscriptionId): void
     {
@@ -51,9 +49,8 @@ class UpdateSubscriptionOptionsService extends AbstractApiService
      * @param int                          $id
      *
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function pushOptions(EntityManagerInterface $entityManager, SubscriptionOptionRepository $subscriptionOptionRepository, Collection $options, int $id): void
     {

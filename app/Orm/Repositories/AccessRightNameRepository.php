@@ -3,8 +3,7 @@
 namespace App\Orm\Repositories;
 
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use ReflectionException;
 
 /**
@@ -35,17 +34,16 @@ class AccessRightNameRepository extends AbstractEntityRepository
      * @param string $name
      *
      * @return bool|int
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function getIdByName(string $name): bool|int
     {
 
-        $result = $this->findBy(['name' => $name])->toArray();
+        $result = $this->customFindBy(['name' => $name])->array()->first();
 
-        if ([] !== $result) {
-            return $result[0]['id'];
+        if (false !== $result) {
+            return $result['id'];
         }
 
         return false;

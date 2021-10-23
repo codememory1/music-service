@@ -5,9 +5,11 @@ namespace App\Orm\Repositories;
 use App\Orm\Entities\RoleEntity;
 use App\Orm\Entities\SubscriptionEntity;
 use App\Orm\Entities\UserEntity;
+use Codememory\Components\Database\Orm\Interfaces\EntityDataInterface;
+use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
+use Codememory\Components\Database\Orm\QueryBuilder\ExtendedQueryBuilder;
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use ReflectionException;
 
 /**
@@ -21,21 +23,32 @@ class UserRepository extends AbstractEntityRepository
 {
 
     /**
-     * @param array $by
-     *
-     * @return bool|UserEntity
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
-     * @throws ReflectionException
+     * @var SubscriptionRepository
      */
-    public function findOne(array $by): bool|UserEntity
+    private SubscriptionRepository $subscriptionRepository;
+
+    /**
+     * @var RoleRepository
+     */
+    private RoleRepository $roleRepository;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param ExtendedQueryBuilder   $queryBuilder
+     * @param EntityDataInterface    $entityData
+     */
+    public function __construct(EntityManagerInterface $entityManager, ExtendedQueryBuilder $queryBuilder, EntityDataInterface $entityData)
     {
 
-        $result = $this->findBy($by)->toEntity();
+        parent::__construct($entityManager, $queryBuilder, $entityData);
 
-        $this->addReferences($result);
+        /** @var SubscriptionRepository $subscriptionRepository */
+        $subscriptionRepository = $this->getRepository(SubscriptionEntity::class);
+        $this->subscriptionRepository = $subscriptionRepository;
 
-        return [] !== $result ? $result[0] : false;
+        /** @var RoleRepository $roleRepository */
+        $roleRepository = $this->getRepository(RoleEntity::class);
+        $this->roleRepository = $roleRepository;
 
     }
 
@@ -43,18 +56,38 @@ class UserRepository extends AbstractEntityRepository
      * @param array $by
      *
      * @return bool|UserEntity
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
+     */
+    public function findOne(array $by): bool|UserEntity
+    {
+
+        /** @var bool|UserEntity $user */
+        $user = $this->customFindBy($by)->entity()->first();
+
+        if (false !== $user) {
+            $this->addReference($user);
+        }
+
+        return $user;
+
+    }
+
+    /**
+     * @param array $by
+     *
+     * @return bool|UserEntity
+     * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function findOneByOr(array $by): bool|UserEntity
     {
 
-        $result = $this->findBy($by, 'or')->toEntity();
+        $result = $this->customFindBy($by, 'or')->entity()->all();
 
         $this->addReferences($result);
 
-        return [] !== $result ? $result[0] : false;
+        return $result[0];
 
     }
 
@@ -63,9 +96,8 @@ class UserRepository extends AbstractEntityRepository
      * @param string $email
      *
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function updateUser(array $data, string $email): void
     {
@@ -77,31 +109,37 @@ class UserRepository extends AbstractEntityRepository
     /**
      * @param UserEntity[] $users
      *
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function addReferences(array &$users): void
     {
 
-        /** @var SubscriptionRepository $subscriptionRepository */
-        $subscriptionRepository = $this->getRepository(SubscriptionEntity::class);
-
-        /** @var RoleRepository $roleRepository */
-        $roleRepository = $this->getRepository(RoleEntity::class);
-
         foreach ($users as &$userEntity) {
-            $subscriptionId = $userEntity->getSubscription();
-
-            // Check if the user has a subscription
-            if (null !== $subscriptionId) {
-                $subscriptionData = $subscriptionRepository->findOneWithOptionsAsEntity($userEntity->getSubscription());
-
-                $userEntity->setSubscriptionData($subscriptionData);
-            }
-
-            $userEntity->setRoleData($roleRepository->findOne($userEntity->getRole()));
+            $this->addReference($userEntity);
         }
+
+    }
+
+    /**
+     * @param UserEntity $userEntity
+     *
+     * @throws ReflectionException
+     * @throws StatementNotSelectedException
+     */
+    private function addReference(UserEntity &$userEntity): void
+    {
+
+        $subscriptionId = $userEntity->getSubscription();
+
+        // Check if the user has a subscription
+        if (null !== $subscriptionId) {
+            $subscriptionData = $this->subscriptionRepository->findOneWithOptionsAsEntity($userEntity->getSubscription());
+
+            $userEntity->setSubscriptionData($subscriptionData);
+        }
+
+        $userEntity->setRoleData($this->roleRepository->findOne($userEntity->getRole()));
 
     }
 

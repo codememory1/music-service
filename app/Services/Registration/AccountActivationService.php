@@ -11,8 +11,7 @@ use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use ReflectionException;
 
 /**
@@ -30,9 +29,8 @@ class AccountActivationService extends AbstractApiService
      * @param string                 $token
      *
      * @return ResponseApiCollectorService
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     final public function activate(EntityManagerInterface $entityManager, string $token): ResponseApiCollectorService
     {
@@ -55,7 +53,8 @@ class AccountActivationService extends AbstractApiService
         }
 
         // Search for a user by user_id from a found token record
-        $finedUserByToken = $userRepository->findOne(['id' => $finedRecordByToken->getUserId()]);
+        /** @var UserEntity $finedUserByToken */
+        $finedUserByToken = $userRepository->findById($finedRecordByToken->getUserId());
 
         // The token is valid and was found in the database
         // We activate a user account with this token
@@ -69,9 +68,8 @@ class AccountActivationService extends AbstractApiService
      * @param UserEntity                $userEntity
      *
      * @return ResponseApiCollectorService
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function activationHandler(ActivationTokenRepository $activationTokenRepository, UserRepository $usersRepository, UserEntity $userEntity): ResponseApiCollectorService
     {
@@ -90,9 +88,8 @@ class AccountActivationService extends AbstractApiService
      * @param ActivationTokenRepository $activationTokenRepository
      * @param UserEntity                $userEntity
      *
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function deleteActivationToken(ActivationTokenRepository $activationTokenRepository, UserEntity $userEntity): void
     {
@@ -105,9 +102,8 @@ class AccountActivationService extends AbstractApiService
      * @param UserRepository $usersRepository
      * @param UserEntity     $userEntity
      *
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function changeStatus(UserRepository $usersRepository, UserEntity $userEntity): void
     {

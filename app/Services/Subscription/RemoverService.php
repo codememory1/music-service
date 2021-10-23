@@ -5,8 +5,7 @@ namespace App\Services\Subscription;
 use App\Orm\Repositories\SubscriptionRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use ReflectionException;
 
 /**
@@ -24,9 +23,8 @@ class RemoverService extends AbstractApiService
      * @param int                    $id
      *
      * @return ResponseApiCollectorService
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     final public function delete(SubscriptionRepository $subscriptionRepository, int $id): ResponseApiCollectorService
     {

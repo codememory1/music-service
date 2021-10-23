@@ -8,8 +8,7 @@ use App\Orm\Repositories\UserSessionRepository;
 use App\Services\AbstractApiService;
 use App\Services\Tokens\SessionTokenService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\GEO\Geolocation;
 use ReflectionException;
 
@@ -29,9 +28,8 @@ class SaveSessionService extends AbstractApiService
      * @param string                 $refreshToken
      *
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function save(EntityManagerInterface $entityManager, UserEntity $userEntity, string $refreshToken): void
     {
@@ -109,9 +107,8 @@ class SaveSessionService extends AbstractApiService
      * @param UserSessionRepository $userSessionRepository
      *
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function removeInvalidTokens(UserSessionRepository $userSessionRepository): void
     {

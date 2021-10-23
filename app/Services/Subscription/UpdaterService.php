@@ -7,8 +7,7 @@ use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\Subscription\SubscriptionUpdatingValidation;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidationManager;
@@ -31,10 +30,9 @@ class UpdaterService extends AbstractApiService
      * @param int                    $subscriptionId
      *
      * @return ResponseApiCollectorService
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     final public function update(ValidationManager $validationManager, EntityManagerInterface $entityManager, SubscriptionRepository $subscriptionRepository, int $subscriptionId): ResponseApiCollectorService
     {
@@ -77,8 +75,6 @@ class UpdaterService extends AbstractApiService
      * @param int                    $subscriptionId
      *
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
@@ -98,9 +94,8 @@ class UpdaterService extends AbstractApiService
      * @param int                    $subscriptionId
      *
      * @return ResponseApiCollectorService
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function updateHandler(SubscriptionRepository $subscriptionRepository, int $subscriptionId): ResponseApiCollectorService
     {

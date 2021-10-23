@@ -10,8 +10,7 @@ use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Event\Exceptions\EventExistException;
 use Codememory\Components\Event\Exceptions\EventNotExistException;
 use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
@@ -37,9 +36,8 @@ class RefresherActivationTokenService extends AbstractApiService
      * @throws EventExistException
      * @throws EventNotExistException
      * @throws EventNotImplementInterfaceException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     final public function refresh(EntityManagerInterface $entityManager, UserEntity $userEntity): RefresherActivationTokenService
     {
@@ -76,9 +74,8 @@ class RefresherActivationTokenService extends AbstractApiService
      * @param UserEntity                $userEntity
      *
      * @return ActivationTokenEntity
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function changeToken(ActivationTokenRepository $activationTokenRepository, UserEntity $userEntity): ActivationTokenEntity
     {

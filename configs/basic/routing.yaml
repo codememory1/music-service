@@ -11,7 +11,7 @@ routing:
     routesFileSuffix: ''
 
   defaultHeaders:
-    Access-Control-Allow-Origin: "account.%env(app.host)%,player.%env(app.host)%"
+    Access-Control-Allow-Origin: "account.%env(app.host)%,player.%env(app.host)%,%env(app.host)%"
     Access-Control-Allow-Headers: "*"
     Origin: "api.%env(app.host)%"
 

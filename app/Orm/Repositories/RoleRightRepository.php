@@ -3,8 +3,7 @@
 namespace App\Orm\Repositories;
 
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use ReflectionException;
 
 /**
@@ -21,9 +20,8 @@ class RoleRightRepository extends AbstractEntityRepository
      * @param int $roleId
      *
      * @return array
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function findAllWithNames(int $roleId): array
     {
@@ -37,11 +35,9 @@ class RoleRightRepository extends AbstractEntityRepository
                 'arn_id'     => 'arn.id'
             ])
             ->from($this->getEntityData()->getTableName(), 'rr')
-            ->join(
-                $qb->innerJoin(
-                    ['arn' => 'access_right_names'],
-                    $qb->joinComparison('arn.id', 'rr.access_right')
-                )
+            ->innerJoin(
+                ['arn' => 'access_right_names'],
+                $qb->joinComparison('arn.id', 'rr.access_right')
             )
             ->where(
                 $qb->expression()->exprAnd(
@@ -49,7 +45,7 @@ class RoleRightRepository extends AbstractEntityRepository
                 )
             );
 
-        return $qb->generateQuery()->toEntity();
+        return $qb->generateTo()->entity()->all();
 
     }
 

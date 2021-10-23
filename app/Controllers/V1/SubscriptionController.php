@@ -9,8 +9,7 @@ use App\Services\Sorting\DataService;
 use App\Services\Subscription\CreatorService;
 use App\Services\Subscription\RemoverService;
 use App\Services\Subscription\UpdaterService;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
@@ -51,10 +50,9 @@ class SubscriptionController extends AbstractAuthorizationController
 
     /**
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     public function all(): void
     {
@@ -75,9 +73,8 @@ class SubscriptionController extends AbstractAuthorizationController
      * @param int $id
      *
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function show(int $id): void
     {
@@ -96,10 +93,9 @@ class SubscriptionController extends AbstractAuthorizationController
 
     /**
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     public function create(): void
     {
@@ -122,10 +118,9 @@ class SubscriptionController extends AbstractAuthorizationController
      * @param int $id
      *
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     public function update(int $id): void
     {
@@ -152,10 +147,9 @@ class SubscriptionController extends AbstractAuthorizationController
     /**
      * @param int $id
      *
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     public function delete(int $id): void
     {

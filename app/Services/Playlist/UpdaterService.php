@@ -7,8 +7,7 @@ use App\Orm\Repositories\PlaylistRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\Playlist\PlaylistUpdateValidation;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\DateTime;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
@@ -33,9 +32,8 @@ class UpdaterService extends AbstractApiService
      *
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function update(ValidationManager $validationManager, PlaylistRepository $playlistRepository, UserEntity $userEntity, int $id): ResponseApiCollectorService
     {
@@ -76,9 +74,8 @@ class UpdaterService extends AbstractApiService
      * @param int                $id
      *
      * @return ResponseApiCollectorService|bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function existPlaylist(PlaylistRepository $playlistRepository, UserEntity $userEntity, int $id): ResponseApiCollectorService|bool
     {
@@ -103,9 +100,8 @@ class UpdaterService extends AbstractApiService
      *
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function updatePlaylistData(PlaylistRepository $playlistRepository, int $id): ResponseApiCollectorService
     {

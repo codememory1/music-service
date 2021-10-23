@@ -7,8 +7,7 @@ use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Event\Exceptions\EventExistException;
 use Codememory\Components\Event\Exceptions\EventNotExistException;
@@ -38,10 +37,9 @@ class RegisterService extends AbstractApiService
      * @throws EventNotExistException
      * @throws EventNotImplementInterfaceException
      * @throws InvalidTimezoneException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     final public function register(ValidatorManager $validatorManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
     {
@@ -71,14 +69,13 @@ class RegisterService extends AbstractApiService
      * @param EntityManagerInterface $entityManager
      *
      * @return ResponseApiCollectorService
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
+     * @throws BuilderNotCurrentSectionException
      * @throws EventExistException
      * @throws EventNotExistException
      * @throws EventNotImplementInterfaceException
-     * @throws BuilderNotCurrentSectionException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     private function refreshActivationToken(EntityManagerInterface $entityManager): ResponseApiCollectorService
     {

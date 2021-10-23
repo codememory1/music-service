@@ -14,9 +14,19 @@ use Codememory\Routing\Router;
  */
 
 Router::subdomainGroup('api', function () {
+    // Registration
     Router::post('/register', SecurityController::class . '#register');
-    Router::get('/register/activate/:token', SecurityController::class . '#accountActivation')->with('token', '.+');
+    Router::options('/register', fn () => null);
+
+    // Account activation
+    Router::get('/register/activate/:token', SecurityController::class . '#accountActivation')
+        ->with('token', '.+');
+    Router::options('/register/activate/:token', fn () => null)
+        ->with('token', '.+');
+
+    // Authorization
     Router::post('/auth', SecurityController::class . '#auth');
+    Router::options('/auth', fn () => null);
 
     // Routes associated with user passwords
     Router::group('/password/', function () {

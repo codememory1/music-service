@@ -6,8 +6,7 @@ use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\PlaylistRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use ReflectionException;
 
 /**
@@ -26,9 +25,8 @@ class RemoverService extends AbstractApiService
      * @param int                $id
      *
      * @return ResponseApiCollectorService
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function delete(PlaylistRepository $playlistRepository, UserEntity $userEntity, int $id): ResponseApiCollectorService
     {

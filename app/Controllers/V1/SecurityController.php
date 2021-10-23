@@ -7,8 +7,7 @@ use App\Services\PasswordReset\RestoreRequestService;
 use App\Services\Registration\AccountActivationService;
 use App\Services\Registration\RegisterService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Event\Exceptions\EventExistException;
 use Codememory\Components\Event\Exceptions\EventNotExistException;
@@ -60,11 +59,10 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws InvalidTimezoneException
-     * @throws ServiceNotExistException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function auth(): void
@@ -86,10 +84,9 @@ class SecurityController extends AbstractController
      * @throws EventNotExistException
      * @throws EventNotImplementInterfaceException
      * @throws InvalidTimezoneException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function register(): void
@@ -108,10 +105,9 @@ class SecurityController extends AbstractController
     /**
      * @param string $token
      *
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function accountActivation(string $token): void
@@ -135,11 +131,10 @@ class SecurityController extends AbstractController
      * @throws EventExistException
      * @throws EventNotExistException
      * @throws EventNotImplementInterfaceException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
+    #[NoReturn]
     public function restoreRequest(): void
     {
 

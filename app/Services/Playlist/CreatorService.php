@@ -9,8 +9,7 @@ use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\Playlist\PlaylistCreationValidation;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\DateTime;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
@@ -34,9 +33,8 @@ class CreatorService extends AbstractApiService
      *
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function create(ValidationManager $validationManager, EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
     {
@@ -75,9 +73,8 @@ class CreatorService extends AbstractApiService
      * @param UserEntity             $userEntity
      *
      * @return ResponseApiCollectorService|bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function existPlaylist(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService|bool
     {

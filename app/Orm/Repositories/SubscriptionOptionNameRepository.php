@@ -3,8 +3,7 @@
 namespace App\Orm\Repositories;
 
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use ReflectionException;
 
 /**
@@ -21,14 +20,13 @@ class SubscriptionOptionNameRepository extends AbstractEntityRepository
      * @param array $by
      *
      * @return array
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function findAllBy(array $by): array
     {
 
-        return $this->findBy($by)->toEntity();
+        return $this->findBy($by);
 
     }
 

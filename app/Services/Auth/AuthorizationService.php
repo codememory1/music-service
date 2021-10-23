@@ -10,8 +10,7 @@ use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\SessionTokenService;
 use App\Validations\Security\AuthValidation;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
@@ -34,10 +33,9 @@ class AuthorizationService extends AbstractApiService
      *
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     final public function authorize(ValidatorManager $validatorManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
     {
@@ -79,9 +77,8 @@ class AuthorizationService extends AbstractApiService
      * @param EntityManagerInterface $entityManager
      *
      * @return UserEntity|bool
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     final public function isAuth(EntityManagerInterface $entityManager): UserEntity|bool
     {
@@ -114,10 +111,9 @@ class AuthorizationService extends AbstractApiService
      * @param AuthenticationService      $authenticationService
      *
      * @return ResponseApiCollectorService|UserEntity
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     private function authorizationConditions(ValidationManagerInterface $validationManager, IdentificationService $identificationService, UserRepository $userRepository, VerificationsService $verificationsService, AuthenticationService $authenticationService): ResponseApiCollectorService|UserEntity
     {
@@ -152,10 +148,9 @@ class AuthorizationService extends AbstractApiService
      *
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     private function handlerAuthorize(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
     {
@@ -180,10 +175,9 @@ class AuthorizationService extends AbstractApiService
      * @param string                 $refreshToken
      *
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     private function saveSessionAuth(EntityManagerInterface $entityManager, UserEntity $userEntity, string $refreshToken): void
     {

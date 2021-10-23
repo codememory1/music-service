@@ -8,8 +8,7 @@ use App\Services\Playlist\CreatorService;
 use App\Services\Playlist\RemoverService;
 use App\Services\Playlist\UpdaterService;
 use App\Services\Sorting\DataService;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
@@ -50,10 +49,9 @@ class PlaylistController extends AbstractAuthorizationController
     }
 
     /**
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     public function all(): void
     {
@@ -76,9 +74,8 @@ class PlaylistController extends AbstractAuthorizationController
     /**
      * @param int $id
      *
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function show(int $id): void
     {
@@ -99,11 +96,10 @@ class PlaylistController extends AbstractAuthorizationController
     }
 
     /**
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
+     * @throws InvalidTimezoneException
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws InvalidTimezoneException
+     * @throws StatementNotSelectedException
      */
     public function create(): void
     {
@@ -124,10 +120,9 @@ class PlaylistController extends AbstractAuthorizationController
      * @param int $id
      *
      * @throws InvalidTimezoneException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     public function update(int $id): void
     {
@@ -152,10 +147,9 @@ class PlaylistController extends AbstractAuthorizationController
     /**
      * @param int $id
      *
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     public function delete(int $id): void
     {

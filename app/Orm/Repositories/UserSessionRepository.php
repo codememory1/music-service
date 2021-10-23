@@ -3,8 +3,7 @@
 namespace App\Orm\Repositories;
 
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use ReflectionException;
 
 /**
@@ -19,9 +18,8 @@ class UserSessionRepository extends AbstractEntityRepository
 
     /**
      * @return void
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     public function deleteInvalidTokens(): void
     {
@@ -29,14 +27,14 @@ class UserSessionRepository extends AbstractEntityRepository
         $qb = $this->createQueryBuilder();
 
         $qb
-            ->delete($this->getEntityData()->getTableName())
+            ->delete()
+            ->from($this->getEntityData()->getTableName())
             ->where(
                 $qb->expression()->exprAnd(
                     $qb->expression()->condition('valid_to', '<', 'NOW()')
                 )
-            );
-
-        $qb->generateQuery()->execute();
+            )
+            ->execute();
 
     }
 
