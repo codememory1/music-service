@@ -21,7 +21,7 @@
         "codememory/asset": "^1.0",
         "codememory/caching": "^1.1",
         "codememory/config": "2.0",
-        "codememory/database-pack": "^1.0",
+        "codememory/database-pack": "^1.1",
         "codememory/date-time": "^1.0",
         "codememory/dto": "^1.0",
         "codememory/environment": "^1.0",
