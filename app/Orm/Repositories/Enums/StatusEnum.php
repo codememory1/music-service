@@ -15,5 +15,6 @@ final class StatusEnum
     public const NOT_ACTIVATED = 0;
     public const ACTIVATED = 1;
     public const BLOCKED = 2;
+    public const PASSWORD_CLEARED = 3;
 
 }

@@ -18,6 +18,12 @@ Router::subdomainGroup('api', function () {
     Router::get('/register/activate/:token', SecurityController::class . '#accountActivation')->with('token', '.+');
     Router::post('/auth', SecurityController::class . '#auth');
 
+    // Routes associated with user passwords
+    Router::group('/password/', function () {
+        Router::post('restore-request/', SecurityController::class . '#restoreRequest');
+        Router::post('recovery/', SecurityController::class . '#recovery');
+    });
+
     Router::resource('/playlist', PlaylistController::class);
     Router::resource('/subscription', SubscriptionController::class);
 });

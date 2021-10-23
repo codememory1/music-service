@@ -37,3 +37,7 @@ subscription:
 security:
   incorrectRole: 'Некорректная роль'
   unauthorized: 'Не авторизован'
+passwordReset:
+  successRestoreRequest: 'На почту отправлено сообщение с кодом'
+oftenUsed:
+    userNotExist: 'Пользователь не найден'
