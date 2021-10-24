@@ -1,6 +1,6 @@
 view:
   # Path to all templates
-  pathWithTemplates: 'resources/Templates/'
+  pathWithTemplates: 'resources/templates/'
 
   # Whether to use the template cache
   useCache: false

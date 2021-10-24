@@ -3,4 +3,4 @@ translation:
   defaultLanguage: 'ru'
 
   # Path to all translations
-  pathWithTranslations: 'resources/Translations'
+  pathWithTranslations: 'resources/translations'
