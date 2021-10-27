@@ -27,6 +27,7 @@ class ActivationTokenService
 
         // Token lifetime in minutes
         $exp = (new Time())->now() + (env('jwt.life-activation') * 60);
+
         $jwtToken = JWT::encode([
             'sub' => Uuid::uuid4()->toString(),
             'exp' => $exp

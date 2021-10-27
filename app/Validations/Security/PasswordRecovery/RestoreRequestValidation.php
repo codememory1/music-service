@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validations\Security\PasswordReset;
+namespace App\Validations\Security\PasswordRecovery;
 
 use Codememory\Components\Translator\Interfaces\TranslationInterface;
 use Codememory\Components\Validator\Interfaces\ValidateInterface;

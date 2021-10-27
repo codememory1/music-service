@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\V1\PasswordRecoveryController;
 use App\Controllers\V1\PlaylistController;
 use App\Controllers\V1\SecurityController;
 use App\Controllers\V1\SubscriptionController;
@@ -29,9 +30,9 @@ Router::subdomainGroup('api', function () {
     Router::options('/auth', fn () => null);
 
     // Routes associated with user passwords
-    Router::group('/password/', function () {
-        Router::post('restore-request/', SecurityController::class . '#restoreRequest');
-        Router::post('recovery/', SecurityController::class . '#recovery');
+    Router::group('/password-recovery/', function () {
+        Router::post('restore-request/', PasswordRecoveryController::class . '#restoreRequest');
+        Router::post('change/', PasswordRecoveryController::class . '#change');
     });
 
     Router::resource('/playlist', PlaylistController::class);

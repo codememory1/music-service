@@ -3,7 +3,6 @@
 namespace App\Controllers\V1;
 
 use App\Services\Auth\AuthorizationService;
-use App\Services\PasswordReset\RestoreRequestService;
 use App\Services\Registration\AccountActivationService;
 use App\Services\Registration\RegisterService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
@@ -120,31 +119,6 @@ class SecurityController extends AbstractController
         $activationResponse = $registerService->activate($this->em, $token);
 
         $this->response->json($activationResponse->getResponse(), $activationResponse->getStatus());
-
-    }
-
-    /**
-     * Send password recovery request
-     *
-     * @return void
-     * @throws BuilderNotCurrentSectionException
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
-     */
-    #[NoReturn]
-    public function restoreRequest(): void
-    {
-
-        /** @var RestoreRequestService $restoreRequestService */
-        $restoreRequestService = $this->getService('PasswordReset\RestoreRequest');
-
-        // We send a message to the mail with a password recovery code
-        $sendResponse = $restoreRequestService->send($this->validatorManager(), $this->em);
-
-        $this->response->json($sendResponse->getResponse(), $sendResponse->getStatus());
 
     }
 

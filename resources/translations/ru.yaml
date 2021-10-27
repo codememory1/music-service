@@ -37,7 +37,10 @@ subscription:
 security:
   incorrectRole: 'Некорректная роль'
   unauthorized: 'Не авторизован'
-passwordReset:
+passwordRecovery:
+  authorized: 'Для восстановления пароля, нужно быть не авторизированным'
   successRestoreRequest: 'На почту отправлено сообщение с кодом'
+  incorrectCode: 'Некорректный код восстановления'
+  success: 'Пароль успешно изменен'
 oftenUsed:
-    userNotExist: 'Пользователь не найден'
+  userNotExist: 'Пользователь не найден'
