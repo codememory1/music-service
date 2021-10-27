@@ -37,6 +37,7 @@ final class SubscriptionDto extends AbstractDTO
      */
     #[Pure]
     #[ArrayShape([
+        'id'          => "integer",
         'name'        => "string",
         'description' => "string|null",
         'old_price'   => "integer|null",
@@ -57,6 +58,7 @@ final class SubscriptionDto extends AbstractDTO
         }
 
         return [
+            'id'          => $this->subscriptionEntity->getId(),
             'name'        => $this->subscriptionEntity->getName(),
             'description' => $this->subscriptionEntity->getDescription(),
             'old_price'   => $this->subscriptionEntity->getOldPrice(),
