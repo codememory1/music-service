@@ -64,21 +64,21 @@ class AccountActivationService extends AbstractApiService
 
     /**
      * @param ActivationTokenRepository $activationTokenRepository
-     * @param UserRepository            $usersRepository
+     * @param UserRepository            $userRepository
      * @param UserEntity                $userEntity
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    private function activationHandler(ActivationTokenRepository $activationTokenRepository, UserRepository $usersRepository, UserEntity $userEntity): ResponseApiCollectorService
+    private function activationHandler(ActivationTokenRepository $activationTokenRepository, UserRepository $userRepository, UserEntity $userEntity): ResponseApiCollectorService
     {
 
         // Removing an activation token
         $this->deleteActivationToken($activationTokenRepository, $userEntity);
 
         // Account activation
-        $this->changeStatus($usersRepository, $userEntity);
+        $this->changeStatus($userRepository, $userEntity);
 
         return $this->createApiResponse(200, 'register.successAccountActivate');
 
@@ -108,7 +108,7 @@ class AccountActivationService extends AbstractApiService
     private function changeStatus(UserRepository $usersRepository, UserEntity $userEntity): void
     {
 
-        $usersRepository->update(['status' => StatusEnum::ACTIVATED], ['email' => $userEntity->getEmail()]);
+        $usersRepository->update(['status' => StatusEnum::ACTIVATED], ['id' => $userEntity->getId()]);
 
     }
 

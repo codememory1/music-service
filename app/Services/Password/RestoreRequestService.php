@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\PasswordReset;
+namespace App\Services\Password;
 
 use App\Events\PasswordRecoveryRequestEvent;
 use App\Orm\Entities\PasswordResetEntity;
@@ -9,10 +9,9 @@ use App\Orm\Repositories\PasswordResetRepository;
 use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
-use App\Validations\Security\PasswordReset\RestoreRequestValidation;
+use App\Validations\Security\PasswordRecovery\RestoreRequestValidation;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
-use Codememory\Components\Database\QueryBuilder\Exceptions\NotSelectedStatementException;
-use Codememory\Components\Database\QueryBuilder\Exceptions\QueryNotGeneratedException;
+use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Event\Exceptions\EventExistException;
 use Codememory\Components\Event\Exceptions\EventNotExistException;
 use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
@@ -40,11 +39,10 @@ class RestoreRequestService extends AbstractApiService
      * @throws EventExistException
      * @throws EventNotExistException
      * @throws EventNotImplementInterfaceException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
-    public function send(ValidationManager $validationManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
+    final public function send(ValidationManager $validationManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
     {
 
         /** @var UserRepository $userRepository */
@@ -116,9 +114,8 @@ class RestoreRequestService extends AbstractApiService
      * @throws EventExistException
      * @throws EventNotExistException
      * @throws EventNotImplementInterfaceException
-     * @throws NotSelectedStatementException
-     * @throws QueryNotGeneratedException
      * @throws ReflectionException
+     * @throws StatementNotSelectedException
      */
     private function sendHandler(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
     {
@@ -147,7 +144,7 @@ class RestoreRequestService extends AbstractApiService
             $passwordResetEntity
         ]);
 
-        return $this->createApiResponse(200, 'passwordReset.successRestoreRequest');
+        return $this->createApiResponse(200, 'passwordRecovery.successRestoreRequest');
 
     }
 

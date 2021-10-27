@@ -13,6 +13,7 @@ use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedE
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
+use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
 
 /**
@@ -54,18 +55,17 @@ class SubscriptionController extends AbstractAuthorizationController
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
+    #[NoReturn]
     public function all(): void
     {
 
-        if (false != $this->isAuthWithResponse()) {
-            /** @var DataService $sortingDataService */
-            $sortingDataService = $this->getService('Sorting\Data');
+        /** @var DataService $sortingDataService */
+        $sortingDataService = $this->getService('Sorting\Data');
 
-            $this->response->json($this->subscriptionRepository->findAllWithOptions(
-                $sortingDataService->getColumns(),
-                $sortingDataService->getType()
-            ));
-        }
+        $this->response->json($this->subscriptionRepository->findAllWithOptions(
+            $sortingDataService->getColumns(),
+            $sortingDataService->getType()
+        ));
 
     }
 
@@ -76,18 +76,17 @@ class SubscriptionController extends AbstractAuthorizationController
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
+    #[NoReturn]
     public function show(int $id): void
     {
 
-        if (false != $this->isAuthWithResponse()) {
-            $subscription = $this->subscriptionRepository->findOneWithOptions($id);
+        $subscription = $this->subscriptionRepository->findOneWithOptions($id);
 
-            if ([] === $subscription) {
-                $this->responseWithTranslation(404, 'subscription.subscriptionNotExist');
-            }
-
-            $this->response->json($subscription);
+        if ([] === $subscription) {
+            $this->responseWithTranslation(404, 'subscription.subscriptionNotExist');
         }
+
+        $this->response->json($subscription);
 
     }
 
