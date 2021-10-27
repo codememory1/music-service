@@ -38,7 +38,7 @@ class UserRegistrationValidation implements ValidationBuildInterface
                 $validate->addRule('min:8')->addMessage($translation->getTranslationActiveLang('register.minPassword'));
                 $validate->addRule('regex:^[a-zA-Z0-9@%_.-]+$')->addMessage($translation->getTranslationActiveLang('register.minPassword'));
             })
-            ->addValidation('password-confirm', function (ValidateInterface $validate) use ($translation) {
+            ->addValidation('password_confirm', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('same:password')->addMessage($translation->getTranslationActiveLang('register.samePassword'));
             });
 

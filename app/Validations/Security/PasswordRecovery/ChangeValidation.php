@@ -40,7 +40,7 @@ class ChangeValidation implements ValidationBuildInterface
                     $translation->getTranslationActiveLang('register.minPassword')
                 );
             })
-            ->addValidation('password-confirm', function (ValidateInterface $validate) use ($translation) {
+            ->addValidation('password_confirm', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('same:password')->addMessage(
                     $translation->getTranslationActiveLang('register.samePassword')
                 );
