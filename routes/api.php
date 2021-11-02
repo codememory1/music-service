@@ -4,6 +4,7 @@ use App\Controllers\V1\PasswordRecoveryController;
 use App\Controllers\V1\PlaylistController;
 use App\Controllers\V1\SecurityController;
 use App\Controllers\V1\SubscriptionController;
+use App\Controllers\V1\TranslationController;
 use Codememory\Routing\Router;
 
 /**
@@ -37,4 +38,7 @@ Router::subdomainGroup('api', function () {
 
     Router::resource('/playlist', PlaylistController::class);
     Router::resource('/subscription', SubscriptionController::class);
+
+    Router::get('/translations', TranslationController::class . '#all');
+    Router::options('/translations', fn () => null);
 });
