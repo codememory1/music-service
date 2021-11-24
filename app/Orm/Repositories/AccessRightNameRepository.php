@@ -29,6 +29,7 @@ class AccessRightNameRepository extends AbstractEntityRepository
     public const CREATE_SUBSCRIPTION = 'create-subscription';
     public const UPDATE_SUBSCRIPTION = 'update-subscription';
     public const REMOVE_SUBSCRIPTION = 'remove-subscription';
+    public const ADD_MUSIC = 'add-music';
 
     /**
      * @param string $name
