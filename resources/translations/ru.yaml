@@ -44,3 +44,14 @@ passwordRecovery:
   success: 'Пароль успешно изменен'
 oftenUsed:
   userNotExist: 'Пользователь не найден'
+translation:
+  langCodeIsRequired: 'Код языка обязательный к заполнению'
+  translationKeyIsRequired: 'Ключ перевода обязательный к заполнению'
+  translationKeyMax: 'Длина ключа перевода не должна превышать 64 символа'
+  translationIsRequired: 'Перевод обязательный к заполнению'
+  successCreateLang: 'Язык успешно создан'
+  langExist: 'Язык с данным кодом уже существует'
+  langNotExist: 'Язык с данным кодом не существует'
+  translationKeyExist: 'Данный ключ перевода уже существует'
+  successAddTranslation: 'Перевод успешно добавлен'
+  translationExist: 'Данный перевод уже был добавлен ранее'
