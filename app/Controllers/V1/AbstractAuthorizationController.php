@@ -196,6 +196,8 @@ abstract class AbstractAuthorizationController extends AbstractController
 
         $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
 
+        return false;
+
     }
 
     /**
