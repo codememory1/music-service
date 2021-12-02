@@ -16,7 +16,6 @@ use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use Codememory\HttpFoundation\Interfaces\ResponseInterface;
 use JetBrains\PhpStorm\NoReturn;
-use Kernel\Controller\AbstractController;
 use ReflectionException;
 
 /**
@@ -26,7 +25,7 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class SecurityController extends AbstractController
+class SecurityController extends AbstractApiController
 {
 
     /**

@@ -2,7 +2,9 @@
 
 namespace App\Controllers\V1;
 
+use App\Orm\Entities\LanguageTranslationEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
+use App\Orm\Repositories\LanguageTranslationRepository;
 use App\Services\Translation\CacheService;
 use App\Services\Translation\CreatorLanguageService;
 use App\Services\Translation\CreatorTranslationService;
@@ -91,6 +93,13 @@ class TranslationController extends AbstractAuthorizationController
 
     }
 
+    /**
+     * @param string $lang
+     *
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
     public function addTranslation(string $lang): void
     {
 
@@ -126,7 +135,7 @@ class TranslationController extends AbstractAuthorizationController
             );
 
             $this->response->json($this->apiResponse->create(200, [
-                $this->translationDataService->getTranslationByKey('success_update_translation_cache')
+                $this->translationDataService->getTranslationByKey('translation@successUpdateCache')
             ])->getResponse());
 
         }

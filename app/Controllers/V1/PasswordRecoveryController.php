@@ -45,6 +45,7 @@ class PasswordRecoveryController extends AbstractAuthorizationController
 
     /**
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     #[NoReturn]
@@ -62,6 +63,7 @@ class PasswordRecoveryController extends AbstractAuthorizationController
 
     /**
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     public function change(): void
@@ -80,6 +82,7 @@ class PasswordRecoveryController extends AbstractAuthorizationController
      * @param callable $callback
      *
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     private function execIfNotLoggedIn(callable $callback): void
@@ -88,7 +91,7 @@ class PasswordRecoveryController extends AbstractAuthorizationController
         if ($this->isAuth()) {
             // Returns the answer, so that to recover the password, the user must not be auto-canceled
             $apiResponse = $this->apiResponse->create(400, [
-                $this->translation->getTranslationActiveLang('passwordRecovery.authorized')
+                $this->translationsFromDb->getTranslationByKey('passwordRecovery@withoutAuth')
             ]);
 
             $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());

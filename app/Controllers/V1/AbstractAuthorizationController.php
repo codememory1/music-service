@@ -5,6 +5,7 @@ namespace App\Controllers\V1;
 use App\Orm\Entities\UserEntity;
 use App\Services\Auth\AuthorizationService;
 use App\Services\ResponseApiCollectorService;
+use App\Services\Translation\DataService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
@@ -13,7 +14,6 @@ use Codememory\Components\Translator\Interfaces\TranslationInterface;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use Codememory\HttpFoundation\Interfaces\ResponseInterface;
 use JetBrains\PhpStorm\NoReturn;
-use Kernel\Controller\AbstractController;
 use ReflectionException;
 
 /**
@@ -23,7 +23,7 @@ use ReflectionException;
  *
  * @author  Danil
  */
-abstract class AbstractAuthorizationController extends AbstractController
+abstract class AbstractAuthorizationController extends AbstractApiController
 {
 
     /**
@@ -50,6 +50,11 @@ abstract class AbstractAuthorizationController extends AbstractController
      * @var TranslationInterface
      */
     protected TranslationInterface $translation;
+
+    /**
+     * @var DataService
+     */
+    protected DataService $translationsFromDb;
 
     /**
      * @param ServiceProviderInterface $serviceProvider
@@ -81,6 +86,10 @@ abstract class AbstractAuthorizationController extends AbstractController
         $translation = $this->get('translator');
         $this->translation = $translation;
 
+        /** @var DataService $translationsFromDb */
+        $translationsFromDb = $this->getService('Translation\Data');
+        $this->translationsFromDb = $translationsFromDb;
+
     }
 
     /**
@@ -104,6 +113,7 @@ abstract class AbstractAuthorizationController extends AbstractController
      *
      * @return UserEntity
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     protected function isAuthWithResponse(): UserEntity
@@ -111,7 +121,7 @@ abstract class AbstractAuthorizationController extends AbstractController
 
         if (false === $authUser = $this->isAuthWithData()) {
             $apiResponse = $this->apiResponse->create(401, [
-                $this->translation->getTranslationActiveLang('security.unauthorized')
+                $this->translationsFromDb->getTranslationByKey('security@notAuth')
             ]);
 
             $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
@@ -142,6 +152,8 @@ abstract class AbstractAuthorizationController extends AbstractController
      * @param string[]   $roles
      *
      * @return bool
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     protected function isNotRoles(UserEntity $userEntity, array $roles): bool
     {
@@ -163,6 +175,8 @@ abstract class AbstractAuthorizationController extends AbstractController
      * @param string[]   $roles
      *
      * @return bool
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     protected function isRoles(UserEntity $userEntity, array $roles): bool
     {
@@ -182,6 +196,8 @@ abstract class AbstractAuthorizationController extends AbstractController
      * @param string     $rightName
      *
      * @return bool
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     protected function isExistRight(UserEntity $userEntity, string $rightName): bool
     {
@@ -195,8 +211,6 @@ abstract class AbstractAuthorizationController extends AbstractController
         $apiResponse = $this->responseIncorrectRole();
 
         $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
-
-        return false;
 
     }
 
@@ -222,12 +236,14 @@ abstract class AbstractAuthorizationController extends AbstractController
 
     /**
      * @return ResponseApiCollectorService
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     private function responseIncorrectRole(): ResponseApiCollectorService
     {
 
         return $this->apiResponse->create(403, [
-            $this->translation->getTranslationActiveLang('security.incorrectRole')
+            $this->translationsFromDb->getTranslationByKey('security@invalidRole')
         ]);
 
     }

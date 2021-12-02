@@ -10,6 +10,7 @@ use App\Validations\Playlist\PlaylistUpdateValidation;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\DateTime;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidationManager;
 use ReflectionException;
@@ -33,6 +34,7 @@ class UpdaterService extends AbstractApiService
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     public function update(ValidationManager $validationManager, PlaylistRepository $playlistRepository, UserEntity $userEntity, int $id): ResponseApiCollectorService
@@ -76,6 +78,7 @@ class UpdaterService extends AbstractApiService
      * @return ResponseApiCollectorService|bool
      * @throws ReflectionException
      * @throws StatementNotSelectedException
+     * @throws ServiceNotExistException
      */
     private function existPlaylist(PlaylistRepository $playlistRepository, UserEntity $userEntity, int $id): ResponseApiCollectorService|bool
     {
@@ -87,7 +90,7 @@ class UpdaterService extends AbstractApiService
         ]);
 
         if (false === $finedPlaylist) {
-            return $this->createApiResponse(400, 'playlist.notExist');
+            return $this->createApiResponse(400, 'playlist@notExist');
         }
 
         return true;
@@ -101,6 +104,7 @@ class UpdaterService extends AbstractApiService
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     private function updatePlaylistData(PlaylistRepository $playlistRepository, int $id): ResponseApiCollectorService
@@ -118,7 +122,7 @@ class UpdaterService extends AbstractApiService
         // Updating the database
         $playlistRepository->update($updateData, ['id' => $id]);
 
-        return $this->createApiResponse(200, 'playlist.successUpdate');
+        return $this->createApiResponse(200, 'playlist@successUpdate');
 
     }
 

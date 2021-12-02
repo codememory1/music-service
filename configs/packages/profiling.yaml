@@ -15,5 +15,5 @@ profiling:
 
     # Profiler access security
     security:
-      subdomain: "profiler-%env(app.secret)%"  # The subdomain for which the profiler will be available
+      subdomain: "profiler-%env(app.secret)%.api"  # The subdomain for which the profiler will be available
       enabledInProduction: false               # Allow access to the profiler in production mode

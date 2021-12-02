@@ -3,6 +3,7 @@
 namespace App\Orm\Repositories;
 
 use App\Orm\Entities\LanguageEntity;
+use App\Orm\Entities\LanguageTranslationEntity;
 use App\Orm\Entities\TranslationKeyEntity;
 use Codememory\Components\Database\Orm\QueryBuilder\Answer\ResultTo;
 use Codememory\Components\Database\Orm\Repository\AbstractEntityRepository;
@@ -50,7 +51,6 @@ class LanguageTranslationRepository extends AbstractEntityRepository
     public function getTranslationsWithColumns(string $lang, array $columns): ResultTo
     {
 
-        /** @var LanguageRepository $langRepository */
         $qb = $this->createQueryBuilder();
 
         $qb
@@ -76,6 +76,47 @@ class LanguageTranslationRepository extends AbstractEntityRepository
             );
 
         return $qb->generateTo();
+
+    }
+
+    /**
+     * @param string $lang
+     * @param string $key
+     *
+     * @return LanguageTranslationEntity|bool
+     * @throws ReflectionException
+     * @throws StatementNotSelectedException
+     */
+    public function getTranslation(string $lang, string $key): LanguageTranslationEntity|bool
+    {
+
+        $qb = $this->createQueryBuilder();
+
+        $qb
+            ->setParameter('lang', $lang)
+            ->setParameter('key', $key)
+            ->select()
+            ->from($this->getEntityData(TranslationKeyEntity::class)->getTableName(), 'tk')
+            ->innerJoin(
+                [
+                    'l' => $this->getEntityData(LanguageEntity::class)->getTableName()
+                ],
+                $qb->joinComparison('l.lang', ':lang')
+            )
+            ->innerJoin(
+                [
+                    'lt' => $this->getEntityData(LanguageTranslationEntity::class)->getTableName()
+                ],
+                $qb->joinComparison('lt.translation_key_id', 'tk.id')
+            )
+            ->where(
+                $qb->expression()->exprAnd(
+                    $qb->expression()->condition('tk.key', '=', ':key'),
+                    $qb->expression()->condition('lt.lang_id', '=', 'l.id'),
+                )
+            );
+
+        return $qb->generateTo()->entity()->first();
 
     }
 

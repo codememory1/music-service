@@ -18,15 +18,22 @@ use Codememory\Components\GlobalConfig\Commands\BackupCommand;
 use Codememory\Components\GlobalConfig\Commands\InitConfigCommand;
 use Codememory\Components\GlobalConfig\Commands\InitFromBackupCommand;
 use Codememory\Components\GlobalConfig\Commands\MergeConfigCommand;
+use Codememory\Components\IndividualTasks\Commands\CreateTablesCommand;
+use Codememory\Components\IndividualTasks\Commands\ListJobsCommand;
+use Codememory\Components\IndividualTasks\Commands\MakeJobCommand;
+use Codememory\Components\IndividualTasks\Commands\WorkerCommand;
 use Codememory\Components\Services\Commands\MakeServiceCommand;
 use Codememory\Components\Translator\Commands\RefreshTranslationsCacheCommand;
 use Codememory\Components\Validator\Commands\MakeValidationCommand;
+use Codememory\Container\ServiceProvider\ServiceProvider;
 use Codememory\FileSystem\File;
 use Codememory\Routing\Commands\MakeSoftwareCommand;
 use Codememory\Routing\Commands\RouteListCommand;
 use Kernel\Commands\MakeControllerCommand;
 use Kernel\ConfigurationModeHandlers\DevelopmentMode;
 use Kernel\ConfigurationModeHandlers\ProductionMode;
+use Kernel\ObjectInitializer;
+use Kernel\ProviderRegistrar;
 use Symfony\Component\Console\Application;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
@@ -34,12 +41,17 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 $connection = new Connection();
 $filesystem = new File();
 $application = new Application('Codememory');
+$serviceProvider = new ServiceProvider();
 
 Environment::__constructStatic($filesystem);
 
+new ObjectInitializer();
+(new ProviderRegistrar($serviceProvider))->register();
+
+$serviceProvider->makeRegistrationProviders();
+
 Configuration::getInstance()->addModeHandler(DevelopmentMode::class);
 Configuration::getInstance()->addModeHandler(ProductionMode::class);
-
 
 // Config
 $application->add(new ConfigurationCacheStateCommand());
@@ -80,8 +92,15 @@ $application->add(new ListenerListCommand());
 
 // Database
 $databasePackConsole = new DatabasePackConsole($application, $connection);
+$connectionWorker = $databasePackConsole->getConnectionWorker();
 
 $databasePackConsole->addCommands();
+
+// Individual Tasks
+$application->add(new CreateTablesCommand($connectionWorker->getConnector(), $connectionWorker->getConnection()));
+$application->add(new WorkerCommand($databasePackConsole->getDatabasePack(), $serviceProvider));
+$application->add(new ListJobsCommand());
+$application->add(new MakeJobCommand());
 
 foreach (Configuration::getInstance()->open('console')->all() ?: [] as $command) {
     $application->add(new $command());

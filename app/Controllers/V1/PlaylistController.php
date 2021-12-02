@@ -75,6 +75,7 @@ class PlaylistController extends AbstractAuthorizationController
      * @param int $id
      *
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     public function show(int $id): void
@@ -87,7 +88,7 @@ class PlaylistController extends AbstractAuthorizationController
             ]);
 
             if ([] == $playlist) {
-                $this->responseWithTranslation(404, 'playlist.playlistNotExist');
+                $this->responseWithTranslation(404, 'playlist@notExist');
             }
 
             $this->response->json($playlist);

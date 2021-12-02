@@ -2,7 +2,7 @@
 
 namespace App\Validations\Playlist;
 
-use Codememory\Components\Translator\Interfaces\TranslationInterface;
+use App\Services\Translation\DataService;
 use Codememory\Components\Validator\Interfaces\ValidateInterface;
 use Codememory\Components\Validator\Interfaces\ValidationBuildInterface;
 use Codememory\Components\Validator\Interfaces\ValidatorInterface;
@@ -23,21 +23,18 @@ class PlaylistCreationValidation implements ValidationBuildInterface
     public function build(ValidatorInterface $validator, ...$args): void
     {
 
-        /** @var TranslationInterface $translation */
-        $translation = $args['translation'];
+        /** @var DataService $translation */
+        $translation = $args['translations-from-db'];
 
         $validator
             ->addValidation('name', function (ValidateInterface $validate) use ($translation) {
-                $validate->addRule('min:5')->addMessage(
-                    $translation->getTranslationActiveLang('playlist.minName')
-                );
-                $validate->addRule('max:100')->addMessage(
-                    $translation->getTranslationActiveLang('playlist.maxName')
+                $validate->addRule('range:5,100')->addMessage(
+                    $translation->getTranslationByKey('playlist@nameLengthRange')
                 );
             })
             ->addValidation('temporary', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('not-empty:temporaryRule')->addMessage(
-                    $translation->getTranslationActiveLang('playlist.temporaryFormat')
+                    $translation->getTranslationByKey('playlist@temporaryFormat')
                 );
             });
 

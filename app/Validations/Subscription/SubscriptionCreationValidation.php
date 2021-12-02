@@ -2,7 +2,7 @@
 
 namespace App\Validations\Subscription;
 
-use Codememory\Components\Translator\Interfaces\TranslationInterface;
+use App\Services\Translation\DataService;
 use Codememory\Components\Validator\Interfaces\ValidateInterface;
 use Codememory\Components\Validator\Interfaces\ValidationBuildInterface;
 use Codememory\Components\Validator\Interfaces\ValidatorInterface;
@@ -23,28 +23,28 @@ class SubscriptionCreationValidation implements ValidationBuildInterface
     public function build(ValidatorInterface $validator, ...$args): void
     {
 
-        /** @var TranslationInterface $translation */
-        $translation = $args['translation'];
+        /** @var DataService $translation */
+        $translation = $args['translations-from-db'];
 
         $validator
             ->addValidation('name', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('required')->addMessage(
-                    $translation->getTranslationActiveLang('subscription.requiredNameRule')
+                    $translation->getTranslationByKey('subscription@nameIsRequired')
                 );
             })
             ->addValidation('old_price', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('not-empty:oldPriceRule')->addMessage(
-                    $translation->getTranslationActiveLang('subscription.numericPriceRule')
+                    $translation->getTranslationByKey('subscription@priceInTypeNumber')
                 );
             })
             ->addValidation('price', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('number')->addMessage(
-                    $translation->getTranslationActiveLang('subscription.numericPriceRule')
+                    $translation->getTranslationByKey('subscription@priceInTypeNumber')
                 );
             })
             ->addValidation('active', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('boolean')->addMessage(
-                    $translation->getTranslationActiveLang('subscription.activeRule')
+                    $translation->getTranslationByKey('subscription@activeInTypeBoolean')
                 );
             });
 

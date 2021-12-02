@@ -12,6 +12,7 @@ use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\DateTime;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidationManager;
 use ReflectionException;
@@ -34,6 +35,7 @@ class CreatorService extends AbstractApiService
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     public function create(ValidationManager $validationManager, EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
@@ -75,6 +77,7 @@ class CreatorService extends AbstractApiService
      * @return ResponseApiCollectorService|bool
      * @throws ReflectionException
      * @throws StatementNotSelectedException
+     * @throws ServiceNotExistException
      */
     private function existPlaylist(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService|bool
     {
@@ -89,7 +92,7 @@ class CreatorService extends AbstractApiService
         ]);
 
         if (false !== $finedPlaylist) {
-            return $this->createApiResponse(400, 'playlist.exist');
+            return $this->createApiResponse(400, 'playlist@exist');
         }
 
         return true;
@@ -127,6 +130,8 @@ class CreatorService extends AbstractApiService
      * @param PlaylistEntity         $playlistEntity
      *
      * @return ResponseApiCollectorService
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     private function pushPlaylist(EntityManagerInterface $entityManager, PlaylistEntity $playlistEntity): ResponseApiCollectorService
     {
@@ -134,7 +139,7 @@ class CreatorService extends AbstractApiService
         // Save the data of the generated playlist to the database
         $entityManager->commit($playlistEntity)->flush();
 
-        return $this->createApiResponse(201, 'playlist.successCreated');
+        return $this->createApiResponse(201, 'playlist@successCreate');
 
     }
 

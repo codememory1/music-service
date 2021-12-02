@@ -8,7 +8,6 @@ use Codememory\Components\Configuration\Configuration;
 use Codememory\Components\Configuration\Exceptions\ModeNotImplementInterfaceException;
 use Codememory\Components\Environment\Environment;
 use Codememory\Components\Environment\Exceptions\EnvironmentVariableNotFoundException;
-use Codememory\Components\Environment\Exceptions\IncorrectPathToEnviException;
 use Codememory\Components\Environment\Exceptions\ParsingErrorException;
 use Codememory\Components\Environment\Exceptions\VariableParsingErrorException;
 use Codememory\Components\Profiling\Profiler;
@@ -56,7 +55,6 @@ class Kernel
      * @throws ConstructorNotInitializedException
      * @throws EnvironmentVariableNotFoundException
      * @throws IncorrectControllerException
-     * @throws IncorrectPathToEnviException
      * @throws InvalidControllerMethodException
      * @throws ParsingErrorException
      * @throws SingleConstructorInitializationException
@@ -99,7 +97,6 @@ class Kernel
      * @throws ConstructorNotInitializedException
      * @throws EnvironmentVariableNotFoundException
      * @throws IncorrectControllerException
-     * @throws IncorrectPathToEnviException
      * @throws InvalidControllerMethodException
      * @throws ParsingErrorException
      * @throws SingleConstructorInitializationException

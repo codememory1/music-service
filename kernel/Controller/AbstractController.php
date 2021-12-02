@@ -53,7 +53,6 @@ abstract class AbstractController extends AbstractCdmController
     {
 
         (new ProviderRegistrar($serviceProvider))->register();
-
         parent::__construct($serviceProvider);
 
         $this->serviceProvider = $serviceProvider;
@@ -115,7 +114,7 @@ abstract class AbstractController extends AbstractCdmController
         $modelReflector = $this->service->getServiceReflector($name);
 
         /** @var AbstractService $service */
-        $service = $modelReflector->newInstance($this->serviceProvider);
+        $service = $modelReflector->newInstance($this->serviceProvider, $this->databasePack);
 
         return $service;
 

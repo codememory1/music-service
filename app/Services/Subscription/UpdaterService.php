@@ -47,7 +47,7 @@ class UpdaterService extends AbstractApiService
 
         // Checking for the existence of a subscription
         if (false === $subscription) {
-            return $this->createApiResponse(404, 'subscription.subscriptionNotExist');
+            return $this->createApiResponse(404, 'subscription@notExist');
         }
 
         // Updating subscription options
@@ -77,6 +77,7 @@ class UpdaterService extends AbstractApiService
      * @return void
      * @throws ReflectionException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
     private function updateSubscriptionOptions(EntityManagerInterface $entityManager, int $subscriptionId): void
     {
@@ -95,6 +96,7 @@ class UpdaterService extends AbstractApiService
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     private function updateHandler(SubscriptionRepository $subscriptionRepository, int $subscriptionId): ResponseApiCollectorService
@@ -108,7 +110,7 @@ class UpdaterService extends AbstractApiService
             'is_active'   => 'on' === $this->request->post()->get('is_active') ? 1 : 0,
         ], ['id' => $subscriptionId]);
 
-        return $this->createApiResponse(200, 'subscription.successUpdate');
+        return $this->createApiResponse(200, 'subscription@successUpdate');
 
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Services\Registration;
 
-use App\Events\UserRegisterEvent;
 use App\Orm\Entities\ActivationTokenEntity;
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\UserRepository;
@@ -10,13 +9,12 @@ use App\Services\AbstractApiService;
 use App\Services\PasswordHashingService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
+use App\Services\Translation\DataService;
+use App\Tasks\UserRegisterTask;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
-use Codememory\Components\Event\Exceptions\EventExistException;
-use Codememory\Components\Event\Exceptions\EventNotExistException;
-use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
-use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
 
 /**
@@ -33,12 +31,9 @@ class AccountCreatorService extends AbstractApiService
      * @param EntityManagerInterface $entityManager
      *
      * @return ResponseApiCollectorService
-     * @throws BuilderNotCurrentSectionException
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
      * @throws InvalidTimezoneException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     final public function createAccount(EntityManagerInterface $entityManager): ResponseApiCollectorService
@@ -56,7 +51,7 @@ class AccountCreatorService extends AbstractApiService
         // Calling the user registration event
         $this->triggerRegistrationEvent($registeredUser, $activationTokenEntity);
 
-        return $this->createApiResponse(200, 'register.successRegister');
+        return $this->createApiResponse(200, 'register@successRegister');
 
     }
 
@@ -129,20 +124,20 @@ class AccountCreatorService extends AbstractApiService
      * @param UserEntity            $userEntity
      * @param ActivationTokenEntity $activationTokenEntity
      *
-     * @throws BuilderNotCurrentSectionException
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
+     * @return void
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     private function triggerRegistrationEvent(UserEntity $userEntity, ActivationTokenEntity $activationTokenEntity): void
     {
 
-        // Raising the user registration event
-        $this->dispatchEvent(UserRegisterEvent::class, [
-            $this->get('mailer'),
-            $userEntity,
-            $activationTokenEntity
+        /** @var DataService $translationsFromDb */
+        $translationsFromDb = $this->getService('Translation\Data');
+
+        $this->dispatchJob(UserRegisterTask::class, [
+            'email'            => $userEntity->getEmail(),
+            'activation-token' => $activationTokenEntity->getToken(),
+            'subject'          => $translationsFromDb->getTranslationByKey('confirmRegistration')
         ]);
 
     }

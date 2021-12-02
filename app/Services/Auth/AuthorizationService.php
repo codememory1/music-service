@@ -162,7 +162,7 @@ class AuthorizationService extends AbstractApiService
         // Save the user's session
         $this->saveSessionAuth($entityManager, $userEntity, $refreshToken);
 
-        return $this->createApiResponse(200, 'auth.success', [
+        return $this->createApiResponse(200, 'auth@successAuth', [
             'access_token'  => $accessToken,
             'refresh_token' => $refreshToken
         ]);

@@ -104,9 +104,16 @@
         "pathWithTranslations": "translations\/",
         "configName": "translation"
     },
-    "version": "4.2.1",
+    "version": "4.3",
     "configuration": {
         "pathWithConfigs": "configs\/",
         "mode": "development"
+    },
+    "individual-tasks": {
+        "pathWithTasks": "Tasks",
+        "namespaceWithTasks": "App",
+        "tableWithTasks": "codememory_jobs",
+        "tableWithInfo": "codememory_work",
+        "configName": "job"
     }
 }

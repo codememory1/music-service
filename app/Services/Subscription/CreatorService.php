@@ -7,8 +7,10 @@ use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\Subscription\SubscriptionCreationValidation;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidationManager;
+use ReflectionException;
 
 /**
  * Class CreatorService
@@ -25,6 +27,8 @@ class CreatorService extends AbstractApiService
      * @param EntityManagerInterface $entityManager
      *
      * @return ResponseApiCollectorService
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     final public function create(ValidationManager $validationManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
     {
@@ -66,7 +70,7 @@ class CreatorService extends AbstractApiService
             ->setDescription($this->request->post()->get('description'))
             ->setOldPrice($this->request->post()->get('old_price'))
             ->setPrice($this->request->post()->get('price'))
-            ->setIsActive($this->request->post()->get('is_active'));
+            ->setIsActive($this->request->post()->get('active'));
 
         return $subscriptionEntity;
 
@@ -77,13 +81,15 @@ class CreatorService extends AbstractApiService
      * @param SubscriptionEntity     $subscriptionEntity
      *
      * @return ResponseApiCollectorService
+     * @throws ServiceNotExistException
+     * @throws ReflectionException
      */
     private function pushSubscription(EntityManagerInterface $entityManager, SubscriptionEntity $subscriptionEntity): ResponseApiCollectorService
     {
 
         $entityManager->commit($subscriptionEntity)->flush();
 
-        return $this->createApiResponse(200, 'subscription.successCreate');
+        return $this->createApiResponse(200, 'subscription@successCreate');
 
     }
 

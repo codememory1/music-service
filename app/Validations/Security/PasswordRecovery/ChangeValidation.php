@@ -2,7 +2,7 @@
 
 namespace App\Validations\Security\PasswordRecovery;
 
-use Codememory\Components\Translator\Interfaces\TranslationInterface;
+use App\Services\Translation\DataService;
 use Codememory\Components\Validator\Interfaces\ValidateInterface;
 use Codememory\Components\Validator\Interfaces\ValidationBuildInterface;
 use Codememory\Components\Validator\Interfaces\ValidatorInterface;
@@ -23,26 +23,26 @@ class ChangeValidation implements ValidationBuildInterface
     public function build(ValidatorInterface $validator, ...$args): void
     {
 
-        /** @var TranslationInterface $translation */
-        $translation = $args['translation'];
+        /** @var DataService $translation */
+        $translation = $args['translations-from-db'];
 
         $validator
             ->addValidation('code', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('regex:^[0-9]+$')->addMessage(
-                    $translation->getTranslationActiveLang('passwordRecovery.incorrectCode')
+                    $translation->getTranslationByKey('passwordRecovery@invalidCode')
                 );
             })
             ->addValidation('password', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('min:8')->addMessage(
-                    $translation->getTranslationActiveLang('register.minPassword')
+                    $translation->getTranslationByKey('register@minPassword')
                 );
                 $validate->addRule('regex:^[a-zA-Z0-9@%_.-]+$')->addMessage(
-                    $translation->getTranslationActiveLang('register.minPassword')
+                    $translation->getTranslationByKey('register@invalidPassword')
                 );
             })
             ->addValidation('password_confirm', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('same:password')->addMessage(
-                    $translation->getTranslationActiveLang('register.samePassword')
+                    $translation->getTranslationByKey('register@samePassword')
                 );
             });
 

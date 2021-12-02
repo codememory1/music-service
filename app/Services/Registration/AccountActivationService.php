@@ -12,6 +12,7 @@ use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
 
 /**
@@ -30,6 +31,7 @@ class AccountActivationService extends AbstractApiService
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     final public function activate(EntityManagerInterface $entityManager, string $token): ResponseApiCollectorService
@@ -49,7 +51,7 @@ class AccountActivationService extends AbstractApiService
 
         // Check the token for validity and existence in the database
         if (!$activationToken->verify($token) || false === $finedRecordByToken) {
-            return $this->createApiResponse(400, 'register.invalidTokenActivation');
+            return $this->createApiResponse(400, 'security@invalidTokenActivation');
         }
 
         // Search for a user by user_id from a found token record
@@ -70,6 +72,7 @@ class AccountActivationService extends AbstractApiService
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws StatementNotSelectedException
+     * @throws ServiceNotExistException
      */
     private function activationHandler(ActivationTokenRepository $activationTokenRepository, UserRepository $userRepository, UserEntity $userEntity): ResponseApiCollectorService
     {
@@ -80,7 +83,7 @@ class AccountActivationService extends AbstractApiService
         // Account activation
         $this->changeStatus($userRepository, $userEntity);
 
-        return $this->createApiResponse(200, 'register.successAccountActivate');
+        return $this->createApiResponse(200, 'security@successAccountActivation');
 
     }
 

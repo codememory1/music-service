@@ -2,7 +2,7 @@
 
 namespace App\Validations\Security;
 
-use Codememory\Components\Translator\Interfaces\TranslationInterface;
+use App\Services\Translation\DataService;
 use Codememory\Components\Validator\Interfaces\ValidateInterface;
 use Codememory\Components\Validator\Interfaces\ValidationBuildInterface;
 use Codememory\Components\Validator\Interfaces\ValidatorInterface;
@@ -23,23 +23,35 @@ class UserRegistrationValidation implements ValidationBuildInterface
     public function build(ValidatorInterface $validator, ...$args): void
     {
 
-        /** @var TranslationInterface $translation */
-        $translation = $args['translation'];
+        /** @var DataService $translation */
+        $translation = $args['translations-from-db'];
 
         $validator
             ->addValidation('name', function (ValidateInterface $validate) use ($translation) {
-                $validate->addRule('required')->addMessage($translation->getTranslationActiveLang('register.nameNotSpecified'));
-                $validate->addRule('range:3,32')->addMessage($translation->getTranslationActiveLang('register.rangeName'));
+                $validate->addRule('required')->addMessage(
+                    $translation->getTranslationByKey('register@nameIsRequired')
+                );
+                $validate->addRule('range:3,32')->addMessage(
+                    $translation->getTranslationByKey('register@nameLengthRange')
+                );
             })
             ->addValidation('email', function (ValidateInterface $validate) use ($translation) {
-                $validate->addRule('email')->addMessage($translation->getTranslationActiveLang('register.invalidEmail'));
+                $validate->addRule('email')->addMessage(
+                    $translation->getTranslationByKey('common@invalidEmail')
+                );
             })
             ->addValidation('password', function (ValidateInterface $validate) use ($translation) {
-                $validate->addRule('min:8')->addMessage($translation->getTranslationActiveLang('register.minPassword'));
-                $validate->addRule('regex:^[a-zA-Z0-9@%_.-]+$')->addMessage($translation->getTranslationActiveLang('register.minPassword'));
+                $validate->addRule('min:8')->addMessage(
+                    $translation->getTranslationByKey('security@minPassword')
+                );
+                $validate->addRule('regex:^[a-zA-Z0-9@%_.-]+$')->addMessage(
+                    $translation->getTranslationByKey('register@invalidPassword')
+                );
             })
             ->addValidation('password_confirm', function (ValidateInterface $validate) use ($translation) {
-                $validate->addRule('same:password')->addMessage($translation->getTranslationActiveLang('register.samePassword'));
+                $validate->addRule('same:password')->addMessage(
+                    $translation->getTranslationByKey('security@samePassword')
+                );
             });
 
     }

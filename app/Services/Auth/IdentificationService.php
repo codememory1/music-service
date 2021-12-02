@@ -7,6 +7,7 @@ use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
 
 /**
@@ -41,11 +42,13 @@ class IdentificationService extends AbstractApiService
 
     /**
      * @return ResponseApiCollectorService
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     public function getResponse(): ResponseApiCollectorService
     {
 
-        return $this->createApiResponse(400, 'auth.badIdentification');
+        return $this->createApiResponse(400, 'auth@badIdentification');
 
     }
 

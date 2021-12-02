@@ -31,6 +31,7 @@
         "codememory/geo": "^1.0",
         "codememory/global-config": "^1.1",
         "codememory/http-foundation": "^2.2",
+        "codememory/individual-tasks": "^1.0",
         "codememory/json-parser": "^1.0",
         "codememory/logging": "2.1",
         "codememory/mailer": "^1.0",
@@ -48,6 +49,7 @@
         "codememory/view": "^1.0",
         "firebase/php-jwt": "^5.4",
         "illuminate/collections": "^8.58",
+        "lavary/crunz": "^3.1",
         "mcaskill/composer-exclude-files": "^2.0",
         "ramsey/uuid": "^4.2",
         "twig/twig": "^3.3"

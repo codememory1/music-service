@@ -52,7 +52,7 @@ class ResetAndChangeService extends AbstractApiService
 
         // Checking for Code Existence
         if (false === $finedRecordByCode = $this->existCode($code, $passwordResetRepository)) {
-            return $this->createApiResponse(400, 'passwordRecovery.incorrectCode');
+            return $this->createApiResponse(400, 'passwordRecovery@invalidCode');
         }
 
         // Changing the password in the database
@@ -61,7 +61,7 @@ class ResetAndChangeService extends AbstractApiService
         // Removing the code
         (new RemoveCodeService())->remove($code, $passwordResetRepository);
 
-        return $this->createApiResponse(200, 'passwordRecovery.success');
+        return $this->createApiResponse(200, 'passwordRecovery@successRecovery');
 
     }
 

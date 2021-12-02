@@ -13,6 +13,7 @@ use App\Services\ResponseApiCollectorService;
 use App\Validations\Translation\AddTranslationValidation;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidationManager;
 use ReflectionException;
@@ -34,6 +35,7 @@ class CreatorTranslationService extends AbstractApiService
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     public function create(ValidationManager $validationManager, EntityManagerInterface $entityManager, string $lang): ResponseApiCollectorService
@@ -50,7 +52,7 @@ class CreatorTranslationService extends AbstractApiService
 
         // Checking for the existence of a language
         if (!$languageRepository->getLang($lang)) {
-            return $this->createApiResponse(400, 'translation.langNotExist');
+            return $this->createApiResponse(400, 'translation@langNotExist');
         }
 
         return $this->addTranslation($entityManager, $languageRepository->getLang($lang), $this->addKey($entityManager));
@@ -98,6 +100,7 @@ class CreatorTranslationService extends AbstractApiService
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws StatementNotSelectedException
+     * @throws ServiceNotExistException
      */
     public function addTranslation(EntityManagerInterface $entityManager, LanguageEntity $languageEntity, int $translationKeyId): ResponseApiCollectorService
     {
@@ -116,12 +119,12 @@ class CreatorTranslationService extends AbstractApiService
             'lang_id'            => $languageEntity->getId(),
             'translation_key_id' => $translationKeyId
         ])) {
-            return $this->createApiResponse(400, 'translation.translationExist');
+            return $this->createApiResponse(400, 'translation@translationExist');
         }
 
         $entityManager->commit($languageTranslationEntity)->flush();
 
-        return $this->createApiResponse(200, 'translation.successAddTranslation');
+        return $this->createApiResponse(200, 'translation@successAddTranslation');
 
     }
 

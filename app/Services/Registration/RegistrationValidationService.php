@@ -50,12 +50,12 @@ class RegistrationValidationService extends AbstractApiService
 
         // Checking the existence of a user with this email and if it is already activated
         if ($this->existNotActivatedEmail($userRepository)) {
-            return $this->createApiResponse(400, 'register.accountWithEmailExist')->setType(self::EXIST_NO_ACTIVATED_MAIL);
+            return $this->createApiResponse(400, 'register@accountWithEmailExist')->setType(self::EXIST_NO_ACTIVATED_MAIL);
         }
 
         // Checking for the existence of verified mail
         if ($this->existActivatedEmail($userRepository)) {
-            return $this->createApiResponse(400, 'register.accountWithEmailExist');
+            return $this->createApiResponse(400, 'register@accountWithEmailExist');
         }
 
         return true;

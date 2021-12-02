@@ -37,7 +37,7 @@ class DataService extends AbstractApiService
 
         /** @var LanguageRepository $languageRepository */
         $languageRepository = $entityManager->getRepository(LanguageEntity::class);
-        $languages = $languageRepository->findAll();
+        $languages = $languageRepository->getAllLangs();
         $translations = [];
 
         /** @var LanguageEntity $language */
@@ -47,7 +47,6 @@ class DataService extends AbstractApiService
                 $language->getLang(),
                 ['l.lang', 'tk.key', 'lt.translation']
             );
-
             $translations[$language->getLang()] = $translationResult->array()->all();
         }
 

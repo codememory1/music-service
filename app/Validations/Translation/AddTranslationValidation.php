@@ -2,7 +2,7 @@
 
 namespace App\Validations\Translation;
 
-use Codememory\Components\Translator\Interfaces\TranslationInterface;
+use App\Services\Translation\DataService;
 use Codememory\Components\Validator\Interfaces\ValidateInterface;
 use Codememory\Components\Validator\Interfaces\ValidationBuildInterface;
 use Codememory\Components\Validator\Interfaces\ValidatorInterface;
@@ -23,21 +23,21 @@ class AddTranslationValidation implements ValidationBuildInterface
     public function build(ValidatorInterface $validator, ...$args): void
     {
 
-        /** @var TranslationInterface $translation */
-        $translation = $args['translation'];
+        /** @var DataService $translation */
+        $translation = $args['translations-from-db'];
 
         $validator
             ->addValidation('key', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('required')->addMessage(
-                    $translation->getTranslationActiveLang('translation.translationKeyIsRequired')
+                    $translation->getTranslationByKey('translation@translationKeyIsRequired')
                 );
                 $validate->addRule('max:64')->addMessage(
-                    $translation->getTranslationActiveLang('translation.translationKeyMax')
+                    $translation->getTranslationByKey('translation@translationKeyMaxLength')
                 );
             })
             ->addValidation('translation', function (ValidateInterface $validate) use ($translation) {
                 $validate->addRule('required')->addMessage(
-                    $translation->getTranslationActiveLang('translation.translationIsRequired')
+                    $translation->getTranslationByKey('translation@translationIsRequired')
                 );
             });
 

@@ -7,6 +7,7 @@ use App\Orm\Repositories\PlaylistRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
 
 /**
@@ -27,6 +28,7 @@ class RemoverService extends AbstractApiService
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws StatementNotSelectedException
+     * @throws ServiceNotExistException
      */
     public function delete(PlaylistRepository $playlistRepository, UserEntity $userEntity, int $id): ResponseApiCollectorService
     {
@@ -39,13 +41,13 @@ class RemoverService extends AbstractApiService
 
         // Checking the existence of a playlist for an authorized user
         if (false === $finedPlaylist) {
-            return $this->createApiResponse(404, 'playlist.notExist');
+            return $this->createApiResponse(404, 'playlist@notExist');
         }
 
         // Playlist found. Delete from the database
         $playlistRepository->delete($searchBy);
 
-        return $this->createApiResponse(200, 'playlist.successDelete');
+        return $this->createApiResponse(200, 'playlist@successDelete');
 
     }
 

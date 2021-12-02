@@ -2,20 +2,18 @@
 
 namespace App\Services\Password;
 
-use App\Events\PasswordRecoveryRequestEvent;
 use App\Orm\Entities\PasswordResetEntity;
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\PasswordResetRepository;
 use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
+use App\Services\Translation\DataService;
+use App\Tasks\PasswordRecoveryRequestTask;
 use App\Validations\Security\PasswordRecovery\RestoreRequestValidation;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
-use Codememory\Components\Event\Exceptions\EventExistException;
-use Codememory\Components\Event\Exceptions\EventNotExistException;
-use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
-use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidationManager;
 use ReflectionException;
@@ -35,11 +33,8 @@ class RestoreRequestService extends AbstractApiService
      * @param EntityManagerInterface $entityManager
      *
      * @return ResponseApiCollectorService
-     * @throws BuilderNotCurrentSectionException
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     final public function send(ValidationManager $validationManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
@@ -59,7 +54,7 @@ class RestoreRequestService extends AbstractApiService
 
         // User Existence Check
         if (!$restoredUser) {
-            return $this->createApiResponse(404, 'oftenUsed.userNotExist');
+            return $this->createApiResponse(404, 'common@userNotExist');
         }
 
         return $this->sendHandler($entityManager, $restoredUser);
@@ -110,11 +105,8 @@ class RestoreRequestService extends AbstractApiService
      * @param UserEntity             $userEntity
      *
      * @return ResponseApiCollectorService
-     * @throws BuilderNotCurrentSectionException
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     private function sendHandler(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
@@ -123,6 +115,9 @@ class RestoreRequestService extends AbstractApiService
         /** @var PasswordResetRepository $passwordResetRepository */
         $passwordResetRepository = $entityManager->getRepository(PasswordResetEntity::class);
         $passwordResetEntity = $this->getCollectedPasswordResetEntity($userEntity);
+
+        /** @var DataService $translationsFromDb */
+        $translationsFromDb = $this->getService('Translation\Data');
 
         // We check the existence of a record with the code,
         // if it does not exist, then add it, otherwise we update it
@@ -137,14 +132,14 @@ class RestoreRequestService extends AbstractApiService
             ]);
         }
 
-        // Calling the password recovery request event
-        $this->dispatchEvent(PasswordRecoveryRequestEvent::class, [
-            $this->get('mailer'),
-            $userEntity,
-            $passwordResetEntity
+        // Creating a task for the message sending queue
+        $this->dispatchJob(PasswordRecoveryRequestTask::class, [
+            'email'   => $userEntity->getEmail(),
+            'code'    => $passwordResetEntity->getCode(),
+            'subject' => $translationsFromDb->getTranslationByKey('passwordRecovery')
         ]);
 
-        return $this->createApiResponse(200, 'passwordRecovery.successRestoreRequest');
+        return $this->createApiResponse(200, 'passwordRecovery@successRestoreRequest');
 
     }
 

@@ -2,19 +2,17 @@
 
 namespace App\Services\Registration;
 
-use App\Events\UserRegisterEvent;
 use App\Orm\Entities\ActivationTokenEntity;
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\ActivationTokenRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
+use App\Services\Translation\DataService;
+use App\Tasks\UserRegisterTask;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
-use Codememory\Components\Event\Exceptions\EventExistException;
-use Codememory\Components\Event\Exceptions\EventNotExistException;
-use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
-use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
 
 /**
@@ -32,11 +30,8 @@ class RefresherActivationTokenService extends AbstractApiService
      * @param UserEntity             $userEntity
      *
      * @return RefresherActivationTokenService
-     * @throws BuilderNotCurrentSectionException
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     final public function refresh(EntityManagerInterface $entityManager, UserEntity $userEntity): RefresherActivationTokenService
@@ -45,14 +40,17 @@ class RefresherActivationTokenService extends AbstractApiService
         /** @var ActivationTokenRepository $activationTokenRepository */
         $activationTokenRepository = $entityManager->getRepository(ActivationTokenEntity::class);
 
+        /** @var DataService $translationsFromDb */
+        $translationsFromDb = $this->getService('Translation\Data');
+
         // Change the user activation token and return the token activation entity
         $activationTokenEntity = $this->changeToken($activationTokenRepository, $userEntity);
 
-        // Raising the user registration event
-        $this->dispatchEvent(UserRegisterEvent::class, [
-            $this->get('mailer'),
-            $userEntity,
-            $activationTokenEntity
+        // Creating a task for the message sending queue
+        $this->dispatchJob(UserRegisterTask::class, [
+            'email'            => $userEntity->getEmail(),
+            'activation-token' => $activationTokenEntity->getToken(),
+            'subject'          => $translationsFromDb->getTranslationByKey('confirmRegistration')
         ]);
 
         return $this;
@@ -61,11 +59,13 @@ class RefresherActivationTokenService extends AbstractApiService
 
     /**
      * @return ResponseApiCollectorService
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     final public function getResponse(): ResponseApiCollectorService
     {
 
-        return $this->createApiResponse(200, 'register.successRegister');
+        return $this->createApiResponse(200, 'register@successRegister');
 
     }
 

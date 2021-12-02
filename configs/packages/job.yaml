@@ -1,0 +1,3 @@
+job:
+  pathWithTasks: "app/Tasks"
+  namespaceWithTasks: "App\\Tasks"

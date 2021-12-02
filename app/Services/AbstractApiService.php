@@ -2,11 +2,15 @@
 
 namespace App\Services;
 
+use App\Services\Translation\DataService;
+use Codememory\Components\Database\Pack\DatabasePack;
 use Codememory\Components\Services\AbstractService;
+use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Translator\Interfaces\TranslationInterface;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use Codememory\HttpFoundation\Interfaces\RequestInterface;
 use Codememory\HttpFoundation\Interfaces\ResponseInterface;
+use ReflectionException;
 
 /**
  * Class AbstractApiService
@@ -40,11 +44,12 @@ abstract class AbstractApiService extends AbstractService
 
     /**
      * @param ServiceProviderInterface $serviceProvider
+     * @param DatabasePack             $databasePack
      */
-    public function __construct(ServiceProviderInterface $serviceProvider)
+    public function __construct(ServiceProviderInterface $serviceProvider, DatabasePack $databasePack)
     {
 
-        parent::__construct($serviceProvider);
+        parent::__construct($serviceProvider, $databasePack);
 
         /** @var RequestInterface $request */
         $request = $this->get('request');
@@ -70,12 +75,17 @@ abstract class AbstractApiService extends AbstractService
      * @param array  $data
      *
      * @return ResponseApiCollectorService
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     protected function createApiResponse(int $status, string $translationKey, array $data = []): ResponseApiCollectorService
     {
 
+        /** @var DataService $translationsFromDb */
+        $translationsFromDb = $this->getService('Translation\Data');
+
         return $this->apiResponse->create($status, [
-            $this->translation->getTranslationActiveLang($translationKey)
+            $translationsFromDb->getTranslationByKey($translationKey)
         ], $data);
 
     }
