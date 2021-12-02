@@ -32,18 +32,6 @@ class TrackEntity
     private ?string $hash = null;
 
     /**
-     * @var int|null
-     */
-    #[ORM\Column(name: 'user_id', type: 'int', length: null, nullable: false)]
-    #[ORM\Reference(
-        entity: UserEntity::class,
-        referencedColumnName: 'id',
-        on: [RelationshipInterface::ON_DELETE],
-        onOptions: [ReferenceDefinition::RD_CASCADE]
-    )]
-    private ?int $user_id = null;
-
-    /**
      * @var string|null
      */
     #[ORM\Column(name: 'name', type: 'varchar', length: 255, nullable: false)]
@@ -85,13 +73,6 @@ class TrackEntity
         onOptions: [ReferenceDefinition::RD_CASCADE]
     )]
     private ?int $album_id = null;
-
-    /**
-     * @var int|null
-     */
-    #[ORM\Column(name: 'current_time', type: 'bigint', length: null, nullable: false)]
-    #[ORM\DefaultValue(value: '0')]
-    private ?int $current_time = null;
 
     /**
      * @var int|null
@@ -151,30 +132,6 @@ class TrackEntity
     {
 
         return $this->hash;
-
-    }
-
-    /**
-     * @param int $value
-     *
-     * @return static
-     */
-    public function setUserId(int $value): static
-    {
-
-        $this->user_id = $value;
-
-        return $this;
-
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getUserId(): ?int
-    {
-
-        return $this->user_id;
 
     }
 
@@ -295,30 +252,6 @@ class TrackEntity
     {
 
         return $this->album_id;
-
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return static
-     */
-    public function setCurrentTime(mixed $value): static
-    {
-
-        $this->current_time = $value;
-
-        return $this;
-
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getCurrentTime(): ?int
-    {
-
-        return $this->current_time;
 
     }
 
