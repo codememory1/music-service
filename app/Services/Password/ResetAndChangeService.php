@@ -7,7 +7,6 @@ use App\Orm\Repositories\PasswordResetRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\Security\PasswordRecovery\ChangeValidation;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
@@ -25,22 +24,21 @@ class ResetAndChangeService extends AbstractApiService
 {
 
     /**
-     * @param ValidationManager      $validationManager
-     * @param EntityManagerInterface $entityManager
+     * @param ValidationManager $validationManager
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
-     * @throws StatementNotSelectedException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
-    final public function change(ValidationManager $validationManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
+    final public function change(ValidationManager $validationManager): ResponseApiCollectorService
     {
 
         $code = $this->request->post()->get('code');
         $inputValidation = $this->inputValidation($validationManager);
 
         /** @var PasswordResetRepository $passwordResetRepository */
-        $passwordResetRepository = $entityManager->getRepository(PasswordResetEntity::class);
+        $passwordResetRepository = $this->getRepository(PasswordResetEntity::class);
 
         /** @var ChangeService $passwordChangeService */
         $passwordChangeService = $this->getService('Password\Change');
@@ -56,7 +54,7 @@ class ResetAndChangeService extends AbstractApiService
         }
 
         // Changing the password in the database
-        $passwordChangeService->change($finedRecordByCode->getUserId(), $entityManager);
+        $passwordChangeService->change($finedRecordByCode->getUserId());
 
         // Removing the code
         (new RemoveCodeService())->remove($code, $passwordResetRepository);

@@ -110,7 +110,11 @@ class PlaylistController extends AbstractAuthorizationController
             $playlistCreatorService = $this->getService('Playlist\Creator');
 
             // Calling the playlist creation method from the service
-            $playlistCreationResponse = $playlistCreatorService->create($this->validatorManager(), $this->em, $authorizedUser);
+            $playlistCreationResponse = $playlistCreatorService->create(
+                $this->validatorManager(),
+                $authorizedUser,
+                $this->playlistRepository
+            );
 
             $this->response->json($playlistCreationResponse->getResponse(), $playlistCreationResponse->getStatus());
         }

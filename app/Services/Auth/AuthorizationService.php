@@ -10,11 +10,13 @@ use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\SessionTokenService;
 use App\Validations\Security\AuthValidation;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
+use Codememory\Components\Database\Pack\DatabasePack;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidatorManager;
+use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use ReflectionException;
 
 /**
@@ -28,8 +30,27 @@ class AuthorizationService extends AbstractApiService
 {
 
     /**
-     * @param ValidatorManager       $validatorManager
-     * @param EntityManagerInterface $entityManager
+     * @var UserRepository
+     */
+    private UserRepository $userRepository;
+
+    /**
+     * @param ServiceProviderInterface $serviceProvider
+     * @param DatabasePack             $databasePack
+     */
+    public function __construct(ServiceProviderInterface $serviceProvider, DatabasePack $databasePack)
+    {
+
+        parent::__construct($serviceProvider, $databasePack);
+
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->getRepository(UserEntity::class);
+        $this->userRepository = $userRepository;
+
+    }
+
+    /**
+     * @param ValidatorManager $validatorManager
      *
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
@@ -37,7 +58,7 @@ class AuthorizationService extends AbstractApiService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    final public function authorize(ValidatorManager $validatorManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
+    final public function authorize(ValidatorManager $validatorManager): ResponseApiCollectorService
     {
 
         /** @var IdentificationService $identificationService */
@@ -49,15 +70,12 @@ class AuthorizationService extends AbstractApiService
         /** @var VerificationsService $verificationsService */
         $verificationsService = $this->getService('Auth\Verifications');
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $entityManager->getRepository(UserEntity::class);
         $validationManager = $validatorManager->create(new AuthValidation(), $this->request->post()->all());
 
         // Fulfillment of authorization conditions and receipt of a response
         $responseAuthorizationConditions = $this->authorizationConditions(
             $validationManager,
             $identificationService,
-            $userRepository,
             $verificationsService,
             $authenticationService
         );
@@ -69,7 +87,7 @@ class AuthorizationService extends AbstractApiService
 
         // Identification, authentication and verification were successful
         // Save the session and return the response
-        return $this->handlerAuthorize($entityManager, $responseAuthorizationConditions);
+        return $this->handlerAuthorize($responseAuthorizationConditions);
 
     }
 
@@ -106,7 +124,6 @@ class AuthorizationService extends AbstractApiService
     /**
      * @param ValidationManagerInterface $validationManager
      * @param IdentificationService      $identificationService
-     * @param UserRepository             $userRepository
      * @param VerificationsService       $verificationsService
      * @param AuthenticationService      $authenticationService
      *
@@ -115,7 +132,7 @@ class AuthorizationService extends AbstractApiService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    private function authorizationConditions(ValidationManagerInterface $validationManager, IdentificationService $identificationService, UserRepository $userRepository, VerificationsService $verificationsService, AuthenticationService $authenticationService): ResponseApiCollectorService|UserEntity
+    private function authorizationConditions(ValidationManagerInterface $validationManager, IdentificationService $identificationService, VerificationsService $verificationsService, AuthenticationService $authenticationService): ResponseApiCollectorService|UserEntity
     {
 
         // Input validation check
@@ -124,7 +141,7 @@ class AuthorizationService extends AbstractApiService
         }
 
         // We check the user's identification by the input email or username
-        if (false === $identificationResponse = $identificationService->identify($userRepository)) {
+        if (false === $identificationResponse = $identificationService->identify($this->userRepository)) {
             return $identificationService->getResponse();
         }
 
@@ -143,8 +160,7 @@ class AuthorizationService extends AbstractApiService
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param UserEntity             $userEntity
+     * @param UserEntity $userEntity
      *
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
@@ -152,7 +168,7 @@ class AuthorizationService extends AbstractApiService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    private function handlerAuthorize(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
+    private function handlerAuthorize(UserEntity $userEntity): ResponseApiCollectorService
     {
 
         /** @var SessionTokenService $sessionToken */
@@ -160,7 +176,7 @@ class AuthorizationService extends AbstractApiService
         [$accessToken, $refreshToken] = $sessionToken->generateTokens((new UserDto($userEntity))->getTransformedData());
 
         // Save the user's session
-        $this->saveSessionAuth($entityManager, $userEntity, $refreshToken);
+        $this->saveSessionAuth($userEntity, $refreshToken);
 
         return $this->createApiResponse(200, 'auth@successAuth', [
             'access_token'  => $accessToken,
@@ -170,22 +186,21 @@ class AuthorizationService extends AbstractApiService
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param UserEntity             $userEntity
-     * @param string                 $refreshToken
+     * @param UserEntity $userEntity
+     * @param string     $refreshToken
      *
      * @return void
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    private function saveSessionAuth(EntityManagerInterface $entityManager, UserEntity $userEntity, string $refreshToken): void
+    private function saveSessionAuth(UserEntity $userEntity, string $refreshToken): void
     {
 
         /** @var SaveSessionService $saveSessionService */
         $saveSessionService = $this->getService('Auth\SaveSession');
 
-        $saveSessionService->save($entityManager, $userEntity, $refreshToken);
+        $saveSessionService->save($userEntity, $refreshToken);
 
     }
 

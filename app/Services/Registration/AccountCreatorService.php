@@ -11,7 +11,6 @@ use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
 use App\Services\Translation\DataService;
 use App\Tasks\UserRegisterTask;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
@@ -28,7 +27,7 @@ class AccountCreatorService extends AbstractApiService
 {
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param UserRepository $userRepository
      *
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
@@ -36,17 +35,14 @@ class AccountCreatorService extends AbstractApiService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    final public function createAccount(EntityManagerInterface $entityManager): ResponseApiCollectorService
+    final public function createAccount(UserRepository $userRepository): ResponseApiCollectorService
     {
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $entityManager->getRepository(UserEntity::class);
-
         // Push the user to the database
-        $registeredUser = $this->pushUser($entityManager, $userRepository, $this->getCollectedUserEntity());
+        $registeredUser = $this->pushUser($userRepository, $this->getCollectedUserEntity());
 
         // Saving an activation token for a registered user
-        $activationTokenEntity = $this->pushActivationToken($entityManager, $registeredUser);
+        $activationTokenEntity = $this->pushActivationToken($registeredUser);
 
         // Calling the user registration event
         $this->triggerRegistrationEvent($registeredUser, $activationTokenEntity);
@@ -77,13 +73,12 @@ class AccountCreatorService extends AbstractApiService
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param UserEntity             $userEntity
+     * @param UserEntity $userEntity
      *
      * @return ActivationTokenEntity
      * @throws InvalidTimezoneException
      */
-    private function pushActivationToken(EntityManagerInterface $entityManager, UserEntity $userEntity): ActivationTokenEntity
+    private function pushActivationToken(UserEntity $userEntity): ActivationTokenEntity
     {
 
         /** @var ActivationTokenService $activationToken */
@@ -95,26 +90,25 @@ class AccountCreatorService extends AbstractApiService
             ->setToken($activationToken->encode());
 
         // Saving a token to the database
-        $entityManager->commit($activationTokenEntity)->flush();
+        $this->getEntityManager()->commit($activationTokenEntity)->flush();
 
         return $activationTokenEntity;
 
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param UserRepository         $userRepository
-     * @param UserEntity             $userEntity
+     * @param UserRepository $userRepository
+     * @param UserEntity     $userEntity
      *
      * @return UserEntity
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    private function pushUser(EntityManagerInterface $entityManager, UserRepository $userRepository, UserEntity $userEntity): UserEntity
+    private function pushUser(UserRepository $userRepository, UserEntity $userEntity): UserEntity
     {
 
         // Saving a user to the database
-        $entityManager->commit($userEntity)->flush();
+        $this->getEntityManager()->commit($userEntity)->flush();
 
         return $userRepository->findOne(['email' => $userEntity->getEmail()]);
 

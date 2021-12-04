@@ -8,7 +8,6 @@ use App\Orm\Repositories\PlaylistRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\Playlist\PlaylistCreationValidation;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\DateTime;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
@@ -28,9 +27,9 @@ class CreatorService extends AbstractApiService
 {
 
     /**
-     * @param ValidationManager      $validationManager
-     * @param EntityManagerInterface $entityManager
-     * @param UserEntity             $userEntity
+     * @param ValidationManager  $validationManager
+     * @param UserEntity         $userEntity
+     * @param PlaylistRepository $playlistRepository
      *
      * @return ResponseApiCollectorService
      * @throws InvalidTimezoneException
@@ -38,7 +37,7 @@ class CreatorService extends AbstractApiService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    public function create(ValidationManager $validationManager, EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
+    public function create(ValidationManager $validationManager, UserEntity $userEntity, PlaylistRepository $playlistRepository): ResponseApiCollectorService
     {
 
         $creationValidationManager = $this->inputValidation($validationManager);
@@ -49,12 +48,12 @@ class CreatorService extends AbstractApiService
         }
 
         // Check the existence of a playlist with an input title
-        if (true !== $responseExistPlaylist = $this->existPlaylist($entityManager, $userEntity)) {
+        if (true !== $responseExistPlaylist = $this->existPlaylist($playlistRepository, $userEntity)) {
             return $responseExistPlaylist;
         }
 
         // A playlist is created, and we return a response about successful creation
-        return $this->pushPlaylist($entityManager, $this->getCollectedPlaylistEntity($userEntity));
+        return $this->pushPlaylist($this->getCollectedPlaylistEntity($userEntity));
 
     }
 
@@ -71,19 +70,16 @@ class CreatorService extends AbstractApiService
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param UserEntity             $userEntity
+     * @param PlaylistRepository $playlistRepository
+     * @param UserEntity         $userEntity
      *
      * @return ResponseApiCollectorService|bool
      * @throws ReflectionException
-     * @throws StatementNotSelectedException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
-    private function existPlaylist(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService|bool
+    private function existPlaylist(PlaylistRepository $playlistRepository, UserEntity $userEntity): ResponseApiCollectorService|bool
     {
-
-        /** @var PlaylistRepository $playlistRepository */
-        $playlistRepository = $entityManager->getRepository(PlaylistEntity::class);
 
         // Checking the existence of a playlist with an input name for an authorized user
         $finedPlaylist = $playlistRepository->findOne([
@@ -126,18 +122,17 @@ class CreatorService extends AbstractApiService
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param PlaylistEntity         $playlistEntity
+     * @param PlaylistEntity $playlistEntity
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
-    private function pushPlaylist(EntityManagerInterface $entityManager, PlaylistEntity $playlistEntity): ResponseApiCollectorService
+    private function pushPlaylist(PlaylistEntity $playlistEntity): ResponseApiCollectorService
     {
 
         // Save the data of the generated playlist to the database
-        $entityManager->commit($playlistEntity)->flush();
+        $this->getEntityManager()->commit($playlistEntity)->flush();
 
         return $this->createApiResponse(201, 'playlist@successCreate');
 

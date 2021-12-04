@@ -6,15 +6,12 @@ use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
+use Codememory\Components\Database\Pack\DatabasePack;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
-use Codememory\Components\Event\Exceptions\EventExistException;
-use Codememory\Components\Event\Exceptions\EventNotExistException;
-use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
-use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Manager as ValidatorManager;
+use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use ReflectionException;
 
 /**
@@ -28,20 +25,35 @@ class RegisterService extends AbstractApiService
 {
 
     /**
-     * @param ValidatorManager       $validatorManager
-     * @param EntityManagerInterface $entityManager
+     * @var UserRepository
+     */
+    private UserRepository $userRepository;
+
+    /**
+     * @param ServiceProviderInterface $serviceProvider
+     * @param DatabasePack             $databasePack
+     */
+    public function __construct(ServiceProviderInterface $serviceProvider, DatabasePack $databasePack)
+    {
+
+        parent::__construct($serviceProvider, $databasePack);
+
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->getRepository(UserEntity::class);
+        $this->userRepository = $userRepository;
+
+    }
+
+    /**
+     * @param ValidatorManager $validatorManager
      *
      * @return ResponseApiCollectorService
-     * @throws BuilderNotCurrentSectionException
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
      * @throws InvalidTimezoneException
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    final public function register(ValidatorManager $validatorManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
+    final public function register(ValidatorManager $validatorManager): ResponseApiCollectorService
     {
 
         /** @var RegistrationValidationService $registrationValidationService */
@@ -51,46 +63,37 @@ class RegisterService extends AbstractApiService
         $accountCreatorService = $this->getService('Registration\AccountCreator');
 
         // Result of all registration validation
-        $validationResult = $registrationValidationService->validate($validatorManager, $entityManager);
+        $validationResult = $registrationValidationService->validate($validatorManager, $this->userRepository);
 
         // Check the existence of mail and if it is not yet activated
         // We update the activation token and send the message to the mail again
         if (true !== $validationResult && $validationResult->getType() === RegistrationValidationService::EXIST_NO_ACTIVATED_MAIL) {
-            return $this->refreshActivationToken($entityManager);
+            return $this->refreshActivationToken();
         }
 
         // If the validation passed, we create an account.
         // Otherwise, it will return a response about the verification problem
-        return $validationResult === true ? $accountCreatorService->createAccount($entityManager) : $validationResult;
+        return $validationResult === true ? $accountCreatorService->createAccount($this->userRepository) : $validationResult;
 
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     *
      * @return ResponseApiCollectorService
-     * @throws BuilderNotCurrentSectionException
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    private function refreshActivationToken(EntityManagerInterface $entityManager): ResponseApiCollectorService
+    private function refreshActivationToken(): ResponseApiCollectorService
     {
 
         /** @var RefresherActivationTokenService $refresherActivationTokenService */
         $refresherActivationTokenService = $this->getService('Registration\RefresherActivationToken');
-
-        /** @var UserRepository $userRepository */
-        $userRepository = $entityManager->getRepository(UserEntity::class);
-        $finedUser = $userRepository->findOne([
+        $finedUser = $this->userRepository->findOne([
             'email' => $this->request->post()->get('email')
         ]);
 
         // We update the activation token and return a response about a successful update
-        return $refresherActivationTokenService->refresh($entityManager, $finedUser)->getResponse();
+        return $refresherActivationTokenService->refresh($finedUser)->getResponse();
 
     }
 

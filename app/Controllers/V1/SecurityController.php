@@ -5,12 +5,8 @@ namespace App\Controllers\V1;
 use App\Services\Auth\AuthorizationService;
 use App\Services\Registration\AccountActivationService;
 use App\Services\Registration\RegisterService;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
-use Codememory\Components\Event\Exceptions\EventExistException;
-use Codememory\Components\Event\Exceptions\EventNotExistException;
-use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
@@ -34,11 +30,6 @@ class SecurityController extends AbstractApiController
     private ResponseInterface $response;
 
     /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
-
-    /**
      * @param ServiceProviderInterface $serviceProvider
      *
      * @throws BuilderNotCurrentSectionException
@@ -51,8 +42,6 @@ class SecurityController extends AbstractApiController
         /** @var ResponseInterface $response */
         $response = $this->get('response');
         $this->response = $response;
-
-        $this->em = $this->getDatabase()->getEntityManager();
 
     }
 
@@ -70,17 +59,13 @@ class SecurityController extends AbstractApiController
         $authorizationService = $this->getService('Auth\Authorization');
 
         // Try to authorize the user and give an authorization response
-        $authorizationResponse = $authorizationService->authorize($this->validatorManager(), $this->em);
+        $authorizationResponse = $authorizationService->authorize($this->validatorManager());
 
         $this->response->json($authorizationResponse->getResponse(), $authorizationResponse->getStatus());
 
     }
 
     /**
-     * @throws BuilderNotCurrentSectionException
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
      * @throws InvalidTimezoneException
      * @throws ReflectionException
      * @throws ServiceNotExistException
@@ -94,7 +79,7 @@ class SecurityController extends AbstractApiController
         $registerService = $this->getService('Registration\Register');
 
         // Receiving a response about user registration
-        $registrationResponse = $registerService->register($this->validatorManager(), $this->em);
+        $registrationResponse = $registerService->register($this->validatorManager());
 
         $this->response->json($registrationResponse->getResponse(), $registrationResponse->getStatus());
 
@@ -115,7 +100,7 @@ class SecurityController extends AbstractApiController
         $registerService = $this->getService('Registration\AccountActivation');
 
         // Receiving an account activation response
-        $activationResponse = $registerService->activate($this->em, $token);
+        $activationResponse = $registerService->activate($token);
 
         $this->response->json($activationResponse->getResponse(), $activationResponse->getStatus());
 

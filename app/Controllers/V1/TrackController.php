@@ -47,8 +47,6 @@ class TrackController extends AbstractAuthorizationController
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
             $this->isExistRight($authorizedUser, AccessRightNameRepository::ADD_MUSIC);
-
-            $this->trackService->add();
         }
 
     }

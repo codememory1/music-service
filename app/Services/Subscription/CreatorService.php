@@ -6,7 +6,6 @@ use App\Orm\Entities\SubscriptionEntity;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\Subscription\SubscriptionCreationValidation;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
 use Codememory\Components\Validator\Manager as ValidationManager;
@@ -23,14 +22,13 @@ class CreatorService extends AbstractApiService
 {
 
     /**
-     * @param ValidationManager      $validationManager
-     * @param EntityManagerInterface $entityManager
+     * @param ValidationManager $validationManager
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
-    final public function create(ValidationManager $validationManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
+    final public function create(ValidationManager $validationManager): ResponseApiCollectorService
     {
 
         $creationValidationManager = $this->inputValidation($validationManager);
@@ -41,7 +39,7 @@ class CreatorService extends AbstractApiService
         }
 
         // A playlist is created, and we return a response about successful creation
-        return $this->pushSubscription($entityManager, $this->getCollectedSubscriptionEntity());
+        return $this->pushSubscription($this->getCollectedSubscriptionEntity());
 
     }
 
@@ -77,17 +75,16 @@ class CreatorService extends AbstractApiService
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param SubscriptionEntity     $subscriptionEntity
+     * @param SubscriptionEntity $subscriptionEntity
      *
      * @return ResponseApiCollectorService
-     * @throws ServiceNotExistException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
-    private function pushSubscription(EntityManagerInterface $entityManager, SubscriptionEntity $subscriptionEntity): ResponseApiCollectorService
+    private function pushSubscription(SubscriptionEntity $subscriptionEntity): ResponseApiCollectorService
     {
 
-        $entityManager->commit($subscriptionEntity)->flush();
+        $this->getEntityManager()->commit($subscriptionEntity)->flush();
 
         return $this->createApiResponse(200, 'subscription@successCreate');
 

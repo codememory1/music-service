@@ -2,12 +2,10 @@
 
 namespace App\Services\Registration;
 
-use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\Enums\StatusEnum;
 use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Manager as ValidatorManager;
@@ -26,22 +24,19 @@ class RegistrationValidationService extends AbstractApiService
     public const EXIST_NO_ACTIVATED_MAIL = 'exist-not-activated-email';
 
     /**
-     * @param ValidatorManager       $validatorManager
-     * @param EntityManagerInterface $entityManager
+     * @param ValidatorManager $validatorManager
+     * @param UserRepository   $userRepository
      *
      * @return ResponseApiCollectorService|bool
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    final public function validate(ValidatorManager $validatorManager, EntityManagerInterface $entityManager): ResponseApiCollectorService|bool
+    final public function validate(ValidatorManager $validatorManager, UserRepository $userRepository): ResponseApiCollectorService|bool
     {
 
         /** @var RegistrationInputValidationService $inputValidationService */
         $inputValidationService = $this->getService('Registration\RegistrationInputValidation');
-
-        /** @var UserRepository $userRepository */
-        $userRepository = $entityManager->getRepository(UserEntity::class);
 
         // Checking the result of validation of input data
         if (true !== $validationResult = $inputValidationService->validate($validatorManager)) {

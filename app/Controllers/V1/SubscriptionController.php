@@ -83,7 +83,7 @@ class SubscriptionController extends AbstractAuthorizationController
         $subscription = $this->subscriptionRepository->findOneWithOptions($id);
 
         if ([] === $subscription) {
-            $this->responseWithTranslation(404, 'subscription.subscriptionNotExist');
+            $this->responseWithTranslation(404, 'subscription@notExist');
         }
 
         $this->response->json($subscription);
@@ -106,7 +106,7 @@ class SubscriptionController extends AbstractAuthorizationController
             $subscriptionCreatorService = $this->getService('Subscription\Creator');
 
             // Create a subscription and receive a response about creation
-            $subscriptionCreationResponse = $subscriptionCreatorService->create($this->validatorManager(), $this->em);
+            $subscriptionCreationResponse = $subscriptionCreatorService->create($this->validatorManager());
 
             $this->response->json($subscriptionCreationResponse->getResponse(), $subscriptionCreationResponse->getStatus());
         }
@@ -133,7 +133,6 @@ class SubscriptionController extends AbstractAuthorizationController
             // We update the subscription data and receive a response about the update
             $subscriptionCreationResponse = $subscriptionUpdaterService->update(
                 $this->validatorManager(),
-                $this->em,
                 $this->subscriptionRepository,
                 $id
             );

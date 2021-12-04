@@ -2,6 +2,7 @@
 
 namespace App\Services\Sorting;
 
+use Codememory\Components\Database\Pack\DatabasePack;
 use Codememory\Components\Services\AbstractService;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use Codememory\HttpFoundation\Interfaces\RequestInterface;
@@ -23,11 +24,12 @@ class DataService extends AbstractService
 
     /**
      * @param ServiceProviderInterface $serviceProvider
+     * @param DatabasePack             $databasePack
      */
-    public function __construct(ServiceProviderInterface $serviceProvider)
+    public function __construct(ServiceProviderInterface $serviceProvider, DatabasePack $databasePack)
     {
 
-        parent::__construct($serviceProvider);
+        parent::__construct($serviceProvider, $databasePack);
 
         /** @var RequestInterface $request */
         $request = $this->get('request');

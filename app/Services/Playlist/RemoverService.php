@@ -37,10 +37,9 @@ class RemoverService extends AbstractApiService
             'user_id' => $userEntity->getId(),
             'id'      => $id
         ];
-        $finedPlaylist = $playlistRepository->findOne($searchBy);
 
         // Checking the existence of a playlist for an authorized user
-        if (false === $finedPlaylist) {
+        if (false === $playlistRepository->findOne($searchBy)) {
             return $this->createApiResponse(404, 'playlist@notExist');
         }
 

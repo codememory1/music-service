@@ -6,7 +6,6 @@ use App\Orm\Repositories\SubscriptionRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\Subscription\SubscriptionUpdatingValidation;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
@@ -25,7 +24,6 @@ class UpdaterService extends AbstractApiService
 
     /**
      * @param ValidationManager      $validationManager
-     * @param EntityManagerInterface $entityManager
      * @param SubscriptionRepository $subscriptionRepository
      * @param int                    $subscriptionId
      *
@@ -34,7 +32,7 @@ class UpdaterService extends AbstractApiService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    final public function update(ValidationManager $validationManager, EntityManagerInterface $entityManager, SubscriptionRepository $subscriptionRepository, int $subscriptionId): ResponseApiCollectorService
+    final public function update(ValidationManager $validationManager, SubscriptionRepository $subscriptionRepository, int $subscriptionId): ResponseApiCollectorService
     {
 
         $creationValidationManager = $this->inputValidation($validationManager);
@@ -51,7 +49,7 @@ class UpdaterService extends AbstractApiService
         }
 
         // Updating subscription options
-        $this->updateSubscriptionOptions($entityManager, $subscriptionId);
+        $this->updateSubscriptionOptions($subscriptionId);
 
         // Updating subscription data
         return $this->updateHandler($subscriptionRepository, $subscriptionId);
@@ -71,22 +69,21 @@ class UpdaterService extends AbstractApiService
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param int                    $subscriptionId
+     * @param int $subscriptionId
      *
      * @return void
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    private function updateSubscriptionOptions(EntityManagerInterface $entityManager, int $subscriptionId): void
+    private function updateSubscriptionOptions(int $subscriptionId): void
     {
 
         /** @var UpdateSubscriptionOptionsService $updateOptionsService */
         $updateOptionsService = $this->getService('Subscription\UpdateSubscriptionOptions');
 
         // Updating subscription options
-        $updateOptionsService->update($entityManager, collect($this->request->post()->get('options') ?: []), $subscriptionId);
+        $updateOptionsService->update(collect($this->request->post()->get('options') ?: []), $subscriptionId);
 
     }
 

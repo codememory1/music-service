@@ -54,7 +54,7 @@ class PasswordRecoveryController extends AbstractAuthorizationController
 
         $this->execIfNotLoggedIn(function () {
             // We send a message to the mail with a password recovery code
-            $sendResponse = $this->passwordRecoveryService->restoreRequest($this->validatorManager(), $this->em);
+            $sendResponse = $this->passwordRecoveryService->restoreRequest($this->validatorManager());
 
             $this->response->json($sendResponse->getResponse(), $sendResponse->getStatus());
         });
@@ -71,7 +71,7 @@ class PasswordRecoveryController extends AbstractAuthorizationController
 
         $this->execIfNotLoggedIn(function () {
             // Change password and delete request record
-            $changeResponse = $this->passwordRecoveryService->change($this->validatorManager(), $this->em);
+            $changeResponse = $this->passwordRecoveryService->change($this->validatorManager());
 
             $this->response->json($changeResponse->getResponse(), $changeResponse->getStatus());
         });

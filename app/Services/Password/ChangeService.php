@@ -6,7 +6,6 @@ use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\PasswordHashingService;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use ReflectionException;
 
@@ -21,18 +20,17 @@ class ChangeService extends AbstractApiService
 {
 
     /**
-     * @param int                    $userId
-     * @param EntityManagerInterface $entityManager
+     * @param int $userId
      *
      * @return void
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    public function change(int $userId, EntityManagerInterface $entityManager): void
+    public function change(int $userId): void
     {
 
         /** @var UserRepository $userRepository */
-        $userRepository = $entityManager->getRepository(UserEntity::class);
+        $userRepository = $this->getRepository(UserEntity::class);
 
         /** @var PasswordHashingService $passwordHashing */
         $passwordHashing = $this->get('password-hashing');

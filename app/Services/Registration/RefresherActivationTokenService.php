@@ -10,7 +10,6 @@ use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
 use App\Services\Translation\DataService;
 use App\Tasks\UserRegisterTask;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
@@ -26,19 +25,18 @@ class RefresherActivationTokenService extends AbstractApiService
 {
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param UserEntity             $userEntity
+     * @param UserEntity $userEntity
      *
      * @return RefresherActivationTokenService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    final public function refresh(EntityManagerInterface $entityManager, UserEntity $userEntity): RefresherActivationTokenService
+    final public function refresh(UserEntity $userEntity): RefresherActivationTokenService
     {
 
         /** @var ActivationTokenRepository $activationTokenRepository */
-        $activationTokenRepository = $entityManager->getRepository(ActivationTokenEntity::class);
+        $activationTokenRepository = $this->getRepository(ActivationTokenEntity::class);
 
         /** @var DataService $translationsFromDb */
         $translationsFromDb = $this->getService('Translation\Data');

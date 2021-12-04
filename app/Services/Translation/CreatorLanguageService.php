@@ -7,7 +7,6 @@ use App\Orm\Repositories\LanguageRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\Translation\CreateLanguageValidation;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
@@ -26,22 +25,21 @@ class CreatorLanguageService extends AbstractApiService
 {
 
     /**
-     * @param ValidationManager      $validationManager
-     * @param EntityManagerInterface $entityManager
+     * @param ValidationManager $validationManager
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    public function create(ValidationManager $validationManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
+    public function create(ValidationManager $validationManager): ResponseApiCollectorService
     {
 
         $languageCode = Str::toLowercase($this->request->post()->get('lang') ?: '');
         $creationValidationManager = $this->inputValidation($validationManager);
 
         /** @var LanguageRepository $languageRepository */
-        $languageRepository = $entityManager->getRepository(LanguageEntity::class);
+        $languageRepository = $this->getRepository(LanguageEntity::class);
 
         // Input validation
         if (!$creationValidationManager->isValidation()) {
@@ -53,7 +51,7 @@ class CreatorLanguageService extends AbstractApiService
             return $this->createApiResponse(400, 'translation@langExist');
         }
 
-        return $this->pushLanguage($entityManager, $languageCode);
+        return $this->pushLanguage($languageCode);
 
     }
 
@@ -70,21 +68,20 @@ class CreatorLanguageService extends AbstractApiService
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param string                 $languageCode
+     * @param string $languageCode
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
-    private function pushLanguage(EntityManagerInterface $entityManager, string $languageCode): ResponseApiCollectorService
+    private function pushLanguage(string $languageCode): ResponseApiCollectorService
     {
 
         $languageEntity = new LanguageEntity();
 
         $languageEntity->setLang($languageCode);
 
-        $entityManager->commit($languageEntity)->flush();
+        $this->getEntityManager()->commit($languageEntity)->flush();
 
         return $this->createApiResponse(200, 'translation@successCreateLang');
 

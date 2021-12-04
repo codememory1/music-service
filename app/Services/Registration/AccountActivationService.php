@@ -10,7 +10,6 @@ use App\Orm\Repositories\UserRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\ActivationTokenService;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
@@ -26,22 +25,21 @@ class AccountActivationService extends AbstractApiService
 {
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param string                 $token
+     * @param string $token
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    final public function activate(EntityManagerInterface $entityManager, string $token): ResponseApiCollectorService
+    final public function activate(string $token): ResponseApiCollectorService
     {
 
         /** @var ActivationTokenRepository $activationTokenRepository */
-        $activationTokenRepository = $entityManager->getRepository(ActivationTokenEntity::class);
+        $activationTokenRepository = $this->getRepository(ActivationTokenEntity::class);
 
         /** @var UserRepository $userRepository */
-        $userRepository = $entityManager->getRepository(UserEntity::class);
+        $userRepository = $this->getRepository(UserEntity::class);
 
         /** @var ActivationTokenService $activationToken */
         $activationToken = $this->get('activation-token');

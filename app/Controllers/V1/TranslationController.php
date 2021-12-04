@@ -2,9 +2,7 @@
 
 namespace App\Controllers\V1;
 
-use App\Orm\Entities\LanguageTranslationEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
-use App\Orm\Repositories\LanguageTranslationRepository;
 use App\Services\Translation\CacheService;
 use App\Services\Translation\CreatorLanguageService;
 use App\Services\Translation\CreatorTranslationService;
@@ -86,7 +84,7 @@ class TranslationController extends AbstractAuthorizationController
             $creatorLanguageService = $this->getService('Translation\CreatorLanguage');
 
             // Creating a language and getting a response about creation
-            $languageCreationResponse = $creatorLanguageService->create($this->validatorManager(), $this->em);
+            $languageCreationResponse = $creatorLanguageService->create($this->validatorManager());
 
             $this->response->json($languageCreationResponse->getResponse(), $languageCreationResponse->getStatus());
         }
@@ -110,7 +108,7 @@ class TranslationController extends AbstractAuthorizationController
             $creatorTranslationService = $this->getService('Translation\CreatorTranslation');
 
             // Answer to add translation to language
-            $translationCreationResponse = $creatorTranslationService->create($this->validatorManager(), $this->em, $lang);
+            $translationCreationResponse = $creatorTranslationService->create($this->validatorManager(), $lang);
 
             $this->response->json($translationCreationResponse->getResponse(), $translationCreationResponse->getStatus());
         }
@@ -131,7 +129,7 @@ class TranslationController extends AbstractAuthorizationController
             $this->isExistRight($authorizedUser, AccessRightNameRepository::UPDATE_TRANSLATION_CACHE);
 
             $this->translationCacheService->update(
-                $this->translationDataService->getTranslationsWithLanguages($this->em)
+                $this->translationDataService->getTranslationsWithLanguages()
             );
 
             $this->response->json($this->apiResponse->create(200, [

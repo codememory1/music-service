@@ -5,7 +5,6 @@ namespace App\Services\Subscription;
 use App\Orm\Entities\SubscriptionOptionEntity;
 use App\Orm\Repositories\SubscriptionOptionRepository;
 use App\Services\AbstractApiService;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Illuminate\Support\Collection;
 use ReflectionException;
@@ -21,29 +20,27 @@ class UpdateSubscriptionOptionsService extends AbstractApiService
 {
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param Collection             $options
-     * @param int                    $subscriptionId
+     * @param Collection $options
+     * @param int        $subscriptionId
      *
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    final public function update(EntityManagerInterface $entityManager, Collection $options, int $subscriptionId): void
+    final public function update(Collection $options, int $subscriptionId): void
     {
 
         /** @var SubscriptionOptionRepository $subscriptionOptionRepository */
-        $subscriptionOptionRepository = $entityManager->getRepository(SubscriptionOptionEntity::class);
+        $subscriptionOptionRepository = $this->getRepository(SubscriptionOptionEntity::class);
 
         // Removing all subscription options
         $subscriptionOptionRepository->delete(['subscription' => $subscriptionId]);
 
         // Pushing updated subscription options
-        $this->pushOptions($entityManager, $subscriptionOptionRepository, $options, $subscriptionId);
+        $this->pushOptions($subscriptionOptionRepository, $options, $subscriptionId);
 
     }
 
     /**
-     * @param EntityManagerInterface       $entityManager
      * @param SubscriptionOptionRepository $subscriptionOptionRepository
      * @param Collection                   $options
      * @param int                          $id
@@ -52,7 +49,7 @@ class UpdateSubscriptionOptionsService extends AbstractApiService
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    private function pushOptions(EntityManagerInterface $entityManager, SubscriptionOptionRepository $subscriptionOptionRepository, Collection $options, int $id): void
+    private function pushOptions(SubscriptionOptionRepository $subscriptionOptionRepository, Collection $options, int $id): void
     {
 
         $subscriptionOptionEntity = new SubscriptionOptionEntity();
@@ -64,11 +61,11 @@ class UpdateSubscriptionOptionsService extends AbstractApiService
                     ->setOption($option)
                     ->setSubscription($id);
 
-                $entityManager->commit($subscriptionOptionEntity);
+                $this->getEntityManager()->commit($subscriptionOptionEntity);
             }
         }
 
-        $entityManager->flush();
+        $this->getEntityManager()->flush();
 
     }
 

@@ -25,25 +25,20 @@ class RecoveryService extends AbstractApiService
 {
 
     /**
-     * @param ValidationManager      $validationManager
-     * @param EntityManagerInterface $entityManager
+     * @param ValidationManager $validationManager
      *
      * @return ResponseApiCollectorService
-     * @throws StatementNotSelectedException
-     * @throws EventExistException
-     * @throws EventNotExistException
-     * @throws EventNotImplementInterfaceException
-     * @throws BuilderNotCurrentSectionException
-     * @throws ServiceNotExistException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
-    public function restoreRequest(ValidationManager $validationManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
+    public function restoreRequest(ValidationManager $validationManager): ResponseApiCollectorService
     {
 
         /** @var RestoreRequestService $restoreRequestService */
         $restoreRequestService = $this->getService('Password\RestoreRequest');
 
-        return $restoreRequestService->send($validationManager, $entityManager);
+        return $restoreRequestService->send($validationManager);
 
     }
 
@@ -56,13 +51,13 @@ class RecoveryService extends AbstractApiService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    public function change(ValidationManager $validationManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
+    public function change(ValidationManager $validationManager): ResponseApiCollectorService
     {
 
         /** @var ResetAndChangeService $resetAndChange */
         $resetAndChange = $this->getService('Password\ResetAndChange');
 
-        return $resetAndChange->change($validationManager, $entityManager);
+        return $resetAndChange->change($validationManager);
 
     }
 

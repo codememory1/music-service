@@ -7,7 +7,6 @@ use App\Orm\Entities\UserSessionEntity;
 use App\Orm\Repositories\UserSessionRepository;
 use App\Services\AbstractApiService;
 use App\Services\Tokens\SessionTokenService;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\GEO\Geolocation;
 use ReflectionException;
@@ -23,19 +22,18 @@ class SaveSessionService extends AbstractApiService
 {
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param UserEntity             $userEntity
-     * @param string                 $refreshToken
+     * @param UserEntity $userEntity
+     * @param string     $refreshToken
      *
      * @return void
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    public function save(EntityManagerInterface $entityManager, UserEntity $userEntity, string $refreshToken): void
+    public function save(UserEntity $userEntity, string $refreshToken): void
     {
 
         /** @var UserSessionRepository $userSessionRepository */
-        $userSessionRepository = $entityManager->getRepository(UserSessionEntity::class);
+        $userSessionRepository = $this->getRepository(UserSessionEntity::class);
 
         // Collecting UserSessionEntity with basic information
         $userSessionEntity = $this->getCollectedUserSessionEntity($userEntity, $refreshToken);
@@ -47,7 +45,7 @@ class SaveSessionService extends AbstractApiService
         $this->removeInvalidTokens($userSessionRepository);
 
         // We save information about authorization to the table
-        $entityManager->commit($userSessionEntity)->flush();
+        $this->getEntityManager()->commit($userSessionEntity)->flush();
 
     }
 

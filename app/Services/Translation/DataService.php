@@ -7,7 +7,6 @@ use App\Orm\Entities\LanguageTranslationEntity;
 use App\Orm\Repositories\LanguageRepository;
 use App\Orm\Repositories\LanguageTranslationRepository;
 use App\Services\AbstractApiService;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
@@ -23,25 +22,22 @@ class DataService extends AbstractApiService
 {
 
     /**
-     * @param EntityManagerInterface $entityManager
-     *
      * @return array
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    public function getTranslationsWithLanguages(EntityManagerInterface $entityManager): array
+    public function getTranslationsWithLanguages(): array
     {
 
         /** @var LanguageTranslationRepository $translationRepository */
-        $translationRepository = $entityManager->getRepository(LanguageTranslationEntity::class);
+        $translationRepository = $this->getRepository(LanguageTranslationEntity::class);
 
         /** @var LanguageRepository $languageRepository */
-        $languageRepository = $entityManager->getRepository(LanguageEntity::class);
-        $languages = $languageRepository->getAllLangs();
+        $languageRepository = $this->getRepository(LanguageEntity::class);
         $translations = [];
 
         /** @var LanguageEntity $language */
-        foreach ($languages as $language) {
+        foreach ($languageRepository->getAllLangs() as $language) {
             // Getting the query result to the database
             $translationResult = $translationRepository->getTranslationsWithColumns(
                 $language->getLang(),

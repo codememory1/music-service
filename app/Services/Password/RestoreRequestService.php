@@ -11,7 +11,6 @@ use App\Services\ResponseApiCollectorService;
 use App\Services\Translation\DataService;
 use App\Tasks\PasswordRecoveryRequestTask;
 use App\Validations\Security\PasswordRecovery\RestoreRequestValidation;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
@@ -29,19 +28,18 @@ class RestoreRequestService extends AbstractApiService
 {
 
     /**
-     * @param ValidationManager      $validationManager
-     * @param EntityManagerInterface $entityManager
+     * @param ValidationManager $validationManager
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    final public function send(ValidationManager $validationManager, EntityManagerInterface $entityManager): ResponseApiCollectorService
+    final public function send(ValidationManager $validationManager): ResponseApiCollectorService
     {
 
         /** @var UserRepository $userRepository */
-        $userRepository = $entityManager->getRepository(UserEntity::class);
+        $userRepository = $this->getRepository(UserEntity::class);
         $creationValidationManager = $this->inputValidation($validationManager);
         $restoredUser = $userRepository->findOne([
             'email' => $this->request->post()->get('email')
@@ -57,7 +55,7 @@ class RestoreRequestService extends AbstractApiService
             return $this->createApiResponse(404, 'common@userNotExist');
         }
 
-        return $this->sendHandler($entityManager, $restoredUser);
+        return $this->sendHandler($restoredUser);
 
     }
 
@@ -101,19 +99,18 @@ class RestoreRequestService extends AbstractApiService
     }
 
     /**
-     * @param EntityManagerInterface $entityManager
-     * @param UserEntity             $userEntity
+     * @param UserEntity $userEntity
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    private function sendHandler(EntityManagerInterface $entityManager, UserEntity $userEntity): ResponseApiCollectorService
+    private function sendHandler(UserEntity $userEntity): ResponseApiCollectorService
     {
 
         /** @var PasswordResetRepository $passwordResetRepository */
-        $passwordResetRepository = $entityManager->getRepository(PasswordResetEntity::class);
+        $passwordResetRepository = $this->getRepository(PasswordResetEntity::class);
         $passwordResetEntity = $this->getCollectedPasswordResetEntity($userEntity);
 
         /** @var DataService $translationsFromDb */
@@ -122,7 +119,7 @@ class RestoreRequestService extends AbstractApiService
         // We check the existence of a record with the code,
         // if it does not exist, then add it, otherwise we update it
         if (!$passwordResetRepository->findOne(['user_id' => $userEntity->getId()])) {
-            $entityManager->commit($passwordResetEntity)->flush();
+            $this->getEntityManager()->commit($passwordResetEntity)->flush();
         } else {
             $passwordResetEntity->setCode($this->generateCode());
             $passwordResetRepository->update([
