@@ -39,7 +39,8 @@ final class Migration1633545149InsertAccessRightNames extends AbstractMigration
             [14, AccessRightNameRepository::ADD_MUSIC],
             [15, AccessRightNameRepository::UPDATE_TRANSLATION_CACHE],
             [16, AccessRightNameRepository::CREATE_LANG],
-            [17, AccessRightNameRepository::ADD_TRANSLATION]
+            [17, AccessRightNameRepository::ADD_TRANSLATION],
+            [18, AccessRightNameRepository::DELETE_MUSIC]
         ]);
 
     }

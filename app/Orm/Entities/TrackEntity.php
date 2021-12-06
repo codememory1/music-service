@@ -176,7 +176,7 @@ class TrackEntity
     /**
      * @return int|null
      */
-    public function getCategory_id(): ?int
+    public function getCategoryId(): ?int
     {
 
         return $this->category_id;
@@ -208,11 +208,11 @@ class TrackEntity
     }
 
     /**
-     * @param string $value
+     * @param string|null $value
      *
      * @return static
      */
-    public function setText(string $value): static
+    public function setText(?string $value): static
     {
 
         $this->text = $value;

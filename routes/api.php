@@ -48,7 +48,11 @@ Router::subdomainGroup('api', function () {
     });
 
     // Routes associated with music
-    Router::group('/track', function () {
-        Router::post('/add', [TrackController::class, 'add'], true);
+    Router::group('/track/', function () {
+        Router::post('add/', [TrackController::class, 'addTrack'], true);
+        Router::get(':hash/info/', [TrackController::class, 'infoTrack'], true)->with('hash', '.+');
+        Router::delete(':hash/delete/', [TrackController::class, 'deleteTrack'], true)->with('hash', '.+');
+
+        Router::put(':hash/text/edit/', [TrackController::class, 'editTrackText'], true)->with('hash', '.+');
     });
 });

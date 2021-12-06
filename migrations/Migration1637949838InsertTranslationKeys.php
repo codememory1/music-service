@@ -85,6 +85,13 @@ final class Migration1637949838InsertTranslationKeys extends AbstractMigration
             [61, 'album@exist'],
             [62, 'trackCategory@exist'],
             [63, 'trackCategory@notExist'],
+            [64, 'track@successAdd'],
+            [65, 'common@invalidImageType'],
+            [66, 'track@numberOfImages'],
+            [67, 'track@notExist'],
+            [68, 'track@successDelete'],
+            [69, 'track@textIsRequired'],
+            [70, 'track@successAddText'],
         ]);
 
     }
@@ -95,7 +102,7 @@ final class Migration1637949838InsertTranslationKeys extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DELETE FROM `translation_keys` WHERE `id` <= 63');
+        $schema->addSql('DELETE FROM `translation_keys` WHERE `id` <= 70');
 
     }
 

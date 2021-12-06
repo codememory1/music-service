@@ -8,13 +8,13 @@ use Codememory\Components\Validator\Interfaces\ValidationBuildInterface;
 use Codememory\Components\Validator\Interfaces\ValidatorInterface;
 
 /**
- * Class TrackAddValidation
+ * Class AddTrackValidation
  *
  * @package App\Validations\Track
  *
  * @author  Danil
  */
-class TrackAddValidation implements ValidationBuildInterface
+class AddTrackValidation implements ValidationBuildInterface
 {
 
     /**
@@ -39,11 +39,6 @@ class TrackAddValidation implements ValidationBuildInterface
                     ->addRule('required')
                     ->addMessage($translation->getTranslationByKey('track@categoryIsRequired'));
             })
-            ->addValidation('image', function (ValidateInterface $validate) use ($translation) {
-                $validate
-                    ->addRule('required')
-                    ->addMessage($translation->getTranslationByKey('track@imageIsRequired'));
-            })
             ->addValidation('album', function (ValidateInterface $validate) use ($translation) {
                 $validate
                     ->addRule('required')
@@ -52,9 +47,7 @@ class TrackAddValidation implements ValidationBuildInterface
             ->addValidation('duration_time', function (ValidateInterface $validate) use ($translation) {
                 $validate
                     ->addRule('required')
-                    ->addMessage($translation->getTranslationByKey('track@durationTimeIsRequired'))
-                    ->addRule('integer')
-                    ->addMessage($translation->getTranslationByKey('track@durationTimeInTypeInteger'));
+                    ->addMessage($translation->getTranslationByKey('track@durationTimeIsRequired'));
             })
             ->addValidation('foul_language', function (ValidateInterface $validate) use ($translation) {
                 $validate

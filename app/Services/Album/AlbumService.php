@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\TrackCategory;
+namespace App\Services\Album;
 
-use App\Orm\Entities\TrackCategoryEntity;
-use App\Orm\Repositories\TrackCategoryRepository;
+use App\Orm\Entities\AlbumEntity;
+use App\Orm\Repositories\AlbumRepository;
 use App\Services\AbstractApiService;
 use Codememory\Components\Database\Pack\DatabasePack;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
@@ -11,19 +11,19 @@ use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use ReflectionException;
 
 /**
- * Class CategoryService
+ * Class AlbumService
  *
- * @package App\Services\TrackCategory
+ * @package App\Services\Album
  *
  * @author  Danil
  */
-class CategoryService extends AbstractApiService
+class AlbumService extends AbstractApiService
 {
 
     /**
-     * @var TrackCategoryRepository
+     * @var AlbumRepository
      */
-    private TrackCategoryRepository $trackCategoryRepository;
+    private AlbumRepository $albumRepository;
 
     /**
      * @param ServiceProviderInterface $serviceProvider
@@ -34,9 +34,9 @@ class CategoryService extends AbstractApiService
 
         parent::__construct($serviceProvider, $databasePack);
 
-        /** @var TrackCategoryRepository $trackCategoryRepository */
-        $trackCategoryRepository = $this->getRepository(TrackCategoryEntity::class);
-        $this->trackCategoryRepository = $trackCategoryRepository;
+        /** @var AlbumRepository $albumRepository */
+        $albumRepository = $this->getRepository(AlbumEntity::class);
+        $this->albumRepository = $albumRepository;
 
     }
 
@@ -44,13 +44,13 @@ class CategoryService extends AbstractApiService
      * @param int $id
      *
      * @return bool
-     * @throws ReflectionException
      * @throws StatementNotSelectedException
+     * @throws ReflectionException
      */
-    final public function exist(int $id): bool
+    public function exist(int $id): bool
     {
 
-        return false !== $this->trackCategoryRepository->findById($id);
+        return false !== $this->albumRepository->findById($id);
 
     }
 
