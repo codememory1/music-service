@@ -117,6 +117,7 @@ class SecurityController extends AbstractApiController
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
+    #[NoReturn]
     public function refreshAccessToken(Request $request): void
     {
 

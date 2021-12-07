@@ -6,6 +6,7 @@ use App\Controllers\V1\SecurityController;
 use App\Controllers\V1\SubscriptionController;
 use App\Controllers\V1\TrackController;
 use App\Controllers\V1\TranslationController;
+use App\Controllers\V1\UserController;
 use Codememory\Routing\Router;
 
 /**
@@ -27,7 +28,11 @@ Router::subdomainGroup('api', function () {
     // Authorization
     Router::post('/auth', [SecurityController::class, 'auth'], true);
 
-    Router::get('/refresh-access-token', [SecurityController::class, 'refreshAccessToken']);
+    Router::get('/refresh-access-token', [SecurityController::class, 'refreshAccessToken'], true);
+
+    Router::group('/user/', function () {
+        Router::get('current/', [UserController::class, 'showCurrentUser'], true);
+    });
 
     // Routes associated with user passwords
     Router::group('/password-recovery/', function () {
