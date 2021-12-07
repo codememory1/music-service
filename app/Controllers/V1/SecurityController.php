@@ -3,6 +3,7 @@
 namespace App\Controllers\V1;
 
 use App\Services\Auth\AuthorizationService;
+use App\Services\Auth\RefreshAccessTokenService;
 use App\Services\Registration\AccountActivationService;
 use App\Services\Registration\RegisterService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
@@ -11,6 +12,7 @@ use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use Codememory\HttpFoundation\Interfaces\ResponseInterface;
+use Codememory\HttpFoundation\Request\Request;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
 
@@ -103,6 +105,30 @@ class SecurityController extends AbstractApiController
         $activationResponse = $registerService->activate($token);
 
         $this->response->json($activationResponse->getResponse(), $activationResponse->getStatus());
+
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return void
+     * @throws InvalidTimezoneException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
+    public function refreshAccessToken(Request $request): void
+    {
+
+        $refreshToken = (string) $request->cookie->get('refresh_token');
+
+        /** @var RefreshAccessTokenService $refreshAccessTokenService */
+        $refreshAccessTokenService = $this->getService('Auth\RefreshAccessToken');
+
+        // Answer about updating AccessToken
+        $refreshResponse = $refreshAccessTokenService->refresh($refreshToken);
+
+        $this->response->json($refreshResponse->getResponse(), $refreshResponse->getStatus());
 
     }
 

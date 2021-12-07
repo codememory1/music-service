@@ -27,6 +27,8 @@ Router::subdomainGroup('api', function () {
     // Authorization
     Router::post('/auth', [SecurityController::class, 'auth'], true);
 
+    Router::get('/refresh-access-token', [SecurityController::class, 'refreshAccessToken']);
+
     // Routes associated with user passwords
     Router::group('/password-recovery/', function () {
         Router::post('restore-request/', [PasswordRecoveryController::class, 'restoreRequest'], true);

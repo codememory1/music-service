@@ -92,6 +92,8 @@ final class Migration1637949838InsertTranslationKeys extends AbstractMigration
             [68, 'track@successDelete'],
             [69, 'track@textIsRequired'],
             [70, 'track@successAddText'],
+            [71, 'common@invalidRefreshToken'],
+            [72, 'refreshToken@successRefreshAccessToken'],
         ]);
 
     }
@@ -102,7 +104,7 @@ final class Migration1637949838InsertTranslationKeys extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DELETE FROM `translation_keys` WHERE `id` <= 70');
+        $schema->addSql('DELETE FROM `translation_keys` WHERE `id` <= 72');
 
     }
 

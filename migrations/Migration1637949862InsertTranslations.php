@@ -92,6 +92,8 @@ final class Migration1637949862InsertTranslations extends AbstractMigration
             [1, 68, 'Трек успешно удален'],
             [1, 69, 'Текст трека обязательный к заполнению'],
             [1, 70, 'Трек песни успешно добавлен'],
+            [1, 71, 'Некорректный Refresh-Token'],
+            [1, 72, 'Access-Token успешно обновлен'],
         ]);
 
     }
@@ -102,7 +104,7 @@ final class Migration1637949862InsertTranslations extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DELETE FROM `language_translations` WHERE `translation_key_id` <= 68');
+        $schema->addSql('DELETE FROM `language_translations` WHERE `translation_key_id` <= 72');
 
     }
 
