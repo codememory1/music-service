@@ -1,0 +1,133 @@
+@import "../variables";
+
+.calendar {
+  background-color: $abs-light-bg;
+  width: 435px;
+  height: max-content;
+  border-radius: 10px;
+  padding: 20px 28px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 27px;
+  }
+}
+
+.calendar__button {
+  padding: 10px 13px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.calendar_button_header {
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: $dark-bg;
+  }
+}
+
+.month {
+  display: flex;
+  align-items: center;
+
+  &__name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    pointer-events: none;
+
+    &::selection {
+      background-color: $abs-light-bg;
+    }
+  }
+}
+
+.calendar__days-week {
+  display: flex;
+  margin-bottom: 35px;
+
+  span {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    width: 54px;
+    text-align: center;
+    pointer-events: none;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    &::selection {
+      background-color: $abs-light-bg;
+    }
+  }
+}
+
+.calendar__days {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  span {
+    width: 45px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-right: 9px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease-in-out;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    &:hover {
+      background-color: $dark-bg;
+    }
+
+    &.active {
+      background-color: $blue;
+    }
+
+    &.disabled {
+      pointer-events: none;
+    }
+  }
+}
+
+.calendar__footer {
+  display: flex;
+}
+
+.calendar_button_done {
+  background-color: $accent;
+  color: #fff;
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: darken($accent, 10%);
+  }
+}
+
+.calendar_button_cancel {
+  background-color: $dark-bg;
+  color: #fff;
+  margin-right: 15px;
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: darken($dark-bg, 10%);
+  }
+}

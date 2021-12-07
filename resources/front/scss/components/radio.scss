@@ -1,0 +1,26 @@
+input[type="radio"] {
+  -webkit-appearance: none;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border: 1px solid $gray;
+  border-radius: 100%;
+  cursor: pointer;
+  transition: border 0.2s ease-in-out;
+}
+
+input[type="radio"]:checked {
+  border-color: $accent;
+}
+
+input[type="radio"]:checked:before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: $accent;
+  border-radius: 100%;
+  left: 3px;
+  top: 3px;
+  transition: background-color 0.2s ease-in-out;
+}

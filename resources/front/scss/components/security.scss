@@ -1,0 +1,18 @@
+.security__modal {
+  &_title {
+    color: #fff;
+    font-size: 25px;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  &_content {
+    padding: 0 80px;
+  }
+}
+
+::v-deep .modal__container {
+  height: max-content;
+}

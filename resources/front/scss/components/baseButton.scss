@@ -1,0 +1,77 @@
+.base-button {
+  padding: 8px 13px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 400;
+  transition: background-color 0.3s ease-in-out;
+  color: #fff;
+  outline: none;
+  border: none;
+
+  &.accent {
+    background-color: $accent;
+
+    &:hover {
+      background-color: darken($accent, 10%);
+    }
+  }
+
+  &.dark {
+    background-color: $dark-bg;
+
+    &:hover {
+      background-color: lighten($dark-bg, 10%);
+    }
+  }
+
+  &.blue {
+    background-color: $blue;
+
+    &:hover {
+      background-color: darken($blue, 10%);
+    }
+  }
+
+  &.green {
+    background-color: $green;
+
+    &:hover {
+      background-color: darken($green, 10%);
+    }
+  }
+
+  &.red {
+    background-color: $red;
+
+    &:hover {
+      background-color: darken($red, 10%);
+    }
+  }
+
+  &.without-bg {
+    &:hover {
+      background-color: #0D1828;
+    }
+  }
+
+  &.color {
+    &__red {
+      color: $red;
+    }
+
+    &__accent {
+      color: $accent;
+    }
+
+    &__blue {
+      color: $blue;
+    }
+
+    &__green {
+      color: $green;
+    }
+  }
+}

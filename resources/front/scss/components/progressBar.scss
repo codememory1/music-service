@@ -1,0 +1,38 @@
+@import "../variables";
+
+.progress-bar {
+  position: relative;
+
+  &--down {
+    background-color: $light-for-dark;
+    width: 100%;
+    height: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  &--up {
+    position: relative;
+    background-color: $accent;
+    width: 100px;
+    height: 3px;
+    top: -3px;
+    border-radius: 3px;
+  }
+
+  &--circle {
+    width: 10px;
+    height: 10px;
+    background-color: $accent;
+    border-radius: 100%;
+    position: absolute;
+    right: -10px;
+    top: -3px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.3);
+    }
+  }
+}

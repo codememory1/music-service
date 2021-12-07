@@ -1,0 +1,139 @@
+@import "../variables";
+
+.relative {
+  padding: 0 $gutter;
+}
+
+.artist {
+  &__header {
+    width: 100%;
+    height: 390px;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    &:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #090909;
+      opacity: 0.4;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  &__name {
+    color: #fff;
+    font-size: 48px;
+    font-weight: 500;
+    padding-top: 125px;
+    padding-bottom: 15px;
+  }
+
+  &__description {
+    font-size: 16px;
+    font-weight: 400;
+    color: #939393;
+    padding-bottom: 40px;
+    width: 410px;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.btn-subscription {
+  padding: 11px 24px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 20px;
+  margin-top: 45px;
+}
+
+::v-deep .section__content {
+  padding: 0 $gutter;
+}
+
+.section__top-musics ::v-deep .section__content {
+  padding-right: 0;
+}
+
+.section__top-musics ::v-deep .music-item {
+  margin-bottom: 20px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.section__similar-artists {
+  ::v-deep {
+    .section__top {
+      padding-left: 0;
+    }
+
+    .section__content {
+      display: flex;
+      flex-direction: column;
+      padding-left: 0;
+      padding-right: $gutter;
+    }
+  }
+}
+
+.similar-artists {
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.similar-artist {
+  width: 70px;
+  height: 70px;
+  max-width: 70px;
+  max-height: 70px;
+  margin-right: 15px;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+
+  img {
+    width: inherit;
+    height: inherit;
+    max-width: 70px;
+    max-height: 70px;
+    border-radius: 100%;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border: 2px solid $accent;
+      padding: 5px;
+    }
+  }
+}
+
+.best-albums__similar-artists {
+  margin-top: 15px;
+
+  ::v-deep .section__content {
+    display: flex;
+    flex-direction: row;
+    padding-right: 0;
+  }
+
+  ::v-deep .section__content .album {
+    margin-right: 15px;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+}

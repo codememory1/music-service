@@ -1,0 +1,8 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+    <ShortName>Spotify</ShortName>
+    <Description>Spotify</Description>
+    <InputEncoding>UTF-8</InputEncoding>
+    <Image width="32" height="32" type="image/x-icon">https://open.scdn.co/cdn/images/favicon.5cb2bd30.ico</Image>
+    <Image width="196" height="196" type="image/png">https://open.scdn.co/cdn/images/favicon.0c211e2e.png</Image>
+    <Url type="text/html" method="get" template="https://open.spotify.com/search/{searchTerms}"/>
+</OpenSearchDescription>

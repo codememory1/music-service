@@ -2,15 +2,20 @@ asset:
   # Resource paths
   paths:
     dist: public/
-    assets: public/assets/
+    assets: resources/front/
 
   # Active path that will be substituted as a prefix
-  activeOutput: assets
+  activeOutput: dist
 
   # File aliases
   aliases:
-    - "images/codememory.svg@cdm-svg-logo"
-    - "images/codememory_icon.png@cdm-icon"
+    - "js/app.js@app-js"
+    - "css/app.css@app-css"
+    - "images/og_cover.png@og_cover"
+    - "images/icon_32.png@icon_32"
+    - "images/icon_16.png@icon_16"
+    - "images/icon.ico@icon"
+    - "opensearch.xml@open_search"
 
   # Webpack builder settings
   webpack:

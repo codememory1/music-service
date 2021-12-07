@@ -1,0 +1,118 @@
+@import "../variables";
+
+.subscription {
+  width: 375px;
+  height: max-content;
+  padding: 60px 55px;
+  border-radius: 6px;
+  background-color: $dark-bg;
+  position: relative;
+
+  &__bang {
+    top: 0;
+    left: 0;
+    position: absolute;
+    padding: 10px 0;
+    text-align: center;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    width: 100%;
+
+    span {
+      text-transform: uppercase;
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: 25px;
+    font-weight: 500;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__mini-desc {
+    font-size: 14px;
+    font-weight: 500;
+    color: #696969;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__old-price {
+    margin-top: 30px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #939393;
+    width: 100%;
+    text-align: center;
+    text-decoration: line-through;
+  }
+
+  &__price {
+    font-size: 32px;
+    font-weight: 500;
+    color: #fff;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__is-valid {
+    font-size: 12px;
+    font-weight: 500;
+    color: #696969;
+    margin-top: 25px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__options {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__option {
+    display: flex;
+    margin-bottom: 20px;
+    align-items: center;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    &--name {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+  }
+
+  &__activate-button {
+    margin-top: 30px;
+    background-color: $accent;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: darken($accent, 10%);
+    }
+  }
+}

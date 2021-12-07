@@ -1,0 +1,80 @@
+.notification {
+  position: relative;
+  width: 430px;
+  height: max-content;
+  padding: 18px 21px;
+  display: flex;
+  border-radius: 8px;
+
+  &__icon {
+    display: flex;
+    align-content: center;
+    position: relative;
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+  }
+
+  &__title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 24px;
+    z-index: 9;
+  }
+
+  &__text {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: $white;
+    z-index: 9;
+  }
+}
+
+.notification_type {
+  &--success:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba($green, 0.26) 0%, $abs-light-bg 55.34%), $abs-light-bg;
+    left: 0;
+    top: 0;
+    border-radius: 8px;
+  }
+  &--error:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba($red, 0.26) 0%, $abs-light-bg 55.34%), $abs-light-bg;
+    left: 0;
+    top: 0;
+    border-radius: 8px;
+  }
+  &--warning:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba($yellow, 0.26) 0%, $abs-light-bg 55.34%), $abs-light-bg;
+    left: 0;
+    top: 0;
+    border-radius: 8px;
+  }
+}
+
+.notification_type--success .notification__title {
+  color: $green;
+}
+
+.notification_type--error .notification__title {
+  color: $red;
+}
+
+.notification_type--warning .notification__title {
+  color: $yellow;
+}

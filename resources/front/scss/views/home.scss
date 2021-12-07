@@ -1,0 +1,149 @@
+@import "../variables";
+
+.header {
+  padding: 50px 0;
+  background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+
+  &__navbar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__content {
+    display: flex;
+    padding-top: 130px;
+
+    &--left {
+      h1 {
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 32px;
+        font-size: 32px;
+        padding-top: 40px;
+      }
+
+      p {
+        font-size: 16px;
+        color: #939393;
+        font-weight: 500;
+        margin-bottom: 50px;
+      }
+    }
+
+    &--right {
+      img {
+        width: 100%;
+      }
+    }
+
+    &--button {
+      color: #fff;
+      padding: 10px 30px;
+      background-color: $accent;
+      border-radius: 30px;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: darken($accent, 10%);
+      }
+    }
+  }
+}
+
+.navbar {
+  &__right {
+    display: flex;
+  }
+}
+
+.navigation__items {
+  display: flex;
+  margin-right: 110px;
+}
+
+.navigation {
+  &__item {
+    margin-right: 50px;
+    list-style: none;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    a {
+      font-size: 18px;
+      font-weight: 400;
+      color: #fff;
+      transition: color 0.2s ease-in-out;
+
+      &:hover {
+        color: $accent;
+      }
+    }
+  }
+}
+
+.out-advantages__title {
+  color: #fff;
+  text-align: center;
+}
+
+.advantages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 40px;
+  grid-row-gap: 65px;
+  margin-top: 65px;
+}
+
+.advantage {
+  display: flex;
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__icon {
+    margin-right: 18px;
+  }
+
+  &__title {
+    color: $accent;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 15px;
+  }
+
+  &__text {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+  }
+}
+
+.subscriptions {
+  margin-top: 200px;
+  margin-bottom: 200px;
+}
+
+.subscriptions__title {
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.subscriptions__text {
+  color: #aaa;
+  font-size: 14px;
+  margin-bottom: 70px;
+  text-align: center;
+}
+
+.subscription__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}

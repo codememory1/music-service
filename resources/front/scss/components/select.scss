@@ -1,0 +1,143 @@
+@import "../variables";
+
+.select {
+  position: relative;
+  min-width: 150px;
+  color: #fff;
+
+  &__arrow {
+    transform: rotate(90deg);
+    transition: transform 0.2s ease-in-out;
+
+    &.active {
+      transform: rotate(265deg);
+    }
+  }
+}
+
+.selected__options {
+  display: flex;
+  background-color: $dark-bg;
+  border: 1px solid $light-border;
+  padding: 7px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  justify-content: space-between;
+}
+
+.list__options {
+  background-color: $dark-bg;
+  border: 1px solid $light-border;
+  margin-top: 5px;
+  border-radius: 5px;
+  position: absolute;
+  width: 100%;
+}
+
+.select__actions {
+  margin-left: 15px;
+
+  svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.options {
+  overflow: auto;
+  max-height: 150px;
+  height: max-content;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+.option {
+  list-style: none;
+  padding: 10px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  position: relative;
+
+  &:hover {
+    background-color: lighten($dark-bg, 10%);
+  }
+
+  &.active {
+    background-color: lighten($dark-bg, 10%);
+
+    &:before {
+      content: "";
+      background-image: url(public/images/icons/check-mark.svg);
+      position: absolute;
+      width: 13px;
+      height: 11px;
+      right: 10px;
+      top: 13px;
+    }
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
+.input-search__wrap {
+  position: relative;
+
+  svg {
+    position: absolute;
+    width: 15px;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.input__search {
+  background-color: $dark-bg;
+  border: none;
+  border-bottom: 1px solid $light-border;
+  width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 10px 35px 10px 13px;
+  color: #fff;
+  outline: none;
+
+  &::placeholder {
+    color: #EFEFEF;
+  }
+}
+
+.placeholder {
+  color: #999;
+}
+
+.selected__tag {
+  background: lighten($light-bg, 10%);
+  padding: 2px 7px;
+  margin: 0 2px;
+  border-radius: 5px;
+
+  i {
+    font-size: 12px;
+    color: #999;
+    padding: 0 2px;
+
+    &:hover {
+      color: #bdbdbd;
+    }
+  }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}

@@ -1,0 +1,134 @@
+@import "../variables";
+
+.player {
+  background-color: $dark-bg;
+  width: 100%;
+  height: max-content;
+  padding: 14px $gutter 40px;
+}
+
+.player__controls-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.player__button {
+  background-color: $light-for-dark;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 7.5px;
+  width: 34px;
+  height: 34px;
+
+  svg {
+    width: 16px;
+    height: 14px;
+
+    ::v-deep path {
+      fill: $gray-dark;
+      stroke: $gray-dark;
+    }
+  }
+
+  &:hover {
+    background-color: $light-border;
+  }
+}
+
+.player__left-control {
+  display: flex;
+}
+
+.player__right-control {
+  display: flex;
+  align-items: center;
+}
+
+.volume_progress {
+  margin: 0 10px;
+  width: 100px!important;
+  cursor: pointer;
+  position: relative;
+  bottom: 2px;
+}
+
+.player__center-control {
+  display: flex;
+  align-items: center;
+
+   div {
+    margin: 0 12px;
+    cursor: pointer;
+  }
+}
+
+.play-pause {
+  width: 42px;
+  height: 42px;
+  border-radius: 100%;
+  background-color: $accent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover {
+    background-color: darken($accent, 10%);
+  }
+}
+
+.duration_progress {
+  width: 100%!important;
+  margin: 0 55px;
+  cursor: pointer;
+}
+
+.duration, .total {
+  color: $gray-dark;
+}
+
+.player__controls-bottom {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.repeat, .shuffle, .min-volume, .max-volume {
+  ::v-deep path {
+    fill: $gray-dark;
+    stroke: $gray-dark;
+    transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
+  }
+
+  &:hover ::v-deep path {
+    fill: #fff;
+    stroke: #fff;
+  }
+}
+
+.prev, .next {
+  ::v-deep path {
+    fill: $accent;
+    stroke: $accent;
+  }
+
+  &:hover ::v-deep path {
+    fill: darken($accent, 10%);
+    stroke: darken($accent, 10%);
+  }
+}
+
+.max-volume {
+  margin-left: 5px;
+}

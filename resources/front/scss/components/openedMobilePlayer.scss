@@ -1,0 +1,93 @@
+@import "../variables";
+
+.opened-mobile-player {
+  width: 320px;
+  height: max-content;
+  padding: 15px 20px 50px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: $dark-bg;
+
+  &__image {
+    margin-top: 20px;
+    margin-bottom: 30px;
+
+    ::v-deep img {
+      width: 100%;
+      height: 260px;
+    }
+  }
+
+  &__times {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    ::v-deep span {
+      color: $gray-dark;
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
+
+  &__control {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &--center {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+  }
+}
+
+.music__name {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.music__author {
+  color: $gray-dark;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
+.repeat, .shuffle {
+  ::v-deep path {
+    fill: $gray-dark;
+    stroke: $gray-dark;
+  }
+}
+
+.next, .prev {
+  ::v-deep path {
+    fill: $gray-dark;
+    stroke: $gray-dark;
+  }
+}
+
+.play-pause {
+  margin: 0 20px;
+  background-color: $accent;
+  width: 42px;
+  height: 42px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.repeat, .shuffle, .next, .prev, .play-pause {
+  cursor: pointer;
+}

@@ -1,0 +1,47 @@
+.checkbox {
+  -webkit-appearance: none;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border: 1px solid $gray;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
+  border-radius: 2px;
+}
+
+.checkbox:before,
+.checkbox:after {
+  content: "";
+  position: absolute;
+  background-color: $dark-bg;
+  transform: rotate(317deg) scale(0);
+  border-radius: 2px;
+  transition: transform 0.4s ease-in-out;
+}
+
+.checkbox:before {
+  width: 2px;
+  height: 6px;
+  bottom: 2px;
+  left: 3px;
+}
+
+.checkbox:after {
+  width: 2px;
+  height: 12px;
+  bottom: 1px;
+  left: 9px;
+}
+
+.checkbox:checked {
+  background-color: $accent;
+  border-color: $accent;
+}
+
+.checkbox:checked:before {
+  transform: rotate(317deg) scale(1);
+}
+
+.checkbox:checked:after {
+  transform: rotate(45deg) scale(1);
+}

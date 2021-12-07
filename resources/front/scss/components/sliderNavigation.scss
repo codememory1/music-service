@@ -1,0 +1,46 @@
+@import "../variables";
+
+.slider-navigation {
+  display: flex;
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+
+    &:first-of-type {
+      margin-right: 20px;
+    }
+
+    svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    &.prev {
+      background-color: $dark-bg;
+
+      &:hover {
+        background-color: lighten($dark-bg, 5%);
+      }
+    }
+
+    &.swiper-button-disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    &.next {
+      background-color: $blue;
+
+      &:hover {
+        background-color: darken($blue, 10%);
+      }
+    }
+  }
+}
