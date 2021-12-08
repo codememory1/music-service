@@ -31,7 +31,7 @@
         <security-form-field
           label="Password"
           icon-class="fa-key"
-          :type="password"
+          type="password"
           v-model="password"
         />
         <!-- Form Fields END -->
@@ -75,6 +75,7 @@
 import SecurityModal from "./SecurityModalComponent";
 import SecurityModalForm from "./SecurityModalFormComponent";
 import SecurityFormField from "./SecurityFormFieldComponent";
+import BaseAxios from "../../modules/BaseAxios";
 
 export default {
   name: "AuthModal",
@@ -112,11 +113,35 @@ export default {
     /**
      * Handler when clicking on the authorization button
      */
-    signIn() {
+    async signIn() {
       if (this.remember) {
         this.$storage.create("auth_data", {
           login: this.login
         });
+      }
+
+      try {
+        await BaseAxios.post("/auth", {
+          username: this.login ?? "",
+          password: this.password ?? ""
+        });
+      } catch (e) {
+        const response = e.response;
+        const messages = response.data.messages;
+
+        if (response.status >= 400) {
+          this.$store.commit("notification/create", {
+            type: "error",
+            title: "Авторизация",
+            message: messages[0]
+          });
+        } else {
+          this.$store.commit("notification/create", {
+            type: "success",
+            title: "Авторизация",
+            message: messages[0]
+          });
+        }
       }
     }
   }

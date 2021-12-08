@@ -1,16 +1,9 @@
 <template>
   <div class="player-layout">
-    <div class="notifications">
-      <transition-group name="notification-fade" mode="out-in">
-        <base-notification
-          v-for="(notification, index) in notifications"
-          :key="index + notification.title"
-          :type="notification.type"
-          :title="notification.title"
-          :message="notification.message"
-        />
-      </transition-group>
-    </div>
+    <!-- Block with notifications -->
+    <block-notifications />
+
+    <!-- Player subdomain navigation -->
     <the-player-navigation />
     <div ref="playerLayoutContent" class="player-layout__content">
       <div class="content__scroll">
@@ -22,11 +15,10 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
 import ThePlayerHeader from "../components/Headers/ThePlayerHeaderComponent";
 import ThePlayerNavigation from "../components/Navigation/ThePlayerNavigationComponent";
 import DesktopPlayer from "../components/Player/DesktopPlayerComponent";
-import BaseNotification from "../components/BaseNotificationComponent";
+import BlockNotifications from "../components/Blocks/BlockNotificationsComponent";
 
 export default {
   name: "PlayerLayout",
@@ -34,7 +26,7 @@ export default {
     ThePlayerHeader,
     ThePlayerNavigation,
     DesktopPlayer,
-    BaseNotification
+    BlockNotifications
   },
 
   data: () => ({
@@ -43,12 +35,6 @@ export default {
       y: 0
     }
   }),
-
-  computed: {
-    ...mapGetters({
-      notifications: "notification/getNotifications"
-    })
-  },
 
   mounted() {
     const playerLayoutContentRect =
@@ -100,30 +86,5 @@ export default {
 
 .main__content {
   margin-bottom: 30px;
-}
-
-.notifications {
-  position: fixed;
-  top: 50px;
-  right: 50px;
-  display: flex;
-  flex-direction: column;
-  z-index: 999;
-
-  div.notification {
-    margin: 7.5px 0;
-  }
-}
-
-.notification-fade-enter-active,
-.notification-fade-leave-active {
-  transition: all 0.5s ease;
-  opacity: 1;
-}
-
-.notification-fade-enter,
-.notification-fade-leave-to {
-  transition: all 0.5s ease;
-  opacity: 0;
 }
 </style>

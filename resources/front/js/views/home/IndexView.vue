@@ -1,5 +1,8 @@
 <template>
   <div class="content">
+    <!-- Block with notifications -->
+    <block-notifications />
+
     <!--  Header component -->
     <the-home-header />
 
@@ -97,12 +100,12 @@
 
         <div class="subscription__cards">
           <base-subscription
-            id="1"
+            :id="1"
             title="Basic"
             mini-desc="Essential feature"
-            old-price="59.99"
-            price="53.99"
-            is-valid="5"
+            :old-price="59.99"
+            :price="53.99"
+            :is-valid="5"
             :options="[
               'Access to all features',
               '5 Watchlists included',
@@ -112,12 +115,12 @@
             ]"
           />
           <base-subscription
-            id="2"
+            :id="2"
             title="Pro"
             mini-desc="Advanced feature"
-            old-price="89.99"
-            price="80.99"
-            is-valid="5"
+            :old-price="89.99"
+            :price="80.99"
+            :is-valid="5"
             :options="[
               'Access to all features',
               '5 Watchlists included',
@@ -132,12 +135,12 @@
             </template>
           </base-subscription>
           <base-subscription
-            id="1"
+            :id="1"
             title="Basic"
             mini-desc="Essential feature"
-            old-price="59.99"
-            price="53.99"
-            is-valid="5"
+            :old-price="59.99"
+            :price="53.99"
+            :is-valid="5"
             :options="[
               'Access to all features',
               '5 Watchlists included',
@@ -160,13 +163,15 @@ import TheHomeHeader from "../../components/Headers/TheHomeHeaderComponent";
 import BaseSubscription from "../../components/Subscription/BaseSubscriptionComponent";
 import SubscriptionBang from "../../components/Subscription/SubscriptionBangComponent";
 import TheFooter from "../../components/TheFooterComponent";
+import BlockNotifications from "../../components/Blocks/BlockNotificationsComponent";
 
 export default {
   components: {
     TheHomeHeader,
     BaseSubscription,
     SubscriptionBang,
-    TheFooter
+    TheFooter,
+    BlockNotifications
   }
 };
 </script>
