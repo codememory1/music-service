@@ -83,11 +83,14 @@ class UserRepository extends AbstractEntityRepository
     public function findOneByOr(array $by): bool|UserEntity
     {
 
-        $result = $this->customFindBy($by, 'or')->entity()->all();
+        /** @var UserEntity|bool $result */
+        $result = $this->customFindBy($by, 'or')->entity()->first();
 
-        $this->addReferences($result);
+        if(false !== $result) {
+            $this->addReference($result);
+        }
 
-        return $result[0];
+        return $result;
 
     }
 

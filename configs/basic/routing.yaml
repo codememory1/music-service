@@ -13,7 +13,7 @@ routing:
   defaultHeaders:
     Access-Control-Allow-Origin: "*"
     Access-Control-Allow-Headers: "*"
-    Origin: "api.%env(app.host)%"
+    Access-Control-Allow-Methods: "*"
 
   # Created routes
   _routes: {}
