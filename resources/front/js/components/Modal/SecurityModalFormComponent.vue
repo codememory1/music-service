@@ -2,20 +2,24 @@
   <form class="security__form" @submit.prevent>
     <slot />
     <div class="security__button_wrap">
-      <base-form-button class="security__button accent" @click="$emit('click')">
+      <loading-button
+        class="security__button accent"
+        @click="$emit('click')"
+        :is-loading="btnIsLoading"
+      >
         {{ buttonLabel }}
-      </base-form-button>
+      </loading-button>
     </div>
   </form>
 </template>
 <script>
-import BaseFormButton from "../Buttons/BaseFormButtonComponent";
+import LoadingButton from "../Buttons/LoadingButtonComponent";
 
 export default {
   name: "SecurityModalForm",
 
   components: {
-    BaseFormButton
+    LoadingButton
   },
 
   props: {
@@ -27,6 +31,17 @@ export default {
     buttonLabel: {
       type: String,
       required: true
+    },
+
+    /**
+     * Show loader on button
+     *
+     * @type {Boolean}
+     */
+    btnIsLoading: {
+      type: Boolean,
+      default: false,
+      required: false
     }
   }
 };

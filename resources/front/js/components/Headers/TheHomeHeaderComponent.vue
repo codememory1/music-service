@@ -41,12 +41,14 @@
                 <a href="#">Download</a>
               </li>
               <li
+                v-if="!isAuth"
                 class="navigation__item"
                 @click.prevent="$refs.registerModal.open()"
               >
                 <a href="#">Sign up</a>
               </li>
               <li
+                v-if="!isAuth"
                 class="navigation__item"
                 @click.prevent="$refs.authModal.open()"
               >
@@ -70,6 +72,11 @@
               ]"
             />
           </div>
+          <div v-if="isAuth" class="navigation__user-profile">
+            <a :href="playerUrl">
+              <img src="/public/images/user.png" :alt="authUserData.name" />
+            </a>
+          </div>
         </div>
       </div>
       <div class="header__content">
@@ -89,11 +96,13 @@
   </header>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import BaseCustomSelect from "../../components/Select/BaseSelectComponent";
 import AuthModal from "../../components/Modal/AuthModalComponent";
 import RegisterModal from "../../components/Modal/RegisterModalComponent";
 import PasswordRecoveryModal from "../../components/Modal/PasswordRecoveryModalComponent";
 import ChangePasswordModal from "../../components/Modal/ChangePasswordModalComponent";
+import Config from "../../modules/Config";
 
 export default {
   name: "TheHomeHeader",
@@ -103,6 +112,21 @@ export default {
     RegisterModal,
     PasswordRecoveryModal,
     ChangePasswordModal
+  },
+
+  computed: {
+    ...mapGetters({
+      isAuth: "auth/isAuth",
+      authUserData: "auth/getUserData"
+    }),
+
+    playerUrl() {
+      return Config.player_url;
+    }
+  },
+
+  mounted() {
+    this.$store.dispatch("auth/loadUserData");
   },
 
   methods: {
@@ -116,3 +140,6 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+@import "../../../scss/components/homeHeader";
+</style>

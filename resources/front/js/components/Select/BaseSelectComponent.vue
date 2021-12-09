@@ -1,5 +1,5 @@
 <template>
-  <div class="select">
+  <div class="select" ref="baseCustomSelect">
     <div class="select__combobox">
       <!-- Selected options START -->
       <div class="selected__options" @click="openClose">
@@ -157,9 +157,13 @@ export default {
     if (this.selected.length === 0) {
       this.selected.push(this.getOptions[0].value);
     }
+  },
 
-    document.addEventListener("click", () => {
-      this.isOpen = false;
+  mounted() {
+    window.addEventListener("click", (event) => {
+      if (!this.$refs.baseCustomSelect.contains(event.target)) {
+        this.isOpen = false;
+      }
     });
   },
 

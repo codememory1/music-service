@@ -10,6 +10,7 @@ import ImageAlias from "./components/Globals/ImageAliasComponent";
 import InlineSvgAlias from "./components/Globals/InlineSvgAliasComponent";
 
 // Import Plugins
+import Cookie from "vue-cookies";
 import AxiosInstance from "./plugins/AxiosInstance";
 import IsEmpty from "./plugins/IsEmpty";
 import Storage from "./plugins/Storage";
@@ -17,6 +18,7 @@ import Storage from "./plugins/Storage";
 // Import Directives
 import VTooltip from "v-tooltip";
 
+Vue.use(Cookie);
 Vue.use(AxiosInstance);
 Vue.use(TouchEvents);
 Vue.use(IsEmpty);

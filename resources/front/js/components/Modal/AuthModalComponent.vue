@@ -21,6 +21,7 @@
       <security-modal-form
         button-label="Sing in to your account"
         @click="signIn"
+        :btn-is-loading="btnIsLoading"
       >
         <!-- Form Fields START -->
         <security-form-field
@@ -75,7 +76,7 @@
 import SecurityModal from "./SecurityModalComponent";
 import SecurityModalForm from "./SecurityModalFormComponent";
 import SecurityFormField from "./SecurityFormFieldComponent";
-import BaseAxios from "../../modules/BaseAxios";
+import response from "../../api/auth";
 
 export default {
   name: "AuthModal",
@@ -88,7 +89,8 @@ export default {
   data: () => ({
     login: null,
     password: null,
-    remember: false
+    remember: false,
+    btnIsLoading: false
   }),
 
   created() {
@@ -114,35 +116,81 @@ export default {
      * Handler when clicking on the authorization button
      */
     async signIn() {
+      this.btnIsLoading = true;
+
       if (this.remember) {
         this.$storage.create("auth_data", {
           login: this.login
         });
       }
 
-      try {
-        await BaseAxios.post("/auth", {
-          username: this.login ?? "",
-          password: this.password ?? ""
-        });
-      } catch (e) {
-        const response = e.response;
-        const messages = response.data.messages;
+      const authResponse = await response(
+        this.login ?? "",
+        this.password ?? ""
+      );
 
-        if (response.status >= 400) {
-          this.$store.commit("notification/create", {
-            type: "error",
-            title: "Авторизация",
-            message: messages[0]
-          });
-        } else {
-          this.$store.commit("notification/create", {
-            type: "success",
-            title: "Авторизация",
-            message: messages[0]
-          });
-        }
+      this.responseHandler(authResponse);
+    },
+
+    /**
+     * Authorization response handler
+     *
+     * @param response
+     */
+    responseHandler(response) {
+      this.btnIsLoading = false;
+
+      if (response.status >= 400) {
+        this.$store.commit("notification/create", {
+          type: "error",
+          title: "Авторизация",
+          message: response.data.messages[0]
+        });
+      } else {
+        this.successAuth(response);
       }
+    },
+
+    /**
+     * Successful authorization handler
+     *
+     * @param response
+     */
+    successAuth(response) {
+      this.$store.commit("notification/create", {
+        type: "success",
+        title: "Авторизация",
+        message: response.data.messages[0]
+      });
+
+      this.installationTokens(response.data.data);
+      this.zeroingInputData();
+
+      this.$store.dispatch("auth/loadUserData");
+
+      // Closing the modal login window
+      this.$refs.securityModal.close();
+    },
+
+    /**
+     * Setting tokens in localStorage
+     *
+     * @param {{access_token: string, refresh_token: string}} tokens
+     */
+    installationTokens(tokens) {
+      this.$cookies.set("access_token", tokens.access_token);
+      this.$cookies.set("refresh_token", tokens.refresh_token);
+
+      this.$store.commit("auth/setAccessToken", tokens.access_token);
+      this.$store.commit("auth/setRefreshToken", tokens.refresh_token);
+    },
+
+    /**
+     * Zeroing the login credentials
+     */
+    zeroingInputData() {
+      this.login = null;
+      this.password = null;
     }
   }
 };
