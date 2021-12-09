@@ -17,37 +17,38 @@ use Codememory\Routing\Router;
  *
  */
 
-Router::subdomainGroup('api', function () {
+Router::group('/api/', function () {
     // Registration
-    Router::post('/register', [SecurityController::class, 'register'], true);
+    Router::post('register/', [SecurityController::class, 'register'], true);
 
     // Account activation
-    Router::get('/register/activate/:token', [SecurityController::class, 'accountActivation'], true)
+    Router::get('register/activate/:token/', [SecurityController::class, 'accountActivation'], true)
         ->with('token', '.+');
 
     // Authorization
-    Router::post('/auth', [SecurityController::class, 'auth'], true);
+    Router::post('auth/', [SecurityController::class, 'auth'], true);
 
-    Router::get('/refresh-access-token', [SecurityController::class, 'refreshAccessToken'], true);
+    Router::get('refresh-access-token/', [SecurityController::class, 'refreshAccessToken'], true);
 
-    Router::group('/user/', function () {
+    Router::group('user/', function () {
         Router::get('current/', [UserController::class, 'showCurrentUser'], true);
     });
 
     // Routes associated with user passwords
-    Router::group('/password-recovery/', function () {
+    Router::group('password-recovery/', function () {
         Router::post('restore-request/', [PasswordRecoveryController::class, 'restoreRequest'], true);
         Router::post('change/', [PasswordRecoveryController::class, 'change'], true);
     });
 
-    Router::resource('/playlist', PlaylistController::class);
-    Router::resource('/subscription', SubscriptionController::class);
+    Router::resource('playlist/', PlaylistController::class);
+    Router::resource('subscription/', SubscriptionController::class);
 
     // Routes are associated with languages
-    Router::group('/language/', function () {
+    Router::group('language/', function () {
         Router::get('translations/', [TranslationController::class, 'translations'], true);
         Router::post('create/', [TranslationController::class, 'createLanguage'], true);
-        Router::post(':lang/translations/add/', [TranslationController::class, 'addTranslation'], true)->with('lang', '[a-z]+');
+        Router::post(':lang/translations/add/', [TranslationController::class, 'addTranslation'], true)
+            ->with('lang', '[a-z]+');
 
         Router::group('cache/', function () {
             Router::put('update/', [TranslationController::class, 'updateCache'], true);
@@ -55,11 +56,14 @@ Router::subdomainGroup('api', function () {
     });
 
     // Routes associated with music
-    Router::group('/track/', function () {
+    Router::group('track/', function () {
         Router::post('add/', [TrackController::class, 'addTrack'], true);
-        Router::get(':hash/info/', [TrackController::class, 'infoTrack'], true)->with('hash', '.+');
-        Router::delete(':hash/delete/', [TrackController::class, 'deleteTrack'], true)->with('hash', '.+');
+        Router::get(':hash/info/', [TrackController::class, 'infoTrack'], true)
+            ->with('hash', '.+');
+        Router::delete(':hash/delete/', [TrackController::class, 'deleteTrack'], true)
+            ->with('hash', '.+');
 
-        Router::put(':hash/text/edit/', [TrackController::class, 'editTrackText'], true)->with('hash', '.+');
+        Router::put(':hash/text/edit/', [TrackController::class, 'editTrackText'], true)
+            ->with('hash', '.+');
     });
 });
