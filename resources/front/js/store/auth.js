@@ -1,4 +1,5 @@
 import BaseAxios from "../modules/BaseAxios";
+import Cookies from "js-cookie";
 
 export default {
   namespaced: true,
@@ -37,7 +38,7 @@ export default {
      * @returns {string}
      */
     getAccessToken(state) {
-      return state.tokens.accessToken ?? this.$cookies.get("access_token");
+      return state.tokens.accessToken ?? Cookies.get("access_token");
     },
 
     /**
@@ -46,7 +47,7 @@ export default {
      * @returns {string}
      */
     getRefreshToken(state) {
-      return state.tokens.refreshToken ?? this.$cookies.get("refresh_token");
+      return state.tokens.refreshToken ?? Cookies.get("refresh_token");
     }
   },
 
@@ -57,6 +58,10 @@ export default {
      * @param token
      */
     setAccessToken(state, token) {
+      Cookies.set("access_token", token, {
+        domain: ".music-service.loc"
+      });
+
       state.tokens.accessToken = token;
     },
 
@@ -66,6 +71,10 @@ export default {
      * @param token
      */
     setRefreshToken(state, token) {
+      Cookies.set("refresh_token", token, {
+        domain: ".music-service.loc"
+      });
+
       state.tokens.refreshToken = token;
     }
   },

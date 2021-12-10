@@ -178,9 +178,6 @@ export default {
      * @param {{access_token: string, refresh_token: string}} tokens
      */
     installationTokens(tokens) {
-      this.$cookies.set("access_token", tokens.access_token);
-      this.$cookies.set("refresh_token", tokens.refresh_token);
-
       this.$store.commit("auth/setAccessToken", tokens.access_token);
       this.$store.commit("auth/setRefreshToken", tokens.refresh_token);
     },
