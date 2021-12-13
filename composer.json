@@ -18,6 +18,7 @@
         "ext-pdo": "*",
         "ext-redis": "*",
         "ext-xhprof": "*",
+        "benlipp/srt-parser": "^1.1",
         "codememory/asset": "^1.0",
         "codememory/caching": "^1.1",
         "codememory/config": "2.0",

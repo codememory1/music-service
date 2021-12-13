@@ -94,6 +94,15 @@ final class Migration1637949838InsertTranslationKeys extends AbstractMigration
             [70, 'track@successAddText'],
             [71, 'common@invalidRefreshToken'],
             [72, 'refreshToken@successRefreshAccessToken'],
+            [73, 'track@invalidSubtitlesType'],
+            [74, 'track@invalidFormatSubtitles'],
+            [75, 'track@dublicateLabels'],
+            [76, 'track@successAddSubtitles'],
+            [77, 'track@numberSubtitleFiles'],
+            [78, 'track@subtitleMimeType'],
+            [79, 'track@subtitleExtension'],
+            [80, 'track@subtitleManualIsRequired'],
+            [81, 'track@subtitleInvalidFormat'],
         ]);
 
     }
@@ -104,7 +113,7 @@ final class Migration1637949838InsertTranslationKeys extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DELETE FROM `translation_keys` WHERE `id` <= 72');
+        $schema->addSql('DELETE FROM `translation_keys` WHERE `id` <= 81');
 
     }
 

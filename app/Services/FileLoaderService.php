@@ -142,16 +142,16 @@ class FileLoaderService extends AbstractApiService
     }
 
     /**
-     * @param callable $nameHandler
+     * @param callable|null $nameHandler
      *
      * @return MakeUploadInterface
      */
-    public function upload(callable $nameHandler): MakeUploadInterface
+    public function upload(?callable $nameHandler = null): MakeUploadInterface
     {
 
         $uploader = $this->getUploader();
 
-        return $uploader
+        $uploader = $uploader
             ->whereToSave($this->saveIn)
             ->mimeTypes($this->mimeTypes)
             ->extensions($this->extensions)
@@ -165,13 +165,16 @@ class FileLoaderService extends AbstractApiService
                 }
             })
             ->changeUploadFilesData(function (array &$files) use ($nameHandler) {
-                foreach ($files as &$file) {
-                    $file['name'] = call_user_func($nameHandler, $file, $this->saveIn);
+                if(null !== $nameHandler) {
+                    foreach ($files as &$file) {
+                        $file['name'] = call_user_func($nameHandler, $file, $this->saveIn);
+                    }
                 }
 
                 $this->uploadedFiles = $files;
-            })
-            ->make();
+            });
+
+        return $uploader->make();
 
     }
 

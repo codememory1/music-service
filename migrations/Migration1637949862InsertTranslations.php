@@ -94,6 +94,15 @@ final class Migration1637949862InsertTranslations extends AbstractMigration
             [1, 70, 'Трек песни успешно добавлен'],
             [1, 71, 'Некорректный Refresh-Token'],
             [1, 72, 'Access-Token успешно обновлен'],
+            [1, 73, 'Некорректный вид субтитров'],
+            [1, 74, 'Некорректный формат субтитров'],
+            [1, 75, 'В субтитрах существуют повторные метки'],
+            [1, 76, 'Субтитры успешно добавлены'],
+            [1, 77, 'Количество файлов с субтитрами должно составлять 1'],
+            [1, 78, 'Некорретный mime-type файла'],
+            [1, 79, 'Расширение файла с субтитрами должно быть .srt'],
+            [1, 80, 'Ручной ввод субтитров обязательный к заполнению'],
+            [1, 81, 'Некорректный формат субтитров'],
         ]);
 
     }
@@ -104,7 +113,7 @@ final class Migration1637949862InsertTranslations extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DELETE FROM `language_translations` WHERE `translation_key_id` <= 72');
+        $schema->addSql('DELETE FROM `language_translations` WHERE `translation_key_id` <= 81');
 
     }
 

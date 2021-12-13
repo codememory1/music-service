@@ -100,6 +100,25 @@ class TrackService extends AbstractApiService
     }
 
     /**
+     * @param string            $fullHash
+     * @param ValidationManager $validationManager
+     *
+     * @return ResponseApiCollectorService
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
+    public function addSubtitles(string $fullHash, ValidationManager $validationManager): ResponseApiCollectorService
+    {
+
+        /** @var AddSubtitlesService $addSubtitles */
+        $addSubtitles = $this->getService('Track\AddSubtitles');
+
+        return $addSubtitles->make($this->getDataHash($fullHash), $validationManager, $this->trackRepository);
+
+    }
+
+    /**
      * @return TrackRepository
      */
     public function getTrackRepository(): TrackRepository

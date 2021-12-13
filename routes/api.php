@@ -47,7 +47,8 @@ Router::subdomainGroup('api', function () {
     Router::group('/language/', function () {
         Router::get('translations/', [TranslationController::class, 'translations'], true);
         Router::post('create/', [TranslationController::class, 'createLanguage'], true);
-        Router::post(':lang/translations/add/', [TranslationController::class, 'addTranslation'], true)->with('lang', '[a-z]+');
+        Router::post(':lang/translations/add/', [TranslationController::class, 'addTranslation'], true)
+            ->with('lang', '[a-z]+');
 
         Router::group('cache/', function () {
             Router::put('update/', [TranslationController::class, 'updateCache'], true);
@@ -57,9 +58,19 @@ Router::subdomainGroup('api', function () {
     // Routes associated with music
     Router::group('/track/', function () {
         Router::post('add/', [TrackController::class, 'addTrack'], true);
-        Router::get(':hash/info/', [TrackController::class, 'infoTrack'], true)->with('hash', '.+');
-        Router::delete(':hash/delete/', [TrackController::class, 'deleteTrack'], true)->with('hash', '.+');
+        Router::get(':hash/info/', [TrackController::class, 'infoTrack'], true)
+            ->with('hash', '.+');
+        Router::delete(':hash/delete/', [TrackController::class, 'deleteTrack'], true)
+            ->with('hash', '.+');
 
-        Router::put(':hash/text/edit/', [TrackController::class, 'editTrackText'], true)->with('hash', '.+');
+        Router::group(':hash/text/', function () {
+            Router::put('edit/', [TrackController::class, 'editTrackText'], true)
+                ->with('hash', '.+');
+        });
+
+        Router::group(':hash/subtitles/', function () {
+            Router::post('add/', [TrackController::class, 'addSubtitles'], true)
+                ->with('hash', '.+');
+        });
     });
 });

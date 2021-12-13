@@ -126,4 +126,16 @@ class TrackController extends AbstractAuthorizationController
 
     }
 
+    public function addSubtitles(string $hash): void
+    {
+
+//        $this->isExistRight($authorizedUser, AccessRightNameRepository::ADD_MUSIC);
+
+        // Answer about adding subtitles to a track
+        $responseAddSubtitles = $this->trackService->addSubtitles($hash, $this->validatorManager());
+
+        $this->response->json($responseAddSubtitles->getResponse(), $responseAddSubtitles->getStatus());
+
+    }
+
 }

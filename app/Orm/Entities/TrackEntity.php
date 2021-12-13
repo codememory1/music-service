@@ -296,7 +296,7 @@ class TrackEntity
     /**
      * @return bool
      */
-    public function getFoul_language(): bool
+    public function getFoulLanguage(): bool
     {
 
         return (bool) $this->foul_language;
