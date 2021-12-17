@@ -21,7 +21,7 @@ final class Migration1637949855InsertLanguages extends AbstractMigration
 
         $schema->selectTable('languages');
 
-        $schema->insertRecords(['id', 'lang'], ...[
+        $schema->insertRecords(['id', 'lang_code'], ...[
             [1, 'ru'],
             [2, 'en'],
         ]);
@@ -34,7 +34,7 @@ final class Migration1637949855InsertLanguages extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DELETE FROM `translation_keys`');
+        $schema->addSql('DELETE FROM `translation_keys` WHERE `id` <= 2');
 
     }
 

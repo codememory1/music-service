@@ -19,7 +19,7 @@ final class Migration1632746315CreateRoleRightTable extends AbstractMigration
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `role_rights` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`access_right` INT NOT NULL,`role_id` INT NOT NULL,`allowed` TINYINT(1) NOT NULL DEFAULT 0);ALTER TABLE `role_rights` ADD CONSTRAINT `access_right_fk` FOREIGN KEY (`access_right`) REFERENCES access_right_names(`id`) ON DELETE CASCADE;ALTER TABLE `role_rights` ADD CONSTRAINT `role_id_fk` FOREIGN KEY (`role_id`) REFERENCES roles(`id`) ON DELETE CASCADE');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `role_rights` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`access_right_id` BIGINT UNSIGNED NOT NULL,`role_id` BIGINT UNSIGNED NOT NULL);ALTER TABLE `role_rights` ADD CONSTRAINT `FK_RoleRight_AccessRightName` FOREIGN KEY (`access_right_id`) REFERENCES access_right_names(`id`) ON DELETE CASCADE;ALTER TABLE `role_rights` ADD CONSTRAINT `FK_RoleRight_Role` FOREIGN KEY (`role_id`) REFERENCES roles(`id`) ON DELETE CASCADE');
 
     }
 
@@ -29,7 +29,12 @@ final class Migration1632746315CreateRoleRightTable extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `role_rights`');
+        $schema->selectTable('role_rights');
+
+        $schema->dropForeign('FK_RoleRight_AccessRightName');
+        $schema->dropForeign('FK_RoleRight_Role');
+
+        $schema->dropTable();
 
     }
 

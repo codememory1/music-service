@@ -19,7 +19,7 @@ final class Migration1632837452CreateUserTable extends AbstractMigration
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `users` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`userid` INT NOT NULL,`name` VARCHAR(32) NOT NULL,`email` VARCHAR(255) NOT NULL,`username` VARCHAR(255) NOT NULL,`password` TEXT NOT NULL,`surname` VARCHAR(32) NULL DEFAULT NULL,`patronymic` VARCHAR(32) NULL DEFAULT NULL,`birth` DATE NULL DEFAULT NULL,`subscription` INT NULL DEFAULT NULL,`role` INT NOT NULL DEFAULT 1,`status` INT NOT NULL DEFAULT 0,`activation_token` TEXT NULL DEFAULT NULL,`created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP);ALTER TABLE `users` ADD CONSTRAINT `role_fk` FOREIGN KEY (`role`) REFERENCES roles(`id`)');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `users` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT UNSIGNED NOT NULL,`name` VARCHAR(32) NOT NULL,`email` VARCHAR(255) NOT NULL,`username` VARCHAR(255) NOT NULL,`password` TEXT NOT NULL,`surname` VARCHAR(32) NULL DEFAULT NULL,`patronymic` VARCHAR(32) NULL DEFAULT NULL,`birth` DATE NULL DEFAULT NULL,`subscription_id` BIGINT UNSIGNED NULL DEFAULT NULL,`role_id` BIGINT UNSIGNED NOT NULL DEFAULT 1,`status` TINYINT(2) NOT NULL DEFAULT 0,`created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP);ALTER TABLE `users` ADD CONSTRAINT `FK_User_Role` FOREIGN KEY (`role_id`) REFERENCES roles(`id`)');
 
     }
 
@@ -29,7 +29,11 @@ final class Migration1632837452CreateUserTable extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `users`');
+        $schema->selectTable('users');
+
+        $schema->dropForeign('FK_User_Role');
+
+        $schema->dropTable();
 
     }
 

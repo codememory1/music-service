@@ -19,7 +19,7 @@ final class Migration1639266738CreateTrackSubtitleTable extends AbstractMigratio
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `track_subtitles` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`track_id` INT NOT NULL,`subtitles` JSON NOT NULL,`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP);ALTER TABLE `track_subtitles` ADD CONSTRAINT `track_subtitles_track_id_fk` FOREIGN KEY (`track_id`) REFERENCES tracks(`id`) ON DELETE CASCADE');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `track_subtitles` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`track_id` BIGINT UNSIGNED NOT NULL,`subtitles` JSON NOT NULL,`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP);ALTER TABLE `track_subtitles` ADD CONSTRAINT `FK_TrackSubtitle_Track` FOREIGN KEY (`track_id`) REFERENCES tracks(`id`) ON DELETE CASCADE');
 
     }
 
@@ -29,7 +29,11 @@ final class Migration1639266738CreateTrackSubtitleTable extends AbstractMigratio
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `track_subtitles`');
+        $schema->selectTable('track_subtitles');
+
+        $schema->dropForeign('FK_TrackSubtitle_Track');
+
+        $schema->dropTable();
 
     }
 

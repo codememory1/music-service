@@ -19,7 +19,7 @@ final class Migration1634237180CreatePasswordResetTable extends AbstractMigratio
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `password_resets` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` INT NOT NULL UNIQUE,`code` VARCHAR(6) NOT NULL,`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP);ALTER TABLE `password_resets` ADD CONSTRAINT `password_resets_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `password_resets` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT UNSIGNED NOT NULL UNIQUE,`code` TINYINT(6) NOT NULL,`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP);ALTER TABLE `password_resets` ADD CONSTRAINT `FK_PasswordReset_User` FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE');
 
     }
 
@@ -29,7 +29,11 @@ final class Migration1634237180CreatePasswordResetTable extends AbstractMigratio
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `password_resets`');
+        $schema->selectTable('password_resets');
+
+        $schema->dropForeign('FK_PasswordReset_User');
+
+        $schema->dropTable();
 
     }
 

@@ -19,7 +19,7 @@ final class Migration1633039574CreatePlaylistTable extends AbstractMigration
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `playlists` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`userid` INT NOT NULL,`name` VARCHAR(100) NOT NULL,`reserved` TINYINT(1) NOT NULL DEFAULT 0,`temporary` DATETIME NULL DEFAULT NULL,`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` DATETIME NULL DEFAULT NULL)');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `playlists` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT UNSIGNED NOT NULL,`name` VARCHAR(100) NOT NULL,`reserved` TINYINT(1) NOT NULL DEFAULT 0,`temporary` DATETIME NULL DEFAULT NULL,`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` DATETIME NULL DEFAULT NULL);ALTER TABLE `playlists` ADD CONSTRAINT `FK_Playlist_User` FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE');
 
     }
 
@@ -29,7 +29,11 @@ final class Migration1633039574CreatePlaylistTable extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `playlists`');
+        $schema->selectTable('playlists');
+
+        $schema->dropForeign('FK_Playlist_User');
+
+        $schema->dropTable();
 
     }
 

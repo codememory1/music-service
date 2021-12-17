@@ -19,7 +19,7 @@ final class Migration1637713452CreateAlbumTypeTable extends AbstractMigration
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `album_types` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(32) NOT NULL,`created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP)');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `album_types` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(32) NOT NULL,`created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,`updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP)');
 
     }
 
@@ -29,7 +29,9 @@ final class Migration1637713452CreateAlbumTypeTable extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `album_types`');
+        $schema->selectTable('album_types');
+
+        $schema->dropTable();
 
     }
 

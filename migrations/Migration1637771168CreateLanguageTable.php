@@ -19,7 +19,7 @@ final class Migration1637771168CreateLanguageTable extends AbstractMigration
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `languages` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`lang` VARCHAR(5) NOT NULL UNIQUE)');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `languages` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`lang_code` VARCHAR(5) NOT NULL UNIQUE)');
 
     }
 
@@ -29,7 +29,9 @@ final class Migration1637771168CreateLanguageTable extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `languages`');
+        $schema->selectTable('languages');
+
+        $schema->dropTable();
 
     }
 

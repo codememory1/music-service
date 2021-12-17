@@ -21,7 +21,7 @@ final class Migration1633553829InsertRoleRights extends AbstractMigration
 
         $schema->selectTable('role_rights');
 
-        $schema->insertRecords(['access_right', 'role_id'], ...[
+        $schema->insertRecords(['access_right_id', 'role_id'], ...[
             # Administrator
             [1, 2], [5, 2], [6, 2], [7, 2],
 
@@ -44,7 +44,7 @@ final class Migration1633553829InsertRoleRights extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DELETE FROM `access_right_names`');
+        $schema->addSql('DELETE FROM `role_rights`');
 
     }
 

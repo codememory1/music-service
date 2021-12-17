@@ -19,7 +19,7 @@ final class Migration1637771169CreateTranslationKeyTable extends AbstractMigrati
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `translation_keys` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`key` VARCHAR(64) NOT NULL UNIQUE)');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `translation_keys` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`key` VARCHAR(64) NOT NULL UNIQUE)');
 
     }
 
@@ -29,7 +29,9 @@ final class Migration1637771169CreateTranslationKeyTable extends AbstractMigrati
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `translation_keys`');
+        $schema->selectTable('translation_keys');
+
+        $schema->dropTable();
 
     }
 

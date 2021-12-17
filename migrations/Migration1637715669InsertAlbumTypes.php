@@ -36,7 +36,7 @@ final class Migration1637715669InsertAlbumTypes extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-    
+        $schema->addSql('DELETE FROM `album_types`');
 
     }
 

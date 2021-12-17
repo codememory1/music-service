@@ -19,7 +19,7 @@ final class Migration1637713455CreateAlbumArtistTable extends AbstractMigration
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `album_artists` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`album_id` INT NOT NULL,`user_id` INT NOT NULL);ALTER TABLE `album_artists` ADD FOREIGN KEY (`album_id`) REFERENCES albums(`id`) ON DELETE CASCADE;ALTER TABLE `album_artists` ADD FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `album_artists` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`album_id` BIGINT UNSIGNED NOT NULL,`user_id` BIGINT UNSIGNED NOT NULL);ALTER TABLE `album_artists` ADD CONSTRAINT `FK_AlbumArtist_Album` FOREIGN KEY (`album_id`) REFERENCES albums(`id`) ON DELETE CASCADE;ALTER TABLE `album_artists` ADD CONSTRAINT `FK_AlbumArtist_User` FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE');
 
     }
 
@@ -29,7 +29,12 @@ final class Migration1637713455CreateAlbumArtistTable extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `album_artists`');
+        $schema->selectTable('album_artists');
+
+        $schema->dropForeign('FK_AlbumArtist_Album');
+        $schema->dropForeign('FK_AlbumArtist_User');
+
+        $schema->dropTable();
 
     }
 

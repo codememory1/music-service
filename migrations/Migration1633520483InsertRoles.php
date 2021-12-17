@@ -38,6 +38,7 @@ final class Migration1633520483InsertRoles extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
+        $schema->addSql('DELETE FROM `roles` WHERE `id` <= 5');
 
     }
 

@@ -19,7 +19,7 @@ final class Migration1633817858CreateSortingTable extends AbstractMigration
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `sorting` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`table` VARCHAR(64) NOT NULL UNIQUE,`columns` JSON NOT NULL)');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `sorting` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`table` VARCHAR(64) NOT NULL UNIQUE,`columns` JSON NOT NULL)');
 
     }
 
@@ -29,7 +29,9 @@ final class Migration1633817858CreateSortingTable extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `sorting`');
+        $schema->selectTable('sorting');
+
+        $schema->dropTable();
 
     }
 

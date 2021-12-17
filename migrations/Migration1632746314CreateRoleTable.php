@@ -19,7 +19,7 @@ final class Migration1632746314CreateRoleTable extends AbstractMigration
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `roles` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(100) NOT NULL UNIQUE)');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `roles` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(100) NOT NULL UNIQUE)');
 
     }
 
@@ -29,7 +29,9 @@ final class Migration1632746314CreateRoleTable extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `roles`');
+        $schema->selectTable('roles');
+
+        $schema->dropTable();
 
     }
 

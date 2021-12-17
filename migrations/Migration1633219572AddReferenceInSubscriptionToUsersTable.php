@@ -27,9 +27,9 @@ final class Migration1633219572AddReferenceInSubscriptionToUsersTable extends Ab
         $reference = new Reference();
         $reference->add(function (ReferenceDefinitionInterface $definition) {
             $definition
-                ->constraint('user_subscription_fk')
+                ->constraint('FK_User_Subscription')
                 ->table('subscriptions')
-                ->foreignKeys('subscription')
+                ->foreignKeys('subscription_id')
                 ->internalKeys('id')
                 ->onDelete(ReferenceDefinition::RD_SET_NULL);
         });
@@ -46,7 +46,7 @@ final class Migration1633219572AddReferenceInSubscriptionToUsersTable extends Ab
 
         $schema->selectTable('users');
 
-        $schema->dropForeign('user_subscription');
+        $schema->dropForeign('FK_User_Subscription');
 
     }
 

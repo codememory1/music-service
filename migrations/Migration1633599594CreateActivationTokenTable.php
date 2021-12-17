@@ -19,7 +19,7 @@ final class Migration1633599594CreateActivationTokenTable extends AbstractMigrat
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `activation_tokens` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` INT NOT NULL,`token` TEXT NOT NULL);ALTER TABLE `activation_tokens` ADD CONSTRAINT `user_id_fk` FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `activation_tokens` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT UNSIGNED NOT NULL,`token` TEXT NOT NULL);ALTER TABLE `activation_tokens` ADD FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE');
 
     }
 
@@ -29,7 +29,9 @@ final class Migration1633599594CreateActivationTokenTable extends AbstractMigrat
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `activation_tokens`');
+        $schema->selectTable('activation_tokens');
+
+        $schema->dropTable();
 
     }
 

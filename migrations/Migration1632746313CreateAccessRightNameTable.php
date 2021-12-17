@@ -19,7 +19,7 @@ final class Migration1632746313CreateAccessRightNameTable extends AbstractMigrat
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `access_right_names` (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(50) NOT NULL UNIQUE)');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `access_right_names` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`name` VARCHAR(50) NOT NULL UNIQUE)');
 
     }
 
@@ -29,7 +29,9 @@ final class Migration1632746313CreateAccessRightNameTable extends AbstractMigrat
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DROP TABLE IF EXISTS `access_right_names`');
+        $schema->selectTable('access_right_names');
+
+        $schema->dropTable();
 
     }
 
