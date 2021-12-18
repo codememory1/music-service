@@ -3,8 +3,6 @@
 namespace App\Orm\Entities;
 
 use Codememory\Components\Database\Orm\Constructions as ORM;
-use Codememory\Components\Database\Orm\Interfaces\RelationshipInterface;
-use Codememory\Components\Database\Schema\StatementComponents\ReferenceDefinition;
 
 /**
  * Class TrackEntity
@@ -41,12 +39,6 @@ class TrackEntity
      * @var int|null
      */
     #[ORM\Column(name: 'category_id', type: 'bigint unsigned', length: null, nullable: false)]
-    #[ORM\Reference(
-        entity: TrackCategoryEntity::class,
-        referencedColumnName: 'id',
-        on: [RelationshipInterface::ON_DELETE],
-        onOptions: [ReferenceDefinition::RD_CASCADE]
-    )]
     private ?int $category_id = null;
 
     /**
@@ -66,12 +58,6 @@ class TrackEntity
      * @var int|null
      */
     #[ORM\Column(name: 'album_id', type: 'bigint unsigned', length: null, nullable: false)]
-    #[ORM\Reference(
-        entity: AlbumEntity::class,
-        referencedColumnName: 'id',
-        on: [RelationshipInterface::ON_DELETE],
-        onOptions: [ReferenceDefinition::RD_CASCADE]
-    )]
     private ?int $album_id = null;
 
     /**

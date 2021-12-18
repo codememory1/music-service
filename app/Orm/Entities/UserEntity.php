@@ -80,7 +80,6 @@ class UserEntity
      */
     #[ORM\Column(name: 'role_id', type: 'int', length: null, nullable: false)]
     #[ORM\DefaultValue(value: '1')]
-    #[ORM\Reference(entity: RoleEntity::class, referencedColumnName: 'id')]
     private ?int $role_id = null;
 
     /**

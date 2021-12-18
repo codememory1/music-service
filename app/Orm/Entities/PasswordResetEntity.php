@@ -3,8 +3,6 @@
 namespace App\Orm\Entities;
 
 use Codememory\Components\Database\Orm\Constructions as ORM;
-use Codememory\Components\Database\Orm\Interfaces\RelationshipInterface;
-use Codememory\Components\Database\Schema\StatementComponents\ReferenceDefinition;
 
 /**
  * Class PasswordResetEntity
@@ -30,12 +28,6 @@ class PasswordResetEntity
      */
     #[ORM\Column(name: 'user_id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Unique]
-    #[ORM\Reference(
-        entity: UserEntity::class,
-        referencedColumnName: 'id',
-        on: [RelationshipInterface::ON_DELETE],
-        onOptions: [ReferenceDefinition::RD_CASCADE]
-    )]
     private ?int $user_id = null;
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Orm\Entities;
 
 use Codememory\Components\Database\Orm\Constructions as ORM;
-use Codememory\Components\Database\Orm\Interfaces\RelationshipInterface;
 
 /**
  * Class SubscriptionOptionEntity
@@ -28,24 +27,12 @@ class SubscriptionOptionEntity
      * @var int|null
      */
     #[ORM\Column(name: 'subscription_option_name_id', type: 'bigint unsigned', length: null, nullable: false)]
-    #[ORM\Reference(
-        entity: SubscriptionOptionNameEntity::class,
-        referencedColumnName: 'id',
-        on: [RelationshipInterface::ON_DELETE],
-        onOptions: [RelationshipInterface::DEFAULT_ON_OPTION]
-    )]
     private ?int $subscription_option_name_id = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(name: 'subscription_id', type: 'bigint unsigned', length: null, nullable: false)]
-    #[ORM\Reference(
-        entity: SubscriptionEntity::class,
-        referencedColumnName: 'id',
-        on: [RelationshipInterface::ON_DELETE],
-        onOptions: [RelationshipInterface::DEFAULT_ON_OPTION]
-    )]
     private ?int $subscription_id = null;
 
     /**

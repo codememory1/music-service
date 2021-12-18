@@ -34,12 +34,6 @@ class LanguageTranslationEntity
      * @var int|null
      */
     #[ORM\Column(name: 'translation_key_id', type: 'bigint unsigned', length: null, nullable: false)]
-    #[ORM\Reference(
-        entity: TranslationKeyEntity::class,
-        referencedColumnName: 'id',
-        on: [RelationshipInterface::ON_DELETE],
-        onOptions: [ReferenceDefinition::RD_CASCADE]
-    )]
     private ?int $translation_key_id = null;
 
     /**

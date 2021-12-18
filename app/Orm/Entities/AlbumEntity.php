@@ -3,8 +3,6 @@
 namespace App\Orm\Entities;
 
 use Codememory\Components\Database\Orm\Constructions as ORM;
-use Codememory\Components\Database\Orm\Interfaces\RelationshipInterface;
-use Codememory\Components\Database\Schema\StatementComponents\ReferenceDefinition;
 
 /**
  * Class AlbumEntity
@@ -35,12 +33,6 @@ class AlbumEntity
      * @var int|null
      */
     #[ORM\Column(name: 'type_id', type: 'bigint unsigned', length: null, nullable: false)]
-    #[ORM\Reference(
-        entity: AlbumTypeEntity::class,
-        referencedColumnName: 'id',
-        on: [RelationshipInterface::ON_DELETE],
-        onOptions: [ReferenceDefinition::RD_CASCADE]
-    )]
     private ?int $type_id = null;
 
     /**

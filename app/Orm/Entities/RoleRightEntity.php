@@ -3,8 +3,6 @@
 namespace App\Orm\Entities;
 
 use Codememory\Components\Database\Orm\Constructions as ORM;
-use Codememory\Components\Database\Orm\Interfaces\RelationshipInterface;
-use Codememory\Components\Database\Schema\StatementComponents\ReferenceDefinition;
 
 /**
  * Class RoleRightEntity
@@ -27,24 +25,12 @@ class RoleRightEntity
      * @var int|null
      */
     #[ORM\Column(name: 'access_right_id', type: 'bigint unsigned', length: null, nullable: false)]
-    #[ORM\Reference(
-        entity: AccessRightNameEntity::class,
-        referencedColumnName: 'id',
-        on: [RelationshipInterface::ON_DELETE],
-        onOptions: [ReferenceDefinition::RD_CASCADE]
-    )]
     private ?int $access_right_id = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column(name: 'role_id', type: 'bigint unsigned', length: null, nullable: false)]
-    #[ORM\Reference(
-        entity: RoleEntity::class,
-        referencedColumnName: 'id',
-        on: [RelationshipInterface::ON_DELETE],
-        onOptions: [ReferenceDefinition::RD_CASCADE]
-    )]
     private ?int $role_id = null;
 
     /**
