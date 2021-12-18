@@ -45,7 +45,7 @@ final class TranslationDto extends AbstractDTO
     {
 
         return [
-            'lang'        => $this->languageTranslationEntity->getLang()->getLang(),
+            'lang'        => $this->languageTranslationEntity->getLang()->getLangCode(),
             'key'         => $this->languageTranslationEntity->getTranslationKey()->getKey(),
             'translation' => $this->languageTranslationEntity->getTranslation()
         ];

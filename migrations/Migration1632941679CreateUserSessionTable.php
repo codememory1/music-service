@@ -19,7 +19,7 @@ final class Migration1632941679CreateUserSessionTable extends AbstractMigration
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `user_sessions` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT UNSIGNED NOT NULL,`refresh_token` TEXT NOT NULL,`ip` VARCHAR(32) NOT NULL,`country` VARCHAR(100) NULL DEFAULT NULL,`code_country` TINYTEXT NULL DEFAULT NULL,`region` VARCHAR(100) NULL DEFAULT NULL,`city` VARCHAR(100) NULL DEFAULT NULL,`latitude` FLOAT NULL DEFAULT NULL,`longitude` FLOAT NULL DEFAULT NULL,`valid_to` DATETIME NOT NULL);ALTER TABLE `user_sessions` ADD CONSTRAINT `FK_UserSession_User` FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `user_sessions` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_id` BIGINT UNSIGNED NOT NULL,`refresh_token` TEXT NOT NULL,`ip` VARCHAR(32) NOT NULL,`country` VARCHAR(100) NULL DEFAULT NULL,`code_country` TINYTEXT NULL DEFAULT NULL,`region` VARCHAR(100) NULL DEFAULT NULL,`city` VARCHAR(100) NULL DEFAULT NULL,`latitude` FLOAT NULL DEFAULT NULL,`longitude` FLOAT NULL DEFAULT NULL,`valid_to` DATETIME NOT NULL)');
 
     }
 
@@ -30,8 +30,6 @@ final class Migration1632941679CreateUserSessionTable extends AbstractMigration
     {
 
         $schema->selectTable('user_sessions');
-
-        $schema->dropForeign('FK_UserSession_User');
 
         $schema->dropTable();
 

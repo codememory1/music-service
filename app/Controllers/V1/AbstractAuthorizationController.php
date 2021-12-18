@@ -120,11 +120,7 @@ abstract class AbstractAuthorizationController extends AbstractApiController
     {
 
         if (false === $authUser = $this->isAuthWithData()) {
-            $apiResponse = $this->apiResponse->create(401, [
-                $this->translationsFromDb->getTranslationByKey('security@notAuth')
-            ]);
-
-            $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
+            $this->responseWithTranslation(401, 'security@notAuth');
         }
 
         return $authUser;
@@ -158,7 +154,7 @@ abstract class AbstractAuthorizationController extends AbstractApiController
     protected function isNotRoles(UserEntity $userEntity, array $roles): bool
     {
 
-        if (in_array($userEntity->getRole(), $roles)) {
+        if (in_array($userEntity->getRoleId(), $roles)) {
             $apiResponse = $this->responseIncorrectRole();
 
             $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
@@ -181,7 +177,7 @@ abstract class AbstractAuthorizationController extends AbstractApiController
     protected function isRoles(UserEntity $userEntity, array $roles): bool
     {
 
-        if (!in_array($userEntity->getRole(), $roles)) {
+        if (!in_array($userEntity->getRoleId(), $roles)) {
             $apiResponse = $this->responseIncorrectRole();
 
             $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
@@ -221,13 +217,15 @@ abstract class AbstractAuthorizationController extends AbstractApiController
      * @param string $translationKey
      *
      * @return void
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     #[NoReturn]
     protected function responseWithTranslation(int $status, string $translationKey): void
     {
 
         $apiResponse = $this->apiResponse->create($status, [
-            $this->translation->getTranslationActiveLang($translationKey)
+            $this->translationsFromDb->getTranslationByKey($translationKey)
         ]);
 
         $this->response->json($apiResponse->getResponse(), $status);

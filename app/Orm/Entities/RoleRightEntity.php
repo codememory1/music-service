@@ -19,26 +19,26 @@ class RoleRightEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Identifier]
     private ?int $id = null;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'access_right', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'access_right_id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Reference(
         entity: AccessRightNameEntity::class,
         referencedColumnName: 'id',
         on: [RelationshipInterface::ON_DELETE],
         onOptions: [ReferenceDefinition::RD_CASCADE]
     )]
-    private ?int $access_right = null;
+    private ?int $access_right_id = null;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'role_id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'role_id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Reference(
         entity: RoleEntity::class,
         referencedColumnName: 'id',
@@ -68,10 +68,10 @@ class RoleRightEntity
      *
      * @return static
      */
-    public function setAccessRight(int $value): static
+    public function setAccessRightId(int $value): static
     {
 
-        $this->access_right = $value;
+        $this->access_right_id = $value;
 
         return $this;
 
@@ -80,10 +80,10 @@ class RoleRightEntity
     /**
      * @return int|null
      */
-    public function getAccessRight(): ?int
+    public function getAccessRightId(): ?int
     {
 
-        return $this->access_right;
+        return $this->access_right_id;
 
     }
 

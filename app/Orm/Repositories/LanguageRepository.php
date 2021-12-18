@@ -27,7 +27,7 @@ class LanguageRepository extends AbstractEntityRepository
     public function getLang(string $lang): LanguageEntity|bool
     {
 
-        return $this->customFindBy(['lang' => $lang])->entity()->first();
+        return $this->customFindBy(['lang_code' => $lang])->entity()->first();
 
     }
 

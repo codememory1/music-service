@@ -54,8 +54,8 @@ final class UserDto extends AbstractDTO
             'surname'      => $this->entity->getSurname(),
             'patronymic'   => $this->entity->getPatronymic(),
             'getBirth'     => $this->entity->getBirth(),
-            'subscription' => $this->entity->getSubscription(),
-            'role'         => $this->entity->getRole()
+            'subscription' => $this->entity->getSubscriptionId(),
+            'role'         => $this->entity->getRoleId()
         ];
 
     }

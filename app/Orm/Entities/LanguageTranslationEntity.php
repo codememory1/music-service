@@ -21,7 +21,7 @@ class LanguageTranslationEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'lang_id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'lang_id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Reference(
         entity: LanguageEntity::class,
         referencedColumnName: 'id',
@@ -33,7 +33,7 @@ class LanguageTranslationEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'translation_key_id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'translation_key_id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Reference(
         entity: TranslationKeyEntity::class,
         referencedColumnName: 'id',

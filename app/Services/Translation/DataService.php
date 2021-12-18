@@ -40,10 +40,10 @@ class DataService extends AbstractApiService
         foreach ($languageRepository->getAllLangs() as $language) {
             // Getting the query result to the database
             $translationResult = $translationRepository->getTranslationsWithColumns(
-                $language->getLang(),
-                ['l.lang', 'tk.key', 'lt.translation']
+                $language->getLangCode(),
+                ['l.lang_code', 'tk.key', 'lt.translation']
             );
-            $translations[$language->getLang()] = $translationResult->array()->all();
+            $translations[$language->getLangCode()] = $translationResult->array()->all();
         }
 
         return $translations;

@@ -4,12 +4,7 @@ namespace App\Services\Password;
 
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
-use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
-use Codememory\Components\Event\Exceptions\EventExistException;
-use Codememory\Components\Event\Exceptions\EventNotExistException;
-use Codememory\Components\Event\Exceptions\EventNotImplementInterfaceException;
-use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Manager as ValidationManager;
 use ReflectionException;
@@ -43,8 +38,7 @@ class RecoveryService extends AbstractApiService
     }
 
     /**
-     * @param ValidationManager      $validationManager
-     * @param EntityManagerInterface $entityManager
+     * @param ValidationManager $validationManager
      *
      * @return ResponseApiCollectorService
      * @throws ReflectionException

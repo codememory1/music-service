@@ -142,7 +142,7 @@ class SubscriptionRepository extends AbstractRepositoryWithSorting
         $subscriptionOptionRepository = $this->getRepository(SubscriptionOptionEntity::class);
 
         $subscriptionOptionRepository->delete([
-            'subscription' => $id
+            'subscription_id' => $id
         ]);
 
         $this->delete(['id' => $id]);

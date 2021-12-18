@@ -21,14 +21,14 @@ class PasswordResetEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Identifier]
     private ?int $id = null;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'user_id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'user_id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Unique]
     #[ORM\Reference(
         entity: UserEntity::class,
@@ -41,7 +41,7 @@ class PasswordResetEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'code', type: 'varchar', length: 6, nullable: false)]
+    #[ORM\Column(name: 'code', type: 'tinyint', length: 6, nullable: false)]
     private ?int $code = null;
 
     /**

@@ -74,6 +74,7 @@ class SubscriptionController extends AbstractAuthorizationController
      *
      * @return void
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
     #[NoReturn]

@@ -133,16 +133,16 @@ class UserRepository extends AbstractEntityRepository
     private function addReference(UserEntity &$userEntity): void
     {
 
-        $subscriptionId = $userEntity->getSubscription();
+        $subscriptionId = $userEntity->getSubscriptionId();
 
         // Check if the user has a subscription
         if (null !== $subscriptionId) {
-            $subscriptionData = $this->subscriptionRepository->findOneWithOptionsAsEntity($userEntity->getSubscription());
+            $subscriptionData = $this->subscriptionRepository->findOneWithOptionsAsEntity($userEntity->getSubscriptionId());
 
             $userEntity->setSubscriptionData($subscriptionData);
         }
 
-        $userEntity->setRoleData($this->roleRepository->findOne($userEntity->getRole()));
+        $userEntity->setRoleData($this->roleRepository->findOne($userEntity->getRoleId()));
 
     }
 

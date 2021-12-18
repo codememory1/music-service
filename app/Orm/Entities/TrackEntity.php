@@ -21,7 +21,7 @@ class TrackEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Identifier]
     private ?int $id = null;
 
@@ -40,7 +40,7 @@ class TrackEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'category_id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'category_id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Reference(
         entity: TrackCategoryEntity::class,
         referencedColumnName: 'id',
@@ -65,7 +65,7 @@ class TrackEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'album_id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'album_id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Reference(
         entity: AlbumEntity::class,
         referencedColumnName: 'id',
@@ -77,7 +77,7 @@ class TrackEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'duration_time', type: 'bigint', length: null, nullable: false)]
+    #[ORM\Column(name: 'duration_time', type: 'bigint unsigned', length: null, nullable: false)]
     private ?int $duration_time = null;
 
     /**

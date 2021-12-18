@@ -19,7 +19,7 @@ class AccessRightNameEntity
     /**
      * @var null|int
      */
-    #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'id', type: 'bigint usigned', length: null, nullable: false)]
     #[ORM\Identifier]
     private ?int $id = null;
 

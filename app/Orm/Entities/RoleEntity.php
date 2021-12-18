@@ -19,7 +19,7 @@ class RoleEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Identifier]
     private ?int $id = null;
 

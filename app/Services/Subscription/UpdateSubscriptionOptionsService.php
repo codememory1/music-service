@@ -33,7 +33,7 @@ class UpdateSubscriptionOptionsService extends AbstractApiService
         $subscriptionOptionRepository = $this->getRepository(SubscriptionOptionEntity::class);
 
         // Removing all subscription options
-        $subscriptionOptionRepository->delete(['subscription' => $subscriptionId]);
+        $subscriptionOptionRepository->delete(['subscription_id' => $subscriptionId]);
 
         // Pushing updated subscription options
         $this->pushOptions($subscriptionOptionRepository, $options, $subscriptionId);
@@ -56,7 +56,7 @@ class UpdateSubscriptionOptionsService extends AbstractApiService
 
         // Commit all subscription options
         foreach ($options->all() as $option) {
-            if (!$subscriptionOptionRepository->exist(['option_name_id' => $option])) {
+            if (!$subscriptionOptionRepository->exist(['subscription_option_name_id' => $option])) {
                 $subscriptionOptionEntity
                     ->setOption($option)
                     ->setSubscription($id);

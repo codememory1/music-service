@@ -37,7 +37,7 @@ class RoleRightRepository extends AbstractEntityRepository
             ->from($this->getEntityData()->getTableName(), 'rr')
             ->innerJoin(
                 ['arn' => 'access_right_names'],
-                $qb->joinComparison('arn.id', 'rr.access_right')
+                $qb->joinComparison('arn.id', 'rr.access_right_id')
             )
             ->where(
                 $qb->expression()->exprAnd(

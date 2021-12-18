@@ -35,7 +35,7 @@ class CreatorLanguageService extends AbstractApiService
     public function create(ValidationManager $validationManager): ResponseApiCollectorService
     {
 
-        $languageCode = Str::toLowercase($this->request->post()->get('lang') ?: '');
+        $languageCode = Str::toLowercase($this->request->post()->get('lang_code') ?: '');
         $creationValidationManager = $this->inputValidation($validationManager);
 
         /** @var LanguageRepository $languageRepository */
@@ -79,7 +79,7 @@ class CreatorLanguageService extends AbstractApiService
 
         $languageEntity = new LanguageEntity();
 
-        $languageEntity->setLang($languageCode);
+        $languageEntity->setLangCode($languageCode);
 
         $this->getEntityManager()->commit($languageEntity)->flush();
 

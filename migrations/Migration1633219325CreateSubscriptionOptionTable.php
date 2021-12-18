@@ -19,7 +19,7 @@ final class Migration1633219325CreateSubscriptionOptionTable extends AbstractMig
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `subscription_options` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`subscription_option_name_id` BIGINT UNSIGNED NOT NULL,`subscription_id` BIGINT UNSIGNED NOT NULL);ALTER TABLE `subscription_options` ADD FOREIGN KEY (`subscription_option_name_id`) REFERENCES subscription_option_names(`id`) ON DELETE CASCADE;ALTER TABLE `subscription_options` ADD CONSTRAINT `FK_SubscriptionOption_Subscription` FOREIGN KEY (`subscription_id`) REFERENCES subscriptions(`id`) ON DELETE CASCADE');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `subscription_options` (`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,`subscription_option_name_id` BIGINT UNSIGNED NOT NULL,`subscription_id` BIGINT UNSIGNED NOT NULL)');
 
     }
 
@@ -30,8 +30,6 @@ final class Migration1633219325CreateSubscriptionOptionTable extends AbstractMig
     {
 
         $schema->selectTable('subscription_options');
-
-        $schema->dropForeign('FK_SubscriptionOption_Subscription');
 
         $schema->dropTable();
 

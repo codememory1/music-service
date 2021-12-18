@@ -19,14 +19,14 @@ class UserSessionEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Identifier]
     private ?int $id = null;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'user_id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'user_id', type: 'bigint unsigned', length: null, nullable: false)]
     private ?int $user_id = null;
 
     /**

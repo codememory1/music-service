@@ -34,7 +34,7 @@ class LanguageTranslationRepository extends AbstractEntityRepository
             'original_lang_id'            => 'l.id',
             'original_translation_key_id' => 'tk.id',
             'lt.*',
-            'l.lang',
+            'l.lang_code',
             'tk.key'
         ])->entity()->all();
 
@@ -54,14 +54,14 @@ class LanguageTranslationRepository extends AbstractEntityRepository
         $qb = $this->createQueryBuilder();
 
         $qb
-            ->setParameter('lang', $lang)
+            ->setParameter('lang_code', $lang)
             ->select($columns)
             ->from($this->getEntityData()->getTableName(), 'lt')
             ->innerJoin(
                 [
                     'l' => $this->getEntityData(LanguageEntity::class)->getTableName()
                 ],
-                $qb->joinComparison('l.lang', ':lang')
+                $qb->joinComparison('l.lang_code', ':lang_code')
             )
             ->innerJoin(
                 [
@@ -93,7 +93,7 @@ class LanguageTranslationRepository extends AbstractEntityRepository
         $qb = $this->createQueryBuilder();
 
         $qb
-            ->setParameter('lang', $lang)
+            ->setParameter('lang_code', $lang)
             ->setParameter('key', $key)
             ->select()
             ->from($this->getEntityData(TranslationKeyEntity::class)->getTableName(), 'tk')
@@ -101,7 +101,7 @@ class LanguageTranslationRepository extends AbstractEntityRepository
                 [
                     'l' => $this->getEntityData(LanguageEntity::class)->getTableName()
                 ],
-                $qb->joinComparison('l.lang', ':lang')
+                $qb->joinComparison('l.lang_code', ':lang_code')
             )
             ->innerJoin(
                 [

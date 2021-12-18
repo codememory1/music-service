@@ -37,7 +37,7 @@ final class Migration1633818088InsertSorting extends AbstractMigration
             [
                 'users',
                 json_encode([
-                    'id', 'birth', 'subscription', 'role',
+                    'id', 'birth', 'subscription_id', 'role_id',
                     'status', 'created_at', 'updated_at'
                 ])
             ],

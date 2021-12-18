@@ -37,11 +37,11 @@ class SubscriptionOptionRepository extends AbstractEntityRepository
             ->from($this->getEntityData()->getTableName(), 'so')
             ->innerJoin(
                 ['son' => 'subscription_option_names'],
-                $qb->joinComparison('so.option_name_id', 'son.id')
+                $qb->joinComparison('so.subscription_option_name_id', 'son.id')
             )
             ->where(
                 $qb->expression()->exprAnd(
-                    $qb->expression()->condition('so.subscription', '=', ':id')
+                    $qb->expression()->condition('so.subscription_id', '=', ':id')
                 )
             );
 

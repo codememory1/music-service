@@ -19,7 +19,7 @@ class UserEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'id', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Identifier]
     private ?int $id = null;
 
@@ -71,22 +71,22 @@ class UserEntity
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'subscription', type: 'int', length: null, nullable: true)]
+    #[ORM\Column(name: 'subscription_id', type: 'bigint unsigned', length: null, nullable: true)]
     #[ORM\DefaultValue(value: 'NULL')]
-    private ?int $subscription = null;
+    private ?int $subscription_id = null;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'role', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'role_id', type: 'int', length: null, nullable: false)]
     #[ORM\DefaultValue(value: '1')]
     #[ORM\Reference(entity: RoleEntity::class, referencedColumnName: 'id')]
-    private ?int $role = null;
+    private ?int $role_id = null;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(name: 'status', type: 'int', length: null, nullable: false)]
+    #[ORM\Column(name: 'status', type: 'tinyint', length: 2, nullable: false)]
     #[ORM\DefaultValue(value: '0')]
     private ?int $status = null;
 
@@ -297,10 +297,10 @@ class UserEntity
      *
      * @return static
      */
-    public function setSubscription(int $value): static
+    public function setSubscriptionId(int $value): static
     {
 
-        $this->subscription = $value;
+        $this->subscription_id = $value;
 
         return $this;
 
@@ -309,10 +309,10 @@ class UserEntity
     /**
      * @return int|null
      */
-    public function getSubscription(): ?int
+    public function getSubscriptionId(): ?int
     {
 
-        return $this->subscription;
+        return $this->subscription_id;
 
     }
 
@@ -321,10 +321,10 @@ class UserEntity
      *
      * @return static
      */
-    public function setRole(int $value): static
+    public function setRoleId(int $value): static
     {
 
-        $this->role = $value;
+        $this->role_id = $value;
 
         return $this;
 
@@ -333,10 +333,10 @@ class UserEntity
     /**
      * @return int|null
      */
-    public function getRole(): ?int
+    public function getRoleId(): ?int
     {
 
-        return $this->role;
+        return $this->role_id;
 
     }
 
