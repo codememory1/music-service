@@ -56,7 +56,7 @@ class SecurityController extends AbstractApiController
     #[NoReturn]
     public function auth(): void
     {
-        
+
         /** @var AuthorizationService $authorizationService */
         $authorizationService = $this->getService('Auth\Authorization');
 
