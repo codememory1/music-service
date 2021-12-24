@@ -5,7 +5,7 @@ namespace App\Controllers\V1;
 use App\Orm\Entities\PlaylistEntity;
 use App\Orm\Repositories\PlaylistRepository;
 use App\Services\Playlist\CreatorService;
-use App\Services\Playlist\RemoverService;
+use App\Services\Playlist\DeleterService;
 use App\Services\Playlist\UpdaterService;
 use App\Services\Sorting\DataService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
@@ -13,6 +13,7 @@ use Codememory\Components\DateTime\Exceptions\InvalidTimezoneException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
+use ErrorException;
 use ReflectionException;
 
 /**
@@ -66,6 +67,7 @@ class PlaylistController extends AbstractAuthorizationController
                 $sortingDataService->getColumns(),
                 $sortingDataService->getType()
             );
+
             $this->response->json($playlists);
         }
 
@@ -101,6 +103,7 @@ class PlaylistController extends AbstractAuthorizationController
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
+     * @throws ErrorException
      */
     public function create(): void
     {
@@ -110,13 +113,11 @@ class PlaylistController extends AbstractAuthorizationController
             $playlistCreatorService = $this->getService('Playlist\Creator');
 
             // Calling the playlist creation method from the service
-            $playlistCreationResponse = $playlistCreatorService->create(
-                $this->validatorManager(),
-                $authorizedUser,
-                $this->playlistRepository
-            );
+            $createResponse = $playlistCreatorService
+                ->make($this->validatorManager(), $authorizedUser)
+                ->getResponseApiCollector();
 
-            $this->response->json($playlistCreationResponse->getResponse(), $playlistCreationResponse->getStatus());
+            $this->response->json($createResponse->getResponse(), $createResponse->getStatus());
         }
 
     }
@@ -124,6 +125,7 @@ class PlaylistController extends AbstractAuthorizationController
     /**
      * @param int $id
      *
+     * @throws ErrorException
      * @throws InvalidTimezoneException
      * @throws ReflectionException
      * @throws ServiceNotExistException
@@ -137,14 +139,11 @@ class PlaylistController extends AbstractAuthorizationController
             $playlistUpdaterService = $this->getService('Playlist\Updater');
 
             // Calling the playlist update method
-            $playlistUpdateResponse = $playlistUpdaterService->update(
-                $this->validatorManager(),
-                $this->playlistRepository,
-                $authorizedUser,
-                $id
-            );
+            $updateResponse = $playlistUpdaterService
+                ->make($this->validatorManager(), $authorizedUser, $this->playlistRepository, $id)
+                ->getResponseApiCollector();
 
-            $this->response->json($playlistUpdateResponse->getResponse(), $playlistUpdateResponse->getStatus());
+            $this->response->json($updateResponse->getResponse(), $updateResponse->getStatus());
         }
 
     }
@@ -152,6 +151,7 @@ class PlaylistController extends AbstractAuthorizationController
     /**
      * @param int $id
      *
+     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
@@ -160,13 +160,15 @@ class PlaylistController extends AbstractAuthorizationController
     {
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            /** @var RemoverService $playlistRemover */
-            $playlistRemover = $this->getService('Playlist\Remover');
+            /** @var DeleterService $playlistDeleterService */
+            $playlistDeleterService = $this->getService('Playlist\Deleter');
 
-            // Delete playlist entry
-            $playlistDeleteResponse = $playlistRemover->delete($this->playlistRepository, $authorizedUser, $id);
+            // We delete the playlist and get the answer
+            $deleteResponse = $playlistDeleterService
+                ->make($authorizedUser, $this->playlistRepository, $id)
+                ->getResponseApiCollector();
 
-            $this->response->json($playlistDeleteResponse->getResponse(), $playlistDeleteResponse->getStatus());
+            $this->response->json($deleteResponse->getResponse(), $deleteResponse->getStatus());
         }
 
     }

@@ -38,6 +38,12 @@ class UserSessionEntity
     /**
      * @var string|null
      */
+    #[ORM\Column(name: 'access_token', type: 'text', length: null, nullable: false)]
+    private ?string $access_token = null;
+
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: 'ip', type: 'varchar', length: 32, nullable: false)]
     private ?string $ip = null;
 
@@ -144,6 +150,30 @@ class UserSessionEntity
     {
 
         return $this->refresh_token;
+
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return static
+     */
+    public function setAccessToken(string $value): static
+    {
+
+        $this->access_token = $value;
+
+        return $this;
+
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAccessToken(): ?string
+    {
+
+        return $this->access_token;
 
     }
 

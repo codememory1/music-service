@@ -3269,12 +3269,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
      * @param response
      */
     successAuth: function successAuth(response) {
+      var _response$data$data$t;
+
       this.$store.commit("notification/create", {
         type: "success",
         title: "Авторизация",
         message: response.data.messages[0]
       });
-      this.installationTokens(response.data.data);
+      var tokens = (_response$data$data$t = response.data.data.tokens) !== null && _response$data$data$t !== void 0 ? _response$data$data$t : {};
+      this.installationTokens(tokens);
       this.zeroingInputData();
       this.$store.dispatch("auth/loadUserData"); // Closing the modal login window
 

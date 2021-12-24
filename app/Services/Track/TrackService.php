@@ -58,7 +58,26 @@ class TrackService extends AbstractApiService
         /** @var AddTrackService $addTrackService */
         $addTrackService = $this->getService('Track\AddTrack');
 
-        return $addTrackService->make($validationManager, $this->trackRepository);
+        return $addTrackService->make($validationManager);
+
+    }
+
+    /**
+     * @param string            $fullHash
+     * @param ValidationManager $validationManager
+     *
+     * @return ResponseApiCollectorService|bool
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
+    public function edit(string $fullHash, ValidationManager $validationManager): ResponseApiCollectorService|bool
+    {
+
+        /** @var EditTrackService $editTrackService */
+        $editTrackService = $this->getService('Track\EditTrack');
+
+        return $editTrackService->make($validationManager, $this->getDataHash($fullHash));
 
     }
 
@@ -73,7 +92,7 @@ class TrackService extends AbstractApiService
     public function delete(string $fullHash): ResponseApiCollectorService
     {
 
-        /** @var RemoverTrackService $removerTrack */
+        /** @var DeleterTrackService $removerTrack */
         $removerTrack = $this->getService('Track\RemoverTrack');
 
         return $removerTrack->make($this->getDataHash($fullHash), $this->trackRepository);

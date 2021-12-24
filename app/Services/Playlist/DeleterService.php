@@ -4,49 +4,54 @@ namespace App\Services\Playlist;
 
 use App\Orm\Entities\UserEntity;
 use App\Orm\Repositories\PlaylistRepository;
-use App\Services\AbstractApiService;
-use App\Services\ResponseApiCollectorService;
+use App\Services\AbstractCrudService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
 
 /**
- * Class RemoverService
+ * Class DeleterService
  *
  * @package App\Services\Playlist
  *
  * @author  Danil
  */
-class RemoverService extends AbstractApiService
+class DeleterService extends AbstractCrudService
 {
 
     /**
-     * @param PlaylistRepository $playlistRepository
      * @param UserEntity         $userEntity
+     * @param PlaylistRepository $playlistRepository
      * @param int                $id
      *
-     * @return ResponseApiCollectorService
+     * @return DeleterService
      * @throws ReflectionException
-     * @throws StatementNotSelectedException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
-    public function delete(PlaylistRepository $playlistRepository, UserEntity $userEntity, int $id): ResponseApiCollectorService
+    public function make(UserEntity $userEntity, PlaylistRepository $playlistRepository, int $id): static
     {
 
         $searchBy = [
-            'user_id' => $userEntity->getId(),
-            'id'      => $id
+            'id'      => $id,
+            'user_id' => $userEntity->getId()
         ];
 
         // Checking the existence of a playlist for an authorized user
-        if (false === $playlistRepository->findOne($searchBy)) {
-            return $this->createApiResponse(404, 'playlist@notExist');
+        if (!$playlistRepository->findOne($searchBy)) {
+            return $this->setResponse(
+                $this->createApiResponse(404, 'playlist@notExist')
+            );
         }
 
         // Playlist found. Delete from the database
         $playlistRepository->delete($searchBy);
 
-        return $this->createApiResponse(200, 'playlist@successDelete');
+        $this->setResponse(
+            $this->createApiResponse(200, 'playlist@successDelete')
+        );
+
+        return $this;
 
     }
 

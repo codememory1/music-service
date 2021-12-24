@@ -25,12 +25,13 @@ class PasswordRecoveryRequestTask extends AbstractJob
         /** @var MailerPack $mailer */
         $mailer = $this->get('mailer');
 
-        $mailer->getMailer()->createMessage(function (MessageInterface $message) use ($parameters) {
-            $message
-                ->setSubject($parameters['subject'])
-                ->addRecipientAddress($parameters['email'])
-                ->setBody($parameters['code']);
-        })->send();
+        $mailer->getMailer()
+            ->createMessage(function (MessageInterface $message) use ($parameters) {
+                $message
+                    ->setSubject($parameters['subject'])
+                    ->addRecipientAddress($parameters['email'])
+                    ->setBody($parameters['code']);
+            })->send();
 
         return true;
 

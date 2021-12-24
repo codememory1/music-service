@@ -163,7 +163,9 @@ export default {
         message: response.data.messages[0]
       });
 
-      this.installationTokens(response.data.data);
+      const tokens = response.data.data.tokens ?? {};
+
+      this.installationTokens(tokens);
       this.zeroingInputData();
 
       this.$store.dispatch("auth/loadUserData");

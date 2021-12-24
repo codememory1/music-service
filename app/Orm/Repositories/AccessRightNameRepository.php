@@ -28,8 +28,9 @@ class AccessRightNameRepository extends AbstractEntityRepository
     public const CHANGE_MUSIC_AS_EXECUTOR = 'change_music_as_executor';
     public const CREATE_SUBSCRIPTION = 'create-subscription';
     public const UPDATE_SUBSCRIPTION = 'update-subscription';
-    public const REMOVE_SUBSCRIPTION = 'remove-subscription';
+    public const DELETE_SUBSCRIPTION = 'remove-subscription';
     public const ADD_MUSIC = 'add-music';
+    public const EDIT_MUSIC = 'edit-music';
     public const DELETE_MUSIC = 'delete-music';
     public const UPDATE_TRANSLATION_CACHE = 'update-translation-cache';
     public const CREATE_LANG = 'create-lang';

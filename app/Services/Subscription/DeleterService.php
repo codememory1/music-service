@@ -3,45 +3,48 @@
 namespace App\Services\Subscription;
 
 use App\Orm\Repositories\SubscriptionRepository;
-use App\Services\AbstractApiService;
-use App\Services\ResponseApiCollectorService;
+use App\Services\AbstractCrudService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use ReflectionException;
 
 /**
- * Class RemoverService
+ * Class DeleterService
  *
  * @package App\Services\Subscription
  *
  * @author  Danil
  */
-class RemoverService extends AbstractApiService
+class DeleterService extends AbstractCrudService
 {
 
     /**
      * @param SubscriptionRepository $subscriptionRepository
      * @param int                    $id
      *
-     * @return ResponseApiCollectorService
+     * @return DeleterService
      * @throws ReflectionException
-     * @throws StatementNotSelectedException
      * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
-    final public function delete(SubscriptionRepository $subscriptionRepository, int $id): ResponseApiCollectorService
+    public function make(SubscriptionRepository $subscriptionRepository, int $id): static
     {
 
-        $subscription = $subscriptionRepository->findOne(['id' => $id]);
-
         // Checking the existence of a subscription
-        if (false === $subscription) {
-            return $this->createApiResponse(404, 'subscription@notExist');
+        if (!$subscriptionRepository->findOne(['id' => $id])) {
+            return $this->setResponse(
+                $this->createApiResponse(404, 'subscription@notExist')
+            );
         }
 
         // Subscription found. Removing the subscription itself and its options
         $subscriptionRepository->deleteById($id);
 
-        return $this->createApiResponse(200, 'subscription@successDelete');
+        $this->setResponse(
+            $this->createApiResponse(200, 'subscription@successDelete')
+        );
+
+        return $this;
 
     }
 

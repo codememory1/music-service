@@ -27,7 +27,9 @@ class UserController extends AbstractAuthorizationController
     {
 
         if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->response->json((new UserDto($authorizedUser))->getTransformedData());
+            $userDto = new UserDto($authorizedUser);
+
+            $this->response->json($userDto->getTransformedData());
         }
 
     }

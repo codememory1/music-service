@@ -5,12 +5,12 @@ namespace App\Services\Track;
 use App\Orm\Entities\TrackEntity;
 use App\Orm\Entities\TrackSubtitleEntity;
 use App\Orm\Repositories\TrackRepository;
-use App\Services\AbstractApiService;
+use App\Services\AbstractCrudService;
 use App\Services\ResponseApiCollectorService;
 use App\Validations\Track\AddSubtitlesValidation;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
-use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
+use Codememory\Components\Validator\Manager;
 use Codememory\Components\Validator\Manager as ValidationManager;
 use ReflectionException;
 
@@ -21,7 +21,7 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class AddSubtitlesService extends AbstractApiService
+class AddSubtitlesService extends AbstractCrudService
 {
 
     public const MANUAL_TYPE = 'manual';
@@ -32,55 +32,64 @@ class AddSubtitlesService extends AbstractApiService
     ];
 
     /**
-     * @param array             $hashData
-     * @param ValidationManager $validationManager
+     * @param ValidationManager $manager
      * @param TrackRepository   $trackRepository
+     * @param array             $hashData
      *
-     * @return ResponseApiCollectorService
+     * @return AddSubtitlesService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    public function make(array $hashData, ValidationManager $validationManager, TrackRepository $trackRepository): ResponseApiCollectorService
+    public function make(Manager $manager, TrackRepository $trackRepository, array $hashData): static
     {
 
-        /** @var SubtitleTypeHandlerService $subtitleTypeHandlerService */
-        $subtitleTypeHandlerService = $this->getService('Track\SubtitleTypeHandler');
+        $validatedDataManager = $this->makeInputValidation($manager, new AddSubtitlesValidation());
         $type = $this->request->post()->get('type');
-        $inputValidation = $this->inputValidation($validationManager);
 
         // Input data validation
-        if (!$inputValidation->isValidation()) {
-            return $this->apiResponse->create(400, $inputValidation->getErrors());
+        if (!$validatedDataManager->isValidation()) {
+            return $this->setResponse(
+                $this->apiResponse->create(400, $validatedDataManager->getErrors())
+            );
         }
 
         // Checking the existence of a track
         /** @var TrackEntity|bool $finedTrack */
         if (!$finedTrack = $trackRepository->customFindBy($hashData)->entity()->first()) {
-            return $this->createApiResponse(404, 'track@notExist');
+            return $this->setResponse(
+                $this->createApiResponse(404, 'track@notExist')
+            );
         }
 
         // Calling a subtitle handler of a specific type
-        $methodName = sprintf('%sType', $type);
-        $subtitles = $subtitleTypeHandlerService->$methodName();
+        $typeHandler = $this->typeHandlerInvocation($type);
 
-        if ($subtitles instanceof ResponseApiCollectorService) {
-            return $subtitles;
+        if ($typeHandler instanceof ResponseApiCollectorService) {
+            return $this->setResponse($typeHandler);
         }
 
-        return $this->pushSubtitles($finedTrack, $subtitles);
+        // Push subtitles into the database
+        return $this->push($finedTrack, $typeHandler);
 
     }
 
     /**
-     * @param ValidationManager $validationManager
+     * @param string $type
      *
-     * @return ValidationManagerInterface
+     * @return ResponseApiCollectorService|array
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
-    private function inputValidation(ValidationManager $validationManager): ValidationManagerInterface
+    private function typeHandlerInvocation(string $type): ResponseApiCollectorService|array
     {
 
-        return $validationManager->create(new AddSubtitlesValidation(), $this->request->post()->all());
+        /** @var SubtitleTypeHandlerService $subtitleTypeHandlerService */
+        $subtitleTypeHandlerService = $this->getService('Track\SubtitleTypeHandler');
+
+        $methodName = sprintf('%sType', $type);
+
+        return $subtitleTypeHandlerService->$methodName();
 
     }
 
@@ -88,11 +97,11 @@ class AddSubtitlesService extends AbstractApiService
      * @param TrackEntity $trackEntity
      * @param array       $subtitles
      *
-     * @return ResponseApiCollectorService
+     * @return AddSubtitlesService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
-    private function pushSubtitles(TrackEntity $trackEntity, array $subtitles): ResponseApiCollectorService
+    private function push(TrackEntity $trackEntity, array $subtitles): static
     {
 
         $trackSubtitleEntity = new TrackSubtitleEntity();
@@ -100,9 +109,15 @@ class AddSubtitlesService extends AbstractApiService
             ->setTrackId($trackEntity->getId())
             ->setSubtitles($subtitles);
 
-        $this->getEntityManager()->commit($trackSubtitleEntity)->flush();
+        $this->getEntityManager()
+            ->commit($trackSubtitleEntity)
+            ->flush();
 
-        return $this->createApiResponse(200, 'track@successAddSubtitles');
+        $this->setResponse(
+            $this->createApiResponse(200, 'track@successAddSubtitles')
+        );
+
+        return $this;
 
     }
 

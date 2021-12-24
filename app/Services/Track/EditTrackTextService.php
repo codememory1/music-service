@@ -3,12 +3,11 @@
 namespace App\Services\Track;
 
 use App\Orm\Repositories\TrackRepository;
-use App\Services\AbstractApiService;
-use App\Services\ResponseApiCollectorService;
+use App\Services\AbstractCrudService;
 use App\Validations\Track\EditTrackTextValidation;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
-use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
+use Codememory\Components\Validator\Manager;
 use Codememory\Components\Validator\Manager as ValidationManager;
 use ReflectionException;
 
@@ -19,52 +18,66 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class EditTrackTextService extends AbstractApiService
+class EditTrackTextService extends AbstractCrudService
 {
 
     /**
-     * @param ValidationManager $validationManager
-     * @param array             $dataHash
+     * @param ValidationManager $manager
      * @param TrackRepository   $trackRepository
      *
-     * @return ResponseApiCollectorService
-     * @throws StatementNotSelectedException
-     * @throws ServiceNotExistException
+     * @param array             $dataHash
+     *
+     * @return EditTrackTextService
      * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
-    final public function make(ValidationManager $validationManager, array $dataHash, TrackRepository $trackRepository): ResponseApiCollectorService
+    public function make(Manager $manager, TrackRepository $trackRepository, array $dataHash): static
     {
 
-        $inputValidation = $this->inputValidation($validationManager);
+        $validatedDataManager = $this->makeInputValidation($manager, new EditTrackTextValidation());
 
         // Input data validation
-        if (!$inputValidation->isValidation()) {
-            return $this->apiResponse->create(400, $inputValidation->getErrors());
+        if (!$validatedDataManager->isValidation()) {
+            return $this->setResponse(
+                $this->apiResponse->create(400, $validatedDataManager->getErrors())
+            );
         }
 
         // Checking the existence of a track
         if (!$trackRepository->findBy($dataHash)) {
-            return $this->createApiResponse(404, 'track@notExist');
+            return $this->setResponse(
+                $this->createApiResponse(404, 'track@notExist')
+            );
         }
 
-        // Updating the track text
-        $trackRepository->update([
-            'text' => $this->request->post()->get('text')
-        ], $dataHash);
-
-        return $this->createApiResponse(200, 'track@successAddText');
+        // Updating the track text in the database
+        return $this->push($trackRepository, $dataHash);
 
     }
 
     /**
-     * @param ValidationManager $validationManager
+     * @param TrackRepository $trackRepository
+     * @param array           $dataHash
      *
-     * @return ValidationManagerInterface
+     * @return $this
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
      */
-    private function inputValidation(ValidationManager $validationManager): ValidationManagerInterface
+    private function push(TrackRepository $trackRepository, array $dataHash): static
     {
 
-        return $validationManager->create(new EditTrackTextValidation(), $this->request->post()->all());
+        // Updating the track text
+        $trackRepository->update([
+            'text' => $this->request->post()->get('text', escapingHtml: true)
+        ], $dataHash);
+
+        $this->setResponse(
+            $this->createApiResponse(200, 'track@successAddText')
+        );
+
+        return $this;
 
     }
 

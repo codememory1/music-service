@@ -7,12 +7,13 @@ use App\Orm\Repositories\AccessRightNameRepository;
 use App\Orm\Repositories\SubscriptionRepository;
 use App\Services\Sorting\DataService;
 use App\Services\Subscription\CreatorService;
-use App\Services\Subscription\RemoverService;
+use App\Services\Subscription\DeleterService;
 use App\Services\Subscription\UpdaterService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
+use ErrorException;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
 
@@ -96,21 +97,23 @@ class SubscriptionController extends AbstractAuthorizationController
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
+     * @throws ErrorException
      */
+    #[NoReturn]
     public function create(): void
     {
 
-        if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->isExistRight($authorizedUser, AccessRightNameRepository::CREATE_SUBSCRIPTION);
+        $this->checkAuthWithRight(AccessRightNameRepository::CREATE_SUBSCRIPTION);
 
-            /** @var CreatorService $subscriptionCreatorService */
-            $subscriptionCreatorService = $this->getService('Subscription\Creator');
+        /** @var CreatorService $subscriptionCreatorService */
+        $subscriptionCreatorService = $this->getService('Subscription\Creator');
 
-            // Create a subscription and receive a response about creation
-            $subscriptionCreationResponse = $subscriptionCreatorService->create($this->validatorManager());
+        // Create a subscription and receive a response about creation
+        $createResponse = $subscriptionCreatorService
+            ->make($this->validatorManager())
+            ->getResponseApiCollector();
 
-            $this->response->json($subscriptionCreationResponse->getResponse(), $subscriptionCreationResponse->getStatus());
-        }
+        $this->response->json($createResponse->getResponse(), $createResponse->getStatus());
 
     }
 
@@ -118,51 +121,52 @@ class SubscriptionController extends AbstractAuthorizationController
      * @param int $id
      *
      * @return void
+     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
+    #[NoReturn]
     public function update(int $id): void
     {
 
-        if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->isExistRight($authorizedUser, AccessRightNameRepository::UPDATE_SUBSCRIPTION);
+        $this->checkAuthWithRight(AccessRightNameRepository::UPDATE_SUBSCRIPTION);
 
-            /** @var UpdaterService $subscriptionUpdaterService */
-            $subscriptionUpdaterService = $this->getService('Subscription\Updater');
+        /** @var UpdaterService $subscriptionUpdaterService */
+        $subscriptionUpdaterService = $this->getService('Subscription\Updater');
 
-            // We update the subscription data and receive a response about the update
-            $subscriptionCreationResponse = $subscriptionUpdaterService->update(
-                $this->validatorManager(),
-                $this->subscriptionRepository,
-                $id
-            );
+        // We update the subscription data and receive a response about the update
+        $updateResponse = $subscriptionUpdaterService
+            ->make($this->validatorManager(), $this->subscriptionRepository, $id)
+            ->getResponseApiCollector();
 
-            $this->response->json($subscriptionCreationResponse->getResponse(), $subscriptionCreationResponse->getStatus());
-        }
+        $this->response->json($updateResponse->getResponse(), $updateResponse->getStatus());
 
     }
 
     /**
      * @param int $id
      *
+     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
+    #[NoReturn]
     public function delete(int $id): void
     {
 
-        if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->isExistRight($authorizedUser, AccessRightNameRepository::REMOVE_SUBSCRIPTION);
+        $this->checkAuthWithRight(AccessRightNameRepository::DELETE_SUBSCRIPTION);
 
-            /** @var RemoverService $subscriptionRemoverService */
-            $subscriptionRemoverService = $this->getService('Subscription\Remover');
+        /** @var DeleterService $subscriptionDeleterService */
+        $subscriptionDeleterService = $this->getService('Subscription\Deleter');
 
-            $subscriptionRemovingResponse = $subscriptionRemoverService->delete($this->subscriptionRepository, $id);
+        // We receive a response about deleting a subscription
+        $deleteResponse = $subscriptionDeleterService
+            ->make($this->subscriptionRepository, $id)
+            ->getResponseApiCollector();
 
-            $this->response->json($subscriptionRemovingResponse->getResponse(), $subscriptionRemovingResponse->getStatus());
-        }
+        $this->response->json($deleteResponse->getResponse(), $deleteResponse->getStatus());
 
     }
 

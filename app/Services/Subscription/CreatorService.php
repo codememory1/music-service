@@ -3,12 +3,10 @@
 namespace App\Services\Subscription;
 
 use App\Orm\Entities\SubscriptionEntity;
-use App\Services\AbstractApiService;
-use App\Services\ResponseApiCollectorService;
+use App\Services\AbstractCrudService;
 use App\Validations\Subscription\SubscriptionCreationValidation;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
-use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
-use Codememory\Components\Validator\Manager as ValidationManager;
+use Codememory\Components\Validator\Manager;
 use ReflectionException;
 
 /**
@@ -18,75 +16,70 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class CreatorService extends AbstractApiService
+class CreatorService extends AbstractCrudService
 {
 
     /**
-     * @param ValidationManager $validationManager
+     * @param Manager $manager
      *
-     * @return ResponseApiCollectorService
+     * @return CreatorService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
-    final public function create(ValidationManager $validationManager): ResponseApiCollectorService
+    public function make(Manager $manager): static
     {
 
-        $creationValidationManager = $this->inputValidation($validationManager);
+        $validatedDataManager = $this->makeInputValidation($manager, new SubscriptionCreationValidation());
 
         // Input validation
-        if (!$creationValidationManager->isValidation()) {
-            return $this->apiResponse->create(400, $creationValidationManager->getErrors());
+        if (!$validatedDataManager->isValidation()) {
+            return $this->setResponse(
+                $this->apiResponse->create(400, $validatedDataManager->getErrors())
+            );
         }
 
         // A playlist is created, and we return a response about successful creation
-        return $this->pushSubscription($this->getCollectedSubscriptionEntity());
-
-    }
-
-    /**
-     * @param ValidationManager $validationManager
-     *
-     * @return ValidationManagerInterface
-     */
-    private function inputValidation(ValidationManager $validationManager): ValidationManagerInterface
-    {
-
-        return $validationManager->create(new SubscriptionCreationValidation(), $this->request->post()->all());
+        return $this->push();
 
     }
 
     /**
      * @return SubscriptionEntity
      */
-    private function getCollectedSubscriptionEntity(): SubscriptionEntity
+    private function getCollectedEntity(): SubscriptionEntity
     {
 
+        $request = $this->request->post();
         $subscriptionEntity = new SubscriptionEntity();
 
         $subscriptionEntity
-            ->setName($this->request->post()->get('name'))
-            ->setDescription($this->request->post()->get('description'))
-            ->setOldPrice($this->request->post()->get('old_price'))
-            ->setPrice($this->request->post()->get('price'))
-            ->setIsActive($this->request->post()->get('active'));
+            ->setName($request->get('name', escapingHtml: true))
+            ->setDescription($request->get('description', escapingHtml: true))
+            ->setOldPrice($request->get('old_price'))
+            ->setPrice($request->get('price'))
+            ->setIsActive($request->get('active'));
 
         return $subscriptionEntity;
 
     }
 
     /**
-     * @param SubscriptionEntity $subscriptionEntity
-     *
-     * @return ResponseApiCollectorService
+     * @return CreatorService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
-    private function pushSubscription(SubscriptionEntity $subscriptionEntity): ResponseApiCollectorService
+    private function push(): static
     {
 
-        $this->getEntityManager()->commit($subscriptionEntity)->flush();
+        $this->getEntityManager()
+            ->commit($this->getCollectedEntity())
+            ->flush();
 
-        return $this->createApiResponse(200, 'subscription@successCreate');
+        $this->setResponse(
+            $this->createApiResponse(200, 'subscription@successCreate')
+        );
+
+        return $this;
 
     }
 

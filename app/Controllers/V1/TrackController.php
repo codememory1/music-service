@@ -2,12 +2,20 @@
 
 namespace App\Controllers\V1;
 
+use App\Orm\Entities\TrackEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
-use App\Services\Track\TrackService;
+use App\Orm\Repositories\TrackRepository;
+use App\Services\Track\AddSubtitlesService;
+use App\Services\Track\AddTrackService;
+use App\Services\Track\DeleterTrackService;
+use App\Services\Track\EditTrackService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
+use ErrorException;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
 
 /**
@@ -21,9 +29,9 @@ class TrackController extends AbstractAuthorizationController
 {
 
     /**
-     * @var TrackService
+     * @var TrackRepository
      */
-    private TrackService $trackService;
+    private TrackRepository $trackRepository;
 
     /**
      * @param ServiceProviderInterface $serviceProvider
@@ -37,9 +45,9 @@ class TrackController extends AbstractAuthorizationController
 
         parent::__construct($serviceProvider);
 
-        /** @var TrackService $trackService */
-        $trackService = $this->getService('Track\Track');
-        $this->trackService = $trackService;
+        /** @var TrackRepository $trackRepository */
+        $trackRepository = $this->em->getRepository(TrackEntity::class);
+        $this->trackRepository = $trackRepository;
 
     }
 
@@ -48,18 +56,23 @@ class TrackController extends AbstractAuthorizationController
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
+     * @throws ErrorException
      */
+    #[NoReturn]
     public function addTrack(): void
     {
 
-        if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->isExistRight($authorizedUser, AccessRightNameRepository::ADD_MUSIC);
+        $this->checkAuthWithRight(AccessRightNameRepository::ADD_MUSIC);
 
-            // Receiving a response about adding a track
-            $responseAdd = $this->trackService->add($this->validatorManager());
+        /** @var AddTrackService $addTrackService */
+        $addTrackService = $this->getService('Track\AddTrack');
 
-            $this->response->json($responseAdd->getResponse(), $responseAdd->getStatus());
-        }
+        // Receiving a response about adding a track
+        $addResponse = $addTrackService
+            ->make($this->validatorManager())
+            ->getResponseApiCollector();
+
+        $this->response->json($addResponse->getResponse(), $addResponse->getStatus());
 
     }
 
@@ -67,21 +80,53 @@ class TrackController extends AbstractAuthorizationController
      * @param string $hash
      *
      * @return void
+     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
+    #[NoReturn]
+    public function editTrack(string $hash): void
+    {
+
+        $this->checkAuthWithRight(AccessRightNameRepository::EDIT_MUSIC);
+
+        /** @var EditTrackService $editTrackService */
+        $editTrackService = $this->getService('Track\EditTrack');
+
+        // Receiving a response about adding a track
+        $editResponse = $editTrackService
+            ->make($this->validatorManager(), $this->getDataHash($hash))
+            ->getResponseApiCollector();
+
+        $this->response->json($editResponse->getResponse(), $editResponse->getStatus());
+
+    }
+
+    /**
+     * @param string $hash
+     *
+     * @return void
+     * @throws ErrorException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
+    #[NoReturn]
     public function deleteTrack(string $hash): void
     {
 
-        if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->isExistRight($authorizedUser, AccessRightNameRepository::DELETE_MUSIC);
+        $this->checkAuthWithRight(AccessRightNameRepository::DELETE_MUSIC);
 
-            // Track deletion response
-            $responseAdd = $this->trackService->delete($hash);
+        /** @var DeleterTrackService $deleterTrackService */
+        $deleterTrackService = $this->getService('Track\DeleterTrack');
 
-            $this->response->json($responseAdd->getResponse(), $responseAdd->getStatus());
-        }
+        // Track deletion response
+        $deleteResponse = $deleterTrackService
+            ->make($this->trackRepository, $this->getDataHash($hash))
+            ->getResponseApiCollector();
+
+        $this->response->json($deleteResponse->getResponse(), $deleteResponse->getStatus());
 
     }
 
@@ -97,9 +142,9 @@ class TrackController extends AbstractAuthorizationController
     {
 
         if (false != $this->isAuthWithResponse()) {
-            $this->response->json($this->trackService->getTrackRepository()->customFindBy(
-                $this->trackService->getDataHash($hash)
-            )->array()->first());
+            $resultTo = $this->trackRepository->customFindBy($this->getDataHash($hash));
+
+            $this->response->json($resultTo->array()->first());
         }
 
     }
@@ -108,33 +153,74 @@ class TrackController extends AbstractAuthorizationController
      * @param string $hash
      *
      * @return void
+     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
+    #[NoReturn]
     public function editTrackText(string $hash): void
     {
 
-        if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->isExistRight($authorizedUser, AccessRightNameRepository::ADD_MUSIC);
+        $this->checkAuthWithRight(AccessRightNameRepository::EDIT_MUSIC);
 
-            // Answer about adding text to a track
-            $responseAdd = $this->trackService->editText($hash, $this->validatorManager());
+        /** @var EditTrackService $editTrackTextService */
+        $editTrackTextService = $this->getService('Track\EditTrackText');
 
-            $this->response->json($responseAdd->getResponse(), $responseAdd->getStatus());
-        }
+        // Answer about adding text to a track
+        $editResponse = $editTrackTextService
+            ->make($this->validatorManager(), $this->getDataHash($hash))
+            ->getResponseApiCollector();
+
+        $this->response->json($editResponse->getResponse(), $editResponse->getStatus());
 
     }
 
+    /**
+     * @param string $hash
+     *
+     * @return void
+     * @throws ErrorException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
+    #[NoReturn]
     public function addSubtitles(string $hash): void
     {
 
-//        $this->isExistRight($authorizedUser, AccessRightNameRepository::ADD_MUSIC);
+        $this->checkAuthWithRight(AccessRightNameRepository::ADD_MUSIC);
+
+        /** @var AddSubtitlesService $addSubtitlesService */
+        $addSubtitlesService = $this->getService('Track\AddSubtitles');
 
         // Answer about adding subtitles to a track
-        $responseAddSubtitles = $this->trackService->addSubtitles($hash, $this->validatorManager());
+        $addResponse = $addSubtitlesService
+            ->make($this->validatorManager(), $this->trackRepository, $this->getDataHash($hash))
+            ->getResponseApiCollector();
 
-        $this->response->json($responseAddSubtitles->getResponse(), $responseAddSubtitles->getStatus());
+        $this->response->json($addResponse->getResponse(), $addResponse->getStatus());
+
+    }
+
+    /**
+     * @param string $fullHash
+     *
+     * @return array
+     */
+    #[ArrayShape([
+        'hash' => "string",
+        'id'   => "int|string"
+    ])]
+    public function getDataHash(string $fullHash): array
+    {
+
+        $dataHash = explode('_', $fullHash);
+
+        return [
+            'hash' => $dataHash[0],
+            'id'   => $dataHash[1] ?? 0
+        ];
 
     }
 

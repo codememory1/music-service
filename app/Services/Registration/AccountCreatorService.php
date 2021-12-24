@@ -59,14 +59,14 @@ class AccountCreatorService extends AbstractApiService
 
         /** @var PasswordHashingService $passwordHashing */
         $passwordHashing = $this->get('password-hashing');
-        $inputData = $this->request->post();
+        $request = $this->request->post();
 
         $userEntity = new UserEntity();
         $userEntity
-            ->setName($inputData->get('name'))
-            ->setEmail($inputData->get('email'))
-            ->setUsername($inputData->get('email'))
-            ->setPassword($passwordHashing->encode($inputData->get('password')));
+            ->setName($request->get('name', escapingHtml: true))
+            ->setEmail($request->get('email'))
+            ->setUsername($request->get('email'))
+            ->setPassword($passwordHashing->encode($request->get('password')));
 
         return $userEntity;
 

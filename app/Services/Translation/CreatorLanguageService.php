@@ -4,12 +4,11 @@ namespace App\Services\Translation;
 
 use App\Orm\Entities\LanguageEntity;
 use App\Orm\Repositories\LanguageRepository;
-use App\Services\AbstractApiService;
-use App\Services\ResponseApiCollectorService;
+use App\Services\AbstractCrudService;
 use App\Validations\Translation\CreateLanguageValidation;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
-use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
+use Codememory\Components\Validator\Manager;
 use Codememory\Components\Validator\Manager as ValidationManager;
 use Codememory\Support\Str;
 use ReflectionException;
@@ -21,60 +20,51 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class CreatorLanguageService extends AbstractApiService
+class CreatorLanguageService extends AbstractCrudService
 {
 
     /**
-     * @param ValidationManager $validationManager
+     * @param ValidationManager  $manager
+     * @param LanguageRepository $languageRepository
      *
-     * @return ResponseApiCollectorService
+     * @return CreatorLanguageService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    public function create(ValidationManager $validationManager): ResponseApiCollectorService
+    public function make(Manager $manager, LanguageRepository $languageRepository): static
     {
 
-        $languageCode = Str::toLowercase($this->request->post()->get('lang_code') ?: '');
-        $creationValidationManager = $this->inputValidation($validationManager);
-
-        /** @var LanguageRepository $languageRepository */
-        $languageRepository = $this->getRepository(LanguageEntity::class);
+        $languageCode = Str::toLowercase($this->request->post()->get('lang_code', escapingHtml: true) ?: '');
+        $validatedDataManager = $this->makeInputValidation($manager, new CreateLanguageValidation());
 
         // Input validation
-        if (!$creationValidationManager->isValidation()) {
-            return $this->apiResponse->create(400, $creationValidationManager->getErrors());
+        if (!$validatedDataManager->isValidation()) {
+            return $this->setResponse(
+                $this->apiResponse->create(400, $validatedDataManager->getErrors())
+            );
         }
 
         // Checking for the existence of a language
         if ($languageRepository->getLang($languageCode)) {
-            return $this->createApiResponse(400, 'translation@langExist');
+            return $this->setResponse(
+                $this->createApiResponse(400, 'translation@langExist')
+            );
         }
 
-        return $this->pushLanguage($languageCode);
-
-    }
-
-    /**
-     * @param ValidationManager $validationManager
-     *
-     * @return ValidationManagerInterface
-     */
-    private function inputValidation(ValidationManager $validationManager): ValidationManagerInterface
-    {
-
-        return $validationManager->create(new CreateLanguageValidation(), $this->request->post()->all());
+        // Push tongue to base
+        return $this->push($languageCode);
 
     }
 
     /**
      * @param string $languageCode
      *
-     * @return ResponseApiCollectorService
+     * @return CreatorLanguageService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
-    private function pushLanguage(string $languageCode): ResponseApiCollectorService
+    private function push(string $languageCode): static
     {
 
         $languageEntity = new LanguageEntity();
@@ -83,7 +73,9 @@ class CreatorLanguageService extends AbstractApiService
 
         $this->getEntityManager()->commit($languageEntity)->flush();
 
-        return $this->createApiResponse(200, 'translation@successCreateLang');
+        return $this->setResponse(
+            $this->createApiResponse(200, 'translation@successCreateLang')
+        );
 
     }
 

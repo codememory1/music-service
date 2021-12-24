@@ -4,7 +4,9 @@ namespace App\Services\Auth;
 
 use App\Orm\Dto\UserDto;
 use App\Orm\Entities\UserEntity;
+use App\Orm\Entities\UserSessionEntity;
 use App\Orm\Repositories\UserRepository;
+use App\Orm\Repositories\UserSessionRepository;
 use App\Services\AbstractApiService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Tokens\SessionTokenService;
@@ -104,10 +106,16 @@ class AuthorizationService extends AbstractApiService
         $authorizationHeader = $this->request->getHeader('Authorization');
         $accessToken = explode(' ', $authorizationHeader, 2)[1] ?? null;
 
+        /** @var UserSessionRepository $userSessionRepository */
+        $userSessionRepository = $this->getRepository(UserSessionEntity::class);
+        $finedSessionByAccessToken = $userSessionRepository->findBy([
+            'access_token' => $accessToken
+        ]);
+
         /** @var SessionTokenService $sessionToken */
         $sessionToken = $this->get('session-token');
 
-        if (!empty($accessToken) && $sessionToken->verifyAccess($accessToken)) {
+        if (!empty($accessToken) && $sessionToken->verifyAccess($accessToken) && [] !== $finedSessionByAccessToken) {
             /** @var UserRepository $userRepository */
             $userRepository = $entityManager->getRepository(UserEntity::class);
             $userDataFromAccessToken = $sessionToken->decodeAccess($accessToken);
@@ -176,17 +184,21 @@ class AuthorizationService extends AbstractApiService
         [$accessToken, $refreshToken] = $sessionToken->generateTokens((new UserDto($userEntity))->getTransformedData());
 
         // Save the user's session
-        $this->saveSessionAuth($userEntity, $refreshToken);
+        $this->saveSessionAuth($userEntity, $accessToken, $refreshToken);
 
         return $this->createApiResponse(200, 'auth@successAuth', [
-            'access_token'  => $accessToken,
-            'refresh_token' => $refreshToken
+            'tokens' => [
+                'access_token'  => $accessToken,
+                'refresh_token' => $refreshToken
+            ],
+            'user_data' => (new UserDto($userEntity))->getTransformedData()
         ]);
 
     }
 
     /**
      * @param UserEntity $userEntity
+     * @param string     $accessToken
      * @param string     $refreshToken
      *
      * @return void
@@ -194,13 +206,13 @@ class AuthorizationService extends AbstractApiService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    private function saveSessionAuth(UserEntity $userEntity, string $refreshToken): void
+    private function saveSessionAuth(UserEntity $userEntity, string $accessToken, string $refreshToken): void
     {
 
         /** @var SaveSessionService $saveSessionService */
         $saveSessionService = $this->getService('Auth\SaveSession');
 
-        $saveSessionService->save($userEntity, $refreshToken);
+        $saveSessionService->save($userEntity, $accessToken, $refreshToken);
 
     }
 

@@ -233,6 +233,25 @@ abstract class AbstractAuthorizationController extends AbstractApiController
     }
 
     /**
+     * @param string $right
+     *
+     * @return UserEntity
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
+    protected function checkAuthWithRight(string $right): UserEntity
+    {
+
+        $authorizedUser = $this->isAuthWithResponse();
+
+        $this->isExistRight($authorizedUser, $right);
+
+        return $authorizedUser;
+
+    }
+
+    /**
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws ServiceNotExistException

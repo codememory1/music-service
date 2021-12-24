@@ -3,12 +3,11 @@
 namespace App\Services\Subscription;
 
 use App\Orm\Repositories\SubscriptionRepository;
-use App\Services\AbstractApiService;
-use App\Services\ResponseApiCollectorService;
+use App\Services\AbstractCrudService;
 use App\Validations\Subscription\SubscriptionUpdatingValidation;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
-use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
+use Codememory\Components\Validator\Manager;
 use Codememory\Components\Validator\Manager as ValidationManager;
 use ReflectionException;
 
@@ -19,52 +18,43 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class UpdaterService extends AbstractApiService
+class UpdaterService extends AbstractCrudService
 {
 
     /**
-     * @param ValidationManager      $validationManager
+     * @param ValidationManager      $manager
      * @param SubscriptionRepository $subscriptionRepository
-     * @param int                    $subscriptionId
+     * @param int                    $id
      *
-     * @return ResponseApiCollectorService
+     * @return UpdaterService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    final public function update(ValidationManager $validationManager, SubscriptionRepository $subscriptionRepository, int $subscriptionId): ResponseApiCollectorService
+    public function make(Manager $manager, SubscriptionRepository $subscriptionRepository, int $id): static
     {
 
-        $creationValidationManager = $this->inputValidation($validationManager);
-        $subscription = $subscriptionRepository->findOne(['id' => $subscriptionId]);
+        $validatedDataManager = $this->makeInputValidation($manager, new SubscriptionUpdatingValidation());
 
         // Input validation
-        if (!$creationValidationManager->isValidation()) {
-            return $this->apiResponse->create(400, $creationValidationManager->getErrors());
+        if (!$validatedDataManager->isValidation()) {
+            return $this->setResponse(
+                $this->apiResponse->create(400, $validatedDataManager->getErrors())
+            );
         }
 
         // Checking for the existence of a subscription
-        if (false === $subscription) {
-            return $this->createApiResponse(404, 'subscription@notExist');
+        if (!$subscriptionRepository->findOne(['id' => $id])) {
+            return $this->setResponse(
+                $this->createApiResponse(404, 'subscription@notExist')
+            );
         }
 
         // Updating subscription options
-        $this->updateSubscriptionOptions($subscriptionId);
+        $this->updateOptions($id);
 
         // Updating subscription data
-        return $this->updateHandler($subscriptionRepository, $subscriptionId);
-
-    }
-
-    /**
-     * @param ValidationManager $validationManager
-     *
-     * @return ValidationManagerInterface
-     */
-    private function inputValidation(ValidationManager $validationManager): ValidationManagerInterface
-    {
-
-        return $validationManager->create(new SubscriptionUpdatingValidation(), $this->request->post()->all());
+        return $this->push($subscriptionRepository, $id);
 
     }
 
@@ -76,38 +66,47 @@ class UpdaterService extends AbstractApiService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    private function updateSubscriptionOptions(int $subscriptionId): void
+    private function updateOptions(int $subscriptionId): void
     {
 
-        /** @var UpdateSubscriptionOptionsService $updateOptionsService */
-        $updateOptionsService = $this->getService('Subscription\UpdateSubscriptionOptions');
+        /** @var UpdateSubscriptionOptionsService $updaterSubscriptionOptionsService */
+        $updaterSubscriptionOptionsService = $this->getService('Subscription\UpdateSubscriptionOptions');
 
         // Updating subscription options
-        $updateOptionsService->update(collect($this->request->post()->get('options') ?: []), $subscriptionId);
+        $updaterSubscriptionOptionsService->make(
+            $this->request->post()->get('options', trim: false) ?: [],
+            $subscriptionId
+        );
 
     }
 
     /**
      * @param SubscriptionRepository $subscriptionRepository
-     * @param int                    $subscriptionId
+     * @param int                    $id
      *
-     * @return ResponseApiCollectorService
+     * @return UpdaterService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    private function updateHandler(SubscriptionRepository $subscriptionRepository, int $subscriptionId): ResponseApiCollectorService
+    private function push(SubscriptionRepository $subscriptionRepository, int $id): static
     {
 
-        $subscriptionRepository->update([
-            'name'        => $this->request->post()->get('name'),
-            'description' => $this->request->post()->get('description'),
-            'old_price'   => $this->request->post()->get('old_price'),
-            'price'       => $this->request->post()->get('price'),
-            'is_active'   => 'on' === $this->request->post()->get('is_active') ? 1 : 0,
-        ], ['id' => $subscriptionId]);
+        $request = $this->request->post();
 
-        return $this->createApiResponse(200, 'subscription@successUpdate');
+        $subscriptionRepository->update([
+            'name'        => $request->get('name', escapingHtml: true),
+            'description' => $request->get('description', escapingHtml: true),
+            'old_price'   => $request->get('old_price'),
+            'price'       => $request->get('price'),
+            'is_active'   => 'on' === $request->get('is_active') ? 1 : 0,
+        ], ['id' => $id]);
+
+        $this->setResponse(
+            $this->createApiResponse(200, 'subscription@successUpdate')
+        );
+
+        return $this;
 
     }
 

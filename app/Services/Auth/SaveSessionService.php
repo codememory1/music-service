@@ -23,20 +23,21 @@ class SaveSessionService extends AbstractApiService
 
     /**
      * @param UserEntity $userEntity
+     * @param string     $accessToken
      * @param string     $refreshToken
      *
      * @return void
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    public function save(UserEntity $userEntity, string $refreshToken): void
+    public function save(UserEntity $userEntity, string $accessToken, string $refreshToken): void
     {
 
         /** @var UserSessionRepository $userSessionRepository */
         $userSessionRepository = $this->getRepository(UserSessionEntity::class);
 
         // Collecting UserSessionEntity with basic information
-        $userSessionEntity = $this->getCollectedUserSessionEntity($userEntity, $refreshToken);
+        $userSessionEntity = $this->getCollectedUserSessionEntity($userEntity, $accessToken, $refreshToken);
 
         // Add IP information to UserSessionEntity, if information exists for this IP
         $userSessionEntity = $this->addIpInfo($userSessionEntity);
@@ -51,11 +52,12 @@ class SaveSessionService extends AbstractApiService
 
     /**
      * @param UserEntity $userEntity
+     * @param string     $accessToken
      * @param string     $refreshToken
      *
      * @return UserSessionEntity
      */
-    private function getCollectedUserSessionEntity(UserEntity $userEntity, string $refreshToken): UserSessionEntity
+    private function getCollectedUserSessionEntity(UserEntity $userEntity, string $accessToken, string $refreshToken): UserSessionEntity
     {
 
         /** @var SessionTokenService $sessionToken */
@@ -65,6 +67,7 @@ class SaveSessionService extends AbstractApiService
         $userSessionEntity = new UserSessionEntity();
         $userSessionEntity
             ->setUserId($userEntity->getId())
+            ->setAccessToken($accessToken)
             ->setRefreshToken($refreshToken)
             ->setIp($this->request->getIp())
             ->setValidTo($refreshTokenValidTo);

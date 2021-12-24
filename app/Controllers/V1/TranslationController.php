@@ -2,15 +2,18 @@
 
 namespace App\Controllers\V1;
 
+use App\Orm\Entities\LanguageEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
+use App\Orm\Repositories\LanguageRepository;
+use App\Services\Translation\AddTranslationService;
 use App\Services\Translation\CacheService;
 use App\Services\Translation\CreatorLanguageService;
-use App\Services\Translation\CreatorTranslationService;
 use App\Services\Translation\DataService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
+use ErrorException;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
 
@@ -35,6 +38,11 @@ class TranslationController extends AbstractAuthorizationController
     private CacheService $translationCacheService;
 
     /**
+     * @var LanguageRepository
+     */
+    private LanguageRepository $languageRepository;
+
+    /**
      * @param ServiceProviderInterface $serviceProvider
      *
      * @throws ReflectionException
@@ -53,6 +61,10 @@ class TranslationController extends AbstractAuthorizationController
         /** @var CacheService $translationCacheService */
         $translationCacheService = $this->getService('Translation\Cache');
         $this->translationCacheService = $translationCacheService;
+
+        /** @var LanguageRepository $languageRepository */
+        $languageRepository = $this->em->getRepository(LanguageEntity::class);
+        $this->languageRepository = $languageRepository;
 
     }
 
@@ -73,45 +85,49 @@ class TranslationController extends AbstractAuthorizationController
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
+     * @throws ErrorException
      */
+    #[NoReturn]
     public function createLanguage(): void
     {
 
-        if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->isExistRight($authorizedUser, AccessRightNameRepository::CREATE_LANG);
+        $this->checkAuthWithRight(AccessRightNameRepository::CREATE_LANG);
 
-            /** @var CreatorLanguageService $creatorLanguageService */
-            $creatorLanguageService = $this->getService('Translation\CreatorLanguage');
+        /** @var CreatorLanguageService $creatorLanguageService */
+        $creatorLanguageService = $this->getService('Translation\CreatorLanguage');
 
-            // Creating a language and getting a response about creation
-            $languageCreationResponse = $creatorLanguageService->create($this->validatorManager());
+        // Creating a language and getting a response about creation
+        $createResponse = $creatorLanguageService
+            ->make($this->validatorManager(), $this->languageRepository)
+            ->getResponseApiCollector();
 
-            $this->response->json($languageCreationResponse->getResponse(), $languageCreationResponse->getStatus());
-        }
+        $this->response->json($createResponse->getResponse(), $createResponse->getStatus());
 
     }
 
     /**
      * @param string $lang
      *
+     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
+    #[NoReturn]
     public function addTranslation(string $lang): void
     {
 
-        if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->isExistRight($authorizedUser, AccessRightNameRepository::ADD_TRANSLATION);
+        $this->checkAuthWithRight(AccessRightNameRepository::ADD_TRANSLATION);
 
-            /** @var CreatorTranslationService $creatorTranslationService */
-            $creatorTranslationService = $this->getService('Translation\CreatorTranslation');
+        /** @var AddTranslationService $addTranslationService */
+        $addTranslationService = $this->getService('Translation\AddTranslation');
 
-            // Answer to add translation to language
-            $translationCreationResponse = $creatorTranslationService->create($this->validatorManager(), $lang);
+        // Answer to add translation to language
+        $createResponse = $addTranslationService
+            ->make($this->validatorManager(), $this->languageRepository, $lang)
+            ->getResponseApiCollector();
 
-            $this->response->json($translationCreationResponse->getResponse(), $translationCreationResponse->getStatus());
-        }
+        $this->response->json($createResponse->getResponse(), $createResponse->getStatus());
 
     }
 
@@ -125,18 +141,16 @@ class TranslationController extends AbstractAuthorizationController
     public function updateCache(): void
     {
 
-        if (false != $authorizedUser = $this->isAuthWithResponse()) {
-            $this->isExistRight($authorizedUser, AccessRightNameRepository::UPDATE_TRANSLATION_CACHE);
+        $this->checkAuthWithRight(AccessRightNameRepository::UPDATE_TRANSLATION_CACHE);
 
-            $this->translationCacheService->update(
-                $this->translationDataService->getTranslationsWithLanguages()
-            );
+        // Updating the translation cache for all languages
+        $this->translationCacheService->update(
+            $this->translationDataService->getTranslationsWithLanguages()
+        );
 
-            $this->response->json($this->apiResponse->create(200, [
-                $this->translationDataService->getTranslationByKey('translation@successUpdateCache')
-            ])->getResponse());
-
-        }
+        $this->response->json($this->apiResponse->create(200, [
+            $this->translationDataService->getTranslationByKey('translation@successUpdateCache')
+        ])->getResponse());
 
     }
 

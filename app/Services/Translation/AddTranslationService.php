@@ -8,49 +8,50 @@ use App\Orm\Entities\TranslationKeyEntity;
 use App\Orm\Repositories\LanguageRepository;
 use App\Orm\Repositories\LanguageTranslationRepository;
 use App\Orm\Repositories\TranslationKeyRepository;
-use App\Services\AbstractApiService;
-use App\Services\ResponseApiCollectorService;
+use App\Services\AbstractCrudService;
 use App\Validations\Translation\AddTranslationValidation;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
-use Codememory\Components\Validator\Interfaces\ValidationManagerInterface;
-use Codememory\Components\Validator\Manager as ValidationManager;
+use Codememory\Components\Validator\Manager;
 use ReflectionException;
 
 /**
- * Class CreatorTranslationService
+ * Class AddTranslationService
  *
  * @package App\Services\Translation
  *
  * @author  Danil
  */
-class CreatorTranslationService extends AbstractApiService
+class AddTranslationService extends AbstractCrudService
 {
 
     /**
-     * @param ValidationManager $validationManager
-     * @param string            $lang
+     * @param Manager            $manager
+     * @param LanguageRepository $languageRepository
+     * @param string             $lang
      *
-     * @return ResponseApiCollectorService
+     * @return AddTranslationService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    public function create(ValidationManager $validationManager, string $lang): ResponseApiCollectorService
+    public function make(Manager $manager, LanguageRepository $languageRepository, string $lang): static
     {
 
-        /** @var LanguageRepository $languageRepository */
-        $languageRepository = $this->getRepository(LanguageEntity::class);
-        $creationValidationManager = $this->inputValidation($validationManager);
+        $validatedDataManager = $this->makeInputValidation($manager, new AddTranslationValidation());
 
         // Input validation
-        if (!$creationValidationManager->isValidation()) {
-            return $this->apiResponse->create(400, $creationValidationManager->getErrors());
+        if (!$validatedDataManager->isValidation()) {
+            return $this->setResponse(
+                $this->apiResponse->create(400, $validatedDataManager->getErrors())
+            );
         }
 
         // Checking for the existence of a language
         if (!$languageRepository->getLang($lang)) {
-            return $this->createApiResponse(400, 'translation@langNotExist');
+            return $this->setResponse(
+                $this->createApiResponse(400, 'translation@langNotExist')
+            );
         }
 
         return $this->addTranslation($languageRepository->getLang($lang), $this->addKey());
@@ -68,11 +69,11 @@ class CreatorTranslationService extends AbstractApiService
         $translationKeyEntity = new TranslationKeyEntity();
 
         /** @var TranslationKeyRepository $translationKeyRepository */
-        $translationKeyRepository = $this->getEntityManager()->getRepository($translationKeyEntity);
+        $translationKeyRepository = $this->getRepository($translationKeyEntity::class);
         $finedTranslationKey = $translationKeyRepository->findOne([
             'key' => $translationKeyEntity->getKey()
         ]);
-        $key = $this->request->post()->get('key');
+        $key = $this->request->post()->get('key', escapingHtml: true);
 
         $translationKeyEntity->setKey($key);
 
@@ -82,7 +83,9 @@ class CreatorTranslationService extends AbstractApiService
         }
 
         // The key does not exist, we add the key and return its id
-        $this->getEntityManager()->commit($translationKeyEntity)->flush();
+        $this->getEntityManager()
+            ->commit($translationKeyEntity)
+            ->flush();
 
         return $translationKeyRepository->getMaxId();
 
@@ -92,12 +95,12 @@ class CreatorTranslationService extends AbstractApiService
      * @param LanguageEntity $languageEntity
      * @param int            $translationKeyId
      *
-     * @return ResponseApiCollectorService
+     * @return AddTranslationService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    public function addTranslation(LanguageEntity $languageEntity, int $translationKeyId): ResponseApiCollectorService
+    public function addTranslation(LanguageEntity $languageEntity, int $translationKeyId): static
     {
 
         /** @var LanguageTranslationRepository $languageTranslationRepository */
@@ -114,24 +117,18 @@ class CreatorTranslationService extends AbstractApiService
             'lang_id'            => $languageEntity->getId(),
             'translation_key_id' => $translationKeyId
         ])) {
-            return $this->createApiResponse(400, 'translation@translationExist');
+            return $this->setResponse(
+                $this->createApiResponse(400, 'translation@translationExist')
+            );
         }
 
-        $this->getEntityManager()->commit($languageTranslationEntity)->flush();
+        $this->getEntityManager()
+            ->commit($languageTranslationEntity)
+            ->flush();
 
-        return $this->createApiResponse(200, 'translation@successAddTranslation');
-
-    }
-
-    /**
-     * @param ValidationManager $validationManager
-     *
-     * @return ValidationManagerInterface
-     */
-    private function inputValidation(ValidationManager $validationManager): ValidationManagerInterface
-    {
-
-        return $validationManager->create(new AddTranslationValidation(), $this->request->post()->all());
+        return $this->setResponse(
+            $this->createApiResponse(200, 'translation@successAddTranslation')
+        );
 
     }
 

@@ -58,6 +58,8 @@ Router::subdomainGroup('api', function () {
     // Routes associated with music
     Router::group('/track/', function () {
         Router::post('add/', [TrackController::class, 'addTrack'], true);
+        Router::put(':hash/edit/', [TrackController::class, 'editTrack'], true)
+            ->with('hash', '.+');
         Router::get(':hash/info/', [TrackController::class, 'infoTrack'], true)
             ->with('hash', '.+');
         Router::delete(':hash/delete/', [TrackController::class, 'deleteTrack'], true)

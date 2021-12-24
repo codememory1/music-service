@@ -4,33 +4,32 @@ namespace App\Services\Track;
 
 use App\Orm\Entities\TrackEntity;
 use App\Orm\Repositories\TrackRepository;
-use App\Services\AbstractApiService;
-use App\Services\ResponseApiCollectorService;
+use App\Services\AbstractCrudService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\FileSystem\File;
 use ReflectionException;
 
 /**
- * Class RemoverTrackService
+ * Class DeleterTrackService
  *
  * @package App\Services\Track
  *
  * @author  Danil
  */
-class RemoverTrackService extends AbstractApiService
+class DeleterTrackService extends AbstractCrudService
 {
 
     /**
-     * @param array           $dataHash
      * @param TrackRepository $trackRepository
+     * @param array           $dataHash
      *
-     * @return ResponseApiCollectorService
+     * @return DeleterTrackService
      * @throws ReflectionException
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    final public function make(array $dataHash, TrackRepository $trackRepository): ResponseApiCollectorService
+    final public function make(TrackRepository $trackRepository, array $dataHash): static
     {
 
         $finedTrack = $trackRepository->customFindBy($dataHash)->entity()->first();
@@ -38,7 +37,9 @@ class RemoverTrackService extends AbstractApiService
         // Check the existence of a track
         /** @var TrackEntity|bool $finedTrack */
         if (false === $finedTrack) {
-            return $this->createApiResponse(404, 'track@notExist');
+            return $this->setResponse(
+                $this->createApiResponse(404, 'track@notExist')
+            );
         }
 
         // Delete the track image
@@ -47,7 +48,11 @@ class RemoverTrackService extends AbstractApiService
         // Removing a track from the database
         $trackRepository->delete($dataHash);
 
-        return $this->createApiResponse(200, 'track@successDelete');
+        $this->setResponse(
+            $this->createApiResponse(200, 'track@successDelete')
+        );
+
+        return $this;
 
     }
 

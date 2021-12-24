@@ -4,9 +4,8 @@ namespace App\Services\Subscription;
 
 use App\Orm\Entities\SubscriptionOptionEntity;
 use App\Orm\Repositories\SubscriptionOptionRepository;
-use App\Services\AbstractApiService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
-use Illuminate\Support\Collection;
+use Codememory\Components\Services\AbstractService;
 use ReflectionException;
 
 /**
@@ -16,17 +15,17 @@ use ReflectionException;
  *
  * @author  Danil
  */
-class UpdateSubscriptionOptionsService extends AbstractApiService
+class UpdateSubscriptionOptionsService extends AbstractService
 {
 
     /**
-     * @param Collection $options
-     * @param int        $subscriptionId
+     * @param array $options
+     * @param int   $subscriptionId
      *
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    final public function update(Collection $options, int $subscriptionId): void
+    public function make(array $options, int $subscriptionId): void
     {
 
         /** @var SubscriptionOptionRepository $subscriptionOptionRepository */
@@ -36,26 +35,26 @@ class UpdateSubscriptionOptionsService extends AbstractApiService
         $subscriptionOptionRepository->delete(['subscription_id' => $subscriptionId]);
 
         // Pushing updated subscription options
-        $this->pushOptions($subscriptionOptionRepository, $options, $subscriptionId);
+        $this->push($subscriptionOptionRepository, $options, $subscriptionId);
 
     }
 
     /**
      * @param SubscriptionOptionRepository $subscriptionOptionRepository
-     * @param Collection                   $options
+     * @param array                        $options
      * @param int                          $id
      *
      * @return void
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    private function pushOptions(SubscriptionOptionRepository $subscriptionOptionRepository, Collection $options, int $id): void
+    private function push(SubscriptionOptionRepository $subscriptionOptionRepository, array $options, int $id): void
     {
 
         $subscriptionOptionEntity = new SubscriptionOptionEntity();
 
         // Commit all subscription options
-        foreach ($options->all() as $option) {
+        foreach ($options as $option) {
             if (!$subscriptionOptionRepository->exist(['subscription_option_name_id' => $option])) {
                 $subscriptionOptionEntity
                     ->setOption($option)
