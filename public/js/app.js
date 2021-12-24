@@ -5006,6 +5006,15 @@ __webpack_require__.r(__webpack_exports__);
     var playerLayoutContentRect = this.$refs.playerLayoutContent.getBoundingClientRect();
     this.contentPosition.x = playerLayoutContentRect.x;
     this.contentPosition.y = playerLayoutContentRect.y;
+    this.$refs.contentScroll.addEventListener("scroll", this.setLayoutScroll);
+  },
+  methods: {
+    setLayoutScroll: function setLayoutScroll() {
+      this.$store.commit("layoutScroll/setScroll", true);
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.$refs.contentScroll.removeEventListener("scroll", this.setLayoutScroll);
   }
 });
 
@@ -5209,6 +5218,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _components_Buttons_BaseCustomClickButtonComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Buttons/BaseCustomClickButtonComponent */ "./resources/front/js/components/Buttons/BaseCustomClickButtonComponent.vue");
 /* harmony import */ var _components_Buttons_ShareButtonComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Buttons/ShareButtonComponent */ "./resources/front/js/components/Buttons/ShareButtonComponent.vue");
 /* harmony import */ var _components_Albums_BaseAlbumComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Albums/BaseAlbumComponent */ "./resources/front/js/components/Albums/BaseAlbumComponent.vue");
@@ -5220,6 +5230,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_DropDown_DropDownItemComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/DropDown/DropDownItemComponent */ "./resources/front/js/components/DropDown/DropDownItemComponent.vue");
 /* harmony import */ var _components_DropDown_DropDownBorderComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/DropDown/DropDownBorderComponent */ "./resources/front/js/components/DropDown/DropDownBorderComponent.vue");
 /* harmony import */ var _modules_ClickOut__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../modules/ClickOut */ "./resources/front/js/modules/ClickOut.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -5371,6 +5387,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 
@@ -5545,10 +5563,14 @@ __webpack_require__.r(__webpack_exports__);
     (0,_modules_ClickOut__WEBPACK_IMPORTED_MODULE_10__["default"])(this.$refs.musicItemDropDown.$el, function (status) {
       if (status) {
         _this.isOpenedMusicItemDropDown = false;
+
+        _this.setLayoutScroll(false);
       }
     });
   },
-  methods: {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_11__.mapMutations)({
+    setLayoutScroll: "layoutScroll/setScroll"
+  })), {}, {
     musicItemDropDownStyle: function musicItemDropDownStyle() {
       return {
         top: "".concat(this.musicItemDropDownY, "px"),
@@ -5565,6 +5587,7 @@ __webpack_require__.r(__webpack_exports__);
       var musicItemDropDownRect = this.$refs.musicItemDropDown.$el.getBoundingClientRect();
       var dropDownPosition = event.clientY - playerLayoutPosition.y + musicItemDropDownRect.height;
       this.isOpenedMusicItemDropDown = false;
+      this.setLayoutScroll(false);
       setTimeout(function () {
         _this2.isOpenedMusicItemDropDown = true;
         _this2.musicItemDropDownX = event.clientX - playerLayoutPosition.x;
@@ -5580,7 +5603,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }, 300);
     }
-  }
+  })
 });
 
 /***/ }),
@@ -6240,21 +6263,61 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _notification__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notification */ "./resources/front/js/store/notification.js");
 /* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth */ "./resources/front/js/store/auth.js");
+/* harmony import */ var _layoutScroll__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layoutScroll */ "./resources/front/js/store/layoutScroll.js");
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_2__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_3__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_3__["default"].Store({
+
+vue__WEBPACK_IMPORTED_MODULE_3__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_4__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_4__["default"].Store({
   modules: {
     notification: _notification__WEBPACK_IMPORTED_MODULE_0__["default"],
-    auth: _auth__WEBPACK_IMPORTED_MODULE_1__["default"]
+    auth: _auth__WEBPACK_IMPORTED_MODULE_1__["default"],
+    layoutScroll: _layoutScroll__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/front/js/store/layoutScroll.js":
+/*!**************************************************!*\
+  !*** ./resources/front/js/store/layoutScroll.js ***!
+  \**************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    isScroll: false
+  },
+  getters: {
+    /**
+     *
+     * @param state
+     * @returns {any}
+     */
+    isScroll: function isScroll(state) {
+      return state.isScroll;
+    }
+  },
+  mutations: {
+    /**
+     *
+     * @param state
+     * @param status
+     */
+    setScroll: function setScroll(state, status) {
+      state.isScroll = status;
+    }
+  }
+});
 
 /***/ }),
 
@@ -35089,7 +35152,7 @@ var render = function () {
         [
           _c(
             "div",
-            { staticClass: "content__scroll" },
+            { ref: "contentScroll", staticClass: "content__scroll" },
             [
               _c("the-player-header"),
               _vm._v(" "),
@@ -35674,7 +35737,9 @@ var render = function () {
         {
           ref: "musicItemDropDown",
           class: {
-            active: _vm.isOpenedMusicItemDropDown,
+            active:
+              _vm.isOpenedMusicItemDropDown &&
+              !_vm.$store.getters["layoutScroll/isScroll"],
             "music-item__drop-down": true,
           },
           style: _vm.musicItemDropDownStyle(),
