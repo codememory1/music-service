@@ -6,7 +6,7 @@
     <!-- Player subdomain navigation -->
     <the-player-navigation />
     <div ref="playerLayoutContent" class="player-layout__content">
-      <div class="content__scroll">
+      <div class="content__scroll" ref="contentScroll">
         <the-player-header />
         <router-view :position="contentPosition" />
       </div>
@@ -42,6 +42,21 @@ export default {
 
     this.contentPosition.x = playerLayoutContentRect.x;
     this.contentPosition.y = playerLayoutContentRect.y;
+
+    this.$refs.contentScroll.addEventListener("scroll", this.setLayoutScroll);
+  },
+
+  methods: {
+    setLayoutScroll() {
+      this.$store.commit("layoutScroll/setScroll", true);
+    }
+  },
+
+  beforeDestroy() {
+    this.$refs.contentScroll.removeEventListener(
+      "scroll",
+      this.setLayoutScroll
+    );
   }
 };
 </script>

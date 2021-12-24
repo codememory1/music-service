@@ -117,7 +117,8 @@
     <drop-down
       ref="musicItemDropDown"
       :class="{
-        active: isOpenedMusicItemDropDown,
+        active:
+          isOpenedMusicItemDropDown && !$store.getters['layoutScroll/isScroll'],
         'music-item__drop-down': true
       }"
       :style="musicItemDropDownStyle()"
@@ -150,6 +151,7 @@
   </div>
 </template>
 <script>
+import { mapMutations } from "vuex";
 import BaseCustomClickButton from "../../components/Buttons/BaseCustomClickButtonComponent";
 import ShareButton from "../../components/Buttons/ShareButtonComponent";
 import BaseAlbum from "../../components/Albums/BaseAlbumComponent";
@@ -369,11 +371,15 @@ export default {
     ClickOut(this.$refs.musicItemDropDown.$el, (status) => {
       if (status) {
         this.isOpenedMusicItemDropDown = false;
+        this.setLayoutScroll(false);
       }
     });
   },
 
   methods: {
+    ...mapMutations({
+      setLayoutScroll: "layoutScroll/setScroll"
+    }),
     musicItemDropDownStyle() {
       return {
         top: `${this.musicItemDropDownY}px`,
@@ -392,6 +398,7 @@ export default {
         event.clientY - playerLayoutPosition.y + musicItemDropDownRect.height;
 
       this.isOpenedMusicItemDropDown = false;
+      this.setLayoutScroll(false);
 
       setTimeout(() => {
         this.isOpenedMusicItemDropDown = true;
