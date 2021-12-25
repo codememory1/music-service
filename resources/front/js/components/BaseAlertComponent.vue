@@ -1,33 +1,33 @@
 <template>
-  <div :class="'notification notification_type--' + type">
+  <div :class="'alert alert_type--' + type">
     <img-alias
       v-if="type === 'success'"
       alias="success-svg"
       alt="success"
-      class="notification__icon"
+      class="alert__icon"
     />
     <img-alias
       v-if="type === 'error'"
       alias="error-svg"
       alt="error"
-      class="notification__icon"
+      class="alert__icon"
     />
     <img-alias
       v-if="type === 'warning'"
       alias="warning-svg"
       alt="warning"
-      class="notification__icon"
+      class="alert__icon"
     />
 
-    <div class="notification__content">
-      <span class="notification__title">{{ title }}</span>
-      <span class="notification__text">{{ message }}</span>
+    <div class="alert__content">
+      <span class="alert__title">{{ title }}</span>
+      <span class="alert__text">{{ message }}</span>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "BaseNotification",
+  name: "BaseAlert",
   props: {
     /**
      * The type of notification.
@@ -64,5 +64,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../scss/components/notification";
+@import "../../scss/components/alert";
 </style>

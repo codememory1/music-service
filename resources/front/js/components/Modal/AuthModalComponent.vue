@@ -141,7 +141,7 @@ export default {
       this.btnIsLoading = false;
 
       if (response.status >= 400) {
-        this.$store.commit("notification/create", {
+        this.$store.commit("alert/create", {
           type: "error",
           title: "Авторизация",
           message: response.data.messages[0]
@@ -157,7 +157,7 @@ export default {
      * @param response
      */
     successAuth(response) {
-      this.$store.commit("notification/create", {
+      this.$store.commit("alert/create", {
         type: "success",
         title: "Авторизация",
         message: response.data.messages[0]

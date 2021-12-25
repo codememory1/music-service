@@ -2,19 +2,19 @@ export default {
   namespaced: true,
 
   state: {
-    notifications: [],
+    alerts: [],
     life: 5000
   },
 
   getters: {
-    getNotifications(state) {
-      return state.notifications;
+    getAlerts(state) {
+      return state.alerts;
     }
   },
 
   mutations: {
     create(state, payload) {
-      state.notifications.push({
+      state.alerts.push({
         type: payload.type,
         title: payload.title,
         message: payload.message
@@ -22,10 +22,10 @@ export default {
 
       // Delete notification after creation
       setTimeout(() => {
-        const keys = Object.keys(state.notifications);
+        const keys = Object.keys(state.alerts);
         const firstKey = Number(keys[0]);
 
-        state.notifications.splice(firstKey, 1);
+        state.alerts.splice(firstKey, 1);
       }, state.life);
     },
 

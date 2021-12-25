@@ -2300,10 +2300,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=script&lang=js&":
-/*!**************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=script&lang=js& ***!
-  \**************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2336,7 +2336,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "BaseNotification",
+  name: "BaseAlert",
   props: {
     /**
      * The type of notification.
@@ -2529,16 +2529,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _components_BaseNotificationComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/BaseNotificationComponent */ "./resources/front/js/components/BaseNotificationComponent.vue");
+/* harmony import */ var _BaseAlertComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../BaseAlertComponent */ "./resources/front/js/components/BaseAlertComponent.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2561,12 +2561,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "BlockNotifications",
+  name: "BlockAlerts",
   components: {
-    BaseNotification: _components_BaseNotificationComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+    BaseAlert: _BaseAlertComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)({
-    notifications: "notification/getNotifications"
+    alerts: "alert/getAlerts"
   }))
 });
 
@@ -3253,7 +3253,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.btnIsLoading = false;
 
       if (response.status >= 400) {
-        this.$store.commit("notification/create", {
+        this.$store.commit("alert/create", {
           type: "error",
           title: "Авторизация",
           message: response.data.messages[0]
@@ -3271,7 +3271,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     successAuth: function successAuth(response) {
       var _response$data$data$t;
 
-      this.$store.commit("notification/create", {
+      this.$store.commit("alert/create", {
         type: "success",
         title: "Авторизация",
         message: response.data.messages[0]
@@ -4966,7 +4966,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Headers_ThePlayerHeaderComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Headers/ThePlayerHeaderComponent */ "./resources/front/js/components/Headers/ThePlayerHeaderComponent.vue");
 /* harmony import */ var _components_Navigation_ThePlayerNavigationComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Navigation/ThePlayerNavigationComponent */ "./resources/front/js/components/Navigation/ThePlayerNavigationComponent.vue");
 /* harmony import */ var _components_Player_DesktopPlayerComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Player/DesktopPlayerComponent */ "./resources/front/js/components/Player/DesktopPlayerComponent.vue");
-/* harmony import */ var _components_Blocks_BlockNotificationsComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Blocks/BlockNotificationsComponent */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue");
+/* harmony import */ var _components_Blocks_BlockAlertsComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Blocks/BlockAlertsComponent */ "./resources/front/js/components/Blocks/BlockAlertsComponent.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -5000,7 +5000,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     ThePlayerHeader: _components_Headers_ThePlayerHeaderComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     ThePlayerNavigation: _components_Navigation_ThePlayerNavigationComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     DesktopPlayer: _components_Player_DesktopPlayerComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
-    BlockNotifications: _components_Blocks_BlockNotificationsComponent__WEBPACK_IMPORTED_MODULE_3__["default"]
+    BlockNotifications: _components_Blocks_BlockAlertsComponent__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   mounted: function mounted() {
     var playerLayoutContentRect = this.$refs.playerLayoutContent.getBoundingClientRect();
@@ -5035,7 +5035,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Subscription_BaseSubscriptionComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Subscription/BaseSubscriptionComponent */ "./resources/front/js/components/Subscription/BaseSubscriptionComponent.vue");
 /* harmony import */ var _components_Subscription_SubscriptionBangComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Subscription/SubscriptionBangComponent */ "./resources/front/js/components/Subscription/SubscriptionBangComponent.vue");
 /* harmony import */ var _components_TheFooterComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/TheFooterComponent */ "./resources/front/js/components/TheFooterComponent.vue");
-/* harmony import */ var _components_Blocks_BlockNotificationsComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Blocks/BlockNotificationsComponent */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue");
+/* harmony import */ var _components_Blocks_BlockAlertsComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Blocks/BlockAlertsComponent */ "./resources/front/js/components/Blocks/BlockAlertsComponent.vue");
 //
 //
 //
@@ -5207,7 +5207,7 @@ __webpack_require__.r(__webpack_exports__);
     BaseSubscription: _components_Subscription_BaseSubscriptionComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     SubscriptionBang: _components_Subscription_SubscriptionBangComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
     TheFooter: _components_TheFooterComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
-    BlockNotifications: _components_Blocks_BlockNotificationsComponent__WEBPACK_IMPORTED_MODULE_4__["default"]
+    BlockNotifications: _components_Blocks_BlockAlertsComponent__WEBPACK_IMPORTED_MODULE_4__["default"]
   }
 });
 
@@ -6101,6 +6101,47 @@ var routes = [{
 
 /***/ }),
 
+/***/ "./resources/front/js/store/alert.js":
+/*!*******************************************!*\
+  !*** ./resources/front/js/store/alert.js ***!
+  \*******************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  namespaced: true,
+  state: {
+    alerts: [],
+    life: 5000
+  },
+  getters: {
+    getAlerts: function getAlerts(state) {
+      return state.alerts;
+    }
+  },
+  mutations: {
+    create: function create(state, payload) {
+      state.alerts.push({
+        type: payload.type,
+        title: payload.title,
+        message: payload.message
+      }); // Delete notification after creation
+
+      setTimeout(function () {
+        var keys = Object.keys(state.alerts);
+        var firstKey = Number(keys[0]);
+        state.alerts.splice(firstKey, 1);
+      }, state.life);
+    },
+    setLife: function setLife(state, life) {
+      state.life = life;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/front/js/store/auth.js":
 /*!******************************************!*\
   !*** ./resources/front/js/store/auth.js ***!
@@ -6257,7 +6298,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _notification__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notification */ "./resources/front/js/store/notification.js");
+/* harmony import */ var _alert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./alert */ "./resources/front/js/store/alert.js");
 /* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth */ "./resources/front/js/store/auth.js");
 /* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout */ "./resources/front/js/store/layout.js");
 
@@ -6268,7 +6309,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_3__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_4__["default"]);
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_4__["default"].Store({
   modules: {
-    notification: _notification__WEBPACK_IMPORTED_MODULE_0__["default"],
+    alert: _alert__WEBPACK_IMPORTED_MODULE_0__["default"],
     auth: _auth__WEBPACK_IMPORTED_MODULE_1__["default"],
     layoutScroll: _layout__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
@@ -6351,47 +6392,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/front/js/store/notification.js":
-/*!**************************************************!*\
-  !*** ./resources/front/js/store/notification.js ***!
-  \**************************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  namespaced: true,
-  state: {
-    notifications: [],
-    life: 5000
-  },
-  getters: {
-    getNotifications: function getNotifications(state) {
-      return state.notifications;
-    }
-  },
-  mutations: {
-    create: function create(state, payload) {
-      state.notifications.push({
-        type: payload.type,
-        title: payload.title,
-        message: payload.message
-      }); // Delete notification after creation
-
-      setTimeout(function () {
-        var keys = Object.keys(state.notifications);
-        var firstKey = Number(keys[0]);
-        state.notifications.splice(firstKey, 1);
-      }, state.life);
-    },
-    setLife: function setLife(state, life) {
-      state.life = life;
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Albums/AlbumWithPlayComponent.vue?vue&type=style&index=0&id=9a146984&lang=scss&scoped=true&":
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Albums/AlbumWithPlayComponent.vue?vue&type=style&index=0&id=9a146984&lang=scss&scoped=true& ***!
@@ -6434,10 +6434,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".album {\n  position: relative;\n  wid
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss&":
-/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss& ***!
-  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6448,7 +6448,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".notification {\n  position: relative;\n  width: 430px;\n  height: -webkit-max-content;\n  height: -moz-max-content;\n  height: max-content;\n  padding: 10px 21px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-radius: 8px;\n}\n.notification__icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-line-pack: center;\n      align-content: center;\n  position: relative;\n}\n.notification__content {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  margin-left: 20px;\n}\n.notification__title {\n  font-weight: bold;\n  font-size: 16px;\n  line-height: 24px;\n  z-index: 9;\n}\n.notification__text {\n  font-weight: 400;\n  font-size: 16px;\n  line-height: 24px;\n  color: #FFFFFF;\n  z-index: 9;\n}\n.notification_type--success:before {\n  content: \"\";\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background: -o-linear-gradient(left, rgba(27, 232, 9, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  background: -webkit-gradient(linear, left top, right top, from(rgba(27, 232, 9, 0.26)), color-stop(55.34%, #0D1623)), #0D1623;\n  background: linear-gradient(90deg, rgba(27, 232, 9, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  left: 0;\n  top: 0;\n  border-radius: 8px;\n}\n.notification_type--error:before {\n  content: \"\";\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background: -o-linear-gradient(left, rgba(229, 55, 55, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  background: -webkit-gradient(linear, left top, right top, from(rgba(229, 55, 55, 0.26)), color-stop(55.34%, #0D1623)), #0D1623;\n  background: linear-gradient(90deg, rgba(229, 55, 55, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  left: 0;\n  top: 0;\n  border-radius: 8px;\n}\n.notification_type--warning:before {\n  content: \"\";\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background: -o-linear-gradient(left, rgba(201, 157, 0, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  background: -webkit-gradient(linear, left top, right top, from(rgba(201, 157, 0, 0.26)), color-stop(55.34%, #0D1623)), #0D1623;\n  background: linear-gradient(90deg, rgba(201, 157, 0, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  left: 0;\n  top: 0;\n  border-radius: 8px;\n}\n.notification_type--success .notification__title {\n  color: #1BE809;\n}\n.notification_type--error .notification__title {\n  color: #E53737;\n}\n.notification_type--warning .notification__title {\n  color: #C99D00;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".alert {\n  position: relative;\n  width: 430px;\n  height: -webkit-max-content;\n  height: -moz-max-content;\n  height: max-content;\n  padding: 10px 21px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  border-radius: 8px;\n}\n.alert__icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-line-pack: center;\n      align-content: center;\n  position: relative;\n}\n.alert__content {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  margin-left: 20px;\n}\n.alert__title {\n  font-weight: bold;\n  font-size: 16px;\n  line-height: 24px;\n  z-index: 9;\n}\n.alert__text {\n  font-weight: 400;\n  font-size: 16px;\n  line-height: 24px;\n  color: #FFFFFF;\n  z-index: 9;\n}\n.alert_type--success:before {\n  content: \"\";\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background: -o-linear-gradient(left, rgba(27, 232, 9, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  background: -webkit-gradient(linear, left top, right top, from(rgba(27, 232, 9, 0.26)), color-stop(55.34%, #0D1623)), #0D1623;\n  background: linear-gradient(90deg, rgba(27, 232, 9, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  left: 0;\n  top: 0;\n  border-radius: 8px;\n}\n.alert_type--error:before {\n  content: \"\";\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background: -o-linear-gradient(left, rgba(229, 55, 55, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  background: -webkit-gradient(linear, left top, right top, from(rgba(229, 55, 55, 0.26)), color-stop(55.34%, #0D1623)), #0D1623;\n  background: linear-gradient(90deg, rgba(229, 55, 55, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  left: 0;\n  top: 0;\n  border-radius: 8px;\n}\n.alert_type--warning:before {\n  content: \"\";\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background: -o-linear-gradient(left, rgba(201, 157, 0, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  background: -webkit-gradient(linear, left top, right top, from(rgba(201, 157, 0, 0.26)), color-stop(55.34%, #0D1623)), #0D1623;\n  background: linear-gradient(90deg, rgba(201, 157, 0, 0.26) 0%, #0D1623 55.34%), #0D1623;\n  left: 0;\n  top: 0;\n  border-radius: 8px;\n}\n.alert_type--success .alert__title {\n  color: #1BE809;\n}\n.alert_type--error .alert__title {\n  color: #E53737;\n}\n.alert_type--warning .alert__title {\n  color: #C99D00;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -6476,10 +6476,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".vue-slider-rail {\n  background-color
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&":
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6490,7 +6490,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".notifications {\n  position: fixed;\n  top: 50px;\n  right: 50px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  z-index: 9999;\n}\n.notifications div.notification {\n  margin: 7.5px 0;\n}\n.notification-fade-enter-active,\n.notification-fade-leave-active {\n  -webkit-transition: all 0.5s ease;\n  -o-transition: all 0.5s ease;\n  transition: all 0.5s ease;\n  opacity: 1;\n}\n.notification-fade-enter,\n.notification-fade-leave-to {\n  -webkit-transition: all 0.5s ease;\n  -o-transition: all 0.5s ease;\n  transition: all 0.5s ease;\n  opacity: 0;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".alerts {\n  position: fixed;\n  top: 50px;\n  right: 50px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  z-index: 9999;\n}\n.alerts div.alert {\n  margin: 7.5px 0;\n}\n.alert-fade-enter-active,\n.alert-fade-leave-active {\n  -webkit-transition: all 0.5s ease;\n  -o-transition: all 0.5s ease;\n  transition: all 0.5s ease;\n  opacity: 1;\n}\n.alert-fade-enter,\n.alert-fade-leave-to {\n  -webkit-transition: all 0.5s ease;\n  -o-transition: all 0.5s ease;\n  transition: all 0.5s ease;\n  opacity: 0;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -16886,17 +16886,17 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss&":
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss& ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseNotificationComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseAlertComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseAlertComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=style&index=0&lang=scss&");
 
             
 
@@ -16905,11 +16905,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseNotificationComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseAlertComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"], options);
 
 
 
-/* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseNotificationComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+/* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseAlertComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -16940,17 +16940,17 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss&");
 
             
 
@@ -16959,11 +16959,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"], options);
 
 
 
-/* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+/* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -29495,17 +29495,17 @@ component.options.__file = "resources/front/js/components/Albums/BaseAlbumCompon
 
 /***/ }),
 
-/***/ "./resources/front/js/components/BaseNotificationComponent.vue":
-/*!*********************************************************************!*\
-  !*** ./resources/front/js/components/BaseNotificationComponent.vue ***!
-  \*********************************************************************/
+/***/ "./resources/front/js/components/BaseAlertComponent.vue":
+/*!**************************************************************!*\
+  !*** ./resources/front/js/components/BaseAlertComponent.vue ***!
+  \**************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _BaseNotificationComponent_vue_vue_type_template_id_34d5a280___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BaseNotificationComponent.vue?vue&type=template&id=34d5a280& */ "./resources/front/js/components/BaseNotificationComponent.vue?vue&type=template&id=34d5a280&");
-/* harmony import */ var _BaseNotificationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BaseNotificationComponent.vue?vue&type=script&lang=js& */ "./resources/front/js/components/BaseNotificationComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _BaseNotificationComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss& */ "./resources/front/js/components/BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _BaseAlertComponent_vue_vue_type_template_id_61ca0103___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BaseAlertComponent.vue?vue&type=template&id=61ca0103& */ "./resources/front/js/components/BaseAlertComponent.vue?vue&type=template&id=61ca0103&");
+/* harmony import */ var _BaseAlertComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BaseAlertComponent.vue?vue&type=script&lang=js& */ "./resources/front/js/components/BaseAlertComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _BaseAlertComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BaseAlertComponent.vue?vue&type=style&index=0&lang=scss& */ "./resources/front/js/components/BaseAlertComponent.vue?vue&type=style&index=0&lang=scss&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -29516,9 +29516,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _BaseNotificationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _BaseNotificationComponent_vue_vue_type_template_id_34d5a280___WEBPACK_IMPORTED_MODULE_0__.render,
-  _BaseNotificationComponent_vue_vue_type_template_id_34d5a280___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _BaseAlertComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BaseAlertComponent_vue_vue_type_template_id_61ca0103___WEBPACK_IMPORTED_MODULE_0__.render,
+  _BaseAlertComponent_vue_vue_type_template_id_61ca0103___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -29528,7 +29528,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/front/js/components/BaseNotificationComponent.vue"
+component.options.__file = "resources/front/js/components/BaseAlertComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
@@ -29571,17 +29571,17 @@ component.options.__file = "resources/front/js/components/BaseRangeComponent.vue
 
 /***/ }),
 
-/***/ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue":
-/*!******************************************************************************!*\
-  !*** ./resources/front/js/components/Blocks/BlockNotificationsComponent.vue ***!
-  \******************************************************************************/
+/***/ "./resources/front/js/components/Blocks/BlockAlertsComponent.vue":
+/*!***********************************************************************!*\
+  !*** ./resources/front/js/components/Blocks/BlockAlertsComponent.vue ***!
+  \***********************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec& */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec&");
-/* harmony import */ var _BlockNotificationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BlockNotificationsComponent.vue?vue&type=script&lang=js& */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _BlockNotificationsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _BlockAlertsComponent_vue_vue_type_template_id_2dbf493e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BlockAlertsComponent.vue?vue&type=template&id=2dbf493e& */ "./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=template&id=2dbf493e&");
+/* harmony import */ var _BlockAlertsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BlockAlertsComponent.vue?vue&type=script&lang=js& */ "./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _BlockAlertsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss& */ "./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -29592,9 +29592,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _BlockNotificationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__.render,
-  _BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _BlockAlertsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BlockAlertsComponent_vue_vue_type_template_id_2dbf493e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _BlockAlertsComponent_vue_vue_type_template_id_2dbf493e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -29604,7 +29604,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/front/js/components/Blocks/BlockNotificationsComponent.vue"
+component.options.__file = "resources/front/js/components/Blocks/BlockAlertsComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
@@ -30945,16 +30945,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/front/js/components/BaseNotificationComponent.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************!*\
-  !*** ./resources/front/js/components/BaseNotificationComponent.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************/
+/***/ "./resources/front/js/components/BaseAlertComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/front/js/components/BaseAlertComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseNotificationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseNotificationComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseNotificationComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseAlertComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseAlertComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseAlertComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -30971,16 +30971,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************!*\
-  !*** ./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************/
+/***/ "./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************!*\
+  !*** ./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockNotificationsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockAlertsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -31465,15 +31465,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/front/js/components/BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss&":
-/*!*******************************************************************************************************!*\
-  !*** ./resources/front/js/components/BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss& ***!
-  \*******************************************************************************************************/
+/***/ "./resources/front/js/components/BaseAlertComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!************************************************************************************************!*\
+  !*** ./resources/front/js/components/BaseAlertComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseNotificationComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseAlertComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseAlertComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=style&index=0&lang=scss&");
 
 
 /***/ }),
@@ -31491,15 +31491,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&":
-/*!****************************************************************************************************************!*\
-  !*** ./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& ***!
-  \****************************************************************************************************************/
+/***/ "./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \*********************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=style&index=0&lang=scss&");
 
 
 /***/ }),
@@ -31863,19 +31863,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/front/js/components/BaseNotificationComponent.vue?vue&type=template&id=34d5a280&":
-/*!****************************************************************************************************!*\
-  !*** ./resources/front/js/components/BaseNotificationComponent.vue?vue&type=template&id=34d5a280& ***!
-  \****************************************************************************************************/
+/***/ "./resources/front/js/components/BaseAlertComponent.vue?vue&type=template&id=61ca0103&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/front/js/components/BaseAlertComponent.vue?vue&type=template&id=61ca0103& ***!
+  \*********************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseNotificationComponent_vue_vue_type_template_id_34d5a280___WEBPACK_IMPORTED_MODULE_0__.render; },
-/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseNotificationComponent_vue_vue_type_template_id_34d5a280___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
+/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseAlertComponent_vue_vue_type_template_id_61ca0103___WEBPACK_IMPORTED_MODULE_0__.render; },
+/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseAlertComponent_vue_vue_type_template_id_61ca0103___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseNotificationComponent_vue_vue_type_template_id_34d5a280___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseNotificationComponent.vue?vue&type=template&id=34d5a280& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=template&id=34d5a280&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseAlertComponent_vue_vue_type_template_id_61ca0103___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseAlertComponent.vue?vue&type=template&id=61ca0103& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=template&id=61ca0103&");
 
 
 /***/ }),
@@ -31897,19 +31897,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec&":
-/*!*************************************************************************************************************!*\
-  !*** ./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec& ***!
-  \*************************************************************************************************************/
+/***/ "./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=template&id=2dbf493e&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=template&id=2dbf493e& ***!
+  \******************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__.render; },
-/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
+/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_template_id_2dbf493e___WEBPACK_IMPORTED_MODULE_0__.render; },
+/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_template_id_2dbf493e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_template_id_2dbf493e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockAlertsComponent.vue?vue&type=template&id=2dbf493e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=template&id=2dbf493e&");
 
 
 /***/ }),
@@ -32623,10 +32623,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=template&id=34d5a280&":
-/*!*******************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseNotificationComponent.vue?vue&type=template&id=34d5a280& ***!
-  \*******************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=template&id=61ca0103&":
+/*!************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/BaseAlertComponent.vue?vue&type=template&id=61ca0103& ***!
+  \************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32641,35 +32641,35 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { class: "notification notification_type--" + _vm.type },
+    { class: "alert alert_type--" + _vm.type },
     [
       _vm.type === "success"
         ? _c("img-alias", {
-            staticClass: "notification__icon",
+            staticClass: "alert__icon",
             attrs: { alias: "success-svg", alt: "success" },
           })
         : _vm._e(),
       _vm._v(" "),
       _vm.type === "error"
         ? _c("img-alias", {
-            staticClass: "notification__icon",
+            staticClass: "alert__icon",
             attrs: { alias: "error-svg", alt: "error" },
           })
         : _vm._e(),
       _vm._v(" "),
       _vm.type === "warning"
         ? _c("img-alias", {
-            staticClass: "notification__icon",
+            staticClass: "alert__icon",
             attrs: { alias: "warning-svg", alt: "warning" },
           })
         : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "notification__content" }, [
-        _c("span", { staticClass: "notification__title" }, [
+      _c("div", { staticClass: "alert__content" }, [
+        _c("span", { staticClass: "alert__title" }, [
           _vm._v(_vm._s(_vm.title)),
         ]),
         _vm._v(" "),
-        _c("span", { staticClass: "notification__text" }, [
+        _c("span", { staticClass: "alert__text" }, [
           _vm._v(_vm._s(_vm.message)),
         ]),
       ]),
@@ -32726,10 +32726,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec&":
-/*!****************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec& ***!
-  \****************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=template&id=2dbf493e&":
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=template&id=2dbf493e& ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32744,18 +32744,18 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "notifications" },
+    { staticClass: "alerts" },
     [
       _c(
         "transition-group",
-        { attrs: { name: "notification-fade", mode: "out-in" } },
-        _vm._l(_vm.notifications, function (notification, index) {
-          return _c("base-notification", {
-            key: index + notification.title,
+        { attrs: { name: "alert-fade", mode: "out-in" } },
+        _vm._l(_vm.alerts, function (alert, index) {
+          return _c("base-alert", {
+            key: index + alert.title,
             attrs: {
-              type: notification.type,
-              title: notification.title,
-              message: notification.message,
+              type: alert.type,
+              title: alert.title,
+              message: alert.message,
             },
           })
         }),

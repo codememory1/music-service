@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import notification from "./notification";
+import alert from "./alert";
 import auth from "./auth";
 import layoutScroll from "./layout";
 
@@ -8,7 +8,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-    notification,
+    alert,
     auth,
     layoutScroll
   }

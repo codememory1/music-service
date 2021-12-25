@@ -163,7 +163,7 @@ import TheHomeHeader from "../../components/Headers/TheHomeHeaderComponent";
 import BaseSubscription from "../../components/Subscription/BaseSubscriptionComponent";
 import SubscriptionBang from "../../components/Subscription/SubscriptionBangComponent";
 import TheFooter from "../../components/TheFooterComponent";
-import BlockNotifications from "../../components/Blocks/BlockNotificationsComponent";
+import BlockNotifications from "../../components/Blocks/BlockAlertsComponent";
 
 export default {
   components: {

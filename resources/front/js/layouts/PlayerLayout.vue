@@ -19,7 +19,7 @@ import { mapMutations } from "vuex";
 import ThePlayerHeader from "../components/Headers/ThePlayerHeaderComponent";
 import ThePlayerNavigation from "../components/Navigation/ThePlayerNavigationComponent";
 import DesktopPlayer from "../components/Player/DesktopPlayerComponent";
-import BlockNotifications from "../components/Blocks/BlockNotificationsComponent";
+import BlockNotifications from "../components/Blocks/BlockAlertsComponent";
 
 export default {
   name: "PlayerLayout",

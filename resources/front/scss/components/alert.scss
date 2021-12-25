@@ -1,6 +1,6 @@
 @import "../variables";
 
-.notification {
+.alert {
   position: relative;
   width: 430px;
   height: max-content;
@@ -35,7 +35,7 @@
   }
 }
 
-.notification_type {
+.alert_type {
   &--success:before {
     content: '';
     position: absolute;
@@ -68,14 +68,14 @@
   }
 }
 
-.notification_type--success .notification__title {
+.alert_type--success .alert__title {
   color: $green;
 }
 
-.notification_type--error .notification__title {
+.alert_type--error .alert__title {
   color: $red;
 }
 
-.notification_type--warning .notification__title {
+.alert_type--warning .alert__title {
   color: $yellow;
 }
