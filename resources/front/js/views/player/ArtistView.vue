@@ -123,30 +123,20 @@
       }"
       :style="musicItemDropDownStyle()"
     >
-      <drop-down-item label="Add to queue" />
-      <drop-down-item label="Go to playlist radio" />
+      <drop-down-item label="Добавить в медиатеку" />
+      <drop-down-item label="Добавить в плейлист" />
       <drop-down-border />
-      <drop-down-item label="Collaborative playlist" />
-      <drop-down-item label="Remove from profile" />
+      <drop-down-item label="Воспроизвести далее" />
+      <drop-down-item label="В конец очереди" />
       <drop-down-border />
-      <drop-down-item label="Edit details" />
-      <drop-down-item label="Create similar playlist" :is-disabled="true" />
-      <drop-down-item label="Delete" />
-      <drop-down-item label="Rename" />
+      <drop-down-item label="Поделиться песней" />
+      <drop-down-item label="Поделиться текстом" />
       <drop-down-border />
-      <drop-down-item label="Download" :is-disabled="true" />
-      <drop-down-item label="Create playlist" />
-      <drop-down-item label="Create folder" />
+      <drop-down-item label="Открыть полный текст песни" />
       <drop-down-border />
-      <drop-down-item label="Share" :is-multiple="true">
-        <template v-slot:drop-down>
-          <drop-down>
-            <drop-down-item label="Facebook" />
-            <drop-down-item label="Twitter" />
-            <drop-down-item label="Instagram" />
-          </drop-down>
-        </template>
-      </drop-down-item>
+      <drop-down-item label="Показать альбом" />
+      <drop-down-item label="Нравится" />
+      <drop-down-item label="Не нравится" />
     </drop-down>
   </div>
 </template>
@@ -427,11 +417,14 @@ export default {
 .music-item__drop-down {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0.3s ease-in-out, opacity 0.4s ease-in-out;
+  transform: translateY(80px);
+  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out,
+    transform 0.5s ease-in-out;
 
   &.active {
     visibility: visible;
     opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>

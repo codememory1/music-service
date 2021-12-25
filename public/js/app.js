@@ -5381,16 +5381,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -7025,7 +7015,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".relative[data-v-58a44351] {\n  padding: 0 60px;\n}\n.artist__header[data-v-58a44351] {\n  width: 100%;\n  height: 390px;\n  position: relative;\n  background-repeat: no-repeat;\n  background-size: cover;\n}\n.artist__header[data-v-58a44351]:before {\n  content: \"\";\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-color: #090909;\n  opacity: 0.4;\n  top: 0;\n  left: 0;\n}\n.artist__name[data-v-58a44351] {\n  color: #fff;\n  font-size: 48px;\n  font-weight: 500;\n  padding-top: 125px;\n  padding-bottom: 15px;\n}\n.artist__description[data-v-58a44351] {\n  font-size: 16px;\n  font-weight: 400;\n  color: #939393;\n  padding-bottom: 40px;\n  width: 410px;\n}\n.artist__actions[data-v-58a44351] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.btn-subscription[data-v-58a44351] {\n  padding: 11px 24px;\n}\n.columns[data-v-58a44351] {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  grid-column-gap: 20px;\n  margin-top: 45px;\n}\n[data-v-58a44351] .section__content {\n  padding: 0 60px;\n}\n.section__top-musics[data-v-58a44351]  .section__content {\n  padding-right: 0;\n}\n.section__top-musics[data-v-58a44351]  .music-item {\n  margin-bottom: 20px;\n}\n.section__top-musics[data-v-58a44351]  .music-item:last-of-type {\n  margin-bottom: 0;\n}\n.section__similar-artists[data-v-58a44351]  .section__top {\n  padding-left: 0;\n}\n.section__similar-artists[data-v-58a44351]  .section__content {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding-left: 0;\n  padding-right: 60px;\n}\n.similar-artists[data-v-58a44351] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  margin-bottom: 30px;\n}\n.similar-artist[data-v-58a44351] {\n  width: 70px;\n  height: 70px;\n  max-width: 70px;\n  max-height: 70px;\n  margin-right: 15px;\n}\n.similar-artist[data-v-58a44351]:last-of-type {\n  margin-right: 0;\n}\n.similar-artist img[data-v-58a44351] {\n  width: inherit;\n  height: inherit;\n  max-width: 70px;\n  max-height: 70px;\n  border-radius: 100%;\n  -webkit-transition: all 0.3s ease;\n  -o-transition: all 0.3s ease;\n  transition: all 0.3s ease;\n}\n.similar-artist img[data-v-58a44351]:hover {\n  border: 2px solid #E03E10;\n  padding: 5px;\n}\n.best-albums__similar-artists[data-v-58a44351] {\n  margin-top: 15px;\n}\n.best-albums__similar-artists[data-v-58a44351]  .section__content {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  padding-right: 0;\n}\n.best-albums__similar-artists[data-v-58a44351]  .section__content .album {\n  margin-right: 15px;\n}\n.best-albums__similar-artists[data-v-58a44351]  .section__content .album:last-of-type {\n  margin-right: 0;\n}\n.music-item__drop-down[data-v-58a44351] {\n  visibility: hidden;\n  opacity: 0;\n  -webkit-transition: visibility 0.3s ease-in-out, opacity 0.4s ease-in-out;\n  -o-transition: visibility 0.3s ease-in-out, opacity 0.4s ease-in-out;\n  transition: visibility 0.3s ease-in-out, opacity 0.4s ease-in-out;\n}\n.music-item__drop-down.active[data-v-58a44351] {\n  visibility: visible;\n  opacity: 1;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".relative[data-v-58a44351] {\n  padding: 0 60px;\n}\n.artist__header[data-v-58a44351] {\n  width: 100%;\n  height: 390px;\n  position: relative;\n  background-repeat: no-repeat;\n  background-size: cover;\n}\n.artist__header[data-v-58a44351]:before {\n  content: \"\";\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background-color: #090909;\n  opacity: 0.4;\n  top: 0;\n  left: 0;\n}\n.artist__name[data-v-58a44351] {\n  color: #fff;\n  font-size: 48px;\n  font-weight: 500;\n  padding-top: 125px;\n  padding-bottom: 15px;\n}\n.artist__description[data-v-58a44351] {\n  font-size: 16px;\n  font-weight: 400;\n  color: #939393;\n  padding-bottom: 40px;\n  width: 410px;\n}\n.artist__actions[data-v-58a44351] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.btn-subscription[data-v-58a44351] {\n  padding: 11px 24px;\n}\n.columns[data-v-58a44351] {\n  display: grid;\n  grid-template-columns: repeat(2, 1fr);\n  grid-column-gap: 20px;\n  margin-top: 45px;\n}\n[data-v-58a44351] .section__content {\n  padding: 0 60px;\n}\n.section__top-musics[data-v-58a44351]  .section__content {\n  padding-right: 0;\n}\n.section__top-musics[data-v-58a44351]  .music-item {\n  margin-bottom: 20px;\n}\n.section__top-musics[data-v-58a44351]  .music-item:last-of-type {\n  margin-bottom: 0;\n}\n.section__similar-artists[data-v-58a44351]  .section__top {\n  padding-left: 0;\n}\n.section__similar-artists[data-v-58a44351]  .section__content {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding-left: 0;\n  padding-right: 60px;\n}\n.similar-artists[data-v-58a44351] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  margin-bottom: 30px;\n}\n.similar-artist[data-v-58a44351] {\n  width: 70px;\n  height: 70px;\n  max-width: 70px;\n  max-height: 70px;\n  margin-right: 15px;\n}\n.similar-artist[data-v-58a44351]:last-of-type {\n  margin-right: 0;\n}\n.similar-artist img[data-v-58a44351] {\n  width: inherit;\n  height: inherit;\n  max-width: 70px;\n  max-height: 70px;\n  border-radius: 100%;\n  -webkit-transition: all 0.3s ease;\n  -o-transition: all 0.3s ease;\n  transition: all 0.3s ease;\n}\n.similar-artist img[data-v-58a44351]:hover {\n  border: 2px solid #E03E10;\n  padding: 5px;\n}\n.best-albums__similar-artists[data-v-58a44351] {\n  margin-top: 15px;\n}\n.best-albums__similar-artists[data-v-58a44351]  .section__content {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  padding-right: 0;\n}\n.best-albums__similar-artists[data-v-58a44351]  .section__content .album {\n  margin-right: 15px;\n}\n.best-albums__similar-artists[data-v-58a44351]  .section__content .album:last-of-type {\n  margin-right: 0;\n}\n.music-item__drop-down[data-v-58a44351] {\n  visibility: hidden;\n  opacity: 0;\n  -webkit-transform: translateY(80px);\n      -ms-transform: translateY(80px);\n          transform: translateY(80px);\n  -webkit-transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, -webkit-transform 0.5s ease-in-out;\n  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, -webkit-transform 0.5s ease-in-out;\n  -o-transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, transform 0.5s ease-in-out;\n  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, transform 0.5s ease-in-out;\n  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;\n}\n.music-item__drop-down.active[data-v-58a44351] {\n  visibility: visible;\n  opacity: 1;\n  -webkit-transform: translateY(0);\n      -ms-transform: translateY(0);\n          transform: translateY(0);\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -35781,64 +35771,35 @@ var render = function () {
           style: _vm.musicItemDropDownStyle(),
         },
         [
-          _c("drop-down-item", { attrs: { label: "Add to queue" } }),
+          _c("drop-down-item", { attrs: { label: "Добавить в медиатеку" } }),
           _vm._v(" "),
-          _c("drop-down-item", { attrs: { label: "Go to playlist radio" } }),
-          _vm._v(" "),
-          _c("drop-down-border"),
-          _vm._v(" "),
-          _c("drop-down-item", { attrs: { label: "Collaborative playlist" } }),
-          _vm._v(" "),
-          _c("drop-down-item", { attrs: { label: "Remove from profile" } }),
+          _c("drop-down-item", { attrs: { label: "Добавить в плейлист" } }),
           _vm._v(" "),
           _c("drop-down-border"),
           _vm._v(" "),
-          _c("drop-down-item", { attrs: { label: "Edit details" } }),
+          _c("drop-down-item", { attrs: { label: "Воспроизвести далее" } }),
           _vm._v(" "),
-          _c("drop-down-item", {
-            attrs: { label: "Create similar playlist", "is-disabled": true },
-          }),
+          _c("drop-down-item", { attrs: { label: "В конец очереди" } }),
           _vm._v(" "),
-          _c("drop-down-item", { attrs: { label: "Delete" } }),
+          _c("drop-down-border"),
           _vm._v(" "),
-          _c("drop-down-item", { attrs: { label: "Rename" } }),
+          _c("drop-down-item", { attrs: { label: "Поделиться песней" } }),
+          _vm._v(" "),
+          _c("drop-down-item", { attrs: { label: "Поделиться текстом" } }),
           _vm._v(" "),
           _c("drop-down-border"),
           _vm._v(" "),
           _c("drop-down-item", {
-            attrs: { label: "Download", "is-disabled": true },
+            attrs: { label: "Открыть полный текст песни" },
           }),
-          _vm._v(" "),
-          _c("drop-down-item", { attrs: { label: "Create playlist" } }),
-          _vm._v(" "),
-          _c("drop-down-item", { attrs: { label: "Create folder" } }),
           _vm._v(" "),
           _c("drop-down-border"),
           _vm._v(" "),
-          _c("drop-down-item", {
-            attrs: { label: "Share", "is-multiple": true },
-            scopedSlots: _vm._u([
-              {
-                key: "drop-down",
-                fn: function () {
-                  return [
-                    _c(
-                      "drop-down",
-                      [
-                        _c("drop-down-item", { attrs: { label: "Facebook" } }),
-                        _vm._v(" "),
-                        _c("drop-down-item", { attrs: { label: "Twitter" } }),
-                        _vm._v(" "),
-                        _c("drop-down-item", { attrs: { label: "Instagram" } }),
-                      ],
-                      1
-                    ),
-                  ]
-                },
-                proxy: true,
-              },
-            ]),
-          }),
+          _c("drop-down-item", { attrs: { label: "Показать альбом" } }),
+          _vm._v(" "),
+          _c("drop-down-item", { attrs: { label: "Нравится" } }),
+          _vm._v(" "),
+          _c("drop-down-item", { attrs: { label: "Не нравится" } }),
         ],
         1
       ),
