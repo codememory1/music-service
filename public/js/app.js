@@ -4962,10 +4962,17 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _components_Headers_ThePlayerHeaderComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Headers/ThePlayerHeaderComponent */ "./resources/front/js/components/Headers/ThePlayerHeaderComponent.vue");
 /* harmony import */ var _components_Navigation_ThePlayerNavigationComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Navigation/ThePlayerNavigationComponent */ "./resources/front/js/components/Navigation/ThePlayerNavigationComponent.vue");
 /* harmony import */ var _components_Player_DesktopPlayerComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Player/DesktopPlayerComponent */ "./resources/front/js/components/Player/DesktopPlayerComponent.vue");
 /* harmony import */ var _components_Blocks_BlockNotificationsComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Blocks/BlockNotificationsComponent */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -4982,6 +4989,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -4994,25 +5002,20 @@ __webpack_require__.r(__webpack_exports__);
     DesktopPlayer: _components_Player_DesktopPlayerComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
     BlockNotifications: _components_Blocks_BlockNotificationsComponent__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  data: function data() {
-    return {
-      contentPosition: {
-        x: 0,
-        y: 0
-      }
-    };
-  },
   mounted: function mounted() {
     var playerLayoutContentRect = this.$refs.playerLayoutContent.getBoundingClientRect();
-    this.contentPosition.x = playerLayoutContentRect.x;
-    this.contentPosition.y = playerLayoutContentRect.y;
+    this.setContentX(playerLayoutContentRect.x);
+    this.setContentY(playerLayoutContentRect.y);
     this.$refs.contentScroll.addEventListener("scroll", this.setLayoutScroll);
   },
-  methods: {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapMutations)({
+    setContentX: "layoutScroll/setContentX",
+    setContentY: "layoutScroll/setContentY"
+  })), {}, {
     setLayoutScroll: function setLayoutScroll() {
       this.$store.commit("layoutScroll/setScroll", true);
     }
-  },
+  }),
   beforeDestroy: function beforeDestroy() {
     this.$refs.contentScroll.removeEventListener("scroll", this.setLayoutScroll);
   }
@@ -5550,13 +5553,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       musicItemDropDownY: 0
     };
   },
-  computed: {
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_11__.mapGetters)({
+    contentX: "layoutScroll/getContentX",
+    contentY: "layoutScroll/getContentY"
+  })), {}, {
     artistHeaderStyle: function artistHeaderStyle() {
       return {
         backgroundImage: "url(".concat(this.artistInfo.background, ")")
       };
     }
-  },
+  }),
   mounted: function mounted() {
     var _this = this;
 
@@ -5580,26 +5586,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     musicItemContextMenu: function musicItemContextMenu(event, isButton) {
       var _this2 = this;
 
-      /**
-       * @type {{x: number, y: number}}
-       */
-      var playerLayoutPosition = this.$attrs.position;
       var musicItemDropDownRect = this.$refs.musicItemDropDown.$el.getBoundingClientRect();
-      var dropDownPosition = event.clientY - playerLayoutPosition.y + musicItemDropDownRect.height;
+      var dropDownPosition = event.clientY - this.contentY + musicItemDropDownRect.height;
       this.isOpenedMusicItemDropDown = false;
       this.setLayoutScroll(false);
       setTimeout(function () {
         _this2.isOpenedMusicItemDropDown = true;
-        _this2.musicItemDropDownX = event.clientX - playerLayoutPosition.x;
+        _this2.musicItemDropDownX = event.clientX - _this2.contentX;
 
         if (true === isButton) {
           _this2.musicItemDropDownX -= musicItemDropDownRect.width + 20;
         }
 
         if (dropDownPosition > window.innerHeight) {
-          _this2.musicItemDropDownY = event.clientY - playerLayoutPosition.y - musicItemDropDownRect.height;
+          _this2.musicItemDropDownY = event.clientY - _this2.contentY - musicItemDropDownRect.height;
         } else {
-          _this2.musicItemDropDownY = event.clientY - playerLayoutPosition.y;
+          _this2.musicItemDropDownY = event.clientY - _this2.contentY;
         }
       }, 300);
     }
@@ -6267,7 +6269,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _notification__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notification */ "./resources/front/js/store/notification.js");
 /* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth */ "./resources/front/js/store/auth.js");
-/* harmony import */ var _layoutScroll__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layoutScroll */ "./resources/front/js/store/layoutScroll.js");
+/* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./layout */ "./resources/front/js/store/layout.js");
 
 
 
@@ -6278,16 +6280,16 @@ vue__WEBPACK_IMPORTED_MODULE_3__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_4_
   modules: {
     notification: _notification__WEBPACK_IMPORTED_MODULE_0__["default"],
     auth: _auth__WEBPACK_IMPORTED_MODULE_1__["default"],
-    layoutScroll: _layoutScroll__WEBPACK_IMPORTED_MODULE_2__["default"]
+    layoutScroll: _layout__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 }));
 
 /***/ }),
 
-/***/ "./resources/front/js/store/layoutScroll.js":
-/*!**************************************************!*\
-  !*** ./resources/front/js/store/layoutScroll.js ***!
-  \**************************************************/
+/***/ "./resources/front/js/store/layout.js":
+/*!********************************************!*\
+  !*** ./resources/front/js/store/layout.js ***!
+  \********************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6295,7 +6297,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    isScroll: false
+    isScroll: false,
+    contentX: 0,
+    contentY: 0
   },
   getters: {
     /**
@@ -6305,6 +6309,24 @@ __webpack_require__.r(__webpack_exports__);
      */
     isScroll: function isScroll(state) {
       return state.isScroll;
+    },
+
+    /**
+     *
+     * @param state
+     * @returns {number}
+     */
+    getContentX: function getContentX(state) {
+      return state.contentX;
+    },
+
+    /**
+     *
+     * @param state
+     * @returns {number}
+     */
+    getContentY: function getContentY(state) {
+      return state.contentY;
     }
   },
   mutations: {
@@ -6315,6 +6337,24 @@ __webpack_require__.r(__webpack_exports__);
      */
     setScroll: function setScroll(state, status) {
       state.isScroll = status;
+    },
+
+    /**
+     *
+     * @param state
+     * @param position
+     */
+    setContentX: function setContentX(state, position) {
+      state.contentX = position;
+    },
+
+    /**
+     *
+     * @param state
+     * @param position
+     */
+    setContentY: function setContentY(state, position) {
+      state.contentY = position;
     }
   }
 });
@@ -35153,11 +35193,7 @@ var render = function () {
           _c(
             "div",
             { ref: "contentScroll", staticClass: "content__scroll" },
-            [
-              _c("the-player-header"),
-              _vm._v(" "),
-              _c("router-view", { attrs: { position: _vm.contentPosition } }),
-            ],
+            [_c("the-player-header"), _vm._v(" "), _c("router-view")],
             1
           ),
           _vm._v(" "),
