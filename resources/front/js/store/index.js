@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import notification from "./notification";
 import auth from "./auth";
-import layoutScroll from "./layoutScroll";
+import layoutScroll from "./layout";
 
 Vue.use(Vuex);
 

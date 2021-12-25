@@ -8,13 +8,14 @@
     <div ref="playerLayoutContent" class="player-layout__content">
       <div class="content__scroll" ref="contentScroll">
         <the-player-header />
-        <router-view :position="contentPosition" />
+        <router-view />
       </div>
       <desktop-player />
     </div>
   </div>
 </template>
 <script>
+import { mapMutations } from "vuex";
 import ThePlayerHeader from "../components/Headers/ThePlayerHeaderComponent";
 import ThePlayerNavigation from "../components/Navigation/ThePlayerNavigationComponent";
 import DesktopPlayer from "../components/Player/DesktopPlayerComponent";
@@ -29,24 +30,22 @@ export default {
     BlockNotifications
   },
 
-  data: () => ({
-    contentPosition: {
-      x: 0,
-      y: 0
-    }
-  }),
-
   mounted() {
     const playerLayoutContentRect =
       this.$refs.playerLayoutContent.getBoundingClientRect();
 
-    this.contentPosition.x = playerLayoutContentRect.x;
-    this.contentPosition.y = playerLayoutContentRect.y;
+    this.setContentX(playerLayoutContentRect.x);
+    this.setContentY(playerLayoutContentRect.y);
 
     this.$refs.contentScroll.addEventListener("scroll", this.setLayoutScroll);
   },
 
   methods: {
+    ...mapMutations({
+      setContentX: "layoutScroll/setContentX",
+      setContentY: "layoutScroll/setContentY"
+    }),
+
     setLayoutScroll() {
       this.$store.commit("layoutScroll/setScroll", true);
     }
