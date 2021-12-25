@@ -1,7 +1,7 @@
 <template>
   <div class="player-layout">
-    <!-- Block with notifications -->
-    <block-notifications />
+    <!-- Block with alerts -->
+    <block-alerts />
 
     <!-- Player subdomain navigation -->
     <the-player-navigation />
@@ -19,7 +19,8 @@ import { mapMutations } from "vuex";
 import ThePlayerHeader from "../components/Headers/ThePlayerHeaderComponent";
 import ThePlayerNavigation from "../components/Navigation/ThePlayerNavigationComponent";
 import DesktopPlayer from "../components/Player/DesktopPlayerComponent";
-import BlockNotifications from "../components/Blocks/BlockAlertsComponent";
+import BlockAlerts from "../components/Blocks/BlockAlertsComponent";
+import BlockNotifications from "../components/Blocks/BlockNotificationsComponent";
 
 export default {
   name: "PlayerLayout",
@@ -27,6 +28,7 @@ export default {
     ThePlayerHeader,
     ThePlayerNavigation,
     DesktopPlayer,
+    BlockAlerts,
     BlockNotifications
   },
 

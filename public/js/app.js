@@ -2572,6 +2572,40 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "BlockNotifications"
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Buttons/BaseCustomClickButtonComponent.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Buttons/BaseCustomClickButtonComponent.vue?vue&type=script&lang=js& ***!
@@ -3049,6 +3083,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_Blocks_BlockNotificationsComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Blocks/BlockNotificationsComponent */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue");
+/* harmony import */ var _modules_ClickOut__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../modules/ClickOut */ "./resources/front/js/modules/ClickOut.js");
 //
 //
 //
@@ -3070,7 +3106,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ThePlayerHeader",
+  components: {
+    BlockNotifications: _components_Blocks_BlockNotificationsComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      isOpenedBlockNotifications: false
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    (0,_modules_ClickOut__WEBPACK_IMPORTED_MODULE_1__["default"])(this.$refs.bell, function (status) {
+      if (status) {
+        _this.isOpenedBlockNotifications = false;
+      }
+    });
+  },
+  methods: {
+    openBlockNotifications: function openBlockNotifications() {
+      this.isOpenedBlockNotifications = !this.isOpenedBlockNotifications;
+    }
+  }
+});
 
 /***/ }),
 
@@ -4153,6 +4222,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -4962,11 +5033,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _components_Headers_ThePlayerHeaderComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Headers/ThePlayerHeaderComponent */ "./resources/front/js/components/Headers/ThePlayerHeaderComponent.vue");
 /* harmony import */ var _components_Navigation_ThePlayerNavigationComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Navigation/ThePlayerNavigationComponent */ "./resources/front/js/components/Navigation/ThePlayerNavigationComponent.vue");
 /* harmony import */ var _components_Player_DesktopPlayerComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Player/DesktopPlayerComponent */ "./resources/front/js/components/Player/DesktopPlayerComponent.vue");
 /* harmony import */ var _components_Blocks_BlockAlertsComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Blocks/BlockAlertsComponent */ "./resources/front/js/components/Blocks/BlockAlertsComponent.vue");
+/* harmony import */ var _components_Blocks_BlockNotificationsComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Blocks/BlockNotificationsComponent */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -4994,13 +5066,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PlayerLayout",
   components: {
     ThePlayerHeader: _components_Headers_ThePlayerHeaderComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     ThePlayerNavigation: _components_Navigation_ThePlayerNavigationComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     DesktopPlayer: _components_Player_DesktopPlayerComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
-    BlockNotifications: _components_Blocks_BlockAlertsComponent__WEBPACK_IMPORTED_MODULE_3__["default"]
+    BlockAlerts: _components_Blocks_BlockAlertsComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
+    BlockNotifications: _components_Blocks_BlockNotificationsComponent__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   mounted: function mounted() {
     var playerLayoutContentRect = this.$refs.playerLayoutContent.getBoundingClientRect();
@@ -5008,7 +5082,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.setContentY(playerLayoutContentRect.y);
     this.$refs.contentScroll.addEventListener("scroll", this.setLayoutScroll);
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapMutations)({
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapMutations)({
     setContentX: "layoutScroll/setContentX",
     setContentY: "layoutScroll/setContentY"
   })), {}, {
@@ -5828,6 +5902,9 @@ var aliases = [{
 }, {
   name: "logo",
   path: "/public/images/logo.png"
+}, {
+  name: "empty-notifications",
+  path: "/public/images/illustrations/empty-notifications.svg"
 }];
 
 /***/ }),
@@ -6497,6 +6574,27 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".alerts {\n  position: fixed;\n  top: 
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".block-notifications {\n  position: absolute;\n  width: 420px;\n  padding: 20px;\n  border-radius: 10px;\n  border: 1px solid #0E1E35;\n  background-color: #0D1623;\n  height: 400px;\n  z-index: 100;\n}\n.block-notifications__wrapper {\n  position: relative;\n}\n.block-notifications__wrapper:after {\n  content: \"\";\n  position: absolute;\n  top: -44px;\n  border: 12px solid transparent;\n  border-bottom: 12px solid #0E1E35;\n  right: 40px;\n}\n.block-notifications__wrapper:before {\n  content: \"\";\n  position: absolute;\n  top: -40px;\n  border: 10px solid transparent;\n  border-bottom: 10px solid #0D1623;\n  right: 42px;\n  z-index: 9;\n}\n.block-notifications__top {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  padding-bottom: 15px;\n  border-bottom: 1px solid #0E1E35;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.block-notifications__content {\n  overflow: auto;\n  height: 330px;\n  padding-right: 10px;\n}\n.block-notifications__content::-webkit-scrollbar {\n  width: 4px;\n  background-color: #0D1623;\n}\n.block-notifications__content::-webkit-scrollbar-track {\n  -webkit-box-shadow: inset 0 0 6px #0D1623;\n          box-shadow: inset 0 0 6px #0D1623;\n  cursor: pointer;\n}\n.block-notifications__content::-webkit-scrollbar-thumb {\n  background-color: #E03E10;\n  cursor: pointer;\n  border-radius: 5px;\n}\n.block-notifications__content::-webkit-scrollbar-thumb:hover {\n  background-color: #b0310d;\n}\n.block-notifications__content > div.notification:last-of-type {\n  border-bottom: none;\n}\n.block-notifications__title {\n  color: #b2c0de;\n  font-size: 18px;\n  font-weight: 400;\n}\n.block-notifications__read-all {\n  color: #E03E10;\n  cursor: pointer;\n  font-size: 14px;\n  -webkit-transition: color 0.2s ease-in-out;\n  -o-transition: color 0.2s ease-in-out;\n  transition: color 0.2s ease-in-out;\n}\n.block-notifications__read-all:hover {\n  color: #b0310d;\n}\n.no_notifications {\n  color: #B8B8B8;\n  text-align: center;\n  margin-top: 20px;\n}\n.no-notifications__wrapper {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  height: 100%;\n}\n.no-notifications__wrapper > p {\n  color: #b2c0de;\n  font-weight: 500;\n  margin-top: 36px;\n}", ""]);
+// Exports
+/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Buttons/LoadingButtonComponent.vue?vue&type=style&index=0&id=48d2bd4e&lang=scss&scoped=true&":
 /*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Buttons/LoadingButtonComponent.vue?vue&type=style&index=0&id=48d2bd4e&lang=scss&scoped=true& ***!
@@ -6595,7 +6693,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".player__header[data-v-710ca610] {\n  width: 100%;\n  height: -webkit-max-content;\n  height: -moz-max-content;\n  height: max-content;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  -webkit-backdrop-filter: saturate(180%) blur(10px);\n          backdrop-filter: saturate(180%) blur(10px);\n  background-color: rgba(7, 14, 23, 0.5);\n}\n.player__header_profile[data-v-710ca610] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.player__header_search[data-v-710ca610] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.search[data-v-710ca610] {\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.search svg[data-v-710ca610] {\n  width: 20px;\n  height: 20px;\n  margin-right: 8px;\n  position: relative;\n}\n.search svg[data-v-710ca610]  path {\n  fill: #fff;\n  -webkit-transition: fill 0.3s ease-in-out;\n  -o-transition: fill 0.3s ease-in-out;\n  transition: fill 0.3s ease-in-out;\n}\n.search__input[data-v-710ca610] {\n  background-color: transparent;\n  border: none;\n  outline: none;\n  color: #fff;\n  font-size: 14px;\n  font-weight: 500;\n}\n.search__input[data-v-710ca610] ::-webkit-input-placeholder {\n  color: #e6e6e6;\n}\n.search__input[data-v-710ca610] ::-moz-placeholder {\n  color: #e6e6e6;\n}\n.search__input[data-v-710ca610] :-ms-input-placeholder {\n  color: #e6e6e6;\n}\n.search__input[data-v-710ca610] ::-ms-input-placeholder {\n  color: #e6e6e6;\n}\n.search__input[data-v-710ca610] ::placeholder {\n  color: #e6e6e6;\n}\n.bell[data-v-710ca610] {\n  margin-right: 20px;\n  cursor: pointer;\n}\n.bell__button[data-v-710ca610] {\n  width: 24px;\n  height: 24px;\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n.bell__button svg[data-v-710ca610] {\n  width: inherit;\n  height: inherit;\n}\n.bell__button svg[data-v-710ca610]  path {\n  -webkit-transition: fill 0.2s ease-in-out;\n  -o-transition: fill 0.2s ease-in-out;\n  transition: fill 0.2s ease-in-out;\n}\n.bell__button svg[data-v-710ca610]:hover  path {\n  fill: #999999;\n}\n.bell__button[data-v-710ca610]:before {\n  content: \"\";\n  position: absolute;\n  width: 8.5px;\n  height: 8.5px;\n  background-color: #E03E10;\n  border: 1px solid #fff;\n  top: 3.5px;\n  right: 0;\n  border-radius: 100%;\n}\n.profile[data-v-710ca610] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  cursor: pointer;\n}\n.profile img[data-v-710ca610] {\n  width: 40px;\n  height: 40px;\n  border-radius: 100%;\n  margin-right: 10px;\n  -o-object-fit: cover;\n     object-fit: cover;\n  border: 2px solid #E03E10;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".player__header[data-v-710ca610] {\n  width: 100%;\n  height: -webkit-max-content;\n  height: -moz-max-content;\n  height: max-content;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  -webkit-backdrop-filter: saturate(180%) blur(10px);\n          backdrop-filter: saturate(180%) blur(10px);\n  background-color: rgba(7, 14, 23, 0.5);\n}\n.player__header_profile[data-v-710ca610] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.player__header_search[data-v-710ca610] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.search[data-v-710ca610] {\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.search svg[data-v-710ca610] {\n  width: 20px;\n  height: 20px;\n  margin-right: 8px;\n  position: relative;\n}\n.search svg[data-v-710ca610]  path {\n  fill: #fff;\n  -webkit-transition: fill 0.3s ease-in-out;\n  -o-transition: fill 0.3s ease-in-out;\n  transition: fill 0.3s ease-in-out;\n}\n.search__input[data-v-710ca610] {\n  background-color: transparent;\n  border: none;\n  outline: none;\n  color: #fff;\n  font-size: 14px;\n  font-weight: 500;\n}\n.search__input[data-v-710ca610] ::-webkit-input-placeholder {\n  color: #e6e6e6;\n}\n.search__input[data-v-710ca610] ::-moz-placeholder {\n  color: #e6e6e6;\n}\n.search__input[data-v-710ca610] :-ms-input-placeholder {\n  color: #e6e6e6;\n}\n.search__input[data-v-710ca610] ::-ms-input-placeholder {\n  color: #e6e6e6;\n}\n.search__input[data-v-710ca610] ::placeholder {\n  color: #e6e6e6;\n}\n.bell[data-v-710ca610] {\n  margin-right: 20px;\n  position: relative;\n}\n.bell__button[data-v-710ca610] {\n  width: 24px;\n  height: 24px;\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  cursor: pointer;\n}\n.bell__button svg[data-v-710ca610] {\n  width: inherit;\n  height: inherit;\n}\n.bell__button svg[data-v-710ca610]  path {\n  -webkit-transition: fill 0.2s ease-in-out;\n  -o-transition: fill 0.2s ease-in-out;\n  transition: fill 0.2s ease-in-out;\n}\n.bell__button svg[data-v-710ca610]:hover  path {\n  fill: #999999;\n}\n.bell__button[data-v-710ca610]:before {\n  content: \"\";\n  position: absolute;\n  width: 8.5px;\n  height: 8.5px;\n  background-color: #E03E10;\n  border: 1px solid #fff;\n  top: 3.5px;\n  right: 0;\n  border-radius: 100%;\n}\n.profile[data-v-710ca610] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  cursor: pointer;\n}\n.profile img[data-v-710ca610] {\n  width: 40px;\n  height: 40px;\n  border-radius: 100%;\n  margin-right: 10px;\n  -o-object-fit: cover;\n     object-fit: cover;\n  border: 2px solid #E03E10;\n}\n.block-notifications[data-v-710ca610] {\n  right: -62px;\n  top: 45px;\n  opacity: 0;\n  visibility: hidden;\n  -webkit-transform: translateY(35px);\n      -ms-transform: translateY(35px);\n          transform: translateY(35px);\n  -webkit-transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, -webkit-transform 0.5s ease-in-out;\n  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, -webkit-transform 0.5s ease-in-out;\n  -o-transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, transform 0.5s ease-in-out;\n  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, transform 0.5s ease-in-out;\n  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out, transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;\n}\n.block-notifications.active[data-v-710ca610] {\n  visibility: visible;\n  opacity: 1;\n  -webkit-transform: translateY(0);\n      -ms-transform: translateY(0);\n          transform: translateY(0);\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -6784,7 +6882,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".navigation {\n  padding-top: 40px;\n  background-color: #070E17;\n  width: 300px;\n  height: 100%;\n  overflow: auto;\n}\n.navigation__logo {\n  margin-bottom: 50px;\n  margin-left: 40px;\n}\n.navigation__logo img {\n  width: 60px;\n  height: 20px;\n}\n.navigation__item {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  position: relative;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 15px 0 15px 40px;\n  width: 100%;\n  color: #fff;\n  font-size: 14px;\n  font-weight: 500;\n  -webkit-transition: background-color 0.3s ease-in-out;\n  -o-transition: background-color 0.3s ease-in-out;\n  transition: background-color 0.3s ease-in-out;\n}\n.navigation__item svg {\n  margin-right: 15px;\n  width: 18px;\n  height: 18px;\n}\n.navigation__item:before {\n  content: \"\";\n  width: 0;\n  height: 100%;\n  background: -o-linear-gradient(right, rgba(224, 62, 16, 0.3) 0%, rgba(224, 62, 16, 0) 97.38%);\n  background: -webkit-gradient(linear, right top, left top, from(rgba(224, 62, 16, 0.3)), color-stop(97.38%, rgba(224, 62, 16, 0)));\n  background: linear-gradient(270deg, rgba(224, 62, 16, 0.3) 0%, rgba(224, 62, 16, 0) 97.38%);\n  position: absolute;\n  border-right: none;\n  right: 0;\n  -webkit-transition: width 0.2s ease-in-out, border 0.2s ease-in-out;\n  -o-transition: width 0.2s ease-in-out, border 0.2s ease-in-out;\n  transition: width 0.2s ease-in-out, border 0.2s ease-in-out;\n}\n.navigation__item:hover {\n  background-color: #0d1a2b;\n}\n.navigation__item.active svg ::v-deep path {\n  stroke: #E03E10;\n}\n.navigation__item.active:before {\n  width: 100%;\n  border-right: 2px solid #E03E10;\n}\n.navigation__item li {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.navigation__items {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.navigation__category {\n  margin-bottom: 50px;\n}\n.navigation__category:last-of-type {\n  margin-bottom: 0;\n}\n.navigation__category--name {\n  color: #E03E10;\n  font-size: 12px;\n  font-weight: bold;\n  text-transform: uppercase;\n  margin-bottom: 10px;\n  display: block;\n  margin-left: 40px;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".navigation {\n  padding-top: 40px;\n  background-color: #070E17;\n  width: 300px;\n  height: 100%;\n  overflow: auto;\n  border-right: 1px solid #09111D;\n}\n.navigation__logo {\n  margin-bottom: 50px;\n  margin-left: 40px;\n}\n.navigation__logo img {\n  width: 60px;\n  height: 20px;\n}\n.navigation__item {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  position: relative;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 15px 0 15px 40px;\n  width: 100%;\n  color: #b2c0de;\n  font-size: 14px;\n  font-weight: 500;\n  -webkit-transition: background-color 0.3s ease-in-out;\n  -o-transition: background-color 0.3s ease-in-out;\n  transition: background-color 0.3s ease-in-out;\n}\n.navigation__item svg {\n  margin-right: 15px;\n  width: 18px;\n  height: 18px;\n}\n.navigation__item svg path {\n  fill: #b2c0de;\n}\n.navigation__item:before {\n  content: \"\";\n  width: 0;\n  height: 100%;\n  background: -o-linear-gradient(right, rgba(224, 62, 16, 0.3) 0%, rgba(224, 62, 16, 0) 97.38%);\n  background: -webkit-gradient(linear, right top, left top, from(rgba(224, 62, 16, 0.3)), color-stop(97.38%, rgba(224, 62, 16, 0)));\n  background: linear-gradient(270deg, rgba(224, 62, 16, 0.3) 0%, rgba(224, 62, 16, 0) 97.38%);\n  position: absolute;\n  border-right: none;\n  right: 0;\n  -webkit-transition: width 0.2s ease-in-out, border 0.2s ease-in-out;\n  -o-transition: width 0.2s ease-in-out, border 0.2s ease-in-out;\n  transition: width 0.2s ease-in-out, border 0.2s ease-in-out;\n}\n.navigation__item:hover {\n  background-color: #0d1a2b;\n}\n.navigation__item.active svg ::v-deep path {\n  stroke: #E03E10;\n}\n.navigation__item.active:before {\n  width: 100%;\n  border-right: 2px solid #E03E10;\n}\n.navigation__item li {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.navigation__items {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.navigation__category {\n  margin-bottom: 50px;\n}\n.navigation__category:last-of-type {\n  margin-bottom: 0;\n}\n.navigation__category--name {\n  color: #E03E10;\n  font-size: 12px;\n  font-weight: bold;\n  text-transform: uppercase;\n  margin-bottom: 10px;\n  display: block;\n  margin-left: 40px;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -6826,7 +6924,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".navigation[data-v-f192f91e] {\n  border-right: 1px solid #09111D;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".favorite-songs[data-v-f192f91e]  path,\n.my-playlists[data-v-f192f91e]  path {\n  fill: none;\n  stroke: #b2c0de;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -16964,6 +17062,33 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -29609,6 +29734,44 @@ component.options.__file = "resources/front/js/components/Blocks/BlockAlertsComp
 
 /***/ }),
 
+/***/ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue":
+/*!******************************************************************************!*\
+  !*** ./resources/front/js/components/Blocks/BlockNotificationsComponent.vue ***!
+  \******************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec& */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec&");
+/* harmony import */ var _BlockNotificationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BlockNotificationsComponent.vue?vue&type=script&lang=js& */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _BlockNotificationsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& */ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _BlockNotificationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__.render,
+  _BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/front/js/components/Blocks/BlockNotificationsComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/front/js/components/Buttons/BaseCustomClickButtonComponent.vue":
 /*!**********************************************************************************!*\
   !*** ./resources/front/js/components/Buttons/BaseCustomClickButtonComponent.vue ***!
@@ -30984,6 +31147,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockNotificationsComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/front/js/components/Buttons/BaseCustomClickButtonComponent.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************************************!*\
   !*** ./resources/front/js/components/Buttons/BaseCustomClickButtonComponent.vue?vue&type=script&lang=js& ***!
@@ -31504,6 +31680,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&":
+/*!****************************************************************************************************************!*\
+  !*** ./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  \****************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=style&index=0&lang=scss&");
+
+
+/***/ }),
+
 /***/ "./resources/front/js/components/Buttons/LoadingButtonComponent.vue?vue&type=style&index=0&id=48d2bd4e&lang=scss&scoped=true&":
 /*!************************************************************************************************************************************!*\
   !*** ./resources/front/js/components/Buttons/LoadingButtonComponent.vue?vue&type=style&index=0&id=48d2bd4e&lang=scss&scoped=true& ***!
@@ -31910,6 +32099,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_template_id_2dbf493e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockAlertsComponent_vue_vue_type_template_id_2dbf493e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockAlertsComponent.vue?vue&type=template&id=2dbf493e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockAlertsComponent.vue?vue&type=template&id=2dbf493e&");
+
+
+/***/ }),
+
+/***/ "./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec&":
+/*!*************************************************************************************************************!*\
+  !*** ./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec& ***!
+  \*************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__.render; },
+/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BlockNotificationsComponent_vue_vue_type_template_id_aacc0fec___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec&");
 
 
 /***/ }),
@@ -32772,6 +32978,77 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec&":
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Blocks/BlockNotificationsComponent.vue?vue&type=template&id=aacc0fec& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": function() { return /* binding */ render; },
+/* harmony export */   "staticRenderFns": function() { return /* binding */ staticRenderFns; }
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "block-notifications" }, [
+    _c("div", { staticClass: "block-notifications__wrapper" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "block-notifications__content" },
+        [
+          _vm._t("default", function () {
+            return [
+              _c(
+                "div",
+                { staticClass: "no-notifications__wrapper" },
+                [
+                  _c("svg-alias", { attrs: { alias: "empty-notifications" } }),
+                  _vm._v(" "),
+                  _c("p", [_vm._v("Notification list is empty")]),
+                ],
+                1
+              ),
+            ]
+          }),
+        ],
+        2
+      ),
+    ]),
+  ])
+}
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "block-notifications__top" }, [
+      _c("h4", { staticClass: "block-notifications__title" }, [
+        _vm._v("Notifications"),
+      ]),
+      _vm._v(" "),
+      _c(
+        "span",
+        {
+          staticClass: "block-notifications__read-all",
+          attrs: { tabindex: "-1" },
+        },
+        [_vm._v("Mark all as read")]
+      ),
+    ])
+  },
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Buttons/BaseCustomClickButtonComponent.vue?vue&type=template&id=f56bbb78&":
 /*!********************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Buttons/BaseCustomClickButtonComponent.vue?vue&type=template&id=f56bbb78& ***!
@@ -33314,14 +33591,27 @@ var render = function () {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "player__header_profile" }, [
-      _c("div", { staticClass: "bell" }, [
-        _c(
-          "span",
-          { staticClass: "bell__button", attrs: { tabindex: "0" } },
-          [_c("svg-alias", { attrs: { alias: "bell-svg" } })],
-          1
-        ),
-      ]),
+      _c(
+        "div",
+        { ref: "bell", staticClass: "bell" },
+        [
+          _c(
+            "span",
+            {
+              staticClass: "bell__button",
+              attrs: { tabindex: "-1" },
+              on: { click: _vm.openBlockNotifications },
+            },
+            [_c("svg-alias", { attrs: { alias: "bell-svg" } })],
+            1
+          ),
+          _vm._v(" "),
+          _c("block-notifications", {
+            class: { active: _vm.isOpenedBlockNotifications },
+          }),
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -34348,6 +34638,7 @@ var render = function () {
                       }),
                       _vm._v(" "),
                       _c("navigation-item", {
+                        staticClass: "favorite-songs",
                         attrs: {
                           label: "Favorite songs",
                           iconAlias: "like-svg",
@@ -34356,6 +34647,7 @@ var render = function () {
                       }),
                       _vm._v(" "),
                       _c("navigation-item", {
+                        staticClass: "my-playlists",
                         attrs: {
                           label: "My playlists",
                           iconAlias: "playlist-svg",
@@ -35172,7 +35464,7 @@ var render = function () {
     "div",
     { staticClass: "player-layout" },
     [
-      _c("block-notifications"),
+      _c("block-alerts"),
       _vm._v(" "),
       _c("the-player-navigation"),
       _vm._v(" "),

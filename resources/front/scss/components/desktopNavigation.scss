@@ -6,6 +6,7 @@
   width: 300px;
   height: 100%;
   overflow: auto;
+  border-right: 1px solid $light-bg;
 
   &__logo {
     margin-bottom: 50px;
@@ -23,7 +24,7 @@
     align-items: center;
     padding: 15px 0 15px 40px;
     width: 100%;
-    color: #fff;
+    color: $abs-light-bg-color;
     font-size: 14px;
     font-weight: 500;
     transition: background-color 0.3s ease-in-out;
@@ -32,6 +33,10 @@
       margin-right: 15px;
       width: 18px;
       height: 18px;
+
+      path {
+        fill: $abs-light-bg-color;
+      }
     }
 
     &:before {

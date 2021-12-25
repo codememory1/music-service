@@ -25,11 +25,13 @@
           />
           <navigation-item label="Album" iconAlias="album-svg" link="/albums" />
           <navigation-item
+            class="favorite-songs"
             label="Favorite songs"
             iconAlias="like-svg"
             link="/favorite-songs"
           />
           <navigation-item
+            class="my-playlists"
             label="My playlists"
             iconAlias="playlist-svg"
             link="/playlists"
@@ -56,7 +58,11 @@ export default {
 <style lang="scss" scoped>
 @import "../../../scss/variables";
 
-.navigation {
-  border-right: 1px solid $light-bg;
+.favorite-songs,
+.my-playlists {
+  & ::v-deep path {
+    fill: none;
+    stroke: $abs-light-bg-color;
+  }
 }
 </style>

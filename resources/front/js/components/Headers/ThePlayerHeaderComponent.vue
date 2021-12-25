@@ -7,10 +7,17 @@
       </div>
     </div>
     <div class="player__header_profile">
-      <div class="bell">
-        <span tabindex="0" class="bell__button">
+      <div class="bell" ref="bell">
+        <span
+          tabindex="-1"
+          class="bell__button"
+          @click="openBlockNotifications"
+        >
           <svg-alias alias="bell-svg" />
         </span>
+
+        <!-- Block with notifications -->
+        <block-notifications :class="{ active: isOpenedBlockNotifications }" />
       </div>
       <div class="profile">
         <img src="/public/images/user.png" alt="profile" />
@@ -20,7 +27,33 @@
   </div>
 </template>
 <script>
-export default {};
+import BlockNotifications from "../../components/Blocks/BlockNotificationsComponent";
+import ClickOut from "../../modules/ClickOut";
+
+export default {
+  name: "ThePlayerHeader",
+  components: {
+    BlockNotifications
+  },
+
+  data: () => ({
+    isOpenedBlockNotifications: false
+  }),
+
+  mounted() {
+    ClickOut(this.$refs.bell, (status) => {
+      if (status) {
+        this.isOpenedBlockNotifications = false;
+      }
+    });
+  },
+
+  methods: {
+    openBlockNotifications() {
+      this.isOpenedBlockNotifications = !this.isOpenedBlockNotifications;
+    }
+  }
+};
 </script>
 <style lang="scss" scoped>
 @import "../../../scss/variables";
@@ -77,13 +110,14 @@ export default {};
 
 .bell {
   margin-right: 20px;
-  cursor: pointer;
+  position: relative;
 
   &__button {
     width: 24px;
     height: 24px;
     position: relative;
     display: flex;
+    cursor: pointer;
 
     svg {
       width: inherit;
@@ -126,6 +160,22 @@ export default {};
     margin-right: 10px;
     object-fit: cover;
     border: 2px solid $accent;
+  }
+}
+
+.block-notifications {
+  right: -62px;
+  top: 45px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(35px);
+  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out,
+    transform 0.5s ease-in-out;
+
+  &.active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>

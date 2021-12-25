@@ -65,17 +65,18 @@ class AddTrackService extends AbstractTrack
     private function push(string $imagePath): ResponseApiCollectorService
     {
 
+        $request = $this->request->post();
         $trackEntity = new TrackEntity();
 
         $trackEntity
             ->setHash(Uuid::uuid4()->toString())
-            ->setName($this->request->post()->get('name', escapingHtml: true))
-            ->setCategoryId($this->request->post()->get('category'))
+            ->setName($request->get('name', escapingHtml: true))
+            ->setCategoryId($request->get('category'))
             ->setImage($imagePath)
-            ->setText($this->request->post()->get('text', escapingHtml: true))
-            ->setAlbumId($this->request->post()->get('album'))
-            ->setDurationTime($this->request->post()->get('duration_time'))
-            ->setFoulLanguage($this->request->post()->get('foul_language'));
+            ->setText($request->get('text', escapingHtml: true))
+            ->setAlbumId($request->get('album'))
+            ->setDurationTime($request->get('duration_time'))
+            ->setFoulLanguage($request->get('foul_language'));
 
         $this->getEntityManager()->commit($trackEntity)->flush();
 

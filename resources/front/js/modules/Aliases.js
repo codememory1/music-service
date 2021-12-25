@@ -134,5 +134,9 @@ export const aliases = [
   {
     name: "logo",
     path: "/public/images/logo.png"
+  },
+  {
+    name: "empty-notifications",
+    path: "/public/images/illustrations/empty-notifications.svg"
   }
 ];
