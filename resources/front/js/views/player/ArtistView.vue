@@ -151,7 +151,7 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 import BaseCustomClickButton from "../../components/Buttons/BaseCustomClickButtonComponent";
 import ShareButton from "../../components/Buttons/ShareButtonComponent";
 import BaseAlbum from "../../components/Albums/BaseAlbumComponent";
@@ -360,6 +360,11 @@ export default {
   }),
 
   computed: {
+    ...mapGetters({
+      contentX: "layoutScroll/getContentX",
+      contentY: "layoutScroll/getContentY"
+    }),
+
     artistHeaderStyle() {
       return {
         backgroundImage: `url(${this.artistInfo.background})`
@@ -380,6 +385,7 @@ export default {
     ...mapMutations({
       setLayoutScroll: "layoutScroll/setScroll"
     }),
+
     musicItemDropDownStyle() {
       return {
         top: `${this.musicItemDropDownY}px`,
@@ -388,21 +394,17 @@ export default {
     },
 
     musicItemContextMenu: function (event, isButton) {
-      /**
-       * @type {{x: number, y: number}}
-       */
-      const playerLayoutPosition = this.$attrs.position;
       const musicItemDropDownRect =
         this.$refs.musicItemDropDown.$el.getBoundingClientRect();
       const dropDownPosition =
-        event.clientY - playerLayoutPosition.y + musicItemDropDownRect.height;
+        event.clientY - this.contentY + musicItemDropDownRect.height;
 
       this.isOpenedMusicItemDropDown = false;
       this.setLayoutScroll(false);
 
       setTimeout(() => {
         this.isOpenedMusicItemDropDown = true;
-        this.musicItemDropDownX = event.clientX - playerLayoutPosition.x;
+        this.musicItemDropDownX = event.clientX - this.contentX;
 
         if (true === isButton) {
           this.musicItemDropDownX -= musicItemDropDownRect.width + 20;
@@ -410,11 +412,9 @@ export default {
 
         if (dropDownPosition > window.innerHeight) {
           this.musicItemDropDownY =
-            event.clientY -
-            playerLayoutPosition.y -
-            musicItemDropDownRect.height;
+            event.clientY - this.contentY - musicItemDropDownRect.height;
         } else {
-          this.musicItemDropDownY = event.clientY - playerLayoutPosition.y;
+          this.musicItemDropDownY = event.clientY - this.contentY;
         }
       }, 300);
     }
