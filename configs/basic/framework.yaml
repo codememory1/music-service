@@ -12,4 +12,4 @@ framework:
 
     # Show toolbar in production mode
     # Note! The page loading speed may decrease if the value is "true"
-    enabledInProduction: true
+    enabledInProduction: false

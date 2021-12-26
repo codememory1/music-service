@@ -107,7 +107,7 @@
     "version": "4.3",
     "configuration": {
         "pathWithConfigs": "configs\/",
-        "mode": "development"
+        "mode": "production"
     },
     "individual-tasks": {
         "pathWithTasks": "Tasks",

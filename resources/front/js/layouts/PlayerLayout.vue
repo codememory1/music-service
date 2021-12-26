@@ -5,11 +5,17 @@
 
     <!-- Player subdomain navigation -->
     <the-player-navigation />
+
     <div ref="playerLayoutContent" class="player-layout__content">
       <div class="content__scroll" ref="contentScroll">
+        <!-- Header -->
         <the-player-header />
+
+        <!-- View -->
         <router-view />
       </div>
+
+      <!-- Desktop player -->
       <desktop-player />
     </div>
   </div>
@@ -20,7 +26,6 @@ import ThePlayerHeader from "../components/Headers/ThePlayerHeaderComponent";
 import ThePlayerNavigation from "../components/Navigation/ThePlayerNavigationComponent";
 import DesktopPlayer from "../components/Player/DesktopPlayerComponent";
 import BlockAlerts from "../components/Blocks/BlockAlertsComponent";
-import BlockNotifications from "../components/Blocks/BlockNotificationsComponent";
 
 export default {
   name: "PlayerLayout",
@@ -28,8 +33,7 @@ export default {
     ThePlayerHeader,
     ThePlayerNavigation,
     DesktopPlayer,
-    BlockAlerts,
-    BlockNotifications
+    BlockAlerts
   },
 
   mounted() {
@@ -40,6 +44,7 @@ export default {
     this.setContentY(playerLayoutContentRect.y);
 
     this.$refs.contentScroll.addEventListener("scroll", this.setLayoutScroll);
+    window.addEventListener("contextmenu", this.contextmenu);
   },
 
   methods: {
@@ -50,6 +55,18 @@ export default {
 
     setLayoutScroll() {
       this.$store.commit("layoutScroll/setScroll", true);
+    },
+
+    /**
+     * Handling opening a context menu
+     *
+     * @param e
+     * @returns {boolean}
+     */
+    contextmenu(e) {
+      e.preventDefault();
+
+      return false;
     }
   },
 
@@ -58,11 +75,13 @@ export default {
       "scroll",
       this.setLayoutScroll
     );
+    window.removeEventListener("contextmenu", this.contextmenu);
   }
 };
 </script>
 <style lang="scss" scoped>
 @import "../../scss/variables";
+@import "../../scss/mixins/scrollbarMixin";
 
 .player-layout {
   display: grid;
@@ -75,7 +94,7 @@ export default {
     flex-direction: column;
     width: 100%;
     position: relative;
-    overflow: auto;
+    overflow: hidden;
   }
 }
 
@@ -98,6 +117,8 @@ export default {
 .content__scroll {
   height: 100%;
   overflow: auto;
+
+  @include scrollbarMixin;
 }
 
 .main__content {

@@ -159,7 +159,6 @@ export default {
     border-radius: 100%;
     margin-right: 10px;
     object-fit: cover;
-    border: 2px solid $accent;
   }
 }
 
