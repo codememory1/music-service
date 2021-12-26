@@ -65,6 +65,9 @@ export default {
   justify-content: space-between;
   backdrop-filter: saturate(180%) blur(10px);
   background-color: rgba($dark-bg, 0.5);
+  position: absolute;
+  padding: 20px $gutter;
+  z-index: 99;
 
   &_profile {
     display: flex;
