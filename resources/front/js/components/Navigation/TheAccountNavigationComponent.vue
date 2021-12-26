@@ -3,30 +3,30 @@
     <template v-slot:categories>
       <navigation-category>
         <template v-slot:items>
-          <navigation-item label="Home" iconAlias="home-svg" link="/home" />
           <navigation-item
             label="General Settings"
-            iconAlias="search-svg"
+            iconAlias="settings-svg"
             link="/general-settings"
           />
           <navigation-item
             label="Security & Login"
-            iconAlias="history-svg"
+            iconAlias="security-svg"
             link="/security"
           />
           <navigation-item
+            class="language-region"
             label="Language & Region"
-            iconAlias="history-svg"
-            link="/language"
+            iconAlias="language-svg"
+            link="/languages"
           />
           <navigation-item
             label="Notifications"
-            iconAlias="history-svg"
+            iconAlias="bell-svg"
             link="/notifications"
           />
           <navigation-item
             label="Connected APPS"
-            iconAlias="history-svg"
+            iconAlias="connected-apps-svg"
             link="/connected-apps"
           />
         </template>
@@ -48,3 +48,20 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+@import "../../../scss/variables";
+
+.language-region {
+  & ::v-deep path {
+    fill: none;
+    stroke: $abs-light-bg-color;
+  }
+
+  &.active {
+    & ::v-deep path {
+      fill: none;
+      stroke: $accent;
+    }
+  }
+}
+</style>

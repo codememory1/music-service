@@ -36,6 +36,16 @@ class FrontendController extends AbstractController
     }
 
     /**
+     * @return void
+     */
+    public function account(): void
+    {
+
+        $this->templateRender('account');
+
+    }
+
+    /**
      * @param string $template
      *
      * @return void

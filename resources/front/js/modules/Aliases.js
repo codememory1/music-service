@@ -138,5 +138,21 @@ export const aliases = [
   {
     name: "empty-notifications",
     path: "/public/images/illustrations/empty-notifications.svg"
+  },
+  {
+    name: "settings-svg",
+    path: "/public/images/icons/settings.svg"
+  },
+  {
+    name: "security-svg",
+    path: "/public/images/icons/security.svg"
+  },
+  {
+    name: "language-svg",
+    path: "/public/images/icons/language.svg"
+  },
+  {
+    name: "connected-apps-svg",
+    path: "/public/images/icons/connected-apps.svg"
   }
 ];

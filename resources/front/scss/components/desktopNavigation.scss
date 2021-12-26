@@ -51,17 +51,19 @@
       position: absolute;
       border-right: none;
       right: 0;
-      transition: width 0.2s ease-in-out, border 0.2s ease-in-out;
+      transition: width 0.5s ease-in-out, border 0.2s ease-in-out;
     }
 
-    &:hover {
-      background-color: lighten($dark-bg, 5%);
+    &:not(.active) {
+      &:hover {
+        background-color: lighten($dark-bg, 5%);
+      }
     }
 
     &.active {
       svg {
-        ::v-deep path {
-          stroke: $accent;
+        path {
+          fill: $accent;
         }
       }
 

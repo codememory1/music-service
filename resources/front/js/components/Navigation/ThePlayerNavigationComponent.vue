@@ -64,5 +64,12 @@ export default {
     fill: none;
     stroke: $abs-light-bg-color;
   }
+
+  &.active {
+    & ::v-deep path {
+      fill: none;
+      stroke: $accent;
+    }
+  }
 }
 </style>

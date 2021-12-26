@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="{{ parameters.active_lang }}" dir="ltr">
+<head>
+    <title>{{ parameters.app_title }}</title>
+    {# Подключение файла с meta-тегами #}
+    {% include './blocks/meta.html.twig' %}
+
+    {# Подключение файла с links(css...) #}
+    {% include './blocks/link.html.twig' %}
+</head>
+<body>
+
+<div id="app">
+    <router-view :data-parameters="{{ parameters | json_encode() }}"></router-view>
+</div>
+
+{% include './blocks/footer.html.twig' %}
+</body>
+</html>
