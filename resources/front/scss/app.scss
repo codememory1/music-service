@@ -27,3 +27,12 @@ html, body, #app {
 .relative {
   position: relative;
 }
+
+.under-header {
+  padding-top: 100px;
+}
+
+.gutter {
+  padding-left: $gutter;
+  padding-right: $gutter;
+}

@@ -35,7 +35,7 @@ final class Migration1633545149InsertAccessRightNames extends AbstractMigration
             [10, AccessRightNameRepository::CHANGE_MUSIC_AS_EXECUTOR],
             [11, AccessRightNameRepository::CREATE_SUBSCRIPTION],
             [12, AccessRightNameRepository::UPDATE_SUBSCRIPTION],
-            [13, AccessRightNameRepository::REMOVE_SUBSCRIPTION],
+            [13, AccessRightNameRepository::DELETE_SUBSCRIPTION],
             [14, AccessRightNameRepository::ADD_MUSIC],
             [15, AccessRightNameRepository::UPDATE_TRANSLATION_CACHE],
             [16, AccessRightNameRepository::CREATE_LANG],

@@ -4,28 +4,28 @@
       <navigation-category>
         <template v-slot:items>
           <navigation-item
-            label="General Settings"
+            :label="translation('generalSettings')"
             iconAlias="settings-svg"
             link="/general-settings"
           />
           <navigation-item
-            label="Security & Login"
+            :label="translation('security')"
             iconAlias="security-svg"
             link="/security"
           />
           <navigation-item
+            :label="`${translation('language')} & ${translation('region')}`"
             class="language-region"
-            label="Language & Region"
             iconAlias="language-svg"
             link="/languages"
           />
           <navigation-item
-            label="Notifications"
+            :label="translation('notifications')"
             iconAlias="bell-svg"
             link="/notifications"
           />
           <navigation-item
-            label="Connected APPS"
+            :label="translation('connectedApps')"
             iconAlias="connected-apps-svg"
             link="/connected-apps"
           />
@@ -35,6 +35,7 @@
   </base-navigation>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import BaseNavigation from "./BaseNavigationComponent";
 import NavigationCategory from "./NavigationCategoryComponent";
 import NavigationItem from "./NavigationItemComponent";
@@ -45,6 +46,12 @@ export default {
     BaseNavigation,
     NavigationCategory,
     NavigationItem
+  },
+
+  computed: {
+    ...mapGetters({
+      translation: "translation/translation"
+    })
   }
 };
 </script>

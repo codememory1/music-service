@@ -47,6 +47,17 @@ export default {
     contentScroll() {
       return this.$refs.contentScroll;
     }
+  },
+
+  async created() {
+    await this.$store.dispatch("translation/receiveTranslations");
+  },
+
+  mounted() {
+    document.documentElement.setAttribute(
+      "lang",
+      this.$store.getters["translation/lang"]
+    );
   }
 };
 </script>

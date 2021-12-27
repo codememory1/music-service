@@ -103,6 +103,19 @@ final class Migration1637949838InsertTranslationKeys extends AbstractMigration
             [79, 'track@subtitleExtension'],
             [80, 'track@subtitleManualIsRequired'],
             [81, 'track@subtitleInvalidFormat'],
+
+            // Account subdomain
+            [82, 'generalSettings'],
+            [83, 'security'],
+            [84, 'login'],
+            [85, 'language'],
+            [86, 'region'],
+            [87, 'notifications'],
+            [88, 'connectedApps'],
+            [89, 'activeSessions'],
+            [90, 'deleteSession'],
+            [91, 'deleteAllActiveSessions'],
+            [92, 'activeNow'],
         ]);
 
     }
@@ -113,7 +126,7 @@ final class Migration1637949838InsertTranslationKeys extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DELETE FROM `translation_keys` WHERE `id` <= 81');
+        $schema->addSql('DELETE FROM `translation_keys` WHERE `id` <= 92');
 
     }
 

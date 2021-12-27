@@ -103,6 +103,19 @@ final class Migration1637949862InsertTranslations extends AbstractMigration
             [1, 79, 'Расширение файла с субтитрами должно быть .srt'],
             [1, 80, 'Ручной ввод субтитров обязательный к заполнению'],
             [1, 81, 'Некорректный формат субтитров'],
+
+            // Account subdomain
+            [1, 82, 'Основные настройки'],
+            [1, 83, 'Безопасность'],
+            [1, 84, 'Логин'],
+            [1, 85, 'Язык'],
+            [1, 86, 'Регион'],
+            [1, 87, 'Уведомления'],
+            [1, 88, 'Подключенные приложения'],
+            [1, 89, 'Активные сеансы'],
+            [1, 90, 'Удалить сеанс'],
+            [1, 91, 'Удалить все активные сеансы'],
+            [1, 92, 'В данный момент активен']
         ]);
 
     }
@@ -113,7 +126,7 @@ final class Migration1637949862InsertTranslations extends AbstractMigration
     public function down(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('DELETE FROM `language_translations` WHERE `translation_key_id` <= 81');
+        $schema->addSql('DELETE FROM `language_translations` WHERE `translation_key_id` <= 92');
 
     }
 

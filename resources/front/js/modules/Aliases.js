@@ -154,5 +154,17 @@ export const aliases = [
   {
     name: "connected-apps-svg",
     path: "/public/images/icons/connected-apps.svg"
+  },
+  {
+    name: "desktop-svg",
+    path: "/public/images/icons/desktop.svg"
+  },
+  {
+    name: "smartphone-svg",
+    path: "/public/images/icons/smartphone.svg"
+  },
+  {
+    name: "key-svg",
+    path: "/public/images/icons/key.svg"
   }
 ];

@@ -51,19 +51,16 @@ class DataService extends AbstractApiService
     }
 
     /**
+     * @param string|null $lang
+     *
      * @return array
      * @throws ReflectionException
      * @throws ServiceNotExistException
      */
-    public function getActiveLangTranslations(): array
+    public function getActiveLangTranslations(?string $lang = null): array
     {
 
-        $activeLang = $this->translation->language->getActiveLang();
-
-        // Checking for the existence of an active language
-        if (!$this->translation->language->existLang($activeLang)) {
-            $activeLang = env('app.default-lang');
-        }
+        $activeLang = $lang ?: $this->request->query()->get('lang', env('app.default-lang'));
 
         /** @var CacheService $translationCacheService */
         $translationCacheService = $this->getService('Translation\Cache');
