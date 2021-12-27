@@ -7992,7 +7992,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".account-section[data-v-035bfef5] {\n  margin-bottom: 50px;\n}\n.account-section[data-v-035bfef5] :last-of-type {\n  margin-bottom: 0;\n}\n.account-section__title[data-v-035bfef5] {\n  font-size: 18px;\n  font-weight: 500;\n  color: #e4ecfe;\n  margin-left: 15px;\n}\n.account-section__title-wrapper[data-v-035bfef5] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding-bottom: 40px;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".account-section[data-v-035bfef5] {\n  margin-bottom: 50px;\n}\n.account-section[data-v-035bfef5] :last-of-type {\n  margin-bottom: 0;\n}\n.account-section__title[data-v-035bfef5] {\n  font-size: 18px;\n  font-weight: 500;\n  color: #e4ecfe;\n}\n.account-section__title-wrapper[data-v-035bfef5] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding-bottom: 40px;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 

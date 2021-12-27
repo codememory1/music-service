@@ -68,7 +68,7 @@
       >
     </account-section>
     <account-section title="Изминение пароля" icon-alias="key-svg">
-	  
+
     </account-section>
   </div>
 </template>
