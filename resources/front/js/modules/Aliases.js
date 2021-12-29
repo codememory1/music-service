@@ -166,5 +166,13 @@ export const aliases = [
   {
     name: "key-svg",
     path: "/public/images/icons/key.svg"
+  },
+  {
+    name: "session-svg",
+    path: "/public/images/icons/session.svg"
+  },
+  {
+    name: "ticket-svg",
+    path: "/public/images/icons/ticket.svg"
   }
 ];

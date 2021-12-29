@@ -16,6 +16,7 @@ import Storage from "./plugins/Storage";
 
 // Import Directives
 import VTooltip from "v-tooltip";
+import VSkeleton from "./directives/skeleton";
 
 Vue.use(AxiosInstance);
 Vue.use(TouchEvents);
@@ -28,6 +29,8 @@ Vue.component("CoreSwiper", Swiper);
 Vue.component("SlideSwiper", SwiperSlide);
 Vue.component("ImgAlias", ImageAlias);
 Vue.component("SvgAlias", InlineSvgAlias);
+
+Vue.directive("skeleton", VSkeleton);
 
 Vue.productionTip = false;
 

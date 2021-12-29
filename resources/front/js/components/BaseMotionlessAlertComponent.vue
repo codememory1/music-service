@@ -1,22 +1,39 @@
 <template>
-  <div v-if="type === 'success'" class="base-motionless-alert success">
+  <div
+    v-if="type === 'success'"
+    class="base-motionless-alert success"
+    :class="{ 'skeleton-active': !isLoading }"
+  >
     <i class="far fa-check"></i>
     <span>{{ message }}</span>
   </div>
-  <div v-else-if="type === 'error'" class="base-motionless-alert error">
+  <div
+    v-else-if="type === 'error'"
+    class="base-motionless-alert error"
+    :class="{ 'skeleton-active': !isLoading }"
+  >
     <i class="far fa-times"></i>
     <span>{{ message }}</span>
   </div>
-  <div v-else-if="type === 'warning'" class="base-motionless-alert warning">
+  <div
+    v-else-if="type === 'warning'"
+    class="base-motionless-alert warning"
+    :class="{ 'skeleton-active': !isLoading }"
+  >
     <i class="far fa-exclamation-triangle"></i>
     <span>{{ message }}</span>
   </div>
-  <div v-else-if="type === 'info'" class="base-motionless-alert info">
+  <div
+    v-else-if="type === 'info'"
+    class="base-motionless-alert info"
+    :class="{ 'skeleton-active': isLoading }">
     <i class="far fa-exclamation-circle"></i>
     <span>{{ message }}</span>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   props: {
     /**
@@ -34,6 +51,12 @@ export default {
       type: String,
       required: true
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      isLoading: "loading/isLoading"
+    })
   }
 };
 </script>
@@ -48,6 +71,13 @@ export default {
   color: #fff;
   font-weight: 500;
   align-items: center;
+
+  &.skeleton-active {
+    width: 400px;
+    height: 30px;
+    background-color: $skeleton-bg !important;
+    color: transparent;
+  }
 
   > i {
     font-size: 18px;

@@ -1,7 +1,10 @@
 <template>
   <base-header>
     <template v-slot:beforeProfile>
-      <h1 class="account-page__title">
+      <h1
+        class="account-page__title"
+        :class="{ 'skeleton-active': isLoading }"
+      >
         {{ $store.getters["account/pageTitle"] }}
       </h1>
     </template>
@@ -19,7 +22,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      pageTitle: "account/pageTitle"
+      pageTitle: "account/pageTitle",
+      isLoading: "loading/isLoading"
     })
   }
 };
@@ -34,5 +38,13 @@ export default {
     display: flex;
     align-items: center;
   }
+}
+
+.skeleton-active {
+  background-color: $skeleton-bg;
+  width: 190px;
+  height: 15px;
+  border-radius: 10px;
+  color: transparent;
 }
 </style>

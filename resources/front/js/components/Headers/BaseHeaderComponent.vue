@@ -7,6 +7,7 @@
     <div class="base-header__right">
       <div class="base-header__bell" ref="bell">
         <span
+          :class="{ 'skeleton-active': isLoading }"
           tabindex="-1"
           class="bell__button"
           @click="openBlockNotifications"
@@ -17,7 +18,10 @@
         <!-- Block with notifications -->
         <block-notifications :class="{ active: isOpenedBlockNotifications }" />
       </div>
-      <div class="base-header__user">
+      <div
+        class="base-header__user"
+        :class="{ 'skeleton-active': isLoading }"
+      >
         <img src="/public/images/user.png" alt="profile" />
         <svg-alias alias="arrow-down-svg" />
       </div>
@@ -28,6 +32,7 @@
 <script>
 import BlockNotifications from "../../components/Blocks/BlockNotificationsComponent";
 import ClickOut from "../../modules/ClickOut";
+import { mapGetters } from "vuex";
 
 export default {
   name: "BaseHeader",
@@ -38,6 +43,13 @@ export default {
   data: () => ({
     isOpenedBlockNotifications: false
   }),
+
+  computed: {
+    ...mapGetters({
+      pageTitle: "account/pageTitle",
+      isLoading: "loading/isLoading"
+    })
+  },
 
   mounted() {
     ClickOut(this.$refs.bell, (status) => {
@@ -67,6 +79,7 @@ export default {
   position: absolute;
   padding: 20px $gutter;
   z-index: 99;
+  align-items: center;
 
   &__right {
     display: flex;
@@ -89,6 +102,17 @@ export default {
       border-radius: 100%;
       margin-right: 10px;
       object-fit: cover;
+    }
+
+    &.skeleton-active {
+      background-color: $skeleton-bg;
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+
+      img {
+        opacity: 0;
+      }
     }
   }
 }
@@ -126,6 +150,21 @@ export default {
       top: 3.5px;
       right: 0;
       border-radius: 100%;
+    }
+
+    &.skeleton-active {
+      background-color: $skeleton-bg;
+      width: 24px;
+      height: 24px;
+      border-radius: 100%;
+
+      svg {
+        opacity: 0;
+      }
+
+      &:before {
+        opacity: 0;
+      }
     }
   }
 }

@@ -85,20 +85,22 @@ export default {
      * @param context
      * @returns {Promise<void>}
      */
-    async loadUserData(context) {
+    async loadUserData({ getters, state, commit }) {
       try {
         const response = await BaseAxios.get("/user/current", {
           headers: {
-            Authorization: `Bearer ${context.getters.getAccessToken}`
+            Authorization: `Bearer ${getters.getAccessToken}`
           }
         });
 
+        commit("requestStatuses/setStatusAuthUserData", true, { root: true });
+
         if (response.status === 200) {
-          context.state.authUserData = response.data;
-          context.state.isAuth = true;
+          state.authUserData = response.data;
+          state.isAuth = true;
         }
       } catch (e) {
-        context.state.isAuth = false;
+        state.isAuth = false;
       }
     }
   }

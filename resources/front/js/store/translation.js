@@ -86,10 +86,12 @@ export default {
      * @returns {Promise<void>}
      * @param lang
      */
-    async receiveTranslations({ state, getters }, lang) {
+    async receiveTranslations({ state, getters, commit }, lang) {
       const response = await BaseAxios.get(
         `/language/translations?lang=${lang ?? getters.lang}`
       );
+
+      commit("requestStatuses/setStatusTranslation", true, { root: true });
 
       if (response.status === 200) {
         state.translations = response.data;
