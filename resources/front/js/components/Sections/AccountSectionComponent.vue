@@ -51,7 +51,7 @@ export default {
 @import "../../../scss/variables";
 
 .account-section {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 
   :last-of-type {
     margin-bottom: 0;

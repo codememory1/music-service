@@ -116,6 +116,14 @@ final class Migration1637949838InsertTranslationKeys extends AbstractMigration
             [90, 'deleteSession'],
             [91, 'deleteAllActiveSessions'],
             [92, 'activeNow'],
+            [93, 'oldPassword'],
+            [94, 'newPassword'],
+            [95, 'repeatPassword'],
+            [96, 'btn@updateSecuritySettings'],
+            [97, 'btn@update'],
+            [98, 'btn@cancel'],
+            [99, 'changePassword'],
+            [100, 'recommendedActiveSession'],
         ]);
 
     }

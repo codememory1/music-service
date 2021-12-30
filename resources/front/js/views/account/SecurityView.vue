@@ -5,7 +5,7 @@
       icon-alias="ticket-svg"
     >
       <base-motionless-alert
-        message="Рекомендация! Если увидели подозрительный сеанс, удалите его и смените пароль."
+        :message="translation('recommendedActiveSession')"
         type="info"
       />
       <div class="active-sessions">
@@ -90,44 +90,30 @@
         >{{ translation("deleteAllActiveSessions") }}</span
       >
     </account-section>
-    <account-section title="Изминение пароля" icon-alias="key-svg">
-      <form class="form__change-password">
-        <div class="field__wrapper" :class="{ 'skeleton-active': isLoading }">
-          <input
-            type="password"
-            name="old-password"
-            class="dark-input"
-            placeholder="Старый пароль"
-          />
-        </div>
-        <div class="field__wrapper" :class="{ 'skeleton-active': isLoading }">
-          <input
-            type="password"
-            name="password"
-            class="dark-input"
-            placeholder="Новый пароль"
-          />
-        </div>
-        <div class="field__wrapper" :class="{ 'skeleton-active': isLoading }">
-          <input
-            type="password"
-            name="old-password"
-            class="dark-input"
-            placeholder="Подтверждение пароля"
-          />
-        </div>
-      </form>
-    </account-section>
+    <inline-account-section
+      title="Двухфакторная аутентификация"
+      subtitle="Дополнительный уровень безопаности, т.е., во время авторизации, на почту будет выслан дополнительный код подверждения."
+    >
+      <input type="checkbox" class="switch" />
+    </inline-account-section>
+    <inline-account-section
+      title="Удаление сеанса"
+      subtitle="Автоматически удалить текущий сеанс, если сеанс не активен:"
+    >
+      <base-select
+        :options="periodsNotActivitySession"
+        :selectedOptions="['one_month']"
+        placeholder="Период не активности"
+      />
+    </inline-account-section>
+    <inline-account-section title="Изменение пароля">
+      <span class="base-button blue">Открыть окно для изменения пароля</span>
+    </inline-account-section>
     <div class="security__buttons">
       <loading-button
-        class="base-button accent"
+        class="base-button accent update-security-settings"
         :class="{ 'skeleton-active': isLoading }"
-        >Update</loading-button
-      >
-      <loading-button
-        class="base-button dark"
-        :class="{ 'skeleton-active': isLoading }"
-        >Cancel</loading-button
+        >{{ translation("btn@updateSecuritySettings") }}</loading-button
       >
     </div>
   </div>
@@ -137,14 +123,39 @@ import { mapGetters, mapMutations } from "vuex";
 import AccountSection from "../../components/Sections/AccountSectionComponent";
 import BaseMotionlessAlert from "../../components/BaseMotionlessAlertComponent";
 import LoadingButton from "../../components/Buttons/LoadingButtonComponent";
+import InlineAccountSection from "../../components/Sections/InlineAccountSecctionComponent";
+import BaseSelect from "../../components/Select/BaseSelectComponent";
 
 export default {
   name: "SecurityView",
   components: {
     AccountSection,
     BaseMotionlessAlert,
-    LoadingButton
+    LoadingButton,
+    InlineAccountSection,
+    BaseSelect
   },
+
+  data: () => ({
+    periodsNotActivitySession: [
+      {
+        label: "1 неделя",
+        value: "one_week"
+      },
+      {
+        label: "1 месяц",
+        value: "one_month"
+      },
+      {
+        label: "3 месяца",
+        value: "three_month"
+      },
+      {
+        label: "6 месяцев",
+        value: "six_month"
+      }
+    ]
+  }),
 
   created() {
     this.setPageTitle(this.translation("security"));

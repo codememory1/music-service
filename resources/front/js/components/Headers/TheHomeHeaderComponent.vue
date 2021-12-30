@@ -18,11 +18,11 @@
         $refs.authModal.open();
       "
     />
-    <password-recovery-modal
+    <password-recovery-request-modal
       ref="passwordRecoveryModal"
       @recovery="recoveryPassword"
     />
-    <change-password-modal ref="changePasswordModal" />
+    <password-recovery-modal ref="changePasswordModal" />
     <div class="container">
       <div class="header__navbar">
         <div class="header__logo">
@@ -100,8 +100,8 @@ import { mapGetters } from "vuex";
 import BaseCustomSelect from "../../components/Select/BaseSelectComponent";
 import AuthModal from "../../components/Modal/AuthModalComponent";
 import RegisterModal from "../../components/Modal/RegisterModalComponent";
-import PasswordRecoveryModal from "../../components/Modal/PasswordRecoveryModalComponent";
-import ChangePasswordModal from "../../components/Modal/ChangePasswordModalComponent";
+import PasswordRecoveryRequestModal from "../Modal/PasswordRecoveryRequestModalComponent";
+import PasswordRecoveryModal from "../Modal/PasswordRecoveryModalComponent";
 import Config from "../../modules/Config";
 
 export default {
@@ -110,8 +110,8 @@ export default {
     BaseCustomSelect,
     AuthModal,
     RegisterModal,
-    PasswordRecoveryModal,
-    ChangePasswordModal
+    PasswordRecoveryRequestModal,
+    PasswordRecoveryModal
   },
 
   computed: {

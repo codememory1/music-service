@@ -1,29 +1,17 @@
 <template>
-  <security-modal ref="securityModal" title="Change Password">
-    <!-- Form START -->
+  <security-modal ref="securityModal" title="Password Recovery">
     <template v-slot:form>
-      <security-modal-form button-label="Change password">
+      <security-modal-form
+        button-label="Submit a restore request"
+        @click="$emit('recovery')"
+      >
         <security-form-field
-          type="password"
-          label="Old password"
-          icon-class="fa-key"
-          v-model="oldPassword"
-        />
-        <security-form-field
-          type="password"
-          label="New password"
-          icon-class="fa-key"
-          v-model="newPassword"
-        />
-        <security-form-field
-          type="password"
-          label="Repeat password"
-          icon-class="fa-key"
-          v-model="repeatPassword"
+          label="Email"
+          icon-class="fa-envelope"
+          v-model="email"
         />
       </security-modal-form>
     </template>
-    <!-- Form END -->
   </security-modal>
 </template>
 <script>
@@ -40,9 +28,7 @@ export default {
   },
 
   data: () => ({
-    oldPassword: null,
-    newPassword: null,
-    repeatPassword: null
+    email: null
   }),
 
   methods: {

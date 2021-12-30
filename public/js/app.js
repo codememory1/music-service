@@ -3129,8 +3129,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Select_BaseSelectComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Select/BaseSelectComponent */ "./resources/front/js/components/Select/BaseSelectComponent.vue");
 /* harmony import */ var _components_Modal_AuthModalComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Modal/AuthModalComponent */ "./resources/front/js/components/Modal/AuthModalComponent.vue");
 /* harmony import */ var _components_Modal_RegisterModalComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Modal/RegisterModalComponent */ "./resources/front/js/components/Modal/RegisterModalComponent.vue");
-/* harmony import */ var _components_Modal_PasswordRecoveryModalComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/Modal/PasswordRecoveryModalComponent */ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue");
-/* harmony import */ var _components_Modal_ChangePasswordModalComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Modal/ChangePasswordModalComponent */ "./resources/front/js/components/Modal/ChangePasswordModalComponent.vue");
+/* harmony import */ var _Modal_PasswordRecoveryRequestModalComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Modal/PasswordRecoveryRequestModalComponent */ "./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue");
+/* harmony import */ var _Modal_PasswordRecoveryModalComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Modal/PasswordRecoveryModalComponent */ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue");
 /* harmony import */ var _modules_Config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../modules/Config */ "./resources/front/js/modules/Config.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
@@ -3248,8 +3248,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     BaseCustomSelect: _components_Select_BaseSelectComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     AuthModal: _components_Modal_AuthModalComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     RegisterModal: _components_Modal_RegisterModalComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
-    PasswordRecoveryModal: _components_Modal_PasswordRecoveryModalComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
-    ChangePasswordModal: _components_Modal_ChangePasswordModalComponent__WEBPACK_IMPORTED_MODULE_4__["default"]
+    PasswordRecoveryRequestModal: _Modal_PasswordRecoveryRequestModalComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
+    PasswordRecoveryModal: _Modal_PasswordRecoveryModalComponent__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapGetters)({
     isAuth: "auth/isAuth",
@@ -3628,10 +3628,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3755,10 +3755,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4735,6 +4735,83 @@ __webpack_require__.r(__webpack_exports__);
       required: true
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "InlineAccountSection",
+  props: {
+    /**
+     * @type {String}
+     */
+    title: {
+      type: String,
+      required: true
+    },
+
+    /**
+     * @type {String}
+     */
+    subtitle: {
+      type: String,
+      "default": null,
+      required: false
+    },
+
+    /**
+     * @type {String}
+     */
+    iconAlias: {
+      type: String,
+      "default": null,
+      required: false
+    }
+  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)({
+    isLoading: "loading/isLoading"
+  }))
 });
 
 /***/ }),
@@ -5731,10 +5808,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _components_Sections_AccountSectionComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Sections/AccountSectionComponent */ "./resources/front/js/components/Sections/AccountSectionComponent.vue");
 /* harmony import */ var _components_BaseMotionlessAlertComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/BaseMotionlessAlertComponent */ "./resources/front/js/components/BaseMotionlessAlertComponent.vue");
 /* harmony import */ var _components_Buttons_LoadingButtonComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Buttons/LoadingButtonComponent */ "./resources/front/js/components/Buttons/LoadingButtonComponent.vue");
+/* harmony import */ var _components_Sections_InlineAccountSecctionComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/Sections/InlineAccountSecctionComponent */ "./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue");
+/* harmony import */ var _components_Select_BaseSelectComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Select/BaseSelectComponent */ "./resources/front/js/components/Select/BaseSelectComponent.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -5861,20 +5940,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+
 
 
 
@@ -5884,12 +5951,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     AccountSection: _components_Sections_AccountSectionComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     BaseMotionlessAlert: _components_BaseMotionlessAlertComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
-    LoadingButton: _components_Buttons_LoadingButtonComponent__WEBPACK_IMPORTED_MODULE_2__["default"]
+    LoadingButton: _components_Buttons_LoadingButtonComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
+    InlineAccountSection: _components_Sections_InlineAccountSecctionComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
+    BaseSelect: _components_Select_BaseSelectComponent__WEBPACK_IMPORTED_MODULE_4__["default"]
+  },
+  data: function data() {
+    return {
+      periodsNotActivitySession: [{
+        label: "1 неделя",
+        value: "one_week"
+      }, {
+        label: "1 месяц",
+        value: "one_month"
+      }, {
+        label: "3 месяца",
+        value: "three_month"
+      }, {
+        label: "6 месяцев",
+        value: "six_month"
+      }]
+    };
   },
   created: function created() {
     this.setPageTitle(this.translation("security"));
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapGetters)({
     translation: "translation/translation",
     isReceived: "translation/isReceived",
     isLoading: "loading/isLoading"
@@ -5897,7 +5983,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted: function mounted() {
     this.$store.commit("loading/setLoading", false);
   },
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)({
+  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapMutations)({
     setPageTitle: "account/setPageTitle"
   })),
   watch: {
@@ -8002,10 +8088,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".modal {\n  z-index: 999;\n  position:
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true&":
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8016,7 +8102,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".code__items[data-v-7cb349ae] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  margin-bottom: 35px;\n}\n.code__item[data-v-7cb349ae] {\n  max-width: 40px;\n  max-height: 40px;\n  width: 40px;\n  height: 40px;\n  background-color: #070E17;\n  border-radius: 5px;\n  margin-right: 20px;\n  cursor: text;\n}\n.code__item[data-v-7cb349ae]:last-of-type {\n  margin-right: 0;\n}\n.code__item.active[data-v-7cb349ae] {\n  border: 1px solid #E03E10;\n}\n.code__item input[data-v-7cb349ae] {\n  width: inherit;\n  height: inherit;\n  background: transparent;\n  border: none;\n  outline: none;\n  color: #fff;\n  font-size: 16px;\n  font-weight: 500;\n  text-align: center;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".code__items[data-v-447c4eda] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  margin-bottom: 35px;\n}\n.code__item[data-v-447c4eda] {\n  max-width: 40px;\n  max-height: 40px;\n  width: 40px;\n  height: 40px;\n  background-color: #070E17;\n  border-radius: 5px;\n  margin-right: 20px;\n  cursor: text;\n}\n.code__item[data-v-447c4eda]:last-of-type {\n  margin-right: 0;\n}\n.code__item.active[data-v-447c4eda] {\n  border: 1px solid #E03E10;\n}\n.code__item input[data-v-447c4eda] {\n  width: inherit;\n  height: inherit;\n  background: transparent;\n  border: none;\n  outline: none;\n  color: #fff;\n  font-size: 16px;\n  font-weight: 500;\n  text-align: center;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -8289,7 +8375,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".account-section[data-v-035bfef5] {\n  margin-bottom: 50px;\n}\n.account-section[data-v-035bfef5] :last-of-type {\n  margin-bottom: 0;\n}\n.account-section__title[data-v-035bfef5] {\n  font-size: 18px;\n  font-weight: 500;\n  color: #e4ecfe;\n}\n.account-section__title.skeleton-active[data-v-035bfef5] {\n  background-color: #0f1d33;\n  width: 250px;\n  height: 15px;\n  color: transparent;\n  border-radius: 10px;\n}\n.account-section__title-wrapper[data-v-035bfef5] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding-bottom: 40px;\n}\n.account-section__title-wrapper > svg[data-v-035bfef5] {\n  margin-right: 15px;\n  width: 24px;\n  height: 24px;\n}\n.account-section__title-wrapper > svg[data-v-035bfef5]  path {\n  stroke: #e4ecfe;\n}\n.account-section__title-wrapper > svg.skeleton-active[data-v-035bfef5] {\n  background-color: #0f1d33;\n  border-radius: 100%;\n}\n.account-section__title-wrapper > svg.skeleton-active[data-v-035bfef5]  path {\n  opacity: 0;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".account-section[data-v-035bfef5] {\n  margin-bottom: 30px;\n}\n.account-section[data-v-035bfef5] :last-of-type {\n  margin-bottom: 0;\n}\n.account-section__title[data-v-035bfef5] {\n  font-size: 18px;\n  font-weight: 500;\n  color: #e4ecfe;\n}\n.account-section__title.skeleton-active[data-v-035bfef5] {\n  background-color: #0f1d33;\n  width: 250px;\n  height: 15px;\n  color: transparent;\n  border-radius: 10px;\n}\n.account-section__title-wrapper[data-v-035bfef5] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding-bottom: 40px;\n}\n.account-section__title-wrapper > svg[data-v-035bfef5] {\n  margin-right: 15px;\n  width: 24px;\n  height: 24px;\n}\n.account-section__title-wrapper > svg[data-v-035bfef5]  path {\n  stroke: #e4ecfe;\n}\n.account-section__title-wrapper > svg.skeleton-active[data-v-035bfef5] {\n  background-color: #0f1d33;\n  border-radius: 100%;\n}\n.account-section__title-wrapper > svg.skeleton-active[data-v-035bfef5]  path {\n  opacity: 0;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -8311,6 +8397,27 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, ".section__top {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding: 0 60px;\n  margin-bottom: 40px;\n}\n.section__title {\n  font-size: 20px;\n  color: #e4ecfe;\n  font-weight: 500;\n}", ""]);
+// Exports
+/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".inline-account-section[data-v-47d0b383] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding-bottom: 20px;\n  border-bottom: 1px solid #0E1E35;\n  margin-bottom: 30px;\n}\n.inline-account-section[data-v-47d0b383]:last-of-type {\n  border-bottom: none;\n}\n.inline-account-section__title[data-v-47d0b383] {\n  font-size: 18px;\n  font-weight: 500;\n  color: #e4ecfe;\n  margin-bottom: 15px;\n}\n.inline-account-section__title.skeleton-active[data-v-47d0b383] {\n  background-color: #0f1d33;\n  width: 250px;\n  height: 15px;\n  color: transparent;\n  border-radius: 10px;\n}\n.inline-account-section__subtitle[data-v-47d0b383] {\n  color: #B8B8B8;\n  margin-left: 15px;\n  font-size: 14px;\n  max-width: 650px;\n  line-height: 20px;\n  border-left: 2px solid #e03e10;\n  padding-left: 15px;\n}\n.inline-account-section__subtitle.skeleton-active[data-v-47d0b383] {\n  background-color: #0f1d33;\n  width: 500px;\n  height: 40px;\n  color: transparent;\n  border-radius: 10px;\n  border: none;\n}\n.inline-account-section__content.skeleton-active[data-v-47d0b383] {\n  background-color: #0f1d33;\n  width: 150px;\n  height: 25px;\n  color: transparent;\n  border-radius: 10px;\n}\n.inline-account-section__content.skeleton-active > *[data-v-47d0b383] {\n  opacity: 0;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -8436,7 +8543,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".active-sessions[data-v-56139b40] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  margin-top: 35px;\n}\n.active-sessions__delete-btn[data-v-56139b40] {\n  color: #E53737;\n  height: 45px;\n}\n.active-sessions__delete-btn.delete-all[data-v-56139b40] {\n  width: -webkit-max-content;\n  width: -moz-max-content;\n  width: max-content;\n  margin-top: 15px;\n}\n.active-sessions__delete-btn.skeleton-active[data-v-56139b40] {\n  background-color: #0f1d33;\n  color: transparent;\n  width: 150px;\n  height: 30px;\n}\n.active-session[data-v-56139b40] {\n  margin-bottom: 20px;\n  padding-bottom: 10px;\n  border-bottom: 1px solid #0E1E35;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.active-session[data-v-56139b40] :last-of-type {\n  margin-bottom: 0;\n}\n.active-session__left[data-v-56139b40] {\n  margin-right: 15px;\n}\n.active-session__left svg[data-v-56139b40] {\n  width: 17px;\n  height: 17px;\n  display: block;\n}\n.active-session__left svg.skeleton-active[data-v-56139b40] {\n  background-color: #0f1d33;\n  border-radius: 100%;\n}\n.active-session__left svg.skeleton-active[data-v-56139b40]  path {\n  opacity: 0;\n}\n.active-session__right[data-v-56139b40] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  width: 100%;\n}\n.active-session__right-info[data-v-56139b40] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.active-session__right-top[data-v-56139b40], .active-session__right-down[data-v-56139b40] {\n  margin-bottom: 10px;\n  color: #B8B8B8;\n  font-size: 16px;\n  font-weight: 400;\n}\n.active-session__right-top.skeleton-active[data-v-56139b40], .active-session__right-down.skeleton-active[data-v-56139b40] {\n  background-color: #0f1d33;\n  width: 270px;\n  height: 10px;\n  border-radius: 10px;\n  color: transparent;\n}\n.active-session__right-top.skeleton-active > span[data-v-56139b40], .active-session__right-down.skeleton-active > span[data-v-56139b40] {\n  color: transparent;\n}\n.active-session__device[data-v-56139b40], .active-session__browser[data-v-56139b40] {\n  color: #fff;\n  font-weight: bold;\n}\n.active-session__activity.now[data-v-56139b40] {\n  color: #1BE809;\n}\n.field__wrapper[data-v-56139b40] {\n  width: 400px;\n  margin-bottom: 15px;\n}\n.field__wrapper.skeleton-active[data-v-56139b40] {\n  background-color: #0f1d33;\n  border-radius: 10px;\n}\n.field__wrapper.skeleton-active > input[data-v-56139b40] {\n  opacity: 0;\n}\n.field__wrapper[data-v-56139b40]:last-of-type {\n  margin-bottom: 0;\n}\n.dark-input[data-v-56139b40] {\n  background-color: transparent;\n  border: 1px solid #0E1E35;\n  padding: 7px 20px;\n  border-radius: 5px;\n  outline: none;\n  color: #fff;\n  display: block;\n  width: inherit;\n}\n.dark-input[data-v-56139b40]::-webkit-input-placeholder {\n  color: rgba(184, 184, 184, 0.5);\n}\n.dark-input[data-v-56139b40]::-moz-placeholder {\n  color: rgba(184, 184, 184, 0.5);\n}\n.dark-input[data-v-56139b40]:-ms-input-placeholder {\n  color: rgba(184, 184, 184, 0.5);\n}\n.dark-input[data-v-56139b40]::-ms-input-placeholder {\n  color: rgba(184, 184, 184, 0.5);\n}\n.dark-input[data-v-56139b40]::placeholder {\n  color: rgba(184, 184, 184, 0.5);\n}\n.security__buttons[data-v-56139b40] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n.security__buttons > button.base-button[data-v-56139b40] {\n  min-width: 100px;\n  border-radius: 5px;\n  margin-right: 10px;\n}\n.security__buttons > button.base-button[data-v-56139b40]:last-of-type {\n  margin-right: 0;\n}\n.security__buttons > button.base-button.skeleton-active[data-v-56139b40] {\n  background-color: #0f1d33;\n  border-radius: 10px;\n  color: transparent;\n  height: 39px;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".active-sessions[data-v-56139b40] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  margin-top: 35px;\n}\n.active-sessions__delete-btn[data-v-56139b40] {\n  color: #E53737;\n  height: 45px;\n}\n.active-sessions__delete-btn.delete-all[data-v-56139b40] {\n  width: -webkit-max-content;\n  width: -moz-max-content;\n  width: max-content;\n  margin-top: 15px;\n}\n.active-sessions__delete-btn.skeleton-active[data-v-56139b40] {\n  background-color: #0f1d33;\n  color: transparent;\n  width: 150px;\n  height: 30px;\n}\n.active-session[data-v-56139b40] {\n  margin-bottom: 20px;\n  padding-bottom: 20px;\n  border-bottom: 1px solid #0E1E35;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.active-session[data-v-56139b40] :last-of-type {\n  margin-bottom: 0;\n}\n.active-session__left[data-v-56139b40] {\n  margin-right: 15px;\n}\n.active-session__left svg[data-v-56139b40] {\n  width: 17px;\n  height: 17px;\n  display: block;\n}\n.active-session__left svg.skeleton-active[data-v-56139b40] {\n  background-color: #0f1d33;\n  border-radius: 100%;\n}\n.active-session__left svg.skeleton-active[data-v-56139b40]  path {\n  opacity: 0;\n}\n.active-session__right[data-v-56139b40] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  width: 100%;\n}\n.active-session__right-info[data-v-56139b40] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.active-session__right-top[data-v-56139b40], .active-session__right-down[data-v-56139b40] {\n  margin-bottom: 10px;\n  color: #B8B8B8;\n  font-size: 16px;\n  font-weight: 400;\n}\n.active-session__right-top.skeleton-active[data-v-56139b40], .active-session__right-down.skeleton-active[data-v-56139b40] {\n  background-color: #0f1d33;\n  width: 270px;\n  height: 10px;\n  border-radius: 10px;\n  color: transparent;\n}\n.active-session__right-top.skeleton-active > span[data-v-56139b40], .active-session__right-down.skeleton-active > span[data-v-56139b40] {\n  color: transparent;\n}\n.active-session__device[data-v-56139b40], .active-session__browser[data-v-56139b40] {\n  color: #fff;\n  font-weight: bold;\n}\n.active-session__activity.now[data-v-56139b40] {\n  color: #1BE809;\n}\n.field__wrapper[data-v-56139b40] {\n  width: 400px;\n  margin-bottom: 15px;\n}\n.field__wrapper.skeleton-active[data-v-56139b40] {\n  background-color: #0f1d33;\n  border-radius: 10px;\n}\n.field__wrapper.skeleton-active > input[data-v-56139b40] {\n  opacity: 0;\n}\n.field__wrapper[data-v-56139b40]:last-of-type {\n  margin-bottom: 0;\n}\n.dark-input[data-v-56139b40] {\n  background-color: transparent;\n  border: 1px solid #0E1E35;\n  padding: 7px 10px;\n  border-radius: 5px;\n  outline: none;\n  color: #fff;\n  display: block;\n  width: inherit;\n  font-size: 14px;\n}\n.dark-input[data-v-56139b40]::-webkit-input-placeholder {\n  color: rgba(228, 236, 254, 0.5);\n  font-size: 14px;\n}\n.dark-input[data-v-56139b40]::-moz-placeholder {\n  color: rgba(228, 236, 254, 0.5);\n  font-size: 14px;\n}\n.dark-input[data-v-56139b40]:-ms-input-placeholder {\n  color: rgba(228, 236, 254, 0.5);\n  font-size: 14px;\n}\n.dark-input[data-v-56139b40]::-ms-input-placeholder {\n  color: rgba(228, 236, 254, 0.5);\n  font-size: 14px;\n}\n.dark-input[data-v-56139b40]::placeholder {\n  color: rgba(228, 236, 254, 0.5);\n  font-size: 14px;\n}\n.update-security-settings.skeleton-active[data-v-56139b40] {\n  width: 250px;\n}\n.security__buttons[data-v-56139b40] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n.security__buttons > button.base-button[data-v-56139b40] {\n  min-width: 100px;\n  border-radius: 5px;\n  margin-right: 10px;\n}\n.security__buttons > button.base-button[data-v-56139b40]:last-of-type {\n  margin-right: 0;\n}\n.security__buttons > button.base-button.skeleton-active[data-v-56139b40] {\n  background-color: #0f1d33;\n  border-radius: 10px;\n  color: transparent;\n  height: 39px;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -18727,17 +18834,17 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true&":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true& ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePasswordModalComponent_vue_vue_type_style_index_0_id_7cb349ae_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_style_index_0_id_447c4eda_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true&");
 
             
 
@@ -18746,11 +18853,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePasswordModalComponent_vue_vue_type_style_index_0_id_7cb349ae_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_style_index_0_id_447c4eda_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"], options);
 
 
 
-/* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePasswordModalComponent_vue_vue_type_style_index_0_id_7cb349ae_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+/* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_style_index_0_id_447c4eda_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -19129,6 +19236,33 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseSectionComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_InlineAccountSecctionComponent_vue_vue_type_style_index_0_id_47d0b383_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_InlineAccountSecctionComponent_vue_vue_type_style_index_0_id_47d0b383_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_InlineAccountSecctionComponent_vue_vue_type_style_index_0_id_47d0b383_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -31949,17 +32083,17 @@ component.options.__file = "resources/front/js/components/Modal/BaseModalCompone
 
 /***/ }),
 
-/***/ "./resources/front/js/components/Modal/ChangePasswordModalComponent.vue":
-/*!******************************************************************************!*\
-  !*** ./resources/front/js/components/Modal/ChangePasswordModalComponent.vue ***!
-  \******************************************************************************/
+/***/ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue":
+/*!********************************************************************************!*\
+  !*** ./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue ***!
+  \********************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ChangePasswordModalComponent_vue_vue_type_template_id_7cb349ae_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ChangePasswordModalComponent.vue?vue&type=template&id=7cb349ae&scoped=true& */ "./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=template&id=7cb349ae&scoped=true&");
-/* harmony import */ var _ChangePasswordModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ChangePasswordModalComponent.vue?vue&type=script&lang=js& */ "./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=script&lang=js&");
-/* harmony import */ var _ChangePasswordModalComponent_vue_vue_type_style_index_0_id_7cb349ae_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true& */ "./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true&");
+/* harmony import */ var _PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&scoped=true& */ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&scoped=true&");
+/* harmony import */ var _PasswordRecoveryModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PasswordRecoveryModalComponent.vue?vue&type=script&lang=js& */ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _PasswordRecoveryModalComponent_vue_vue_type_style_index_0_id_447c4eda_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true& */ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -31970,33 +32104,33 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _ChangePasswordModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _ChangePasswordModalComponent_vue_vue_type_template_id_7cb349ae_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
-  _ChangePasswordModalComponent_vue_vue_type_template_id_7cb349ae_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _PasswordRecoveryModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
-  "7cb349ae",
+  "447c4eda",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/front/js/components/Modal/ChangePasswordModalComponent.vue"
+component.options.__file = "resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue":
-/*!********************************************************************************!*\
-  !*** ./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue ***!
-  \********************************************************************************/
+/***/ "./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue":
+/*!***************************************************************************************!*\
+  !*** ./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue ***!
+  \***************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda& */ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&");
-/* harmony import */ var _PasswordRecoveryModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PasswordRecoveryModalComponent.vue?vue&type=script&lang=js& */ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _PasswordRecoveryRequestModalComponent_vue_vue_type_template_id_b66e4e68___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PasswordRecoveryRequestModalComponent.vue?vue&type=template&id=b66e4e68& */ "./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=template&id=b66e4e68&");
+/* harmony import */ var _PasswordRecoveryRequestModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PasswordRecoveryRequestModalComponent.vue?vue&type=script&lang=js& */ "./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=script&lang=js&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -32006,9 +32140,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 ;
 var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _PasswordRecoveryModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda___WEBPACK_IMPORTED_MODULE_0__.render,
-  _PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _PasswordRecoveryRequestModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PasswordRecoveryRequestModalComponent_vue_vue_type_template_id_b66e4e68___WEBPACK_IMPORTED_MODULE_0__.render,
+  _PasswordRecoveryRequestModalComponent_vue_vue_type_template_id_b66e4e68___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
   null,
@@ -32018,7 +32152,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue"
+component.options.__file = "resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
@@ -32587,6 +32721,44 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/front/js/components/Sections/BaseSectionComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue":
+/*!***********************************************************************************!*\
+  !*** ./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue ***!
+  \***********************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _InlineAccountSecctionComponent_vue_vue_type_template_id_47d0b383_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./InlineAccountSecctionComponent.vue?vue&type=template&id=47d0b383&scoped=true& */ "./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=template&id=47d0b383&scoped=true&");
+/* harmony import */ var _InlineAccountSecctionComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InlineAccountSecctionComponent.vue?vue&type=script&lang=js& */ "./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _InlineAccountSecctionComponent_vue_vue_type_style_index_0_id_47d0b383_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true& */ "./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _InlineAccountSecctionComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _InlineAccountSecctionComponent_vue_vue_type_template_id_47d0b383_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _InlineAccountSecctionComponent_vue_vue_type_template_id_47d0b383_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "47d0b383",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/front/js/components/Sections/InlineAccountSecctionComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
@@ -33397,19 +33569,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************!*\
-  !*** ./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePasswordModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ChangePasswordModalComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=script&lang=js&");
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePasswordModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
 /***/ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************!*\
   !*** ./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=script&lang=js& ***!
@@ -33420,6 +33579,19 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PasswordRecoveryModalComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=script&lang=js&");
  /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************!*\
+  !*** ./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryRequestModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PasswordRecoveryRequestModalComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryRequestModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -33615,6 +33787,19 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseSectionComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseSectionComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/BaseSectionComponent.vue?vue&type=script&lang=js&");
  /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseSectionComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_InlineAccountSecctionComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./InlineAccountSecctionComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_InlineAccountSecctionComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -34008,15 +34193,15 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true&":
-/*!****************************************************************************************************************************************!*\
-  !*** ./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true& ***!
-  \****************************************************************************************************************************************/
+/***/ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true&":
+/*!******************************************************************************************************************************************!*\
+  !*** ./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true& ***!
+  \******************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePasswordModalComponent_vue_vue_type_style_index_0_id_7cb349ae_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=style&index=0&id=7cb349ae&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_style_index_0_id_447c4eda_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=style&index=0&id=447c4eda&lang=scss&scoped=true&");
 
 
 /***/ }),
@@ -34199,6 +34384,19 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseSectionComponent_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseSectionComponent.vue?vue&type=style&index=0&lang=scss& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/BaseSectionComponent.vue?vue&type=style&index=0&lang=scss&");
+
+
+/***/ }),
+
+/***/ "./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true&":
+/*!*********************************************************************************************************************************************!*\
+  !*** ./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true& ***!
+  \*********************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_2_node_modules_sass_loader_dist_cjs_js_clonedRuleSet_12_0_rules_0_use_3_node_modules_vue_loader_lib_index_js_vue_loader_options_InlineAccountSecctionComponent_vue_vue_type_style_index_0_id_47d0b383_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader/dist/cjs.js!../../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=style&index=0&id=47d0b383&lang=scss&scoped=true&");
 
 
 /***/ }),
@@ -34681,36 +34879,36 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=template&id=7cb349ae&scoped=true&":
-/*!*************************************************************************************************************************!*\
-  !*** ./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=template&id=7cb349ae&scoped=true& ***!
-  \*************************************************************************************************************************/
+/***/ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&scoped=true&":
+/*!***************************************************************************************************************************!*\
+  !*** ./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&scoped=true& ***!
+  \***************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePasswordModalComponent_vue_vue_type_template_id_7cb349ae_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render; },
-/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePasswordModalComponent_vue_vue_type_template_id_7cb349ae_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
+/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render; },
+/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangePasswordModalComponent_vue_vue_type_template_id_7cb349ae_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ChangePasswordModalComponent.vue?vue&type=template&id=7cb349ae&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=template&id=7cb349ae&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&scoped=true&");
 
 
 /***/ }),
 
-/***/ "./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&":
-/*!***************************************************************************************************************!*\
-  !*** ./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda& ***!
-  \***************************************************************************************************************/
+/***/ "./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=template&id=b66e4e68&":
+/*!**********************************************************************************************************************!*\
+  !*** ./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=template&id=b66e4e68& ***!
+  \**********************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda___WEBPACK_IMPORTED_MODULE_0__.render; },
-/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
+/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryRequestModalComponent_vue_vue_type_template_id_b66e4e68___WEBPACK_IMPORTED_MODULE_0__.render; },
+/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryRequestModalComponent_vue_vue_type_template_id_b66e4e68___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryModalComponent_vue_vue_type_template_id_447c4eda___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PasswordRecoveryRequestModalComponent_vue_vue_type_template_id_b66e4e68___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PasswordRecoveryRequestModalComponent.vue?vue&type=template&id=b66e4e68& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=template&id=b66e4e68&");
 
 
 /***/ }),
@@ -34966,6 +35164,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseSectionComponent_vue_vue_type_template_id_1ec0dea9___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BaseSectionComponent_vue_vue_type_template_id_1ec0dea9___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./BaseSectionComponent.vue?vue&type=template&id=1ec0dea9& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/BaseSectionComponent.vue?vue&type=template&id=1ec0dea9&");
+
+
+/***/ }),
+
+/***/ "./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=template&id=47d0b383&scoped=true&":
+/*!******************************************************************************************************************************!*\
+  !*** ./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=template&id=47d0b383&scoped=true& ***!
+  \******************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InlineAccountSecctionComponent_vue_vue_type_template_id_47d0b383_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render; },
+/* harmony export */   "staticRenderFns": function() { return /* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InlineAccountSecctionComponent_vue_vue_type_template_id_47d0b383_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns; }
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InlineAccountSecctionComponent_vue_vue_type_template_id_47d0b383_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./InlineAccountSecctionComponent.vue?vue&type=template&id=47d0b383&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=template&id=47d0b383&scoped=true&");
 
 
 /***/ }),
@@ -36086,12 +36301,12 @@ var render = function () {
         },
       }),
       _vm._v(" "),
-      _c("password-recovery-modal", {
+      _c("password-recovery-request-modal", {
         ref: "passwordRecoveryModal",
         on: { recovery: _vm.recoveryPassword },
       }),
       _vm._v(" "),
-      _c("change-password-modal", { ref: "changePasswordModal" }),
+      _c("password-recovery-modal", { ref: "changePasswordModal" }),
       _vm._v(" "),
       _c("div", { staticClass: "container" }, [
         _c("div", { staticClass: "header__navbar" }, [
@@ -36506,10 +36721,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=template&id=7cb349ae&scoped=true&":
-/*!****************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/ChangePasswordModalComponent.vue?vue&type=template&id=7cb349ae&scoped=true& ***!
-  \****************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&scoped=true&":
+/*!******************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&scoped=true& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -36614,10 +36829,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda&":
-/*!******************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryModalComponent.vue?vue&type=template&id=447c4eda& ***!
-  \******************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=template&id=b66e4e68&":
+/*!*************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Modal/PasswordRecoveryRequestModalComponent.vue?vue&type=template&id=b66e4e68& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37790,6 +38005,63 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=template&id=47d0b383&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue?vue&type=template&id=47d0b383&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": function() { return /* binding */ render; },
+/* harmony export */   "staticRenderFns": function() { return /* binding */ staticRenderFns; }
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { staticClass: "inline-account-section" }, [
+    _c("div", { staticClass: "inline-account-section__headers" }, [
+      _c(
+        "h3",
+        {
+          staticClass: "inline-account-section__title",
+          class: { "skeleton-active": _vm.isLoading },
+        },
+        [_vm._v("\n        " + _vm._s(_vm.title) + "\n      ")]
+      ),
+      _vm._v(" "),
+      null !== _vm.subtitle
+        ? _c(
+            "p",
+            {
+              staticClass: "inline-account-section__subtitle",
+              class: { "skeleton-active": _vm.isLoading },
+            },
+            [_vm._v("\n        " + _vm._s(_vm.subtitle) + "\n      ")]
+          )
+        : _vm._e(),
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "inline-account-section__content",
+        class: { "skeleton-active": _vm.isLoading },
+      },
+      [_vm._t("default")],
+      2
+    ),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Select/BaseSelectComponent.vue?vue&type=template&id=72fcf8ee&":
 /*!********************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/front/js/components/Select/BaseSelectComponent.vue?vue&type=template&id=72fcf8ee& ***!
@@ -38528,8 +38800,7 @@ var render = function () {
         [
           _c("base-motionless-alert", {
             attrs: {
-              message:
-                "Рекомендация! Если увидели подозрительный сеанс, удалите его и смените пароль.",
+              message: _vm.translation("recommendedActiveSession"),
               type: "info",
             },
           }),
@@ -38692,66 +38963,43 @@ var render = function () {
       ),
       _vm._v(" "),
       _c(
-        "account-section",
-        { attrs: { title: "Изминение пароля", "icon-alias": "key-svg" } },
-        [
-          _c("form", { staticClass: "form__change-password" }, [
-            _c(
-              "div",
-              {
-                staticClass: "field__wrapper",
-                class: { "skeleton-active": _vm.isLoading },
-              },
-              [
-                _c("input", {
-                  staticClass: "dark-input",
-                  attrs: {
-                    type: "password",
-                    name: "old-password",
-                    placeholder: "Старый пароль",
-                  },
-                }),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "field__wrapper",
-                class: { "skeleton-active": _vm.isLoading },
-              },
-              [
-                _c("input", {
-                  staticClass: "dark-input",
-                  attrs: {
-                    type: "password",
-                    name: "password",
-                    placeholder: "Новый пароль",
-                  },
-                }),
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "field__wrapper",
-                class: { "skeleton-active": _vm.isLoading },
-              },
-              [
-                _c("input", {
-                  staticClass: "dark-input",
-                  attrs: {
-                    type: "password",
-                    name: "old-password",
-                    placeholder: "Подтверждение пароля",
-                  },
-                }),
-              ]
-            ),
-          ]),
-        ]
+        "inline-account-section",
+        {
+          attrs: {
+            title: "Двухфакторная аутентификация",
+            subtitle:
+              "Дополнительный уровень безопаности, т.е., во время авторизации, на почту будет выслан дополнительный код подверждения.",
+          },
+        },
+        [_c("input", { staticClass: "switch", attrs: { type: "checkbox" } })]
       ),
+      _vm._v(" "),
+      _c(
+        "inline-account-section",
+        {
+          attrs: {
+            title: "Удаление сеанса",
+            subtitle:
+              "Автоматически удалить текущий сеанс, если сеанс не активен:",
+          },
+        },
+        [
+          _c("base-select", {
+            attrs: {
+              options: _vm.periodsNotActivitySession,
+              selectedOptions: ["one_month"],
+              placeholder: "Период не активности",
+            },
+          }),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("inline-account-section", { attrs: { title: "Изменение пароля" } }, [
+        _c("span", { staticClass: "base-button blue" }, [
+          _vm._v("Открыть окно для изменения пароля"),
+        ]),
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -38760,19 +39008,10 @@ var render = function () {
           _c(
             "loading-button",
             {
-              staticClass: "base-button accent",
+              staticClass: "base-button accent update-security-settings",
               class: { "skeleton-active": _vm.isLoading },
             },
-            [_vm._v("Update")]
-          ),
-          _vm._v(" "),
-          _c(
-            "loading-button",
-            {
-              staticClass: "base-button dark",
-              class: { "skeleton-active": _vm.isLoading },
-            },
-            [_vm._v("Cancel")]
+            [_vm._v(_vm._s(_vm.translation("btn@updateSecuritySettings")))]
           ),
         ],
         1
