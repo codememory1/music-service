@@ -1,5 +1,5 @@
 <template>
-  <section class="inline-account-section">
+  <section class="inline-account-section" :class="{ disabled }">
     <div class="inline-account-section__headers">
       <h3
         class="inline-account-section__title"
@@ -8,7 +8,7 @@
         {{ title }}
       </h3>
       <p
-		v-if="null !== subtitle"
+        v-if="null !== subtitle"
         class="inline-account-section__subtitle"
         :class="{ 'skeleton-active': isLoading }"
       >
@@ -42,7 +42,7 @@ export default {
      */
     subtitle: {
       type: String,
-	  default: null,
+      default: null,
       required: false
     },
 
@@ -52,6 +52,15 @@ export default {
     iconAlias: {
       type: String,
       default: null,
+      required: false
+    },
+
+    /**
+     * @type {Boolean}
+     */
+    disabled: {
+      type: Boolean,
+      default: false,
       required: false
     }
   },
@@ -73,6 +82,11 @@ export default {
   padding-bottom: 20px;
   border-bottom: 1px solid $light-border;
   margin-bottom: 30px;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+  }
 
   &:last-of-type {
     border-bottom: none;

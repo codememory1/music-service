@@ -7,7 +7,8 @@
     "watch-poll": "mix watch -- --watch-options-poll=1000",
     "hot": "mix watch --hot",
     "prod": "npm run production",
-    "production": "mix --production"
+    "production": "mix --production",
+    "mjml:build": "node_modules/mjml/bin/mjml ./resources/templates/mail/input/*.mjml -o ./resources/templates/mail/output/*.html.twig"
   },
   "browserslist": [
     "> 1%",
@@ -50,6 +51,7 @@
     "axios": "^0.23.0",
     "generate-strings": "^2.1.0",
     "js-cookie": "^3.0.1",
+    "mjml": "^4.11.0",
     "node-notifier": "^9.0.1",
     "normalize.css": "^8.0.1",
     "tldts": "^5.7.50",

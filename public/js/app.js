@@ -4807,6 +4807,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       type: String,
       "default": null,
       required: false
+    },
+
+    /**
+     * @type {Boolean}
+     */
+    disabled: {
+      type: Boolean,
+      "default": false,
+      required: false
     }
   },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)({
@@ -4824,6 +4833,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -4980,16 +4992,14 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.selected = this.selectedOptions;
     this.modifiableOptions = this.options;
-
-    if (this.selected.length === 0) {
-      this.selected.push(this.getOptions[0].value);
-    }
   },
   mounted: function mounted() {
     var _this = this;
 
     window.addEventListener("click", function (event) {
-      if (!_this.$refs.baseCustomSelect.contains(event.target)) {
+      var _this$$refs$baseCusto;
+
+      if (!((_this$$refs$baseCusto = _this.$refs.baseCustomSelect) !== null && _this$$refs$baseCusto !== void 0 && _this$$refs$baseCusto.contains(event.target))) {
         _this.isOpen = false;
       }
     });
@@ -5768,7 +5778,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _components_Sections_InlineAccountSecctionComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/Sections/InlineAccountSecctionComponent */ "./resources/front/js/components/Sections/InlineAccountSecctionComponent.vue");
+/* harmony import */ var _components_Select_BaseSelectComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Select/BaseSelectComponent */ "./resources/front/js/components/Select/BaseSelectComponent.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -5776,17 +5788,96 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "NotificationsView",
-  created: function created() {
-    this.setPageTitle(this.translation("notifications"));
+  components: {
+    InlineAccountSection: _components_Sections_InlineAccountSecctionComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
+    BaseSelect: _components_Select_BaseSelectComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)({
+  data: function data() {
+    return {
+      disableNotificationsOptions: [{
+        label: "Выключить уведомления",
+        value: "off"
+      }, {
+        label: "На 1 час",
+        value: "one_hour"
+      }, {
+        label: "На 1 день",
+        value: "one_day"
+      }, {
+        label: "На 7 дней",
+        value: "seven_day"
+      }],
+      newCommentOptions: [{
+        label: "Отключить",
+        value: "off"
+      }, {
+        label: "От всех",
+        value: "all"
+      }, {
+        label: "От подписчиков",
+        value: "subscriber"
+      }]
+    };
+  },
+  created: function created() {
+    this.setPageTitle(this.translation("security"));
+  },
+  mounted: function mounted() {
+    this.$store.commit("loading/setLoading", false);
+  },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
     translation: "translation/translation",
     isReceived: "translation/isReceived"
   })),
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapMutations)({
+  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapMutations)({
     setPageTitle: "account/setPageTitle"
   })),
   watch: {
@@ -5975,14 +6066,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     this.setPageTitle(this.translation("security"));
   },
+  mounted: function mounted() {
+    this.$store.commit("loading/setLoading", false);
+  },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapGetters)({
     translation: "translation/translation",
     isReceived: "translation/isReceived",
     isLoading: "loading/isLoading"
   })),
-  mounted: function mounted() {
-    this.$store.commit("loading/setLoading", false);
-  },
   methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_5__.mapMutations)({
     setPageTitle: "account/setPageTitle"
   })),
@@ -8417,7 +8508,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".inline-account-section[data-v-47d0b383] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding-bottom: 20px;\n  border-bottom: 1px solid #0E1E35;\n  margin-bottom: 30px;\n}\n.inline-account-section[data-v-47d0b383]:last-of-type {\n  border-bottom: none;\n}\n.inline-account-section__title[data-v-47d0b383] {\n  font-size: 18px;\n  font-weight: 500;\n  color: #e4ecfe;\n  margin-bottom: 15px;\n}\n.inline-account-section__title.skeleton-active[data-v-47d0b383] {\n  background-color: #0f1d33;\n  width: 250px;\n  height: 15px;\n  color: transparent;\n  border-radius: 10px;\n}\n.inline-account-section__subtitle[data-v-47d0b383] {\n  color: #B8B8B8;\n  margin-left: 15px;\n  font-size: 14px;\n  max-width: 650px;\n  line-height: 20px;\n  border-left: 2px solid #e03e10;\n  padding-left: 15px;\n}\n.inline-account-section__subtitle.skeleton-active[data-v-47d0b383] {\n  background-color: #0f1d33;\n  width: 500px;\n  height: 40px;\n  color: transparent;\n  border-radius: 10px;\n  border: none;\n}\n.inline-account-section__content.skeleton-active[data-v-47d0b383] {\n  background-color: #0f1d33;\n  width: 150px;\n  height: 25px;\n  color: transparent;\n  border-radius: 10px;\n}\n.inline-account-section__content.skeleton-active > *[data-v-47d0b383] {\n  opacity: 0;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".inline-account-section[data-v-47d0b383] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding-bottom: 20px;\n  border-bottom: 1px solid #0E1E35;\n  margin-bottom: 30px;\n}\n.inline-account-section.disabled[data-v-47d0b383] {\n  pointer-events: none;\n  opacity: 0.3;\n}\n.inline-account-section[data-v-47d0b383]:last-of-type {\n  border-bottom: none;\n}\n.inline-account-section__title[data-v-47d0b383] {\n  font-size: 18px;\n  font-weight: 500;\n  color: #e4ecfe;\n  margin-bottom: 15px;\n}\n.inline-account-section__title.skeleton-active[data-v-47d0b383] {\n  background-color: #0f1d33;\n  width: 250px;\n  height: 15px;\n  color: transparent;\n  border-radius: 10px;\n}\n.inline-account-section__subtitle[data-v-47d0b383] {\n  color: #B8B8B8;\n  margin-left: 15px;\n  font-size: 14px;\n  max-width: 650px;\n  line-height: 20px;\n  border-left: 2px solid #e03e10;\n  padding-left: 15px;\n}\n.inline-account-section__subtitle.skeleton-active[data-v-47d0b383] {\n  background-color: #0f1d33;\n  width: 500px;\n  height: 40px;\n  color: transparent;\n  border-radius: 10px;\n  border: none;\n}\n.inline-account-section__content.skeleton-active[data-v-47d0b383] {\n  background-color: #0f1d33;\n  width: 150px;\n  height: 25px;\n  color: transparent;\n  border-radius: 10px;\n}\n.inline-account-section__content.skeleton-active > *[data-v-47d0b383] {\n  opacity: 0;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -8438,7 +8529,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".select {\n  position: relative;\n  min-width: 150px;\n  color: #fff;\n}\n.select__arrow {\n  -webkit-transform: rotate(90deg);\n      -ms-transform: rotate(90deg);\n          transform: rotate(90deg);\n  -webkit-transition: -webkit-transform 0.2s ease-in-out;\n  transition: -webkit-transform 0.2s ease-in-out;\n  -o-transition: transform 0.2s ease-in-out;\n  transition: transform 0.2s ease-in-out;\n  transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n}\n.select__arrow.active {\n  -webkit-transform: rotate(265deg);\n      -ms-transform: rotate(265deg);\n          transform: rotate(265deg);\n}\n.selected__options {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  background-color: #070E17;\n  border: 1px solid #0E1E35;\n  padding: 7px 10px;\n  border-radius: 5px;\n  cursor: pointer;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.list__options {\n  background-color: #070E17;\n  border: 1px solid #0E1E35;\n  margin-top: 5px;\n  border-radius: 5px;\n  position: absolute;\n  width: 100%;\n}\n.select__actions {\n  margin-left: 15px;\n}\n.select__actions svg {\n  width: 10px;\n  height: 10px;\n}\n.options {\n  overflow: auto;\n  max-height: 150px;\n  height: -webkit-max-content;\n  height: -moz-max-content;\n  height: max-content;\n}\n.options::-webkit-scrollbar {\n  width: 0;\n  height: 0;\n}\n.option {\n  list-style: none;\n  padding: 10px 10px;\n  cursor: pointer;\n  -webkit-transition: background-color 0.2s ease-in-out;\n  -o-transition: background-color 0.2s ease-in-out;\n  transition: background-color 0.2s ease-in-out;\n  position: relative;\n}\n.option:hover {\n  background-color: #13263e;\n}\n.option.active {\n  background-color: #13263e;\n}\n.option.active:before {\n  content: \"\";\n  background-image: url(public/images/icons/check-mark.svg);\n  position: absolute;\n  width: 13px;\n  height: 11px;\n  right: 10px;\n  top: 13px;\n}\n.option.disabled {\n  pointer-events: none;\n  opacity: 0.3;\n}\n.input-search__wrap {\n  position: relative;\n}\n.input-search__wrap svg {\n  position: absolute;\n  width: 15px;\n  right: 10px;\n  top: 50%;\n  -webkit-transform: translateY(-50%);\n      -ms-transform: translateY(-50%);\n          transform: translateY(-50%);\n}\n.input__search {\n  background-color: #070E17;\n  border: none;\n  border-bottom: 1px solid #0E1E35;\n  width: 100%;\n  border-top-left-radius: 5px;\n  border-top-right-radius: 5px;\n  padding: 10px 35px 10px 13px;\n  color: #fff;\n  outline: none;\n}\n.input__search::-webkit-input-placeholder {\n  color: #EFEFEF;\n}\n.input__search::-moz-placeholder {\n  color: #EFEFEF;\n}\n.input__search:-ms-input-placeholder {\n  color: #EFEFEF;\n}\n.input__search::-ms-input-placeholder {\n  color: #EFEFEF;\n}\n.input__search::placeholder {\n  color: #EFEFEF;\n}\n.placeholder {\n  color: #999;\n}\n.selected__tag {\n  background: #152844;\n  padding: 2px 7px;\n  margin: 0 2px;\n  border-radius: 5px;\n}\n.selected__tag i {\n  font-size: 12px;\n  color: #999;\n  padding: 0 2px;\n}\n.selected__tag i:hover {\n  color: #bdbdbd;\n}\n.fade-enter-active, .fade-leave-active {\n  -webkit-transition: opacity 0.5s;\n  -o-transition: opacity 0.5s;\n  transition: opacity 0.5s;\n}\n.fade-enter, .fade-leave-to {\n  opacity: 0;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".select {\n  position: relative;\n  min-width: 150px;\n  color: #fff;\n}\n.select__arrow {\n  -webkit-transform: rotate(90deg);\n      -ms-transform: rotate(90deg);\n          transform: rotate(90deg);\n  -webkit-transition: -webkit-transform 0.2s ease-in-out;\n  transition: -webkit-transform 0.2s ease-in-out;\n  -o-transition: transform 0.2s ease-in-out;\n  transition: transform 0.2s ease-in-out;\n  transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;\n}\n.select__arrow.active {\n  -webkit-transform: rotate(265deg);\n      -ms-transform: rotate(265deg);\n          transform: rotate(265deg);\n}\n.selected__options {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  background-color: #070E17;\n  border: 1px solid #0E1E35;\n  padding: 7px 10px;\n  border-radius: 5px;\n  cursor: pointer;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.list__options {\n  background-color: #070E17;\n  border: 1px solid #0E1E35;\n  margin-top: 5px;\n  border-radius: 5px;\n  position: absolute;\n  width: 100%;\n  z-index: 1;\n}\n.select__actions {\n  margin-left: 15px;\n}\n.select__actions svg {\n  width: 10px;\n  height: 10px;\n}\n.options {\n  overflow: auto;\n  max-height: 150px;\n  height: -webkit-max-content;\n  height: -moz-max-content;\n  height: max-content;\n}\n.options::-webkit-scrollbar {\n  width: 0;\n  height: 0;\n}\n.option {\n  list-style: none;\n  padding: 10px 10px;\n  cursor: pointer;\n  -webkit-transition: background-color 0.2s ease-in-out;\n  -o-transition: background-color 0.2s ease-in-out;\n  transition: background-color 0.2s ease-in-out;\n  position: relative;\n}\n.option:hover {\n  background-color: #13263e;\n}\n.option.active {\n  background-color: #13263e;\n}\n.option.active:before {\n  content: \"\";\n  background-image: url(public/images/icons/check-mark.svg);\n  position: absolute;\n  width: 13px;\n  height: 11px;\n  right: 10px;\n  top: 13px;\n}\n.option.disabled {\n  pointer-events: none;\n  opacity: 0.3;\n}\n.input-search__wrap {\n  position: relative;\n}\n.input-search__wrap svg {\n  position: absolute;\n  width: 15px;\n  right: 10px;\n  top: 50%;\n  -webkit-transform: translateY(-50%);\n      -ms-transform: translateY(-50%);\n          transform: translateY(-50%);\n}\n.input__search {\n  background-color: #070E17;\n  border: none;\n  border-bottom: 1px solid #0E1E35;\n  width: 100%;\n  border-top-left-radius: 5px;\n  border-top-right-radius: 5px;\n  padding: 10px 35px 10px 13px;\n  color: #fff;\n  outline: none;\n}\n.input__search::-webkit-input-placeholder {\n  color: #EFEFEF;\n}\n.input__search::-moz-placeholder {\n  color: #EFEFEF;\n}\n.input__search:-ms-input-placeholder {\n  color: #EFEFEF;\n}\n.input__search::-ms-input-placeholder {\n  color: #EFEFEF;\n}\n.input__search::placeholder {\n  color: #EFEFEF;\n}\n.placeholder {\n  color: #999;\n}\n.selected__tag {\n  background: #152844;\n  padding: 2px 7px;\n  margin: 0 2px;\n  border-radius: 5px;\n}\n.selected__tag i {\n  font-size: 12px;\n  color: #999;\n  padding: 0 2px;\n}\n.selected__tag i:hover {\n  color: #bdbdbd;\n}\n.fade-enter-active, .fade-leave-active {\n  -webkit-transition: opacity 0.5s;\n  -o-transition: opacity 0.5s;\n  transition: opacity 0.5s;\n}\n.fade-enter, .fade-leave-to {\n  opacity: 0;\n}", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -38021,39 +38112,46 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", { staticClass: "inline-account-section" }, [
-    _c("div", { staticClass: "inline-account-section__headers" }, [
+  return _c(
+    "section",
+    {
+      staticClass: "inline-account-section",
+      class: { disabled: _vm.disabled },
+    },
+    [
+      _c("div", { staticClass: "inline-account-section__headers" }, [
+        _c(
+          "h3",
+          {
+            staticClass: "inline-account-section__title",
+            class: { "skeleton-active": _vm.isLoading },
+          },
+          [_vm._v("\n      " + _vm._s(_vm.title) + "\n    ")]
+        ),
+        _vm._v(" "),
+        null !== _vm.subtitle
+          ? _c(
+              "p",
+              {
+                staticClass: "inline-account-section__subtitle",
+                class: { "skeleton-active": _vm.isLoading },
+              },
+              [_vm._v("\n      " + _vm._s(_vm.subtitle) + "\n    ")]
+            )
+          : _vm._e(),
+      ]),
+      _vm._v(" "),
       _c(
-        "h3",
+        "div",
         {
-          staticClass: "inline-account-section__title",
+          staticClass: "inline-account-section__content",
           class: { "skeleton-active": _vm.isLoading },
         },
-        [_vm._v("\n        " + _vm._s(_vm.title) + "\n      ")]
+        [_vm._t("default")],
+        2
       ),
-      _vm._v(" "),
-      null !== _vm.subtitle
-        ? _c(
-            "p",
-            {
-              staticClass: "inline-account-section__subtitle",
-              class: { "skeleton-active": _vm.isLoading },
-            },
-            [_vm._v("\n        " + _vm._s(_vm.subtitle) + "\n      ")]
-          )
-        : _vm._e(),
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "inline-account-section__content",
-        class: { "skeleton-active": _vm.isLoading },
-      },
-      [_vm._t("default")],
-      2
-    ),
-  ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38136,11 +38234,9 @@ var render = function () {
                   ],
                   2
                 )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.selected.length === 0
+              : _vm.selected.length === 0
               ? _c("span", { staticClass: "selected__text placeholder" }, [
-                  _vm._v(_vm._s(_vm.placeholder)),
+                  _vm._v("\n        " + _vm._s(_vm.placeholder) + "\n      "),
                 ])
               : _vm._e(),
             _vm._v(" "),
@@ -38760,7 +38856,93 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c(
+    "div",
+    { staticClass: "main__content under-header gutter" },
+    [
+      _c(
+        "inline-account-section",
+        { attrs: { title: "Отключить уведомления" } },
+        [
+          _c("base-select", {
+            attrs: {
+              options: _vm.disableNotificationsOptions,
+              placeholder: "Отключение уведомлений",
+            },
+          }),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "inline-account-section",
+        {
+          attrs: {
+            title: "Новости",
+            subtitle:
+              "Уведомить меня о новых новостях платформы Music Service.",
+          },
+        },
+        [_c("input", { staticClass: "switch", attrs: { type: "checkbox" } })]
+      ),
+      _vm._v(" "),
+      _c(
+        "inline-account-section",
+        {
+          attrs: {
+            title: "Новые релизы",
+            subtitle:
+              "Уведометить меня о новых релизах у подписываемых авторов.",
+          },
+        },
+        [_c("input", { staticClass: "switch", attrs: { type: "checkbox" } })]
+      ),
+      _vm._v(" "),
+      _c(
+        "inline-account-section",
+        {
+          attrs: {
+            title: "Новые подписчики",
+            subtitle: "Уведомить меня о новых подписчиках.",
+          },
+        },
+        [_c("input", { staticClass: "switch", attrs: { type: "checkbox" } })]
+      ),
+      _vm._v(" "),
+      _c(
+        "inline-account-section",
+        {
+          attrs: {
+            title: "Новые комментарии",
+            subtitle: "Уведомить меня о новых комментариях.",
+          },
+        },
+        [
+          _c("base-select", {
+            attrs: {
+              options: _vm.newCommentOptions,
+              "selected-options": ["all"],
+              placeholder: "Как получать уведомление",
+            },
+          }),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "inline-account-section",
+        {
+          attrs: {
+            title: "Вход с других устройств",
+            subtitle:
+              "Уведометь меня о новых входах в аккаунт с других устройств.",
+          },
+        },
+        [_c("input", { staticClass: "switch", attrs: { type: "checkbox" } })]
+      ),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -38922,9 +39104,11 @@ var render = function () {
                         _vm._v("Chrome"),
                       ]),
                       _vm._v("\n              -\n              "),
-                      _c("span", { staticClass: "active-session__activity" }, [
-                        _vm._v("May 6 at 7:23 PM"),
-                      ]),
+                      _c(
+                        "span",
+                        { staticClass: "active-session__activity now" },
+                        [_vm._v("Active now")]
+                      ),
                     ]
                   ),
                 ]),

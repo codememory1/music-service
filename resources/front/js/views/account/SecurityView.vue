@@ -71,7 +71,7 @@
               >
                 <span class="active-session__browser">Chrome</span>
                 -
-                <span class="active-session__activity">May 6 at 7:23 PM</span>
+                <span class="active-session__activity now">Active now</span>
               </p>
             </div>
             <span
@@ -161,16 +161,16 @@ export default {
     this.setPageTitle(this.translation("security"));
   },
 
+  mounted() {
+    this.$store.commit("loading/setLoading", false);
+  },
+
   computed: {
     ...mapGetters({
       translation: "translation/translation",
       isReceived: "translation/isReceived",
       isLoading: "loading/isLoading"
     })
-  },
-
-  mounted() {
-    this.$store.commit("loading/setLoading", false);
   },
 
   methods: {

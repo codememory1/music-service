@@ -24,9 +24,12 @@
             </span>
           </slot>
         </div>
-        <span v-if="selected.length === 0" class="selected__text placeholder">{{
-          placeholder
-        }}</span>
+        <span
+          v-else-if="selected.length === 0"
+          class="selected__text placeholder"
+        >
+          {{ placeholder }}
+        </span>
         <div class="select__actions">
           <svg-alias alias="arrow-right-svg" class="select__arrow" />
         </div>
@@ -153,15 +156,11 @@ export default {
   created() {
     this.selected = this.selectedOptions;
     this.modifiableOptions = this.options;
-
-    if (this.selected.length === 0) {
-      this.selected.push(this.getOptions[0].value);
-    }
   },
 
   mounted() {
     window.addEventListener("click", (event) => {
-      if (!this.$refs.baseCustomSelect.contains(event.target)) {
+      if (!this.$refs.baseCustomSelect?.contains(event.target)) {
         this.isOpen = false;
       }
     });
