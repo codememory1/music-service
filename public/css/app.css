@@ -689,6 +689,9 @@ input[type=radio]:checked:before {
 .base-button.red:hover {
   background-color: #ce1b1b;
 }
+.base-button.without-bg {
+  background-color: transparent;
+}
 .base-button.without-bg:hover {
   background-color: #0D1828;
 }

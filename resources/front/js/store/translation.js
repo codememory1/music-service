@@ -1,10 +1,11 @@
 import ObjectFromArrayByKey from "../modules/ObjectFromArrayByKey";
 import BaseAxios from "../modules/BaseAxios";
+import Cookie from "js-cookie";
 
 export default {
   namespaced: true,
   state: {
-    lang: "en",
+    lang: null,
     translations: [],
     received: false
   },
@@ -17,13 +18,20 @@ export default {
      * @returns {string|*}
      */
     lang(state) {
-      const langFromStorage = window.localStorage.getItem("lang");
+      const langFromCookie = Cookie.get("lang");
 
-      if (null === langFromStorage) {
+      if (
+        null === state.lang &&
+        (null === langFromCookie || "" === langFromCookie || undefined === langFromCookie)
+      ) {
+        return "en";
+      }
+
+      if (null !== state.lang) {
         return state.lang;
       }
 
-      return langFromStorage;
+      return langFromCookie;
     },
 
     /**
@@ -68,13 +76,11 @@ export default {
      * @param lang
      */
     setLang(state, lang) {
-      window.localStorage.setItem("lang", lang);
+      Cookie.set("lang", lang, {
+        domain: ".music-service.loc"
+      });
 
       state.lang = lang;
-    },
-
-    setTranslations(state) {
-      state.translations = [];
     }
   },
 
@@ -87,9 +93,11 @@ export default {
      * @param lang
      */
     async receiveTranslations({ state, getters, commit }, lang) {
-      const response = await BaseAxios.get(
-        `/language/translations?lang=${lang ?? getters.lang}`
-      );
+      const response = await BaseAxios.get("/language/translations", {
+        params: {
+          lang: lang ?? getters.lang
+        }
+      });
 
       commit("requestStatuses/setStatusTranslation", true, { root: true });
 

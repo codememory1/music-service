@@ -9,92 +9,29 @@
         type="info"
       />
       <div class="active-sessions">
-        <div class="active-session">
-          <div class="active-session__left">
-            <svg-alias
-              alias="desktop-svg"
-              :class="{ 'skeleton-active': isLoading }"
-            />
-          </div>
-          <div class="active-session__right">
-            <div class="active-session__right-info">
-              <p
-                class="active-session__right-top"
-                :class="{ 'skeleton-active': isLoading }"
-              >
-                <span class="active-session__device">Mac</span>
-                -
-                <span class="active-session__address">
-                  Santa Monica, CA, United States
-                </span>
-              </p>
-              <p
-                class="active-session__right-down"
-                :class="{ 'skeleton-active': isLoading }"
-              >
-                <span class="active-session__browser">Chrome</span>
-                -
-                <span class="active-session__activity">May 6 at 7:23 PM</span>
-              </p>
-            </div>
-            <span
-              class="active-sessions__delete-btn base-button without-bg"
-              :class="{ 'skeleton-active': isLoading }"
-              tabindex="-1"
-            >
-              {{ translation("deleteSession") }}
-            </span>
-          </div>
-        </div>
-        <div class="active-session">
-          <div class="active-session__left">
-            <svg-alias
-              alias="smartphone-svg"
-              :class="{ 'skeleton-active': isLoading }"
-            />
-          </div>
-          <div class="active-session__right">
-            <div class="active-session__right-info">
-              <p
-                class="active-session__right-top"
-                :class="{ 'skeleton-active': isLoading }"
-              >
-                <span class="active-session__device">Mac</span>
-                -
-                <span class="active-session__address">
-                  Santa Monica, CA, United States
-                </span>
-              </p>
-              <p
-                class="active-session__right-down"
-                :class="{ 'skeleton-active': isLoading }"
-              >
-                <span class="active-session__browser">Chrome</span>
-                -
-                <span class="active-session__activity now">Active now</span>
-              </p>
-            </div>
-            <span
-              class="active-sessions__delete-btn base-button without-bg"
-              :class="{ 'skeleton-active': isLoading }"
-              tabindex="-1"
-            >
-              {{ translation("deleteSession") }}
-            </span>
-          </div>
-        </div>
+        <active-session
+          v-for="(session, index) in sessions"
+          :key="index"
+          :device-type="session.device.type"
+          :device-name="session.device.name"
+          :browser="session.browser"
+          :address="session.address"
+          :is-active="session.isActive"
+          :last-active="session.lastActive"
+        />
       </div>
-      <span
-        class="active-sessions__delete-btn base-button without-bg delete-all"
+      <loading-button
+        class="without-bg color__red active-sessions__btn-delete all"
         :class="{ 'skeleton-active': isLoading }"
-        >{{ translation("deleteAllActiveSessions") }}</span
       >
+        {{ translation("deleteAllActiveSessions") }}
+      </loading-button>
     </account-section>
     <inline-account-section
       title="Двухфакторная аутентификация"
       subtitle="Дополнительный уровень безопаности, т.е., во время авторизации, на почту будет выслан дополнительный код подверждения."
     >
-      <input type="checkbox" class="switch" />
+      <input type="checkbox" class="switch" v-model="twoFactorAuth" />
     </inline-account-section>
     <inline-account-section
       title="Удаление сеанса"
@@ -102,19 +39,18 @@
     >
       <base-select
         :options="periodsNotActivitySession"
-        :selectedOptions="['one_month']"
+        :selectedOptions="deleteSession"
         placeholder="Период не активности"
+        @change="changePeriodDeleteSession"
       />
     </inline-account-section>
     <inline-account-section title="Изменение пароля">
       <span class="base-button blue">Открыть окно для изменения пароля</span>
     </inline-account-section>
     <div class="security__buttons">
-      <loading-button
-        class="base-button accent update-security-settings"
-        :class="{ 'skeleton-active': isLoading }"
-        >{{ translation("btn@updateSecuritySettings") }}</loading-button
-      >
+      <loading-button class="base-button accent">
+        {{ translation("btn@updateSecuritySettings") }}
+      </loading-button>
     </div>
   </div>
 </template>
@@ -125,6 +61,7 @@ import BaseMotionlessAlert from "../../components/BaseMotionlessAlertComponent";
 import LoadingButton from "../../components/Buttons/LoadingButtonComponent";
 import InlineAccountSection from "../../components/Sections/InlineAccountSecctionComponent";
 import BaseSelect from "../../components/Select/BaseSelectComponent";
+import ActiveSession from "./components/ActiveSessionComponent";
 
 export default {
   name: "SecurityView",
@@ -133,7 +70,8 @@ export default {
     BaseMotionlessAlert,
     LoadingButton,
     InlineAccountSection,
-    BaseSelect
+    BaseSelect,
+    ActiveSession
   },
 
   data: () => ({
@@ -154,7 +92,31 @@ export default {
         label: "6 месяцев",
         value: "six_month"
       }
-    ]
+    ],
+    sessions: [
+      {
+        address: "Santa Monica, CA, United States",
+        device: {
+          type: "computer",
+          name: "Macbook Air"
+        },
+        browser: "Chrome",
+        isActive: false,
+        lastActive: "May 6 at 7:23 PM"
+      },
+      {
+        address: "Santa Monica, CA, United States",
+        device: {
+          type: "phone",
+          name: "Iphone 11"
+        },
+        browser: "Chrome",
+        isActive: true,
+        lastActive: "May 6 at 7:23 PM"
+      }
+    ],
+    twoFactorAuth: false,
+    deleteSession: ["one_month"]
   }),
 
   created() {
@@ -176,7 +138,14 @@ export default {
   methods: {
     ...mapMutations({
       setPageTitle: "account/setPageTitle"
-    })
+    }),
+
+    /**
+     * @param selected
+     */
+    changePeriodDeleteSession(selected) {
+      this.deleteSession[0] = selected[0];
+    }
   },
 
   watch: {

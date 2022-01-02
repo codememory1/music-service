@@ -53,6 +53,8 @@
   }
 
   &.without-bg {
+    background-color: transparent;
+
     &:hover {
       background-color: #0D1828;
     }

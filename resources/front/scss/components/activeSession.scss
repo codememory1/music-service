@@ -1,0 +1,76 @@
+@import "../variables";
+
+.active-session {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $light-border;
+  display: flex;
+  flex-direction: row;
+
+  :last-of-type {
+    margin-bottom: 0;
+  }
+
+  &__left {
+    margin-right: 15px;
+
+    svg {
+      width: 17px;
+      height: 17px;
+      display: block;
+
+      &.skeleton-active {
+        background-color: $skeleton-bg;
+        border-radius: 100%;
+
+        path {
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-top,
+    &-down {
+      margin-bottom: 10px;
+      color: $gray;
+      font-size: 16px;
+      font-weight: 400;
+
+      &.skeleton-active {
+        background-color: $skeleton-bg;
+        width: 270px;
+        height: 10px;
+        border-radius: 10px;
+        color: transparent;
+
+        > span {
+          color: transparent;
+        }
+      }
+    }
+  }
+
+  &__device,
+  &__browser {
+    color: #fff;
+    font-weight: bold;
+  }
+
+  &__activity {
+    &.now {
+      color: $green;
+    }
+  }
+}

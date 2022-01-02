@@ -57,19 +57,13 @@
             </ul>
           </div>
           <div class="header__select--lang">
-            <base-custom-select
+            <base-select
               class="header__lang"
               placeholder="Выберите язык"
-              :options="[
-                {
-                  label: 'English',
-                  value: 'en'
-                },
-                {
-                  label: 'Russian',
-                  value: 'ru'
-                }
-              ]"
+              :options="languages"
+              :selected-options="selectedLanguage"
+              :with-search="true"
+              @change="changeLanguage"
             />
           </div>
           <div v-if="isAuth" class="navigation__user-profile">
@@ -97,7 +91,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import BaseCustomSelect from "../../components/Select/BaseSelectComponent";
+import BaseSelect from "../../components/Select/BaseSelectComponent";
 import AuthModal from "../../components/Modal/AuthModalComponent";
 import RegisterModal from "../../components/Modal/RegisterModalComponent";
 import PasswordRecoveryRequestModal from "../Modal/PasswordRecoveryRequestModalComponent";
@@ -107,26 +101,188 @@ import Config from "../../modules/Config";
 export default {
   name: "TheHomeHeader",
   components: {
-    BaseCustomSelect,
+    BaseSelect,
     AuthModal,
     RegisterModal,
     PasswordRecoveryRequestModal,
     PasswordRecoveryModal
   },
 
+  data: () => ({
+    languages: [
+      {
+        label: "Albanian",
+        value: "sq"
+      },
+      {
+        label: "English",
+        value: "en"
+      },
+      {
+        label: "Arab",
+        value: "ar"
+      },
+      {
+        label: "Armenian",
+        value: "hy"
+      },
+      {
+        label: "Bashkir",
+        value: "ba"
+      },
+      {
+        label: "Belorussian",
+        value: "be"
+      },
+      {
+        label: "Bengal",
+        value: "bn"
+      },
+      {
+        label: "Burmese",
+        value: "my"
+      },
+      {
+        label: "Bulgarian",
+        value: "bg"
+      },
+      {
+        label: "Bosnian",
+        value: "bs"
+      },
+      {
+        label: "Hungarian",
+        value: "hu"
+      },
+      {
+        label: "Venda",
+        value: "ve"
+      },
+      {
+        label: "Vietnamese",
+        value: "vi"
+      },
+      {
+        label: "Greenlandic",
+        value: "kl"
+      },
+      {
+        label: "Greek",
+        value: "el"
+      },
+      {
+        label: "Georgian",
+        value: "ka"
+      },
+      {
+        label: "Irish",
+        value: "ga"
+      },
+      {
+        label: "Icelandic",
+        value: "is"
+      },
+      {
+        label: "Spanish",
+        value: "es"
+      },
+      {
+        label: "Italian",
+        value: "it"
+      },
+      {
+        label: "Kazakh",
+        value: "kk"
+      },
+      {
+        label: "Kannada",
+        value: "kn"
+      },
+      {
+        label: "Chinese",
+        value: "zh"
+      },
+      {
+        label: "Korean",
+        value: "ko"
+      },
+      {
+        label: "Latin",
+        value: "la"
+      },
+      {
+        label: "Latvian",
+        value: "lv"
+      },
+      {
+        label: "Lithuanian",
+        value: "lt"
+      },
+      {
+        label: "Luxembourgish",
+        value: "lb"
+      },
+      {
+        label: "Marshall",
+        value: "mh"
+      },
+      {
+        label: "Moldavian",
+        value: "md"
+      },
+      {
+        label: "Mongolian",
+        value: "mn"
+      },
+      {
+        label: "Deutsch",
+        value: "de"
+      },
+      {
+        label: "Nepali",
+        value: "ni"
+      },
+      {
+        label: "Persian",
+        value: "fa"
+      },
+      {
+        label: "Polish",
+        value: "pl"
+      },
+      {
+        label: "Russian",
+        value: "ru"
+      },
+      {
+        label: "French",
+        value: "fr"
+      },
+      {
+        label: "Czech",
+        value: "cs"
+      },
+      {
+        label: "Swedish",
+        value: "sv"
+      }
+    ],
+    selectedLanguage: []
+  }),
+
   computed: {
     ...mapGetters({
       isAuth: "auth/isAuth",
-      authUserData: "auth/getUserData"
+      authUserData: "auth/getUserData",
+      language: "translation/lang"
     }),
 
-    playerUrl() {
-      return Config.player_url;
-    }
+    playerUrl: () => Config.player_url
   },
 
   mounted() {
     this.$store.dispatch("auth/loadUserData");
+    this.selectedLanguage.push(this.language);
   },
 
   methods: {
@@ -136,6 +292,15 @@ export default {
     recoveryPassword() {
       this.$refs.passwordRecoveryModal.close();
       this.$refs.changePasswordModal.open();
+    },
+
+    /**
+     * Handler change language
+     *
+     * @param selected
+     */
+    changeLanguage(selected) {
+      this.$store.commit("translation/setLang", selected[0]);
     }
   }
 };

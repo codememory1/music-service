@@ -35,6 +35,8 @@ export default {
   position: relative;
 
   &.active {
+    color: transparent;
+
     &:after {
       content: "\f3f4";
       position: absolute;

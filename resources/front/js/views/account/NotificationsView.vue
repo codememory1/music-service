@@ -3,6 +3,7 @@
     <inline-account-section title="Отключить уведомления">
       <base-select
         :options="disableNotificationsOptions"
+        :selected-options="notificationStates.disableAllNotifications"
         placeholder="Отключение уведомлений"
       ></base-select>
     </inline-account-section>
@@ -10,19 +11,27 @@
       title="Новости"
       subtitle="Уведомить меня о новых новостях платформы Music Service."
     >
-      <input type="checkbox" class="switch" />
+      <input type="checkbox" class="switch" v-model="notificationStates.news" />
     </inline-account-section>
     <inline-account-section
       title="Новые релизы"
       subtitle="Уведометить меня о новых релизах у подписываемых авторов."
     >
-      <input type="checkbox" class="switch" />
+      <input
+        type="checkbox"
+        class="switch"
+        v-model="notificationStates.newReleases"
+      />
     </inline-account-section>
     <inline-account-section
       title="Новые подписчики"
       subtitle="Уведомить меня о новых подписчиках."
     >
-      <input type="checkbox" class="switch" />
+      <input
+        type="checkbox"
+        class="switch"
+        v-model="notificationStates.newSubscribes"
+      />
     </inline-account-section>
     <inline-account-section
       title="Новые комментарии"
@@ -30,7 +39,7 @@
     >
       <base-select
         :options="newCommentOptions"
-        :selected-options="['all']"
+        :selected-options="notificationStates.newComments"
         placeholder="Как получать уведомление"
       />
     </inline-account-section>
@@ -38,24 +47,33 @@
       title="Вход с других устройств"
       subtitle="Уведометь меня о новых входах в аккаунт с других устройств."
     >
-      <input type="checkbox" class="switch" />
+      <input
+        type="checkbox"
+        class="switch"
+        v-model="notificationStates.authFromOtherDevices"
+      />
     </inline-account-section>
+    <loading-button class="accent">
+      Обновить настройки уведомлений
+    </loading-button>
   </div>
 </template>
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import InlineAccountSection from "../../components/Sections/InlineAccountSecctionComponent";
 import BaseSelect from "../../components/Select/BaseSelectComponent";
+import LoadingButton from "../../components/Buttons/LoadingButtonComponent";
 
 export default {
   name: "NotificationsView",
   components: {
     InlineAccountSection,
-    BaseSelect
+    BaseSelect,
+    LoadingButton
   },
 
   data: () => ({
-	disableNotificationsOptions: [
+    disableNotificationsOptions: [
       {
         label: "Выключить уведомления",
         value: "off"
@@ -86,7 +104,15 @@ export default {
         label: "От подписчиков",
         value: "subscriber"
       }
-    ]
+    ],
+    notificationStates: {
+      disableAllNotifications: [],
+      news: false,
+      newReleases: false,
+      newSubscribes: false,
+      newComments: [],
+      authFromOtherDevices: false
+    }
   }),
 
   created() {
@@ -94,13 +120,14 @@ export default {
   },
 
   mounted() {
-    this.$store.commit("loading/setLoading", false);
+    this.$store.commit("loading/setLoading", true);
   },
 
   computed: {
     ...mapGetters({
       translation: "translation/translation",
-      isReceived: "translation/isReceived"
+      isReceived: "translation/isReceived",
+      isLoading: "loading/isLoading"
     })
   },
 

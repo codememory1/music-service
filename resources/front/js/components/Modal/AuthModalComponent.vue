@@ -73,10 +73,11 @@
   </security-modal>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import SecurityModal from "./SecurityModalComponent";
 import SecurityModalForm from "./SecurityModalFormComponent";
 import SecurityFormField from "./SecurityFormFieldComponent";
-import response from "../../api/auth";
+import responseAuth from "../../api/auth";
 
 export default {
   name: "AuthModal",
@@ -84,6 +85,12 @@ export default {
     SecurityModal,
     SecurityModalForm,
     SecurityFormField
+  },
+
+  computed: {
+    ...mapGetters({
+      lang: "translation/lang"
+    })
   },
 
   data: () => ({
@@ -124,7 +131,7 @@ export default {
         });
       }
 
-      const authResponse = await response(
+      const authResponse = await responseAuth(
         this.login ?? "",
         this.password ?? ""
       );

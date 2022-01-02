@@ -277,6 +277,8 @@ export default {
           this.selected.push(option.value);
         }
       }
+
+      this.$emit("change", this.selected);
     },
 
     /**
