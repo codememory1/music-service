@@ -20,7 +20,7 @@ import SecurityModalForm from "./SecurityModalFormComponent";
 import SecurityFormField from "./SecurityFormFieldComponent";
 
 export default {
-  name: "PasswordRecoverModal",
+  name: "PasswordRecoverModalComponent",
   components: {
     SecurityModal,
     SecurityModalForm,

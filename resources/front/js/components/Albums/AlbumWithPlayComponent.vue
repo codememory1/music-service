@@ -9,7 +9,7 @@
 import BaseAlbum from "./BaseAlbumComponent";
 
 export default {
-  name: "AlbumWithPlay",
+  name: "AlbumWithPlayComponent",
   components: {
     BaseAlbum
   },

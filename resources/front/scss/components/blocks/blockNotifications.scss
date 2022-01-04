@@ -13,7 +13,7 @@ $notification-height: 400px;
   height: $notification-height;
   z-index: 100;
 
-  &__wrapper {
+  &-inner {
     position: relative;
 
     &:after {
@@ -36,7 +36,7 @@ $notification-height: 400px;
     }
   }
 
-  &__top {
+  &-top {
     display: flex;
     padding-bottom: 15px;
     border-bottom: 1px solid $light-border;
@@ -44,7 +44,7 @@ $notification-height: 400px;
     align-items: center;
   }
 
-  &__content {
+  &-content {
     overflow: auto;
     height: $notification-height - 70px;
     padding-right: 10px;
@@ -63,18 +63,16 @@ $notification-height: 400px;
   }
 
   &__read-all {
-    color: $accent;
-    cursor: pointer;
     font-size: 14px;
-    transition: color 0.2s ease-in-out;
+    padding: 0;
 
     &:hover {
-      color: darken($accent, 10%);
+      background-color: transparent!important;
     }
   }
 }
 
-.no_notifications {
+.no-notifications {
   color: $gray;
   text-align: center;
   margin-top: 20px;

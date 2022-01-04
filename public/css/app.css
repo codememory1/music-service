@@ -651,61 +651,73 @@ input[type=radio]:checked:before {
           justify-content: center;
   font-size: 16px;
   font-weight: 400;
-  -webkit-transition: background-color 0.3s ease-in-out;
-  -o-transition: background-color 0.3s ease-in-out;
-  transition: background-color 0.3s ease-in-out;
+  -webkit-transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  -o-transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   color: #fff;
   outline: none;
   border: none;
   cursor: pointer;
 }
-.base-button.accent {
+.base-button.bg--accent {
   background-color: #E03E10;
 }
-.base-button.accent:hover {
+.base-button.bg--accent:hover {
   background-color: #b0310d;
 }
-.base-button.dark {
+.base-button.bg--dark {
   background-color: #070E17;
 }
-.base-button.dark:hover {
+.base-button.bg--dark:hover {
   background-color: #13263e;
 }
-.base-button.blue {
+.base-button.bg--blue {
   background-color: #3C56D6;
 }
-.base-button.blue:hover {
+.base-button.bg--blue:hover {
   background-color: #273fb8;
 }
-.base-button.green {
+.base-button.bg--green {
   background-color: #1BE809;
 }
-.base-button.green:hover {
+.base-button.bg--green:hover {
   background-color: #15b707;
 }
-.base-button.red {
+.base-button.bg--red {
   background-color: #E53737;
 }
-.base-button.red:hover {
+.base-button.bg--red:hover {
   background-color: #ce1b1b;
 }
-.base-button.without-bg {
+.base-button.bg--transparent {
   background-color: transparent;
 }
-.base-button.without-bg:hover {
+.base-button.bg--transparent:hover {
   background-color: #0D1828;
 }
-.base-button.color__red {
+.base-button.color--red {
   color: #E53737;
 }
-.base-button.color__accent {
+.base-button.color--red:hover {
+  color: #ce1b1b;
+}
+.base-button.color--accent {
   color: #E03E10;
 }
-.base-button.color__blue {
+.base-button.color--accent:hover {
+  color: #b0310d;
+}
+.base-button.color--blue {
   color: #3C56D6;
 }
-.base-button.color__green {
+.base-button.color--blue:hover {
+  color: #273fb8;
+}
+.base-button.color--green {
   color: #1BE809;
+}
+.base-button.color--green:hover {
+  color: #15b707;
 }
 .base-button.disabled {
   opacity: 0.5;

@@ -6,11 +6,17 @@
   height: max-content;
   padding: 14px $gutter 40px;
   border-top: 1px solid $light-bg;
-}
 
-.player__controls-top {
-  display: flex;
-  justify-content: space-between;
+  &-up {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-down {
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+  }
 }
 
 .player__button {
@@ -41,16 +47,16 @@
   }
 }
 
-.player__left-control {
+.player-left-buttons {
   display: flex;
 }
 
-.player__right-control {
+.player-right-buttons {
   display: flex;
   align-items: center;
 }
 
-.volume_progress {
+.volume__progress {
   margin: 0 10px;
   width: 100px!important;
   cursor: pointer;
@@ -58,7 +64,7 @@
   bottom: 2px;
 }
 
-.player__center-control {
+.player-center-buttons {
   display: flex;
   align-items: center;
 
@@ -89,7 +95,7 @@
   }
 }
 
-.duration_progress {
+.duration__progress {
   width: 100%!important;
   margin: 0 55px;
   cursor: pointer;
@@ -97,12 +103,6 @@
 
 .duration, .total {
   color: $gray-dark;
-}
-
-.player__controls-bottom {
-  display: flex;
-  align-items: center;
-  margin-top: 24px;
 }
 
 .repeat, .shuffle, .min-volume, .max-volume {

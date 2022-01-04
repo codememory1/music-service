@@ -37,10 +37,14 @@
 
     <!-- Other useful links START -->
     <template v-slot:contentAfterForm>
-      <div class="text-after-button">
+      <div class="other-links">
         <p>
           Does the account already exist?
-          <span tabindex="0" @click.prevent="$emit('openAuthModal')">
+          <span
+            tabindex="-1"
+            role="button"
+            @click.prevent="$emit('openAuthModal')"
+          >
             Sign in to your account
           </span>
         </p>
@@ -55,7 +59,7 @@ import SecurityModalForm from "./SecurityModalFormComponent";
 import SecurityFormField from "./SecurityFormFieldComponent";
 
 export default {
-  name: "RegisterModal",
+  name: "RegisterModalComponent",
   components: {
     SecurityModal,
     SecurityModalForm,
@@ -89,7 +93,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../../scss/variables";
 
-.text-after-button {
+.other-links {
   margin-top: 30px;
   margin-bottom: 55px;
 

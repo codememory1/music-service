@@ -1,8 +1,8 @@
 <template>
-  <div class="drop-down__border"></div>
+  <span class="drop-down__border"></span>
 </template>
 <script>
 export default {
-  name: "DropDownBorder"
+  name: "DropDownBorderComponent"
 };
 </script>

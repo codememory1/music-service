@@ -8,7 +8,27 @@
   display: flex;
   justify-content: space-between;
 
-  &__left-info {
+  &-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    justify-content: center;
+
+    &--name {
+      font-weight: 400;
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    &--author {
+      font-weight: 400;
+      color: $gray-dark;
+      font-size: 12px;
+    }
+  }
+
+  &-left-info {
     display: flex;
   }
 
@@ -18,7 +38,7 @@
     border-radius: 10px;
   }
 
-  &__control {
+  &-control {
     display: flex;
     align-items: center;
 
@@ -51,28 +71,6 @@
     svg {
       height: 13px;
       width: 14px;
-    }
-  }
-}
-
-.music {
-  &__info {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    justify-content: center;
-
-    &--name {
-      font-weight: 400;
-      color: #fff;
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-
-    &--author {
-      font-weight: 400;
-      color: $gray-dark;
-      font-size: 12px;
     }
   }
 }

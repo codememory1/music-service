@@ -1,25 +1,35 @@
 <template>
   <div class="opened-mobile-player">
-    <div class="window_indicator">
-      <div class="window_indicator__border"></div>
+    <!-- Indicator START -->
+    <div class="window-indicator">
+      <span class="window-indicator__border"></span>
     </div>
-    <div class="opened-mobile-player__image">
-      <img :src="image" :alt="name" />
-    </div>
-    <div class="opened-mobile-player__info">
+    <!-- Indicator END -->
+
+    <img class="opened-mobile-player__image" :src="image" :alt="name" />
+
+    <!-- Info START -->
+    <div class="opened-mobile-player-info">
       <span class="music__name">{{ name }}</span>
       <span class="music__author">{{ author }}</span>
     </div>
-    <div class="opened-mobile-player__times">
+    <!-- Info END -->
+
+    <!-- Times START -->
+    <div class="opened-mobile-player-times">
       <span class="duration">0:58</span>
       <span class="total">03:58</span>
     </div>
+    <!-- Times END -->
+
     <progress-bar />
-    <div class="opened-mobile-player__control">
+
+    <!-- Control START -->
+    <div class="opened-mobile-player-control">
       <div class="repeat">
         <svg-alias alias="repeat-svg" />
       </div>
-      <div class="opened-mobile-player__control--center">
+      <div class="opened-mobile-player-control-center">
         <div class="prev">
           <svg-alias alias="prev-svg" />
         </div>
@@ -34,13 +44,14 @@
         <svg-alias alias="shuffle-svg" />
       </div>
     </div>
+    <!-- Control END -->
   </div>
 </template>
 <script>
 import ProgressBar from "../BaseRangeComponent";
 
 export default {
-  name: "MobileOpenedPlayer",
+  name: "MobileOpenedPlayerComponent",
   components: {
     ProgressBar
   },

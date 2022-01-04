@@ -3,12 +3,11 @@
     class="drop-down__item"
     :class="{
       multiple: isMultiple,
-      disabled: isDisabled,
-      is_link: link === null
+      disabled: isDisabled
     }"
     @click="$emit('click')"
   >
-    <a v-if="link !== null" :href="link" class="is_link">
+    <a v-if="link !== null" :href="link">
       {{ label }}
     </a>
     <template v-else>{{ label }}</template>
@@ -17,7 +16,7 @@
 </template>
 <script>
 export default {
-  name: "DropDownItem",
+  name: "DropDownItemComponent",
   props: {
     /**
      * Link when clicking on which will be redirected

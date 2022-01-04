@@ -41,7 +41,7 @@ import NavigationCategory from "./NavigationCategoryComponent";
 import NavigationItem from "./NavigationItemComponent";
 
 export default {
-  name: "TheAccountNavigation",
+  name: "TheAccountNavigationComponent",
   components: {
     BaseNavigation,
     NavigationCategory,

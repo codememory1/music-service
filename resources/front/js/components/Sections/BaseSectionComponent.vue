@@ -1,17 +1,17 @@
 <template>
   <section class="section">
-    <div class="section__top">
-      <span class="section__title">{{ title }}</span>
+    <div class="section-top">
+      <h3 class="section__title">{{ title }}</h3>
       <slot name="top" />
     </div>
-    <div class="section__content">
+    <div class="section-content">
       <slot name="content" />
     </div>
   </section>
 </template>
 <script>
 export default {
-  name: "BaseSection",
+  name: "BaseSectionComponent",
   props: {
     /**
      * Section title

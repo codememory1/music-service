@@ -38,14 +38,14 @@
         <!-- Form Fields END -->
 
         <!-- Checkbox remember data on this device START -->
-        <div class="remember-data__wrap">
+        <div class="remember-wrapper">
           <input
             type="checkbox"
             class="checkbox"
-            id="remember-data"
+            id="remember-label"
             @input="remember = !remember"
           />
-          <label for="remember-data">Remember on this device</label>
+          <label for="remember-label">Remember on this device</label>
         </div>
         <!-- Checkbox remember data on this device END -->
       </security-modal-form>
@@ -54,16 +54,20 @@
 
     <!-- Other useful links START -->
     <template v-slot:contentAfterForm>
-      <div class="text-after-button">
+      <div class="other-links">
         <p>
           Don't have an account?
-          <span tabindex="0" @click="$emit('openRegisterModal')">
+          <span tabindex="-1" role="button" @click="$emit('openRegisterModal')">
             Create an account
           </span>
         </p>
         <p>
           Forgot your password?
-          <span tabindex="0" @click="$emit('openPasswordRecoveryModal')">
+          <span
+            tabindex="-1"
+            role="button"
+            @click="$emit('openPasswordRecoveryModal')"
+          >
             Restore password
           </span>
         </p>
@@ -80,7 +84,7 @@ import SecurityFormField from "./SecurityFormFieldComponent";
 import responseAuth from "../../api/auth";
 
 export default {
-  name: "AuthModal",
+  name: "AuthModalComponent",
   components: {
     SecurityModal,
     SecurityModalForm,
@@ -251,7 +255,7 @@ export default {
   }
 }
 
-.remember-data__wrap {
+.remember-wrapper {
   display: flex;
   cursor: pointer;
   margin-bottom: 40px;
@@ -267,7 +271,7 @@ export default {
   }
 }
 
-.text-after-button {
+.other-links {
   margin-top: 30px;
   margin-bottom: 55px;
 

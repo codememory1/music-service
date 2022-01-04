@@ -1,0 +1,116 @@
+@import "../variables";
+
+.header {
+  width: 100%;
+  height: max-content;
+  display: flex;
+  justify-content: space-between;
+  backdrop-filter: saturate(180%) blur(10px);
+  background-color: rgba($dark-bg, 0.5);
+  position: absolute;
+  padding: 20px $gutter;
+  z-index: 99;
+  align-items: center;
+
+  &-right-info {
+    display: flex;
+    align-items: center;
+  }
+
+  &-bell-wrapper {
+    margin-right: 20px;
+    position: relative;
+
+    > button {
+      width: 24px;
+      height: 24px;
+      position: relative;
+      display: flex;
+      cursor: pointer;
+      padding: 0;
+
+      svg {
+        width: inherit;
+        height: inherit;
+
+        ::v-deep path {
+          transition: fill 0.2s ease-in-out;
+        }
+
+        &:hover {
+          ::v-deep path {
+            fill: darken(#fff, 40%);
+          }
+        }
+      }
+
+      &:before {
+        content: "";
+        position: absolute;
+        width: 8.5px;
+        height: 8.5px;
+        background-color: $accent;
+        border: 1px solid #fff;
+        top: 3.5px;
+        right: 0;
+        border-radius: 100%;
+      }
+
+      &.skeleton-active {
+        background-color: $skeleton-bg;
+        width: 24px;
+        height: 24px;
+        border-radius: 100%;
+
+        svg {
+          opacity: 0;
+        }
+
+        &:before {
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+  &-user {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &__photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+
+    &.skeleton-active {
+      background-color: $skeleton-bg;
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+
+      img {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+.block-notifications {
+  right: -62px;
+  top: 45px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(35px);
+  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out,
+  transform 0.5s ease-in-out;
+
+  &.active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

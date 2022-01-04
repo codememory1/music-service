@@ -1,5 +1,5 @@
 <template>
-  <div class="subscription__bang" :style="bangStyles">
+  <div class="subscription-bang" :style="bangStyles">
     <span>{{ title }}</span>
   </div>
 </template>

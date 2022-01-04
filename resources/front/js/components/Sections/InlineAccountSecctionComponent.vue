@@ -16,7 +16,7 @@
       </p>
     </div>
     <div
-      class="inline-account-section__content"
+      class="inline-account-section-content"
       :class="{ 'skeleton-active': isLoading }"
     >
       <slot />
@@ -27,7 +27,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: "InlineAccountSection",
+  name: "InlineAccountSectionComponent",
   props: {
     /**
      * @type {String}
@@ -126,7 +126,7 @@ export default {
     }
   }
 
-  &__content {
+  &-content {
     &.skeleton-active {
       > * {
         opacity: 0;

@@ -1,16 +1,16 @@
 <template>
-  <div class="navigation__category">
-    <span v-if="undefined !== title" class="navigation__category--name">{{
+  <div class="navigation-category">
+    <span v-if="undefined !== title" class="navigation-category__name">{{
       title
     }}</span>
-    <ul class="navigation__items">
+    <ul class="navigation_items">
       <slot name="items" />
     </ul>
   </div>
 </template>
 <script>
 export default {
-  name: "NavigationCategory",
+  name: "NavigationCategoryComponent",
   props: {
     /**
      * name of category

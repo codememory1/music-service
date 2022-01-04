@@ -1,7 +1,7 @@
 <template>
-  <base-modal ref="modal" class="security__modal">
-    <div class="security__modal_content">
-      <h3 class="security__modal_title">{{ title }}</h3>
+  <base-modal ref="modal" class="security-modal">
+    <div class="security-modal__content">
+      <h3 class="security-modal__title">{{ title }}</h3>
       <slot name="contentAfterTitle" />
       <slot name="form" />
       <slot name="contentAfterForm" />
@@ -12,7 +12,7 @@
 import BaseModal from "../../components/Modal/BaseModalComponent";
 
 export default {
-  name: "SecurityModal",
+  name: "SecurityModalComponent",
   components: {
     BaseModal
   },

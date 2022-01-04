@@ -3,7 +3,7 @@
     <router-link class="album__link" :to="to">
       <img class="album__image" :src="image" :alt="name" />
       <span class="album__name">{{ name }}</span>
-      <div class="album__authors">
+      <div class="album-authors">
         <router-link
           v-for="(author, index) in authors"
           :key="index"
@@ -18,7 +18,7 @@
 </template>
 <script>
 export default {
-  name: "BaseAlbum",
+  name: "BaseAlbumComponent",
   props: {
     /**
      * Album name

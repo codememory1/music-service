@@ -1,16 +1,18 @@
 <template>
-  <div class="navigation">
-    <div class="navigation__logo">
-      <img src="/public/images/logo.png" alt="logo" />
-    </div>
-    <div class="navigation__categories">
+  <nav class="navigation">
+    <img
+      class="navigation__logo"
+      src="/public/images/logo.png"
+      :alt="$attrs.app_name"
+    />
+    <div class="navigation-categories">
       <slot name="categories" />
     </div>
-  </div>
+  </nav>
 </template>
 <script>
 export default {
-  name: "BaseNavigation"
+  name: "BaseNavigationComponent"
 };
 </script>
 <style lang="scss">

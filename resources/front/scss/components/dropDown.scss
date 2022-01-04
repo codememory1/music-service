@@ -12,6 +12,7 @@
     height: 1px;
     background-color: lighten($abs-light-bg, 10%);
     margin: 5px 0;
+    display: block;
   }
 }
 
@@ -24,6 +25,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
   border-radius: 5px;
+  padding: 11px 18px 11px 8px;
 
   > a {
     color: #efefef;
@@ -67,11 +69,6 @@
   &:hover {
     background-color: lighten($abs-light-bg, 10%);
   }
-}
-
-.is_link {
-  padding: 11px 18px 11px 8px;
-  display: block;
 }
 
 .drop-down__border {

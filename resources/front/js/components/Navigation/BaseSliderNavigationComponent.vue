@@ -2,7 +2,7 @@
   <div class="slider-navigation">
     <span
       class="slider-navigation__button prev"
-      tabindex="0"
+      tabindex="-1"
       role="button"
       @click="$emit('prev')"
     >
@@ -10,7 +10,7 @@
     </span>
     <span
       class="slider-navigation__button next"
-      tabindex="0"
+      tabindex="-1"
       role="button"
       @click="$emit('next')"
     >
@@ -20,7 +20,7 @@
 </template>
 <script>
 export default {
-  name: "BaseSliderNavigation"
+  name: "BaseSliderNavigationComponent"
 };
 </script>
 <style lang="scss">

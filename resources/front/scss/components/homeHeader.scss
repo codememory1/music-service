@@ -4,29 +4,59 @@
   padding: 50px 0;
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
 
-  &__navbar {
+  &-navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    &-right-info {
+      display: flex;
+      align-items: center;
+    }
+
+    &-user-profile {
+      position: relative;
+      margin-left: 27px;
+
+      a {
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        img {
+          max-width: 50px;
+          width: 50px;
+          max-height: 50px;
+          height: 50px;
+          border-radius: 100%;
+          object-fit: cover;
+          transition: opacity 0.3s ease;
+        }
+
+        &:hover img {
+          opacity: 0.6;
+        }
+      }
+    }
   }
 
   &__lang {
     width: 165px;
   }
 
-  &__content {
+  &__heading {
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 32px;
+    font-size: 32px;
+    padding-top: 40px;
+  }
+
+  &-content {
     display: flex;
     padding-top: 130px;
 
-    &--left {
-      h1 {
-        color: #fff;
-        font-weight: 500;
-        margin-bottom: 32px;
-        font-size: 32px;
-        padding-top: 40px;
-      }
-
+    &-left {
       p {
         font-size: 16px;
         color: #939393;
@@ -35,39 +65,22 @@
       }
     }
 
-    &--right {
+    &-right {
       img {
         width: 100%;
       }
     }
 
-    &--button {
-      color: #fff;
-      padding: 10px 30px;
-      background-color: $accent;
+    &-button {
+      padding: 12px 25px;
       border-radius: 30px;
-      transition: background-color 0.2s ease-in-out;
-
-      &:hover {
-        background-color: darken($accent, 10%);
-      }
+      width: max-content;
     }
-  }
-
-  &__select--lang {
-    display: flex;
-    align-items: center;
-  }
-}
-
-.navbar {
-  &__right {
-    display: flex;
   }
 }
 
 .navigation {
-  &__items {
+  &-items {
     display: flex;
     margin-right: 85px;
     height: 100%;
@@ -90,31 +103,6 @@
 
       &:hover {
         color: $accent;
-      }
-    }
-  }
-
-  &__user-profile {
-    position: relative;
-    margin-left: 27px;
-
-    > a {
-      display: block;
-      width: 100%;
-      height: 100%;
-
-      img {
-        max-width: 50px;
-        width: 50px;
-        max-height: 50px;
-        height: 50px;
-        border-radius: 100%;
-        object-fit: cover;
-        transition: opacity 0.3s ease;
-      }
-
-      &:hover img {
-        opacity: 0.6;
       }
     }
   }

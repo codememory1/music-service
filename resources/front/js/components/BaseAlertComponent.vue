@@ -1,5 +1,5 @@
 <template>
-  <div :class="'alert alert_type--' + type">
+  <div class="alert" :class="{type}">
     <img-alias
       v-if="type === 'success'"
       alias="success-svg"
@@ -19,15 +19,15 @@
       class="alert__icon"
     />
 
-    <div class="alert__content">
+    <div class="alert-content">
       <span class="alert__title">{{ title }}</span>
-      <span class="alert__text">{{ message }}</span>
+      <p class="alert__text">{{ message }}</p>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "BaseAlert",
+  name: "BaseAlertComponent",
   props: {
     /**
      * The type of notification.

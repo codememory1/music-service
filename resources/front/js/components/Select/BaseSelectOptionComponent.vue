@@ -1,0 +1,43 @@
+<template>
+  <li
+    class="option"
+    :class="{
+      active: isActive,
+      disabled: isDisabled
+    }"
+    @click="$emit('click', $event)"
+  >
+    {{ label }}
+  </li>
+</template>
+
+<script>
+export default {
+  name: "BaseSelectOptionComponent",
+  props: {
+    /**
+     * @type {Boolean}
+     */
+    isActive: {
+      type: Boolean,
+      required: true
+    },
+
+    /**
+     * @type {Boolean}
+     */
+    isDisabled: {
+      type: Boolean,
+      required: true
+    },
+
+    /**
+     * @type {String}
+     */
+    label: {
+      type: String,
+      required: true
+    }
+  }
+};
+</script>

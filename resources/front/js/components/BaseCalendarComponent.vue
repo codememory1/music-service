@@ -1,57 +1,73 @@
 <template>
   <div class="calendar">
-    <div class="calendar__content">
-      <div class="calendar__header">
-        <div class="calendar__button calendar_button_header" @click="prev">
-          <svg-alias alias="arrow-left-svg" />
-        </div>
-        <div class="month">
-          <span class="month__name"
-            >{{ months[displayedData.month - 1] }}
-            {{ displayedData.year }}</span
-          >
-        </div>
-        <div class="calendar__button calendar_button_header" @click="next">
-          <svg-alias alias="arrow-right-svg" />
-        </div>
-      </div>
-      <div class="calendar__days-week">
-        <span>Mo</span>
-        <span>Tu</span>
-        <span>We</span>
-        <span>Th</span>
-        <span>Fri</span>
-        <span>Sa</span>
-        <span>Su</span>
-      </div>
-      <div class="calendar__days">
+    <div class="calendar-content">
+      <!-- Header START -->
+      <div class="calendar-header">
         <span
-          class="disabled"
-          v-for="(_, index) in this.startedFromWeek"
+          class="calendar__button prev"
+          role="button"
+          tabindex="-1"
+          @click="prev"
+        >
+          <svg-alias alias="arrow-left-svg" />
+        </span>
+        <span class="month__name">
+          {{ months[displayedData.month - 1] }} {{ displayedData.year }}
+        </span>
+        <span
+          class="calendar__button next"
+          role="button"
+          tabindex="-1"
+          @click="next"
+        >
+          <svg-alias alias="arrow-right-svg" />
+        </span>
+      </div>
+      <!-- Header END -->
+
+      <!-- Days week START -->
+      <div class="calendar-days-week">
+        <span class="calendar__day-week">Mo</span>
+        <span class="calendar__day-week">Tu</span>
+        <span class="calendar__day-week">We</span>
+        <span class="calendar__day-week">Th</span>
+        <span class="calendar__day-week">Fri</span>
+        <span class="calendar__day-week">Sa</span>
+        <span class="calendar__day-week">Su</span>
+      </div>
+      <!-- Days week END -->
+
+      <!-- Days START -->
+      <div class="calendar-days">
+        <span
+          class="calendar__day disabled"
+          v-for="(_, index) in startedFromWeek"
           :key="index"
         ></span>
         <span
+          class="calendar__day"
           v-for="(day, index) in date.getDate()"
           :class="{ active: day === displayedData.day }"
-          :key="index"
+          :key="index + startedFromWeek"
           @click="datePicker"
-          >{{ day }}</span
         >
+          {{ day }}
+        </span>
       </div>
+      <!-- Days END -->
     </div>
-    <div class="calendar__footer">
-      <div class="calendar__button calendar_button_cancel" @click="cancel">
-        Cancel
-      </div>
-      <div class="calendar__button calendar_button_done" @click="done">
-        Done
-      </div>
+
+    <!-- Footer START -->
+    <div class="calendar-footer">
+      <div class="calendar__button cancel" @click="cancel">Cancel</div>
+      <div class="calendar__button done" @click="done">Done</div>
     </div>
+    <!-- Footer END -->
   </div>
 </template>
 <script>
 export default {
-  name: "BaseCalendar",
+  name: "BaseCalendarComponent",
   props: {
     /**
      * Default active year

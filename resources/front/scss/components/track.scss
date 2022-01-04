@@ -31,7 +31,7 @@
     color: #fff;
   }
 
-  &__left-info {
+  &-left-info {
     display: flex;
   }
 
@@ -40,7 +40,7 @@
     height: 55px;
   }
 
-  &__names {
+  &-names {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -61,7 +61,7 @@
     color: $gray-dark;
   }
 
-  &__right-info {
+  &-right-info {
     display: flex;
     justify-content: center;
   }
@@ -77,9 +77,13 @@
     transition: color 0.3s ease-in-out;
   }
 
-  &__buttons {
+  &-actions {
     display: flex;
     align-items: center;
+
+    img {
+      cursor: pointer;
+    }
 
     svg {
       path,
@@ -98,15 +102,11 @@
     }
   }
 
-  &__buttons img {
-    cursor: pointer;
-  }
-
-  &__button--actions {
+  &__button-action {
     margin-left: 15px;
   }
 }
 
-.music-item__button--like {
+.music-item__button-like {
   stroke-width: 1.2px;
 }

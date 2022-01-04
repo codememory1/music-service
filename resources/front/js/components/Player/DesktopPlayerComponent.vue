@@ -1,7 +1,9 @@
 <template>
   <div class="player">
-    <div class="player__controls-top">
-      <div class="player__left-control">
+    <!-- Player Up controls START -->
+    <div class="player-up">
+      <!-- Player left buttons START -->
+      <div class="player-left-buttons">
         <div class="player__button" v-tooltip="'Like and suggest similar'">
           <svg-alias alias="like-svg" />
         </div>
@@ -12,7 +14,10 @@
           <svg-alias alias="expand-svg" />
         </div>
       </div>
-      <div class="player__center-control">
+      <!-- Player left buttons END -->
+
+      <!-- Player center buttons START -->
+      <div class="player-center-buttons">
         <div class="repeat" v-tooltip="'Repeat track'">
           <svg-alias alias="repeat-svg" />
         </div>
@@ -29,32 +34,40 @@
           <svg-alias alias="shuffle-svg" />
         </div>
       </div>
-      <div class="player__right-control">
+      <!-- Player center buttons START -->
+
+      <!-- Player right buttons START -->
+      <div class="player-right-buttons">
         <div class="min-volume">
           <svg-alias alias="min-volume-svg" />
         </div>
-        <progress-bar class="volume_progress" />
+        <progress-bar class="volume__progress" />
         <div class="max-volume">
           <svg-alias alias="max-volume-svg" />
         </div>
       </div>
+      <!-- Player right buttons START -->
     </div>
-    <div class="player__controls-bottom">
+    <!-- Player Up controls END -->
+
+    <!-- Player Down controls START -->
+    <div class="player-down">
       <div class="duration">
         <span>0:58</span>
       </div>
-      <progress-bar class="duration_progress" />
+      <progress-bar class="duration__progress" />
       <div class="total">
         <span>5:18</span>
       </div>
     </div>
+    <!-- Player Down controls END -->
   </div>
 </template>
 <script>
 import ProgressBar from "../BaseRangeComponent";
 
 export default {
-  name: "DesktopPlayer",
+  name: "DesktopPlayerComponent",
   components: {
     ProgressBar
   }

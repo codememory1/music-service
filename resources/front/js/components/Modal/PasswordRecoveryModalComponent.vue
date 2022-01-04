@@ -2,8 +2,8 @@
   <security-modal ref="securityModal" title="Password Recovery">
     <!-- Code entry fields START -->
     <template v-slot:contentAfterTitle>
-      <div class="code__items">
-        <div
+      <div class="code-items">
+        <span
           v-for="(item, index) in code"
           :key="index"
           class="code__item"
@@ -15,7 +15,7 @@
             @input="changeCode(index, $event.target.value, $event.target)"
             @click="activeIndexCode = index"
           />
-        </div>
+        </span>
       </div>
     </template>
     <!-- Code entry fields END -->
@@ -44,7 +44,7 @@ import SecurityModalForm from "./SecurityModalFormComponent";
 import SecurityFormField from "./SecurityFormFieldComponent";
 
 export default {
-  name: "PasswordRecoverModal",
+  name: "PasswordRecoverModalComponent",
   components: {
     SecurityModal,
     SecurityModalForm,
@@ -118,7 +118,7 @@ export default {
 @import "../../../scss/variables";
 
 .code {
-  &__items {
+  &-items {
     display: flex;
     margin-bottom: 35px;
   }

@@ -1,32 +1,45 @@
 <template>
   <div class="block-notifications">
-    <div class="block-notifications__wrapper">
-      <div class="block-notifications__top">
+    <div class="block-notifications-inner">
+      <!-- Notification TOP START -->
+      <div class="block-notifications-top">
         <h4 class="block-notifications__title">Notifications</h4>
-        <span class="block-notifications__read-all" tabindex="-1"
-          >Mark all as read</span
+        <loading-button
+          class="bg--transparent color--accent block-notifications__read-all"
+          aria-label="Mark all as read"
         >
+          Mark all as read
+        </loading-button>
       </div>
-      <div class="block-notifications__content">
+      <!-- Notification TOP END -->
+
+      <!-- Content START -->
+      <div class="block-notifications-content">
         <slot>
-          <div class="no-notifications__wrapper">
+          <div class="no-notifications-wrapper">
             <svg-alias alias="empty-notifications" />
             <p>Notification list is empty</p>
           </div>
         </slot>
       </div>
+      <!-- Content END -->
     </div>
   </div>
 </template>
 <script>
+import LoadingButton from "../Buttons/LoadingButtonComponent";
+
 export default {
-  name: "BlockNotifications"
+  name: "BlockNotificationsComponent",
+  components: {
+    LoadingButton
+  }
 };
 </script>
 <style lang="scss">
 @import "../../../scss/components/blocks/blockNotifications";
 
-.no-notifications__wrapper {
+.no-notifications-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;

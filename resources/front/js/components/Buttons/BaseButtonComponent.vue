@@ -1,7 +1,7 @@
 <template>
   <button
-    class="base-button c-pointer"
-    :class="{ 'skeleton-active': $store.getters['loading/isLoading'] }"
+    class="base-button"
+    type="button"
     @click="$emit('click')"
   >
     <slot />
@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-  name: "BaseFormButton"
+  name: "BaseButtonComponent"
 };
 </script>
 <style lang="scss">

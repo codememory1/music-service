@@ -1,14 +1,16 @@
 <template>
   <div class="notification">
-    <div class="notification__user-photo">
-      <img src="/public/images/user.png" :alt="userName" />
-    </div>
-    <div class="notification__content">
-      <div class="notification__content--top">
+    <img
+      class="notification__user-photo"
+      src="/public/images/user.png"
+      :alt="userName"
+    />
+    <div class="notification-content">
+      <div class="notification-content-top">
         <span class="notification__user-name">{{ userName }}</span>
         <span class="notification__create-at">{{ createdAt }}</span>
       </div>
-      <div class="notification__content--down">
+      <div class="notification-content-down">
         <p class="notification__description">{{ description }}</p>
       </div>
     </div>
@@ -16,7 +18,7 @@
 </template>
 <script>
 export default {
-  name: "BaseNotification",
+  name: "BaseNotificationComponent",
   props: {
     /**
      * @type {String}

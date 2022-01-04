@@ -16,7 +16,7 @@ import { mapGetters } from "vuex";
 import BaseAlert from "../BaseAlertComponent";
 
 export default {
-  name: "BlockAlerts",
+  name: "BlockAlertsComponent",
   components: {
     BaseAlert
   },

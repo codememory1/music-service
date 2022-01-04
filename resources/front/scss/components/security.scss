@@ -1,5 +1,5 @@
-.security__modal {
-  &_title {
+.security-modal {
+  &__title {
     color: #fff;
     font-size: 25px;
     font-weight: 500;
@@ -8,11 +8,11 @@
     text-align: center;
   }
 
-  &_content {
+  &__content {
     padding: 0 80px;
   }
 }
 
-::v-deep .modal__container {
+::v-deep .modal-container {
   height: max-content;
 }

@@ -6,75 +6,93 @@
   justify-content: center;
   font-size: 16px;
   font-weight: 400;
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   color: #fff;
   outline: none;
   border: none;
   cursor: pointer;
 
-  &.accent {
-    background-color: $accent;
+  &.bg {
+    &--accent {
+      background-color: $accent;
 
-    &:hover {
-      background-color: darken($accent, 10%);
+      &:hover {
+        background-color: darken($accent, 10%);
+      }
     }
-  }
 
-  &.dark {
-    background-color: $dark-bg;
+    &--dark {
+      background-color: $dark-bg;
 
-    &:hover {
-      background-color: lighten($dark-bg, 10%);
+      &:hover {
+        background-color: lighten($dark-bg, 10%);
+      }
     }
-  }
 
-  &.blue {
-    background-color: $blue;
+    &--blue {
+      background-color: $blue;
 
-    &:hover {
-      background-color: darken($blue, 10%);
+      &:hover {
+        background-color: darken($blue, 10%);
+      }
     }
-  }
 
-  &.green {
-    background-color: $green;
+    &--green {
+      background-color: $green;
 
-    &:hover {
-      background-color: darken($green, 10%);
+      &:hover {
+        background-color: darken($green, 10%);
+      }
     }
-  }
 
-  &.red {
-    background-color: $red;
+    &--red {
+      background-color: $red;
 
-    &:hover {
-      background-color: darken($red, 10%);
+      &:hover {
+        background-color: darken($red, 10%);
+      }
     }
-  }
 
-  &.without-bg {
-    background-color: transparent;
+    &--transparent {
+      background-color: transparent;
 
-    &:hover {
-      background-color: #0D1828;
+      &:hover {
+        background-color: #0D1828;
+      }
     }
   }
 
   &.color {
-    &__red {
+    &--red {
       color: $red;
+
+      &:hover {
+        color: darken($red, 10%);
+      }
     }
 
-    &__accent {
+    &--accent {
       color: $accent;
+
+      &:hover {
+        color: darken($accent, 10%);
+      }
     }
 
-    &__blue {
+    &--blue {
       color: $blue;
+
+      &:hover {
+        color: darken($blue, 10%);
+      }
     }
 
-    &__green {
+    &--green {
       color: $green;
+
+      &:hover {
+        color: darken($green, 10%);
+      }
     }
   }
 

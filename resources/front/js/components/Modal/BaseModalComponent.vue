@@ -1,14 +1,14 @@
 <template>
   <div
-    ref="modal"
+    ref="dialog"
     class="modal"
     :class="{ active: isOpen }"
     @click="closeOutContainer"
   >
-    <div class="modal__container">
-      <div class="modal__content">
-        <div class="modal__close">
-          <div class="modal__close--btn" @click="close">
+    <div class="modal-container">
+      <div class="modal-content" role="document">
+        <div class="modal-close">
+          <div class="modal-close__btn" @click="close">
             <i class="fal fa-times"></i>
           </div>
         </div>
@@ -19,7 +19,7 @@
 </template>
 <script>
 export default {
-  name: "BaseModal",
+  name: "BaseModalComponent",
   props: {
     /**
      * Whether to allow scroll body when modal is open

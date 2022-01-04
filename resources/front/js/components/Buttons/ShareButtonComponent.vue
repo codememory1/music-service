@@ -1,23 +1,20 @@
 <template>
-  <base-custom-click-button
-    :class="'blue share__button'"
-    @click="$emit('click')"
-  >
+  <base-button class="bg--blue share" @click="$emit('click')">
     <i class="fal fa-share-alt"></i>
-  </base-custom-click-button>
+  </base-button>
 </template>
 <script>
-import BaseCustomClickButton from "./BaseCustomClickButtonComponent";
+import BaseButton from "./BaseButtonComponent";
 
 export default {
-  name: "ShareButton",
+  name: "ShareButtonComponent",
   components: {
-    BaseCustomClickButton
+    BaseButton
   }
 };
 </script>
 <style lang="scss" scoped>
-.share__button {
+.share {
   padding: 10px;
   width: 40px;
   height: 40px;

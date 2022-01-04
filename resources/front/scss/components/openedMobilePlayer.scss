@@ -18,7 +18,7 @@
     }
   }
 
-  &__times {
+  &-times {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
@@ -30,19 +30,19 @@
     }
   }
 
-  &__control {
+  &-control {
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    &--center {
+    &-center {
       display: flex;
       align-items: center;
     }
   }
 
-  &__info {
+  &-info {
     display: flex;
     flex-direction: column;
     margin-bottom: 40px;

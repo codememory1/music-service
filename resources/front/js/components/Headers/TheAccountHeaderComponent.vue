@@ -1,13 +1,12 @@
 <template>
-  <base-header>
+  <base-header aria-label="Account header">
+    <!-- Page title START -->
     <template v-slot:beforeProfile>
-      <h1
-        class="account-page__title"
-        :class="{ 'skeleton-active': isLoading }"
-      >
+      <h1 class="header__page-title" :class="{ 'skeleton-active': isLoading }">
         {{ $store.getters["account/pageTitle"] }}
       </h1>
     </template>
+    <!-- Page title END -->
   </base-header>
 </template>
 <script>
@@ -15,7 +14,7 @@ import { mapGetters } from "vuex";
 import BaseHeader from "./BaseHeaderComponent";
 
 export default {
-  name: "TheAccountHeader",
+  name: "TheAccountHeaderComponent",
   components: {
     BaseHeader
   },
@@ -31,20 +30,20 @@ export default {
 <style lang="scss" scoped>
 @import "../../../scss/variables";
 
-.account-page {
-  &__title {
+.header {
+  &__page-title {
     font-size: 20px;
     color: $section-color;
     display: flex;
     align-items: center;
-  }
-}
 
-.skeleton-active {
-  background-color: $skeleton-bg;
-  width: 190px;
-  height: 15px;
-  border-radius: 10px;
-  color: transparent;
+    &.skeleton-active {
+      background-color: $skeleton-bg;
+      width: 190px;
+      height: 15px;
+      border-radius: 10px;
+      color: transparent;
+    }
+  }
 }
 </style>

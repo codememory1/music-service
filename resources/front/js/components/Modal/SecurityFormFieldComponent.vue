@@ -1,5 +1,5 @@
 <template>
-  <div class="security__form_field" :class="{ active: !isEmpty(value) }">
+  <div class="security-form-field" :class="{ active: !isEmpty(value) }">
     <label :for="id">{{ label }}</label>
     <input
       :type="type"
@@ -14,7 +14,7 @@
 import { generateRandomString } from "generate-strings";
 
 export default {
-  name: "SecurityFormField",
+  name: "SecurityFormFieldComponent",
   props: {
     /**
      * Label input
@@ -71,7 +71,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../../scss/variables";
 
-.security__form_field {
+.security-form-field {
   position: relative;
   width: 100%;
   height: 50px;

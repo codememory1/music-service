@@ -1,21 +1,23 @@
 <template>
   <div class="subscription" :style="getCardStyles">
     <slot name="bang" />
-    <div class="subscription__content">
+    <div class="subscription-content">
       <h3 class="subscription__title">
         {{ title }}
       </h3>
-      <h3 class="subscription__mini-desc">
-        {{ miniDesc }}
-      </h3>
-      <span v-if="undefined !== oldPrice" class="subscription__old-price"
-        >${{ oldPrice }}</span
-      >
+      <p class="subscription__description">
+        {{ description }}
+      </p>
+      <span v-if="undefined !== oldPrice" class="subscription__old-price">
+        ${{ oldPrice }}
+      </span>
       <span class="subscription__price">${{ price }}</span>
-      <span class="subscription__is-valid"
-        >Subscription is valid for {{ isValid }} months</span
-      >
-      <div class="subscription__options">
+      <span class="subscription__acts">
+        Subscription is valid for {{ isValid }} months
+      </span>
+
+      <!-- Subscription options START -->
+      <div class="subscription-options">
         <div
           v-for="(option, index) in options"
           :key="index"
@@ -27,15 +29,27 @@
           </p>
         </div>
       </div>
-      <a href="#" class="subscription__activate-button">Activate</a>
+      <!-- Subscription options END -->
+
+      <base-link-button
+        link="#"
+        class="bg--accent subscription__activate-button"
+      >
+        Activate
+      </base-link-button>
     </div>
   </div>
 </template>
 <script>
 import HexToRgba from "../../modules/HexToRgba";
+import BaseLinkButton from "../Buttons/BaseLinkButtonComponent";
 
 export default {
-  name: "BaseSubscription",
+  name: "BaseSubscriptionComponent",
+  components: {
+    BaseLinkButton
+  },
+
   props: {
     /**
      * Subscription indicator
@@ -62,7 +76,7 @@ export default {
      *
      * @type {String}
      */
-    miniDesc: {
+    description: {
       type: String,
       required: true
     },

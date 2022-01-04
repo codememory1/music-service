@@ -4,26 +4,34 @@
     class="music-item"
     @contextmenu.prevent="$emit('contextmenu', $event)"
   >
-    <div class="music-item__left-info">
+    <div class="music-item-left-info">
       <img class="music-item__image" :src="image" :alt="name" />
-      <div class="music-item__names">
+      <div class="music-item-names">
         <span class="music-item__name">{{ name }}</span>
         <span class="music-item__author">{{ author }}</span>
       </div>
     </div>
-    <div class="music-item__right-info">
+    <div class="music-item-right-info">
       <span class="music-item__time">03:20</span>
-      <div class="music-item__buttons">
-        <div class="music-item__button">
-          <svg-alias class="music-item__button--like" alias="like-svg" />
-        </div>
-        <div class="music-item__button" @click="$emit('contextmenu', $event, true)">
+
+      <!-- Actions START -->
+      <div class="music-item-actions">
+        <span class="music-item__button" role="button" tabindex="-1">
+          <svg-alias class="music-item__button-like" alias="like-svg" />
+        </span>
+        <span
+          class="music-item__button"
+          role="button"
+          tabindex="-1"
+          @click="$emit('contextmenu', $event, true)"
+        >
           <svg-alias
-            class="music-item__button--actions"
+            class="music-item__button-action"
             alias="vertical-ellipses-svg"
           />
-        </div>
+        </span>
       </div>
+      <!-- Actions END -->
     </div>
   </div>
 </template>

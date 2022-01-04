@@ -35,6 +35,7 @@
 import { mapGetters } from "vuex";
 
 export default {
+  name: "BaseMotionlessAlertComponent",
   props: {
     /**
      * @type {String}

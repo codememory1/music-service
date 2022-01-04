@@ -1,13 +1,13 @@
 <template>
   <div class="mobile-player">
-    <div class="mobile-player__left-info">
+    <div class="mobile-player-left-info">
       <img class="mobile-player__image" :src="image" :alt="name" />
-      <div class="music__info">
-        <span class="music__info--name">{{ name }}</span>
-        <span class="music__info--author">{{ author }}</span>
+      <div class="music-info">
+        <span class="mobile-player-info__name">{{ name }}</span>
+        <span class="mobile-player-info__author">{{ author }}</span>
       </div>
     </div>
-    <div class="mobile-player__control">
+    <div class="mobile-player-control">
       <div class="mobile-player__play-pause">
         <svg-alias alias="pause-bold-svg" />
       </div>

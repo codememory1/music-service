@@ -14,7 +14,7 @@
 import VueSlider from "vue-slider-component";
 
 export default {
-  name: "BaseRange",
+  name: "BaseRangeComponent",
   components: {
     VueSlider
   },

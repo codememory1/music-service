@@ -7,7 +7,7 @@
   border-radius: 10px;
   padding: 20px 28px;
 
-  &__header {
+  &-header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 27px;
@@ -21,37 +21,56 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-}
 
-.calendar_button_header {
-  transition: background-color 0.2s ease-in-out;
+  &.next,
+  .prev {
+    transition: background-color 0.2s ease-in-out;
 
-  &:hover {
-    background-color: $dark-bg;
+    &:hover {
+      background-color: $dark-bg;
+    }
   }
-}
 
-.month {
-  display: flex;
-  align-items: center;
-
-  &__name {
-    font-size: 20px;
-    font-weight: 600;
+  &.done,
+  &.cancel {
     color: #fff;
-    pointer-events: none;
+    transition: background-color 0.3s ease-in-out;
+  }
 
-    &::selection {
-      background-color: $abs-light-bg;
+  &.done {
+    background-color: $accent;
+
+    &:hover {
+      background-color: darken($accent, 10%);
+    }
+  }
+
+  &.cancel {
+    background-color: $dark-bg;
+    margin-right: 15px;
+
+    &:hover {
+      background-color: darken($dark-bg, 10%);
     }
   }
 }
 
-.calendar__days-week {
+.month__name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  pointer-events: none;
+
+  &::selection {
+    background-color: $abs-light-bg;
+  }
+}
+
+.calendar-days-week {
   display: flex;
   margin-bottom: 35px;
 
-  span {
+  span.calendar__day-week {
     font-size: 16px;
     font-weight: 600;
     color: #fff;
@@ -69,12 +88,12 @@
   }
 }
 
-.calendar__days {
+.calendar-days {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 
-  span {
+  span.calendar__day {
     width: 45px;
     height: 40px;
     display: flex;
@@ -107,27 +126,6 @@
   }
 }
 
-.calendar__footer {
+.calendar-footer {
   display: flex;
-}
-
-.calendar_button_done {
-  background-color: $accent;
-  color: #fff;
-  transition: background-color 0.3s ease-in-out;
-
-  &:hover {
-    background-color: darken($accent, 10%);
-  }
-}
-
-.calendar_button_cancel {
-  background-color: $dark-bg;
-  color: #fff;
-  margin-right: 15px;
-  transition: background-color 0.3s ease-in-out;
-
-  &:hover {
-    background-color: darken($dark-bg, 10%);
-  }
 }

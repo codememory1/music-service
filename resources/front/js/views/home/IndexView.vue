@@ -102,7 +102,7 @@
           <base-subscription
             :id="1"
             title="Basic"
-            mini-desc="Essential feature"
+            description="Essential feature"
             :old-price="59.99"
             :price="53.99"
             :is-valid="5"
@@ -117,7 +117,7 @@
           <base-subscription
             :id="2"
             title="Pro"
-            mini-desc="Advanced feature"
+            description="Advanced feature"
             :old-price="89.99"
             :price="80.99"
             :is-valid="5"
@@ -137,7 +137,7 @@
           <base-subscription
             :id="1"
             title="Basic"
-            mini-desc="Essential feature"
+            description="Essential feature"
             :old-price="59.99"
             :price="53.99"
             :is-valid="5"

@@ -1,6 +1,6 @@
 <template>
   <section class="account-section">
-    <div class="account-section__title-wrapper">
+    <div class="account-section-top">
       <svg-alias
         v-if="null !== iconAlias"
         :alias="iconAlias"
@@ -21,6 +21,7 @@
 import { mapGetters } from "vuex";
 
 export default {
+  name: "AccountSectionComponent",
   props: {
     /**
      * @type {String}
@@ -70,7 +71,7 @@ export default {
       border-radius: 10px;
     }
 
-    &-wrapper {
+    &-top {
       display: flex;
       align-items: center;
       padding-bottom: 40px;

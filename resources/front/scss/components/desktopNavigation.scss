@@ -11,11 +11,8 @@
   &__logo {
     margin-bottom: 50px;
     margin-left: 40px;
-
-    img {
-      width: 60px;
-      height: 20px;
-    }
+    width: 60px;
+    height: 20px;
   }
 
   &__item {
@@ -79,19 +76,19 @@
     }
   }
 
-  &__items {
+  &-items {
     display: flex;
     flex-direction: column;
   }
 
-  &__category {
+  &-category {
     margin-bottom: 50px;
 
     &:last-of-type {
       margin-bottom: 0;
     }
 
-    &--name {
+    &__name {
       color: $accent;
       font-size: 12px;
       font-weight: bold;

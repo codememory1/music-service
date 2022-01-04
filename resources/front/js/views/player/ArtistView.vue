@@ -1,20 +1,20 @@
 <template>
   <div ref="mainContent" class="main__content">
     <!-- Header START -->
-    <div class="artist__header" :style="artistHeaderStyle">
+    <div class="artist-header" :style="artistHeaderStyle">
       <div class="relative">
         <h1 class="artist__name">{{ artistInfo.name }}</h1>
         <p class="artist__description">{{ artistInfo.description }}</p>
-        <div class="artist__actions">
-          <base-custom-click-button
+        <div class="artist-actions">
+          <base-button
             v-if="artistInfo.isSubscribed"
-            class="accent btn-subscription"
+            class="bg--accent btn-subscription"
           >
             Subscribe
-          </base-custom-click-button>
-          <base-custom-click-button v-else class="dark btn-subscription">
+          </base-button>
+          <base-button v-else class="bg--dark btn-subscription">
             Unsubscribe
-          </base-custom-click-button>
+          </base-button>
           <share-button />
         </div>
       </div>
@@ -36,7 +36,7 @@
 
     <div class="columns">
       <!-- Top musics START -->
-      <base-section title="Top tracks" class="section__top-musics">
+      <base-section title="Top tracks" class="section-top-musics">
         <template v-slot:content>
           <music-item
             name="NO MERCY"
@@ -79,7 +79,7 @@
       <!-- Top musics END -->
 
       <!-- Similar artists START -->
-      <base-section title="Similar artists" class="section__similar-artists">
+      <base-section title="Similar artists" class="section-similar-artists">
         <template v-slot:content>
           <div class="similar-artists">
             <div
@@ -96,7 +96,7 @@
           <!-- Best albums of similar artists START -->
           <base-section
             title="Best albums of similar artists"
-            class="best-albums__similar-artists"
+            class="best-albums-similar-artists"
           >
             <template v-slot:content>
               <album-with-play
@@ -116,11 +116,10 @@
     </div>
     <drop-down
       ref="musicItemDropDown"
-      :class="{
-        active:
-          isOpenedMusicItemDropDown && !$store.getters['layoutScroll/isScroll'],
-        'music-item__drop-down': true
-      }"
+      class="music-item-drop-down"
+      :is-active="
+        isOpenedMusicItemDropDown && !$store.getters['layoutScroll/isScroll']
+      "
       :style="musicItemDropDownStyle()"
     >
       <drop-down-item label="Добавить в медиатеку" />
@@ -142,7 +141,7 @@
 </template>
 <script>
 import { mapMutations, mapGetters } from "vuex";
-import BaseCustomClickButton from "../../components/Buttons/BaseCustomClickButtonComponent";
+import BaseButton from "../../components/Buttons/BaseButtonComponent";
 import ShareButton from "../../components/Buttons/ShareButtonComponent";
 import BaseAlbum from "../../components/Albums/BaseAlbumComponent";
 import SectionAlbums from "../../components/SectionAlbumsComponent";
@@ -157,7 +156,7 @@ import ClickOut from "../../modules/ClickOut";
 export default {
   name: "ArtistView",
   components: {
-    BaseCustomClickButton,
+    BaseButton,
     ShareButton,
     BaseAlbum,
     SectionAlbums,
@@ -362,6 +361,10 @@ export default {
     }
   },
 
+  created() {
+    this.$store.commit("loading/setLoading", false);
+  },
+
   mounted() {
     ClickOut(this.$refs.musicItemDropDown.$el, (status) => {
       if (status) {
@@ -414,7 +417,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../../scss/views/artist";
 
-.music-item__drop-down {
+.music-item-drop-down {
   visibility: hidden;
   opacity: 0;
   transform: translateY(80px);

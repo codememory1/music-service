@@ -1,9 +1,9 @@
 <template>
-  <form class="security__form" @submit.prevent>
+  <form class="security-form" @submit.prevent>
     <slot />
-    <div class="security__button_wrap">
+    <div class="security-button-wrapper">
       <loading-button
-        class="security__button accent"
+        class="security-form__button bg--accent"
         @click="$emit('click')"
         :is-loading="btnIsLoading"
       >
@@ -47,13 +47,13 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.security__button_wrap {
+.security-button-wrapper {
   display: flex;
   justify-content: center;
   padding-bottom: 45px;
 }
 
-.security__button {
+.security-form__button {
   border-radius: 60px;
   padding: 14px 30px;
   font-weight: 500;

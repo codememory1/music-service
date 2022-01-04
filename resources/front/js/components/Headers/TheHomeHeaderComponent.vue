@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header" role="banner">
     <auth-modal
       ref="authModal"
       @openRegisterModal="
@@ -23,14 +23,20 @@
       @recovery="recoveryPassword"
     />
     <password-recovery-modal ref="changePasswordModal" />
+
     <div class="container">
-      <div class="header__navbar">
-        <div class="header__logo">
+      <!-- Header navbar START -->
+      <div class="header-navbar">
+        <!-- Header logo START -->
+        <div class="header-logo">
           <img-alias alias="logo" alt="logo" />
         </div>
-        <div class="navbar__right">
-          <div class="header__navigation">
-            <ul class="navigation__items">
+        <!-- Header logo END -->
+
+        <div class="header-navbar-right-info">
+          <!-- Navigation START -->
+          <nav class="navigation" role="navigation">
+            <ul class="navigation-items">
               <li class="navigation__item">
                 <a href="#">Premium</a>
               </li>
@@ -55,37 +61,50 @@
                 <a href="#">Sing in</a>
               </li>
             </ul>
-          </div>
-          <div class="header__select--lang">
-            <base-select
-              class="header__lang"
-              placeholder="Выберите язык"
-              :options="languages"
-              :selected-options="selectedLanguage"
-              :with-search="true"
-              @change="changeLanguage"
-            />
-          </div>
-          <div v-if="isAuth" class="navigation__user-profile">
+          </nav>
+          <!-- Navigation END -->
+
+          <!-- Select Lang START -->
+          <base-select
+            class="header__lang"
+            placeholder="Выберите язык"
+            :options="languages"
+            :selected-options="selectedLanguage"
+            :with-search="true"
+            @change="changeLanguage"
+          />
+          <!-- Select Lang END -->
+
+          <!-- Navbar user profile START -->
+          <div v-if="isAuth" class="header-navbar-user-profile">
             <a :href="playerUrl">
               <img src="/public/images/user.png" :alt="authUserData.name" />
             </a>
           </div>
+          <!-- Navbar user profile END -->
         </div>
       </div>
-      <div class="header__content">
-        <div class="header__content--left">
-          <h1>Listening is everything in your life</h1>
+      <!-- Header navbar END -->
+
+      <!-- Header content START -->
+      <div class="header-content">
+        <div class="header-content-left">
+          <h1 class="header__heading" role="heading">
+            Listening is everything in your life
+          </h1>
           <p>
             Millions of songs and podcasts. No credit card. of songs and
             podcasts. No credit card.
           </p>
-          <a href="#" class="header__content--button">Create account</a>
+          <base-link-button link="#" class="header-content-button bg--accent">
+            Create account
+          </base-link-button>
         </div>
-        <div class="header__content--right">
+        <div class="header-content-right">
           <img src="public/images/mockup.png" alt="mockup" />
         </div>
       </div>
+      <!-- Header content STOP -->
     </div>
   </header>
 </template>
@@ -97,15 +116,17 @@ import RegisterModal from "../../components/Modal/RegisterModalComponent";
 import PasswordRecoveryRequestModal from "../Modal/PasswordRecoveryRequestModalComponent";
 import PasswordRecoveryModal from "../Modal/PasswordRecoveryModalComponent";
 import Config from "../../modules/Config";
+import BaseLinkButton from "../Buttons/BaseLinkButtonComponent";
 
 export default {
-  name: "TheHomeHeader",
+  name: "TheHomeHeaderComponent",
   components: {
     BaseSelect,
     AuthModal,
     RegisterModal,
     PasswordRecoveryRequestModal,
-    PasswordRecoveryModal
+    PasswordRecoveryModal,
+    BaseLinkButton
   },
 
   data: () => ({

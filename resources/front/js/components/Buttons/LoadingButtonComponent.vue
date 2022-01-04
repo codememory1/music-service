@@ -1,19 +1,19 @@
 <template>
-  <base-form-button
-    @click="$emit('click')"
+  <base-button
     class="loading-button"
     :class="{ disabled: isLoading, active: isLoading }"
+    @click="$emit('click')"
   >
     <slot />
-  </base-form-button>
+  </base-button>
 </template>
 <script>
-import BaseFormButton from "./BaseFormButtonComponent";
+import BaseButton from "./BaseButtonComponent";
 
 export default {
-  name: "LoadingButton",
+  name: "LoadingButtonComponent",
   components: {
-    BaseFormButton
+    BaseButton
   },
 
   props: {

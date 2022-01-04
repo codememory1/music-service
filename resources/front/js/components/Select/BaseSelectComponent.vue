@@ -1,83 +1,87 @@
 <template>
   <div class="select" ref="baseCustomSelect">
-    <div class="select__combobox">
+    <div class="select-combobox">
       <!-- Selected options START -->
-      <div class="selected__options" @click="openClose">
+      <div class="selected-options" @click="openClose">
+        <!-- One item selected START -->
         <slot
           v-if="selected.length === 1"
           name="selectedLabel"
           :option="getOptionData(selected[0])"
         >
-          <span class="selected__text">{{
-            getOptionData(selected[0]).label
-          }}</span>
+          <span class="selected__text">
+            {{ getOptionData(selected[0]).label }}
+          </span>
         </slot>
+        <!-- One item selected END -->
+
+        <!-- > One item selected START -->
         <div v-else-if="selected.length > 1" class="selected__text">
           <slot name="tags" :selected="selected">
-            <span
+            <base-select-tag
               v-for="(tag, index) in selected"
               :key="index"
-              class="selected__tag"
-            >
-              {{ getOptionData(tag).label }}
-              <i @click="removeFromSelected(tag)" class="fal fa-times"></i>
-            </span>
+              :label="getOptionData(tag).label"
+              @click="removeFromSelected(tag)"
+            />
           </slot>
         </div>
+        <!-- > One item selected END -->
+
+        <!-- Zero item selected START -->
         <span
           v-else-if="selected.length === 0"
           class="selected__text placeholder"
         >
           {{ placeholder }}
         </span>
-        <div class="select__actions">
+        <!-- Zero item selected END -->
+
+        <div class="select-actions">
           <svg-alias alias="arrow-right-svg" class="select__arrow" />
         </div>
       </div>
       <!-- Selected options END -->
 
-      <!-- List options START -->
       <transition name="fade">
         <div
           v-show="isOpen"
           ref="listOptions"
-          class="list__options"
+          class="list-options"
           :class="{ top: listOptionsIsTop }"
         >
-          <div v-if="withSearch" class="input-search__wrap">
-            <input
-              type="text"
-              class="input__search"
-              placeholder="Search..."
-              @input="search"
-            />
-            <svg-alias alias="search-svg" />
-          </div>
-          <ul class="options">
-            <li
-              class="option"
+          <!-- Search START -->
+          <base-select-search v-if="withSearch" @input="search" />
+          <!-- Search END -->
+
+          <!-- List options START -->
+          <ul class="options" role="listbox">
+            <base-select-option
               v-for="(option, index) in getOptions"
               :key="index"
-              :class="{
-                active: selected.includes(option.value),
-                disabled:
-                  maxSelections === selected.length &&
-                  !selected.includes(option.value)
-              }"
+              :role="selected.includes(option.value) ? 'option' : 'listitem'"
+              :label="option.label"
+              :is-active="selected.includes(option.value)"
+              :is-disabled="
+                maxSelections === selected.length &&
+                !selected.includes(option.value)
+              "
               @click="clickByOption(option)"
-            >
-              {{ option.label }}
-            </li>
+            />
           </ul>
+          <!-- List options END -->
         </div>
       </transition>
-      <!-- List options END -->
     </div>
   </div>
 </template>
 <script>
+import BaseSelectSearch from "./BaseSelectSearchComponent";
+import BaseSelectOption from "./BaseSelectOptionComponent";
+import BaseSelectTag from "./BaseSelectTagComponent";
+
 export default {
-  name: "BaseSelect",
+  name: "BaseSelectComponent",
   props: {
     /**
      * Default text
@@ -142,6 +146,12 @@ export default {
       type: Number,
       required: false
     }
+  },
+
+  components: {
+    BaseSelectSearch,
+    BaseSelectOption,
+    BaseSelectTag
   },
 
   data: () => ({

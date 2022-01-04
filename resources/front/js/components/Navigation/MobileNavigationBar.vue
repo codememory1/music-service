@@ -1,33 +1,32 @@
 <template>
-  <div class="navigation">
-    <div class="navigation__content">
-      <div
+  <nav class="navigation" role="navigation">
+    <div class="navigation-content">
+      <span
         class="navigation__border-top"
-        :style="
-          'left:' +
-          itemWithInPercent * getActiveItemIndex +
-          '%;width:' +
-          itemWithInPercent +
-          '%'
-        "
-      ></div>
-      <div
-        class="navigation__item"
-        v-for="(item, index) in items"
-        :key="index"
-        :class="{ active: index === getActiveItemIndex }"
-        :style="'width:' + itemWithInPercent + '%'"
-        @click="clickByItem(index)"
-      >
-        <svg-alias :alias="item.iconAlias" />
-        <span>{{ item.name }}</span>
-      </div>
+        :style="{
+          left: `${itemWithInPercent * getActiveItemIndex}%`,
+          width: `${itemWithInPercent}%`
+        }"
+      ></span>
+      <ul class="navigation-items">
+        <li
+          class="navigation__item"
+          v-for="(item, index) in items"
+          :key="index"
+          :class="{ active: index === getActiveItemIndex }"
+          :style="'width:' + itemWithInPercent + '%'"
+          @click="clickByItem(index)"
+        >
+          <svg-alias :alias="item.iconAlias" />
+          <span>{{ item.name }}</span>
+        </li>
+      </ul>
     </div>
-  </div>
+  </nav>
 </template>
 <script>
 export default {
-  name: "MobileNavigationBar",
+  name: "MobileNavigationBarComponent",
   props: {
     /**
      * An array of items whose object contains two keys {iconAlias, name}

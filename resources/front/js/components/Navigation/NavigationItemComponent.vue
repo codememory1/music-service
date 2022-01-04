@@ -10,7 +10,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: "NavigationItem",
+  name: "NavigationItemComponent",
   props: {
     /**
      * Alias icon from modules/Aliases
