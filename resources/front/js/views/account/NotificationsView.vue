@@ -1,5 +1,6 @@
 <template>
-  <div class="main__content under-header gutter">
+  <main class="main-content under-header gutter" role="main">
+    <!-- Inline sections START -->
     <inline-account-section title="Отключить уведомления">
       <base-select
         :options="disableNotificationsOptions"
@@ -53,10 +54,14 @@
         v-model="notificationStates.authFromOtherDevices"
       />
     </inline-account-section>
-    <loading-button class="accent">
+    <!-- Inline sections END -->
+
+    <!-- Update button START -->
+    <loading-button class="bg--accent">
       Обновить настройки уведомлений
     </loading-button>
-  </div>
+    <!-- Update button END -->
+  </main>
 </template>
 <script>
 import { mapGetters, mapMutations } from "vuex";
@@ -138,6 +143,11 @@ export default {
   },
 
   watch: {
+    /**
+     * Track changes in the status of incoming transfers
+     *
+     * @param value
+     */
     isReceived: function (value) {
       if (value) {
         this.setPageTitle(this.translation("notifications"));

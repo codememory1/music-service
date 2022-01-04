@@ -1,5 +1,6 @@
 <template>
-  <section class="account-section">
+  <section class="account-section" :aria-label="title">
+    <!-- Section top START -->
     <div class="account-section-top">
       <svg-alias
         v-if="null !== iconAlias"
@@ -13,6 +14,7 @@
         {{ title }}
       </h3>
     </div>
+    <!-- Section top END -->
 
     <slot />
   </section>
@@ -49,52 +51,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/variables";
-
-.account-section {
-  margin-bottom: 30px;
-
-  :last-of-type {
-    margin-bottom: 0;
-  }
-
-  &__title {
-    font-size: 18px;
-    font-weight: 500;
-    color: $section-color;
-
-    &.skeleton-active {
-      background-color: $skeleton-bg;
-      width: 250px;
-      height: 15px;
-      color: transparent;
-      border-radius: 10px;
-    }
-
-    &-top {
-      display: flex;
-      align-items: center;
-      padding-bottom: 40px;
-
-      > svg {
-        margin-right: 15px;
-        width: 24px;
-        height: 24px;
-
-        ::v-deep path {
-          stroke: $section-color;
-        }
-
-        &.skeleton-active {
-          background-color: $skeleton-bg;
-          border-radius: 100%;
-
-          ::v-deep path {
-            opacity: 0;
-          }
-        }
-      }
-    }
-  }
-}
+@import "../../../scss/components/sections/account";
 </style>

@@ -1,5 +1,6 @@
 <template>
-  <section class="inline-account-section" :class="{ disabled }">
+  <section class="inline-account-section" :class="{ disabled }" :aria-label="title">
+	<!-- Header START -->
     <div class="inline-account-section__headers">
       <h3
         class="inline-account-section__title"
@@ -15,12 +16,16 @@
         {{ subtitle }}
       </p>
     </div>
+	<!-- Header END -->
+
+	<!-- Content START -->
     <div
       class="inline-account-section-content"
       :class="{ 'skeleton-active': isLoading }"
     >
       <slot />
     </div>
+	<!-- Content END -->
   </section>
 </template>
 <script>
@@ -73,71 +78,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/variables";
-
-.inline-account-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 20px;
-  border-bottom: 1px solid $light-border;
-  margin-bottom: 30px;
-
-  &.disabled {
-    pointer-events: none;
-    opacity: 0.3;
-  }
-
-  &:last-of-type {
-    border-bottom: none;
-  }
-
-  &__title {
-    font-size: 18px;
-    font-weight: 500;
-    color: $section-color;
-    margin-bottom: 15px;
-
-    &.skeleton-active {
-      background-color: $skeleton-bg;
-      width: 250px;
-      height: 15px;
-      color: transparent;
-      border-radius: 10px;
-    }
-  }
-
-  &__subtitle {
-    color: $gray;
-    margin-left: 15px;
-    font-size: 14px;
-    max-width: 650px;
-    line-height: 20px;
-    border-left: 2px solid #e03e10;
-    padding-left: 15px;
-
-    &.skeleton-active {
-      background-color: $skeleton-bg;
-      width: 500px;
-      height: 40px;
-      color: transparent;
-      border-radius: 10px;
-      border: none;
-    }
-  }
-
-  &-content {
-    &.skeleton-active {
-      > * {
-        opacity: 0;
-      }
-
-      background-color: $skeleton-bg;
-      width: 150px;
-      height: 25px;
-      color: transparent;
-      border-radius: 10px;
-    }
-  }
-}
+@import "../../../scss/components/sections/inlineAccount";
 </style>

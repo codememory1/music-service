@@ -13,10 +13,6 @@ import BaseModal from "../../components/Modal/BaseModalComponent";
 
 export default {
   name: "SecurityModalComponent",
-  components: {
-    BaseModal
-  },
-
   props: {
     /**
      * Modal name
@@ -27,6 +23,9 @@ export default {
       type: String,
       required: true
     }
+  },
+  components: {
+    BaseModal
   },
 
   methods: {
@@ -47,5 +46,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/components/security";
+@import "../../../scss/components/modals/security";
 </style>

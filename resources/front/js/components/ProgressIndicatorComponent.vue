@@ -1,9 +1,10 @@
 <template>
   <div class="progress-indicator">
-    <div class="progress-indicator__items">
+    <div class="progress-indicator-items">
       <div
-        class="progress-indicator__item"
         v-for="(label, index) in labels"
+        class="progress-indicator__item"
+        :aria-current="index <= getActiveIndex ? 'step' : 'false'"
         :key="index"
         :class="{
           active: index <= getActiveIndex,
@@ -19,7 +20,7 @@
 </template>
 <script>
 export default {
-  name: "ProgressIndicator",
+  name: "ProgressIndicatorComponent",
   props: {
     /**
      * Indicator circle labels

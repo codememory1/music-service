@@ -1,7 +1,9 @@
 <template>
   <button
-    class="base-button"
     type="button"
+    class="base-button"
+    :class="{ disabled: isDisabled }"
+    :aria-disabled="isDisabled"
     @click="$emit('click')"
   >
     <slot />
@@ -9,20 +11,21 @@
 </template>
 <script>
 export default {
-  name: "BaseButtonComponent"
+  name: "BaseButtonComponent",
+  props: {
+    /**
+     * State disabled button
+     *
+     * @type {Boolean}
+     */
+    isDisabled: {
+      type: Boolean,
+      default: false,
+      required: false
+    }
+  }
 };
 </script>
 <style lang="scss">
 @import "../../../scss/variables";
-
-.base-button {
-  &.skeleton-active {
-    width: 170px;
-    background-color: $skeleton-bg;
-    border-radius: 10px;
-    color: transparent;
-    height: 39px;
-    pointer-events: none;
-  }
-}
 </style>

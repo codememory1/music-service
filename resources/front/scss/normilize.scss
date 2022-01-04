@@ -1,12 +1,12 @@
 @import "~normalize.css";
-@import "mixins/scrollbarMixin";
+@import "mixins/scrollbar";
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 
-  @include scrollbarMixin;
+  @include scrollbar;
 }
 
 a {

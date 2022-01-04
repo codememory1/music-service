@@ -8,22 +8,12 @@
     {# Подключение файла с links(css...) #}
     {% include './blocks/link.html.twig' %}
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SC9XGDPPW8"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag(){
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-
-        gtag('config', 'G-SC9XGDPPW8');
-    </script>
+    {# Подключение google аналитики #}
+    {% include './blocks/google-analytics.html.twig' %}
 </head>
 <body>
 
-<div id="app">
+<div id="app" role="application">
     <router-view :data-parameters="{{ parameters | json_encode() }}"></router-view>
 </div>
 

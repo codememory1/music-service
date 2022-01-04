@@ -1,6 +1,11 @@
 <template>
-  <router-link class="navigation__item" active-class="active" :to="link">
-    <li :class="{ 'skeleton-active': isLoading }">
+  <router-link
+    class="navigation__item"
+    active-class="active"
+    :to="link"
+    role="presentation"
+  >
+    <li :class="{ 'skeleton-active': isLoading }" role="menuitem">
       <svg-alias :alias="iconAlias" />
       {{ label }}
     </li>
@@ -62,18 +67,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-@import "../../../scss/variables";
-
-.skeleton-active {
-  background-color: $skeleton-bg;
-  width: 190px;
-  height: 10px;
-  border-radius: 10px;
-  color: transparent;
-
-  > svg {
-    opacity: 0;
-  }
-}
-</style>

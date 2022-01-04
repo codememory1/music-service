@@ -1,10 +1,13 @@
 <template>
   <li
+    role="option"
     class="option"
     :class="{
       active: isActive,
       disabled: isDisabled
     }"
+    :aria-disabled="isDisabled"
+    :aria-label="label"
     @click="$emit('click', $event)"
   >
     {{ label }}

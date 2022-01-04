@@ -1,10 +1,8 @@
 <template>
-  <nav class="navigation">
-    <img
-      class="navigation__logo"
-      src="/public/images/logo.png"
-      :alt="$attrs.app_name"
-    />
+  <nav class="navigation" role="navigation">
+    <a href="#" aria-current="page">
+      <img class="navigation__logo" src="/public/images/logo.png" alt="logo" />
+    </a>
     <div class="navigation-categories">
       <slot name="categories" />
     </div>
@@ -16,5 +14,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../../scss/components/desktopNavigation";
+@import "../../../scss/components/navigations/desktop";
 </style>

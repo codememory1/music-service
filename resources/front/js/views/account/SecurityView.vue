@@ -1,5 +1,6 @@
 <template>
-  <div class="main__content under-header gutter">
+  <main class="main-content under-header gutter" role="main">
+    <!-- Sessions START -->
     <account-section
       :title="translation('activeSessions')"
       icon-alias="ticket-svg"
@@ -8,6 +9,8 @@
         :message="translation('recommendedActiveSession')"
         type="info"
       />
+
+      <!-- Active sessions START -->
       <div class="active-sessions">
         <active-session
           v-for="(session, index) in sessions"
@@ -20,13 +23,20 @@
           :last-active="session.lastActive"
         />
       </div>
+      <!-- Active sessions END -->
+
+      <!-- Button Delete all active sessions START -->
       <loading-button
-        class="without-bg color__red active-sessions__btn-delete all"
+        class="bg--transparent color--red active-sessions__btn-delete all"
         :class="{ 'skeleton-active': isLoading }"
       >
         {{ translation("deleteAllActiveSessions") }}
       </loading-button>
+      <!-- Button Delete all active sessions END -->
     </account-section>
+    <!-- Sessions END -->
+
+    <!-- Inline sections START -->
     <inline-account-section
       title="Двухфакторная аутентификация"
       subtitle="Дополнительный уровень безопаности, т.е., во время авторизации, на почту будет выслан дополнительный код подверждения."
@@ -45,14 +55,18 @@
       />
     </inline-account-section>
     <inline-account-section title="Изменение пароля">
-      <span class="base-button blue">Открыть окно для изменения пароля</span>
+      <base-button class="bg--blue">
+        Открыть окно для изменения пароля
+      </base-button>
     </inline-account-section>
-    <div class="security__buttons">
-      <loading-button class="base-button accent">
-        {{ translation("btn@updateSecuritySettings") }}
-      </loading-button>
-    </div>
-  </div>
+    <!-- Inline sections END -->
+
+    <!-- Update button START -->
+    <loading-button class="base-button bg--accent">
+      {{ translation("btn@updateSecuritySettings") }}
+    </loading-button>
+    <!-- Update button END -->
+  </main>
 </template>
 <script>
 import { mapGetters, mapMutations } from "vuex";
@@ -62,16 +76,18 @@ import LoadingButton from "../../components/Buttons/LoadingButtonComponent";
 import InlineAccountSection from "../../components/Sections/InlineAccountSecctionComponent";
 import BaseSelect from "../../components/Select/BaseSelectComponent";
 import ActiveSession from "./components/ActiveSessionComponent";
+import BaseButton from "../../components/Buttons/BaseButtonComponent";
 
 export default {
-  name: "SecurityView",
+  name: "SecurityViewComponent",
   components: {
     AccountSection,
     BaseMotionlessAlert,
     LoadingButton,
     InlineAccountSection,
     BaseSelect,
-    ActiveSession
+    ActiveSession,
+    BaseButton
   },
 
   data: () => ({

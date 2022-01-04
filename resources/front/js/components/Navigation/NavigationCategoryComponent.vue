@@ -3,7 +3,7 @@
     <span v-if="undefined !== title" class="navigation-category__name">{{
       title
     }}</span>
-    <ul class="navigation_items">
+    <ul class="navigation_items" role="menubar">
       <slot name="items" />
     </ul>
   </div>

@@ -3,8 +3,9 @@
     <!-- Slot to profile block -->
     <slot name="beforeProfile" />
 
-    <!-- Profile START -->
+    <!-- Right info START -->
     <div class="header-right-info">
+      <!-- Bell START -->
       <div class="header-bell-wrapper" ref="bell">
         <base-button
           tabindex="-1"
@@ -18,12 +19,20 @@
         <!-- Block with notifications -->
         <block-notifications :class="{ active: isOpenedBlockNotifications }" />
       </div>
+      <!-- Bell END -->
+
+      <!-- User START -->
       <div class="header-user" :class="{ 'skeleton-active': isLoading }">
-        <img class="header-user__photo" src="/public/images/user.png" />
+        <img
+          class="header-user__photo"
+          src="/public/images/user.png"
+          :alt="user.name"
+        />
         <svg-alias alias="arrow-down-svg" />
       </div>
+      <!-- User END -->
     </div>
-    <!-- Profile END -->
+    <!-- Right info END -->
   </header>
 </template>
 <script>
@@ -34,7 +43,6 @@ import ClickOut from "../../modules/ClickOut";
 
 export default {
   name: "BaseHeaderComponent",
-
   components: {
     BaseButton,
     BlockNotifications
@@ -68,5 +76,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/components/header";
+@import "../../../scss/components/headers/base";
 </style>

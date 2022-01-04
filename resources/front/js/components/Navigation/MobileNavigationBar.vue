@@ -3,24 +3,31 @@
     <div class="navigation-content">
       <span
         class="navigation__border-top"
+        role="separator"
         :style="{
           left: `${itemWithInPercent * getActiveItemIndex}%`,
           width: `${itemWithInPercent}%`
         }"
       ></span>
-      <ul class="navigation-items">
+
+      <!-- Items START -->
+      <ul class="navigation-items" role="menubar">
         <li
-          class="navigation__item"
           v-for="(item, index) in items"
+          class="navigation__item"
+          role="presentation"
           :key="index"
           :class="{ active: index === getActiveItemIndex }"
           :style="'width:' + itemWithInPercent + '%'"
           @click="clickByItem(index)"
         >
-          <svg-alias :alias="item.iconAlias" />
-          <span>{{ item.name }}</span>
+          <a href="#" role="menuitem">
+            <svg-alias :alias="item.iconAlias" />
+            <span>{{ item.name }}</span>
+          </a>
         </li>
       </ul>
+      <!-- Items START -->
     </div>
   </nav>
 </template>
@@ -81,5 +88,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../../scss/components/mobileNavigationBar";
+@import "../../../scss/components/navigations/mobile";
 </style>

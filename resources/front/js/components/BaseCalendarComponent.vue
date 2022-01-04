@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar">
+  <div class="calendar" aria-label="Calendar">
     <div class="calendar-content">
       <!-- Header START -->
       <div class="calendar-header">
@@ -41,14 +41,19 @@
       <div class="calendar-days">
         <span
           class="calendar__day disabled"
+          aria-disabled="true"
           v-for="(_, index) in startedFromWeek"
           :key="index"
         ></span>
         <span
-          class="calendar__day"
           v-for="(day, index) in date.getDate()"
+          role="button"
+          class="calendar__day"
           :class="{ active: day === displayedData.day }"
           :key="index + startedFromWeek"
+          :aria-current="day === displayedData.day ? 'date' : 'false'"
+          :aria-selected="day === displayedData.day ? 'true' : 'false'"
+          :tabindex="day === displayedData.day ? '0' : '-1'"
           @click="datePicker"
         >
           {{ day }}
@@ -59,13 +64,19 @@
 
     <!-- Footer START -->
     <div class="calendar-footer">
-      <div class="calendar__button cancel" @click="cancel">Cancel</div>
-      <div class="calendar__button done" @click="done">Done</div>
+      <base-button class="calendar__button cancel" @click="cancel">
+        Cancel
+      </base-button>
+      <base-button class="calendar__button done" @click="done">
+        Done
+      </base-button>
     </div>
     <!-- Footer END -->
   </div>
 </template>
 <script>
+import BaseButton from "./Buttons/BaseButtonComponent";
+
 export default {
   name: "BaseCalendarComponent",
   props: {
@@ -101,6 +112,9 @@ export default {
       default: new Date().getDate(),
       required: false
     }
+  },
+  components: {
+    BaseButton
   },
 
   data: () => ({

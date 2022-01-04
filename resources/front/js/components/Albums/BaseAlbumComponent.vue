@@ -1,20 +1,24 @@
 <template>
-  <div class="album">
-    <router-link class="album__link" :to="to">
-      <img class="album__image" :src="image" :alt="name" />
-      <span class="album__name">{{ name }}</span>
-      <div class="album-authors">
-        <router-link
-          v-for="(author, index) in authors"
-          :key="index"
-          :to="{ name: 'artist', params: { id: author.id } }"
-        >
-          {{ author.name }}
-        </router-link>
-      </div>
-      <slot />
-    </router-link>
-  </div>
+  <router-link class="album" :to="to">
+    <!-- Info START -->
+    <img class="album__image" :src="image" :alt="name" />
+    <span class="album__name">{{ name }}</span>
+    <!-- Info START -->
+
+    <!-- Authors START -->
+    <div class="album-authors">
+      <router-link
+        v-for="(author, index) in authors"
+        :key="index"
+        :to="{ name: 'artist', params: { id: author.id } }"
+      >
+        {{ author.name }}
+      </router-link>
+    </div>
+    <!-- Authors START -->
+
+    <slot />
+  </router-link>
 </template>
 <script>
 export default {

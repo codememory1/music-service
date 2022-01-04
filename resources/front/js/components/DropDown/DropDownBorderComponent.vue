@@ -1,5 +1,5 @@
 <template>
-  <span class="drop-down__border"></span>
+  <span class="drop-down__border" role="separator"></span>
 </template>
 <script>
 export default {

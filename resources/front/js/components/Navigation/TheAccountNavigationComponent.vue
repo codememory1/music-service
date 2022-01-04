@@ -1,5 +1,5 @@
 <template>
-  <base-navigation>
+  <base-navigation aria-label="Account navigation">
     <template v-slot:categories>
       <navigation-category>
         <template v-slot:items>
@@ -56,19 +56,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/variables";
-
-.language-region {
-  & ::v-deep path {
-    fill: none;
-    stroke: $abs-light-bg-color;
-  }
-
-  &.active {
-    & ::v-deep path {
-      fill: none;
-      stroke: $accent;
-    }
-  }
-}
+@import "../../../scss/components/navigations/account";
 </style>

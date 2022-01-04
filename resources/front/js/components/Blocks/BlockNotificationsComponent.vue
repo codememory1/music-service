@@ -37,19 +37,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../../scss/components/blocks/blockNotifications";
-
-.no-notifications-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-
-  & > p {
-    color: $abs-light-bg-color;
-    font-weight: 500;
-    margin-top: 36px;
-  }
-}
+@import "../../../scss/components/blocks/notifications";
 </style>

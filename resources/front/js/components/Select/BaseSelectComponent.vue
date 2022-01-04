@@ -49,6 +49,7 @@
           ref="listOptions"
           class="list-options"
           :class="{ top: listOptionsIsTop }"
+          :aria-expanded="isOpen"
         >
           <!-- Search START -->
           <base-select-search v-if="withSearch" @input="search" />

@@ -1,7 +1,10 @@
 <template>
   <div class="subscription" :style="getCardStyles">
     <slot name="bang" />
+
+    <!-- Content START -->
     <div class="subscription-content">
+      <!-- Info START -->
       <h3 class="subscription__title">
         {{ title }}
       </h3>
@@ -15,6 +18,7 @@
       <span class="subscription__acts">
         Subscription is valid for {{ isValid }} months
       </span>
+      <!-- Info END -->
 
       <!-- Subscription options START -->
       <div class="subscription-options">
@@ -38,6 +42,7 @@
         Activate
       </base-link-button>
     </div>
+    <!-- Content END -->
   </div>
 </template>
 <script>
@@ -49,7 +54,6 @@ export default {
   components: {
     BaseLinkButton
   },
-
   props: {
     /**
      * Subscription indicator

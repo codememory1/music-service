@@ -1,22 +1,22 @@
 <template>
-  <footer class="footer">
+  <footer class="footer" role="contentinfo">
     <div class="container">
-      <div class="footer__logo">
-        <img-alias alias="logo" alt="logo" />
-      </div>
-      <div class="footer__columns">
-        <div class="footer__column">
-          <div class="footer_column__name">About</div>
-          <div class="footer_column__items">
+      <img-alias class="footer__logo" alias="logo" alt="Logo" />
+
+      <!-- Columns START -->
+      <div class="footer-columns">
+        <div class="footer-column">
+          <span class="footer-column__name">About</span>
+          <div class="footer-column-items">
             <a href="#">About</a>
             <a href="#">Submit an issue</a>
             <a href="#">GidHub Repo</a>
             <a href="#">Slack</a>
           </div>
         </div>
-        <div class="footer__column">
-          <div class="footer_column__name">Getting started</div>
-          <div class="footer_column__items">
+        <div class="footer-column">
+          <span class="footer-column__name">Getting started</span>
+          <div class="footer-column-items">
             <a href="#">Introduction</a>
             <a href="#">Documentation</a>
             <a href="#">Usage</a>
@@ -26,9 +26,9 @@
             <a href="#">Themes</a>
           </div>
         </div>
-        <div class="footer__column">
-          <div class="footer_column__name">Resources</div>
-          <div class="footer_column__items">
+        <div class="footer-column">
+          <span class="footer-column__name">Resources</span>
+          <div class="footer-column-items">
             <a href="#">API</a>
             <a href="#">Form validation product</a>
             <a href="#">Visibility</a>
@@ -38,8 +38,8 @@
             <a href="#">Marketplace</a>
           </div>
         </div>
-        <div class="footer__column footer__column--network">
-          <div class="footer_column__name">Social media</div>
+        <div class="footer-column network">
+          <span class="footer-column__name">Social media</span>
           <p>
             Follow us to social media to find out the latest updates on our
             progress
@@ -60,21 +60,25 @@
           </div>
         </div>
       </div>
+      <!-- Copyright END -->
+
+      <!-- Copyright START -->
       <div class="copyright">
         <span>© 2021 flow-ui. All rights reserved</span>
-        <div class="copyright__items">
+        <div class="copyright-items">
           <a href="#">Teams of Service</a>
           <a href="#">Privacy Policy</a>
           <a href="#">Security</a>
           <a href="#">Sitemap</a>
         </div>
       </div>
+      <!-- Copyright END -->
     </div>
   </footer>
 </template>
 <script>
 export default {
-  name: "TheFooter"
+  name: "TheFooterComponent"
 };
 </script>
 <style lang="scss">

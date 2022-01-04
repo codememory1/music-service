@@ -4,26 +4,26 @@
     <template v-slot:form>
       <security-modal-form button-label="Create account">
         <!-- Form Fields START -->
-        <security-form-field
+        <security-modal-field
           label="Name"
           icon-class="fa-id-card"
           :value="name"
           v-model="name"
         />
-        <security-form-field
+        <security-modal-field
           label="Email"
           icon-class="fa-envelope"
           :value="email"
           v-model="email"
         />
-        <security-form-field
+        <security-modal-field
           label="Password"
           icon-class="fa-key"
           type="password"
           :value="password"
           v-model="password"
         />
-        <security-form-field
+        <security-modal-field
           label="Repeat password"
           icon-class="fa-key"
           type="password"
@@ -55,15 +55,15 @@
 </template>
 <script>
 import SecurityModal from "./SecurityModalComponent";
-import SecurityModalForm from "./SecurityModalFormComponent";
-import SecurityFormField from "./SecurityFormFieldComponent";
+import SecurityModalForm from "../Forms/SecurityModalFormComponent";
+import SecurityModalField from "../Fields/SecurityModalFieldComponent";
 
 export default {
   name: "RegisterModalComponent",
   components: {
     SecurityModal,
     SecurityModalForm,
-    SecurityFormField
+	SecurityModalField
   },
 
   data: () => ({
@@ -91,28 +91,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/variables";
-
-.other-links {
-  margin-top: 30px;
-  margin-bottom: 55px;
-
-  p {
-    font-size: 14px;
-    font-weight: 400;
-    color: #fff;
-    text-align: center;
-    margin: 7px 0;
-
-    span {
-      color: $accent;
-      transition: color 0.2s ease-in-out;
-      cursor: pointer;
-
-      &:hover {
-        color: darken($accent, 10%);
-      }
-    }
-  }
-}
+@import "../../../scss/components/modals/register";
 </style>

@@ -1,7 +1,8 @@
 <template>
   <div
-    ref="dialog"
     class="modal"
+    aria-haspopup="dialog"
+    ref="modal"
     :class="{ active: isOpen }"
     @click="closeOutContainer"
   >
@@ -78,5 +79,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../../scss/components/modal";
+@import "../../../scss/components/modals/base";
 </style>

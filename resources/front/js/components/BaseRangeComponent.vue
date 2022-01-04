@@ -1,5 +1,6 @@
 <template>
   <vue-slider
+    role="progressbar"
     v-model="value"
     :enable-cross="multipleCross"
     :min="min"

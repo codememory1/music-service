@@ -1,5 +1,6 @@
 <template>
   <base-section :title="sectionTitle" class="top-albums">
+    <!-- Control START -->
     <template v-slot:top>
       <base-slider-navigation
         ref="sliderNavigation"
@@ -7,8 +8,11 @@
         @next="nextSlide"
       />
     </template>
+    <!-- Control END -->
+
+    <!-- Albums START -->
     <template v-slot:content>
-      <div class="albums">
+      <div class="albums" role="slider">
         <core-swiper ref="albumsSwiper" :options="swiperOptions">
           <slide-swiper v-for="(album, index) in albums" :key="index">
             <slot name="slider" :album="album" />
@@ -16,19 +20,16 @@
         </core-swiper>
       </div>
     </template>
+    <!-- Albums END -->
   </base-section>
 </template>
 <script>
-import BaseSliderNavigation from "../components/Navigation/BaseSliderNavigationComponent";
-import BaseSection from "./Sections/BaseSectionComponent";
+import BaseSliderNavigation from "../Navigation/BaseSliderNavigationComponent";
+import BaseSection from "../Sections/BaseSectionComponent";
 import "swiper/css/swiper.css";
 
 export default {
-  name: "SectionAlbums",
-  components: {
-    BaseSliderNavigation,
-    BaseSection
-  },
+  name: "AlbumSectionComponent",
   props: {
     /**
      * Section title for top
@@ -49,6 +50,10 @@ export default {
       type: Array,
       required: true
     }
+  },
+  components: {
+	BaseSliderNavigation,
+	BaseSection
   },
 
   data: () => ({
@@ -75,17 +80,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../scss/variables";
-.albums {
-  width: 100%;
-}
-
-.top-albums {
-  margin-top: 60px;
-}
-
-.swiper-slide {
-  display: flex;
-  justify-content: center;
-}
+@import "../../../scss/components/sections/albums";
 </style>

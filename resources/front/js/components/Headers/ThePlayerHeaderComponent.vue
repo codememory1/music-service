@@ -29,36 +29,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/variables";
-
-.player-header-search {
-  position: relative;
-  display: flex;
-  align-items: center;
-
-  svg {
-    width: 20px;
-    height: 20px;
-    margin-right: 8px;
-    position: relative;
-
-    ::v-deep path {
-      fill: #fff;
-      transition: fill 0.3s ease-in-out;
-    }
-  }
-
-  &__input {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
-
-    ::placeholder {
-      color: darken(#fff, 10%);
-    }
-  }
-}
+@import "../../../scss/components/headers/player";
 </style>

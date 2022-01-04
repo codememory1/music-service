@@ -1,5 +1,5 @@
 <template>
-  <div ref="mainContent" class="main__content">
+  <main ref="mainContent" class="main-content" role="main">
     <!-- Header START -->
     <div class="artist-header" :style="artistHeaderStyle">
       <div class="relative">
@@ -115,8 +115,8 @@
       <!-- Similar artists END -->
     </div>
     <drop-down
-      ref="musicItemDropDown"
       class="music-item-drop-down"
+      ref="musicItemDropDown"
       :is-active="
         isOpenedMusicItemDropDown && !$store.getters['layoutScroll/isScroll']
       "
@@ -137,17 +137,17 @@
       <drop-down-item label="Нравится" />
       <drop-down-item label="Не нравится" />
     </drop-down>
-  </div>
+  </main>
 </template>
 <script>
 import { mapMutations, mapGetters } from "vuex";
 import BaseButton from "../../components/Buttons/BaseButtonComponent";
 import ShareButton from "../../components/Buttons/ShareButtonComponent";
 import BaseAlbum from "../../components/Albums/BaseAlbumComponent";
-import SectionAlbums from "../../components/SectionAlbumsComponent";
+import SectionAlbums from "../../components/Sections/AlbumsSectionComponent";
 import BaseSection from "../../components/Sections/BaseSectionComponent";
 import MusicItem from "../../components/MusicItemComponent";
-import AlbumWithPlay from "../../components/Albums/AlbumWithPlayComponent";
+import AlbumWithPlay from "../../components/Albums/AlbumWithPlayButtonComponent";
 import DropDown from "../../components/DropDown/DropDownComponent";
 import DropDownItem from "../../components/DropDown/DropDownItemComponent";
 import DropDownBorder from "../../components/DropDown/DropDownBorderComponent";
@@ -361,10 +361,6 @@ export default {
     }
   },
 
-  created() {
-    this.$store.commit("loading/setLoading", false);
-  },
-
   mounted() {
     ClickOut(this.$refs.musicItemDropDown.$el, (status) => {
       if (status) {
@@ -423,6 +419,7 @@ export default {
   transform: translateY(80px);
   transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out,
     transform 0.5s ease-in-out;
+  position: absolute;
 
   &.active {
     visibility: visible;

@@ -1,4 +1,5 @@
-@import "../variables";
+@import "../../variables";
+@import "../../mixins/skeleton";
 
 .header {
   width: 100%;
@@ -56,8 +57,7 @@
         border-radius: 100%;
       }
 
-      &.skeleton-active {
-        background-color: $skeleton-bg;
+      @include skeleton {
         width: 24px;
         height: 24px;
         border-radius: 100%;
@@ -86,8 +86,7 @@
       object-fit: cover;
     }
 
-    &.skeleton-active {
-      background-color: $skeleton-bg;
+    @include skeleton {
       width: 40px;
       height: 40px;
       border-radius: 100%;

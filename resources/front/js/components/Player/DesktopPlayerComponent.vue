@@ -41,7 +41,7 @@
         <div class="min-volume">
           <svg-alias alias="min-volume-svg" />
         </div>
-        <progress-bar class="volume__progress" />
+        <base-range class="volume__progress" />
         <div class="max-volume">
           <svg-alias alias="max-volume-svg" />
         </div>
@@ -55,7 +55,7 @@
       <div class="duration">
         <span>0:58</span>
       </div>
-      <progress-bar class="duration__progress" />
+      <base-range class="duration__progress" />
       <div class="total">
         <span>5:18</span>
       </div>
@@ -64,12 +64,12 @@
   </div>
 </template>
 <script>
-import ProgressBar from "../BaseRangeComponent";
+import BaseRange from "../BaseRangeComponent";
 
 export default {
   name: "DesktopPlayerComponent",
   components: {
-    ProgressBar
+	BaseRange
   }
 };
 </script>

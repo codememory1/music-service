@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="section" :aria-label="title">
     <div class="section-top">
       <h3 class="section__title">{{ title }}</h3>
       <slot name="top" />
@@ -26,5 +26,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../../scss/components/section";
+@import "../../../scss/components/sections/base";
 </style>

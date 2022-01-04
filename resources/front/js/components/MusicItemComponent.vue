@@ -4,6 +4,7 @@
     class="music-item"
     @contextmenu.prevent="$emit('contextmenu', $event)"
   >
+    <!-- Info START -->
     <div class="music-item-left-info">
       <img class="music-item__image" :src="image" :alt="name" />
       <div class="music-item-names">
@@ -11,6 +12,9 @@
         <span class="music-item__author">{{ author }}</span>
       </div>
     </div>
+    <!-- Info END -->
+
+    <!-- Times info START -->
     <div class="music-item-right-info">
       <span class="music-item__time">03:20</span>
 
@@ -33,11 +37,12 @@
       </div>
       <!-- Actions END -->
     </div>
+    <!-- Times info END -->
   </div>
 </template>
 <script>
 export default {
-  name: "MusicItem",
+  name: "MusicItemComponent",
   props: {
     /**
      * Music image

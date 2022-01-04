@@ -1,31 +1,38 @@
 <template>
   <div class="active-session">
-    <div class="active-session__left">
-      <svg-alias
-        v-if="'computer' === deviceType"
-        alias="desktop-svg"
-        :class="{ 'skeleton-active': isLoading }"
-      />
-      <svg-alias
-        v-else
-        alias="smartphone-svg"
-        :class="{ 'skeleton-active': isLoading }"
-      />
-    </div>
+    <!-- Icon START -->
+    <svg-alias
+      v-if="'computer' === deviceType"
+      alias="desktop-svg"
+      class="active-session__icon"
+      :class="{ 'skeleton-active': isLoading }"
+    />
+    <svg-alias
+      v-else
+      alias="smartphone-svg"
+      class="active-session__icon"
+      :class="{ 'skeleton-active': isLoading }"
+    />
+    <!-- Icon END -->
 
-    <!-- Session info START -->
-    <div class="active-session__right">
-      <div class="active-session__right-info">
+    <!-- Content START -->
+    <div class="active-session-content">
+      <!-- Info START -->
+      <div class="active-session-info">
+        <!-- Device and address START -->
         <p
-          class="active-session__right-top"
+          class="active-session-info__device-address"
           :class="{ 'skeleton-active': isLoading }"
         >
           <span class="active-session__device">{{ deviceName }}</span>
           -
           <span class="active-session__address">{{ address }}</span>
         </p>
+        <!-- Device and address END -->
+
+        <!-- Browser and last activity START -->
         <p
-          class="active-session__right-down"
+          class="active-session-info__browser-last-activity"
           :class="{ 'skeleton-active': isLoading }"
         >
           <span class="active-session__browser">{{ browser }}</span>
@@ -35,18 +42,20 @@
           </span>
           <span v-else class="active-session__activity">{{ lastActive }}</span>
         </p>
+        <!-- Browser and last activity END -->
       </div>
-      <!-- Session info END -->
+      <!-- Info END -->
 
       <!-- Button delete session START -->
       <loading-button
-        class="without-bg color__red active-sessions__btn-delete"
+        class="bg--transparent color--red active-sessions__btn-delete"
         :class="{ 'skeleton-active': isLoading }"
       >
         {{ translation("deleteSession") }}
       </loading-button>
       <!-- Button delete session END -->
     </div>
+    <!-- Content END -->
   </div>
 </template>
 

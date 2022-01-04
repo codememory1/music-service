@@ -22,7 +22,7 @@
     </div>
     <!-- Times END -->
 
-    <progress-bar />
+    <base-range />
 
     <!-- Control START -->
     <div class="opened-mobile-player-control">
@@ -48,12 +48,12 @@
   </div>
 </template>
 <script>
-import ProgressBar from "../BaseRangeComponent";
+import BaseRange from "../BaseRangeComponent";
 
 export default {
   name: "MobileOpenedPlayerComponent",
   components: {
-    ProgressBar
+    BaseRange
   },
   props: {
     /**

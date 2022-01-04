@@ -1,7 +1,8 @@
 <template>
   <base-button
     class="loading-button"
-    :class="{ disabled: isLoading, active: isLoading }"
+    :class="{ active: isLoading }"
+    :is-disabled="isDisabled || isLoading"
     @click="$emit('click')"
   >
     <slot />
@@ -12,10 +13,6 @@ import BaseButton from "./BaseButtonComponent";
 
 export default {
   name: "LoadingButtonComponent",
-  components: {
-    BaseButton
-  },
-
   props: {
     /**
      * Show loader on button
@@ -26,43 +23,24 @@ export default {
       type: Boolean,
       default: false,
       required: false
+    },
+
+    /**
+     * State disabled button
+     *
+     * @type {Boolean}
+     */
+    isDisabled: {
+      type: Boolean,
+      default: false,
+      required: false
     }
+  },
+  components: {
+    BaseButton
   }
 };
 </script>
 <style lang="scss" scoped>
-.loading-button {
-  position: relative;
-
-  &.active {
-    color: transparent;
-
-    &:after {
-      content: "\f3f4";
-      position: absolute;
-      font-family: "Font Awesome 5 Pro", sans-serif;
-      color: #fff;
-      transition: all 0.5s ease;
-      animation: rotate 1s linear infinite;
-      font-size: 20px;
-    }
-
-    &:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: inherit;
-      border-radius: inherit;
-    }
-  }
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(360deg);
-  }
-}
+@import "../../../scss/components/loadingButton";
 </style>

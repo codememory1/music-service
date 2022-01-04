@@ -1,4 +1,4 @@
-@import "../variables";
+@import "../../variables";
 
 .header {
   padding: 50px 0;
@@ -75,35 +75,6 @@
       padding: 12px 25px;
       border-radius: 30px;
       width: max-content;
-    }
-  }
-}
-
-.navigation {
-  &-items {
-    display: flex;
-    margin-right: 85px;
-    height: 100%;
-    align-items: center;
-  }
-
-  &__item {
-    margin-right: 50px;
-    list-style: none;
-
-    &:last-of-type {
-      margin-right: 0;
-    }
-
-    a {
-      font-size: 18px;
-      font-weight: 400;
-      color: #fff;
-      transition: color 0.2s ease-in-out;
-
-      &:hover {
-        color: $accent;
-      }
     }
   }
 }

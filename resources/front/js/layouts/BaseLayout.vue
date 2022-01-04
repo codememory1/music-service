@@ -6,8 +6,8 @@
     <!-- Navigation -->
     <slot name="navigation" />
 
-    <div ref="layoutContent" class="base-layout__content">
-      <div class="content__scroll" ref="contentScroll">
+    <div ref="layoutContent" class="base-layout-content">
+      <div class="content-scroll" role="scrollbar" ref="contentScroll">
         <!-- Header -->
         <slot name="header" />
 
@@ -62,37 +62,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../scss/variables";
-@import "../../scss/mixins/scrollbarMixin";
-
-.base-layout {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  overflow: hidden;
-  height: 100%;
-
-  &__content {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-  }
-}
-
-.navigation {
-  min-width: 300px;
-  border-right: 1px solid $light-bg;
-}
-
-.content__scroll {
-  height: 100%;
-  overflow: auto;
-
-  @include scrollbarMixin;
-}
-
-.main__content {
-  margin-bottom: 30px;
-}
+@import "../../scss/layouts/baseLayout";
 </style>

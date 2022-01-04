@@ -8,9 +8,10 @@
 
     <div class="container">
       <!-- Start sections  advantages -->
-      <section class="out-advantages">
+      <section class="out-advantages" aria-label="Advantages">
         <h2 class="out-advantages__title">Our advantages</h2>
         <div class="advantages">
+          <!-- Advantages START -->
           <div class="advantage">
             <div class="advantage__icon">
               <inline-svg src="public/images/icons/unique-features.svg" />
@@ -87,17 +88,19 @@
               </p>
             </div>
           </div>
+          <!-- Advantages END -->
         </div>
       </section>
       <!-- End sections  advantages -->
 
       <!-- Start sections subscriptions -->
-      <section class="subscriptions">
+      <section class="subscriptions" aria-label="Subscriptions">
         <h2 class="subscriptions__title">Choose your subscription</h2>
         <p class="subscriptions__text">
           Listen without limits on your phone, speaker and other devices
         </p>
 
+        <!-- Subscriptions -->
         <div class="subscription__cards">
           <base-subscription
             :id="1"

@@ -1,6 +1,7 @@
 <template>
   <li
     class="drop-down__item"
+    role="listitem"
     :class="{
       multiple: isMultiple,
       disabled: isDisabled

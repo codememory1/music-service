@@ -28,22 +28,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/variables";
-
-.header {
-  &__page-title {
-    font-size: 20px;
-    color: $section-color;
-    display: flex;
-    align-items: center;
-
-    &.skeleton-active {
-      background-color: $skeleton-bg;
-      width: 190px;
-      height: 15px;
-      border-radius: 10px;
-      color: transparent;
-    }
-  }
-}
+@import "../../../scss/components/headers/account";
 </style>

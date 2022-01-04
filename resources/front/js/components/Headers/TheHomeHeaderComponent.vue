@@ -35,33 +35,27 @@
 
         <div class="header-navbar-right-info">
           <!-- Navigation START -->
-          <nav class="navigation" role="navigation">
-            <ul class="navigation-items">
-              <li class="navigation__item">
-                <a href="#">Premium</a>
-              </li>
-              <li class="navigation__item">
-                <a href="#">Help</a>
-              </li>
-              <li class="navigation__item">
-                <a href="#">Download</a>
-              </li>
-              <li
-                v-if="!isAuth"
-                class="navigation__item"
-                @click.prevent="$refs.registerModal.open()"
-              >
-                <a href="#">Sign up</a>
-              </li>
-              <li
-                v-if="!isAuth"
-                class="navigation__item"
-                @click.prevent="$refs.authModal.open()"
-              >
-                <a href="#">Sing in</a>
-              </li>
-            </ul>
-          </nav>
+          <the-home-navigation
+            :register-modal="$refs.registerModal"
+            :auth-modal="$refs.authModal"
+          >
+            <li
+              v-if="!isAuth"
+              class="navigation__item"
+              role="presentation"
+              @click.prevent="$refs.registerModal.open()"
+            >
+              <a href="#" role="menuitem">Sign up</a>
+            </li>
+            <li
+              v-if="!isAuth"
+              class="navigation__item"
+              role="presentation"
+              @click.prevent="$refs.authModal.open()"
+            >
+              <a href="#" role="menuitem">Sing in</a>
+            </li>
+          </the-home-navigation>
           <!-- Navigation END -->
 
           <!-- Select Lang START -->
@@ -117,6 +111,7 @@ import PasswordRecoveryRequestModal from "../Modal/PasswordRecoveryRequestModalC
 import PasswordRecoveryModal from "../Modal/PasswordRecoveryModalComponent";
 import Config from "../../modules/Config";
 import BaseLinkButton from "../Buttons/BaseLinkButtonComponent";
+import TheHomeNavigation from "../Navigation/TheHomeNavigationComponent";
 
 export default {
   name: "TheHomeHeaderComponent",
@@ -126,7 +121,8 @@ export default {
     RegisterModal,
     PasswordRecoveryRequestModal,
     PasswordRecoveryModal,
-    BaseLinkButton
+    BaseLinkButton,
+    TheHomeNavigation
   },
 
   data: () => ({
@@ -298,7 +294,9 @@ export default {
       language: "translation/lang"
     }),
 
-    playerUrl: () => Config.player_url
+    playerUrl() {
+      return Config.player_url;
+    }
   },
 
   mounted() {
@@ -327,5 +325,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/components/homeHeader";
+@import "../../../scss/components/headers/home";
 </style>

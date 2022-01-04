@@ -1,6 +1,7 @@
 <template>
   <div
     v-if="type === 'success'"
+    role="alert"
     class="base-motionless-alert success"
     :class="{ 'skeleton-active': !isLoading }"
   >
@@ -9,6 +10,7 @@
   </div>
   <div
     v-else-if="type === 'error'"
+    role="alert"
     class="base-motionless-alert error"
     :class="{ 'skeleton-active': !isLoading }"
   >
@@ -17,6 +19,7 @@
   </div>
   <div
     v-else-if="type === 'warning'"
+    role="alert"
     class="base-motionless-alert warning"
     :class="{ 'skeleton-active': !isLoading }"
   >
@@ -25,8 +28,10 @@
   </div>
   <div
     v-else-if="type === 'info'"
+    role="alert"
     class="base-motionless-alert info"
-    :class="{ 'skeleton-active': isLoading }">
+    :class="{ 'skeleton-active': isLoading }"
+  >
     <i class="far fa-exclamation-circle"></i>
     <span>{{ message }}</span>
   </div>
@@ -62,48 +67,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "../../scss/variables";
-
-.base-motionless-alert {
-  display: flex;
-  padding: 10px;
-  width: max-content;
-  border-radius: 5px;
-  color: #fff;
-  font-weight: 500;
-  align-items: center;
-
-  &.skeleton-active {
-    width: 400px;
-    height: 30px;
-    background-color: $skeleton-bg !important;
-    color: transparent;
-  }
-
-  > i {
-    font-size: 18px;
-    opacity: 0.6;
-  }
-
-  > span {
-    margin-left: 10px;
-    font-size: 14px;
-  }
-
-  &.success {
-    background-color: #128039;
-  }
-
-  &.error {
-    background-color: $red;
-  }
-
-  &.warning {
-    background-color: #c17300;
-  }
-
-  &.info {
-    background-color: #125280;
-  }
-}
+@import "../../scss/components/motionlessAlert";
 </style>

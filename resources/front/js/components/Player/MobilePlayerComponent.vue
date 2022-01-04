@@ -1,5 +1,6 @@
 <template>
   <div class="mobile-player">
+    <!-- Music Info START -->
     <div class="mobile-player-left-info">
       <img class="mobile-player__image" :src="image" :alt="name" />
       <div class="music-info">
@@ -7,17 +8,23 @@
         <span class="mobile-player-info__author">{{ author }}</span>
       </div>
     </div>
+    <!-- Music Info END -->
+
+    <!-- Control START -->
     <div class="mobile-player-control">
-      <div class="mobile-player__play-pause">
+      <base-button class="mobile-player__play-pause">
         <svg-alias alias="pause-bold-svg" />
-      </div>
-      <div class="mobile-player__next">
+      </base-button>
+      <base-button class="mobile-player__next">
         <svg-alias alias="next-svg" />
-      </div>
+      </base-button>
     </div>
+    <!-- Control END -->
   </div>
 </template>
 <script>
+import BaseButton from "../Buttons/BaseButtonComponent";
+
 export default {
   name: "MobilePlayer",
   props: {
@@ -50,6 +57,9 @@ export default {
       type: String,
       required: true
     }
+  },
+  components: {
+    BaseButton
   }
 };
 </script>

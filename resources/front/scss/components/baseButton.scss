@@ -1,3 +1,7 @@
+@import "../variables";
+@import "../mixins/button";
+@import "../mixins/skeleton";
+
 .base-button {
   padding: 8px 13px;
   border-radius: 8px;
@@ -12,92 +16,23 @@
   border: none;
   cursor: pointer;
 
-  &.bg {
-    &--accent {
-      background-color: $accent;
-
-      &:hover {
-        background-color: darken($accent, 10%);
-      }
-    }
-
-    &--dark {
-      background-color: $dark-bg;
-
-      &:hover {
-        background-color: lighten($dark-bg, 10%);
-      }
-    }
-
-    &--blue {
-      background-color: $blue;
-
-      &:hover {
-        background-color: darken($blue, 10%);
-      }
-    }
-
-    &--green {
-      background-color: $green;
-
-      &:hover {
-        background-color: darken($green, 10%);
-      }
-    }
-
-    &--red {
-      background-color: $red;
-
-      &:hover {
-        background-color: darken($red, 10%);
-      }
-    }
-
-    &--transparent {
-      background-color: transparent;
-
-      &:hover {
-        background-color: #0D1828;
-      }
-    }
+  @include skeleton {
+    border-radius: 10px;
+    width: 170px;
+    height: 39px;
   }
 
-  &.color {
-    &--red {
-      color: $red;
+  // Backgrounds
+  @include buttonBackground("accent", $accent);
+  @include buttonBackground("dark", $dark-bg, "lighten");
+  @include buttonBackground("blue", $blue);
+  @include buttonBackground("green", $green);
+  @include buttonBackground("red", $red);
+  @include buttonBackground("transparent", transparent, "darken", #0D1828);
 
-      &:hover {
-        color: darken($red, 10%);
-      }
-    }
-
-    &--accent {
-      color: $accent;
-
-      &:hover {
-        color: darken($accent, 10%);
-      }
-    }
-
-    &--blue {
-      color: $blue;
-
-      &:hover {
-        color: darken($blue, 10%);
-      }
-    }
-
-    &--green {
-      color: $green;
-
-      &:hover {
-        color: darken($green, 10%);
-      }
-    }
-  }
-
-  &.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-  }
+  // Colors
+  @include buttonColor("red", $red);
+  @include buttonColor("accent", $accent);
+  @include buttonColor("blue", $blue);
+  @include buttonColor("green", $green);
 }

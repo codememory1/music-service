@@ -16,7 +16,7 @@
 import LoadingButton from "../Buttons/LoadingButtonComponent";
 
 export default {
-  name: "SecurityModalForm",
+  name: "SecurityModalFormComponent",
 
   components: {
     LoadingButton
@@ -47,15 +47,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.security-button-wrapper {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 45px;
-}
-
-.security-form__button {
-  border-radius: 60px;
-  padding: 14px 30px;
-  font-weight: 500;
-}
+@import "../../../scss/components/forms/securityModal";
 </style>

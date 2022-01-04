@@ -1,6 +1,6 @@
 @import "../variables";
 
-@mixin scrollbarMixin($bg: $abs-light-bg, $thumb: $accent) {
+@mixin scrollbar($bg: $abs-light-bg, $thumb: $accent) {
   &::-webkit-scrollbar {
     width: 4px;
     background-color: $bg;

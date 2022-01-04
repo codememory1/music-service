@@ -11,10 +11,6 @@
   border-radius: 5px;
   position: relative;
 
-  &__drop-down {
-    position: absolute;
-  }
-
   &:hover {
     background-color: lighten($dark-bg, 5%);
   }

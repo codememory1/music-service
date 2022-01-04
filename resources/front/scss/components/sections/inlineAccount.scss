@@ -1,0 +1,62 @@
+@import "../../variables";
+@import "../../mixins/skeleton";
+
+.inline-account-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $light-border;
+  margin-bottom: 30px;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 500;
+    color: $section-color;
+    margin-bottom: 15px;
+
+    @include skeleton {
+      width: 250px;
+      height: 15px;
+      border-radius: 10px;
+    }
+  }
+
+  &__subtitle {
+    color: $gray;
+    margin-left: 15px;
+    font-size: 14px;
+    max-width: 650px;
+    line-height: 20px;
+    border-left: 2px solid #e03e10;
+    padding-left: 15px;
+
+    @include skeleton {
+      width: 500px;
+      height: 40px;
+      border-radius: 10px;
+      border: none;
+    }
+  }
+
+  &-content {
+    @include skeleton {
+      width: 150px;
+      height: 25px;
+      border-radius: 10px;
+
+      > * {
+        opacity: 0;
+      }
+    }
+  }
+}

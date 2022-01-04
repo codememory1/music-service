@@ -4,7 +4,7 @@
     :class="{ active: isActive }"
     :aria-expanded="isActive"
   >
-    <ul class="drop-down-items">
+    <ul class="drop-down-items" role="list">
       <slot />
     </ul>
   </div>

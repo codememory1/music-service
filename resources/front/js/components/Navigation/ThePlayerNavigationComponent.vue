@@ -1,5 +1,5 @@
 <template>
-  <base-navigation>
+  <base-navigation aria-label="Player navigation">
     <template v-slot:categories>
       <navigation-category>
         <template v-slot:items>
@@ -56,20 +56,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/variables";
-
-.favorite-songs,
-.my-playlists {
-  & ::v-deep path {
-    fill: none;
-    stroke: $abs-light-bg-color;
-  }
-
-  &.active {
-    & ::v-deep path {
-      fill: none;
-      stroke: $accent;
-    }
-  }
-}
+@import "../../../scss/components/navigations/player";
 </style>

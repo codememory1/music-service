@@ -5,6 +5,8 @@
       src="/public/images/user.png"
       :alt="userName"
     />
+
+	<!-- Content START -->
     <div class="notification-content">
       <div class="notification-content-top">
         <span class="notification__user-name">{{ userName }}</span>
@@ -14,6 +16,7 @@
         <p class="notification__description">{{ description }}</p>
       </div>
     </div>
+	<!-- Content END -->
   </div>
 </template>
 <script>

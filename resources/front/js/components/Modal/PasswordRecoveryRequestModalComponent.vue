@@ -5,7 +5,7 @@
         button-label="Submit a restore request"
         @click="$emit('recovery')"
       >
-        <security-form-field
+        <security-modal-field
           label="Email"
           icon-class="fa-envelope"
           v-model="email"
@@ -16,15 +16,15 @@
 </template>
 <script>
 import SecurityModal from "./SecurityModalComponent";
-import SecurityModalForm from "./SecurityModalFormComponent";
-import SecurityFormField from "./SecurityFormFieldComponent";
+import SecurityModalForm from "../Forms/SecurityModalFormComponent";
+import SecurityModalField from "../Fields/SecurityModalFieldComponent";
 
 export default {
   name: "PasswordRecoverModalComponent",
   components: {
     SecurityModal,
     SecurityModalForm,
-    SecurityFormField
+	SecurityModalField
   },
 
   data: () => ({

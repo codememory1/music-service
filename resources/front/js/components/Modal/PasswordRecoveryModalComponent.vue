@@ -4,7 +4,7 @@
     <template v-slot:contentAfterTitle>
       <div class="code-items">
         <span
-          v-for="(item, index) in code"
+          v-for="(_, index) in code"
           :key="index"
           class="code__item"
           :class="{ active: activeIndexCode === index }"
@@ -23,12 +23,12 @@
     <!-- Form START -->
     <template v-slot:form>
       <security-modal-form button-label="Change password">
-        <security-form-field
+        <security-modal-field
           label="Password"
           icon-class="fa-key"
           v-model="password"
         />
-        <security-form-field
+        <security-modal-field
           label="Repeat password"
           icon-class="fa-key"
           v-model="repeatPassword"
@@ -40,15 +40,15 @@
 </template>
 <script>
 import SecurityModal from "./SecurityModalComponent";
-import SecurityModalForm from "./SecurityModalFormComponent";
-import SecurityFormField from "./SecurityFormFieldComponent";
+import SecurityModalForm from "../Forms/SecurityModalFormComponent";
+import SecurityModalField from "../Fields/SecurityModalFieldComponent";
 
 export default {
   name: "PasswordRecoverModalComponent",
   components: {
     SecurityModal,
     SecurityModalForm,
-    SecurityFormField
+    SecurityModalField
   },
 
   data: () => ({
@@ -115,43 +115,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../../scss/variables";
-
-.code {
-  &-items {
-    display: flex;
-    margin-bottom: 35px;
-  }
-
-  &__item {
-    max-width: 40px;
-    max-height: 40px;
-    width: 40px;
-    height: 40px;
-    background-color: $dark-bg;
-    border-radius: 5px;
-    margin-right: 20px;
-    cursor: text;
-
-    &:last-of-type {
-      margin-right: 0;
-    }
-
-    &.active {
-      border: 1px solid $accent;
-    }
-
-    input {
-      width: inherit;
-      height: inherit;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 500;
-      text-align: center;
-    }
-  }
-}
+@import "../../../scss/components/modals/passwordRecovery";
 </style>

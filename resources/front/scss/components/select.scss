@@ -1,5 +1,4 @@
 @import "../variables";
-@import "../mixins/scrollbarMixin";
 
 .select {
   position: relative;
@@ -49,8 +48,6 @@
   overflow: auto;
   max-height: 150px;
   height: max-content;
-
-  @include scrollbarMixin;
 }
 
 .option {

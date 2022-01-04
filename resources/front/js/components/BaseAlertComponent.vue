@@ -1,5 +1,6 @@
 <template>
-  <div class="alert" :class="{type}">
+  <div class="alert" :class="{ type }" role="alert">
+    <!-- Img START -->
     <img-alias
       v-if="type === 'success'"
       alias="success-svg"
@@ -18,11 +19,14 @@
       alt="warning"
       class="alert__icon"
     />
+    <!-- Img END -->
 
+    <!-- Content START -->
     <div class="alert-content">
       <span class="alert__title">{{ title }}</span>
       <p class="alert__text">{{ message }}</p>
     </div>
+    <!-- Content START -->
   </div>
 </template>
 <script>

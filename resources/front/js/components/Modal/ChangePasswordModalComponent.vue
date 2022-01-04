@@ -3,13 +3,13 @@
     <!-- Form START -->
     <template v-slot:form>
       <security-modal-form button-label="Change password">
-        <security-form-field
+        <security-modal-field
           type="password"
           label="Old password"
           icon-class="fa-key"
           v-model="oldPassword"
         />
-        <security-form-field
+        <security-modal-field
           type="password"
           label="New password"
           icon-class="fa-key"
@@ -28,15 +28,15 @@
 </template>
 <script>
 import SecurityModal from "./SecurityModalComponent";
-import SecurityModalForm from "./SecurityModalFormComponent";
-import SecurityFormField from "./SecurityFormFieldComponent";
+import SecurityModalForm from "../Forms/SecurityModalFormComponent";
+import SecurityModalField from "../Fields/SecurityModalFieldComponent";
 
 export default {
   name: "PasswordRecoverModalComponent",
   components: {
     SecurityModal,
     SecurityModalForm,
-    SecurityFormField
+	SecurityModalField
   },
 
   data: () => ({
