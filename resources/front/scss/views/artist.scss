@@ -58,11 +58,11 @@
   margin-top: 45px;
 }
 
-::v-deep .section-content {
+.section-content {
   padding: 0 $gutter;
 }
 
-.section-top-musics ::v-deep .section-content {
+.section-top-musics .section-content {
   padding-right: 0;
 }
 
@@ -75,17 +75,15 @@
 }
 
 .section-similar-artists {
-  ::v-deep {
-    .section-top {
-      padding-left: 0;
-    }
+  .section-top {
+    padding-left: 0;
+  }
 
-    .section-content {
-      display: flex;
-      flex-direction: column;
-      padding-left: 0;
-      padding-right: $gutter;
-    }
+  .section-content {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    padding-right: $gutter;
   }
 }
 
@@ -123,17 +121,32 @@
 .best-albums-similar-artists {
   margin-top: 15px;
 
-  ::v-deep .section-content {
+  .section-content {
     display: flex;
     flex-direction: row;
     padding-right: 0;
   }
 
-  ::v-deep .section-content .album {
+  .section-content .album {
     margin-right: 15px;
 
     &:last-of-type {
       margin-right: 0;
     }
+  }
+}
+
+.track-drop-down {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(80px);
+  transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out,
+  transform 0.5s ease-in-out;
+  position: absolute;
+
+  &.active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
   }
 }

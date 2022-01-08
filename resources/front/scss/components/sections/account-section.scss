@@ -1,0 +1,46 @@
+@import "../../variables";
+@import "../../mixins/skeleton";
+
+.account-section {
+  margin-bottom: 30px;
+
+  :last-of-type {
+    margin-bottom: 0;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 500;
+    color: $section-color;
+
+    @include skeleton {
+      width: 250px;
+      height: 15px;
+      border-radius: 10px;
+    }
+  }
+
+  &-top {
+    display: flex;
+    align-items: center;
+    padding-bottom: 40px;
+
+    > svg {
+      margin-right: 15px;
+      width: 24px;
+      height: 24px;
+
+      path {
+        stroke: $section-color;
+      }
+
+      @include skeleton {
+        border-radius: 100%;
+
+        path {
+          opacity: 0;
+        }
+      }
+    }
+  }
+}

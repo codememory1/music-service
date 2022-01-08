@@ -1,0 +1,32 @@
+@import "../../variables";
+
+.select__option {
+  list-style: none;
+  padding: 10px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  position: relative;
+
+  &:hover {
+    background-color: lighten($dark-bg, 10%);
+  }
+
+  &.active {
+    background-color: lighten($dark-bg, 10%);
+
+    &:before {
+      content: "";
+      background-image: url(public/images/icons/check-mark.svg);
+      position: absolute;
+      width: 13px;
+      height: 11px;
+      right: 10px;
+      top: 13px;
+    }
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}

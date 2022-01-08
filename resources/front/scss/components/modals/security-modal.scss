@@ -1,0 +1,18 @@
+.security-modal {
+  &__title {
+    color: #fff;
+    font-size: 25px;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  &__content {
+    padding: 0 80px;
+  }
+
+  > div.modal-container {
+    height: max-content;
+  }
+}

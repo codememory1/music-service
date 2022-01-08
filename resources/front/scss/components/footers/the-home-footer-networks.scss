@@ -1,0 +1,13 @@
+.networks {
+  display: flex;
+
+  a {
+    margin-right: 30px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+    }
+  }
+}

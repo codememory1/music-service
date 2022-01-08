@@ -1,9 +1,9 @@
 import axios from "axios";
-import ConfigModule from "./Config";
-import store from "../store/index";
+import { API_URL } from "../env";
+import store from "../store";
 
 const instance = axios.create({
-  baseURL: ConfigModule.api_url
+  baseURL: API_URL
 });
 
 instance.interceptors.request.use((config) => {

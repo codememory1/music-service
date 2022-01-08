@@ -1,0 +1,15 @@
+@import "../../variables";
+
+.navigation-category__item.languages {
+  path {
+    fill: none;
+    stroke: $abs-light-bg-color;
+  }
+
+  &.active {
+    path {
+      fill: none;
+      stroke: $accent;
+    }
+  }
+}

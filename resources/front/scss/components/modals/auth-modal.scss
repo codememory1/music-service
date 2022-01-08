@@ -1,0 +1,66 @@
+@import "../../variables";
+
+.modal-auth {
+  &-methods-auth {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 30px;
+    margin-left: 80px;
+    margin-right: 80px;
+    margin-bottom: 30px;
+  }
+
+  &__method-auth {
+    width: 47px;
+    height: 47px;
+    background-color: $dark-bg;
+    margin-right: 25px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    &.apple {
+      i {
+        font-size: 25px;
+      }
+    }
+
+    &.facebook {
+      i {
+        font-size: 21px;
+      }
+    }
+
+    i {
+      color: $accent;
+      font-size: 19px;
+    }
+
+    &:hover {
+      background-color: lighten($dark-bg, 10%);
+    }
+  }
+
+  &-remember-wrapper {
+    display: flex;
+    cursor: pointer;
+    margin-bottom: 40px;
+    align-items: center;
+
+    label {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      margin-left: 10px;
+      margin-top: 2px;
+      align-items: center;
+    }
+  }
+}

@@ -1,0 +1,42 @@
+@import "../../variables";
+
+.calendar__button {
+  padding: 10px 13px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &.next,
+  .prev {
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: $dark-bg;
+    }
+  }
+
+  &.done,
+  &.cancel {
+    color: #fff;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  &.done {
+    background-color: $accent;
+
+    &:hover {
+      background-color: darken($accent, 10%);
+    }
+  }
+
+  &.cancel {
+    background-color: $dark-bg;
+    margin-right: 15px;
+
+    &:hover {
+      background-color: darken($dark-bg, 10%);
+    }
+  }
+}

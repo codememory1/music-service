@@ -1,0 +1,63 @@
+@import "../../variables";
+
+.select {
+  position: relative;
+  min-width: 150px;
+  color: #fff;
+
+  &__arrow {
+    transform: rotate(90deg);
+    transition: transform 0.2s ease-in-out;
+
+    &.active {
+      transform: rotate(265deg);
+    }
+  }
+
+  &-selected-options {
+    display: flex;
+    background-color: $dark-bg;
+    border: 1px solid $light-border;
+    padding: 7px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: space-between;
+  }
+
+  &-list-options {
+    background-color: $dark-bg;
+    border: 1px solid $light-border;
+    margin-top: 5px;
+    border-radius: 5px;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+  }
+
+  &-actions {
+    margin-left: 15px;
+
+    svg {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  &-options {
+    overflow: auto;
+    max-height: 150px;
+    height: max-content;
+  }
+
+  &__placeholder {
+    color: #999;
+  }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}

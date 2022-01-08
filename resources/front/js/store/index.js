@@ -1,12 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import alert from "./alert";
-import auth from "./auth";
-import layoutScroll from "./layout";
-import translation from "./translation";
-import account from "./account";
-import requestStatuses from "./requestStatuses";
-import loading from "./loading";
+import alert from "./modules/alert.js";
+import auth from "./modules/auth.js";
+import layoutScroll from "./modules/layout.js";
+import translation from "./modules/translation.js";
+import account from "./modules/account.js";
+import requestStatuses from "./modules/requestStatuses.js";
+import loading from "./modules/loading.js";
 
 Vue.use(Vuex);
 

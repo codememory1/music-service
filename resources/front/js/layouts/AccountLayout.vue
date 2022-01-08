@@ -1,20 +1,20 @@
 <template>
   <base-layout>
     <!-- Navigation -->
-    <template v-slot:navigation>
+    <template #navigation>
       <the-account-navigation />
     </template>
 
     <!-- Header -->
-    <template v-slot:header>
+    <template #header>
       <the-account-header />
     </template>
   </base-layout>
 </template>
 <script>
 import BaseLayout from "./BaseLayout";
-import TheAccountNavigation from "../components/Navigation/TheAccountNavigationComponent";
-import TheAccountHeader from "../components/Headers/TheAccountHeaderComponent";
+import TheAccountNavigation from "../components/Navigations/TheAccountNavigation";
+import TheAccountHeader from "../components/Headers/TheAccountHeader";
 
 export default {
   name: "AccountLayout",

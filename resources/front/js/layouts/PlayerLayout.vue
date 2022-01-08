@@ -12,16 +12,16 @@
 
     <!-- Desktop player -->
     <template v-slot:afterContentScroll>
-      <desktop-player />
+      <base-desktop-player />
     </template>
   </base-layout>
 </template>
 <script>
-import BaseLayout from "./BaseLayout";
 import { mapMutations } from "vuex";
-import ThePlayerHeader from "../components/Headers/ThePlayerHeaderComponent";
-import ThePlayerNavigation from "../components/Navigation/ThePlayerNavigationComponent";
-import DesktopPlayer from "../components/Player/DesktopPlayerComponent";
+import BaseLayout from "./BaseLayout";
+import ThePlayerHeader from "../components/Headers/ThePlayerHeader";
+import ThePlayerNavigation from "../components/Navigations/ThePlayerNavigation";
+import BaseDesktopPlayer from "../components/Players/BaseDesktopPlayer";
 
 export default {
   name: "PlayerLayout",
@@ -29,7 +29,7 @@ export default {
     BaseLayout,
     ThePlayerHeader,
     ThePlayerNavigation,
-    DesktopPlayer
+    BaseDesktopPlayer
   },
 
   computed: {

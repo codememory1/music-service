@@ -1,0 +1,31 @@
+@import "../../variables";
+
+.track-info {
+  display: flex;
+
+  &__image {
+    width: 80px;
+    height: 55px;
+  }
+
+  &-names {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 12px;
+  }
+
+  &__name {
+    font-size: 14px;
+    color: #fff;
+    line-height: 24px;
+    font-weight: 500;
+  }
+
+  &__author {
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 24px;
+    color: $gray-dark;
+  }
+}

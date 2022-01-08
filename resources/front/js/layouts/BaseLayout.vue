@@ -1,7 +1,7 @@
 <template>
   <div class="base-layout">
     <!-- Block with alerts -->
-    <block-alerts />
+    <fixed-alerts-block />
 
     <!-- Navigation -->
     <slot name="navigation" />
@@ -21,12 +21,12 @@
   </div>
 </template>
 <script>
-import BlockAlerts from "../components/Blocks/BlockAlertsComponent";
+import FixedAlertsBlock from "../components/Blocks/FixedAlertsBlock";
 
 export default {
   name: "BaseLayout",
   components: {
-    BlockAlerts
+    FixedAlertsBlock
   },
 
   computed: {
