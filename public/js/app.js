@@ -3868,8 +3868,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TheHomeHeaderContent",
@@ -11826,18 +11824,6 @@ function scroll(...args) {
 
 
 
-
-/***/ }),
-
-/***/ "./public/images/mockup.png":
-/*!**********************************!*\
-  !*** ./public/images/mockup.png ***!
-  \**********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("/images/mockup.png?0fec030f6379844eddba3338626501a8");
 
 /***/ }),
 
@@ -41247,7 +41233,7 @@ var render = function () {
       { staticClass: "header-content-left" },
       [
         _c("h1", { staticClass: "header__heading" }, [
-          _vm._v("\n      Listening is everything in your life\n    "),
+          _vm._v("Listening is everything in your life"),
         ]),
         _vm._v(" "),
         _c("p", { staticClass: "header__sub-title" }, [
@@ -41277,12 +41263,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "header-content-right" }, [
-      _c("img", {
-        attrs: {
-          src: __webpack_require__(/*! ../../../../../public/images/mockup.png */ "./public/images/mockup.png"),
-          alt: "mockup",
-        },
-      }),
+      _c("img", { attrs: { src: "/public/images/mockup.png", alt: "mockup" } }),
     ])
   },
 ]

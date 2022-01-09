@@ -1,9 +1,7 @@
 <template>
   <div class="header-content">
     <div class="header-content-left">
-      <h1 class="header__heading">
-        Listening is everything in your life
-      </h1>
+      <h1 class="header__heading">Listening is everything in your life</h1>
       <p class="header__sub-title">
         Millions of songs and podcasts. No credit card. of songs and podcasts.
         No credit card.
@@ -13,7 +11,7 @@
       </base-link-button>
     </div>
     <div class="header-content-right">
-      <img src="../../../../../public/images/mockup.png" alt="mockup" />
+      <img src="/public/images/mockup.png" alt="mockup" />
     </div>
   </div>
 </template>
