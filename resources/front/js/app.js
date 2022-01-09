@@ -22,7 +22,9 @@ Vue.use(AxiosInstance);
 Vue.use(TouchEvents);
 Vue.use(IsEmpty);
 Vue.use(Storage);
-Vue.use(VTooltip);
+Vue.use(VTooltip, {
+  defaultDelay: 100
+});
 Vue.use(Environment);
 
 Vue.component("InlineSvg", InlineSvg);

@@ -942,6 +942,10 @@ input[type=radio]:checked:before {
 
 .tooltip {
   z-index: 99;
+  -webkit-transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  -o-transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  top: -7px !important;
 }
 .tooltip-inner {
   position: relative;
@@ -949,7 +953,37 @@ input[type=radio]:checked:before {
   padding: 4px 7px;
   color: #fff;
   border-radius: 5px;
-  bottom: 15px;
+}
+.tooltip-arrow {
+  width: 0;
+  height: 0;
+  position: absolute;
+  z-index: 1;
+  margin-left: 1px;
+}
+.tooltip[x-placement=bottom] .tooltip-arrow {
+  border: 7px solid transparent;
+  border-bottom: 7px solid #03060a;
+  top: -12px;
+}
+.tooltip[x-placement=top] .tooltip-arrow {
+  border: 7px solid transparent;
+  border-top: 7px solid #03060a;
+  bottom: -12px;
+}
+.tooltip[aria-hidden=true] {
+  -webkit-transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  -o-transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  visibility: hidden;
+  opacity: 0;
+}
+.tooltip[aria-hidden=false] {
+  -webkit-transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  -o-transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  visibility: visible;
+  opacity: 1;
 }
 
 .tooltip.accent > div.tooltip-inner {

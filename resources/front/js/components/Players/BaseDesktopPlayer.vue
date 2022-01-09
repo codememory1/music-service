@@ -1,75 +1,73 @@
 <template>
-  <div class="player">
-    <!-- Player Up controls START -->
-    <div class="player-up">
-      <!-- Player left buttons START -->
-      <div class="player-left-buttons">
-        <div class="player__button" v-tooltip="'Like and suggest similar'">
+  <div class="desktop-player">
+    <div class="desktop-player-up-control">
+      <div class="desktop-player-main-control">
+        <base-button
+          class="desktop-player__main-control-button like"
+          v-tooltip="'Предлагать похожие треки'"
+        >
           <svg-alias alias="like-svg" />
-        </div>
-        <div class="player__button" v-tooltip="'Add to playlist'">
+        </base-button>
+        <base-button
+          class="desktop-player__main-control-button playlist"
+          v-tooltip="'Добавить в плейлист'"
+        >
           <svg-alias alias="playlist-svg" />
-        </div>
-        <div class="player__button" v-tooltip="'Expand player'">
+        </base-button>
+        <base-button
+          class="desktop-player__main-control-button expand"
+          v-tooltip="'Расширить плеер'"
+        >
           <svg-alias alias="expand-svg" />
-        </div>
+        </base-button>
       </div>
-      <!-- Player left buttons END -->
-
-      <!-- Player center buttons START -->
-      <div class="player-center-buttons">
-        <div class="repeat" v-tooltip="'Repeat track'">
+      <div class="desktop-player-control">
+        <base-button
+          class="desktop-player__control-button repeat"
+          v-tooltip="'Повторить трек'"
+        >
           <svg-alias alias="repeat-svg" />
-        </div>
-        <div class="prev">
+        </base-button>
+        <base-button class="desktop-player__control-button prev">
           <svg-alias alias="prev-svg" />
-        </div>
-        <div class="play-pause">
+        </base-button>
+        <base-button
+          class="desktop-player__control-button play-pause bg--accent"
+        >
           <svg-alias alias="pause-svg" />
-        </div>
-        <div class="next">
+        </base-button>
+        <base-button class="desktop-player__control-button next">
           <svg-alias alias="next-svg" />
-        </div>
-        <div class="shuffle" v-tooltip="'Shuffle music'">
+        </base-button>
+        <base-button
+          class="desktop-player__control-button shuffle"
+          v-tooltip="'Перемешать треки'"
+        >
           <svg-alias alias="shuffle-svg" />
-        </div>
+        </base-button>
       </div>
-      <!-- Player center buttons START -->
-
-      <!-- Player right buttons START -->
-      <div class="player-right-buttons">
-        <div class="min-volume">
-          <svg-alias alias="min-volume-svg" />
-        </div>
-        <base-range class="volume__progress" />
-        <div class="max-volume">
-          <svg-alias alias="max-volume-svg" />
-        </div>
-      </div>
-      <!-- Player right buttons START -->
-    </div>
-    <!-- Player Up controls END -->
-
-    <!-- Player Down controls START -->
-    <div class="player-down">
-      <div class="duration">
-        <span>0:58</span>
-      </div>
-      <base-range class="duration__progress" />
-      <div class="total">
-        <span>5:18</span>
+      <div class="desktop-player-volume-wrapper">
+        <svg-alias alias="min-volume-svg" />
+        <base-range class="desktop-player__volume-control" />
+        <svg-alias alias="max-volume-svg" />
       </div>
     </div>
-    <!-- Player Down controls END -->
+    <div class="desktop-player-down-control">
+      <span class="desktop-player__current-time">0:58</span>
+      <base-range class="desktop-player__time-control" />
+      <span class="desktop-player__duration-time">5:18</span>
+    </div>
   </div>
 </template>
 
 <script>
+import BaseButton from "../Buttons/BaseButton";
 import BaseRange from "../Ranges/BaseRange";
 
 export default {
   name: "BaseDesktopPlayer",
   components: {
+    BaseButton,
     BaseRange
   }
 };
