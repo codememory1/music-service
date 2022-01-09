@@ -22,12 +22,13 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+  }
 
-    span {
-      color: $gray-dark;
-      font-size: 12px;
-      font-weight: 400;
-    }
+  &__current-time,
+  &__duration-time {
+    color: $gray-dark;
+    font-size: 12px;
+    font-weight: 400;
   }
 
   &-control {
@@ -47,47 +48,53 @@
     flex-direction: column;
     margin-bottom: 40px;
   }
-}
 
-.music__name {
-  color: #fff;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 5px;
-}
-
-.music__author {
-  color: $gray-dark;
-  font-size: 14px;
-  font-weight: 400;
-  margin-bottom: 5px;
-}
-
-.repeat, .shuffle {
-  path {
-    fill: $gray-dark;
-    stroke: $gray-dark;
+  &__track-name {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
   }
-}
 
-.next, .prev {
-  path {
-    fill: $gray-dark;
-    stroke: $gray-dark;
+  &__author {
+    color: $gray-dark;
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 5px;
   }
-}
 
-.play-pause {
-  margin: 0 20px;
-  background-color: $accent;
-  width: 42px;
-  height: 42px;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  &__button {
+    background-color: transparent;
 
-.repeat, .shuffle, .next, .prev, .play-pause {
-  cursor: pointer;
+    &:hover {
+      background-color: transparent;
+    }
+
+    &.repeat,
+    &.shuffle {
+      path {
+        fill: $gray-dark;
+        stroke: $gray-dark;
+      }
+    }
+
+    &.next,
+    &.prev {
+      path {
+        fill: $gray-dark;
+        stroke: $gray-dark;
+      }
+    }
+
+    &.play-pause {
+      margin: 0 20px;
+      background-color: $accent;
+      width: 42px;
+      height: 42px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }

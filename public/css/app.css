@@ -990,7 +990,7 @@ input[type=radio]:checked:before {
   background-color: #E03E10;
 }
 
-.window_indicator {
+.window-indicator {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -999,7 +999,7 @@ input[type=radio]:checked:before {
           justify-content: center;
   width: 100%;
 }
-.window_indicator__border {
+.window-indicator__line {
   width: 40px;
   height: 4px;
   border-radius: 10px;
