@@ -61,7 +61,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import LoadingButton from "resources/front/js/components/Buttons/LoadingButton.vue";
+import LoadingButton from "../../../../components/Buttons/LoadingButton";
 
 export default {
   name: "ActiveSessionComponent",
