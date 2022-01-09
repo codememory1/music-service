@@ -61,7 +61,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import LoadingButton from "../../../components/Buttons/LoadingButton";
+import LoadingButton from "resources/front/js/components/Buttons/LoadingButton.vue";
 
 export default {
   name: "ActiveSessionComponent",
@@ -129,5 +129,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../../../scss/views/security/components/activeSession";
+@import "../../../../../scss/views/security/components/activeSession";
 </style>

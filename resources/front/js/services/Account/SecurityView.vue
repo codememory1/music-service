@@ -75,7 +75,7 @@ import AccountSection from "../../components/Sections/AccountSection";
 import BaseAlert from "../../components/Alerts/BaseAlert";
 import LoadingButton from "../../components/Buttons/LoadingButton";
 import BaseInlineSection from "../../components/Sections/BaseInlineSection";
-import ActiveSession from "./components/ActiveSessionComponent";
+import ActiveSession from "../Account/components/Security/ActiveSessionComponent";
 import BaseSelect from "../../components/Selects/BaseSelect";
 import BaseButton from "../../components/Buttons/BaseButton";
 
