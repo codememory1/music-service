@@ -25,7 +25,6 @@ export default {
       type: String,
       required: true
     },
-
     /**
      * Is active option
      */
@@ -33,7 +32,6 @@ export default {
       type: Boolean,
       required: true
     },
-
     /**
      * Is disabled option
      */

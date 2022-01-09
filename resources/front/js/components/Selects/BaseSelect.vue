@@ -4,27 +4,19 @@
       <!-- Selected options START -->
       <div class="select-selected-options" @click="openClose">
         <!-- One item selected START -->
-        <slot
-          v-if="selected.length === 1"
-          name="selectedLabel"
-          :option="getOptionData(selected[0])"
-        >
-          <span class="select-selected__text">
-            {{ getOptionData(selected[0]).label }}
-          </span>
-        </slot>
+        <span v-if="selected.length === 1" class="select-selected__text">
+          {{ getOptionData(selected[0]).label }}
+        </span>
         <!-- One item selected END -->
 
         <!-- > One item selected START -->
         <div v-else-if="selected.length > 1" class="select-selected__text">
-          <slot name="tags" :selected="selected">
-            <base-select-tag
-              v-for="(tag, index) in selected"
-              :key="index"
-              :label="getOptionData(tag).label"
-              @click="removeFromSelected(tag)"
-            />
-          </slot>
+          <base-select-tag
+            v-for="(tag, index) in selected"
+            :key="index"
+            :label="getOptionData(tag).label"
+            @click="removeFromSelected(tag)"
+          />
         </div>
         <!-- > One item selected END -->
 
@@ -38,7 +30,11 @@
         <!-- Zero item selected END -->
 
         <div class="select-actions">
-          <svg-alias alias="arrow-right-svg" class="select__arrow" />
+          <svg-alias
+            alias="arrow-right-svg"
+            class="select__arrow"
+            :class="{ active: isOpen }"
+          />
         </div>
       </div>
       <!-- Selected options END -->
@@ -77,6 +73,7 @@
 </template>
 
 <script>
+import { arrayValidator, objectValidator } from "vue-props-validation";
 import BaseSelectSearch from "./BaseSelectSearch";
 import BaseSelectOption from "./BaseSelectOption";
 import BaseSelectTag from "./BaseSelectTag";
@@ -103,7 +100,14 @@ export default {
      */
     options: {
       type: Array,
-      required: true
+      required: true,
+      validator: arrayValidator({
+        type: Object,
+        validator: objectValidator({
+          label: [String, Number],
+          value: [String, Number]
+        })
+      })
     },
 
     /**
@@ -111,7 +115,8 @@ export default {
      */
     selectedOptions: {
       type: Array,
-      default: () => []
+      required: true,
+      validator: arrayValidator([String, Number])
     },
 
     /**
