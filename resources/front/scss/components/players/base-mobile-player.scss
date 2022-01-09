@@ -1,35 +1,20 @@
 @import "../../variables";
 
 .mobile-player {
-  width: 435px;
-  height: 50px;
-  padding: 5px 12px 5px 8px;
+  width: 100%;
+  padding: 8px;
   background-color: $dark-bg;
   display: flex;
   justify-content: space-between;
 
   &-info {
     display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    justify-content: center;
-
-    &--name {
-      font-weight: 400;
-      color: #fff;
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-
-    &--author {
-      font-weight: 400;
-      color: $gray-dark;
-      font-size: 12px;
-    }
+    align-items: center;
   }
 
-  &-left-info {
+  &-control {
     display: flex;
+    align-items: center;
   }
 
   &__image {
@@ -38,39 +23,50 @@
     border-radius: 10px;
   }
 
-  &-control {
+  &-names {
     display: flex;
-    align-items: center;
-
-    & > div {
-      cursor: pointer;
-    }
+    flex-direction: column;
+    padding: 10px 0;
+    margin-left: 10px;
   }
 
-  &__play-pause, &__next {
-    margin-right: 15px;
-    height: 14px;
-
-    svg {
-      height: 14px;
-      width: 15px;
-
-      ::v-deep path {
-        transition: fill 0.2s ease-in-out, stroke 0.2s ease-in-out;
-      }
-    }
-
-    &:hover svg ::v-deep path {
-      fill: $gray-dark;
-    }
+  &__track-name {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+    margin-bottom: 5px;
   }
 
-  &__next {
-    margin-right: 0;
+  &__author {
+    color: $gray;
+    font-size: 11px;
+    font-weight: 400;
+  }
 
-    svg {
-      height: 13px;
-      width: 14px;
+  &__button {
+    background-color: transparent;
+    margin-right: 13px;
+    height: max-content;
+    padding: 5px;
+    transition: opacity 0.4s ease-in-out;
+
+    &:hover {
+      background-color: transparent;
+      opacity: 0.6;
+    }
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    &.play-pause svg {
+      width: 13px;
+      height: 16px;
+    }
+
+    &.next svg {
+      width: 13px;
+      height: 12px;
     }
   }
 }

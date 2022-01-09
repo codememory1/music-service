@@ -1,21 +1,21 @@
 <template>
   <div class="mobile-player">
-    <!-- Music Info START -->
-    <div class="mobile-player-left-info">
+    <!-- Info START -->
+    <div class="mobile-player-info">
       <img class="mobile-player__image" :src="image" :alt="name" />
-      <div class="music-info">
-        <span class="mobile-player-info__name">{{ name }}</span>
-        <span class="mobile-player-info__author">{{ author }}</span>
+      <div class="mobile-player-names">
+        <span class="mobile-player__track-name">{{ name }}</span>
+        <a href="#" class="mobile-player__author">{{ author }}</a>
       </div>
     </div>
-    <!-- Music Info END -->
+    <!-- Info END -->
 
     <!-- Control START -->
     <div class="mobile-player-control">
-      <base-button class="mobile-player__play-pause">
-        <svg-alias alias="pause-bold-svg" />
+      <base-button class="mobile-player__button play-pause">
+        <svg-alias alias="pause-svg" />
       </base-button>
-      <base-button class="mobile-player__next">
+      <base-button class="mobile-player__button next">
         <svg-alias alias="next-svg" />
       </base-button>
     </div>
@@ -51,7 +51,7 @@ export default {
     /**
      * Path Track image
      */
-    trackImage: {
+    image: {
       type: String,
       required: true
     }
