@@ -5,10 +5,7 @@ namespace App\Controllers\V1;
 use App\Orm\Entities\TrackEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
 use App\Orm\Repositories\TrackRepository;
-use App\Services\Track\AddSubtitlesService;
-use App\Services\Track\AddTrackService;
-use App\Services\Track\DeleterTrackService;
-use App\Services\Track\EditTrackService;
+use App\Services\AbstractCrudService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
@@ -62,17 +59,11 @@ class TrackController extends AbstractAuthorizationController
     public function addTrack(): void
     {
 
-        $this->checkAuthWithRight(AccessRightNameRepository::ADD_MUSIC);
-
-        /** @var AddTrackService $addTrackService */
-        $addTrackService = $this->getService('Track\AddTrack');
-
-        // Receiving a response about adding a track
-        $addResponse = $addTrackService
-            ->make($this->validatorManager())
-            ->getResponseApiCollector();
-
-        $this->response->json($addResponse->getResponse(), $addResponse->getStatus());
+        $this->make(
+            'Track\AddTrack',
+            AccessRightNameRepository::ADD_MUSIC,
+            $this->validatorManager()
+        );
 
     }
 
@@ -89,17 +80,12 @@ class TrackController extends AbstractAuthorizationController
     public function editTrack(string $hash): void
     {
 
-        $this->checkAuthWithRight(AccessRightNameRepository::EDIT_MUSIC);
-
-        /** @var EditTrackService $editTrackService */
-        $editTrackService = $this->getService('Track\EditTrack');
-
-        // Receiving a response about adding a track
-        $editResponse = $editTrackService
-            ->make($this->validatorManager(), $this->getDataHash($hash))
-            ->getResponseApiCollector();
-
-        $this->response->json($editResponse->getResponse(), $editResponse->getStatus());
+        $this->make(
+            'Track\EditTrack',
+            AccessRightNameRepository::EDIT_MUSIC,
+            $this->validatorManager(),
+            $this->getDataHash($hash)
+        );
 
     }
 
@@ -116,17 +102,12 @@ class TrackController extends AbstractAuthorizationController
     public function deleteTrack(string $hash): void
     {
 
-        $this->checkAuthWithRight(AccessRightNameRepository::DELETE_MUSIC);
-
-        /** @var DeleterTrackService $deleterTrackService */
-        $deleterTrackService = $this->getService('Track\DeleterTrack');
-
-        // Track deletion response
-        $deleteResponse = $deleterTrackService
-            ->make($this->trackRepository, $this->getDataHash($hash))
-            ->getResponseApiCollector();
-
-        $this->response->json($deleteResponse->getResponse(), $deleteResponse->getStatus());
+        $this->make(
+            'Track\DeleterTrack',
+            AccessRightNameRepository::DELETE_MUSIC,
+            $this->trackRepository,
+            $this->getDataHash($hash)
+        );
 
     }
 
@@ -162,17 +143,12 @@ class TrackController extends AbstractAuthorizationController
     public function editTrackText(string $hash): void
     {
 
-        $this->checkAuthWithRight(AccessRightNameRepository::EDIT_MUSIC);
-
-        /** @var EditTrackService $editTrackTextService */
-        $editTrackTextService = $this->getService('Track\EditTrackText');
-
-        // Answer about adding text to a track
-        $editResponse = $editTrackTextService
-            ->make($this->validatorManager(), $this->getDataHash($hash))
-            ->getResponseApiCollector();
-
-        $this->response->json($editResponse->getResponse(), $editResponse->getStatus());
+        $this->make(
+            'Track\EditTrackText',
+            AccessRightNameRepository::EDIT_MUSIC,
+            $this->validatorManager(),
+            $this->getDataHash($hash)
+        );
 
     }
 
@@ -189,17 +165,35 @@ class TrackController extends AbstractAuthorizationController
     public function addSubtitles(string $hash): void
     {
 
-        $this->checkAuthWithRight(AccessRightNameRepository::ADD_MUSIC);
+        $this->make(
+            'Track\AddSubtitles',
+            AccessRightNameRepository::ADD_MUSIC,
+            $this->validatorManager(),
+            $this->trackRepository,
+            $this->getDataHash($hash)
+        );
 
-        /** @var AddSubtitlesService $addSubtitlesService */
-        $addSubtitlesService = $this->getService('Track\AddSubtitles');
+    }
 
-        // Answer about adding subtitles to a track
-        $addResponse = $addSubtitlesService
-            ->make($this->validatorManager(), $this->trackRepository, $this->getDataHash($hash))
-            ->getResponseApiCollector();
+    /**
+     * @param string $hash
+     *
+     * @return void
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
+    #[NoReturn]
+    public function editSubtitles(string $hash)
+    {
 
-        $this->response->json($addResponse->getResponse(), $addResponse->getStatus());
+        $this->make(
+            'Track\EditSubtitles',
+            AccessRightNameRepository::ADD_MUSIC,
+            $this->validatorManager(),
+            $this->trackRepository,
+            $this->getDataHash($hash)
+        );
 
     }
 
@@ -212,7 +206,7 @@ class TrackController extends AbstractAuthorizationController
         'hash' => "string",
         'id'   => "int|string"
     ])]
-    public function getDataHash(string $fullHash): array
+    private function getDataHash(string $fullHash): array
     {
 
         $dataHash = explode('_', $fullHash);
@@ -221,6 +215,33 @@ class TrackController extends AbstractAuthorizationController
             'hash' => $dataHash[0],
             'id'   => $dataHash[1] ?? 0
         ];
+
+    }
+
+    /**
+     * @param string $service
+     * @param string $rightName
+     * @param mixed  ...$args
+     *
+     * @return void
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
+    #[NoReturn]
+    private function make(string $service, string $rightName, mixed ...$args): void
+    {
+
+        $this->checkAuthWithRight($rightName);
+
+        /** @var AbstractCrudService $crudService */
+        $crudService = $this->getService($service);
+
+        $editResponse = $crudService
+            ->make(...$args)
+            ->getResponseApiCollector();
+
+        $this->response->json($editResponse->getResponse(), $editResponse->getStatus());
 
     }
 

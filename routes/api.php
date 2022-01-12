@@ -73,6 +73,8 @@ Router::subdomainGroup('api', function () {
         Router::group(':hash/subtitles/', function () {
             Router::post('add/', [TrackController::class, 'addSubtitles'], true)
                 ->with('hash', '.+');
+            Router::post('edit/', [TrackController::class, 'editSubtitles'], true)
+                ->with('hash', '.+');
         });
     });
 });
