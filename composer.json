@@ -52,7 +52,10 @@
         "illuminate/collections": "^8.58",
         "lavary/crunz": "^3.1",
         "mcaskill/composer-exclude-files": "^2.0",
+        "phpunit/phpunit": "^9.5",
         "ramsey/uuid": "^4.2",
+        "symfony/dom-crawler": "^6.0",
+        "symfony/http-client": "^6.0",
         "twig/twig": "^3.3",
         "workerman/workerman": "^4.0"
     },
@@ -65,7 +68,8 @@
         "psr-4": {
             "App\\": "app/",
             "Migrations\\": "migrations/",
-            "Kernel\\": "kernel/"
+            "Kernel\\": "kernel/",
+            "Tests\\": "tests/"
         },
         "files": [
             "kernel/helpers.php"
