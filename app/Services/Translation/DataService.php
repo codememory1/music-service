@@ -41,7 +41,7 @@ class DataService extends AbstractApiService
             // Getting the query result to the database
             $translationResult = $translationRepository->getTranslationsWithColumns(
                 $language->getLangCode(),
-                ['l.lang_code', 'tk.key', 'lt.translation']
+                ['l.lang_code', 'lt.key', 'lt.translation']
             );
             $translations[$language->getLangCode()] = $translationResult->array()->all();
         }

@@ -31,11 +31,9 @@ class LanguageTranslationRepository extends AbstractEntityRepository
     {
 
         return $this->getTranslationsWithColumns($lang, [
-            'original_lang_id'            => 'l.id',
-            'original_translation_key_id' => 'tk.id',
+            'original_lang_id' => 'l.id',
             'lt.*',
-            'l.lang_code',
-            'tk.key'
+            'l.lang_code'
         ])->entity()->all();
 
     }
@@ -62,12 +60,6 @@ class LanguageTranslationRepository extends AbstractEntityRepository
                     'l' => $this->getEntityData(LanguageEntity::class)->getTableName()
                 ],
                 $qb->joinComparison('l.lang_code', ':lang_code')
-            )
-            ->innerJoin(
-                [
-                    'tk' => $this->getEntityData(TranslationKeyEntity::class)->getTableName()
-                ],
-                $qb->joinComparison('lt.translation_key_id', 'tk.id')
             )
             ->where(
                 $qb->expression()->exprAnd(
@@ -96,23 +88,17 @@ class LanguageTranslationRepository extends AbstractEntityRepository
             ->setParameter('lang_code', $lang)
             ->setParameter('key', $key)
             ->select()
-            ->from($this->getEntityData(TranslationKeyEntity::class)->getTableName(), 'tk')
+            ->from($this->getEntityData()->getTableName(), 'lt')
             ->innerJoin(
                 [
                     'l' => $this->getEntityData(LanguageEntity::class)->getTableName()
                 ],
                 $qb->joinComparison('l.lang_code', ':lang_code')
             )
-            ->innerJoin(
-                [
-                    'lt' => $this->getEntityData(LanguageTranslationEntity::class)->getTableName()
-                ],
-                $qb->joinComparison('lt.translation_key_id', 'tk.id')
-            )
             ->where(
                 $qb->expression()->exprAnd(
-                    $qb->expression()->condition('tk.key', '=', ':key'),
                     $qb->expression()->condition('lt.lang_id', '=', 'l.id'),
+                    $qb->expression()->condition('lt.key', '=', ':key')
                 )
             );
 
