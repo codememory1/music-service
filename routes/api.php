@@ -75,6 +75,8 @@ Router::subdomainGroup('api', function () {
                 ->with('hash', '.+');
             Router::post('edit/', [TrackController::class, 'editSubtitles'], true)
                 ->with('hash', '.+');
+            Router::delete('delete/', [TrackController::class, 'deleteSubtitles'], true)
+                ->with('hash', '.+');
         });
     });
 });

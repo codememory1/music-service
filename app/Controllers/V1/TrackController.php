@@ -184,13 +184,34 @@ class TrackController extends AbstractAuthorizationController
      * @throws StatementNotSelectedException
      */
     #[NoReturn]
-    public function editSubtitles(string $hash)
+    public function editSubtitles(string $hash): void
     {
 
         $this->make(
             'Track\EditSubtitles',
             AccessRightNameRepository::ADD_MUSIC,
             $this->validatorManager(),
+            $this->trackRepository,
+            $this->getDataHash($hash)
+        );
+
+    }
+
+    /**
+     * @param string $hash
+     *
+     * @return void
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
+    #[NoReturn]
+    public function deleteSubtitles(string $hash): void
+    {
+
+        $this->make(
+            'Track\DeleterSubtitles',
+            AccessRightNameRepository::ADD_MUSIC,
             $this->trackRepository,
             $this->getDataHash($hash)
         );
