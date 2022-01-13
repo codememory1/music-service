@@ -31,10 +31,11 @@ class LanguageTranslationEntity
     private ?int $lang_id = null;
 
     /**
-     * @var int|null
+     * @var string|null
      */
-    #[ORM\Column(name: 'translation_key_id', type: 'bigint unsigned', length: null, nullable: false)]
-    private ?int $translation_key_id = null;
+    #[ORM\Column(name: 'key', type: 'varchar', length: 255, nullable: false)]
+    #[ORM\Unique]
+    private ?string $key = null;
 
     /**
      * @var string|null
@@ -47,12 +48,6 @@ class LanguageTranslationEntity
      */
     #[ORM\Join(entity: LanguageEntity::class, columns: ['original_lang_id', 'lang'], as: ['id', 'lang'])]
     private ?LanguageEntity $lang = null;
-
-    /**
-     * @var TranslationKeyEntity|null
-     */
-    #[ORM\Join(entity: TranslationKeyEntity::class, columns: ['original_translation_key_id', 'key'], as: ['id', 'key'])]
-    private ?TranslationKeyEntity $translationKey = null;
 
     /**
      * @param int $value
@@ -79,26 +74,26 @@ class LanguageTranslationEntity
     }
 
     /**
-     * @param int $value
+     * @param string $value
      *
      * @return static
      */
-    public function setTranslationKeyId(int $value): static
+    public function setKey(string $value): static
     {
 
-        $this->translation_key_id = $value;
+        $this->key = $value;
 
         return $this;
 
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getTranslationKeyId(): ?int
+    public function getKey(): ?string
     {
 
-        return $this->translation_key_id;
+        return $this->key;
 
     }
 
@@ -133,16 +128,6 @@ class LanguageTranslationEntity
     {
 
         return $this->lang;
-
-    }
-
-    /**
-     * @return TranslationKeyEntity|null
-     */
-    public function getTranslationKey(): ?TranslationKeyEntity
-    {
-
-        return $this->translationKey;
 
     }
 
