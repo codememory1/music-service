@@ -19,7 +19,7 @@ final class Migration1637771170CreateLanguageTranslationTable extends AbstractMi
     public function up(MigrationSchemaInterface $schema): void
     {
 
-        $schema->addSql('CREATE TABLE IF NOT EXISTS `language_translations` (`lang_id` BIGINT UNSIGNED NOT NULL,`translation_key_id` BIGINT UNSIGNED NOT NULL,`translation` TEXT NOT NULL)');
+        $schema->addSql('CREATE TABLE IF NOT EXISTS `language_translations` (`lang_id` BIGINT UNSIGNED NOT NULL,`key` VARCHAR(255) NOT NULL UNIQUE ,`translation` TEXT NOT NULL)');
 
     }
 
