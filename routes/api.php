@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\V1\AlbumController;
 use App\Controllers\V1\PasswordRecoveryController;
 use App\Controllers\V1\PlaylistController;
 use App\Controllers\V1\SecurityController;
@@ -54,6 +55,9 @@ Router::subdomainGroup('api', function () {
             Router::put('update/', [TranslationController::class, 'updateCache'], true);
         });
     });
+
+    // Album routes
+    Router::resource('/album', AlbumController::class);
 
     // Routes associated with music
     Router::group('/track/', function () {
