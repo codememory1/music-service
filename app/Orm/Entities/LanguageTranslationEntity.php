@@ -21,6 +21,13 @@ class LanguageTranslationEntity
     /**
      * @var int|null
      */
+    #[ORM\Column(name: 'id', type: 'bigint unsigned', length: null, nullable: false)]
+    #[ORM\Identifier]
+    private ?int $id = null;
+
+    /**
+     * @var int|null
+     */
     #[ORM\Column(name: 'lang_id', type: 'bigint unsigned', length: null, nullable: false)]
     #[ORM\Reference(
         entity: LanguageEntity::class,
@@ -34,7 +41,6 @@ class LanguageTranslationEntity
      * @var string|null
      */
     #[ORM\Column(name: 'key', type: 'varchar', length: 255, nullable: false)]
-    #[ORM\Unique]
     private ?string $key = null;
 
     /**
@@ -48,6 +54,16 @@ class LanguageTranslationEntity
      */
     #[ORM\Join(entity: LanguageEntity::class, columns: ['original_lang_id', 'lang'], as: ['id', 'lang'])]
     private ?LanguageEntity $lang = null;
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+
+        return $this->id;
+
+    }
 
     /**
      * @param int $value
