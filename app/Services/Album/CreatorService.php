@@ -46,7 +46,7 @@ class CreatorService extends AbstractCrudService
         }
 
         // Check exist album type
-        if (!$albumTypeEntity = $this->getTypeEntity($this->request->post()->get('type'))) {
+        if (!$albumTypeEntity = $this->getAlbumTypeEntity($this->request->post()->get('type'))) {
             return $this->setResponse(
                 $this->createApiResponse(404, 'album@typeNotExist')
             );
@@ -69,7 +69,7 @@ class CreatorService extends AbstractCrudService
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      */
-    private function getTypeEntity(string $type): AlbumTypeEntity|bool
+    private function getAlbumTypeEntity(string $type): AlbumTypeEntity|bool
     {
 
         /** @var AlbumTypeRepository $albumTypeRepository */
