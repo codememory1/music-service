@@ -2,10 +2,14 @@
 
 namespace App\Controllers\V1;
 
+use App\Orm\Entities\AlbumEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
+use App\Orm\Repositories\AlbumRepository;
 use App\Services\Album\CreatorService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
+use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
+use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use ErrorException;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
@@ -19,6 +23,29 @@ use ReflectionException;
  */
 class AlbumController extends AbstractAuthorizationController
 {
+
+    /**
+     * @var AlbumRepository
+     */
+    private AlbumRepository $albumRepository;
+
+    /**
+     * @param ServiceProviderInterface $serviceProvider
+     *
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws BuilderNotCurrentSectionException
+     */
+    public function __construct(ServiceProviderInterface $serviceProvider)
+    {
+
+        parent::__construct($serviceProvider);
+
+        /** @var AlbumRepository $albumRepository */
+        $albumRepository = $this->em->getRepository(AlbumEntity::class);
+        $this->albumRepository = $albumRepository;
+
+    }
 
     /**
      * @return void
@@ -42,6 +69,13 @@ class AlbumController extends AbstractAuthorizationController
             ->getResponseApiCollector();
 
         $this->response->json($createResponse->getResponse(), $createResponse->getStatus());
+
+    }
+
+    #[NoReturn]
+    public function delete(int $id): void
+    {
+
 
     }
 
