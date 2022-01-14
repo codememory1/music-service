@@ -6,6 +6,7 @@ use App\Orm\Entities\AlbumEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
 use App\Orm\Repositories\AlbumRepository;
 use App\Services\Album\CreatorService;
+use App\Services\Album\DeleterService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
@@ -72,9 +73,30 @@ class AlbumController extends AbstractAuthorizationController
 
     }
 
+    /**
+     * @param int $id
+     *
+     * @return void
+     * @throws ErrorException
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
     #[NoReturn]
     public function delete(int $id): void
     {
+
+        $authorizedUser = $this->checkAuthWithRight(AccessRightNameRepository::ADD_MUSIC);
+
+        /** @var DeleterService $albumDeleterService */
+        $albumDeleterService = $this->getService('Album\Deleter');
+
+        // Album deletion response
+        $deleteResponse = $albumDeleterService
+            ->make($authorizedUser, $this->albumRepository, $id)
+            ->getResponseApiCollector();
+
+        $this->response->json($deleteResponse->getResponse(), $deleteResponse->getStatus());
 
 
     }
