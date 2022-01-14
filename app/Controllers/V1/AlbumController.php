@@ -5,8 +5,6 @@ namespace App\Controllers\V1;
 use App\Orm\Entities\AlbumEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
 use App\Orm\Repositories\AlbumRepository;
-use App\Services\Album\CreatorService;
-use App\Services\Album\DeleterService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
@@ -59,17 +57,12 @@ class AlbumController extends AbstractAuthorizationController
     public function create(): void
     {
 
-        $authorizedUser = $this->checkAuthWithRight(AccessRightNameRepository::ADD_MUSIC);
-
-        /** @var CreatorService $albumCreatorService */
-        $albumCreatorService = $this->getService('Album\Creator');
-
-        // Album creation response
-        $createResponse = $albumCreatorService
-            ->make($this->validatorManager(), $authorizedUser)
-            ->getResponseApiCollector();
-
-        $this->response->json($createResponse->getResponse(), $createResponse->getStatus());
+        $this->callCrud(
+            'Album\Creator',
+            AccessRightNameRepository::ADD_MUSIC,
+            true,
+            $this->validatorManager()
+        );
 
     }
 
@@ -86,17 +79,13 @@ class AlbumController extends AbstractAuthorizationController
     public function delete(int $id): void
     {
 
-        $authorizedUser = $this->checkAuthWithRight(AccessRightNameRepository::ADD_MUSIC);
-
-        /** @var DeleterService $albumDeleterService */
-        $albumDeleterService = $this->getService('Album\Deleter');
-
-        // Album deletion response
-        $deleteResponse = $albumDeleterService
-            ->make($authorizedUser, $this->albumRepository, $id)
-            ->getResponseApiCollector();
-
-        $this->response->json($deleteResponse->getResponse(), $deleteResponse->getStatus());
+        $this->callCrud(
+            'Album\Deleter',
+            AccessRightNameRepository::ADD_MUSIC,
+            true,
+            $this->albumRepository,
+            $id
+        );
 
 
     }
