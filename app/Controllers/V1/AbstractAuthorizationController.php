@@ -262,6 +262,7 @@ abstract class AbstractAuthorizationController extends AbstractApiController
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
+    #[NoReturn]
     protected function callCrud(string $service, string $rightName, mixed ...$args): void
     {
 
