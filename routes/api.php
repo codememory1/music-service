@@ -57,7 +57,11 @@ Router::subdomainGroup('api', function () {
     });
 
     // Album routes
-    Router::resource('/album', AlbumController::class);
+    Router::group('/album/', function () {
+        Router::post('create/', [AlbumController::class, 'create'], true);
+        Router::delete(':id/delete/', [AlbumController::class, 'delete'], true)
+            ->with('id', '[0-9]+');
+    });
 
     // Routes associated with music
     Router::group('/track/', function () {
