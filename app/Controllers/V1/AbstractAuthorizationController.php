@@ -3,6 +3,7 @@
 namespace App\Controllers\V1;
 
 use App\Orm\Entities\UserEntity;
+use App\Services\AbstractCrudService;
 use App\Services\Auth\AuthorizationService;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Translation\DataService;
@@ -248,6 +249,32 @@ abstract class AbstractAuthorizationController extends AbstractApiController
         $this->isExistRight($authorizedUser, $right);
 
         return $authorizedUser;
+
+    }
+
+    /**
+     * @param string $service
+     * @param string $rightName
+     * @param mixed  ...$args
+     *
+     * @return void
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     * @throws StatementNotSelectedException
+     */
+    protected function callCrud(string $service, string $rightName, mixed ...$args): void
+    {
+
+        $this->checkAuthWithRight($rightName);
+
+        /** @var AbstractCrudService $crudService */
+        $crudService = $this->getService($service);
+
+        $editResponse = $crudService
+            ->make(...$args)
+            ->getResponseApiCollector();
+
+        $this->response->json($editResponse->getResponse(), $editResponse->getStatus());
 
     }
 
