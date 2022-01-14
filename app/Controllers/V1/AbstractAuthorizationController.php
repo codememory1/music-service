@@ -255,6 +255,7 @@ abstract class AbstractAuthorizationController extends AbstractApiController
     /**
      * @param string $service
      * @param string $rightName
+     * @param bool   $addAuthUser
      * @param mixed  ...$args
      *
      * @return void
@@ -263,13 +264,17 @@ abstract class AbstractAuthorizationController extends AbstractApiController
      * @throws StatementNotSelectedException
      */
     #[NoReturn]
-    protected function callCrud(string $service, string $rightName, mixed ...$args): void
+    protected function callCrud(string $service, string $rightName, bool $addAuthUser = false, mixed ...$args): void
     {
 
-        $this->checkAuthWithRight($rightName);
+        $authorizedUser = $this->checkAuthWithRight($rightName);
 
         /** @var AbstractCrudService $crudService */
         $crudService = $this->getService($service);
+
+        if($addAuthUser) {
+            array_unshift($args, $authorizedUser);
+        }
 
         $editResponse = $crudService
             ->make(...$args)
