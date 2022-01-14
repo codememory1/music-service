@@ -41,7 +41,7 @@ class DeleterService extends AbstractCrudService
 
         // Checking if an album exists
         if (!$finedAlbumArtist) {
-            $this->setResponse(
+            return $this->setResponse(
                 $this->createApiResponse(404, 'album@notExist')
             );
         }
