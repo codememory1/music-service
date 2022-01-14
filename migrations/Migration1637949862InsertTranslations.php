@@ -82,6 +82,7 @@ final class Migration1637949862InsertTranslations extends AbstractMigration
         [1, 'album@nameLengthRange', 'Длина имени альбома, должна состовлять 5-255 символов'],
         [1, 'album@typeNotExist', 'Выбранный тип альбома не существует'],
         [1, 'album@successCreate', 'Альбом успешно создан'],
+        [1, 'album@successDelete', 'Альбом успешно удален'],
         [1, 'album@typeIsRequired', 'Укажите тип альбома'],
         [1, 'trackCategory@exist', 'Данная категория уже существует'],
         [1, 'trackCategory@notExist', 'Выбранная категория трека не существует'],
