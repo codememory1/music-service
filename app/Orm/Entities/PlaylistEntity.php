@@ -153,7 +153,7 @@ class PlaylistEntity
     public function setTemporary(?string $value): static
     {
 
-        $this->temporary = $value;
+        $this->temporary = empty($value) ? null : $value;
 
         return $this;
 
