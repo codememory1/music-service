@@ -3,8 +3,9 @@
 namespace App\Controllers\V1;
 
 use App\Orm\Entities\UserEntity;
-use App\Services\AbstractCrudService;
 use App\Services\Auth\AuthorizationService;
+use App\Services\CalledCrudService;
+use App\Services\Interfaces\CalledCrudInterface;
 use App\Services\ResponseApiCollectorService;
 use App\Services\Translation\DataService;
 use Codememory\Components\Database\Orm\Interfaces\EntityManagerInterface;
@@ -253,38 +254,6 @@ abstract class AbstractAuthorizationController extends AbstractApiController
     }
 
     /**
-     * @param string $service
-     * @param string $rightName
-     * @param bool   $addAuthUser
-     * @param mixed  ...$args
-     *
-     * @return void
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
-     */
-    #[NoReturn]
-    protected function callCrud(string $service, string $rightName, bool $addAuthUser = false, mixed ...$args): void
-    {
-
-        $authorizedUser = $this->checkAuthWithRight($rightName);
-
-        /** @var AbstractCrudService $crudService */
-        $crudService = $this->getService($service);
-
-        if($addAuthUser) {
-            array_unshift($args, $authorizedUser);
-        }
-
-        $editResponse = $crudService
-            ->make(...$args)
-            ->getResponseApiCollector();
-
-        $this->response->json($editResponse->getResponse(), $editResponse->getStatus());
-
-    }
-
-    /**
      * @return ResponseApiCollectorService
      * @throws ReflectionException
      * @throws ServiceNotExistException
@@ -295,6 +264,29 @@ abstract class AbstractAuthorizationController extends AbstractApiController
         return $this->apiResponse->create(403, [
             $this->translationsFromDb->getTranslationByKey('security@invalidRole')
         ]);
+
+    }
+
+    /**
+     * @param string $serviceName
+     *
+     * @return CalledCrudInterface
+     * @throws ReflectionException
+     * @throws ServiceNotExistException
+     */
+    protected function initCrud(string $serviceName): CalledCrudInterface
+    {
+
+        /** @var CalledCrudService $calledCrudService */
+        $calledCrudService = $this->getService('CalledCrud');
+
+        $calledCrudService->init(
+            $serviceName,
+            $this->authorizationService,
+            $this->translationsFromDb
+        );
+
+        return $calledCrudService;
 
     }
 
