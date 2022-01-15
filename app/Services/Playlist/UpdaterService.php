@@ -24,8 +24,8 @@ class UpdaterService extends AbstractCrudService
 {
 
     /**
-     * @param Manager            $manager
      * @param UserEntity         $userEntity
+     * @param Manager            $manager
      * @param PlaylistRepository $playlistRepository
      * @param int                $id
      *
@@ -35,7 +35,7 @@ class UpdaterService extends AbstractCrudService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    public function make(Manager $manager, UserEntity $userEntity, PlaylistRepository $playlistRepository, int $id): static
+    public function make( UserEntity $userEntity, Manager $manager, PlaylistRepository $playlistRepository, int $id): static
     {
 
         $validatedDataManager = $this->makeInputValidation($manager, new PlaylistUpdateValidation());

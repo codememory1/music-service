@@ -25,8 +25,8 @@ class CreatorService extends AbstractCrudService
 {
 
     /**
-     * @param Manager    $manager
      * @param UserEntity $userEntity
+     * @param Manager    $manager
      *
      * @return CreatorService
      * @throws InvalidTimezoneException
@@ -34,7 +34,7 @@ class CreatorService extends AbstractCrudService
      * @throws ServiceNotExistException
      * @throws StatementNotSelectedException
      */
-    public function make(Manager $manager, UserEntity $userEntity): static
+    public function make(UserEntity $userEntity, Manager $manager): static
     {
 
         /** @var PlaylistRepository $playlistRepository */
@@ -49,7 +49,7 @@ class CreatorService extends AbstractCrudService
         }
 
         // Check the existence of a playlist with an input title
-        if (!$this->existPlaylist($playlistRepository, $userEntity)) {
+        if ($this->existPlaylist($playlistRepository, $userEntity)) {
             return $this->setResponse(
                 $this->createApiResponse(400, 'playlist@exist')
             );
