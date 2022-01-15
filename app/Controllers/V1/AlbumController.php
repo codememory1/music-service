@@ -5,11 +5,9 @@ namespace App\Controllers\V1;
 use App\Orm\Entities\AlbumEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
 use App\Orm\Repositories\AlbumRepository;
-use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
-use ErrorException;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
 
@@ -48,21 +46,18 @@ class AlbumController extends AbstractAuthorizationController
 
     /**
      * @return void
-     * @throws StatementNotSelectedException
-     * @throws ServiceNotExistException
-     * @throws ErrorException
      * @throws ReflectionException
+     * @throws ServiceNotExistException
      */
     #[NoReturn]
     public function create(): void
     {
 
-        $this->callCrud(
-            'Album\Creator',
-            AccessRightNameRepository::ADD_MUSIC,
-            true,
-            $this->validatorManager()
-        );
+        $this->initCrud('Album\Creator')
+            ->addArgumentAuthUser()
+            ->addArgument($this->validatorManager())
+            ->checkAccessRight(AccessRightNameRepository::ADD_MUSIC)
+            ->response();
 
     }
 
@@ -70,22 +65,19 @@ class AlbumController extends AbstractAuthorizationController
      * @param int $id
      *
      * @return void
-     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function delete(int $id): void
     {
 
-        $this->callCrud(
-            'Album\Deleter',
-            AccessRightNameRepository::ADD_MUSIC,
-            true,
-            $this->albumRepository,
-            $id
-        );
+        $this->initCrud('Album\Deleter')
+            ->addArgumentAuthUser()
+            ->addArgument($this->albumRepository)
+            ->addArgument($id)
+            ->checkAccessRight(AccessRightNameRepository::ADD_MUSIC)
+            ->response();
 
 
     }

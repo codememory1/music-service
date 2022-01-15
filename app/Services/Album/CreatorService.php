@@ -25,15 +25,15 @@ class CreatorService extends AbstractCrudService
 {
 
     /**
-     * @param Manager    $manager
      * @param UserEntity $userEntity
+     * @param Manager    $manager
      *
      * @return $this
      * @throws ReflectionException
      * @throws StatementNotSelectedException
      * @throws ServiceNotExistException
      */
-    public function make(Manager $manager, UserEntity $userEntity): static
+    public function make(UserEntity $userEntity, Manager $manager): static
     {
 
         $validatedDataManager = $this->makeInputValidation($manager, new CreationValidation());
