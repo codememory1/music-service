@@ -15,7 +15,6 @@ use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Translator\Interfaces\TranslationInterface;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
 use Codememory\HttpFoundation\Interfaces\ResponseInterface;
-use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
 
 /**
@@ -110,26 +109,6 @@ abstract class AbstractAuthorizationController extends AbstractApiController
     }
 
     /**
-     * Check the authorization of the user, if authorized to return his entity,
-     * otherwise return a response with 401 status
-     *
-     * @return UserEntity
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
-     */
-    protected function isAuthWithResponse(): UserEntity
-    {
-
-        if (false === $authUser = $this->isAuthWithData()) {
-            $this->responseWithTranslation(401, 'security@notAuth');
-        }
-
-        return $authUser;
-
-    }
-
-    /**
      * Check user authorization
      *
      * @return bool
@@ -140,130 +119,6 @@ abstract class AbstractAuthorizationController extends AbstractApiController
     {
 
         return false !== $this->isAuthWithData();
-
-    }
-
-    /**
-     * Check if not the role of the authorized user corresponds to specific roles
-     *
-     * @param UserEntity $userEntity
-     * @param string[]   $roles
-     *
-     * @return bool
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
-     */
-    protected function isNotRoles(UserEntity $userEntity, array $roles): bool
-    {
-
-        if (in_array($userEntity->getRoleId(), $roles)) {
-            $apiResponse = $this->responseIncorrectRole();
-
-            $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
-        }
-
-        return true;
-
-    }
-
-    /**
-     * Check if the role of the authorized user corresponds to specific roles
-     *
-     * @param UserEntity $userEntity
-     * @param string[]   $roles
-     *
-     * @return bool
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
-     */
-    protected function isRoles(UserEntity $userEntity, array $roles): bool
-    {
-
-        if (!in_array($userEntity->getRoleId(), $roles)) {
-            $apiResponse = $this->responseIncorrectRole();
-
-            $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
-        }
-
-        return true;
-
-    }
-
-    /**
-     * @param UserEntity $userEntity
-     * @param string     $rightName
-     *
-     * @return bool
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
-     */
-    protected function isExistRight(UserEntity $userEntity, string $rightName): bool
-    {
-
-        foreach ($userEntity->getRoleData()->getRights() as $right) {
-            if ($right->getAccessRightName()->getName() === $rightName) {
-                return true;
-            }
-        }
-
-        $apiResponse = $this->responseIncorrectRole();
-
-        $this->response->json($apiResponse->getResponse(), $apiResponse->getStatus());
-
-    }
-
-    /**
-     * Throw out a reply with a message from translations
-     *
-     * @param int    $status
-     * @param string $translationKey
-     *
-     * @return void
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
-     */
-    #[NoReturn]
-    protected function responseWithTranslation(int $status, string $translationKey): void
-    {
-
-        $apiResponse = $this->apiResponse->create($status, [
-            $this->translationsFromDb->getTranslationByKey($translationKey)
-        ]);
-
-        $this->response->json($apiResponse->getResponse(), $status);
-
-    }
-
-    /**
-     * @param string $right
-     *
-     * @return UserEntity
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
-     */
-    protected function checkAuthWithRight(string $right): UserEntity
-    {
-
-        $authorizedUser = $this->isAuthWithResponse();
-
-        $this->isExistRight($authorizedUser, $right);
-
-        return $authorizedUser;
-
-    }
-
-    /**
-     * @return ResponseApiCollectorService
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
-     */
-    private function responseIncorrectRole(): ResponseApiCollectorService
-    {
-
-        return $this->apiResponse->create(403, [
-            $this->translationsFromDb->getTranslationByKey('security@invalidRole')
-        ]);
 
     }
 
