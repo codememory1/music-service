@@ -6,14 +6,10 @@ use App\Orm\Entities\SubscriptionEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
 use App\Orm\Repositories\SubscriptionRepository;
 use App\Services\Sorting\DataService;
-use App\Services\Subscription\CreatorService;
-use App\Services\Subscription\DeleterService;
-use App\Services\Subscription\UpdaterService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
-use ErrorException;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
 
@@ -96,24 +92,15 @@ class SubscriptionController extends AbstractAuthorizationController
      * @return void
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
-     * @throws ErrorException
      */
     #[NoReturn]
     public function create(): void
     {
 
-        $this->checkAuthWithRight(AccessRightNameRepository::CREATE_SUBSCRIPTION);
-
-        /** @var CreatorService $subscriptionCreatorService */
-        $subscriptionCreatorService = $this->getService('Subscription\Creator');
-
-        // Create a subscription and receive a response about creation
-        $createResponse = $subscriptionCreatorService
-            ->make($this->validatorManager())
-            ->getResponseApiCollector();
-
-        $this->response->json($createResponse->getResponse(), $createResponse->getStatus());
+        $this->initCrud('Subscription\Creator')
+            ->addArgument($this->validatorManager())
+            ->checkAccessRight(AccessRightNameRepository::CREATE_SUBSCRIPTION)
+            ->response();
 
     }
 
@@ -121,52 +108,38 @@ class SubscriptionController extends AbstractAuthorizationController
      * @param int $id
      *
      * @return void
-     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function update(int $id): void
     {
 
-        $this->checkAuthWithRight(AccessRightNameRepository::UPDATE_SUBSCRIPTION);
-
-        /** @var UpdaterService $subscriptionUpdaterService */
-        $subscriptionUpdaterService = $this->getService('Subscription\Updater');
-
-        // We update the subscription data and receive a response about the update
-        $updateResponse = $subscriptionUpdaterService
-            ->make($this->validatorManager(), $this->subscriptionRepository, $id)
-            ->getResponseApiCollector();
-
-        $this->response->json($updateResponse->getResponse(), $updateResponse->getStatus());
+        $this->initCrud('Subscription\Updater')
+            ->addArgument($this->validatorManager())
+            ->addArgument($this->subscriptionRepository)
+            ->addArgument($id)
+            ->checkAccessRight(AccessRightNameRepository::UPDATE_SUBSCRIPTION)
+            ->response();
 
     }
 
     /**
      * @param int $id
      *
-     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function delete(int $id): void
     {
 
-        $this->checkAuthWithRight(AccessRightNameRepository::DELETE_SUBSCRIPTION);
 
-        /** @var DeleterService $subscriptionDeleterService */
-        $subscriptionDeleterService = $this->getService('Subscription\Deleter');
-
-        // We receive a response about deleting a subscription
-        $deleteResponse = $subscriptionDeleterService
-            ->make($this->subscriptionRepository, $id)
-            ->getResponseApiCollector();
-
-        $this->response->json($deleteResponse->getResponse(), $deleteResponse->getStatus());
+        $this->initCrud('Subscription\Deleter')
+            ->addArgument($this->subscriptionRepository)
+            ->addArgument($id)
+            ->checkAccessRight(AccessRightNameRepository::DELETE_SUBSCRIPTION)
+            ->response();
 
     }
 

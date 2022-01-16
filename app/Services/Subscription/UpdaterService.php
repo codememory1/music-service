@@ -74,7 +74,7 @@ class UpdaterService extends AbstractCrudService
 
         // Updating subscription options
         $updaterSubscriptionOptionsService->make(
-            $this->request->post()->get('options', trim: false) ?: [],
+            (array) $this->request->post()->get('options', trim: false),
             $subscriptionId
         );
 
