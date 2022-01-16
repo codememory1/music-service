@@ -5,15 +5,12 @@ namespace App\Controllers\V1;
 use App\Orm\Entities\LanguageEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
 use App\Orm\Repositories\LanguageRepository;
-use App\Services\Translation\AddTranslationService;
 use App\Services\Translation\CacheService;
-use App\Services\Translation\CreatorLanguageService;
 use App\Services\Translation\DataService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
-use ErrorException;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
 
@@ -84,50 +81,35 @@ class TranslationController extends AbstractAuthorizationController
     /**
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
-     * @throws ErrorException
      */
     #[NoReturn]
     public function createLanguage(): void
     {
 
-        $this->checkAuthWithRight(AccessRightNameRepository::CREATE_LANG);
-
-        /** @var CreatorLanguageService $creatorLanguageService */
-        $creatorLanguageService = $this->getService('Translation\CreatorLanguage');
-
-        // Creating a language and getting a response about creation
-        $createResponse = $creatorLanguageService
-            ->make($this->validatorManager(), $this->languageRepository)
-            ->getResponseApiCollector();
-
-        $this->response->json($createResponse->getResponse(), $createResponse->getStatus());
+        $this->initCrud('Translation\CreatorLanguage')
+            ->addArgument($this->validatorManager())
+            ->addArgument($this->languageRepository)
+            ->checkAccessRight(AccessRightNameRepository::CREATE_LANG)
+            ->response();
 
     }
 
     /**
      * @param string $lang
      *
-     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function addTranslation(string $lang): void
     {
 
-        $this->checkAuthWithRight(AccessRightNameRepository::ADD_TRANSLATION);
-
-        /** @var AddTranslationService $addTranslationService */
-        $addTranslationService = $this->getService('Translation\AddTranslation');
-
-        // Answer to add translation to language
-        $createResponse = $addTranslationService
-            ->make($this->validatorManager(), $this->languageRepository, $lang)
-            ->getResponseApiCollector();
-
-        $this->response->json($createResponse->getResponse(), $createResponse->getStatus());
+        $this->initCrud('Translation\AddTranslation')
+            ->addArgument($this->validatorManager())
+            ->addArgument($this->languageRepository)
+            ->addArgument($lang)
+            ->checkAccessRight(AccessRightNameRepository::ADD_TRANSLATION)
+            ->response();
 
     }
 
