@@ -8,6 +8,7 @@ use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedE
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Components\Validator\Manager;
 use Codememory\Components\Validator\Manager as ValidationManager;
+use ErrorException;
 use Ramsey\Uuid\Uuid;
 use ReflectionException;
 
@@ -37,19 +38,25 @@ class AddTrackService extends AbstractTrack
             return $this;
         }
 
-        $dataUploadImage = $this->uploadImage($this->trackRepository->getMaxId() + 1, 'tracks');
+        try {
+            $dataUploadImage = $this->uploadImage($this->trackRepository->getMaxId() + 1, 'tracks');
 
-        // Checking image loading
-        if (!$dataUploadImage['isSuccess']) {
-            return $this->setResponse(
-                $this->apiResponse->create(400, [$dataUploadImage['error']])
+            // Checking image loading
+            if (!$dataUploadImage['isSuccess']) {
+                return $this->setResponse(
+                    $this->apiResponse->create(400, [$dataUploadImage['error']])
+                );
+            }
+
+            // Push the track to the database
+            $this->setResponse(
+                $this->push($dataUploadImage['pathWithFilename'])
+            );
+        } catch (ErrorException) {
+            $this->setResponse(
+                $this->createApiResponse(400, 'imageNotSelected')
             );
         }
-
-        // Push the track to the database
-        $this->setResponse(
-            $this->push($dataUploadImage['pathWithFilename'])
-        );
 
         return $this;
 

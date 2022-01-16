@@ -105,6 +105,7 @@ final class Migration1637949862InsertTranslations extends AbstractMigration
         [1, 'track@subtitleExtension', 'Расширение файла с субтитрами должно быть .srt'],
         [1, 'track@subtitleManualIsRequired', 'Ручной ввод субтитров обязательный к заполнению'],
         [1, 'track@subtitleInvalidFormat', 'Некорректный формат субтитров'],
+        [1, 'imageNotSelected', 'Не выбрано изображение'],
 
         // Account subdomain
         [1, 'generalSettings', 'Основные настройки'],
