@@ -65,6 +65,7 @@ final class Migration1637949862InsertTranslations extends AbstractMigration
         [1, 'common@userExist', 'Пользователь уже существует'],
         [1, 'subscription@activeInTypeBoolean', 'Поле "активный" должно иметь значение 0 или 1'],
         [1, 'playlist@notExist', 'Плейлист не существует'],
+        [1, 'playlist@optionNotExist', 'Некорректные опции подписки'],
         [1, 'subscription@notExist', 'Подписка не найдена'],
         [1, 'confirmRegistration', 'Подтверждение регистрации'],
         [1, 'passwordRecovery', 'Восстановление пароля'],
