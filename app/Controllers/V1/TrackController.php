@@ -5,12 +5,10 @@ namespace App\Controllers\V1;
 use App\Orm\Entities\TrackEntity;
 use App\Orm\Repositories\AccessRightNameRepository;
 use App\Orm\Repositories\TrackRepository;
-use App\Services\AbstractCrudService;
 use Codememory\Components\Database\QueryBuilder\Exceptions\StatementNotSelectedException;
 use Codememory\Components\Profiling\Exceptions\BuilderNotCurrentSectionException;
 use Codememory\Components\Services\Exceptions\ServiceNotExistException;
 use Codememory\Container\ServiceProvider\Interfaces\ServiceProviderInterface;
-use ErrorException;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\NoReturn;
 use ReflectionException;
@@ -52,18 +50,15 @@ class TrackController extends AbstractAuthorizationController
      * @return void
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
-     * @throws ErrorException
      */
     #[NoReturn]
     public function addTrack(): void
     {
 
-        $this->make(
-            'Track\AddTrack',
-            AccessRightNameRepository::ADD_MUSIC,
-            $this->validatorManager()
-        );
+        $this->initCrud('Track\AddTrack')
+            ->addArgument($this->validatorManager())
+            ->checkAccessRight(AccessRightNameRepository::ADD_MUSIC)
+            ->response();
 
     }
 
@@ -71,21 +66,18 @@ class TrackController extends AbstractAuthorizationController
      * @param string $hash
      *
      * @return void
-     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function editTrack(string $hash): void
     {
 
-        $this->make(
-            'Track\EditTrack',
-            AccessRightNameRepository::EDIT_MUSIC,
-            $this->validatorManager(),
-            $this->getDataHash($hash)
-        );
+        $this->initCrud('Track\EditTrack')
+            ->addArgument($this->validatorManager())
+            ->addArgument($this->getDataHash($hash))
+            ->checkAccessRight(AccessRightNameRepository::EDIT_MUSIC)
+            ->response();
 
     }
 
@@ -93,21 +85,18 @@ class TrackController extends AbstractAuthorizationController
      * @param string $hash
      *
      * @return void
-     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function deleteTrack(string $hash): void
     {
 
-        $this->make(
-            'Track\DeleterTrack',
-            AccessRightNameRepository::DELETE_MUSIC,
-            $this->trackRepository,
-            $this->getDataHash($hash)
-        );
+        $this->initCrud('Track\DeleterTrack')
+            ->addArgument($this->trackRepository)
+            ->addArgument($this->getDataHash($hash))
+            ->checkAccessRight(AccessRightNameRepository::DELETE_MUSIC)
+            ->response();
 
     }
 
@@ -134,21 +123,18 @@ class TrackController extends AbstractAuthorizationController
      * @param string $hash
      *
      * @return void
-     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function editTrackText(string $hash): void
     {
 
-        $this->make(
-            'Track\EditTrackText',
-            AccessRightNameRepository::EDIT_MUSIC,
-            $this->validatorManager(),
-            $this->getDataHash($hash)
-        );
+        $this->initCrud('Track\EditTrackText')
+            ->addArgument($this->validatorManager())
+            ->addArgument($this->getDataHash($hash))
+            ->checkAccessRight(AccessRightNameRepository::EDIT_MUSIC)
+            ->response();
 
     }
 
@@ -156,22 +142,19 @@ class TrackController extends AbstractAuthorizationController
      * @param string $hash
      *
      * @return void
-     * @throws ErrorException
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function addSubtitles(string $hash): void
     {
 
-        $this->make(
-            'Track\AddSubtitles',
-            AccessRightNameRepository::ADD_MUSIC,
-            $this->validatorManager(),
-            $this->trackRepository,
-            $this->getDataHash($hash)
-        );
+        $this->initCrud('Track\AddSubtitles')
+            ->addArgument($this->validatorManager())
+            ->addArgument($this->trackRepository)
+            ->addArgument($this->getDataHash($hash))
+            ->checkAccessRight(AccessRightNameRepository::ADD_MUSIC)
+            ->response();
 
     }
 
@@ -181,19 +164,17 @@ class TrackController extends AbstractAuthorizationController
      * @return void
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function editSubtitles(string $hash): void
     {
 
-        $this->make(
-            'Track\EditSubtitles',
-            AccessRightNameRepository::ADD_MUSIC,
-            $this->validatorManager(),
-            $this->trackRepository,
-            $this->getDataHash($hash)
-        );
+        $this->initCrud('Track\EditSubtitles')
+            ->addArgument($this->validatorManager())
+            ->addArgument($this->trackRepository)
+            ->addArgument($this->getDataHash($hash))
+            ->checkAccessRight(AccessRightNameRepository::ADD_MUSIC)
+            ->response();
 
     }
 
@@ -203,18 +184,17 @@ class TrackController extends AbstractAuthorizationController
      * @return void
      * @throws ReflectionException
      * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
      */
     #[NoReturn]
     public function deleteSubtitles(string $hash): void
     {
 
-        $this->make(
-            'Track\DeleterSubtitles',
-            AccessRightNameRepository::ADD_MUSIC,
-            $this->trackRepository,
-            $this->getDataHash($hash)
-        );
+        $this->initCrud('Track\DeleterSubtitles')
+            ->addArgument($this->validatorManager())
+            ->addArgument($this->trackRepository)
+            ->addArgument($this->getDataHash($hash))
+            ->checkAccessRight(AccessRightNameRepository::ADD_MUSIC)
+            ->response();
 
     }
 
@@ -236,33 +216,6 @@ class TrackController extends AbstractAuthorizationController
             'hash' => $dataHash[0],
             'id'   => $dataHash[1] ?? 0
         ];
-
-    }
-
-    /**
-     * @param string $service
-     * @param string $rightName
-     * @param mixed  ...$args
-     *
-     * @return void
-     * @throws ReflectionException
-     * @throws ServiceNotExistException
-     * @throws StatementNotSelectedException
-     */
-    #[NoReturn]
-    private function make(string $service, string $rightName, mixed ...$args): void
-    {
-
-        $this->checkAuthWithRight($rightName);
-
-        /** @var AbstractCrudService $crudService */
-        $crudService = $this->getService($service);
-
-        $editResponse = $crudService
-            ->make(...$args)
-            ->getResponseApiCollector();
-
-        $this->response->json($editResponse->getResponse(), $editResponse->getStatus());
 
     }
 
