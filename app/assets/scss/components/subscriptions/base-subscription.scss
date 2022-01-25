@@ -1,0 +1,73 @@
+@import "../../variables";
+
+.subscription {
+  width: 375px;
+  height: max-content;
+  padding: 60px 55px;
+  border-radius: 6px;
+  background-color: $dark-bg;
+  position: relative;
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: 25px;
+    font-weight: 500;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__description {
+    font-size: 14px;
+    font-weight: 500;
+    color: lighten($gray, 10%);
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__old-price {
+    margin-top: 30px;
+    font-size: 22px;
+    font-weight: 500;
+    color: $gray;
+    width: 100%;
+    text-align: center;
+    text-decoration: line-through;
+  }
+
+  &__price {
+    font-size: 32px;
+    font-weight: 500;
+    color: #fff;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &__acts {
+    font-size: 12px;
+    font-weight: 500;
+    color: lighten($gray, 10%);
+    margin-top: 25px;
+    width: 100%;
+    text-align: center;
+  }
+
+  &-options {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__activate-button {
+    margin-top: 30px;
+    padding: 10px 0;
+    width: 100%;
+    border-radius: 8px;
+  }
+}

@@ -1,0 +1,9 @@
+@import "../../variables";
+
+.drop-down__separator {
+  width: 100%;
+  height: 1px;
+  background-color: lighten($abs-light-bg, 10%);
+  margin: 5px 0;
+  display: block;
+}

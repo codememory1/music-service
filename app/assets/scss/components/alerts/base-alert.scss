@@ -1,0 +1,44 @@
+@import "../../variables";
+@import "../../mixins/skeleton";
+
+.motionless-alert {
+  display: flex;
+  padding: 10px;
+  width: max-content;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 500;
+  align-items: center;
+
+  @include skeleton {
+    width: 400px;
+    height: 30px;
+    background-color: $skeleton-bg !important;
+  }
+
+  > i {
+    font-size: 18px;
+    opacity: 0.6;
+  }
+
+  > span {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+
+  &.success {
+    background-color: #128039;
+  }
+
+  &.error {
+    background-color: $red;
+  }
+
+  &.warning {
+    background-color: #c17300;
+  }
+
+  &.info {
+    background-color: #125280;
+  }
+}

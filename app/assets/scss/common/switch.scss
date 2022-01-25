@@ -1,0 +1,32 @@
+.switch {
+  -webkit-appearance: none;
+  position: relative;
+  width: 40px;
+  height: 16px;
+  background-color: $gray;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.switch:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -2px;
+  width: 20px;
+  height: 20px;
+  background-color: $white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 100%;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.switch:checked {
+  background-color: rgba($accent, 0.6);
+}
+
+.switch:checked:before {
+  background-color: $accent;
+  transform: translateX(20px);
+}

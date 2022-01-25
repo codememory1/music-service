@@ -1,0 +1,133 @@
+@import "../../variables";
+
+.desktop-player {
+  width: 100%;
+  padding: 20px 65px;
+  background-color: $dark-bg;
+
+  &-up-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  &-down-control {
+    display: flex;
+  }
+
+  // Main control
+  &-main-control {
+    display: flex;
+  }
+
+  // Common track control
+  &-control {
+    display: flex;
+    align-items: center;
+  }
+
+  &-volume-wrapper {
+    display: flex;
+    align-items: center;
+
+    svg {
+      width: 20px;
+      height: 20px;
+
+      path {
+        stroke: darken($gray, 10%);
+      }
+    }
+  }
+
+  // Ranges
+  &__volume-control {
+    width: 100px!important;
+    margin: 0 20px;
+    padding: 0!important;
+  }
+
+  &__time-control {
+    width: 100%!important;
+    margin: 0 55px;
+  }
+
+  // Times
+  &__current-time,
+  &__duration-time {
+    color: darken($gray, 10%);
+  }
+
+  // Buttons
+  &__main-control-button {
+    width: 35px;
+    height: 35px;
+    padding: 10px;
+    background-color: $abs-light-bg;
+    margin-right: 15px;
+    border-radius: 10px;
+    transition: background-color 0.4s ease-in-out;
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    &:hover {
+      background-color: lighten($light-bg, 10%);
+    }
+
+    &.like path {
+      stroke: darken($gray, 10%);
+      stroke-width: 2;
+    }
+
+    &.playlist path {
+      stroke: darken($gray, 10%);
+      fill: darken($gray, 10%);
+      stroke-width: 0.2;
+    }
+
+    &.expand path {
+      fill: darken($gray, 10%);
+    }
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  &__control-button {
+    background-color: transparent;
+    padding: 0;
+    height: max-content;
+    margin-right: 20px;
+
+    &.repeat,
+    &.prev,
+    &.next,
+    &.shuffle {
+      transition: opacity 0.4s ease-in-out;
+
+      &:hover {
+        opacity: 0.6;
+        background-color: transparent;
+      }
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:last-of-type {
+      margin-right: 0;
+    }
+
+    &.play-pause {
+      width: 42px;
+      height: 42px;
+      border-radius: 100%;
+    }
+  }
+}

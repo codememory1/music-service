@@ -1,0 +1,21 @@
+@import "../../variables";
+
+.header {
+  padding: 50px 0;
+  background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+
+  &-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-right-info {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__lang {
+    width: 165px;
+  }
+}

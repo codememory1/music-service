@@ -1,0 +1,29 @@
+@import "./variables";
+
+.container {
+  max-width: 1220px;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+.c-pointer {
+  cursor: pointer;
+}
+
+.relative {
+  position: relative;
+}
+
+.under-header {
+  padding-top: 100px;
+}
+
+.gutter {
+  padding-left: $gutter;
+  padding-right: $gutter;
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

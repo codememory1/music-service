@@ -77,7 +77,7 @@ class User
         'comment' => 'User status, not active by default'
     ])]
     #[Assert\NotBlank(message: 'common@statusIsRequired', payload: 'status_is_required')]
-    #[Assert\Choice(callback: [StatusEnum::class, 'values'], message: 'common@statusInvalid', payload: 'status_invalid')]
+    #[Assert\Choice(callback: [StatusEnum::class, 'values'], message: 'common@invalidStatus', payload: 'status_invalid')]
     private ?int $status;
 
     /**

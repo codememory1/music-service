@@ -1,0 +1,45 @@
+@import "../../variables";
+
+.footer-column {
+  flex-basis: 25%;
+
+  &-items {
+    display: flex;
+    flex-direction: column;
+
+    a {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 10px;
+      width: max-content;
+      transition: color 0.2s ease-in-out;
+
+      &:hover {
+        color: $accent;
+      }
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__name {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #939393;
+    text-transform: uppercase;
+    display: block;
+  }
+
+  &.network {
+    p {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 40px;
+    }
+  }
+}

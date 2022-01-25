@@ -1,0 +1,26 @@
+@import "../../variables";
+
+.track-actions {
+  display: flex;
+  align-items: center;
+
+  img {
+    cursor: pointer;
+  }
+
+  svg {
+    path,
+    circle {
+      transition: stroke 0.3s ease-in-out, fill 0.3s ease-in-out;
+    }
+
+    &:hover path {
+      stroke: $accent;
+    }
+
+    &:hover circle {
+      stroke: $accent;
+      fill: $accent;
+    }
+  }
+}

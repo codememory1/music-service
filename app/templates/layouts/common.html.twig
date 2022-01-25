@@ -1,0 +1,22 @@
+<!doctype html>
+<html dir="ltr">
+<head>
+    <title>{{ app.request.server.get('APP_TITLE') }}</title>
+    {# Подключение файла с meta-тегами #}
+    {% include './blocks/meta.html.twig' %}
+
+    {# Подключение файла с links(css...) #}
+    {% include './blocks/link.html.twig' %}
+
+    {# Подключение google аналитики #}
+    {% include './blocks/google-analytics.html.twig' %}
+</head>
+<body>
+
+<div id="app" role="application">
+    <router-view />
+</div>
+
+{% include './blocks/footer.html.twig' %}
+</body>
+</html>

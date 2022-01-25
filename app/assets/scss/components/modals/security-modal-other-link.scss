@@ -1,0 +1,19 @@
+@import "../../variables";
+
+.security-modal-other-link {
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+  text-align: center;
+  margin: 7px 0;
+
+  &__button {
+    color: $accent;
+    transition: color 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      color: darken($accent, 10%);
+    }
+  }
+}

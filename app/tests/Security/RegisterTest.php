@@ -3,6 +3,7 @@
 namespace App\Tests\Security;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -18,7 +19,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
  *
  * @author  Codememory
  */
-class RegisterTest extends ApiTestCase
+class RegisterTest extends WebTestCase
 {
 
     /**
@@ -32,14 +33,7 @@ class RegisterTest extends ApiTestCase
     public function testName(): void
     {
 
-        static::createClient()->request('POST', env('app.api.url'));
 
-        $this->assertJsonContains([
-            'status' => 'error',
-            'type'   => 'name_is_required'
-        ]);
-
-        $this->assertResponseStatusCodeSame(400);
 
     }
 

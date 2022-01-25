@@ -32,7 +32,7 @@ class CreatorLanguageService extends AbstractApiService
 
         $languageEntity
             ->setCode($this->request->get('code', ''))
-            ->setTitleTranslationKey($this->request->get('title', ''));
+            ->setTitle($this->request->get('title', ''));
 
         // Input Validation
         if (count($errors = $validator->validate($languageEntity)) > 0) {
@@ -42,7 +42,7 @@ class CreatorLanguageService extends AbstractApiService
                 ->setMessage(
                     ApiResponseTypeEnum::INPUT_VALIDATION,
                     $validateInfo['name'],
-                    $this->getTranslation($validateInfo['message'])
+                    $this->getTranslation($validateInfo['message']) ?? ''
                 );
 
             return $this->getPreparedApiResponse();

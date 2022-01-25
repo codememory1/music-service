@@ -1,0 +1,7 @@
+<link rel="canonical" href="{{ app.request.server.get('APP_URL') }}">
+<link rel="alternate" href="android-app://{{ app.request.server.get('APP_PACKAGE') }}">
+{#<link rel="icon" sizes="32x32" type="image/png" href="{{ app_url }}{{ assetAliasPath('icon_32', true) }}">#}
+{#<link rel="icon" sizes="16x16" type="image/png" href="{{ app_url }}{{ assetAliasPath('icon_16', true) }}">#}
+{#<link rel="icon" href="{{ app_url }}{{ assetAliasPath('icon') }}">#}
+<link rel="search" type="application/opensearchdescription+xml" title="{{ app.request.server.get('APP_TITLE') }}" href="{{ app.request.server.get('APP_URL') }}{{ asset('/public/opensearch.xml') }}">
+<link rel="stylesheet" href="{{ asset('/public/css/app.css') }}">

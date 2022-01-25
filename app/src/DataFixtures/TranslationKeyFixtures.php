@@ -25,6 +25,7 @@ class TranslationKeyFixtures extends Fixture
         'role@admin',
         'role@support',
         'role@musicManager',
+
         'roleRightName@addTrack',
         'roleRightName@updateTrack',
         'roleRightName@deleteTrack',
@@ -32,9 +33,9 @@ class TranslationKeyFixtures extends Fixture
         'common@titleIsRequired',
         'common@descriptionIsRequired',
         'common@priceIsRequired',
-        'common@priceInvalid',
+        'common@priceIsInvalid',
         'common@statusIsRequired',
-        'common@statusInvalid',
+        'common@invalidStatus',
         'common@subscriptionIsRequired',
         'common@titleTranslationKeyMaxLength',
         'common@invalidEmail',
@@ -42,11 +43,15 @@ class TranslationKeyFixtures extends Fixture
         'common@userProfileIsRequired',
         'common@validToIsRequired',
         'common@emailMaxLength',
+        'common@imageIsRequired',
 
         'lang@codeExist',
         'lang@codeMinLength',
         'lang@codeMaxLength',
         'lang@titleMaxLength',
+        'lang@successCreate',
+        'lang@successUpdate',
+        'lang@successDelete',
 
         'translationKey@keyExist',
         'translationKey@nameIsRequired',
@@ -58,12 +63,12 @@ class TranslationKeyFixtures extends Fixture
 
         'user@emailExist',
         'user@usernameExist',
-        'user@invalidEmail',
         'user@usernameIsRequired',
         'user@usernameMaxLength',
         'user@passwordIsRequired',
-        'user@passordMinLength',
+        'user@passwordMinLength',
         'user@passwordRegex',
+        'user@roleIsRequired',
 
         'userProfile@nameIsRequired',
         'userProfile@surnameMaxLength',
@@ -78,29 +83,7 @@ class TranslationKeyFixtures extends Fixture
         'subscriptionRightName@keyIsRequired',
         'subscriptionRightName@keyMaxLength',
 
-        'subscriptionRight@rightNameIsRequired',
-        'subscriptionRight@rightNameIsRequired',
-
-        'userSubscription@invalidValidTo',
-
-        'user@emailExist',
-        'user@usernameExist',
-        'user@usernameIsRequired',
-        'user@usernameMaxLength',
-        'user@passwordIsRequired',
-        'user@passordMinLength',
-        'user@passwordRegex',
-        'user@roleIsRequired',
-
-        'userProfile@nameIsRequired',
-        'userProfile@nameMaxLength',
-        'userProfile@surnameMaxLength',
-        'userProfile@patronymicMaxLength',
-        'userProfile@invalidBirth',
-
-        'userProfileCover@coverIsRequired',
-
-        'userProfilePhoto@photoIsRequired',
+        'subscriptionRight@rightNameIsRequired'
     ];
 
     /**

@@ -1,0 +1,23 @@
+@import "../../variables";
+
+.calendar-days-week {
+  display: flex;
+  margin-bottom: 35px;
+}
+
+.calendar__day-week {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  width: 54px;
+  text-align: center;
+  pointer-events: none;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+
+  &::selection {
+    background-color: $abs-light-bg;
+  }
+}

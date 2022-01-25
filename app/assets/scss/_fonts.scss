@@ -1,0 +1,15 @@
+@import "./mixins/font";
+
+// Roboto font
+@include font('Roboto', 'Light-Italic/Roboto-LightItalic', 300, italic);
+@include font('Roboto', 'Thin-Italic/Roboto-ThinItalic', 100, italic);
+@include font('Roboto', 'Regular/Roboto-Regular');
+@include font('Roboto', 'Medium/Roboto-Medium', 500);
+@include font('Roboto', 'Black-Italic/Roboto-BlackItalic', 900, italic);
+@include font('Roboto', 'Light/Roboto-Light', 300);
+@include font('Roboto', 'Medium-Italic/Roboto-MediumItalic', 500, italic);
+@include font('Roboto', 'Bold-Italic/Roboto-BoldItalic', bold, italic);
+@include font('Roboto', 'Bold/Roboto-Bold', bold);
+@include font('Roboto', 'Italic/Roboto-Italic.eot', normal, italic);
+@include font('Roboto', 'Black/Roboto-Black', 900);
+@include font('Roboto', 'Thin/Roboto-Thin', 100);

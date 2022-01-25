@@ -1,0 +1,38 @@
+@import "../variables";
+@import "../mixins/button";
+@import "../mixins/skeleton";
+
+.base-button {
+  padding: 8px 13px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 400;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  color: #fff;
+  outline: none;
+  border: none;
+  cursor: pointer;
+
+  @include skeleton {
+    border-radius: 10px;
+    width: 170px;
+    height: 39px;
+  }
+
+  // Backgrounds
+  @include buttonBackground("accent", $accent);
+  @include buttonBackground("dark", $dark-bg, "lighten");
+  @include buttonBackground("blue", $blue);
+  @include buttonBackground("green", $green);
+  @include buttonBackground("red", $red);
+  @include buttonBackground("transparent", transparent, "darken", #0D1828);
+
+  // Colors
+  @include buttonColor("red", $red);
+  @include buttonColor("accent", $accent);
+  @include buttonColor("blue", $blue);
+  @include buttonColor("green", $green);
+}

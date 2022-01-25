@@ -1,0 +1,11 @@
+@import "../../variables";
+
+.toolbar-mobile__line-top {
+  position: absolute;
+  width: 20%;
+  background-color: $accent;
+  height: 2px;
+  top: 0;
+  left: 0;
+  transition: left 0.3s ease-in-out;
+}

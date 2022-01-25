@@ -21,12 +21,12 @@ class LanguageFixtures extends Fixture
      */
     private array $languages = [
         [
-            'code'                  => 'ru',
-            'title_translation_key' => 'lang@ru'
+            'code'  => 'ru',
+            'title' => 'Русский'
         ],
         [
-            'code'                  => 'en',
-            'title_translation_key' => 'lang@en'
+            'code'  => 'en',
+            'title' => 'English'
         ]
     ];
 
@@ -43,7 +43,7 @@ class LanguageFixtures extends Fixture
 
             $languageEntity
                 ->setCode($language['code'])
-                ->setTitleTranslationKey($language['title_translation_key']);
+                ->setTitle($language['title']);
 
             $this->addReference(sprintf('lang-%s', $language['code']), $languageEntity);
 
