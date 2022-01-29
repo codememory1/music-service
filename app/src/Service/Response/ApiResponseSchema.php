@@ -39,16 +39,16 @@ class ApiResponseSchema
     /**
      * @param ApiResponseTypeEnum $type
      * @param string              $name
-     * @param string              $text
+     * @param string|null         $text
      *
      * @return $this
      */
-    public function setMessage(ApiResponseTypeEnum $type, string $name, string $text): ApiResponseSchema
+    public function setMessage(ApiResponseTypeEnum $type, string $name, ?string $text): ApiResponseSchema
     {
 
         $this->schema['message']['type'] = $type->value;
         $this->schema['message']['name'] = $name;
-        $this->schema['message']['text'] = $text;
+        $this->schema['message']['text'] = $text ?? '';
 
         return $this;
 

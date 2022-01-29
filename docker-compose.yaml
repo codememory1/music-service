@@ -38,7 +38,6 @@ services:
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_USER_PASSWORD}"
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_USER_PASSWORD}"
-      MYSQL_DATABASE: "${MYSQL_DBNAME}"
     ports:
       - "3306:3306"
     volumes:

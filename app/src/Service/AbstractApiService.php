@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Enums\ApiResponseTypeEnum;
 use App\Service\Response\ApiResponseSchema;
 use App\Service\Response\ApiResponseService;
 use App\Service\Translator\TranslationService;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class AbstractApiService
@@ -108,6 +110,7 @@ abstract class AbstractApiService
      */
     #[ArrayShape([
         'name'    => "string",
+        'type'    => ApiResponseTypeEnum::class,
         'message' => "string"
     ])]
     protected function getValidateInfo(ConstraintViolationListInterface $constraintViolationList): array
@@ -115,11 +118,94 @@ abstract class AbstractApiService
 
         /** @var ConstraintViolation $constraint */
         $constraint = $constraintViolationList->get(0);
+        $payload = $constraint->getConstraint()->payload;
 
         return [
-            'name'    => $constraint->getConstraint()->payload,
+            'name'    => is_array($payload) ? $payload[1] : $payload,
+            'type'    => is_array($payload) ? $payload[0] : null,
             'message' => $constraint->getMessage()
         ];
+
+    }
+
+    /**
+     * @param object             $entity
+     * @param ValidatorInterface $validator
+     *
+     * @return ApiResponseService|bool
+     * @throws Exception
+     */
+    protected function inputValidation(object $entity, ValidatorInterface $validator): ApiResponseService|bool
+    {
+
+        // Input Validation
+        if (count($errors = $validator->validate($entity)) > 0) {
+            $validateInfo = $this->getValidateInfo($errors);
+
+            $this
+                ->prepareApiResponse('error', 400)
+                ->setMessage(
+                    $validateInfo['type'] ?? ApiResponseTypeEnum::INPUT_VALIDATION,
+                    $validateInfo['name'],
+                    $this->getTranslation($validateInfo['message']) ?? ''
+                );
+
+            return $this->getPreparedApiResponse();
+        }
+
+        return true;
+
+    }
+
+    /**
+     * @param object $entity
+     * @param string $successTranslationKey
+     * @param bool   $asUpdate
+     *
+     * @return ApiResponseService
+     * @throws Exception
+     */
+    protected function push(object $entity, string $successTranslationKey, bool $asUpdate = false): ApiResponseService
+    {
+
+        $messageName = $asUpdate ? 'success_update' : 'success_create';
+        $type = $asUpdate ? ApiResponseTypeEnum::UPDATE : ApiResponseTypeEnum::CREATE;
+        $translation = $this->getTranslation($successTranslationKey);
+
+        if (!$asUpdate) {
+            $this->em->persist($entity);
+        }
+
+        $this->em->flush();
+
+        $this
+            ->prepareApiResponse('success', 200)
+            ->setMessage($type, $messageName, $translation);
+
+        return $this->getPreparedApiResponse();
+
+    }
+
+    /**
+     * @param object $entity
+     * @param string $successTranslationKey
+     *
+     * @return ApiResponseService
+     * @throws Exception
+     */
+    protected function remove(object $entity, string $successTranslationKey): ApiResponseService
+    {
+
+        $translation = $this->getTranslation($successTranslationKey);
+
+        $this->em->remove($entity);
+        $this->em->flush();
+
+        $this
+            ->prepareApiResponse('success', 200)
+            ->setMessage(ApiResponseTypeEnum::DELETE, 'success_delete', $translation);
+
+        return $this->getPreparedApiResponse();
 
     }
 

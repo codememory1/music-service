@@ -2,12 +2,10 @@
 
 namespace App\Controller\Api\V1;
 
-use App\Service\Response\ApiResponseSchema;
-use App\Service\Response\ApiResponseService;
-use App\Service\Translator\TranslationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Faker\Factory;
+use Faker\Generator;
 
 /**
  * Class SecurityController
@@ -23,21 +21,10 @@ class SecurityController extends AbstractController
     public function test()
     {
 
-        $schema = new ApiResponseSchema('error', 500);
+        $faker = Factory::create('en');
 
-        $schema
-            ->setMessage('input_validation', 'name_is_required', 'Имя обязательно к заполнению')
-            ->setData([
-                'tokens' => [
-                    'access' => 'cdsc',
-                    'refresh' => 'csdc'
-                ]
-            ]);
-
-        $api = new ApiResponseService($schema);
-
-        $api->make();
-
+//        dd($faker->text(255));
+//dd($faker->text(256));
     }
 
 }

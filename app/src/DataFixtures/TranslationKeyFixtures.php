@@ -46,6 +46,7 @@ class TranslationKeyFixtures extends Fixture
         'common@imageIsRequired',
 
         'lang@codeExist',
+        'lang@langNotExist',
         'lang@codeMinLength',
         'lang@codeMaxLength',
         'lang@titleMaxLength',

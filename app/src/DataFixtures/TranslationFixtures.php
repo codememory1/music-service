@@ -147,6 +147,11 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
         ],
         [
             'lang'        => 'ru',
+            'key'         => 'lang@langNotExist',
+            'translation' => 'Данный код языка не существует'
+        ],
+        [
+            'lang'        => 'ru',
             'key'         => 'lang@codeMinLength',
             'translation' => 'Код языка должен состоять не меньше чем из 2-х символов'
         ],

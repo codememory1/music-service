@@ -32,14 +32,18 @@ class ApiResponseService
     /**
      * @param array $headers
      *
-     * @return void
+     * @return JsonResponse
      */
-    public function make(array $headers = []): void
+    public function make(array $headers = []): JsonResponse
     {
 
         $schema = $this->apiResponseSchema->getSchema();
 
-        (new JsonResponse($schema, $schema['status_code'], $headers))->send();
+        $response = new JsonResponse($schema, $schema['status_code'], $headers);
+
+        $response->send();
+
+        return $response;
 
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enums\ApiResponseTypeEnum;
 use App\Repository\LanguageRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
 #[ORM\Table('languages')]
-#[UniqueEntity('code', 'lang@codeExist', payload: 'code_exist')]
+#[UniqueEntity('code', 'lang@codeExist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'code_exist'])] // Payload: type => string, name => string
 class Language
 {
 
@@ -43,11 +44,11 @@ class Language
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'string', length: 255, options: [
+    #[ORM\Column(type: 'string', length: 50, options: [
         'comment' => 'Language name'
     ])]
     #[Assert\NotBlank(message: 'common@titleIsRequired', payload: 'title_is_required')]
-    #[Assert\Length(max: 255, maxMessage: 'lang@titleMaxLength', payload: 'title_length')]
+    #[Assert\Length(max: 50, maxMessage: 'lang@titleMaxLength', payload: 'title_length')]
     private ?string $title = null;
 
     /**

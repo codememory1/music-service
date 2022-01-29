@@ -55,9 +55,9 @@ class TranslationService
     }
 
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function activeLanguageTranslations(): Collection
+    public function activeLanguageTranslations(): ?Collection
     {
 
         /** @var LanguageRepository $languageRepository */
@@ -65,20 +65,23 @@ class TranslationService
 
         return $languageRepository->findOneBy([
             'code' => $this->getActiveLang()
-        ])->getTranslations();
+        ])?->getTranslations();
 
     }
 
     /**
+     * @param string $key
+     *
+     * @return Translation|null
      * @throws Exception
      */
     public function getActiveLanguageTranslation(string $key): ?Translation
     {
 
-        $iteratorTranslations = $this->activeLanguageTranslations()->getIterator();
+        $iteratorTranslations = $this->activeLanguageTranslations()?->getIterator();
 
         /** @var Translation $translation */
-        foreach ($iteratorTranslations as $translation) {
+        foreach ($iteratorTranslations ?? [] as $translation) {
             if ($translation->getTranslationKey()->getName() === $key) {
                 return $translation;
             }

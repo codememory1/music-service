@@ -3,7 +3,6 @@
 namespace App\Service\Translator\Language;
 
 use App\Entity\Language;
-use App\Enums\ApiResponseTypeEnum;
 use App\Service\AbstractApiService;
 use App\Service\Response\ApiResponseService;
 use Exception;
@@ -28,51 +27,31 @@ class CreatorLanguageService extends AbstractApiService
     public function create(ValidatorInterface $validator): ApiResponseService
     {
 
+        $languageEntity = $this->collectEntity();
+
+        // Input Validation
+        if (true !== $resultInputValidation = $this->inputValidation($languageEntity, $validator)) {
+            return $resultInputValidation;
+        }
+
+        // Saving data to the database
+        return $this->push($languageEntity, 'lang@successCreate');
+
+    }
+
+    /**
+     * @return Language
+     */
+    private function collectEntity(): Language
+    {
+
         $languageEntity = new Language();
 
         $languageEntity
             ->setCode($this->request->get('code', ''))
             ->setTitle($this->request->get('title', ''));
 
-        // Input Validation
-        if (count($errors = $validator->validate($languageEntity)) > 0) {
-            $validateInfo = $this->getValidateInfo($errors);
-
-            $this->prepareApiResponse('error', 400)
-                ->setMessage(
-                    ApiResponseTypeEnum::INPUT_VALIDATION,
-                    $validateInfo['name'],
-                    $this->getTranslation($validateInfo['message']) ?? ''
-                );
-
-            return $this->getPreparedApiResponse();
-        }
-
-        // Saving data to the database
-        return $this->push($languageEntity);
-
-    }
-
-    /**
-     * @param Language $languageEntity
-     *
-     * @return ApiResponseService
-     * @throws Exception
-     */
-    private function push(Language $languageEntity): ApiResponseService
-    {
-
-        $this->em->persist($languageEntity);
-        $this->em->flush();
-
-        $this->prepareApiResponse('success', 200)
-            ->setMessage(
-                ApiResponseTypeEnum::CREATE,
-                'success_create',
-                $this->getTranslation('lang@successCreate')
-            );
-
-        return $this->getPreparedApiResponse();
+        return $languageEntity;
 
     }
 

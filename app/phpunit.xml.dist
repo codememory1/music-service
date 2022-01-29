@@ -15,11 +15,15 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
+        <server name="API_VERSION" value="v1" />
     </php>
 
     <testsuites>
         <testsuite name="Security Api Tests">
             <directory>tests/Security</directory>
+        </testsuite>
+        <testsuite name="Translator Api Tests">
+            <directory>tests/Translator</directory>
         </testsuite>
     </testsuites>
 
@@ -28,12 +32,4 @@
             <directory suffix=".php">src</directory>
         </include>
     </coverage>
-
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
-
-    <extensions>
-        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
-    </extensions>
 </phpunit>
