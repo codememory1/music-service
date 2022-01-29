@@ -4,6 +4,7 @@ namespace App\Controller\Api\V1;
 
 use App\Controller\Api\AbstractApiController;
 use App\Dto\LanguageDto;
+use App\Dto\LanguageTranslationDto;
 use App\Entity\Language;
 use App\Repository\LanguageRepository;
 use App\Service\Response\ApiResponseSchema;
@@ -53,7 +54,7 @@ class TranslatorController extends AbstractApiController
     /**
      * @return JsonResponse
      */
-    #[Route('/translator/language/all', methods: 'GET')]
+    #[Route('/translator/languages', methods: 'GET')]
     public function allLanguages(): JsonResponse
     {
 
@@ -119,6 +120,32 @@ class TranslatorController extends AbstractApiController
         $deleterLanguageService = new DeleterLanguageService($request, $this->response, $this->managerRegistry);
 
         return $deleterLanguageService->delete($id)->make();
+
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    #[Route('/translator/translations', methods: 'GET')]
+    public function languageTranslations(Request $request): JsonResponse
+    {
+
+        /** @var LanguageRepository $languageRepository */
+        $languageRepository = $this->managerRegistry->getRepository(Language::class);
+        $language = $languageRepository->findOneBy([
+            'code' => $request->getLocale()
+        ]);
+        $translationDto = new LanguageTranslationDto($language->getTranslations()->getValues());
+
+        $apiResponseSchema = new ApiResponseSchema('success', 200);
+
+        $apiResponseSchema->setData($translationDto->transform());
+
+        $apiResponseService = new ApiResponseService($apiResponseSchema);
+
+        return $apiResponseService->make();
 
     }
 
