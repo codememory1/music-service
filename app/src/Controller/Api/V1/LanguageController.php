@@ -72,7 +72,7 @@ class LanguageController extends AbstractApiController
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/translator/language/update/{id<\d+>}', methods: 'PUT')]
+    #[Route('/translator/language/{id<\d+>}/update/', methods: 'PUT')]
     public function update(int $id, Request $request, ValidatorInterface $validator): JsonResponse
     {
 
@@ -89,7 +89,7 @@ class LanguageController extends AbstractApiController
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/translator/language/delete/{id<\d+>}', methods: 'DELETE')]
+    #[Route('/translator/language/{id<\d+>}/delete/', methods: 'DELETE')]
     public function delete(int $id, Request $request): JsonResponse
     {
 
