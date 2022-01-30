@@ -10,13 +10,13 @@ use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class AddTranslationService
+ * Class CreatorTranslationService
  *
  * @package App\Service\Translator\Translation
  *
  * @author  Codememory
  */
-class AddTranslationService extends AbstractAddAndUpdateTranslation
+class CreatorTranslationService extends AbstractAddAndUpdateTranslation
 {
 
     /**
@@ -26,7 +26,7 @@ class AddTranslationService extends AbstractAddAndUpdateTranslation
      * @return ApiResponseService
      * @throws Exception
      */
-    public function add(ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function create(ValidatorInterface $validator, callable $handler): ApiResponseService
     {
 
         // Checking for Language Existence

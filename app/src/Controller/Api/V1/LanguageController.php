@@ -46,12 +46,12 @@ class LanguageController extends AbstractApiController
     public function create(Request $request, ValidatorInterface $validator): JsonResponse
     {
 
-        $creatorLanguageService = new CreatorLanguageService($request, $this->response, $this->managerRegistry);
-        $handler = function (Language $languageEntity) use ($creatorLanguageService) {
-            return $creatorLanguageService->push($languageEntity, 'lang@successCreate');
-        };
-
-        return $creatorLanguageService->create($validator, $handler)->make();
+        return $this->executeCreateService(
+            CreatorLanguageService::class,
+            'lang@successCreate',
+            $request,
+            $validator
+        );
 
     }
 
@@ -67,16 +67,13 @@ class LanguageController extends AbstractApiController
     public function update(int $id, Request $request, ValidatorInterface $validator): JsonResponse
     {
 
-        $updaterLanguageService = new UpdaterLanguageService($request, $this->response, $this->managerRegistry);
-        $handler = function (Language $languageEntity) use ($updaterLanguageService) {
-            return $updaterLanguageService->push(
-                $languageEntity,
-                'lang@successUpdate',
-                true
-            );
-        };
-
-        return $updaterLanguageService->update($id, $validator, $handler)->make();
+        return $this->executeUpdateService(
+            $id,
+            UpdaterLanguageService::class,
+            'lang@successUpdate',
+            $request,
+            $validator
+        );
 
     }
 
@@ -91,12 +88,12 @@ class LanguageController extends AbstractApiController
     public function delete(int $id, Request $request): JsonResponse
     {
 
-        $deleterLanguageService = new DeleterLanguageService($request, $this->response, $this->managerRegistry);
-        $handler = function (Language $languageEntity) use ($deleterLanguageService) {
-            return $deleterLanguageService->remove($languageEntity, 'lang@successDelete');
-        };
-
-        return $deleterLanguageService->delete($id, $handler)->make();
+        return $this->executeDeleteService(
+            $id,
+            DeleterLanguageService::class,
+            'lang@successDelete',
+            $request
+        );
 
     }
 

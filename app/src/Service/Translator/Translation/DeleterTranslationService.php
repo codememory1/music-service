@@ -3,9 +3,8 @@
 namespace App\Service\Translator\Translation;
 
 use App\Entity\Translation;
-use App\Enums\ApiResponseTypeEnum;
-use App\Repository\TranslationRepository;
 use App\Service\AbstractApiService;
+use App\Service\Abstraction\DeleteRecord;
 use App\Service\Response\ApiResponseService;
 use Exception;
 
@@ -29,24 +28,11 @@ class DeleterTranslationService extends AbstractApiService
     public function delete(int $id, callable $handler): ApiResponseService
     {
 
-        /** @var TranslationRepository $translationRepository */
-        $translationRepository = $this->em->getRepository(Translation::class);
+        $deleteAbstraction = new DeleteRecord($this->request, $this->response, $this->managerRegistry);
 
-        // Check exist language
-        if (null === $finedTranslation = $translationRepository->findOneBy(['id' => $id])) {
-            $this
-                ->prepareApiResponse('error', 404)
-                ->setMessage(
-                    ApiResponseTypeEnum::CHECK_EXIST,
-                    'translation_not_exist',
-                    $this->getTranslation('translation@notExist')
-                );
-
-            return $this->getPreparedApiResponse();
-        }
-
-        // Calling an Extender Method
-        return call_user_func($handler, $finedTranslation);
+        return $deleteAbstraction
+            ->prepare(Translation::class, $handler)
+            ->make($id, 'translation_not_exist', 'translation@notExist');
 
     }
 

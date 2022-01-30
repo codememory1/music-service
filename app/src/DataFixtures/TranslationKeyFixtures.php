@@ -58,6 +58,9 @@ class TranslationKeyFixtures extends Fixture
         'translationKey@nameIsRequired',
         'translationKey@nameMaxLength',
         'translationKey@notExist',
+        'translationKey@successCreate',
+        'translationKey@successUpdate',
+        'translationKey@successDelete',
 
         'translation@langIsRequired',
         'translation@keyIsRequired',

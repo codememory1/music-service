@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Service\Translator\Language;
+namespace App\Service\Translator\TranslationKey;
 
-use App\Entity\Language;
+use App\Entity\TranslationKey;
 use App\Service\AbstractApiService;
 use App\Service\Abstraction\DeleteRecord;
 use App\Service\Response\ApiResponseService;
 use Exception;
 
 /**
- * Class DeleterLanguageService
+ * Class DeleterTranslationKeyService
  *
- * @package App\Service\Translator\Language
+ * @package App\Service\Translator\TranslationKey
  *
  * @author  Codememory
  */
-class DeleterLanguageService extends AbstractApiService
+class DeleterTranslationKeyService extends AbstractApiService
 {
 
     /**
@@ -31,8 +31,8 @@ class DeleterLanguageService extends AbstractApiService
         $deleteAbstraction = new DeleteRecord($this->request, $this->response, $this->managerRegistry);
 
         return $deleteAbstraction
-            ->prepare(Language::class, $handler)
-            ->make($id, 'lang_not_exist', 'lang@langNotExist');
+            ->prepare(TranslationKey::class, $handler)
+            ->make($id, 'translation_key_not_exist', 'translationKey@notExist');
 
     }
 

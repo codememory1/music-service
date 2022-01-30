@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enums\ApiResponseTypeEnum;
 use App\Repository\TranslationKeyRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 #[ORM\Entity(repositoryClass: TranslationKeyRepository::class)]
 #[ORM\Table('translation_keys')]
-#[UniqueEntity('key', 'translationKey@keyExist', payload: 'key_exist')]
+#[UniqueEntity('name', 'translationKey@keyExist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'key_exist'])]
 class TranslationKey
 {
 

@@ -5,7 +5,7 @@ namespace App\Controller\Api\V1;
 use App\Controller\Api\AbstractApiController;
 use App\Dto\LanguageTranslationDto;
 use App\Entity\Translation;
-use App\Service\Translator\Translation\AddTranslationService;
+use App\Service\Translator\Translation\CreatorTranslationService;
 use App\Service\Translator\Translation\DeleterTranslationService;
 use App\Service\Translator\Translation\UpdaterTranslationService;
 use Exception;
@@ -46,12 +46,12 @@ class TranslationController extends AbstractApiController
     public function add(Request $request, ValidatorInterface $validator): JsonResponse
     {
 
-        $addTranslationService = new AddTranslationService($request, $this->response, $this->managerRegistry);
-        $handler = function (Translation $translationEntity) use ($addTranslationService) {
-            return $addTranslationService->push($translationEntity, 'translation@successAdd');
-        };
-
-        return $addTranslationService->add($validator, $handler)->make();
+        return $this->executeCreateService(
+            CreatorTranslationService::class,
+            'translation@successAdd',
+            $request,
+            $validator
+        );
 
     }
 
@@ -67,16 +67,13 @@ class TranslationController extends AbstractApiController
     public function update(int $id, Request $request, ValidatorInterface $validator): JsonResponse
     {
 
-        $updaterTranslationService = new UpdaterTranslationService($request, $this->response, $this->managerRegistry);
-        $handler = function (Translation $translationEntity) use ($updaterTranslationService) {
-            return $updaterTranslationService->push(
-                $translationEntity,
-                'translation@successUpdate',
-                true
-            );
-        };
-
-        return $updaterTranslationService->update($id, $validator, $handler)->make();
+        return $this->executeUpdateService(
+            $id,
+            UpdaterTranslationService::class,
+            'translation@successUpdate',
+            $request,
+            $validator
+        );
 
     }
 
@@ -91,12 +88,12 @@ class TranslationController extends AbstractApiController
     public function delete(int $id, Request $request): JsonResponse
     {
 
-        $deleterTranslationService = new DeleterTranslationService($request, $this->response, $this->managerRegistry);
-        $handler = function (Translation $translationEntity) use ($deleterTranslationService) {
-            return $deleterTranslationService->remove($translationEntity, 'translation@successDelete');
-        };
-
-        return $deleterTranslationService->delete($id, $handler)->make();
+        return $this->executeDeleteService(
+            $id,
+            DeleterTranslationService::class,
+            'translation@successDelete',
+            $request
+        );
 
     }
 
