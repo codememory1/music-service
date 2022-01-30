@@ -9,6 +9,7 @@ use App\Repository\LanguageRepository;
 use App\Service\Response\ApiResponseSchema;
 use App\Service\Response\ApiResponseService;
 use App\Service\Translator\Translation\AddTranslationService;
+use App\Service\Translator\Translation\DeleterTranslationService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +66,23 @@ class TranslationController extends AbstractApiController
         $addTranslationService = new AddTranslationService($request, $this->response, $this->managerRegistry);
 
         return $addTranslationService->add($validator)->make();
+
+    }
+
+    /**
+     * @param int     $id
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Exception
+     */
+    #[Route('/translator/translation/{id<\d+>}/delete/', methods: 'DELETE')]
+    public function delete(int $id, Request $request): JsonResponse
+    {
+
+        $deleterTranslationService = new DeleterTranslationService($request, $this->response, $this->managerRegistry);
+
+        return $deleterTranslationService->delete($id)->make();
 
     }
 
