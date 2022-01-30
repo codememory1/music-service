@@ -32,7 +32,6 @@ class Translation
      */
     #[ORM\ManyToOne(targetEntity: Language::class, inversedBy: 'translations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'translation@langIsRequired')]
     private ?Language $lang = null;
 
     /**
@@ -40,7 +39,6 @@ class Translation
      */
     #[ORM\ManyToOne(targetEntity: TranslationKey::class, inversedBy: 'translations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'translation@keyIsRequired')]
     private ?TranslationKey $translationKey = null;
 
     /**
@@ -49,7 +47,7 @@ class Translation
     #[ORM\Column(type: 'text', options: [
         'comment' => 'Translation of the key into the specified language'
     ])]
-    #[Assert\NotBlank(message: 'translation@translationIsRequired')]
+    #[Assert\NotBlank(message: 'translation@translationIsRequired', payload: 'translation_is_required')]
     private ?string $translation = null;
 
     /**
