@@ -197,6 +197,11 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'translationKey@nameMaxLength',
             'translation' => 'Длина ключа не должна превышать 255 символов'
         ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'translationKey@notExist',
+            'translation' => 'Данный ключ перевода не существует'
+        ],
 
         // RU - translation
         [
@@ -213,6 +218,16 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'lang'        => 'ru',
             'key'         => 'translation@translationIsRequired',
             'translation' => 'Перевод обязателен к заполнению'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'translation@exist',
+            'translation' => 'Данный перевод для текущего языка уже существует'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'translation@successAdd',
+            'translation' => 'Перевод успешно добавлен'
         ],
 
         // RU - user

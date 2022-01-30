@@ -57,10 +57,13 @@ class TranslationKeyFixtures extends Fixture
         'translationKey@keyExist',
         'translationKey@nameIsRequired',
         'translationKey@nameMaxLength',
+        'translationKey@notExist',
 
         'translation@langIsRequired',
         'translation@keyIsRequired',
         'translation@translationIsRequired',
+        'translation@exist',
+        'translation@successAdd',
 
         'user@emailExist',
         'user@usernameExist',
