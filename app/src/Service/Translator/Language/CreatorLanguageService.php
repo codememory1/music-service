@@ -20,11 +20,12 @@ class CreatorLanguageService extends AbstractApiService
 
     /**
      * @param ValidatorInterface $validator
+     * @param callable           $handler
      *
      * @return ApiResponseService
      * @throws Exception
      */
-    public function create(ValidatorInterface $validator): ApiResponseService
+    public function create(ValidatorInterface $validator, callable $handler): ApiResponseService
     {
 
         $languageEntity = $this->collectEntity();
@@ -34,8 +35,8 @@ class CreatorLanguageService extends AbstractApiService
             return $resultInputValidation;
         }
 
-        // Saving data to the database
-        return $this->push($languageEntity, 'lang@successCreate');
+        // Calling an Extender Method
+        return call_user_func($handler, $languageEntity);
 
     }
 

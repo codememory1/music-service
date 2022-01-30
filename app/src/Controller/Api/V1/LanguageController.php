@@ -59,8 +59,11 @@ class LanguageController extends AbstractApiController
     {
 
         $creatorLanguageService = new CreatorLanguageService($request, $this->response, $this->managerRegistry);
+        $handler = function (Language $languageEntity) use ($creatorLanguageService) {
+            return $creatorLanguageService->push($languageEntity, 'lang@successCreate');
+        };
 
-        return $creatorLanguageService->create($validator)->make();
+        return $creatorLanguageService->create($validator, $handler)->make();
 
     }
 
@@ -77,8 +80,15 @@ class LanguageController extends AbstractApiController
     {
 
         $updaterLanguageService = new UpdaterLanguageService($request, $this->response, $this->managerRegistry);
+        $handler = function (Language $languageEntity) use ($updaterLanguageService) {
+            return $updaterLanguageService->push(
+                $languageEntity,
+                'lang@successUpdate',
+                true
+            );
+        };
 
-        return $updaterLanguageService->update($id, $validator)->make();
+        return $updaterLanguageService->update($id, $validator, $handler)->make();
 
     }
 
@@ -94,8 +104,11 @@ class LanguageController extends AbstractApiController
     {
 
         $deleterLanguageService = new DeleterLanguageService($request, $this->response, $this->managerRegistry);
+        $handler = function (Language $languageEntity) use ($deleterLanguageService) {
+            return $deleterLanguageService->remove($languageEntity, 'lang@successDelete');
+        };
 
-        return $deleterLanguageService->delete($id)->make();
+        return $deleterLanguageService->delete($id, $handler)->make();
 
     }
 

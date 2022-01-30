@@ -20,12 +20,13 @@ class DeleterTranslationService extends AbstractApiService
 {
 
     /**
-     * @param int $id
+     * @param int      $id
+     * @param callable $handler
      *
      * @return ApiResponseService
      * @throws Exception
      */
-    public function delete(int $id): ApiResponseService
+    public function delete(int $id, callable $handler): ApiResponseService
     {
 
         /** @var TranslationRepository $translationRepository */
@@ -44,8 +45,8 @@ class DeleterTranslationService extends AbstractApiService
             return $this->getPreparedApiResponse();
         }
 
-        // Deleting a found entry
-        return $this->remove($finedTranslation, 'translation@successDelete');
+        // Calling an Extender Method
+        return call_user_func($handler, $finedTranslation);
 
     }
 

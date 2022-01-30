@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use App\Enums\ApiResponseTypeEnum;
 use App\Repository\TranslationRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: TranslationRepository::class)]
 #[ORM\Table('translations')]
+#[UniqueEntity(['lang', 'translationKey'], 'translation@exist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'translation_exist'])]
 class Translation
 {
 

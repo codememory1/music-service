@@ -165,7 +165,7 @@ abstract class AbstractApiService
      * @return ApiResponseService
      * @throws Exception
      */
-    protected function push(object $entity, string $successTranslationKey, bool $asUpdate = false): ApiResponseService
+    public function push(object $entity, string $successTranslationKey, bool $asUpdate = false): ApiResponseService
     {
 
         $messageName = $asUpdate ? 'success_update' : 'success_create';
@@ -193,7 +193,7 @@ abstract class AbstractApiService
      * @return ApiResponseService
      * @throws Exception
      */
-    protected function remove(object $entity, string $successTranslationKey): ApiResponseService
+    public function remove(object $entity, string $successTranslationKey): ApiResponseService
     {
 
         $translation = $this->getTranslation($successTranslationKey);

@@ -23,11 +23,12 @@ class UpdaterLanguageService extends AbstractApiService
     /**
      * @param int                $id
      * @param ValidatorInterface $validator
+     * @param callable           $handler
      *
      * @return ApiResponseService
      * @throws Exception
      */
-    public function update(int $id, ValidatorInterface $validator): ApiResponseService
+    public function update(int $id, ValidatorInterface $validator, callable $handler): ApiResponseService
     {
 
         /** @var LanguageRepository $languageRepository */
@@ -53,20 +54,18 @@ class UpdaterLanguageService extends AbstractApiService
             return $resultInputValidation;
         }
 
-        // Update found record
-        return $this->push($languageEntity, 'lang@successUpdate', true);
+        // Calling an Extender Method
+        return call_user_func($handler, $languageEntity);
 
     }
 
     /**
-     * @param Language|null $defaultEntity
+     * @param Language $languageEntity
      *
      * @return Language
      */
-    private function collectEntity(?Language $defaultEntity = null): Language
+    private function collectEntity(Language $languageEntity): Language
     {
-
-        $languageEntity = $defaultEntity ?? new Language();
 
         $languageEntity
             ->setCode($this->request->get('code', ''))
