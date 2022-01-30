@@ -72,7 +72,7 @@ class LanguageController extends AbstractApiController
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/translator/language/{id<\d+>}/update/', methods: 'PUT')]
+    #[Route('/translator/language/{id<\d+>}/edit/', methods: 'PUT')]
     public function update(int $id, Request $request, ValidatorInterface $validator): JsonResponse
     {
 
