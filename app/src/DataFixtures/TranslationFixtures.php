@@ -226,8 +226,18 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
         ],
         [
             'lang'        => 'ru',
+            'key'         => 'translation@notExist',
+            'translation' => 'Перевод не найден'
+        ],
+        [
+            'lang'        => 'ru',
             'key'         => 'translation@successAdd',
             'translation' => 'Перевод успешно добавлен'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'translation@successDelete',
+            'translation' => 'Перевод успешно удален'
         ],
 
         // RU - user

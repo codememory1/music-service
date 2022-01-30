@@ -63,7 +63,9 @@ class TranslationKeyFixtures extends Fixture
         'translation@keyIsRequired',
         'translation@translationIsRequired',
         'translation@exist',
+        'translation@notExist',
         'translation@successAdd',
+        'translation@successDelete',
 
         'user@emailExist',
         'user@usernameExist',
