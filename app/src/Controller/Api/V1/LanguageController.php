@@ -5,9 +5,6 @@ namespace App\Controller\Api\V1;
 use App\Controller\Api\AbstractApiController;
 use App\Dto\LanguageDto;
 use App\Entity\Language;
-use App\Repository\LanguageRepository;
-use App\Service\Response\ApiResponseSchema;
-use App\Service\Response\ApiResponseService;
 use App\Service\Translator\Language\CreatorLanguageService;
 use App\Service\Translator\Language\DeleterLanguageService;
 use App\Service\Translator\Language\UpdaterLanguageService;
@@ -34,16 +31,7 @@ class LanguageController extends AbstractApiController
     public function all(): JsonResponse
     {
 
-        /** @var LanguageRepository $languageRepository */
-        $languageRepository = $this->managerRegistry->getRepository(Language::class);
-        $languageDto = new LanguageDto($languageRepository->findAll());
-        $apiResponseSchema = new ApiResponseSchema('success', 200);
-
-        $apiResponseSchema->setData($languageDto->transform());
-
-        $apiResponseService = new ApiResponseService($apiResponseSchema);
-
-        return $apiResponseService->make();
+        return $this->showAllFromDatabase(Language::class, LanguageDto::class);
 
     }
 

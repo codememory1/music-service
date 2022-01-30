@@ -2,8 +2,11 @@
 
 namespace App\Controller\Api;
 
+use App\Service\Response\ApiResponseSchema;
+use App\Service\Response\ApiResponseService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -34,6 +37,27 @@ abstract class AbstractApiController extends AbstractController
 
         $this->response = new Response();
         $this->managerRegistry = $managerRegistry;
+
+    }
+
+    /**
+     * @param string $entityNamespace
+     * @param string $dtoNamespace
+     *
+     * @return JsonResponse
+     */
+    protected function showAllFromDatabase(string $entityNamespace, string $dtoNamespace): JsonResponse
+    {
+
+        $entityRepository = $this->managerRegistry->getRepository($entityNamespace);
+        $dto = new $dtoNamespace($entityRepository->findAll());
+        $apiResponseSchema = new ApiResponseSchema('success', 200);
+
+        $apiResponseSchema->setData($dto->transform());
+
+        $apiResponseService = new ApiResponseService($apiResponseSchema);
+
+        return $apiResponseService->make();
 
     }
 

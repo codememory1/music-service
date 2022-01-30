@@ -11,7 +11,7 @@ use App\Entity\Language;
  *
  * @author  Codememory
  */
-final class LanguageDto
+final class LanguageDto implements DtoInterface
 {
 
     /**
@@ -30,7 +30,7 @@ final class LanguageDto
     }
 
     /**
-     * @return array
+     * @inheritDoc
      */
     public function transform(): array
     {
