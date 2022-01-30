@@ -8,9 +8,12 @@ use App\Entity\Language;
 use App\Repository\LanguageRepository;
 use App\Service\Response\ApiResponseSchema;
 use App\Service\Response\ApiResponseService;
+use App\Service\Translator\Translation\AddTranslationService;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class TranslationController
@@ -45,6 +48,23 @@ class TranslationController extends AbstractApiController
         $apiResponseService = new ApiResponseService($apiResponseSchema);
 
         return $apiResponseService->make();
+
+    }
+
+    /**
+     * @param Request            $request
+     * @param ValidatorInterface $validator
+     *
+     * @return JsonResponse
+     * @throws Exception
+     */
+    #[Route('/translator/translation/add', methods: 'POST')]
+    public function add(Request $request, ValidatorInterface $validator): JsonResponse
+    {
+
+        $addTranslationService = new AddTranslationService($request, $this->response, $this->managerRegistry);
+
+        return $addTranslationService->add($validator)->make();
 
     }
 
