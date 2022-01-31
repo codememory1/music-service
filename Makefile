@@ -13,7 +13,7 @@ build:
 	sudo docker-compose --env-file .docker/development/.env build
 
 up_dev:
-	docker-compose --env-file .docker/development/.env up
+	docker-compose --env-file .docker/development/.env up -d
 
 up_prod:
 	docker-compose --env-file .docker/production/.env up
