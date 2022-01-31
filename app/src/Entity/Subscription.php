@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Enums\ApiResponseTypeEnum;
 use App\Enums\StatusEnum;
 use App\Repository\SubscriptionRepository;
+use App\ValidatorConstraints as AppAssert;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,6 +40,7 @@ class Subscription
     ])]
     #[Assert\NotBlank(message: 'subscription@nameIsRequired', payload: 'name_is_required')]
     #[Assert\Length(max: 255, maxMessage: 'subscription@nameMaxLength', payload: 'name_length')]
+    #[AppAssert\Exist(TranslationKey::class, 'name', 'common@titleTranslationKeyNotExist', [ApiResponseTypeEnum::CHECK_EXIST, 'title_translation_key_not_exist'])]
     private ?string $nameTranslationKey = null;
 
     /**
@@ -48,6 +51,7 @@ class Subscription
     ])]
     #[Assert\NotBlank(message: 'common@descriptionIsRequired', payload: 'description_is_required')]
     #[Assert\Length(max: 255, maxMessage: 'subscription@descriptionMaxLength', payload: 'description_length')]
+    #[AppAssert\Exist(TranslationKey::class, 'name', 'common@descriptionTranslationKeyNotExist', [ApiResponseTypeEnum::CHECK_EXIST, 'description_translation_key_not_exist'])]
     private ?string $descriptionTranslationKey = null;
 
     /**
@@ -57,7 +61,6 @@ class Subscription
         'comment' => 'Subscription price'
     ])]
     #[Assert\NotBlank(message: 'common@priceIsRequired', payload: 'price_is_required')]
-    #[Assert\PositiveOrZero(message: 'common@priceInvalid', payload: 'price_invalid')]
     private ?float $price = null;
 
     /**
@@ -66,8 +69,6 @@ class Subscription
     #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true, options: [
         'comment' => 'Old subscription price'
     ])]
-    #[Assert\NotBlank(message: 'common@priceIsRequired', payload: 'old_price_is_required')]
-    #[Assert\PositiveOrZero(message: 'common@priceInvalid', payload: 'old_price_invalid')]
     private ?float $oldPrice = null;
 
     /**
@@ -95,8 +96,8 @@ class Subscription
     /**
      * @var Collection
      */
-    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionRight::class)]
-    private Collection $subscriptionRights;
+    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPermission::class)]
+    private Collection $subscriptionPermissions;
 
     /**
      * @var UserSubscription|null
@@ -110,7 +111,7 @@ class Subscription
         $this->status = StatusEnum::ACTIVE->value;
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
-        $this->subscriptionRights = new ArrayCollection();
+        $this->subscriptionPermissions = new ArrayCollection();
 
     }
 
@@ -190,7 +191,7 @@ class Subscription
     public function setPrice(string $price): self
     {
 
-        $this->price = $price;
+        $this->price = (float) $price;
 
         return $this;
 
@@ -207,14 +208,14 @@ class Subscription
     }
 
     /**
-     * @param string $oldPrice
+     * @param string|null $oldPrice
      *
      * @return $this
      */
-    public function setOldPrice(string $oldPrice): self
+    public function setOldPrice(?string $oldPrice): self
     {
 
-        $this->oldPrice = $oldPrice;
+        $this->oldPrice = empty($oldPrice) ? null : (float) $oldPrice;
 
         return $this;
 
@@ -295,24 +296,24 @@ class Subscription
     /**
      * @return Collection
      */
-    public function getSubscriptionRights(): Collection
+    public function getSubscriptionPermissions(): Collection
     {
 
-        return $this->subscriptionRights;
+        return $this->subscriptionPermissions;
 
     }
 
     /**
-     * @param SubscriptionRight $subscriptionRight
+     * @param SubscriptionPermission $subscriptionPermission
      *
      * @return $this
      */
-    public function addSubscriptionRight(SubscriptionRight $subscriptionRight): self
+    public function addSubscriptionRight(SubscriptionPermission $subscriptionPermission): self
     {
 
-        if (!$this->subscriptionRights->contains($subscriptionRight)) {
-            $this->subscriptionRights[] = $subscriptionRight;
-            $subscriptionRight->setSubscription($this);
+        if (!$this->subscriptionPermissions->contains($subscriptionPermission)) {
+            $this->subscriptionPermissions[] = $subscriptionPermission;
+            $subscriptionPermission->setSubscription($this);
         }
 
         return $this;
@@ -320,17 +321,17 @@ class Subscription
     }
 
     /**
-     * @param SubscriptionRight $subscriptionRight
+     * @param SubscriptionPermission $subscriptionPermission
      *
      * @return $this
      */
-    public function removeSubscriptionRight(SubscriptionRight $subscriptionRight): self
+    public function removeSubscriptionRight(SubscriptionPermission $subscriptionPermission): self
     {
 
-        if ($this->subscriptionRights->removeElement($subscriptionRight)) {
+        if ($this->subscriptionPermissions->removeElement($subscriptionPermission)) {
             // set the owning side to null (unless already changed)
-            if ($subscriptionRight->getSubscription() === $this) {
-                $subscriptionRight->setSubscription(null);
+            if ($subscriptionPermission->getSubscription() === $this) {
+                $subscriptionPermission->setSubscription(null);
             }
         }
 

@@ -2,22 +2,22 @@
 
 namespace App\Entity;
 
-use App\Repository\RoleRightNameRepository;
+use App\Repository\RolePermissionNameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class RoleRightName
+ * Class RolePermissionName
  *
  * @package App\Entitiy
  *
  * @author  Codememory
  */
-#[ORM\Entity(repositoryClass: RoleRightNameRepository::class)]
-#[ORM\Table('role_right_names')]
-class RoleRightName
+#[ORM\Entity(repositoryClass: RolePermissionNameRepository::class)]
+#[ORM\Table('role_permission_names')]
+class RolePermissionName
 {
 
     public const ADD_TRACK = 'add-music';
@@ -37,18 +37,18 @@ class RoleRightName
     public const DELETE_TRANSLATION = 'delete-translation-from-language';
 
     public const NAMES = [
-        self::ADD_TRACK           => 'roleRightName@addTrack',
-        self::UPDATE_TRACK        => 'roleRightName@updateTrack',
-        self::DELETE_TRACK        => 'roleRightName@deleteTrack',
-        self::CREATE_SUBSCRIPTION => 'roleRightName@createSubscription',
-        self::UPDATE_SUBSCRIPTION => 'roleRightName@updateSubscription',
-        self::DELETE_SUBSCRIPTION => 'roleRightName@deleteSubscription',
-        self::CREATE_LANG         => 'roleRightName@createLang',
-        self::UPDATE_LANG         => 'roleRightName@updateLang',
-        self::DELETE_LANG         => 'roleRightName@deleteLang',
-        self::ADD_TRANSLATION     => 'roleRightName@addLangTranslation',
-        self::UPDATE_TRANSLATION  => 'roleRightName@updateLangTranslation',
-        self::DELETE_TRANSLATION  => 'roleRightName@deleteTranslationFromLanguage',
+        self::ADD_TRACK           => 'rolePermission@addTrack',
+        self::UPDATE_TRACK        => 'rolePermission@updateTrack',
+        self::DELETE_TRACK        => 'rolePermission@deleteTrack',
+        self::CREATE_SUBSCRIPTION => 'rolePermission@createSubscription',
+        self::UPDATE_SUBSCRIPTION => 'rolePermission@updateSubscription',
+        self::DELETE_SUBSCRIPTION => 'rolePermission@deleteSubscription',
+        self::CREATE_LANG         => 'rolePermission@createLang',
+        self::UPDATE_LANG         => 'rolePermission@updateLang',
+        self::DELETE_LANG         => 'rolePermission@deleteLang',
+        self::ADD_TRANSLATION     => 'rolePermission@addLangTranslation',
+        self::UPDATE_TRANSLATION  => 'rolePermission@updateLangTranslation',
+        self::DELETE_TRANSLATION  => 'rolePermission@deleteTranslationFromLanguage',
     ];
 
     /**
@@ -78,14 +78,14 @@ class RoleRightName
     /**
      * @var Collection
      */
-    #[ORM\OneToMany(mappedBy: 'roleRightName', targetEntity: RoleRight::class)]
-    private Collection $roleRights;
+    #[ORM\OneToMany(mappedBy: 'rolePermissionName', targetEntity: RolePermission::class)]
+    private Collection $rolePermissions;
 
     #[Pure]
     public function __construct()
     {
 
-        $this->roleRights = new ArrayCollection();
+        $this->rolePermissions = new ArrayCollection();
 
     }
 
@@ -150,24 +150,24 @@ class RoleRightName
     /**
      * @return Collection
      */
-    public function getRoleRights(): Collection
+    public function getRolePermissions(): Collection
     {
 
-        return $this->roleRights;
+        return $this->rolePermissions;
 
     }
 
     /**
-     * @param RoleRight $roleRight
+     * @param RolePermission $rolePermission
      *
      * @return $this
      */
-    public function addRoleRight(RoleRight $roleRight): self
+    public function addRolePermission(RolePermission $rolePermission): self
     {
 
-        if (!$this->roleRights->contains($roleRight)) {
-            $this->roleRights[] = $roleRight;
-            $roleRight->setRoleRightName($this);
+        if (!$this->rolePermissions->contains($rolePermission)) {
+            $this->rolePermissions[] = $rolePermission;
+            $rolePermission->setRolePermissionName($this);
         }
 
         return $this;
@@ -175,16 +175,16 @@ class RoleRightName
     }
 
     /**
-     * @param RoleRight $roleRight
+     * @param RolePermission $rolePermission
      *
      * @return $this
      */
-    public function removeRoleRight(RoleRight $roleRight): self
+    public function removeRolePermission(RolePermission $rolePermission): self
     {
 
-        if ($this->roleRights->removeElement($roleRight)) {
-            if ($roleRight->getRoleRightName() === $this) {
-                $roleRight->setRoleRightName(null);
+        if ($this->rolePermissions->removeElement($rolePermission)) {
+            if ($rolePermission->getRolePermissionName() === $this) {
+                $rolePermission->setRolePermissionName(null);
             }
         }
 

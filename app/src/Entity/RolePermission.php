@@ -2,19 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\RoleRightRepository;
+use App\Repository\RolePermissionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class RoleRight
+ * Class RolePermission
  *
  * @package App\Entitiy
  *
  * @author  Codememory
  */
-#[ORM\Entity(repositoryClass: RoleRightRepository::class)]
-#[ORM\Table('role_rights')]
-class RoleRight
+#[ORM\Entity(repositoryClass: RolePermissionRepository::class)]
+#[ORM\Table('role_permissions')]
+class RolePermission
 {
 
     /**
@@ -26,16 +26,16 @@ class RoleRight
     private ?int $id = null;
 
     /**
-     * @var RoleRightName|null
+     * @var RolePermissionName|null
      */
-    #[ORM\ManyToOne(targetEntity: RoleRightName::class, inversedBy: 'roleRights')]
+    #[ORM\ManyToOne(targetEntity: RolePermissionName::class, inversedBy: 'rolePermissions')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?RoleRightName $roleRightName = null;
+    private ?RolePermissionName $rolePermissionName = null;
 
     /**
      * @var Role|null
      */
-    #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'roleRights')]
+    #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'rolePermissions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Role $role = null;
 
@@ -50,24 +50,24 @@ class RoleRight
     }
 
     /**
-     * @return RoleRightName|null
+     * @return RolePermissionName|null
      */
-    public function getRoleRightName(): ?RoleRightName
+    public function getRolePermissionName(): ?RolePermissionName
     {
 
-        return $this->roleRightName;
+        return $this->rolePermissionName;
 
     }
 
     /**
-     * @param RoleRightName|null $roleRightName
+     * @param RolePermissionName|null $rolePermissionName
      *
      * @return $this
      */
-    public function setRoleRightName(?RoleRightName $roleRightName): self
+    public function setRolePermissionName(?RolePermissionName $rolePermissionName): self
     {
 
-        $this->roleRightName = $roleRightName;
+        $this->rolePermissionName = $rolePermissionName;
 
         return $this;
 

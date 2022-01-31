@@ -50,20 +50,20 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'translation' => 'Менеджер по загрузке музыки'
         ],
 
-        // RU - roleRightName
+        // RU - rolePermission
         [
             'lang'        => 'ru',
-            'key'         => 'roleRightName@addTrack',
+            'key'         => 'rolePermission@addTrack',
             'translation' => 'Добавление музыки'
         ],
         [
             'lang'        => 'ru',
-            'key'         => 'roleRightName@updateTrack',
+            'key'         => 'rolePermission@updateTrack',
             'translation' => 'Обновление музыки'
         ],
         [
             'lang'        => 'ru',
-            'key'         => 'roleRightName@deleteTrack',
+            'key'         => 'rolePermission@deleteTrack',
             'translation' => 'Удаление музыки'
         ],
 
@@ -137,6 +137,26 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'lang'        => 'ru',
             'key'         => 'common@imageIsRequired',
             'translation' => 'Изображение обязательно к заполнению'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'common@priceInvalid',
+            'translation' => 'Некорректная цена'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'common@statusInvalid',
+            'translation' => 'Некорректный статус'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'common@titleTranslationKeyNotExist',
+            'translation' => 'Ключ перевода названия не существует'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'common@descriptionTranslationKeyNotExist',
+            'translation' => 'Ключ перевода описания не существует'
         ],
 
         // RU - lang
@@ -340,30 +360,95 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'subscription@descriptionMaxLength',
             'translation' => 'Описание не должно превышать 255 символов'
         ],
-
-        // RU - subscriptionRightName
         [
             'lang'        => 'ru',
-            'key'         => 'subscriptionRightName@keyExist',
+            'key'         => 'subscription@successCreate',
+            'translation' => 'Подписка успешно создана'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscription@successUpdate',
+            'translation' => 'Подписка успешно обновлена'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscription@successDelete',
+            'translation' => 'Подписка успешно удалена'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscription@notExist',
+            'translation' => 'Подписка не найдена'
+        ],
+
+        // RU - subscriptionPermissionName
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermissionName@keyExist',
             'translation' => 'Данный ключ уже существует'
         ],
         [
             'lang'        => 'ru',
-            'key'         => 'subscriptionRightName@keyIsRequired',
+            'key'         => 'subscriptionPermissionName@keyIsRequired',
             'translation' => 'Ключ обязательный к заполнению'
         ],
         [
             'lang'        => 'ru',
-            'key'         => 'subscriptionRightName@keyMaxLength',
+            'key'         => 'subscriptionPermissionName@keyMaxLength',
             'translation' => 'Длина ключа не должна превышать 255 символов'
         ],
-
-        // RU - subscriptionRight
         [
             'lang'        => 'ru',
-            'key'         => 'subscriptionRight@rightNameIsRequired',
+            'key'         => 'subscriptionPermissionName@successCreate',
+            'translation' => 'Ключ разрешения успешно создан'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermissionName@successUpdate',
+            'translation' => 'Ключ разрешения успешно обновлен'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermissionName@successDelete',
+            'translation' => 'Ключ разрешения успешно удален'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermissionName@notExist',
+            'translation' => 'Ключ разрешения не найден'
+        ],
+
+        // RU - subscriptionPermission
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermission@rightNameIsRequired',
             'translation' => 'Ключ право обязательный к заполнению'
-        ]
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermission@successCreate',
+            'translation' => 'Разрешение успешно создано'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermission@successUpdate',
+            'translation' => 'Разрешение успешно обновлено'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermission@successDelete',
+            'translation' => 'Разрешение успешно удалено'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermission@notExist',
+            'translation' => 'Разрешение не найдено'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermission@exist',
+            'translation' => 'Данное разрешение для текущей подписки уже существует'
+        ],
     ];
 
     /**

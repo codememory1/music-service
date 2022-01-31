@@ -26,9 +26,9 @@ class TranslationKeyFixtures extends Fixture
         'role@support',
         'role@musicManager',
 
-        'roleRightName@addTrack',
-        'roleRightName@updateTrack',
-        'roleRightName@deleteTrack',
+        'rolePermission@addTrack',
+        'rolePermission@updateTrack',
+        'rolePermission@deleteTrack',
 
         'common@titleIsRequired',
         'common@descriptionIsRequired',
@@ -44,6 +44,10 @@ class TranslationKeyFixtures extends Fixture
         'common@validToIsRequired',
         'common@emailMaxLength',
         'common@imageIsRequired',
+        'common@priceInvalid',
+        'common@statusInvalid',
+        'common@titleTranslationKeyNotExist',
+        'common@descriptionTranslationKeyNotExist',
 
         'lang@codeExist',
         'lang@langNotExist',
@@ -88,12 +92,25 @@ class TranslationKeyFixtures extends Fixture
         'subscription@nameIsRequired',
         'subscription@nameMaxLength',
         'subscription@descriptionMaxLength',
+        'subscription@successCreate',
+        'subscription@successUpdate',
+        'subscription@successDelete',
+        'subscription@notExist',
 
-        'subscriptionRightName@keyExist',
-        'subscriptionRightName@keyIsRequired',
-        'subscriptionRightName@keyMaxLength',
+        'subscriptionPermissionName@keyExist',
+        'subscriptionPermissionName@keyIsRequired',
+        'subscriptionPermissionName@keyMaxLength',
+        'subscriptionPermissionName@successCreate',
+        'subscriptionPermissionName@successUpdate',
+        'subscriptionPermissionName@successDelete',
+        'subscriptionPermissionName@notExist',
 
-        'subscriptionRight@rightNameIsRequired'
+        'subscriptionPermission@rightNameIsRequired',
+        'subscriptionPermission@successCreate',
+        'subscriptionPermission@successUpdate',
+        'subscriptionPermission@successDelete',
+        'subscriptionPermission@notExist',
+        'subscriptionPermission@exist',
     ];
 
     /**

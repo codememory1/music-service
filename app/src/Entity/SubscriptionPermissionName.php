@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\SubscriptionRightNameRepository;
+use App\Enums\ApiResponseTypeEnum;
+use App\Repository\SubscriptionPermissionNameRepository;
+use App\ValidatorConstraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,16 +13,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class SubscriptionRightName
+ * Class SubscriptionPermissionName
  *
  * @package App\Entity
  *
  * @author  Codememory
  */
-#[ORM\Entity(repositoryClass: SubscriptionRightNameRepository::class)]
-#[ORM\Table('subscription_right_names')]
-#[UniqueEntity('key', message: 'subscriptionRightName@keyExist', payload: 'key_exist')]
-class SubscriptionRightName
+#[ORM\Entity(repositoryClass: SubscriptionPermissionNameRepository::class)]
+#[ORM\Table('subscription_permission_names')]
+#[UniqueEntity('key', message: 'subscriptionPermissionName@keyExist', payload: 'key_exist')]
+class SubscriptionPermissionName
 {
 
     /**
@@ -37,8 +39,8 @@ class SubscriptionRightName
     #[ORM\Column('`key`', 'string', length: 255, unique: true, options: [
         'comment' => 'The unique key of the rule by which access will be checked'
     ])]
-    #[Assert\NotBlank(message: 'subscriptionRightName@keyIsRequired', payload: 'key_is_required')]
-    #[Assert\Length(max: 255, maxMessage: 'subscriptionRightName@keyMaxLength', payload: 'key_length')]
+    #[Assert\NotBlank(message: 'subscriptionPermissionName@keyIsRequired', payload: 'key_is_required')]
+    #[Assert\Length(max: 255, maxMessage: 'subscriptionPermissionName@keyMaxLength', payload: 'key_length')]
     private ?string $key = null;
 
     /**
@@ -49,18 +51,19 @@ class SubscriptionRightName
     ])]
     #[Assert\NotBlank(message: 'common@titleIsRequired', payload: 'title_is_required')]
     #[Assert\Length(max: 255, maxMessage: 'common@titleTranslationKeyMaxLength', payload: 'title_length')]
+    #[AppAssert\Exist(TranslationKey::class, 'name', 'common@titleTranslationKeyNotExist', [ApiResponseTypeEnum::CHECK_EXIST, 'title_translation_key_not_exist'])]
     private ?string $titleTranslationKey = null;
 
     /**
      * @var Collection
      */
-    #[ORM\OneToMany(mappedBy: 'subscriptionRightName', targetEntity: SubscriptionRight::class)]
-    private Collection $subscriptionRights;
+    #[ORM\OneToMany(mappedBy: 'subscriptionPermissionName', targetEntity: SubscriptionPermission::class)]
+    private Collection $subscriptionPermissions;
 
     #[Pure]
     public function __construct()
     {
-        $this->subscriptionRights = new ArrayCollection();
+        $this->subscriptionPermissions = new ArrayCollection();
     }
 
     /**
@@ -124,24 +127,24 @@ class SubscriptionRightName
     /**
      * @return Collection
      */
-    public function getSubscriptionRights(): Collection
+    public function getSubscriptionPermissions(): Collection
     {
 
-        return $this->subscriptionRights;
+        return $this->subscriptionPermissions;
 
     }
 
     /**
-     * @param SubscriptionRight $subscriptionRight
+     * @param SubscriptionPermission $subscriptionPermission
      *
      * @return $this
      */
-    public function addSubscriptionRight(SubscriptionRight $subscriptionRight): self
+    public function addSubscriptionRight(SubscriptionPermission $subscriptionPermission): self
     {
 
-        if (!$this->subscriptionRights->contains($subscriptionRight)) {
-            $this->subscriptionRights[] = $subscriptionRight;
-            $subscriptionRight->setSubscriptionRightName($this);
+        if (!$this->subscriptionPermissions->contains($subscriptionPermission)) {
+            $this->subscriptionPermissions[] = $subscriptionPermission;
+            $subscriptionPermission->setSubscriptionPermissionName($this);
         }
 
         return $this;
@@ -149,17 +152,17 @@ class SubscriptionRightName
     }
 
     /**
-     * @param SubscriptionRight $subscriptionRight
+     * @param SubscriptionPermission $subscriptionPermission
      *
      * @return $this
      */
-    public function removeSubscriptionRight(SubscriptionRight $subscriptionRight): self
+    public function removeSubscriptionPermission(SubscriptionPermission $subscriptionPermission): self
     {
 
-        if ($this->subscriptionRights->removeElement($subscriptionRight)) {
+        if ($this->subscriptionPermissions->removeElement($subscriptionPermission)) {
             // set the owning side to null (unless already changed)
-            if ($subscriptionRight->getSubscriptionRightName() === $this) {
-                $subscriptionRight->setSubscriptionRightName(null);
+            if ($subscriptionPermission->getSubscriptionPermissionName() === $this) {
+                $subscriptionPermission->setSubscriptionPermissionName(null);
             }
         }
 

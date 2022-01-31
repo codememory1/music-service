@@ -47,8 +47,8 @@ class Role
     /**
      * @var Collection
      */
-    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RoleRight::class)]
-    private Collection $roleRights;
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class)]
+    private Collection $rolePermissions;
 
     /**
      * @var Collection
@@ -59,7 +59,7 @@ class Role
     #[Pure]
     public function __construct()
     {
-        $this->roleRights = new ArrayCollection();
+        $this->rolePermissions = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
 
@@ -124,24 +124,24 @@ class Role
     /**
      * @return Collection
      */
-    public function getRoleRights(): Collection
+    public function getRolePermissions(): Collection
     {
 
-        return $this->roleRights;
+        return $this->rolePermissions;
 
     }
 
     /**
-     * @param RoleRight $roleRight
+     * @param RolePermission $rolePermission
      *
      * @return $this
      */
-    public function addRoleRight(RoleRight $roleRight): self
+    public function addRoleRight(RolePermission $rolePermission): self
     {
 
-        if (!$this->roleRights->contains($roleRight)) {
-            $this->roleRights[] = $roleRight;
-            $roleRight->setRole($this);
+        if (!$this->rolePermissions->contains($rolePermission)) {
+            $this->rolePermissions[] = $rolePermission;
+            $rolePermission->setRole($this);
         }
 
         return $this;
@@ -149,16 +149,16 @@ class Role
     }
 
     /**
-     * @param RoleRight $roleRight
+     * @param RolePermission $rolePermission
      *
      * @return $this
      */
-    public function removeRoleRight(RoleRight $roleRight): self
+    public function removeRoleRight(RolePermission $rolePermission): self
     {
 
-        if ($this->roleRights->removeElement($roleRight)) {
-            if ($roleRight->getRole() === $this) {
-                $roleRight->setRole(null);
+        if ($this->rolePermissions->removeElement($rolePermission)) {
+            if ($rolePermission->getRole() === $this) {
+                $rolePermission->setRole(null);
             }
         }
 

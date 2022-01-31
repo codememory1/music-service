@@ -3,88 +3,88 @@
 namespace App\DataFixtures;
 
 use App\Entity\Role;
-use App\Entity\RoleRight;
-use App\Entity\RoleRightName;
+use App\Entity\RolePermission;
+use App\Entity\RolePermissionName;
 use App\Enums\RoleEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class RoleRightFixtures
+ * Class RolePermissionFixtures
  *
  * @package App\DataFixtures
  *
  * @author  Codememory
  */
-class RoleRightFixtures extends Fixture implements DependentFixtureInterface
+class RolePermissionFixtures extends Fixture implements DependentFixtureInterface
 {
 
     /**
      * @var array
      */
-    private array $roleRights = [
+    private array $rolePermissions = [
         // Developer
         [
-            'right_name' => RoleRightName::ADD_TRACK,
+            'right_name' => RolePermissionName::ADD_TRACK,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::UPDATE_TRACK,
+            'right_name' => RolePermissionName::UPDATE_TRACK,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::DELETE_TRACK,
+            'right_name' => RolePermissionName::DELETE_TRACK,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::CREATE_SUBSCRIPTION,
+            'right_name' => RolePermissionName::CREATE_SUBSCRIPTION,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::UPDATE_SUBSCRIPTION,
+            'right_name' => RolePermissionName::UPDATE_SUBSCRIPTION,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::DELETE_SUBSCRIPTION,
+            'right_name' => RolePermissionName::DELETE_SUBSCRIPTION,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::CREATE_LANG,
+            'right_name' => RolePermissionName::CREATE_LANG,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::UPDATE_LANG,
+            'right_name' => RolePermissionName::UPDATE_LANG,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::DELETE_LANG,
+            'right_name' => RolePermissionName::DELETE_LANG,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::ADD_TRANSLATION,
+            'right_name' => RolePermissionName::ADD_TRANSLATION,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::UPDATE_TRANSLATION,
+            'right_name' => RolePermissionName::UPDATE_TRANSLATION,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RoleRightName::DELETE_TRANSLATION,
+            'right_name' => RolePermissionName::DELETE_TRANSLATION,
             'role'       => RoleEnum::DEVELOPER
         ],
 
         // Music Manager
         [
-            'right_name' => RoleRightName::ADD_TRACK,
+            'right_name' => RolePermissionName::ADD_TRACK,
             'role'       => RoleEnum::MUSIC_MANAGER
         ],
         [
-            'right_name' => RoleRightName::UPDATE_TRACK,
+            'right_name' => RolePermissionName::UPDATE_TRACK,
             'role'       => RoleEnum::MUSIC_MANAGER
         ],
         [
-            'right_name' => RoleRightName::DELETE_TRACK,
+            'right_name' => RolePermissionName::DELETE_TRACK,
             'role'       => RoleEnum::MUSIC_MANAGER
         ]
     ];
@@ -97,16 +97,16 @@ class RoleRightFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
 
-        foreach ($this->roleRights as $roleRight) {
-            /** @var RoleRightName $roleRightNameEntity */
-            $roleRightNameEntity = $this->getReference(sprintf('role-right-name-%s', $roleRight['right_name']));
+        foreach ($this->rolePermissions as $rolePermission) {
+            /** @var RolePermissionName $rolePermissionNameEntity */
+            $rolePermissionNameEntity = $this->getReference(sprintf('role-right-name-%s', $rolePermission['right_name']));
 
             /** @var Role $roleEntity */
-            $roleEntity = $this->getReference(sprintf('role-%s', $roleRight['role']->value));
-            $roleRightEntity = new RoleRight();
+            $roleEntity = $this->getReference(sprintf('role-%s', $rolePermission['role']->value));
+            $roleRightEntity = new RolePermission();
 
             $roleRightEntity
-                ->setRoleRightName($roleRightNameEntity)
+                ->setRolePermissionName($rolePermissionNameEntity)
                 ->setRole($roleEntity);
 
             $manager->persist($roleRightEntity);
@@ -123,7 +123,7 @@ class RoleRightFixtures extends Fixture implements DependentFixtureInterface
     {
 
         return [
-            RoleRightNameFixtures::class,
+            RolePermissionNameFixtures::class,
             RoleFixtures::class
         ];
 
