@@ -1,0 +1,21 @@
+<meta charset="UTF-8">
+<meta name="description" content="{{ app.request.server.get('APP_DESCRIPTION') }}">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta property="og:title" content="{{ app.request.server.get('APP_TITLE') }}">
+<meta property="og:description" content="{{ app.request.server.get('APP_DESCRIPTION') }}">
+<meta property="og:url" content="{{ app.request.server.get('APP_URL') }}">
+{#<meta property="og:image" content="{{ app.request.server.get('APP_URL') }}{{ assetAliasPath('og_cover', true) }}">#}
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ app.request.server.get('APP_TITLE') }}">
+<meta property="al:android:app_name" content="{{ app.request.server.get('APP_TITLE') }}">
+<meta property="al:android:package" content="{{ app.request.server.get('APP_PACKAGE') }}">
+<meta property="al:android:url" content="{{ app.request.server.get('APP_TITLE') | lower }}://">
+<meta property="al:ios:app_name" content="{{ app.request.server.get('APP_TITLE') }}">
+{#<meta property="al:ios:app_store_id" content="">#}
+<meta property="al:ios:url" content="{{ app.request.server.get('APP_TITLE') | lower }}://">
+<meta property="twitter:site" content="@{{ app.request.server.get('APP_TITLE') | lower }}">
+<meta property="twitter:title" content="{{ app.request.server.get('APP_TITLE') }}">
+<meta property="twitter:description" content="{{ app.request.server.get('APP_DESCRIPTION') }}">
+<meta property="twitter:card" content="summary">
+{#<meta property="twitter:image" content="{{ app.request.server.get('APP_URL') }}{{ assetAliasPath('og_cover', true) }}">#}

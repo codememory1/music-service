@@ -1,7 +1,0 @@
-AddDefaultCharset utf-8
-RewriteEngine On
-
-RewriteRule !^public/.* kernel.php [L,NC]
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ kernel.php [L]

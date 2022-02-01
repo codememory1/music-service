@@ -1,8 +1,8 @@
-/vendor/
 /.idea/
-composer.lock
-/storage/
-.env
-node_modules/
-mix-manifest.json
-package-lock.json
+/data/
+
+/app/config/secrets/dev
+/app/config/secrets/jwt-private.pem
+/app/config/secrets/jwt-public.pem
+
+/app/.env
