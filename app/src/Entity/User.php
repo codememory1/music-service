@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use App\Enums\ApiResponseTypeEnum;
 use App\Enums\StatusEnum;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\ValidatorConstraints as AppAssert;
 
 /**
  * Class User
@@ -18,8 +20,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table('users')]
-#[UniqueEntity('email', 'user@emailExist', payload: 'email_exist')]
-#[UniqueEntity('username', 'user@usernameExist', payload: 'username_exist')]
+#[UniqueEntity('email', 'user@emailExist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'email_exist'])]
+#[UniqueEntity('username', 'user@usernameExist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'username_exist'])]
 class User
 {
 
@@ -58,9 +60,16 @@ class User
         'comment' => 'User password hash'
     ])]
     #[Assert\NotBlank(message: 'user@passwordIsRequired', payload: 'password_is_required')]
-    #[Assert\Length(min: 8, minMessage: 'user@passordMinLength', payload: 'password_length')]
+    #[Assert\Length(min: 8, minMessage: 'user@passwordMinLength', payload: 'password_length')]
     #[Assert\Regex('/^[a-z0-9\-_%\.\$\#]+$/i', message: 'user@passwordRegex', payload: 'password_regexp')]
     private ?string $password = null;
+
+    /**
+     * @var string|null
+     */
+    #[Assert\NotBlank(message: 'user@passwordConfirmIsRequired', payload: 'password_confirm_is_required')]
+    #[AppAssert\Between('getPassword', 'user@invalidPasswordConfirm', 'password_confirm_is_invalid')]
+    private ?string $passwordConfirm = null;
 
     /**
      * @var Role|null
@@ -190,6 +199,30 @@ class User
     {
 
         $this->password = $password;
+
+        return $this;
+
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPasswordConfirm(): ?string
+    {
+
+        return $this->passwordConfirm;
+
+    }
+
+    /**
+     * @param string|null $passwordConfirm
+     *
+     * @return $this
+     */
+    public function setPasswordConfirm(?string $passwordConfirm): self
+    {
+
+        $this->passwordConfirm = $passwordConfirm;
 
         return $this;
 
