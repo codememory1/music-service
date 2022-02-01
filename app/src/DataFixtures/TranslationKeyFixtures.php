@@ -83,6 +83,9 @@ class TranslationKeyFixtures extends Fixture
         'user@passwordMinLength',
         'user@passwordRegex',
         'user@roleIsRequired',
+        'user@successRegister',
+        'user@invalidPasswordConfirm',
+        'user@passwordConfirmIsRequired',
 
         'userProfile@nameIsRequired',
         'userProfile@surnameMaxLength',

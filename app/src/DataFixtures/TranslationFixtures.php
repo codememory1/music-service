@@ -321,6 +321,21 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'user@roleIsRequired',
             'translation' => 'Роль обязательна к заполнению'
         ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'user@successRegister',
+            'translation' => 'Регистрация прошла успешна! На почту отправлено сообщение с активацией аккаунта'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'user@invalidPasswordConfirm',
+            'translation' => 'Некорректное подтверждение пароля'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'user@passwordConfirmIsRequired',
+            'translation' => 'Подтверждение пароля обязательно к заполнению'
+        ],
 
         // RU - userProfile
         [
