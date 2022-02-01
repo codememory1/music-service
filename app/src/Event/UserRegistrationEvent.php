@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventListener;
+namespace App\Event;
 
 use App\Entity\User;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -8,7 +8,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Class UserRegistrationEvent
  *
- * @package App\EventListener
+ * @package App\Event
  *
  * @author  Codememory
  */
