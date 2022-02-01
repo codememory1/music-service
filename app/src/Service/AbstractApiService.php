@@ -6,6 +6,7 @@ use App\Enums\ApiResponseTypeEnum;
 use App\Service\Response\ApiResponseSchema;
 use App\Service\Response\ApiResponseService;
 use App\Service\Translator\TranslationService;
+use Closure;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
@@ -56,6 +57,11 @@ abstract class AbstractApiService
      * @var ApiResponseSchema|null
      */
     private ?ApiResponseSchema $preparedApiResponse = null;
+
+    /**
+     * @var Closure|null
+     */
+    private ?Closure $handler = null;
 
     /**
      * @param Request         $request
@@ -158,6 +164,20 @@ abstract class AbstractApiService
     }
 
     /**
+     * @param callable $handler
+     *
+     * @return $this
+     */
+    protected function setHandler(callable $handler): AbstractApiService
+    {
+
+        $this->handler = $handler;
+
+        return $this;
+
+    }
+
+    /**
      * @param object $entity
      * @param string $successTranslationKey
      * @param bool   $asUpdate
@@ -177,6 +197,8 @@ abstract class AbstractApiService
         }
 
         $this->em->flush();
+
+        $this->callHandler($entity);
 
         $this
             ->prepareApiResponse('success', 200)
@@ -201,6 +223,8 @@ abstract class AbstractApiService
         $this->em->remove($entity);
         $this->em->flush();
 
+        $this->callHandler($entity);
+
         $this
             ->prepareApiResponse('success', 200)
             ->setMessage(ApiResponseTypeEnum::DELETE, 'success_delete', $translation);
@@ -217,6 +241,20 @@ abstract class AbstractApiService
     {
 
         return new ApiResponseService($this->preparedApiResponse);
+
+    }
+
+    /**
+     * @param object $entity
+     *
+     * @return void
+     */
+    private function callHandler(object $entity): void
+    {
+
+        if (null !== $this->handler) {
+            call_user_func($this->handler, $entity);
+        }
 
     }
 
