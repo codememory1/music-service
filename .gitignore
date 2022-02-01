@@ -1,2 +1,8 @@
 /.idea/
 /data/
+
+/app/config/secrets/dev
+/app/config/secrets/jwt-private.pem
+/app/config/secrets/jwt-public.pem
+
+/app/.env

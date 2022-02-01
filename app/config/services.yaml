@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    jwt.path.public_key: config/secrets/jwt-public.pem
+    jwt.path.private_key: config/secrets/jwt-private.pem
 
 services:
     # default configuration for services in *this* file
@@ -22,8 +24,15 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
             - '../src/Enums/'
+            - '../src/Service/'
 
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    # Event Subscribers
+
+    # Event Listeners
+
+    # Commands
+    App\Command\GenerateJwtKeysCommand:
+        tags:
+            - {name: console.command}

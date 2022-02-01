@@ -52,3 +52,10 @@
 /.web-server-pid
 
 /node_modules/
+
+/app/.env
+/.env
+
+/app/config/secrets/dev
+/app/config/secrets/jwt-private.pem
+/app/config/secrets/jwt-public.pem

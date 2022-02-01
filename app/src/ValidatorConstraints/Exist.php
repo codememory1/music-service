@@ -48,14 +48,4 @@ class Exist extends Constraint
 
     }
 
-    /**
-     * @return string
-     */
-    public function validatedBy(): string
-    {
-
-        return static::class . 'Validator';
-
-    }
-
 }

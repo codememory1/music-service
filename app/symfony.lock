@@ -1,4 +1,7 @@
 {
+    "brick/math": {
+        "version": "0.9.3"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.5"
     },
@@ -10,6 +13,9 @@
             "version": "4.0",
             "ref": "56eaa387b5e48ebcc7c95a893b47dfa1ad51449c"
         }
+    },
+    "defuse/php-encryption": {
+        "version": "v2.3.1"
     },
     "doctrine/annotations": {
         "version": "1.13",
@@ -109,6 +115,9 @@
     "fakerphp/faker": {
         "version": "v1.17.0"
     },
+    "firebase/php-jwt": {
+        "version": "v6.0.0"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
@@ -153,6 +162,9 @@
     },
     "nikic/php-parser": {
         "version": "v4.13.2"
+    },
+    "paragonie/random_compat": {
+        "version": "v9.99.100"
     },
     "phar-io/manifest": {
         "version": "2.0.3"
@@ -213,6 +225,12 @@
     "psr/log": {
         "version": "3.0.0"
     },
+    "ramsey/collection": {
+        "version": "1.2.2"
+    },
+    "ramsey/uuid": {
+        "version": "4.2.3"
+    },
     "sebastian/cli-parser": {
         "version": "1.0.1"
     },
@@ -260,6 +278,12 @@
     },
     "sebastian/version": {
         "version": "3.0.2"
+    },
+    "sixlive/dotenv-editor": {
+        "version": "v2.0.0"
+    },
+    "starkbank/ecdsa": {
+        "version": "0.0.5"
     },
     "symfony/asset": {
         "version": "v6.0.1"
@@ -311,6 +335,9 @@
     },
     "symfony/doctrine-bridge": {
         "version": "v6.0.2"
+    },
+    "symfony/doctrine-messenger": {
+        "version": "v6.0.3"
     },
     "symfony/dom-crawler": {
         "version": "v6.0.2"
@@ -384,6 +411,18 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/messenger": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "25e3c964d3aee480b3acc3114ffb7940c89edfed"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
     },
     "symfony/monolog-bridge": {
         "version": "v6.0.1"
