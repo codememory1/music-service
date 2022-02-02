@@ -3,6 +3,7 @@
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\AbstractApiController;
+use App\Service\Security\UserActivationAccountService;
 use App\Service\Security\UserRegistrationService;
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,13 +30,34 @@ class SecurityController extends AbstractApiController
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/register', methods: 'POST')]
+    #[Route('/user/register', methods: 'POST')]
     public function register(Request $request, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
 
         $userRegistrationService = new UserRegistrationService($request, $this->response, $this->managerRegistry);
 
         return $userRegistrationService->register($validator, $eventDispatcher)->make();
+
+    }
+
+    /**
+     * @param string  $hash
+     * @param Request $request
+     *
+     * @return JsonResponse
+     * @throws Exception
+     */
+    #[Route('/user/activate-account/{hash<.+>}', methods: 'POST')]
+    public function activateAccount(string $hash, Request $request): JsonResponse
+    {
+
+        $userActivationAccountService = new UserActivationAccountService(
+            $request,
+            $this->response,
+            $this->managerRegistry
+        );
+
+        return $userActivationAccountService->activate($hash)->make();
 
     }
 
