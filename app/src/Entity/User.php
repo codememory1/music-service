@@ -5,11 +5,13 @@ namespace App\Entity;
 use App\Enums\ApiResponseTypeEnum;
 use App\Enums\StatusEnum;
 use App\Repository\UserRepository;
-use DateTimeImmutable;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\ValidatorConstraints as AppAssert;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class User
@@ -113,12 +115,19 @@ class User
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSubscription::class, cascade: ['persist', 'remove'])]
     private ?UserSubscription $userSubscription;
 
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserActivationToken::class)]
+    private Collection $userActivationTokens;
+
     public function __construct()
     {
 
         $this->status = StatusEnum::NOT_ACTIVE->value;
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
+        $this->userActivationTokens = new ArrayCollection();
 
     }
 
@@ -377,6 +386,52 @@ class User
         }
 
         $this->userSubscription = $userSubscription;
+
+        return $this;
+
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getUserActivationTokens(): Collection
+    {
+
+        return $this->userActivationTokens;
+
+    }
+
+    /**
+     * @param UserActivationToken $userActivationToken
+     *
+     * @return $this
+     */
+    public function addUserActivationToken(UserActivationToken $userActivationToken): self
+    {
+
+        if (!$this->userActivationTokens->contains($userActivationToken)) {
+            $this->userActivationTokens[] = $userActivationToken;
+            $userActivationToken->setUser($this);
+        }
+
+        return $this;
+
+    }
+
+    /**
+     * @param UserActivationToken $userActivationToken
+     *
+     * @return $this
+     */
+    public function removeUserActivationToken(UserActivationToken $userActivationToken): self
+    {
+
+        if ($this->userActivationTokens->removeElement($userActivationToken)) {
+            // set the owning side to null (unless already changed)
+            if ($userActivationToken->getUser() === $this) {
+                $userActivationToken->setUser(null);
+            }
+        }
 
         return $this;
 
