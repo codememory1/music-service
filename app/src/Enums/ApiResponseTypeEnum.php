@@ -18,5 +18,6 @@ enum ApiResponseTypeEnum: string
     case UPDATE = 'update';
     case DELETE = 'delete';
     case EXIST = 'exist';
+    case IS_VALID = 'is_valid';
 
 }
