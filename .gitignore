@@ -5,4 +5,5 @@
 /app/config/secrets/jwt-private.pem
 /app/config/secrets/jwt-public.pem
 
-/app/.env
+/app/.env.local
+/app/.env.test
