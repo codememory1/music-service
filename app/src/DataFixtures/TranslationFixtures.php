@@ -464,6 +464,23 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'subscriptionPermission@exist',
             'translation' => 'Данное разрешение для текущей подписки уже существует'
         ],
+
+        // RU - userActivationAccount
+        [
+            'lang'        => 'ru',
+            'key'         => 'userActivationAccount@tokenIsNotValid',
+            'translation' => 'Токен активации не валидный'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'userActivationAccount@tokenNotExist',
+            'translation' => 'Токен активации не существует'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'userActivationAccount@successActivation',
+            'translation' => 'Аккаунт успешно активирован'
+        ],
     ];
 
     /**

@@ -114,6 +114,10 @@ class TranslationKeyFixtures extends Fixture
         'subscriptionPermission@successDelete',
         'subscriptionPermission@notExist',
         'subscriptionPermission@exist',
+
+        'userActivationAccount@tokenIsNotValid',
+        'userActivationAccount@tokenNotExist',
+        'userActivationAccount@successActivation'
     ];
 
     /**
