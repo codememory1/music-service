@@ -29,7 +29,8 @@ services:
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
     # Event Subscribers
-    App\EventSubscriber\UserRegistration\SendConfirmationSubscriber:
+    App\EventSubscriber\UserRegistration\:
+        resource: '../src/EventSubscriber/UserRegistration/'
         tags:
             - {name: kernel.event_subscriber, event: user.registration}
 
