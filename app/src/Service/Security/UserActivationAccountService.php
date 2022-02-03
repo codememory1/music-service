@@ -9,6 +9,7 @@ use App\Repository\UserActivationTokenRepository;
 use App\Service\AbstractApiService;
 use App\Service\ParseCronTimeService;
 use App\Service\Response\ApiResponseService;
+use DateTimeImmutable;
 use Exception;
 
 /**
@@ -53,6 +54,8 @@ class UserActivationAccountService extends AbstractApiService
         // Change user status
         $this->setHandler(function(UserActivationToken $userActivationTokenEntity) use ($finedToken) {
             $userActivationTokenEntity->getUser()->setStatus(StatusEnum::ACTIVE->value);
+
+            $this->em->flush();
         });
 
         return $this->remove($finedToken, 'userActivationAccount@successActivation');
@@ -70,14 +73,13 @@ class UserActivationAccountService extends AbstractApiService
 
         $parseCronTime = new ParseCronTimeService();
 
-        $createdAt = $userActivationToken->getCreatedAt()->getTimestamp();
         $validInSecond = $parseCronTime
             ->setTime($userActivationToken->getValid())
             ->toSecond();
-        $valid = $createdAt + $validInSecond;
+        $valid = $userActivationToken->getCreatedAt()->getTimestamp() + $validInSecond;
 
         // Check valid token
-        if ($valid >= $createdAt) {
+        if ((new DateTimeImmutable())->getTimestamp() >= $valid) {
             $this->prepareApiResponse('error', 404)
                  ->setMessage(
                      ApiResponseTypeEnum::IS_VALID,
