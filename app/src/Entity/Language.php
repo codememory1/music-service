@@ -21,6 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
 #[ORM\Table('languages')]
 #[UniqueEntity('code', 'lang@codeExist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'code_exist'])] // Payload: type => string, name => string
+#[ORM\HasLifecycleCallbacks]
 class Language
 {
 
@@ -55,7 +56,7 @@ class Language
      * @var DateTimeImmutable|null
      */
     #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt;
+    private ?DateTimeImmutable $createdAt = null;
 
     /**
      * @var DateTimeImmutable|null
@@ -73,7 +74,6 @@ class Language
     {
 
         $this->translations = new ArrayCollection();
-        $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
 
     }
@@ -147,14 +147,13 @@ class Language
     }
 
     /**
-     * @param DateTimeImmutable $createdAt
-     *
      * @return $this
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    #[ORM\PrePersist]
+    public function setCreatedAt(): self
     {
 
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTimeImmutable();
 
         return $this;
 

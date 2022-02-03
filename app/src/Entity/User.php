@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table('users')]
 #[UniqueEntity('email', 'user@emailExist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'email_exist'])]
 #[UniqueEntity('username', 'user@usernameExist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'username_exist'])]
+#[ORM\HasLifecycleCallbacks]
 class User
 {
 
@@ -97,7 +98,7 @@ class User
      * @var DateTimeImmutable|null
      */
     #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt;
+    private ?DateTimeImmutable $createdAt = null;
 
     /**
      * @var DateTimeImmutable|null
@@ -133,7 +134,6 @@ class User
     {
 
         $this->status = StatusEnum::NOT_ACTIVE->value;
-        $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
         $this->userActivationTokens = new ArrayCollection();
         $this->userSessions = new ArrayCollection();
@@ -305,14 +305,13 @@ class User
     }
 
     /**
-     * @param DateTimeImmutable $createdAt
-     *
      * @return $this
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    #[ORM\PrePersist]
+    public function setCreatedAt(): self
     {
 
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTimeImmutable();
 
         return $this;
 

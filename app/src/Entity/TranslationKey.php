@@ -21,6 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: TranslationKeyRepository::class)]
 #[ORM\Table('translation_keys')]
 #[UniqueEntity('name', 'translationKey@keyExist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'key_exist'])]
+#[ORM\HasLifecycleCallbacks]
 class TranslationKey
 {
 
@@ -46,7 +47,7 @@ class TranslationKey
      * @var DateTimeImmutable|null
      */
     #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt;
+    private ?DateTimeImmutable $createdAt = null;
 
     /**
      * @var DateTimeImmutable|null
@@ -64,7 +65,6 @@ class TranslationKey
     {
 
         $this->translations = new ArrayCollection();
-        $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
 
     }
@@ -112,14 +112,13 @@ class TranslationKey
     }
 
     /**
-     * @param DateTimeImmutable $createdAt
-     *
      * @return $this
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    #[ORM\PrePersist]
+    public function setCreatedAt(): self
     {
 
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTimeImmutable();
 
         return $this;
 

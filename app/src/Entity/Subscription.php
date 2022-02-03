@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 #[ORM\Table('subscriptions')]
+#[ORM\HasLifecycleCallbacks]
 class Subscription
 {
 
@@ -85,7 +86,7 @@ class Subscription
      * @var DateTimeImmutable|null
      */
     #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt;
+    private ?DateTimeImmutable $createdAt = null;
 
     /**
      * @var DateTimeImmutable|null
@@ -109,7 +110,6 @@ class Subscription
     {
 
         $this->status = StatusEnum::ACTIVE->value;
-        $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
         $this->subscriptionPermissions = new ArrayCollection();
 
@@ -256,14 +256,13 @@ class Subscription
     }
 
     /**
-     * @param DateTimeImmutable $createdAt
-     *
      * @return $this
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    #[ORM\PrePersist]
+    public function setCreatedAt(): self
     {
 
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTimeImmutable();
 
         return $this;
 

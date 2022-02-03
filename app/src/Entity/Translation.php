@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: TranslationRepository::class)]
 #[ORM\Table('translations')]
 #[UniqueEntity(['lang', 'translationKey'], 'translation@exist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'translation_exist'])]
+#[ORM\HasLifecycleCallbacks]
 class Translation
 {
 
@@ -57,7 +58,7 @@ class Translation
      * @var DateTimeImmutable|null
      */
     #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt;
+    private ?DateTimeImmutable $createdAt = null;
 
     /**
      * @var DateTimeImmutable|null
@@ -68,7 +69,6 @@ class Translation
     public function __construct()
     {
 
-        $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
 
     }
@@ -166,14 +166,13 @@ class Translation
     }
 
     /**
-     * @param DateTimeImmutable $createdAt
-     *
      * @return $this
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    #[ORM\PrePersist]
+    public function setCreatedAt(): self
     {
 
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTimeImmutable();
 
         return $this;
 

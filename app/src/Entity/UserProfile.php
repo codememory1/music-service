@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: UserProfileRepository::class)]
 #[ORM\Table('user_profiles')]
+#[ORM\HasLifecycleCallbacks]
 class UserProfile
 {
 
@@ -246,14 +247,13 @@ class UserProfile
     }
 
     /**
-     * @param DateTimeImmutable $createdAt
-     *
      * @return $this
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    #[ORM\PrePersist]
+    public function setCreatedAt(): self
     {
 
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTimeImmutable();
 
         return $this;
 
