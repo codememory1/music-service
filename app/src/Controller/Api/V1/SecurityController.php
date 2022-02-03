@@ -47,7 +47,7 @@ class SecurityController extends AbstractApiController
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/user/activate-account/{hash<.+>}', methods: 'POST')]
+    #[Route('/user/activate-account/{hash<.+>}', methods: 'GET')]
     public function activateAccount(string $hash, Request $request): JsonResponse
     {
 
