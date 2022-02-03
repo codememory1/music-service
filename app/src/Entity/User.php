@@ -88,7 +88,9 @@ class User
         'comment' => 'User status, not active by default'
     ])]
     #[Assert\NotBlank(message: 'common@statusIsRequired', payload: 'status_is_required')]
-    #[Assert\Choice(callback: [StatusEnum::class, 'values'], message: 'common@invalidStatus', payload: 'status_invalid')]
+    #[Assert\Choice(callback: [
+        StatusEnum::class, 'values'
+    ], message: 'common@invalidStatus', payload: 'status_invalid')]
     private ?int $status;
 
     /**
@@ -121,6 +123,12 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserActivationToken::class)]
     private Collection $userActivationTokens;
 
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserSession::class)]
+    private Collection $userSessions;
+
     public function __construct()
     {
 
@@ -128,6 +136,7 @@ class User
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
         $this->userActivationTokens = new ArrayCollection();
+        $this->userSessions = new ArrayCollection();
 
     }
 
@@ -430,6 +439,52 @@ class User
             // set the owning side to null (unless already changed)
             if ($userActivationToken->getUser() === $this) {
                 $userActivationToken->setUser(null);
+            }
+        }
+
+        return $this;
+
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getUserSessions(): Collection
+    {
+
+        return $this->userSessions;
+
+    }
+
+    /**
+     * @param UserSession $userSession
+     *
+     * @return $this
+     */
+    public function addUserSession(UserSession $userSession): self
+    {
+
+        if (!$this->userSessions->contains($userSession)) {
+            $this->userSessions[] = $userSession;
+            $userSession->setUser($this);
+        }
+
+        return $this;
+
+    }
+
+    /**
+     * @param UserSession $userSession
+     *
+     * @return $this
+     */
+    public function removeUserSession(UserSession $userSession): self
+    {
+
+        if ($this->userSessions->removeElement($userSession)) {
+            // set the owning side to null (unless already changed)
+            if ($userSession->getUser() === $this) {
+                $userSession->setUser(null);
             }
         }
 
