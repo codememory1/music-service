@@ -52,11 +52,9 @@ class UserActivationAccountService extends AbstractApiService
         }
 
         // Change user status
-        $this->setHandler(function(UserActivationToken $userActivationTokenEntity) use ($finedToken) {
-            $userActivationTokenEntity->getUser()->setStatus(StatusEnum::ACTIVE->value);
+        $finedToken->getUser()->setStatus(StatusEnum::ACTIVE->value);
+        $this->em->flush();
 
-            $this->em->flush();
-        });
 
         return $this->remove($finedToken, 'userActivationAccount@successActivation');
 
