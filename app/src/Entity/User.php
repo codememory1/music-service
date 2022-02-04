@@ -401,7 +401,7 @@ class User
     /**
      * @return UserActivationToken|null
      */
-    public function getUserActivationToken(): ?UserActivationToken
+    public function getUserActivationTokens(): ?UserActivationToken
     {
 
         return $this->userActivationToken;
