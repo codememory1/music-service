@@ -3,6 +3,7 @@
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\AbstractApiController;
+use App\Service\Security\Auth\UserAuthorizationService;
 use App\Service\Security\UserActivationAccountService;
 use App\Service\Security\UserRegistrationService;
 use Exception;
@@ -58,6 +59,23 @@ class SecurityController extends AbstractApiController
         );
 
         return $userActivationAccountService->activate($hash)->make();
+
+    }
+
+    /**
+     * @param Request            $request
+     * @param ValidatorInterface $validator
+     *
+     * @return JsonResponse
+     * @throws Exception
+     */
+    #[Route('/user/auth', methods: 'POST')]
+    public function auth(Request $request, ValidatorInterface $validator): JsonResponse
+    {
+
+        $userAuthorizationService = new UserAuthorizationService($request, $this->response, $this->managerRegistry);
+
+        return $userAuthorizationService->authorize($validator)->make();
 
     }
 
