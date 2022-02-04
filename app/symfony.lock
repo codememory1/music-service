@@ -2,6 +2,12 @@
     "brick/math": {
         "version": "0.9.3"
     },
+    "codememory/geo": {
+        "version": "v1.0"
+    },
+    "codememory/support": {
+        "version": "v1.2.1"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.5"
     },

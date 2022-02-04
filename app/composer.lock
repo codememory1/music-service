@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb686113bcdd31e546dd52214bdaeb17",
+    "content-hash": "5cb78ac0fe70339e0bed4193277ca32a",
     "packages": [
         {
             "name": "brick/math",
@@ -65,6 +65,94 @@
                 }
             ],
             "time": "2021-08-15T20:50:18+00:00"
+        },
+        {
+            "name": "codememory/geo",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codememory1/geo.git",
+                "reference": "6707f7ba50814ebb36bd52332ac56dda9aa4de1b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codememory1/geo/zipball/6707f7ba50814ebb36bd52332ac56dda9aa4de1b",
+                "reference": "6707f7ba50814ebb36bd52332ac56dda9aa4de1b",
+                "shasum": ""
+            },
+            "require": {
+                "codememory/support": "^1.2"
+            },
+            "require-dev": {
+                "symfony/var-dumper": "^5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Codememory\\Components\\GEO\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danil",
+                    "email": "kostynd1@gmail.com"
+                }
+            ],
+            "description": "geo",
+            "support": {
+                "issues": "https://github.com/codememory1/geo/issues",
+                "source": "https://github.com/codememory1/geo/tree/v1.0"
+            },
+            "time": "2021-09-20T20:07:31+00:00"
+        },
+        {
+            "name": "codememory/support",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codememory1/support.git",
+                "reference": "ff214241ca5b6466dde0a89460caeee2af30dc22"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codememory1/support/zipball/ff214241ca5b6466dde0a89460caeee2af30dc22",
+                "reference": "ff214241ca5b6466dde0a89460caeee2af30dc22",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*"
+            },
+            "require-dev": {
+                "symfony/var-dumper": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Codememory\\Support\\": ""
+                },
+                "files": [
+                    "helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danil",
+                    "email": "kostynd1@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/codememory1/support/issues",
+                "source": "https://github.com/codememory1/support/tree/v1.2.1"
+            },
+            "time": "2021-07-31T14:35:19+00:00"
         },
         {
             "name": "doctrine/annotations",
