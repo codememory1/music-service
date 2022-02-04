@@ -336,6 +336,26 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'user@passwordConfirmIsRequired',
             'translation' => 'Подтверждение пароля обязательно к заполнению'
         ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'user@failedToIdentityUser',
+            'translation' => 'Не удалось идентифицировать пользователя'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'user@passwordIsIncorrect',
+            'translation' => 'Некорректный пароль'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'user@accountNotActive',
+            'translation' => 'Аккаунт не активирован! Подтвердите почту'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'user@successAuth',
+            'translation' => 'Авторизация прошла успешно'
+        ],
 
         // RU - userProfile
         [

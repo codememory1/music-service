@@ -86,6 +86,10 @@ class TranslationKeyFixtures extends Fixture
         'user@successRegister',
         'user@invalidPasswordConfirm',
         'user@passwordConfirmIsRequired',
+        'user@failedToIdentityUser',
+        'user@passwordIsIncorrect',
+        'user@accountNotActive',
+        'user@successAuth',
 
         'userProfile@nameIsRequired',
         'userProfile@surnameMaxLength',
