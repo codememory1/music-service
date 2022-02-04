@@ -14,6 +14,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -135,17 +136,18 @@ abstract class AbstractApiService
     }
 
     /**
-     * @param object             $entity
+     * @param object|array       $entity
      * @param ValidatorInterface $validator
+     * @param Constraint|null    $constraint
      *
      * @return ApiResponseService|bool
      * @throws Exception
      */
-    protected function inputValidation(object $entity, ValidatorInterface $validator): ApiResponseService|bool
+    protected function inputValidation(object|array $entity, ValidatorInterface $validator, ?Constraint $constraint = null): ApiResponseService|bool
     {
 
         // Input Validation
-        if (count($errors = $validator->validate($entity)) > 0) {
+        if (count($errors = $validator->validate($entity, $constraint)) > 0) {
             $validateInfo = $this->getValidateInfo($errors);
 
             $this
