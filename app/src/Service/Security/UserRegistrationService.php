@@ -36,6 +36,8 @@ class UserRegistrationService extends AbstractApiService
     public function register(ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher): ApiResponseService
     {
 
+        $creatorAccountActivationTokenService = new CreatorAccountActivationTokenService($this->managerRegistry);
+
         $collectedEntity = $this->collectEntity();
 
         // Input validation
@@ -47,7 +49,10 @@ class UserRegistrationService extends AbstractApiService
         $this->hashPassword($collectedEntity);
 
         // Raises an event after user registration
-        $this->setHandler(function (User $registeredUser) use ($eventDispatcher) {
+        $this->setHandler(function (User $registeredUser) use ($eventDispatcher, $creatorAccountActivationTokenService) {
+            // Create activation token
+            $creatorAccountActivationTokenService->create($registeredUser);
+
             $eventDispatcher->dispatch(
                 new UserRegistrationEvent($registeredUser),
                 EventsEnum::USER_REGISTRATION->value
