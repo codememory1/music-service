@@ -47,7 +47,11 @@ class JwtTokenGenerator
     public function encode(array $data, string $privateKey, string $lifeInCronTimeFormat): string
     {
 
-        return JWT::encode($this->collectPayload($data, $lifeInCronTimeFormat), $privateKey, 'RS256');
+        return JWT::encode(
+            $this->collectPayload($data, $lifeInCronTimeFormat),
+            base64_decode($privateKey),
+            'RS256'
+        );
 
     }
 
@@ -61,7 +65,7 @@ class JwtTokenGenerator
     {
 
         try {
-            return JWT::decode($token, new Key($publicKey, 'RS256'));
+            return JWT::decode($token, new Key(base64_decode($publicKey), 'RS256'));
         } catch (Exception) {
             return false;
         }
