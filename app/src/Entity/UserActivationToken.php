@@ -30,7 +30,7 @@ class UserActivationToken
     /**
      * @var User|null
      */
-    #[ORM\OneToOne(inversedBy: 'userActivationToken', targetEntity: User::class)]
+    #[ORM\OneToOne(inversedBy: 'userActivationToken', targetEntity: User::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
