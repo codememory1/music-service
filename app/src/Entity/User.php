@@ -107,22 +107,22 @@ class User
     private ?DateTimeImmutable $updatedAt;
 
     /**
-     * @var UserProfile
+     * @var UserProfile|null
      */
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserProfile::class, cascade: ['persist', 'remove'])]
-    private UserProfile $userProfile;
+    private ?UserProfile $userProfile = null;
 
     /**
      * @var UserSubscription|null
      */
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSubscription::class, cascade: ['persist', 'remove'])]
-    private ?UserSubscription $userSubscription;
+    private ?UserSubscription $userSubscription = null;
 
     /**
-     * @var Collection
+     * @var UserActivationToken|null
      */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserActivationToken::class)]
-    private Collection $userActivationTokens;
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserActivationToken::class, cascade: ['persist', 'remove'])]
+    private ?UserActivationToken $userActivationToken = null;
 
     /**
      * @var Collection
@@ -135,7 +135,6 @@ class User
 
         $this->status = StatusEnum::NOT_ACTIVE->value;
         $this->updatedAt = new DateTimeImmutable();
-        $this->userActivationTokens = new ArrayCollection();
         $this->userSessions = new ArrayCollection();
 
     }
@@ -400,12 +399,12 @@ class User
     }
 
     /**
-     * @return Collection
+     * @return UserActivationToken|null
      */
-    public function getUserActivationTokens(): Collection
+    public function getUserActivationTokens(): ?UserActivationToken
     {
 
-        return $this->userActivationTokens;
+        return $this->userActivationToken;
 
     }
 
@@ -414,32 +413,15 @@ class User
      *
      * @return $this
      */
-    public function addUserActivationToken(UserActivationToken $userActivationToken): self
+    public function setUserActivationToken(UserActivationToken $userActivationToken): self
     {
 
-        if (!$this->userActivationTokens->contains($userActivationToken)) {
-            $this->userActivationTokens[] = $userActivationToken;
+        // set the owning side of the relation if necessary
+        if ($userActivationToken->getUser() !== $this) {
             $userActivationToken->setUser($this);
         }
 
-        return $this;
-
-    }
-
-    /**
-     * @param UserActivationToken $userActivationToken
-     *
-     * @return $this
-     */
-    public function removeUserActivationToken(UserActivationToken $userActivationToken): self
-    {
-
-        if ($this->userActivationTokens->removeElement($userActivationToken)) {
-            // set the owning side to null (unless already changed)
-            if ($userActivationToken->getUser() === $this) {
-                $userActivationToken->setUser(null);
-            }
-        }
+        $this->userActivationToken = $userActivationToken;
 
         return $this;
 
