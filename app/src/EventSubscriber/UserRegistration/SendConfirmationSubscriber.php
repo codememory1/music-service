@@ -2,8 +2,11 @@
 
 namespace App\EventSubscriber\UserRegistration;
 
+use App\Entity\UserActivationToken;
 use App\Enums\EventsEnum;
 use App\Event\UserRegistrationEvent;
+use App\Repository\UserActivationTokenRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -25,12 +28,19 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
     private MailerInterface $mailer;
 
     /**
-     * @param MailerInterface $mailer
+     * @var ManagerRegistry
      */
-    public function __construct(MailerInterface $mailer)
+    private ManagerRegistry $managerRegistry;
+
+    /**
+     * @param MailerInterface $mailer
+     * @param ManagerRegistry $managerRegistry
+     */
+    public function __construct(MailerInterface $mailer, ManagerRegistry $managerRegistry)
     {
 
         $this->mailer = $mailer;
+        $this->managerRegistry = $managerRegistry;
 
     }
 
@@ -55,13 +65,19 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
     public function onUserRegistration(UserRegistrationEvent $event): void
     {
 
-        $email = new Email();
+        /** @var UserActivationTokenRepository $userActivationTokenRepository */
+        $userActivationTokenRepository = $this->managerRegistry->getRepository(UserActivationToken::class);
 
+        $userActivationToken = $userActivationTokenRepository->findOneBy([
+            'user' => $event->getUser()
+        ]);
+
+        $email = new Email();
         $email
             ->from('kostynd1@gmail.com')
             ->to($event->getUser()->getEmail())
             ->subject('Регистрация')
-            ->html('Html');
+            ->html($userActivationToken->getToken());
 
         $this->mailer->send($email);
 
