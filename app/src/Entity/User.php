@@ -119,16 +119,16 @@ class User
     private ?UserSubscription $userSubscription = null;
 
     /**
-     * @var UserActivationToken|null
-     */
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserActivationToken::class, cascade: ['persist', 'remove'])]
-    private ?UserActivationToken $userActivationToken = null;
-
-    /**
      * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserSession::class)]
     private Collection $userSessions;
+
+    /**
+     * @var UserActivationToken|null
+     */
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserActivationToken::class, cascade: ['persist', 'remove'])]
+    private ?UserActivationToken $userActivationToken = null;
 
     public function __construct()
     {
@@ -399,35 +399,6 @@ class User
     }
 
     /**
-     * @return UserActivationToken|null
-     */
-    public function getUserActivationToken(): ?UserActivationToken
-    {
-
-        return $this->userActivationToken;
-
-    }
-
-    /**
-     * @param UserActivationToken $userActivationToken
-     *
-     * @return $this
-     */
-    public function setUserActivationToken(UserActivationToken $userActivationToken): self
-    {
-
-        // set the owning side of the relation if necessary
-        if ($userActivationToken->getUser() !== $this) {
-            $userActivationToken->setUser($this);
-        }
-
-        $this->userActivationToken = $userActivationToken;
-
-        return $this;
-
-    }
-
-    /**
      * @return Collection
      */
     public function getUserSessions(): Collection
@@ -468,6 +439,35 @@ class User
                 $userSession->setUser(null);
             }
         }
+
+        return $this;
+
+    }
+
+    /**
+     * @return UserActivationToken|null
+     */
+    public function getUserActivationToken(): ?UserActivationToken
+    {
+
+        return $this->userActivationToken;
+
+    }
+
+    /**
+     * @param UserActivationToken $userActivationToken
+     *
+     * @return $this
+     */
+    public function setUserActivationToken(UserActivationToken $userActivationToken): self
+    {
+
+        // set the owning side of the relation if necessary
+        if ($userActivationToken->getUser() !== $this) {
+            $userActivationToken->setUser($this);
+        }
+
+        $this->userActivationToken = $userActivationToken;
 
         return $this;
 
