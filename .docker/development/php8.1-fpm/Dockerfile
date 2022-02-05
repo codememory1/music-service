@@ -14,7 +14,7 @@ RUN apt install -y  \
     apt-transport-https  \
     software-properties-common gpg
 
-RUN apt-get install -y gpg
+RUN apt-get install -y gpg npm
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -30,6 +30,8 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xhprof
 
 RUN docker-php-ext-install mysqli pdo zip pdo_mysql xml intl mbstring curl
+
+RUN npm install
 
 # Insatll PHP Manager - Composer
 RUN wget https://getcomposer.org/installer -O - -q | php -- --install-dir=/bin --filename=composer --quite
