@@ -35,6 +35,11 @@ abstract class AbstractApiService
     protected Request $request;
 
     /**
+     * @var RequestDataService
+     */
+    protected RequestDataService $requestData;
+
+    /**
      * @var Response
      */
     protected Response $response;
@@ -73,6 +78,9 @@ abstract class AbstractApiService
     {
 
         $this->request = $request;
+
+        $this->initRequestData();
+
         $this->response = $response;
         $this->managerRegistry = $managerRegistry;
         $this->em = $this->managerRegistry->getManager();
@@ -256,6 +264,20 @@ abstract class AbstractApiService
 
         if (null !== $this->handler) {
             call_user_func($this->handler, $entity);
+        }
+
+    }
+
+    /**
+     * @return void
+     */
+    private function initRequestData(): void
+    {
+
+        if ($this->request->isXmlHttpRequest()) {
+            $this->requestData = new RequestDataService($this->request->toArray());
+        } else {
+            $this->requestData = new RequestDataService($this->request->request->all());
         }
 
     }
