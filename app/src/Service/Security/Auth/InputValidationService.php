@@ -55,8 +55,8 @@ class InputValidationService extends AbstractApiService
     {
 
         return [
-            'login'    => $this->request->get('login', ''),
-            'password' => $this->request->get('password', ''),
+            'login'    => $this->requestData->get('login', ''),
+            'password' => $this->requestData->get('password', ''),
         ];
 
     }

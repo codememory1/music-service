@@ -33,8 +33,8 @@ class UserAuthorizationService extends AbstractApiService
         $userAuthenticationService = new UserAuthenticationService($this->request, $this->response, $this->managerRegistry);
         $inputValidationService = new InputValidationService($this->request, $this->response, $this->managerRegistry);
 
-        $login = $this->request->get('login', '');
-        $password = $this->request->get('password', '');
+        $login = $this->requestData->get('login', '');
+        $password = $this->requestData->get('password', '');
 
         // Input POST validation
         if (true !== $resultInputValidation = $inputValidationService->validate($validator)) {
