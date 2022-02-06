@@ -1,5 +1,6 @@
 import BaseAxios from "../../modules/BaseAxios";
 import Cookies from "js-cookie";
+import { APP_DOMAIN } from "../../env";
 
 export default {
   namespaced: true,
@@ -47,7 +48,10 @@ export default {
      * @returns {string}
      */
     getRefreshToken(state) {
-      return state.tokens.refreshToken ?? Cookies.get("refresh_token");
+      return (
+        state.tokens.refreshToken ??
+        window.localStorage.getItem("refresh_token")
+      );
     }
   },
 
@@ -59,7 +63,7 @@ export default {
      */
     setAccessToken(state, token) {
       Cookies.set("access_token", token, {
-        domain: ".music-service.loc"
+        domain: "." + APP_DOMAIN
       });
 
       state.tokens.accessToken = token;
@@ -71,9 +75,7 @@ export default {
      * @param token
      */
     setRefreshToken(state, token) {
-      Cookies.set("refresh_token", token, {
-        domain: ".music-service.loc"
-      });
+      window.localStorage.setItem("refresh_token", token);
 
       state.tokens.refreshToken = token;
     }
@@ -92,10 +94,12 @@ export default {
             Authorization: `Bearer ${getters.getAccessToken}`
           }
         });
+        const status = response.status;
+        const contentType = response.headers["content-type"];
 
         commit("requestStatuses/setStatusAuthUserData", true, { root: true });
 
-        if (response.status === 200) {
+        if (status === 200 && contentType === "application/json") {
           state.authUserData = response.data;
           state.isAuth = true;
         }
