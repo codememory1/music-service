@@ -3,13 +3,14 @@ import { API_URL } from "../env";
 import store from "../store";
 
 const instance = axios.create({
-  baseURL: API_URL
+  baseURL: API_URL,
+  headers: {
+    "X-Requested-With": "XMLHttpRequest"
+  }
 });
 
 instance.interceptors.request.use((config) => {
-  config.params = {
-    lang: store.getters["translation/lang"]
-  };
+  config.baseURL = API_URL + "/" + store.getters["translation/lang"];
 
   return config;
 });
