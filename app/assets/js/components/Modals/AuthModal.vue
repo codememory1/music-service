@@ -154,7 +154,7 @@ export default {
         this.$store.commit("alert/create", {
           type: "error",
           title: "Авторизация",
-          message: response.data.messages[0]
+          message: response.data.message.text
         });
       } else {
         this.successAuth(response);
@@ -170,12 +170,12 @@ export default {
       this.$store.commit("alert/create", {
         type: "success",
         title: "Авторизация",
-        message: response.data.messages[0]
+        message: response.data.message.text
       });
 
-      const tokens = response.data.data.tokens ?? {};
+      const data = response.data.data ?? {};
 
-      this.installationTokens(tokens);
+      this.installationTokens(data.access_token, data.refresh_token);
       this.zeroingInputData();
 
       this.$store.dispatch("auth/loadUserData");
@@ -184,14 +184,15 @@ export default {
       this.$refs.securityModal.close();
     },
 
-    /**
-     * Setting tokens in localStorage
-     *
-     * @param {{access_token: string, refresh_token: string}} tokens
-     */
-    installationTokens(tokens) {
-      this.$store.commit("auth/setAccessToken", tokens.access_token);
-      this.$store.commit("auth/setRefreshToken", tokens.refresh_token);
+      /**
+       * Setting tokens in localStorage
+       *
+       * @param accessToken
+       * @param refreshToken
+       */
+    installationTokens(accessToken, refreshToken) {
+      this.$store.commit("auth/setAccessToken", accessToken);
+      this.$store.commit("auth/setRefreshToken", refreshToken);
     },
 
     /**
