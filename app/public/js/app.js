@@ -2189,8 +2189,8 @@ function _response() {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _modules_BaseAxios__WEBPACK_IMPORTED_MODULE_1__["default"].post("/auth", {
-              username: username,
+            return _modules_BaseAxios__WEBPACK_IMPORTED_MODULE_1__["default"].post("/user/auth", {
+              login: username,
               password: password
             });
 
@@ -2288,17 +2288,18 @@ new vue__WEBPACK_IMPORTED_MODULE_12__["default"]({
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "APP_NAME": function() { return /* binding */ APP_NAME; },
+/* harmony export */   "APP_DOMAIN": function() { return /* binding */ APP_DOMAIN; },
 /* harmony export */   "APP_URL": function() { return /* binding */ APP_URL; },
 /* harmony export */   "PLAYER_URL": function() { return /* binding */ PLAYER_URL; },
 /* harmony export */   "API_URL": function() { return /* binding */ API_URL; },
 /* harmony export */   "AUTH_COOKIE_NAME": function() { return /* binding */ AUTH_COOKIE_NAME; }
 /* harmony export */ });
 var APP_NAME = "Music Service";
-var APP_URL = "http://localhost";
-var PLAYER_URL = APP_URL + '/web-player';
-var API_URL = APP_URL + '/api/v1';
+var APP_DOMAIN = "music-service.loc";
+var APP_URL = "http://music-service.loc";
+var PLAYER_URL = APP_URL + "/web-player";
+var API_URL = APP_URL + "/api/v1";
 var AUTH_COOKIE_NAME = "access_token";
-
 
 /***/ }),
 
@@ -2465,12 +2466,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var instance = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
-  baseURL: _env__WEBPACK_IMPORTED_MODULE_1__.API_URL
+  baseURL: _env__WEBPACK_IMPORTED_MODULE_1__.API_URL,
+  headers: {
+    "X-Requested-With": "XMLHttpRequest"
+  }
 });
 instance.interceptors.request.use(function (config) {
-  config.params = {
-    lang: _store__WEBPACK_IMPORTED_MODULE_2__["default"].getters["translation/lang"]
-  };
+  config.baseURL = _env__WEBPACK_IMPORTED_MODULE_1__.API_URL + "/" + _store__WEBPACK_IMPORTED_MODULE_2__["default"].getters["translation/lang"];
   return config;
 });
 /* harmony default export */ __webpack_exports__["default"] = (instance);
@@ -2934,11 +2936,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _modules_BaseAxios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../modules/BaseAxios */ "./assets/js/modules/BaseAxios.js");
 /* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/dist/js.cookie.mjs");
+/* harmony import */ var _env__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../env */ "./assets/js/env.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -2990,7 +2994,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getRefreshToken: function getRefreshToken(state) {
       var _state$tokens$refresh;
 
-      return (_state$tokens$refresh = state.tokens.refreshToken) !== null && _state$tokens$refresh !== void 0 ? _state$tokens$refresh : js_cookie__WEBPACK_IMPORTED_MODULE_2__["default"].get("refresh_token");
+      return (_state$tokens$refresh = state.tokens.refreshToken) !== null && _state$tokens$refresh !== void 0 ? _state$tokens$refresh : window.localStorage.getItem("refresh_token");
     }
   },
   mutations: {
@@ -3001,7 +3005,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
      */
     setAccessToken: function setAccessToken(state, token) {
       js_cookie__WEBPACK_IMPORTED_MODULE_2__["default"].set("access_token", token, {
-        domain: ".music-service.loc"
+        domain: "." + _env__WEBPACK_IMPORTED_MODULE_3__.APP_DOMAIN
       });
       state.tokens.accessToken = token;
     },
@@ -3012,9 +3016,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
      * @param token
      */
     setRefreshToken: function setRefreshToken(state, token) {
-      js_cookie__WEBPACK_IMPORTED_MODULE_2__["default"].set("refresh_token", token, {
-        domain: ".music-service.loc"
-      });
+      window.localStorage.setItem("refresh_token", token);
       state.tokens.refreshToken = token;
     }
   },
@@ -3026,7 +3028,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
      */
     loadUserData: function loadUserData(_ref) {
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var getters, state, commit, response;
+        var getters, state, commit, response, status, contentType;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -3042,29 +3044,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 4:
                 response = _context.sent;
+                status = response.status;
+                contentType = response.headers["content-type"];
                 commit("requestStatuses/setStatusAuthUserData", true, {
                   root: true
                 });
 
-                if (response.status === 200) {
+                if (status === 200 && contentType === "application/json") {
                   state.authUserData = response.data;
                   state.isAuth = true;
                 }
 
-                _context.next = 12;
+                _context.next = 14;
                 break;
 
-              case 9:
-                _context.prev = 9;
+              case 11:
+                _context.prev = 11;
                 _context.t0 = _context["catch"](1);
                 state.isAuth = false;
 
-              case 12:
+              case 14:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 9]]);
+        }, _callee, null, [[1, 11]]);
       }))();
     }
   }
@@ -5369,7 +5373,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.$store.commit("alert/create", {
           type: "error",
           title: "Авторизация",
-          message: response.data.messages[0]
+          message: response.data.message.text
         });
       } else {
         this.successAuth(response);
@@ -5382,15 +5386,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
      * @param response
      */
     successAuth: function successAuth(response) {
-      var _response$data$data$t;
+      var _response$data$data;
 
       this.$store.commit("alert/create", {
         type: "success",
         title: "Авторизация",
-        message: response.data.messages[0]
+        message: response.data.message.text
       });
-      var tokens = (_response$data$data$t = response.data.data.tokens) !== null && _response$data$data$t !== void 0 ? _response$data$data$t : {};
-      this.installationTokens(tokens);
+      var data = (_response$data$data = response.data.data) !== null && _response$data$data !== void 0 ? _response$data$data : {};
+      this.installationTokens(data.access_token, data.refresh_token);
       this.zeroingInputData();
       this.$store.dispatch("auth/loadUserData"); // Closing the modal login window
 
@@ -5400,11 +5404,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     /**
      * Setting tokens in localStorage
      *
-     * @param {{access_token: string, refresh_token: string}} tokens
+     * @param accessToken
+     * @param refreshToken
      */
-    installationTokens: function installationTokens(tokens) {
-      this.$store.commit("auth/setAccessToken", tokens.access_token);
-      this.$store.commit("auth/setRefreshToken", tokens.refresh_token);
+    installationTokens: function installationTokens(accessToken, refreshToken) {
+      this.$store.commit("auth/setAccessToken", accessToken);
+      this.$store.commit("auth/setRefreshToken", refreshToken);
     },
 
     /**
