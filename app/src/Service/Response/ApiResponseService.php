@@ -2,6 +2,7 @@
 
 namespace App\Service\Response;
 
+use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -44,6 +45,19 @@ class ApiResponseService
         $response->send();
 
         return $response;
+
+    }
+
+    /**
+     * @param array $headers
+     *
+     * @return void
+     */
+    #[NoReturn]
+    public function send(array $headers = []): void
+    {
+
+        exit($this->make($headers));
 
     }
 
