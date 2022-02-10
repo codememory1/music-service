@@ -2,10 +2,8 @@
 
 namespace App\Service\Translator\Language;
 
-use App\Entity\Language;
-use App\Enums\ApiResponseTypeEnum;
-use App\Repository\LanguageRepository;
-use App\Service\AbstractApiService;
+use App\DTO\LanguageDTO;
+use App\Service\CRUD\UpdaterCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -17,61 +15,32 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class UpdaterLanguageService extends AbstractApiService
+class UpdaterLanguageService extends UpdaterCRUDService
 {
 
     /**
-     * @param int                $id
+     * @param LanguageDTO        $languageDTO
      * @param ValidatorInterface $validator
-     * @param callable           $handler
+     * @param int                $id
      *
      * @return ApiResponseService
      * @throws Exception
      */
-    public function update(int $id, ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function update(LanguageDTO $languageDTO, ValidatorInterface $validator, int $id): ApiResponseService
     {
 
-        /** @var LanguageRepository $languageRepository */
-        $languageRepository = $this->em->getRepository(Language::class);
+        $this->validator = $validator;
+        $this->validateEntity = true;
+        $this->messageNameNotExist = 'lang_not_exist';
+        $this->translationKeyNotExist = 'lang@langNotExist';
 
-        // Check exist language
-        if (null === $finedLanguage = $languageRepository->findOneBy(['id' => $id])) {
-            $this
-                ->prepareApiResponse('error', 404)
-                ->setMessage(
-                    ApiResponseTypeEnum::CHECK_EXIST,
-                    'lang_not_exist',
-                    $this->getTranslation('lang@langNotExist')
-                );
+        $updatedEntity = $this->make($languageDTO, ['id' => $id]);
 
-            return $this->getPreparedApiResponse();
+        if ($updatedEntity instanceof ApiResponseService) {
+            return $updatedEntity;
         }
 
-        $languageEntity = $this->collectEntity($finedLanguage);
-
-        // Input validation
-        if (true !== $resultInputValidation = $this->inputValidation($languageEntity, $validator)) {
-            return $resultInputValidation;
-        }
-
-        // Calling an Extender Method
-        return call_user_func($handler, $languageEntity);
-
-    }
-
-    /**
-     * @param Language $languageEntity
-     *
-     * @return Language
-     */
-    private function collectEntity(Language $languageEntity): Language
-    {
-
-        $languageEntity
-            ->setCode($this->request->get('code', ''))
-            ->setTitle($this->request->get('title', ''));
-
-        return $languageEntity;
+        return $this->push($updatedEntity, 'lang@successUpdate', true);
 
     }
 

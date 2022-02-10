@@ -3,8 +3,10 @@
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\AbstractApiController;
-use App\Dto\LanguageDto;
+use App\DTO\LanguageDTO;
 use App\Entity\Language;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\RequestDataService;
 use App\Service\Translator\Language\CreatorLanguageService;
 use App\Service\Translator\Language\DeleterLanguageService;
 use App\Service\Translator\Language\UpdaterLanguageService;
@@ -12,7 +14,6 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class LanguageController
@@ -31,49 +32,46 @@ class LanguageController extends AbstractApiController
     public function all(): JsonResponse
     {
 
-        return $this->showAllFromDatabase(Language::class, LanguageDto::class);
+        return $this->showAllFromDatabase(Language::class, LanguageDTO::class);
 
     }
 
     /**
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws UndefinedClassForDTOException
      */
     #[Route('/translator/language/create', methods: 'POST')]
-    public function create(Request $request, ValidatorInterface $validator): JsonResponse
+    public function create(Request $request, RequestDataService $requestDataService): JsonResponse
     {
 
-        return $this->executeCreateService(
-            CreatorLanguageService::class,
-            'lang@successCreate',
-            $request,
-            $validator
-        );
+        /** @var CreatorLanguageService $service */
+        $service = $this->getCollectedService($request, CreatorLanguageService::class);
+        $languageDTO = new LanguageDTO($requestDataService, $this->managerRegistry);
+
+        return $service->create($languageDTO, $this->validator)->make();
 
     }
 
     /**
-     * @param int                $id
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
+     * @param int                $id
      *
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/translator/language/{id<\d+>}/edit/', methods: 'PUT')]
-    public function update(int $id, Request $request, ValidatorInterface $validator): JsonResponse
+    #[Route('/translator/language/{id<\d+>}/edit', methods: 'PUT')]
+    public function update(Request $request, RequestDataService $requestDataService, int $id): JsonResponse
     {
 
-        return $this->executeUpdateService(
-            $id,
-            UpdaterLanguageService::class,
-            'lang@successUpdate',
-            $request,
-            $validator
-        );
+        /** @var UpdaterLanguageService $service */
+        $service = $this->getCollectedService($request, UpdaterLanguageService::class);
+        $languageDTO = new LanguageDTO($requestDataService, $this->managerRegistry);
+
+        return $service->update($languageDTO, $this->validator, $id)->make();
 
     }
 
@@ -84,16 +82,14 @@ class LanguageController extends AbstractApiController
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/translator/language/{id<\d+>}/delete/', methods: 'DELETE')]
-    public function delete(int $id, Request $request): JsonResponse
+    #[Route('/translator/language/{id<\d+>}/delete', methods: 'DELETE')]
+    public function delete(Request $request, int $id): JsonResponse
     {
 
-        return $this->executeDeleteService(
-            $id,
-            DeleterLanguageService::class,
-            'lang@successDelete',
-            $request
-        );
+        /** @var DeleterLanguageService $service */
+        $service = $this->getCollectedService($request, DeleterLanguageService::class);
+
+        return $service->delete($id)->make();
 
     }
 

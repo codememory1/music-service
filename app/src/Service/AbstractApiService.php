@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
-use App\Enums\ApiResponseTypeEnum;
+use App\Enum\ApiResponseTypeEnum;
+use App\Interface\DTOInterface;
+use App\Interface\EntityInterface;
 use App\Service\Response\ApiResponseSchema;
 use App\Service\Response\ApiResponseService;
 use App\Service\Translator\TranslationService;
@@ -12,9 +14,7 @@ use Doctrine\Persistence\ObjectManager;
 use Exception;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -28,16 +28,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractApiService
 {
-
-    /**
-     * @var Request
-     */
-    protected Request $request;
-
-    /**
-     * @var RequestDataService
-     */
-    protected RequestDataService $requestData;
 
     /**
      * @var Response
@@ -70,21 +60,17 @@ abstract class AbstractApiService
     private ?Closure $handler = null;
 
     /**
-     * @param Request         $request
      * @param Response        $response
      * @param ManagerRegistry $managerRegistry
+     * @param string          $locale
      */
-    public function __construct(Request $request, Response $response, ManagerRegistry $managerRegistry)
+    public function __construct(Response $response, ManagerRegistry $managerRegistry, string $locale)
     {
-
-        $this->request = $request;
-
-        $this->initRequestData();
 
         $this->response = $response;
         $this->managerRegistry = $managerRegistry;
         $this->em = $this->managerRegistry->getManager();
-        $this->translationService = new TranslationService($request, $managerRegistry);
+        $this->translationService = new TranslationService($managerRegistry, $locale);
 
     }
 
@@ -144,18 +130,17 @@ abstract class AbstractApiService
     }
 
     /**
-     * @param object|array       $entity
-     * @param ValidatorInterface $validator
-     * @param Constraint|null    $constraint
+     * @param DTOInterface|EntityInterface $entityOrDTO
+     * @param ValidatorInterface           $validator
      *
      * @return ApiResponseService|bool
      * @throws Exception
      */
-    protected function inputValidation(object|array $entity, ValidatorInterface $validator, ?Constraint $constraint = null): ApiResponseService|bool
+    protected function inputValidation(DTOInterface|EntityInterface $entityOrDTO, ValidatorInterface $validator): ApiResponseService|bool
     {
 
         // Input Validation
-        if (count($errors = $validator->validate($entity, $constraint)) > 0) {
+        if (count($errors = $validator->validate($entityOrDTO)) > 0) {
             $validateInfo = $this->getValidateInfo($errors);
 
             $this
@@ -247,10 +232,26 @@ abstract class AbstractApiService
      * @return ApiResponseService
      */
     #[Pure]
-    public function getPreparedApiResponse(): ApiResponseService
+    protected function getPreparedApiResponse(): ApiResponseService
     {
 
         return new ApiResponseService($this->preparedApiResponse);
+
+    }
+
+    /**
+     * @param string $serviceClass
+     *
+     * @return AbstractApiService
+     */
+    protected function getCollectedService(string $serviceClass): AbstractApiService
+    {
+
+        return new $serviceClass(
+            $this->response,
+            $this->managerRegistry,
+            $this->translationService->getActiveLang()
+        );
 
     }
 
@@ -264,20 +265,6 @@ abstract class AbstractApiService
 
         if (null !== $this->handler) {
             call_user_func($this->handler, $entity);
-        }
-
-    }
-
-    /**
-     * @return void
-     */
-    private function initRequestData(): void
-    {
-
-        if ($this->request->isXmlHttpRequest()) {
-            $this->requestData = new RequestDataService($this->request->toArray());
-        } else {
-            $this->requestData = new RequestDataService($this->request->request->all());
         }
 
     }

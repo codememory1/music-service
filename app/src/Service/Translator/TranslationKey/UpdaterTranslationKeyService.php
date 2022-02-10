@@ -2,10 +2,9 @@
 
 namespace App\Service\Translator\TranslationKey;
 
-use App\Entity\TranslationKey;
-use App\Enums\ApiResponseTypeEnum;
-use App\Repository\TranslationKeyRepository;
-use App\Service\AbstractApiService;
+use App\DTO\TranslationKeyDTO;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\CRUD\UpdaterCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -17,59 +16,33 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class UpdaterTranslationKeyService extends AbstractApiService
+class UpdaterTranslationKeyService extends UpdaterCRUDService
 {
 
     /**
-     * @param int                $id
+     * @param TranslationKeyDTO  $translationKeyDTO
      * @param ValidatorInterface $validator
-     * @param callable           $handler
+     * @param int                $id
      *
      * @return ApiResponseService
+     * @throws UndefinedClassForDTOException
      * @throws Exception
      */
-    public function update(int $id, ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function update(TranslationKeyDTO $translationKeyDTO, ValidatorInterface $validator, int $id): ApiResponseService
     {
 
-        /** @var TranslationKeyRepository $translationKeyRepository */
-        $translationKeyRepository = $this->em->getRepository(TranslationKey::class);
+        $this->validator = $validator;
+        $this->validateEntity = true;
+        $this->messageNameNotExist = 'translation_key_not_exist';
+        $this->translationKeyNotExist = 'translationKey@notExist';
 
-        // Check exist translation key
-        if (null === $finedTranslationKey = $translationKeyRepository->findOneBy(['id' => $id])) {
-            $this
-                ->prepareApiResponse('error', 404)
-                ->setMessage(
-                    ApiResponseTypeEnum::CHECK_EXIST,
-                    'translation_key_not_exist',
-                    $this->getTranslation('translationKey@notExist')
-                );
+        $updatedEntity = $this->make($translationKeyDTO, ['id' => $id]);
 
-            return $this->getPreparedApiResponse();
+        if ($updatedEntity instanceof ApiResponseService) {
+            return $updatedEntity;
         }
 
-        $translationKeyEntity = $this->collectEntity($finedTranslationKey);
-
-        // Input validation
-        if (true !== $resultInputValidation = $this->inputValidation($translationKeyEntity, $validator)) {
-            return $resultInputValidation;
-        }
-
-        // Calling an Extender Method
-        return call_user_func($handler, $translationKeyEntity);
-
-    }
-
-    /**
-     * @param TranslationKey $translationKeyEntity
-     *
-     * @return TranslationKey
-     */
-    private function collectEntity(TranslationKey $translationKeyEntity): TranslationKey
-    {
-
-        $translationKeyEntity->setName($this->request->get('name'));
-
-        return $translationKeyEntity;
+        return $this->push($updatedEntity, 'translationKey@successUpdate', true);
 
     }
 

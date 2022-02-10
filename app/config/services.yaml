@@ -23,7 +23,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
-            - '../src/Enums/'
+            - '../src/Enum/'
             - '../src/Service/'
 
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
@@ -40,3 +40,8 @@ services:
     App\Command\GenerateJwtKeysCommand:
         tags:
             - {name: console.command}
+
+    # Resolvers
+    App\Resolver\RequestDataResolver:
+        tags:
+            - {name: controller.argument_value_resolver, priority: 150}

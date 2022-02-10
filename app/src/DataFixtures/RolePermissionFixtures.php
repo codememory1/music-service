@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Role;
 use App\Entity\RolePermission;
 use App\Entity\RolePermissionName;
-use App\Enums\RoleEnum;
+use App\Enum\RoleEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

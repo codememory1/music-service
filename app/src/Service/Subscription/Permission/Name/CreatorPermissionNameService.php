@@ -2,8 +2,9 @@
 
 namespace App\Service\Subscription\Permission\Name;
 
-use App\Entity\SubscriptionPermissionName;
-use App\Service\AbstractApiService;
+use App\DTO\SubscriptionPermissionNameDTO;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\CRUD\CreatorCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -15,44 +16,30 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorPermissionNameService extends AbstractApiService
+class CreatorPermissionNameService extends CreatorCRUDService
 {
 
     /**
-     * @param ValidatorInterface $validator
-     * @param callable           $handler
+     * @param SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO
+     * @param ValidatorInterface            $validator
      *
      * @return ApiResponseService
+     * @throws UndefinedClassForDTOException
      * @throws Exception
      */
-    public function create(ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function create(SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO, ValidatorInterface $validator): ApiResponseService
     {
 
-        $collectedEntity = $this->collectEntity();
+        $this->validator = $validator;
+        $this->validateEntity = true;
 
-        // Input validation
-        if (true !== $resultInputValidation = $this->inputValidation($collectedEntity, $validator)) {
-            return $resultInputValidation;
+        $createdEntity = $this->make($subscriptionPermissionNameDTO);
+
+        if ($createdEntity instanceof ApiResponseService) {
+            return $createdEntity;
         }
 
-        // Calling an Extender Method
-        return call_user_func($handler, $collectedEntity);
-
-    }
-
-    /**
-     * @return SubscriptionPermissionName
-     */
-    private function collectEntity(): SubscriptionPermissionName
-    {
-
-        $subscriptionPermissionNameEntity = new SubscriptionPermissionName();
-
-        $subscriptionPermissionNameEntity
-            ->setKey($this->request->get('key', ''))
-            ->setTitleTranslationKey($this->request->get('title', ''));
-
-        return $subscriptionPermissionNameEntity;
+        return $this->push($createdEntity, 'subscriptionPermissionName@successCreate');
 
     }
 

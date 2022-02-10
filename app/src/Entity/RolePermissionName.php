@@ -2,9 +2,13 @@
 
 namespace App\Entity;
 
+use App\Interface\EntityInterface;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use App\Repository\RolePermissionNameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
@@ -17,21 +21,22 @@ use JetBrains\PhpStorm\Pure;
  */
 #[ORM\Entity(repositoryClass: RolePermissionNameRepository::class)]
 #[ORM\Table('role_permission_names')]
-class RolePermissionName
+#[ORM\HasLifecycleCallbacks]
+class RolePermissionName implements EntityInterface
 {
+
+    use IdentifierTrait;
+    use TimestampTrait;
 
     public const ADD_TRACK = 'add-music';
     public const UPDATE_TRACK = 'update-music';
     public const DELETE_TRACK = 'delete-music';
-
     public const CREATE_SUBSCRIPTION = 'create-subscription';
     public const UPDATE_SUBSCRIPTION = 'update-subscription';
     public const DELETE_SUBSCRIPTION = 'delete-subscription';
-
     public const CREATE_LANG = 'create-language';
     public const UPDATE_LANG = 'update-language';
     public const DELETE_LANG = 'delete-language';
-
     public const ADD_TRANSLATION = 'add-translation-to-language';
     public const UPDATE_TRANSLATION = 'update-language-translation';
     public const DELETE_TRANSLATION = 'delete-translation-from-language';
@@ -52,17 +57,9 @@ class RolePermissionName
     ];
 
     /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
-
-    /**
      * @var string|null
      */
-    #[ORM\Column('`key`', 'string', length: 255, unique: true, options: [
+    #[ORM\Column('`key`', Types::STRING, length: 255, unique: true, options: [
         'comment' => 'A unique key that can be used to check availability'
     ])]
     private ?string $key = null;
@@ -70,7 +67,7 @@ class RolePermissionName
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'string', length: 255, options: [
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Rule name translation key'
     ])]
     private ?string $titleTranslationKey = null;
@@ -86,16 +83,6 @@ class RolePermissionName
     {
 
         $this->rolePermissions = new ArrayCollection();
-
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
 
     }
 

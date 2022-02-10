@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
-use App\Enums\ApiResponseTypeEnum;
-use App\Enums\StatusEnum;
+use App\Enum\StatusEnum;
+use App\Interface\EntityInterface;
 use App\Repository\SubscriptionRepository;
-use App\ValidatorConstraints as AppAssert;
-use DateTimeImmutable;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class Subscription
@@ -22,52 +23,40 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 #[ORM\Table('subscriptions')]
 #[ORM\HasLifecycleCallbacks]
-class Subscription
+class Subscription implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'string', length: 255, options: [
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Subscription name translation key'
     ])]
-    #[Assert\NotBlank(message: 'subscription@nameIsRequired', payload: 'name_is_required')]
-    #[Assert\Length(max: 255, maxMessage: 'subscription@nameMaxLength', payload: 'name_length')]
-    #[AppAssert\Exist(TranslationKey::class, 'name', 'common@titleTranslationKeyNotExist', [ApiResponseTypeEnum::CHECK_EXIST, 'title_translation_key_not_exist'])]
     private ?string $nameTranslationKey = null;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'string', length: 255, options: [
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Subscription description translation key'
     ])]
-    #[Assert\NotBlank(message: 'common@descriptionIsRequired', payload: 'description_is_required')]
-    #[Assert\Length(max: 255, maxMessage: 'subscription@descriptionMaxLength', payload: 'description_length')]
-    #[AppAssert\Exist(TranslationKey::class, 'name', 'common@descriptionTranslationKeyNotExist', [ApiResponseTypeEnum::CHECK_EXIST, 'description_translation_key_not_exist'])]
     private ?string $descriptionTranslationKey = null;
 
     /**
      * @var float|null
      */
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, options: [
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, options: [
         'comment' => 'Subscription price'
     ])]
-    #[Assert\NotBlank(message: 'common@priceIsRequired', payload: 'price_is_required')]
     private ?float $price = null;
 
     /**
      * @var float|null
      */
-    #[ORM\Column(type: 'decimal', precision: 10, scale: 2, nullable: true, options: [
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true, options: [
         'comment' => 'Old subscription price'
     ])]
     private ?float $oldPrice = null;
@@ -75,24 +64,10 @@ class Subscription
     /**
      * @var int|null
      */
-    #[ORM\Column(type: 'integer', options: [
+    #[ORM\Column(type: Types::INTEGER, options: [
         'comment' => 'Subscription status, default StatusEnum::ACTIVE'
     ])]
-    #[Assert\NotBlank(message: 'common@statusIsRequired', payload: 'status_is_required')]
-    #[Assert\Choice(callback: [StatusEnum::class, 'values'], message: 'common@statusInvalid', payload: 'status_invalid')]
     private ?int $status;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt = null;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $updatedAt;
 
     /**
      * @var Collection
@@ -106,22 +81,12 @@ class Subscription
     #[ORM\OneToOne(mappedBy: 'subscription', targetEntity: UserSubscription::class, cascade: ['persist', 'remove'])]
     private ?UserSubscription $userSubscription = null;
 
+    #[Pure]
     public function __construct()
     {
 
         $this->status = StatusEnum::ACTIVE->value;
-        $this->updatedAt = new DateTimeImmutable();
         $this->subscriptionPermissions = new ArrayCollection();
-
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
 
     }
 
@@ -240,53 +205,6 @@ class Subscription
     {
 
         $this->status = $status;
-
-        return $this;
-
-    }
-
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-
-        return $this->createdAt;
-
-    }
-
-    /**
-     * @return $this
-     */
-    #[ORM\PrePersist]
-    public function setCreatedAt(): self
-    {
-
-        $this->createdAt = new DateTimeImmutable();
-
-        return $this;
-
-    }
-
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-
-        return $this->updatedAt;
-
-    }
-
-    /**
-     * @param DateTimeImmutable $updatedAt
-     *
-     * @return $this
-     */
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): self
-    {
-
-        $this->updatedAt = $updatedAt;
 
         return $this;
 

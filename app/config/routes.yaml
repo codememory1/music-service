@@ -2,10 +2,6 @@ controllers:
     resource: ../src/Controller/
     type: annotation
 
-xhprof_bundle:
-    resource: ../src/Acme/XhprofBundle/Controller
-    type: annotation
-
 api_v1:
     resource: ../src/Controller/Api/V1
     type: annotation

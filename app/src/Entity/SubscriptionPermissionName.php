@@ -2,15 +2,17 @@
 
 namespace App\Entity;
 
-use App\Enums\ApiResponseTypeEnum;
+use App\Enum\ApiResponseTypeEnum;
+use App\Interface\EntityInterface;
 use App\Repository\SubscriptionPermissionNameRepository;
-use App\ValidatorConstraints as AppAssert;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class SubscriptionPermissionName
@@ -21,37 +23,32 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: SubscriptionPermissionNameRepository::class)]
 #[ORM\Table('subscription_permission_names')]
-#[UniqueEntity('key', message: 'subscriptionPermissionName@keyExist', payload: 'key_exist')]
-class SubscriptionPermissionName
+#[UniqueEntity(
+    'key',
+    'subscriptionPermissionName@keyExist',
+    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'key_exist']
+)]
+#[ORM\HasLifecycleCallbacks]
+class SubscriptionPermissionName implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var string|null
      */
-    #[ORM\Column('`key`', 'string', length: 255, unique: true, options: [
+    #[ORM\Column('`key`', Types::STRING, length: 255, unique: true, options: [
         'comment' => 'The unique key of the rule by which access will be checked'
     ])]
-    #[Assert\NotBlank(message: 'subscriptionPermissionName@keyIsRequired', payload: 'key_is_required')]
-    #[Assert\Length(max: 255, maxMessage: 'subscriptionPermissionName@keyMaxLength', payload: 'key_length')]
     private ?string $key = null;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'string', length: 255, options: [
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Rule name translation key'
     ])]
-    #[Assert\NotBlank(message: 'common@titleIsRequired', payload: 'title_is_required')]
-    #[Assert\Length(max: 255, maxMessage: 'common@titleTranslationKeyMaxLength', payload: 'title_length')]
-    #[AppAssert\Exist(TranslationKey::class, 'name', 'common@titleTranslationKeyNotExist', [ApiResponseTypeEnum::CHECK_EXIST, 'title_translation_key_not_exist'])]
     private ?string $titleTranslationKey = null;
 
     /**
@@ -63,17 +60,8 @@ class SubscriptionPermissionName
     #[Pure]
     public function __construct()
     {
+
         $this->subscriptionPermissions = new ArrayCollection();
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
-
     }
 
     /**

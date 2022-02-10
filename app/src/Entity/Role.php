@@ -2,9 +2,13 @@
 
 namespace App\Entity;
 
+use App\Interface\EntityInterface;
 use App\Repository\RoleRepository;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
@@ -17,21 +21,17 @@ use JetBrains\PhpStorm\Pure;
  */
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
 #[ORM\Table('roles')]
-class Role
+#[ORM\HasLifecycleCallbacks]
+class Role implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var string|null
      */
-    #[ORM\Column('`key`', 'string', length: 255, unique: true, options: [
+    #[ORM\Column('`key`', Types::STRING, length: 255, unique: true, options: [
         'comment' => 'Unique role key against which the role will be checked'
     ])]
     private ?string $key = null;
@@ -39,7 +39,7 @@ class Role
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'string', length: 255, options: [
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Role name translation key'
     ])]
     private ?string $titleTranslationKey = null;
@@ -59,18 +59,9 @@ class Role
     #[Pure]
     public function __construct()
     {
+
         $this->rolePermissions = new ArrayCollection();
         $this->users = new ArrayCollection();
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
-
     }
 
     /**

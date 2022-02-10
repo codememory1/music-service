@@ -3,9 +3,9 @@
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\AbstractApiController;
-use App\Dto\TranslationKeyDto;
+use App\DTO\TranslationKeyDTO;
 use App\Entity\TranslationKey;
-use App\Service\Translator\Translation\CreatorTranslationService;
+use App\Service\RequestDataService;
 use App\Service\Translator\TranslationKey\CreatorTranslationKeyService;
 use App\Service\Translator\TranslationKey\DeleterTranslationKeyService;
 use App\Service\Translator\TranslationKey\UpdaterTranslationKeyService;
@@ -13,7 +13,6 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class TranslationKeyController
@@ -32,69 +31,64 @@ class TranslationKeyController extends AbstractApiController
     public function all(): JsonResponse
     {
 
-        return $this->showAllFromDatabase(TranslationKey::class, TranslationKeyDto::class);
+        return $this->showAllFromDatabase(TranslationKey::class, TranslationKeyDTO::class);
 
     }
 
     /**
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
      *
      * @return JsonResponse
      * @throws Exception
      */
     #[Route('/translator/translation-key/create', methods: 'POST')]
-    public function create(Request $request, ValidatorInterface $validator): JsonResponse
+    public function create(Request $request, RequestDataService $requestDataService): JsonResponse
     {
 
-        return $this->executeCreateService(
-            CreatorTranslationKeyService::class,
-            'translationKey@successCreate',
-            $request,
-            $validator
-        );
+        /** @var CreatorTranslationKeyService $service */
+        $service = $this->getCollectedService($request, CreatorTranslationKeyService::class);
+        $translationKeyDTO = new TranslationKeyDTO($requestDataService, $this->managerRegistry);
+
+        return $service->create($translationKeyDTO, $this->validator)->make();
 
     }
 
     /**
-     * @param int                $id
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
+     * @param int                $id
      *
      * @return JsonResponse
      * @throws Exception
      */
     #[Route('/translator/translation-key/{id<\d+>}/edit', methods: 'PUT')]
-    public function update(int $id, Request $request, ValidatorInterface $validator): JsonResponse
+    public function update(Request $request, RequestDataService $requestDataService, int $id): JsonResponse
     {
 
-        return $this->executeUpdateService(
-            $id,
-            UpdaterTranslationKeyService::class,
-            'translationKey@successUpdate',
-            $request,
-            $validator
-        );
+        /** @var UpdaterTranslationKeyService $service */
+        $service = $this->getCollectedService($request, UpdaterTranslationKeyService::class);
+        $translationKeyDTO = new TranslationKeyDTO($requestDataService, $this->managerRegistry);
+
+        return $service->update($translationKeyDTO, $this->validator, $id)->make();
 
     }
 
     /**
-     * @param int     $id
      * @param Request $request
+     * @param int     $id
      *
      * @return JsonResponse
      * @throws Exception
      */
     #[Route('/translator/translation-key/{id<\d+>}/delete', methods: 'DELETE')]
-    public function delete(int $id, Request $request): JsonResponse
+    public function delete(Request $request, int $id): JsonResponse
     {
 
-        return $this->executeDeleteService(
-            $id,
-            DeleterTranslationKeyService::class,
-            'translationKey@successDelete',
-            $request
-        );
+        /** @var DeleterTranslationKeyService $service */
+        $service = $this->getCollectedService($request, DeleterTranslationKeyService::class);
+
+        return $service->delete($id)->make();
 
     }
 

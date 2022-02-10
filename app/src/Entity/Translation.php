@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
-use App\Enums\ApiResponseTypeEnum;
+use App\Enum\ApiResponseTypeEnum;
+use App\Interface\EntityInterface;
 use App\Repository\TranslationRepository;
-use DateTimeImmutable;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Translation
@@ -18,18 +20,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: TranslationRepository::class)]
 #[ORM\Table('translations')]
-#[UniqueEntity(['lang', 'translationKey'], 'translation@exist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'translation_exist'])]
+#[UniqueEntity(
+    ['lang', 'translationKey'],
+    'translation@exist',
+    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'translation_exist']
+)]
 #[ORM\HasLifecycleCallbacks]
-class Translation
+class Translation implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var Language|null
@@ -48,40 +49,10 @@ class Translation
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text', options: [
+    #[ORM\Column(type: Types::TEXT, options: [
         'comment' => 'Translation of the key into the specified language'
     ])]
-    #[Assert\NotBlank(message: 'translation@translationIsRequired', payload: 'translation_is_required')]
     private ?string $translation = null;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt = null;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $updatedAt;
-
-    public function __construct()
-    {
-
-        $this->updatedAt = new DateTimeImmutable();
-
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
-
-    }
 
     /**
      * @return Language|null
@@ -150,53 +121,6 @@ class Translation
     {
 
         $this->translation = $translation;
-
-        return $this;
-
-    }
-
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-
-        return $this->createdAt;
-
-    }
-
-    /**
-     * @return $this
-     */
-    #[ORM\PrePersist]
-    public function setCreatedAt(): self
-    {
-
-        $this->createdAt = new DateTimeImmutable();
-
-        return $this;
-
-    }
-
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-
-        return $this->updatedAt;
-
-    }
-
-    /**
-     * @param DateTimeImmutable $updatedAt
-     *
-     * @return $this
-     */
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): self
-    {
-
-        $this->updatedAt = $updatedAt;
 
         return $this;
 

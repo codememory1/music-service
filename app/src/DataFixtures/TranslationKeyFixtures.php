@@ -66,8 +66,8 @@ class TranslationKeyFixtures extends Fixture
         'translationKey@successUpdate',
         'translationKey@successDelete',
 
-        'translation@langIsRequired',
-        'translation@keyIsRequired',
+        'translation@langNotExistOrNotEntered',
+        'translation@keyNotExistOrNotEnetred',
         'translation@translationIsRequired',
         'translation@exist',
         'translation@notExist',
@@ -112,6 +112,8 @@ class TranslationKeyFixtures extends Fixture
         'subscriptionPermissionName@successDelete',
         'subscriptionPermissionName@notExist',
 
+        'subscriptionPermission@permissionNameNotExistOrNotEntered',
+        'subscriptionPermission@subscriptionNotExistOrNotEnetred',
         'subscriptionPermission@rightNameIsRequired',
         'subscriptionPermission@successCreate',
         'subscriptionPermission@successUpdate',

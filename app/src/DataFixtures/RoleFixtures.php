@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Role;
-use App\Enums\RoleEnum;
+use App\Enum\RoleEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 

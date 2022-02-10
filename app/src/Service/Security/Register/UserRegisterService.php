@@ -2,13 +2,11 @@
 
 namespace App\Service\Security\Register;
 
-use App\Entity\Role;
+use App\DTO\RegistrationDTO;
 use App\Entity\User;
-use App\Enums\EventsEnum;
-use App\Enums\RoleEnum;
-use App\Enums\StatusEnum;
+use App\Enum\EventsEnum;
 use App\Event\UserRegistrationEvent;
-use App\Repository\RoleRepository;
+use App\Exception\UndefinedClassForDTOException;
 use App\Repository\UserRepository;
 use App\Service\AbstractApiService;
 use App\Service\PasswordHashingService;
@@ -29,34 +27,45 @@ class UserRegisterService extends AbstractApiService
 {
 
     /**
+     * @param RegistrationDTO          $registrationDTO
      * @param ValidatorInterface       $validator
      * @param EventDispatcherInterface $dispatcher
      *
      * @return ApiResponseService
      * @throws NonUniqueResultException
+     * @throws UndefinedClassForDTOException
      * @throws Exception
      */
-    public function register(ValidatorInterface $validator, EventDispatcherInterface $dispatcher): ApiResponseService
+    public function register(RegistrationDTO $registrationDTO, ValidatorInterface $validator, EventDispatcherInterface $dispatcher): ApiResponseService
     {
 
         /** @var UserRepository $userRepository */
         $userRepository = $this->em->getRepository(User::class);
-        $isReRegistration = $this->isReRegistration($userRepository);
-        $collectedEntity = $this->collectEntity($isReRegistration);
+        $isReRegistration = $this->isReRegistration($userRepository, $registrationDTO);
 
-        // Input POST validation
+        /** @var User $collectedEntity */
+        $collectedEntity = $registrationDTO->update($isReRegistration)->getCollectedEntity();
+        $collectedEntity->setUsername($registrationDTO->getUsername());
+
+        // Validation of input POST data
+        if (true !== $resultInputValidation = $this->inputValidation($registrationDTO, $validator)) {
+            return $resultInputValidation;
+        }
+
+        // Validation when inserting into the database
         if (true !== $resultInputValidation = $this->inputValidation($collectedEntity, $validator)) {
             return $resultInputValidation;
         }
 
         // Hash password after validation
-        $this->hashPassword($collectedEntity);
+        $this->hashPassword($collectedEntity, $registrationDTO);
 
         // Generating or updating an activation token if re-registration is in progress
         $this->createActivationToken($collectedEntity);
 
         // Adding a handler after user registration
         $this->setHandler(function(User $registeredUser) use ($dispatcher) {
+
             $userRegistrationEvent = new UserRegistrationEvent($registeredUser);
 
             $dispatcher->dispatch($userRegistrationEvent, EventsEnum::USER_REGISTRATION->value);
@@ -68,70 +77,32 @@ class UserRegisterService extends AbstractApiService
     }
 
     /**
-     * @param User|null $userEntity
-     *
-     * @return User
-     */
-    private function collectEntity(?User $userEntity = null): User
-    {
-
-        /** @var RoleRepository $roleRepository */
-        $roleRepository = $this->em->getRepository(Role::class);
-        $email = $this->request->get('email', '');
-
-        $userEntity = $userEntity ?? new User();
-        $userEntity
-            ->setEmail($email)
-            ->setUsername($this->getUsernameFromEmail($email))
-            ->setPassword($this->request->get('password', ''))
-            ->setPasswordConfirm($this->request->get('password_confirm', ''))
-            ->setStatus(StatusEnum::ACTIVE->value)
-            ->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->value]));
-
-        return $userEntity;
-
-    }
-
-    /**
-     * @param string $email
-     *
-     * @return string
-     */
-    private function getUsernameFromEmail(string $email): string
-    {
-
-        return explode('@', $email)[0];
-
-    }
-
-    /**
-     * @param UserRepository $userRepository
+     * @param UserRepository  $userRepository
+     * @param RegistrationDTO $registrationDTO
      *
      * @return User|null
      * @throws NonUniqueResultException
      */
-    private function isReRegistration(UserRepository $userRepository): ?User
+    private function isReRegistration(UserRepository $userRepository, RegistrationDTO $registrationDTO): ?User
     {
 
-        return $userRepository->findByLogin($this->request->get('email'));
+        return $userRepository->findByLogin($registrationDTO->getEmail());
 
     }
 
     /**
-     * @param User $userEntity
+     * @param User            $userEntity
+     * @param RegistrationDTO $registrationDTO
      *
      * @return void
      */
-    private function hashPassword(User $userEntity): void
+    private function hashPassword(User $userEntity, RegistrationDTO $registrationDTO): void
     {
 
         $hashingPasswordService = new PasswordHashingService();
+        $encodedPassword = $hashingPasswordService->encode($registrationDTO->getPassword());
 
-        $userEntity->setPassword(
-            $hashingPasswordService->encode(
-                $this->request->get('password', '')
-            )
-        );
+        $userEntity->setPassword($encodedPassword);
 
     }
 

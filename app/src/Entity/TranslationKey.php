@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Enums\ApiResponseTypeEnum;
+use App\Enum\ApiResponseTypeEnum;
+use App\Interface\EntityInterface;
 use App\Repository\TranslationKeyRepository;
-use DateTimeImmutable;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -20,40 +23,25 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 #[ORM\Entity(repositoryClass: TranslationKeyRepository::class)]
 #[ORM\Table('translation_keys')]
-#[UniqueEntity('name', 'translationKey@keyExist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'key_exist'])]
+#[UniqueEntity(
+    'name',
+    'translationKey@keyExist',
+    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'key_exist']
+)]
 #[ORM\HasLifecycleCallbacks]
-class TranslationKey
+class TranslationKey implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'string', length: 255, unique: true, options: [
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
         'comment' => 'A unique key by which it will be possible to receive a transfer'
     ])]
-    #[Assert\NotBlank(message: 'translationKey@nameIsRequired', payload: 'name_is_required')]
-    #[Assert\Length(max: 255, maxMessage: 'translationKey@nameMaxLength', payload: 'name_length')]
     private ?string $name = null;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt = null;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $updatedAt;
 
     /**
      * @var Collection
@@ -61,21 +49,11 @@ class TranslationKey
     #[ORM\OneToMany(mappedBy: 'translationKey', targetEntity: Translation::class)]
     private Collection $translations;
 
+    #[Pure]
     public function __construct()
     {
 
         $this->translations = new ArrayCollection();
-        $this->updatedAt = new DateTimeImmutable();
-
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
 
     }
 
@@ -96,56 +74,10 @@ class TranslationKey
      */
     public function setName(string $name): self
     {
+
         $this->name = $name;
 
         return $this;
-    }
-
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-
-        return $this->createdAt;
-
-    }
-
-    /**
-     * @return $this
-     */
-    #[ORM\PrePersist]
-    public function setCreatedAt(): self
-    {
-
-        $this->createdAt = new DateTimeImmutable();
-
-        return $this;
-
-    }
-
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-
-        return $this->updatedAt;
-
-    }
-
-    /**
-     * @param DateTimeImmutable $updatedAt
-     *
-     * @return $this
-     */
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): self
-    {
-
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-
     }
 
     /**

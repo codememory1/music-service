@@ -3,8 +3,10 @@
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\AbstractApiController;
-use App\Dto\SubscriptionPermissionNameDto;
+use App\DTO\SubscriptionPermissionNameDTO;
 use App\Entity\SubscriptionPermissionName;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\RequestDataService;
 use App\Service\Subscription\Permission\Name\CreatorPermissionNameService;
 use App\Service\Subscription\Permission\Name\DeleterPermissionNameService;
 use App\Service\Subscription\Permission\Name\UpdaterPermissionNameService;
@@ -12,7 +14,6 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class SubscriptionPermissionNameController
@@ -33,50 +34,47 @@ class SubscriptionPermissionNameController extends AbstractApiController
 
         return $this->showAllFromDatabase(
             SubscriptionPermissionName::class,
-            SubscriptionPermissionNameDto::class
+            SubscriptionPermissionNameDTO::class
         );
 
     }
 
     /**
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws UndefinedClassForDTOException
      */
     #[Route('/subscription/permission-name/create', methods: 'POST')]
-    public function create(Request $request, ValidatorInterface $validator): JsonResponse
+    public function create(Request $request, RequestDataService $requestDataService): JsonResponse
     {
 
-        return $this->executeCreateService(
-            CreatorPermissionNameService::class,
-            'subscriptionPermissionName@successCreate',
-            $request,
-            $validator
-        );
+        /** @var CreatorPermissionNameService $service */
+        $service = $this->getCollectedService($request, CreatorPermissionNameService::class);
+        $subscriptionPermissionNameDTO = new SubscriptionPermissionNameDTO($requestDataService, $this->managerRegistry);
+
+        return $service->create($subscriptionPermissionNameDTO, $this->validator)->make();
 
     }
 
     /**
-     * @param int                $id
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
+     * @param int                $id
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws UndefinedClassForDTOException
      */
     #[Route('/subscription/permission-name/{id<\d+>}/edit', methods: 'PUT')]
-    public function update(int $id, Request $request, ValidatorInterface $validator): JsonResponse
+    public function update(Request $request, RequestDataService $requestDataService, int $id): JsonResponse
     {
 
-        return $this->executeUpdateService(
-            $id,
-            UpdaterPermissionNameService::class,
-            'subscriptionPermissionName@successUpdate',
-            $request,
-            $validator
-        );
+        /** @var UpdaterPermissionNameService $service */
+        $service = $this->getCollectedService($request, UpdaterPermissionNameService::class);
+        $subscriptionPermissionNameDTO = new SubscriptionPermissionNameDTO($requestDataService, $this->managerRegistry);
+
+        return $service->update($subscriptionPermissionNameDTO, $this->validator, $id)->make();
 
     }
 
@@ -91,12 +89,10 @@ class SubscriptionPermissionNameController extends AbstractApiController
     public function delete(int $id, Request $request): JsonResponse
     {
 
-        return $this->executeDeleteService(
-            $id,
-            DeleterPermissionNameService::class,
-            'subscriptionPermissionName@successDelete',
-            $request
-        );
+        /** @var DeleterPermissionNameService $service */
+        $service = $this->getCollectedService($request, DeleterPermissionNameService::class);
+
+        return $service->delete($id)->make();
 
     }
 

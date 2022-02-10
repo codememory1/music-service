@@ -2,10 +2,9 @@
 
 namespace App\Service\Subscription;
 
-use App\Entity\Subscription;
-use App\Enums\ApiResponseTypeEnum;
-use App\Repository\SubscriptionRepository;
-use App\Service\AbstractApiService;
+use App\DTO\SubscriptionDTO;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\CRUD\UpdaterCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -17,64 +16,32 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class UpdaterSubscriptionService extends AbstractApiService
+class UpdaterSubscriptionService extends UpdaterCRUDService
 {
 
     /**
-     * @param int                $id
+     * @param SubscriptionDTO    $subscriptionDTO
      * @param ValidatorInterface $validator
-     * @param callable           $handler
+     * @param int                $id
      *
      * @return ApiResponseService
+     * @throws UndefinedClassForDTOException
      * @throws Exception
      */
-    public function update(int $id, ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function update(SubscriptionDTO $subscriptionDTO, ValidatorInterface $validator, int $id): ApiResponseService
     {
 
-        /** @var SubscriptionRepository $subscriptionRepository */
-        $subscriptionRepository = $this->em->getRepository(Subscription::class);
+        $this->validator = $validator;
+        $this->messageNameNotExist = 'subscription_not_exist';
+        $this->translationKeyNotExist = 'subscription@notExist';
 
-        // Check exist language
-        if (null === $finedSubscription = $subscriptionRepository->findOneBy(['id' => $id])) {
-            $this
-                ->prepareApiResponse('error', 404)
-                ->setMessage(
-                    ApiResponseTypeEnum::CHECK_EXIST,
-                    'subscription_not_exist',
-                    $this->getTranslation('subscription@notExist')
-                );
+        $updatedEntity = $this->make($subscriptionDTO, ['id' => $id]);
 
-            return $this->getPreparedApiResponse();
+        if ($updatedEntity instanceof ApiResponseService) {
+            return $updatedEntity;
         }
 
-        $collectedEntity = $this->collectEntity($finedSubscription);
-
-        // Input validation
-        if (true !== $resultInputValidation = $this->inputValidation($collectedEntity, $validator)) {
-            return $resultInputValidation;
-        }
-
-        // Calling an Extender Method
-        return call_user_func($handler, $collectedEntity);
-
-    }
-
-    /**
-     * @param Subscription $subscriptionEntity
-     *
-     * @return Subscription
-     */
-    private function collectEntity(Subscription $subscriptionEntity): Subscription
-    {
-
-        $subscriptionEntity
-            ->setNameTranslationKey($this->request->get('name', ''))
-            ->setDescriptionTranslationKey($this->request->get('description', ''))
-            ->setPrice($this->request->get('price', -1))
-            ->setOldPrice($this->request->get('old_price'))
-            ->setStatus($this->request->get('status', -1));
-
-        return $subscriptionEntity;
+        return $this->push($updatedEntity, 'subscription@successUpdate', true);
 
     }
 

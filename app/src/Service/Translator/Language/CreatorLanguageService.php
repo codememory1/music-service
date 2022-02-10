@@ -2,8 +2,9 @@
 
 namespace App\Service\Translator\Language;
 
-use App\Entity\Language;
-use App\Service\AbstractApiService;
+use App\DTO\LanguageDTO;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\CRUD\CreatorCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -15,44 +16,30 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorLanguageService extends AbstractApiService
+class CreatorLanguageService extends CreatorCRUDService
 {
 
     /**
+     * @param LanguageDTO        $languageDTO
      * @param ValidatorInterface $validator
-     * @param callable           $handler
      *
      * @return ApiResponseService
+     * @throws UndefinedClassForDTOException
      * @throws Exception
      */
-    public function create(ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function create(LanguageDTO $languageDTO, ValidatorInterface $validator): ApiResponseService
     {
 
-        $languageEntity = $this->collectEntity();
+        $this->validator = $validator;
+        $this->validateEntity = true;
 
-        // Input Validation
-        if (true !== $resultInputValidation = $this->inputValidation($languageEntity, $validator)) {
-            return $resultInputValidation;
+        $createdLanguage = $this->make($languageDTO);
+
+        if ($createdLanguage instanceof ApiResponseService) {
+            return $createdLanguage;
         }
 
-        // Calling an Extender Method
-        return call_user_func($handler, $languageEntity);
-
-    }
-
-    /**
-     * @return Language
-     */
-    private function collectEntity(): Language
-    {
-
-        $languageEntity = new Language();
-
-        $languageEntity
-            ->setCode($this->request->get('code', ''))
-            ->setTitle($this->request->get('title', ''));
-
-        return $languageEntity;
+        return $this->push($createdLanguage, 'lang@successCreate');
 
     }
 

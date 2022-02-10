@@ -6,7 +6,6 @@ use App\Service\AbstractApiService;
 use App\Service\Response\ApiResponseSchema;
 use App\Service\Response\ApiResponseService;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,13 +33,20 @@ abstract class AbstractApiController extends AbstractController
     protected ManagerRegistry $managerRegistry;
 
     /**
-     * @param ManagerRegistry $managerRegistry
+     * @var ValidatorInterface
      */
-    public function __construct(ManagerRegistry $managerRegistry)
+    protected ValidatorInterface $validator;
+
+    /**
+     * @param ManagerRegistry    $managerRegistry
+     * @param ValidatorInterface $validator
+     */
+    public function __construct(ManagerRegistry $managerRegistry, ValidatorInterface $validator)
     {
 
         $this->response = new Response();
         $this->managerRegistry = $managerRegistry;
+        $this->validator = $validator;
 
     }
 
@@ -53,11 +59,11 @@ abstract class AbstractApiController extends AbstractController
     protected function showAllFromDatabase(string $entityNamespace, string $dtoNamespace): JsonResponse
     {
 
+        $DTO = new $dtoNamespace(managerRegistry: $this->managerRegistry);
         $entityRepository = $this->managerRegistry->getRepository($entityNamespace);
-        $dto = new $dtoNamespace($entityRepository->findAll());
         $apiResponseSchema = new ApiResponseSchema('success', 200);
 
-        $apiResponseSchema->setData($dto->transform());
+        $apiResponseSchema->setData($DTO->transform($entityRepository->findAll()));
 
         $apiResponseService = new ApiResponseService($apiResponseSchema);
 
@@ -66,69 +72,15 @@ abstract class AbstractApiController extends AbstractController
     }
 
     /**
-     * @param string             $serviceNamespace
-     * @param string             $successTranslationKey
-     * @param Request            $request
-     * @param ValidatorInterface $validator
-     *
-     * @return JsonResponse
-     * @throws Exception
-     */
-    protected function executeCreateService(string $serviceNamespace, string $successTranslationKey, Request $request, ValidatorInterface $validator): JsonResponse
-    {
-
-        /** @var AbstractApiService $service */
-        $service = new $serviceNamespace($request, $this->response, $this->managerRegistry);
-        $handler = function (object $entity) use ($service, $successTranslationKey) {
-            return $service->push($entity, $successTranslationKey);
-        };
-
-        return $service->create($validator, $handler)->make();
-
-    }
-
-    /**
-     * @param int                $id
-     * @param string             $serviceNamespace
-     * @param string             $successTranslationKey
-     * @param Request            $request
-     * @param ValidatorInterface $validator
-     *
-     * @return JsonResponse
-     * @throws Exception
-     */
-    protected function executeUpdateService(int $id, string $serviceNamespace, string $successTranslationKey, Request $request, ValidatorInterface $validator): JsonResponse
-    {
-
-        /** @var AbstractApiService $service */
-        $service = new $serviceNamespace($request, $this->response, $this->managerRegistry);
-        $handler = function (object $entity) use ($service, $successTranslationKey) {
-            return $service->push($entity, $successTranslationKey, true);
-        };
-
-        return $service->update($id, $validator, $handler)->make();
-
-    }
-
-    /**
-     * @param int     $id
-     * @param string  $serviceNamespace
-     * @param string  $successTranslationKey
      * @param Request $request
+     * @param string  $serviceClass
      *
-     * @return JsonResponse
-     * @throws Exception
+     * @return AbstractApiService
      */
-    protected function executeDeleteService(int $id, string $serviceNamespace, string $successTranslationKey, Request $request): JsonResponse
+    protected function getCollectedService(Request $request, string $serviceClass): AbstractApiService
     {
 
-        /** @var AbstractApiService $service */
-        $service = new $serviceNamespace($request, $this->response, $this->managerRegistry);
-        $handler = function (object $entity) use ($service, $successTranslationKey) {
-            return $service->remove($entity, $successTranslationKey);
-        };
-
-        return $service->delete($id, $handler)->make();
+        return new $serviceClass($this->response, $this->managerRegistry, $request->getLocale());
 
     }
 

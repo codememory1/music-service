@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Interface\EntityInterface;
 use App\Repository\UserSessionRepository;
-use DateTimeImmutable;
+use App\Trait\Entity\CreatedAtTrait;
+use App\Trait\Entity\IdentifierTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,16 +18,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: UserSessionRepository::class)]
 #[ORM\Table('user_sessions')]
 #[ORM\HasLifecycleCallbacks]
-class UserSession
+class UserSession implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use CreatedAtTrait;
 
     /**
      * @var User|null
@@ -105,22 +102,6 @@ class UserSession
         'comment' => 'Token lifetime in CronTime format'
     ])]
     private ?string $valid = null;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt = null;
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
-
-    }
 
     /**
      * @return User|null
@@ -357,29 +338,6 @@ class UserSession
     {
 
         $this->valid = $valid;
-
-        return $this;
-
-    }
-
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-
-        return $this->createdAt;
-
-    }
-
-    /**
-     * @return $this
-     */
-    #[ORM\PrePersist]
-    public function setCreatedAt(): self
-    {
-
-        $this->createdAt = new DateTimeImmutable();
 
         return $this;
 

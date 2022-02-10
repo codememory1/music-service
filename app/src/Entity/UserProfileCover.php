@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use App\Interface\EntityInterface;
 use App\Repository\UserProfileCoverRepository;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,16 +18,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: UserProfileCoverRepository::class)]
 #[ORM\Table('user_profile_covers')]
-class UserProfileCover
+#[ORM\HasLifecycleCallbacks]
+class UserProfileCover implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var UserProfile|null
@@ -42,16 +41,6 @@ class UserProfileCover
     ])]
     #[Assert\NotBlank(message: 'userProfileCover@coverIsRequired', payload: 'cover_is_required')]
     private ?string $cover = null;
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
-
-    }
 
     /**
      * @return UserProfile|null

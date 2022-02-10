@@ -3,8 +3,7 @@
 namespace App\Service\Subscription;
 
 use App\Entity\Subscription;
-use App\Service\AbstractApiService;
-use App\Service\Abstraction\DeleteRecord;
+use App\Service\CRUD\DeleterCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 
@@ -15,24 +14,28 @@ use Exception;
  *
  * @author  Codememory
  */
-class DeleterSubscriptionService extends AbstractApiService
+class DeleterSubscriptionService extends DeleterCRUDService
 {
 
     /**
-     * @param int      $id
-     * @param callable $handler
+     * @param int $id
      *
      * @return ApiResponseService
      * @throws Exception
      */
-    public function delete(int $id, callable $handler): ApiResponseService
+    public function delete(int $id): ApiResponseService
     {
 
-        $deleteAbstraction = new DeleteRecord($this->request, $this->response, $this->managerRegistry);
+        $this->messageNameNotExist = 'subscription_not_exist';
+        $this->translationKeyNotExist = 'subscription@notExist';
 
-        return $deleteAbstraction
-            ->prepare(Subscription::class, $handler)
-            ->make($id, 'subscription_not_exist', 'subscription@notExist');
+        $deletedEntity = $this->make(Subscription::class, ['id' => $id]);
+
+        if ($deletedEntity instanceof ApiResponseService) {
+            return $deletedEntity;
+        }
+
+        return $this->remove($deletedEntity, 'subscription@successDelete');
 
     }
 

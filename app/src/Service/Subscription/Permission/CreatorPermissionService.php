@@ -2,9 +2,9 @@
 
 namespace App\Service\Subscription\Permission;
 
-use App\Entity\Subscription;
-use App\Entity\SubscriptionPermission;
-use App\Entity\SubscriptionPermissionName;
+use App\DTO\SubscriptionPermissionDTO;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\CRUD\CreatorCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,61 +16,30 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorPermissionService extends AbstractAddAndUpdatePermission
+class CreatorPermissionService extends CreatorCRUDService
 {
 
     /**
-     * @param ValidatorInterface $validator
-     * @param callable           $handler
+     * @param SubscriptionPermissionDTO $subscriptionPermissionDTO
+     * @param ValidatorInterface        $validator
      *
      * @return ApiResponseService
+     * @throws UndefinedClassForDTOException
      * @throws Exception
      */
-    public function create(ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function create(SubscriptionPermissionDTO $subscriptionPermissionDTO, ValidatorInterface $validator): ApiResponseService
     {
 
-        // Check exist permission name
-        $finedPermissionName = $this->existPermissionName();
+        $this->validator = $validator;
+        $this->validateEntity = true;
 
-        if ($finedPermissionName instanceof ApiResponseService) {
-            return $finedPermissionName;
+        $createdEntity = $this->make($subscriptionPermissionDTO);
+
+        if ($createdEntity instanceof ApiResponseService) {
+            return $createdEntity;
         }
 
-        // Check exist subscription
-        $finedSubscription = $this->existSubscription();
-
-        if ($finedSubscription instanceof ApiResponseService) {
-            return $finedSubscription;
-        }
-
-        $collectedEntity = $this->collectEntity($finedPermissionName, $finedSubscription);
-
-        // Input validation
-        if (true !== $resultInputValidation = $this->inputValidation($collectedEntity, $validator)) {
-            return $resultInputValidation;
-        }
-
-        // Calling an Extender Method
-        return call_user_func($handler, $collectedEntity);
-
-    }
-
-    /**
-     * @param SubscriptionPermissionName $subscriptionPermissionNameEntity
-     * @param Subscription               $subscriptionEntity
-     *
-     * @return SubscriptionPermission
-     */
-    private function collectEntity(SubscriptionPermissionName $subscriptionPermissionNameEntity, Subscription $subscriptionEntity): SubscriptionPermission
-    {
-
-        $subscriptionPermission = new SubscriptionPermission();
-
-        $subscriptionPermission
-            ->setSubscriptionPermissionName($subscriptionPermissionNameEntity)
-            ->setSubscription($subscriptionEntity);
-
-        return $subscriptionPermission;
+        return $this->push($createdEntity, 'subscriptionPermission@successCreate');
 
     }
 

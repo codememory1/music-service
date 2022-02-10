@@ -15,6 +15,7 @@
         "doctrine/orm": "^2.11",
         "fakerphp/faker": "^1.18",
         "firebase/php-jwt": "^6.0",
+        "gedmo/doctrine-extensions": "^3.5",
         "ramsey/uuid": "^4.2",
         "sixlive/dotenv-editor": "^2.0",
         "starkbank/ecdsa": "^0.0.5",

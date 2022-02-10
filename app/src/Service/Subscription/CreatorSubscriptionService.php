@@ -2,8 +2,9 @@
 
 namespace App\Service\Subscription;
 
-use App\Entity\Subscription;
-use App\Service\AbstractApiService;
+use App\DTO\SubscriptionDTO;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\CRUD\CreatorCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -15,47 +16,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorSubscriptionService extends AbstractApiService
+class CreatorSubscriptionService extends CreatorCRUDService
 {
 
     /**
+     * @param SubscriptionDTO    $subscriptionDTO
      * @param ValidatorInterface $validator
-     * @param callable           $handler
      *
      * @return ApiResponseService
+     * @throws UndefinedClassForDTOException
      * @throws Exception
      */
-    public function create(ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function create(SubscriptionDTO $subscriptionDTO, ValidatorInterface $validator): ApiResponseService
     {
 
-        $collectedEntity = $this->collectEntity();
+        $this->validator = $validator;
 
-        // Input validation
-        if (true !== $resultInputValidation = $this->inputValidation($collectedEntity, $validator)) {
-            return $resultInputValidation;
+        $createdEntity = $this->make($subscriptionDTO);
+
+        if ($createdEntity instanceof ApiResponseService) {
+            return $createdEntity;
         }
 
-        // Calling an Extender Method
-        return call_user_func($handler, $collectedEntity);
-
-    }
-
-    /**
-     * @return Subscription
-     */
-    private function collectEntity(): Subscription
-    {
-
-        $subscriptionEntity = new Subscription();
-
-        $subscriptionEntity
-            ->setNameTranslationKey($this->request->get('name', ''))
-            ->setDescriptionTranslationKey($this->request->get('description', ''))
-            ->setPrice($this->request->get('price', -1))
-            ->setOldPrice($this->request->get('old_price'))
-            ->setStatus($this->request->get('status', -1));
-
-        return $subscriptionEntity;
+        return $this->push($createdEntity, 'subscription@successCreate');
 
     }
 

@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use JetBrains\PhpStorm\Pure;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class TranslationService
@@ -22,24 +21,24 @@ class TranslationService
 {
 
     /**
-     * @var Request
-     */
-    private Request $request;
-
-    /**
      * @var ManagerRegistry
      */
     private ManagerRegistry $managerRegistry;
 
     /**
-     * @param Request         $request
-     * @param ManagerRegistry $managerRegistry
+     * @var string
      */
-    public function __construct(Request $request, ManagerRegistry $managerRegistry)
+    private string $locale;
+
+    /**
+     * @param ManagerRegistry $managerRegistry
+     * @param string          $locale
+     */
+    public function __construct(ManagerRegistry $managerRegistry, string $locale)
     {
 
-        $this->request = $request;
         $this->managerRegistry = $managerRegistry;
+        $this->locale = $locale;
 
     }
 
@@ -50,7 +49,7 @@ class TranslationService
     public function getActiveLang(): string
     {
 
-        return $this->request->getLocale();
+        return $this->locale;
 
     }
 

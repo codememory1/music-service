@@ -14,37 +14,15 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserProfileCoverRepository extends ServiceEntityRepository
 {
+
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
+
         parent::__construct($registry, UserProfileCover::class);
+
     }
 
-    // /**
-    //  * @return UserProfileCover[] Returns an array of UserProfileCover objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?UserProfileCover
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

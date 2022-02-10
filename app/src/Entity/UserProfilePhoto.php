@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use App\Interface\EntityInterface;
 use App\Repository\UserProfilePhotoRepository;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class UserProfilePhoto
@@ -15,23 +17,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: UserProfilePhotoRepository::class)]
 #[ORM\Table('user_profile_photos')]
-class UserProfilePhoto
+#[ORM\HasLifecycleCallbacks]
+class UserProfilePhoto implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var UserProfile|null
      */
     #[ORM\OneToOne(inversedBy: 'userProfilePhoto', targetEntity: UserProfile::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'common@userProfileIsRequired', payload: 'user_profile_is_required')]
     private ?UserProfile $userProfile = null;
 
     /**
@@ -40,18 +37,7 @@ class UserProfilePhoto
     #[ORM\Column(type: 'text', options: [
         'comment' => 'Path to photography'
     ])]
-    #[Assert\NotBlank(message: 'userProfilePhoto@photoIsRequired', payload: 'photo_is_required')]
     private ?string $photo = null;
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
-
-    }
 
     /**
      * @return UserProfile|null

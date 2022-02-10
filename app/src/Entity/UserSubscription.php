@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use App\Interface\EntityInterface;
 use App\Repository\UserSubscriptionRepository;
-use DateTimeImmutable;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class UserSubscription
@@ -17,23 +18,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserSubscriptionRepository::class)]
 #[ORM\Table('user_subscriptions')]
 #[ORM\HasLifecycleCallbacks]
-class UserSubscription
+class UserSubscription implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var User|null
      */
     #[ORM\OneToOne(inversedBy: 'userSubscription', targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'common@userIsRequired', payload: 'user_is_required')]
     private ?User $user = null;
 
     /**
@@ -41,7 +36,6 @@ class UserSubscription
      */
     #[ORM\OneToOne(inversedBy: 'userSubscription', targetEntity: Subscription::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'common@subscriptionIsRequired', payload: 'subscription_is_required')]
     private ?Subscription $subscription = null;
 
     /**
@@ -50,38 +44,7 @@ class UserSubscription
     #[ORM\Column(type: 'string', length: 255, options: [
         'comment' => 'Subscription duration in the format 30d 10m, etc.'
     ])]
-    #[Assert\NotBlank(message: 'common@validToIsRequired', payload: 'valid_to_is_required')]
-    #[Assert\Regex('\d+(y|m|w|d||h|m|s)', message: 'common@invalidValidTo', payload: 'valid_to_invalid')]
     private ?string $validTo = null;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt = null;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $updatedAt;
-
-    public function __construct()
-    {
-
-        $this->updatedAt = new DateTimeImmutable();
-
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
-
-    }
 
     /**
      * @return User|null
@@ -150,53 +113,6 @@ class UserSubscription
     {
 
         $this->validTo = $validTo;
-
-        return $this;
-
-    }
-
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-
-        return $this->createdAt;
-
-    }
-
-    /**
-     * @return $this
-     */
-    #[ORM\PrePersist]
-    public function setCreatedAt(): self
-    {
-
-        $this->createdAt = new DateTimeImmutable();
-
-        return $this;
-
-    }
-
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getUpdatedAt(): ?DateTimeImmutable
-    {
-
-        return $this->updatedAt;
-
-    }
-
-    /**
-     * @param DateTimeImmutable $updatedAt
-     *
-     * @return $this
-     */
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): self
-    {
-
-        $this->updatedAt = $updatedAt;
 
         return $this;
 

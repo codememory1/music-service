@@ -2,10 +2,9 @@
 
 namespace App\Service\Subscription\Permission\Name;
 
-use App\Entity\SubscriptionPermissionName;
-use App\Enums\ApiResponseTypeEnum;
-use App\Repository\SubscriptionPermissionNameRepository;
-use App\Service\AbstractApiService;
+use App\DTO\SubscriptionPermissionNameDTO;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\CRUD\UpdaterCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -17,61 +16,33 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class UpdaterPermissionNameService extends AbstractApiService
+class UpdaterPermissionNameService extends UpdaterCRUDService
 {
 
     /**
-     * @param int                $id
-     * @param ValidatorInterface $validator
-     * @param callable           $handler
+     * @param SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO
+     * @param ValidatorInterface            $validator
+     * @param int                           $id
      *
      * @return ApiResponseService
+     * @throws UndefinedClassForDTOException
      * @throws Exception
      */
-    public function update(int $id, ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function update(SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO, ValidatorInterface $validator, int $id): ApiResponseService
     {
 
-        /** @var SubscriptionPermissionNameRepository $subscriptionPermissionNameRepository */
-        $subscriptionPermissionNameRepository = $this->em->getRepository(SubscriptionPermissionName::class);
+        $this->validator = $validator;
+        $this->validateEntity = true;
+        $this->messageNameNotExist = 'subscription_permission_name_not_exist';
+        $this->translationKeyNotExist = 'subscriptionPermissionName@notExist';
 
-        // Check exist language
-        if (null === $finedSubscriptionPermissionName = $subscriptionPermissionNameRepository->findOneBy(['id' => $id])) {
-            $this
-                ->prepareApiResponse('error', 404)
-                ->setMessage(
-                    ApiResponseTypeEnum::CHECK_EXIST,
-                    'subscription_permission_name_not_exist',
-                    $this->getTranslation('subscriptionPermissionName@notExist')
-                );
+        $updatedEntity = $this->make($subscriptionPermissionNameDTO, ['id' => $id]);
 
-            return $this->getPreparedApiResponse();
+        if ($updatedEntity instanceof ApiResponseService) {
+            return $updatedEntity;
         }
 
-        $collectedEntity = $this->collectEntity($finedSubscriptionPermissionName);
-
-        // Input validation
-        if (true !== $resultInputValidation = $this->inputValidation($collectedEntity, $validator)) {
-            return $resultInputValidation;
-        }
-
-        // Calling an Extender Method
-        return call_user_func($handler, $collectedEntity);
-
-    }
-
-    /**
-     * @param SubscriptionPermissionName $subscriptionPermissionNameEntity
-     *
-     * @return SubscriptionPermissionName
-     */
-    private function collectEntity(SubscriptionPermissionName $subscriptionPermissionNameEntity): SubscriptionPermissionName
-    {
-
-        $subscriptionPermissionNameEntity
-            ->setKey($this->request->get('key', ''))
-            ->setTitleTranslationKey($this->request->get('title', ''));
-
-        return $subscriptionPermissionNameEntity;
+        return $this->push($updatedEntity, 'subscriptionPermissionName@successUpdate', true);
 
     }
 

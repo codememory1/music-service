@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use App\Enums\ApiResponseTypeEnum;
+use App\Enum\ApiResponseTypeEnum;
+use App\Interface\EntityInterface;
 use App\Repository\SubscriptionPermissionRepository;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -17,24 +19,23 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 #[ORM\Entity(repositoryClass: SubscriptionPermissionRepository::class)]
 #[ORM\Table('subscription_permissions')]
-#[UniqueEntity(['subscriptionPermissionName', 'subscription'], 'subscriptionPermission@exist', payload: [ApiResponseTypeEnum::CHECK_EXIST, 'permission_exist'])]
-class SubscriptionPermission
+#[UniqueEntity(
+    ['subscriptionPermissionName', 'subscription'],
+    'subscriptionPermission@exist',
+    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'permission_exist']
+)]
+#[ORM\HasLifecycleCallbacks]
+class SubscriptionPermission implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var SubscriptionPermissionName|null
      */
     #[ORM\ManyToOne(targetEntity: SubscriptionPermissionName::class, inversedBy: 'subscriptionPermissions')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'subscriptionPermission@rightNameIsRequired', payload: 'right_name_is_required')]
     private ?SubscriptionPermissionName $subscriptionPermissionName = null;
 
     /**
@@ -42,18 +43,7 @@ class SubscriptionPermission
      */
     #[ORM\ManyToOne(targetEntity: Subscription::class, inversedBy: 'subscriptionPermissions')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'common@subscriptionIsRequired', payload: 'subscription_is_required')]
     private ?Subscription $subscription = null;
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
-
-    }
 
     /**
      * @return SubscriptionPermissionName|null

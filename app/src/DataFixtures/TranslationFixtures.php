@@ -241,13 +241,13 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
         // RU - translation
         [
             'lang'        => 'ru',
-            'key'         => 'translation@langIsRequired',
-            'translation' => 'Язык перевода обязателен к заполнению'
+            'key'         => 'translation@langNotExistOrNotEntered',
+            'translation' => 'Язык не существует или поле не заполнено'
         ],
         [
             'lang'        => 'ru',
-            'key'         => 'translation@keyIsRequired',
-            'translation' => 'Ключ перевода обязателен к заполнению'
+            'key'         => 'translation@keyNotExistOrNotEnetred',
+            'translation' => 'Ключ перевода не существует или поле не заполнено'
         ],
         [
             'lang'        => 'ru',
@@ -454,6 +454,16 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
         ],
 
         // RU - subscriptionPermission
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermission@permissionNameNotExistOrNotEntered',
+            'translation' => 'Имя право не существует или поле не заполнено'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'subscriptionPermission@subscriptionNotExistOrNotEnetred',
+            'translation' => 'Подписка не существует или поле не заполнено'
+        ],
         [
             'lang'        => 'ru',
             'key'         => 'subscriptionPermission@rightNameIsRequired',

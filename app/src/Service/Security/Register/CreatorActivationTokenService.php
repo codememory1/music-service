@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
  *
  * @package App\Service\Security\Register
  *
- * @author  codememory
+ * @author  Codememory
  */
 class CreatorActivationTokenService
 {

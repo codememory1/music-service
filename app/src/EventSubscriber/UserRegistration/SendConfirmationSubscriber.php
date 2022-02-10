@@ -3,7 +3,7 @@
 namespace App\EventSubscriber\UserRegistration;
 
 use App\Entity\UserActivationToken;
-use App\Enums\EventsEnum;
+use App\Enum\EventsEnum;
 use App\Event\UserRegistrationEvent;
 use App\Repository\UserActivationTokenRepository;
 use Doctrine\Persistence\ManagerRegistry;

@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use App\Interface\EntityInterface;
 use App\Repository\UserActivationTokenRepository;
-use DateTimeImmutable;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,16 +18,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: UserActivationTokenRepository::class)]
 #[ORM\Table('user_activation_tokens')]
 #[ORM\HasLifecycleCallbacks]
-class UserActivationToken
+class UserActivationToken implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var User|null
@@ -49,22 +46,6 @@ class UserActivationToken
         'comment' => 'Account activation token'
     ])]
     private ?string $token = null;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $createdAt = null;
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
-
-    }
 
     /**
      * @return User|null
@@ -133,29 +114,6 @@ class UserActivationToken
     {
 
         $this->token = $token;
-
-        return $this;
-
-    }
-
-    /**
-     * @return DateTimeImmutable|null
-     */
-    public function getCreatedAt(): ?DateTimeImmutable
-    {
-
-        return $this->createdAt;
-
-    }
-
-    /**
-     * @return $this
-     */
-    #[ORM\PrePersist]
-    public function setCreatedAt(): self
-    {
-
-        $this->createdAt = new DateTimeImmutable();
 
         return $this;
 

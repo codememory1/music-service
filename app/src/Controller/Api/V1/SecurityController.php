@@ -3,9 +3,14 @@
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\AbstractApiController;
+use App\DTO\AuthorizationDTO;
+use App\DTO\RegistrationDTO;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\RequestDataService;
 use App\Service\Security\Auth\UserAuthorizationService;
 use App\Service\Security\Register\UserActivationAccountService;
 use App\Service\Security\Register\UserRegisterService;
+use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,57 +30,61 @@ class SecurityController extends AbstractApiController
 
     /**
      * @param Request                  $request
-     * @param ValidatorInterface       $validator
+     * @param RequestDataService       $requestDataService
      * @param EventDispatcherInterface $eventDispatcher
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws NonUniqueResultException
+     * @throws UndefinedClassForDTOException
      */
     #[Route('/user/register', methods: 'POST')]
-    public function register(Request $request, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher): JsonResponse
+    public function register(Request $request, RequestDataService $requestDataService, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
 
-        $userRegistrationService = new UserRegisterService($request, $this->response, $this->managerRegistry);
+        /** @var UserRegisterService $service */
+        $service = $this->getCollectedService($request, UserRegisterService::class);
+        $registrationDTO = new RegistrationDTO($requestDataService, $this->managerRegistry);
 
-        return $userRegistrationService->register($validator, $eventDispatcher)->make();
+        return $service->register($registrationDTO, $this->validator, $eventDispatcher)->make();
 
     }
 
     /**
-     * @param string  $hash
      * @param Request $request
+     * @param string  $token
      *
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/user/activate-account/{hash<.+>}', methods: 'GET')]
-    public function activateAccount(string $hash, Request $request): JsonResponse
+    #[Route('/user/activate-account/{token<[^\.]+>}', methods: 'GET')]
+    public function activateAccount(Request $request, string $token): JsonResponse
     {
 
-        $userActivationAccountService = new UserActivationAccountService(
-            $request,
-            $this->response,
-            $this->managerRegistry
-        );
+        /** @var UserActivationAccountService $service */
+        $service = $this->getCollectedService($request, UserActivationAccountService::class);
 
-        return $userActivationAccountService->activate($hash)->make();
+        return $service->activate($token)->make();
 
     }
 
     /**
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
      *
      * @return JsonResponse
      * @throws Exception
      */
     #[Route('/user/auth', methods: 'POST')]
-    public function auth(Request $request, ValidatorInterface $validator): JsonResponse
+    public function auth(Request $request, RequestDataService $requestDataService): JsonResponse
     {
 
-        $userAuthorizationService = new UserAuthorizationService($request, $this->response, $this->managerRegistry);
+        /** @var UserAuthorizationService $service */
+        $service = $this->getCollectedService($request, UserAuthorizationService::class);
+        $authorizationDTO = new AuthorizationDTO($requestDataService, $this->managerRegistry);
 
-        return $userAuthorizationService->authorize($validator)->make();
+        $authorizationDTO->setClientIp($request->getClientIp());
+
+        return $service->authorize($authorizationDTO, $this->validator)->make();
 
     }
 

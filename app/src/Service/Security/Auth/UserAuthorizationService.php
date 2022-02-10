@@ -2,11 +2,13 @@
 
 namespace App\Service\Security\Auth;
 
+use App\DTO\AuthorizationDTO;
 use App\Entity\User;
-use App\Enums\ApiResponseTypeEnum;
-use App\Enums\StatusEnum;
+use App\Enum\ApiResponseTypeEnum;
+use App\Enum\StatusEnum;
 use App\Service\AbstractApiService;
 use App\Service\Response\ApiResponseService;
+use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -21,28 +23,29 @@ class UserAuthorizationService extends AbstractApiService
 {
 
     /**
+     * @param AuthorizationDTO   $authorizationDTO
      * @param ValidatorInterface $validator
      *
      * @return ApiResponseService
+     * @throws NonUniqueResultException
      * @throws Exception
      */
-    public function authorize(ValidatorInterface $validator): ApiResponseService
+    public function authorize(AuthorizationDTO $authorizationDTO, ValidatorInterface $validator): ApiResponseService
     {
 
-        $userIdentifyService = new UserIdentificationService($this->request, $this->response, $this->managerRegistry);
-        $userAuthenticationService = new UserAuthenticationService($this->request, $this->response, $this->managerRegistry);
-        $inputValidationService = new InputValidationService($this->request, $this->response, $this->managerRegistry);
+        /** @var UserIdentificationService $userIdentifyService */
+        $userIdentifyService = $this->getCollectedService(UserIdentificationService::class);
 
-        $login = $this->requestData->get('login', '');
-        $password = $this->requestData->get('password', '');
+        /** @var UserAuthenticationService $userAuthenticationService */
+        $userAuthenticationService = $this->getCollectedService(UserAuthenticationService::class);
 
-        // Input POST validation
-        if (true !== $resultInputValidation = $inputValidationService->validate($validator)) {
+        // Validation of input POST data
+        if (true !== $resultInputValidation = $this->inputValidation($authorizationDTO, $validator)) {
             return $resultInputValidation;
         }
 
         // Check identify user
-        $identifiedUser = $userIdentifyService->identify($login);
+        $identifiedUser = $userIdentifyService->identify($authorizationDTO);
 
         if ($identifiedUser instanceof ApiResponseService) {
             return $identifiedUser;
@@ -54,14 +57,14 @@ class UserAuthorizationService extends AbstractApiService
         }
 
         // Check authentication user
-        $authenticationUser = $userAuthenticationService->authenticate($identifiedUser, $password);
+        $authenticationUser = $userAuthenticationService->authenticate($identifiedUser, $authorizationDTO);
 
         if ($authenticationUser instanceof ApiResponseService) {
             return $authenticationUser;
         }
 
         // Create user session
-        $createdUserSession = $this->createSession($identifiedUser);
+        $createdUserSession = $this->createSession($identifiedUser, $authorizationDTO);
 
         return $this->getSuccessResponse($createdUserSession);
 
@@ -77,12 +80,13 @@ class UserAuthorizationService extends AbstractApiService
     {
 
         if ($identityUser->getStatus() !== StatusEnum::ACTIVE->value) {
-            $this->prepareApiResponse('error', 400)
-                 ->setMessage(
-                     ApiResponseTypeEnum::CHECK_ACTIVE,
-                     'account_not_active',
-                     $this->getTranslation('user@accountNotActive')
-                 );
+            $this
+                ->prepareApiResponse('error', 400)
+                ->setMessage(
+                    ApiResponseTypeEnum::CHECK_ACTIVE,
+                    'account_not_active',
+                    $this->getTranslation('user@accountNotActive')
+                );
 
             return $this->getPreparedApiResponse();
         }
@@ -92,16 +96,18 @@ class UserAuthorizationService extends AbstractApiService
     }
 
     /**
-     * @param User $identifiedUser
+     * @param User             $identifiedUser
+     * @param AuthorizationDTO $authorizationDTO
      *
      * @return CreatorUserSessionService
      */
-    private function createSession(User $identifiedUser): CreatorUserSessionService
+    private function createSession(User $identifiedUser, AuthorizationDTO $authorizationDTO): CreatorUserSessionService
     {
 
-        $userSessionService = new CreatorUserSessionService($this->request, $this->response, $this->managerRegistry);
+        /** @var CreatorUserSessionService $userSessionService */
+        $userSessionService = $this->getCollectedService(CreatorUserSessionService::class);
 
-        $userSessionService->create($identifiedUser);
+        $userSessionService->create($identifiedUser, $authorizationDTO);
 
         return $userSessionService;
 
@@ -116,16 +122,17 @@ class UserAuthorizationService extends AbstractApiService
     private function getSuccessResponse(CreatorUserSessionService $createdUserSession): ApiResponseService
     {
 
-        $this->prepareApiResponse('success', 200)
-             ->setMessage(
-                 ApiResponseTypeEnum::AUTH,
-                 'success_auth',
-                 $this->getTranslation('user@successAuth')
-             )
-             ->setData([
-                 'access_token'  => $createdUserSession->getAccessToken(),
-                 'refresh_token' => $createdUserSession->getRefreshToken()
-             ]);
+        $this
+            ->prepareApiResponse('success', 200)
+            ->setMessage(
+                ApiResponseTypeEnum::AUTH,
+                'success_auth',
+                $this->getTranslation('user@successAuth')
+            )
+            ->setData([
+                'access_token'  => $createdUserSession->getAccessToken(),
+                'refresh_token' => $createdUserSession->getRefreshToken()
+            ]);
 
         return $this->getPreparedApiResponse();
 

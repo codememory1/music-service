@@ -2,8 +2,9 @@
 
 namespace App\Service\Security\Auth;
 
+use App\DTO\AuthorizationDTO;
 use App\Entity\User;
-use App\Enums\ApiResponseTypeEnum;
+use App\Enum\ApiResponseTypeEnum;
 use App\Service\AbstractApiService;
 use App\Service\PasswordHashingService;
 use App\Service\Response\ApiResponseService;
@@ -20,25 +21,26 @@ class UserAuthenticationService extends AbstractApiService
 {
 
     /**
-     * @param User   $identifiedUser
-     * @param string $password
+     * @param User             $identifiedUser
+     * @param AuthorizationDTO $authorizationDTO
      *
      * @return ApiResponseService|User
      * @throws Exception
      */
-    public function authenticate(User $identifiedUser, string $password): ApiResponseService|User
+    public function authenticate(User $identifiedUser, AuthorizationDTO $authorizationDTO): ApiResponseService|User
     {
 
         $passwordHashingService = new PasswordHashingService();
 
         // Check compare password with identified user
-        if (!$passwordHashingService->compare($password, $identifiedUser->getPassword())) {
-            $this->prepareApiResponse('error', 400)
-                 ->setMessage(
-                     ApiResponseTypeEnum::IS_INCORRECT,
-                     'password_is_incorrect',
-                     $this->getTranslation('user@passwordIsIncorrect')
-                 );
+        if (!$passwordHashingService->compare($authorizationDTO->getPassword(), $identifiedUser->getPassword())) {
+            $this
+                ->prepareApiResponse('error', 400)
+                ->setMessage(
+                    ApiResponseTypeEnum::IS_INCORRECT,
+                    'password_is_incorrect',
+                    $this->getTranslation('user@passwordIsIncorrect')
+                );
 
             return $this->getPreparedApiResponse();
         }

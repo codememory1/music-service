@@ -3,8 +3,10 @@
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\AbstractApiController;
-use App\Dto\SubscriptionPermissionDto;
+use App\DTO\SubscriptionPermissionDTO;
 use App\Entity\SubscriptionPermission;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\RequestDataService;
 use App\Service\Subscription\Permission\CreatorPermissionService;
 use App\Service\Subscription\Permission\DeleterPermissionService;
 use App\Service\Subscription\Permission\UpdaterPermissionService;
@@ -12,7 +14,6 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class SubscriptionPermissionController
@@ -33,70 +34,65 @@ class SubscriptionPermissionController extends AbstractApiController
 
         return $this->showAllFromDatabase(
             SubscriptionPermission::class,
-            SubscriptionPermissionDto::class
+            SubscriptionPermissionDTO::class
         );
 
     }
 
     /**
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws UndefinedClassForDTOException
      */
     #[Route('/subscription/permission/create', methods: 'POST')]
-    public function create(Request $request, ValidatorInterface $validator): JsonResponse
+    public function create(Request $request, RequestDataService $requestDataService): JsonResponse
     {
 
-        return $this->executeCreateService(
-            CreatorPermissionService::class,
-            'subscriptionPermission@successCreate',
-            $request,
-            $validator
-        );
+        /** @var CreatorPermissionService $service */
+        $service = $this->getCollectedService($request, CreatorPermissionService::class);
+        $subscriptionPermissionDTO = new SubscriptionPermissionDTO($requestDataService, $this->managerRegistry);
+
+        return $service->create($subscriptionPermissionDTO, $this->validator)->make();
 
     }
 
     /**
-     * @param int                $id
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
+     * @param int                $id
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws UndefinedClassForDTOException
      */
     #[Route('/subscription/permission/{id<\d+>}/edit', methods: 'PUT')]
-    public function update(int $id, Request $request, ValidatorInterface $validator): JsonResponse
+    public function update(Request $request, RequestDataService $requestDataService, int $id): JsonResponse
     {
 
-        return $this->executeUpdateService(
-            $id,
-            UpdaterPermissionService::class,
-            'subscriptionPermission@successUpdate',
-            $request,
-            $validator
-        );
+        /** @var UpdaterPermissionService $service */
+        $service = $this->getCollectedService($request, UpdaterPermissionService::class);
+        $subscriptionPermissionDTO = new SubscriptionPermissionDTO($requestDataService, $this->managerRegistry);
+
+        return $service->update($subscriptionPermissionDTO, $this->validator, $id)->make();
 
     }
 
     /**
-     * @param int     $id
      * @param Request $request
+     * @param int     $id
      *
      * @return JsonResponse
      * @throws Exception
      */
     #[Route('/subscription/permission/{id<\d+>}/delete', methods: 'DELETE')]
-    public function delete(int $id, Request $request): JsonResponse
+    public function delete(Request $request, int $id): JsonResponse
     {
 
-        return $this->executeDeleteService(
-            $id,
-            DeleterPermissionService::class,
-            'subscriptionPermission@successDelete',
-            $request
-        );
+        /** @var DeleterPermissionService $service */
+        $service = $this->getCollectedService($request, DeleterPermissionService::class);
+
+        return $service->delete($id)->make();
 
     }
 

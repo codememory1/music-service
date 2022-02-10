@@ -2,9 +2,9 @@
 
 namespace App\Service\Translator\Translation;
 
-use App\Entity\Language;
-use App\Entity\Translation;
-use App\Entity\TranslationKey;
+use App\DTO\TranslationDTO;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\CRUD\CreatorCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,62 +16,30 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorTranslationService extends AbstractAddAndUpdateTranslation
+class CreatorTranslationService extends CreatorCRUDService
 {
 
     /**
+     * @param TranslationDTO     $translationDTO
      * @param ValidatorInterface $validator
-     * @param callable           $handler
      *
      * @return ApiResponseService
+     * @throws UndefinedClassForDTOException
      * @throws Exception
      */
-    public function create(ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function create(TranslationDTO $translationDTO, ValidatorInterface $validator): ApiResponseService
     {
 
-        // Checking for Language Existence
-        if ($languageEntity = $this->existLang()) {
-            if ($languageEntity instanceof ApiResponseService) {
-                return $languageEntity;
-            }
+        $this->validator = $validator;
+        $this->validateEntity = true;
+
+        $createdEntity = $this->make($translationDTO);
+
+        if ($createdEntity instanceof ApiResponseService) {
+            return $createdEntity;
         }
 
-        // Checking for the existence of a translation key
-        if ($translationKeyEntity = $this->existTranslationKey()) {
-            if ($translationKeyEntity instanceof ApiResponseService) {
-                return $translationKeyEntity;
-            }
-        }
-
-        $collectedEntity = $this->collectEntity($languageEntity, $translationKeyEntity);
-
-        // Input validation
-        if (true !== $resultInputValidation = $this->inputValidation($collectedEntity, $validator)) {
-            return $resultInputValidation;
-        }
-
-        // Extender method call
-        return call_user_func($handler, $collectedEntity);
-
-    }
-
-    /**
-     * @param Language       $languageEntity
-     * @param TranslationKey $translationKeyEntity
-     *
-     * @return Translation
-     */
-    private function collectEntity(Language $languageEntity, TranslationKey $translationKeyEntity): Translation
-    {
-
-        $translationEntity = new Translation();
-
-        $translationEntity
-            ->setLang($languageEntity)
-            ->setTranslationKey($translationKeyEntity)
-            ->setTranslation($this->request->get('translation', ''));
-
-        return $translationEntity;
+        return $this->push($createdEntity, 'translation@successAdd');
 
     }
 

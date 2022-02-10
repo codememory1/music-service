@@ -3,8 +3,7 @@
 namespace App\Service\Translator\TranslationKey;
 
 use App\Entity\TranslationKey;
-use App\Service\AbstractApiService;
-use App\Service\Abstraction\DeleteRecord;
+use App\Service\CRUD\DeleterCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 
@@ -15,24 +14,28 @@ use Exception;
  *
  * @author  Codememory
  */
-class DeleterTranslationKeyService extends AbstractApiService
+class DeleterTranslationKeyService extends DeleterCRUDService
 {
 
     /**
-     * @param int      $id
-     * @param callable $handler
+     * @param int $id
      *
      * @return ApiResponseService
      * @throws Exception
      */
-    public function delete(int $id, callable $handler): ApiResponseService
+    public function delete(int $id): ApiResponseService
     {
 
-        $deleteAbstraction = new DeleteRecord($this->request, $this->response, $this->managerRegistry);
+        $this->messageNameNotExist = 'translation_key_not_exist';
+        $this->translationKeyNotExist = 'translationKey@notExist';
 
-        return $deleteAbstraction
-            ->prepare(TranslationKey::class, $handler)
-            ->make($id, 'translation_key_not_exist', 'translationKey@notExist');
+        $deletedEntity = $this->make(TranslationKey::class, ['id' => $id]);
+
+        if ($deletedEntity instanceof ApiResponseService) {
+            return $deletedEntity;
+        }
+
+        return $this->remove($deletedEntity, 'translationKey@successDelete');
 
     }
 

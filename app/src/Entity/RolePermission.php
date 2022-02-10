@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use App\Interface\EntityInterface;
 use App\Repository\RolePermissionRepository;
+use App\Trait\Entity\IdentifierTrait;
+use App\Trait\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,16 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ORM\Entity(repositoryClass: RolePermissionRepository::class)]
 #[ORM\Table('role_permissions')]
-class RolePermission
+#[ORM\HasLifecycleCallbacks]
+class RolePermission implements EntityInterface
 {
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    use IdentifierTrait;
+    use TimestampTrait;
 
     /**
      * @var RolePermissionName|null
@@ -38,16 +37,6 @@ class RolePermission
     #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'rolePermissions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Role $role = null;
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-
-        return $this->id;
-
-    }
 
     /**
      * @return RolePermissionName|null

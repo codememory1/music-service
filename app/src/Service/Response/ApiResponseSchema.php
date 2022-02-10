@@ -2,7 +2,7 @@
 
 namespace App\Service\Response;
 
-use App\Enums\ApiResponseTypeEnum;
+use App\Enum\ApiResponseTypeEnum;
 
 /**
  * Class ApiResponseSchema

@@ -3,8 +3,10 @@
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\AbstractApiController;
-use App\Dto\LanguageTranslationDto;
+use App\DTO\TranslationDTO;
 use App\Entity\Translation;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\RequestDataService;
 use App\Service\Translator\Translation\CreatorTranslationService;
 use App\Service\Translator\Translation\DeleterTranslationService;
 use App\Service\Translator\Translation\UpdaterTranslationService;
@@ -12,7 +14,6 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class TranslationController
@@ -31,69 +32,64 @@ class TranslationController extends AbstractApiController
     public function all(): JsonResponse
     {
 
-        return $this->showAllFromDatabase(Translation::class, LanguageTranslationDto::class);
+        return $this->showAllFromDatabase(Translation::class, TranslationDTO::class);
 
     }
 
     /**
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws UndefinedClassForDTOException
      */
-    #[Route('/translator/translation/add', methods: 'POST')]
-    public function add(Request $request, ValidatorInterface $validator): JsonResponse
+    #[Route('/translator/translation/create', methods: 'POST')]
+    public function create(Request $request, RequestDataService $requestDataService): JsonResponse
     {
 
-        return $this->executeCreateService(
-            CreatorTranslationService::class,
-            'translation@successAdd',
-            $request,
-            $validator
-        );
+        /** @var CreatorTranslationService $service */
+        $service = $this->getCollectedService($request, CreatorTranslationService::class);
+        $translationDTO = new TranslationDTO($requestDataService, $this->managerRegistry);
+
+        return $service->create($translationDTO, $this->validator)->make();
 
     }
 
     /**
+     * @param Request            $request
+     * @param RequestDataService $requestDataService
      * @param int                $id
-     * @param Request            $request
-     * @param ValidatorInterface $validator
      *
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/translator/translation/{id<\d+>}/edit/', methods: 'PUT')]
-    public function update(int $id, Request $request, ValidatorInterface $validator): JsonResponse
+    #[Route('/translator/translation/{id<\d+>}/edit', methods: 'PUT')]
+    public function update(Request $request, RequestDataService $requestDataService, int $id): JsonResponse
     {
 
-        return $this->executeUpdateService(
-            $id,
-            UpdaterTranslationService::class,
-            'translation@successUpdate',
-            $request,
-            $validator
-        );
+        /** @var UpdaterTranslationService $service */
+        $service = $this->getCollectedService($request, UpdaterTranslationService::class);
+        $translationDTO = new TranslationDTO($requestDataService, $this->managerRegistry);
+
+        return $service->update($translationDTO, $this->validator, $id)->make();
 
     }
 
     /**
-     * @param int     $id
      * @param Request $request
+     * @param int     $id
      *
      * @return JsonResponse
      * @throws Exception
      */
-    #[Route('/translator/translation/{id<\d+>}/delete/', methods: 'DELETE')]
-    public function delete(int $id, Request $request): JsonResponse
+    #[Route('/translator/translation/{id<\d+>}/delete', methods: 'DELETE')]
+    public function delete(Request $request, int $id): JsonResponse
     {
 
-        return $this->executeDeleteService(
-            $id,
-            DeleterTranslationService::class,
-            'translation@successDelete',
-            $request
-        );
+        /** @var DeleterTranslationService $service */
+        $service = $this->getCollectedService($request, DeleterTranslationService::class);
+
+        return $service->delete($id)->make();
 
     }
 

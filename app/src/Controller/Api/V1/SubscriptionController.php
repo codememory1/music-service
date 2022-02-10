@@ -3,8 +3,10 @@
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\AbstractApiController;
-use App\Dto\SubscriptionDto;
+use App\DTO\SubscriptionDTO;
 use App\Entity\Subscription;
+use App\Exception\UndefinedClassForDTOException;
+use App\Service\RequestDataService;
 use App\Service\Subscription\CreatorSubscriptionService;
 use App\Service\Subscription\DeleterSubscriptionService;
 use App\Service\Subscription\UpdaterSubscriptionService;
@@ -12,7 +14,6 @@ use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class SubscriptionController
@@ -31,69 +32,64 @@ class SubscriptionController extends AbstractApiController
     public function all(): JsonResponse
     {
 
-        return $this->showAllFromDatabase(Subscription::class, SubscriptionDto::class);
+        return $this->showAllFromDatabase(Subscription::class, SubscriptionDTO::class);
 
     }
 
     /**
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws UndefinedClassForDTOException
      */
     #[Route('/subscription/create', methods: 'POST')]
-    public function create(Request $request, ValidatorInterface $validator): JsonResponse
+    public function create(Request $request, RequestDataService $requestDataService): JsonResponse
     {
 
-        return $this->executeCreateService(
-            CreatorSubscriptionService::class,
-            'subscription@successCreate',
-            $request,
-            $validator
-        );
+        /** @var CreatorSubscriptionService $service */
+        $service = $this->getCollectedService($request, CreatorSubscriptionService::class);
+        $subscriptionDTO = new SubscriptionDTO($requestDataService, $this->managerRegistry);
+
+        return $service->create($subscriptionDTO, $this->validator)->make();
 
     }
 
     /**
-     * @param int                $id
      * @param Request            $request
-     * @param ValidatorInterface $validator
+     * @param RequestDataService $requestDataService
+     * @param int                $id
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws UndefinedClassForDTOException
      */
     #[Route('/subscription/{id<\d+>}/edit', methods: 'PUT')]
-    public function update(int $id, Request $request, ValidatorInterface $validator): JsonResponse
+    public function update(Request $request, RequestDataService $requestDataService, int $id): JsonResponse
     {
 
-        return $this->executeUpdateService(
-            $id,
-            UpdaterSubscriptionService::class,
-            'subscription@successUpdate',
-            $request,
-            $validator
-        );
+        /** @var UpdaterSubscriptionService $service */
+        $service = $this->getCollectedService($request, UpdaterSubscriptionService::class);
+        $subscriptionDTO = new SubscriptionDTO($requestDataService, $this->managerRegistry);
+
+        return $service->update($subscriptionDTO, $this->validator, $id)->make();
 
     }
 
     /**
-     * @param int     $id
      * @param Request $request
+     * @param int     $id
      *
      * @return JsonResponse
      * @throws Exception
      */
     #[Route('/subscription/{id<\d+>}/delete', methods: 'DELETE')]
-    public function delete(int $id, Request $request): JsonResponse
+    public function delete(Request $request, int $id): JsonResponse
     {
 
-        return $this->executeDeleteService(
-            $id,
-            DeleterSubscriptionService::class,
-            'subscription@successDelete',
-            $request
-        );
+        /** @var DeleterSubscriptionService $service */
+        $service = $this->getCollectedService($request, DeleterSubscriptionService::class);
+
+        return $service->delete($id)->make();
 
     }
 

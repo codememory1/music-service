@@ -2,36 +2,23 @@
 
 namespace App\Service\Security\Auth;
 
+use App\DTO\AuthorizationDTO;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Service\AbstractApiService;
 use App\Service\JwtTokenGenerator;
 use Codememory\Components\GEO\Geolocation;
-use Codememory\Components\GEO\Interfaces\LocationInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use JetBrains\PhpStorm\ArrayShape;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class CreatorUserSessionService
  *
  * @package App\Service\Security\Auth
  *
- * @author  codememory
+ * @author  Codememory
  */
 class CreatorUserSessionService extends AbstractApiService
 {
-
-    /**
-     * @var Geolocation
-     */
-    private Geolocation $geo;
-
-    /**
-     * @var LocationInterface
-     */
-    private LocationInterface $location;
 
     /**
      * @var string|null
@@ -44,56 +31,61 @@ class CreatorUserSessionService extends AbstractApiService
     private ?string $refreshToken = null;
 
     /**
-     * @param Request         $request
-     * @param Response        $response
-     * @param ManagerRegistry $managerRegistry
+     * @param User             $authorizedUser
+     * @param AuthorizationDTO $authorizationDTO
+     *
+     * @return CreatorUserSessionService
      */
-    public function __construct(Request $request, Response $response, ManagerRegistry $managerRegistry)
+    public function create(User $authorizedUser, AuthorizationDTO $authorizationDTO): CreatorUserSessionService
     {
 
-        parent::__construct($request, $response, $managerRegistry);
+        $jwtTokenGenerator = new JwtTokenGenerator();
 
-        $this->geo = (new Geolocation())->setIp($request->getClientIp());
-        $this->location = $this->geo->getLocation();
+        // Saving generated tokens
+        $this->accessToken = $this->generateAccessToken($jwtTokenGenerator, $authorizedUser);
+        $this->refreshToken = $this->generateRefreshToken($jwtTokenGenerator, $authorizedUser);
+
+        $this->em->persist($this->collectEntity($authorizedUser, $authorizationDTO));
+        $this->em->flush();
+
+        return $this;
 
     }
 
     /**
-     * @param User $user
+     * @param User             $authorizedUser
+     * @param AuthorizationDTO $authorizationDTO
      *
-     * @return CreatorUserSessionService
+     * @return UserSession
      */
-    public function create(User $user): CreatorUserSessionService
+    private function collectEntity(User $authorizedUser, AuthorizationDTO $authorizationDTO): UserSession
     {
 
-        $jwtTokenGenerator = new JwtTokenGenerator();
+        $geo = new Geolocation();
         $userSessionEntity = new UserSession();
 
-        // Saving generated tokens
-        $this->accessToken = $this->generateAccessToken($jwtTokenGenerator, $user);
-        $this->refreshToken = $this->generateAccessToken($jwtTokenGenerator, $user);
+        $geo->setIp($authorizationDTO->getClientIp());
+
+        $location = $geo->getLocation();
 
         $userSessionEntity
-            ->setUser($user)
+            ->setUser($authorizedUser)
             ->setRefreshToken($this->refreshToken)
-            ->setIp($this->request->getClientIp())
+            ->setIp($authorizationDTO->getClientIp())
             ->setValid($_ENV['JWT_REFRESH_TTL']);
 
         // If there is information on this ip, fix it
-        if ($this->geo->isSuccess()) {
+        if ($geo->isSuccess()) {
             $userSessionEntity
-                ->setCountry($this->location->getCountry()->getName())
-                ->setCountryCode($this->location->getCountry()->getCode())
-                ->setRegion($this->location->getRegion()->getName())
-                ->setCity($this->location->getCity()->getName())
-                ->setLatitude($this->location->getCity()->getLatitude())
-                ->setLongitude($this->location->getCity()->getLongitude());
+                ->setCountry($location->getCountry()->getName())
+                ->setCountryCode($location->getCountry()->getCode())
+                ->setRegion($location->getRegion()->getName())
+                ->setCity($location->getCity()->getName())
+                ->setLatitude($location->getCity()->getLatitude())
+                ->setLongitude($location->getCity()->getLongitude());
         }
 
-        $this->em->persist($userSessionEntity);
-        $this->em->flush();
-
-        return $this;
+        return $userSessionEntity;
 
     }
 

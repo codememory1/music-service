@@ -2,8 +2,8 @@
 
 namespace App\Service\Translator\TranslationKey;
 
-use App\Entity\TranslationKey;
-use App\Service\AbstractApiService;
+use App\DTO\TranslationKeyDTO;
+use App\Service\CRUD\CreatorCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -15,42 +15,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorTranslationKeyService extends AbstractApiService
+class CreatorTranslationKeyService extends CreatorCRUDService
 {
 
     /**
+     * @param TranslationKeyDTO  $translationKeyDTO
      * @param ValidatorInterface $validator
-     * @param callable           $handler
      *
      * @return ApiResponseService
      * @throws Exception
      */
-    public function create(ValidatorInterface $validator, callable $handler): ApiResponseService
+    public function create(TranslationKeyDTO $translationKeyDTO, ValidatorInterface $validator): ApiResponseService
     {
 
-        $collectedEntity = $this->collectEntity();
+        $this->validator = $validator;
+        $this->validateEntity = true;
 
-        // Input Validation
-        if (true !== $resultInputValidation = $this->inputValidation($collectedEntity, $validator)) {
-            return $resultInputValidation;
+        $createdEntity = $this->make($translationKeyDTO);
+
+        if ($createdEntity instanceof ApiResponseService) {
+            return $createdEntity;
         }
 
-        // Calling an Extender Method
-        return call_user_func($handler, $collectedEntity);
-
-    }
-
-    /**
-     * @return TranslationKey
-     */
-    private function collectEntity(): TranslationKey
-    {
-
-        $translationKeyEntity = new TranslationKey();
-
-        $translationKeyEntity->setName($this->request->get('name', ''));
-
-        return $translationKeyEntity;
+        return $this->push($createdEntity, 'translationKey@successCreate');
 
     }
 
