@@ -7,3 +7,5 @@
 
 /app/.env.local
 /app/.env.test
+
+/app/.phpunit.result.cache
