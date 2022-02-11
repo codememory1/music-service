@@ -163,6 +163,11 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'common@accessDenied',
             'translation' => 'Доступ запрещен'
         ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'common@authRequired',
+            'translation' => 'Не авторизованы'
+        ],
 
         // RU - lang
         [
