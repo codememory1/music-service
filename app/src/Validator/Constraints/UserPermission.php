@@ -25,7 +25,7 @@ class UserPermission extends Constraint
     /**
      * @var string
      */
-    public string $message = 'Access denied to record with id {{ id }}';
+    public string $message = 'Insufficient rights to perform this action';
 
     /**
      * @param string|null $message

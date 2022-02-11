@@ -84,7 +84,6 @@ class UserPermissionValidator extends ConstraintValidator
         if (!$isManipulate) {
             $this->context
                 ->buildViolation($constraint->message)
-                ->setParameter('{{ id }}', $value->getId())
                 ->addViolation();
         }
 
