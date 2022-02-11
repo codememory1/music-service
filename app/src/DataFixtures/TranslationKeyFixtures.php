@@ -48,6 +48,7 @@ class TranslationKeyFixtures extends Fixture
         'common@statusInvalid',
         'common@titleTranslationKeyNotExist',
         'common@descriptionTranslationKeyNotExist',
+        'common@accessDenied',
 
         'lang@codeExist',
         'lang@langNotExist',

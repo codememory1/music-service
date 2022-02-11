@@ -158,6 +158,11 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'common@descriptionTranslationKeyNotExist',
             'translation' => 'Ключ перевода описания не существует'
         ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'common@accessDenied',
+            'translation' => 'Доступ запрещен'
+        ],
 
         // RU - lang
         [
