@@ -35,6 +35,29 @@ enum RolePermissionNameEnum: string
     /**
      * @return array
      */
+    public static function getPermissionNames(): array
+    {
+
+        return [
+            self::ADD_TRACK->value           => 'rolePermission@addTrack',
+            self::UPDATE_TRACK->value        => 'rolePermission@updateTrack',
+            self::DELETE_TRACK->value        => 'rolePermission@deleteTrack',
+            self::CREATE_SUBSCRIPTION->value => 'rolePermission@createSubscription',
+            self::UPDATE_SUBSCRIPTION->value => 'rolePermission@updateSubscription',
+            self::DELETE_SUBSCRIPTION->value => 'rolePermission@deleteSubscription',
+            self::CREATE_LANG->value         => 'rolePermission@createLang',
+            self::UPDATE_LANG->value         => 'rolePermission@updateLang',
+            self::DELETE_LANG->value         => 'rolePermission@deleteLang',
+            self::CREATE_TRANSLATION->value  => 'rolePermission@addLangTranslation',
+            self::UPDATE_TRANSLATION->value  => 'rolePermission@updateLangTranslation',
+            self::DELETE_TRANSLATION->value  => 'rolePermission@deleteTranslationFromLanguage',
+        ];
+
+    }
+
+    /**
+     * @return array
+     */
     public static function values(): array
     {
 
