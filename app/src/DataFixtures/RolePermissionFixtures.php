@@ -6,6 +6,7 @@ use App\Entity\Role;
 use App\Entity\RolePermission;
 use App\Entity\RolePermissionName;
 use App\Enum\RoleEnum;
+use App\Enum\RolePermissionNameEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -26,65 +27,65 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
     private array $rolePermissions = [
         // Developer
         [
-            'right_name' => RolePermissionName::ADD_TRACK,
+            'right_name' => RolePermissionNameEnum::ADD_TRACK,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::UPDATE_TRACK,
+            'right_name' => RolePermissionNameEnum::UPDATE_TRACK,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::DELETE_TRACK,
+            'right_name' => RolePermissionNameEnum::DELETE_TRACK,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::CREATE_SUBSCRIPTION,
+            'right_name' => RolePermissionNameEnum::CREATE_SUBSCRIPTION,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::UPDATE_SUBSCRIPTION,
+            'right_name' => RolePermissionNameEnum::UPDATE_SUBSCRIPTION,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::DELETE_SUBSCRIPTION,
+            'right_name' => RolePermissionNameEnum::DELETE_SUBSCRIPTION,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::CREATE_LANG,
+            'right_name' => RolePermissionNameEnum::CREATE_LANG,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::UPDATE_LANG,
+            'right_name' => RolePermissionNameEnum::UPDATE_LANG,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::DELETE_LANG,
+            'right_name' => RolePermissionNameEnum::DELETE_LANG,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::ADD_TRANSLATION,
+            'right_name' => RolePermissionNameEnum::CREATE_TRANSLATION,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::UPDATE_TRANSLATION,
+            'right_name' => RolePermissionNameEnum::UPDATE_TRANSLATION,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionName::DELETE_TRANSLATION,
+            'right_name' => RolePermissionNameEnum::DELETE_TRANSLATION,
             'role'       => RoleEnum::DEVELOPER
         ],
 
         // Music Manager
         [
-            'right_name' => RolePermissionName::ADD_TRACK,
+            'right_name' => RolePermissionNameEnum::ADD_TRACK,
             'role'       => RoleEnum::MUSIC_MANAGER
         ],
         [
-            'right_name' => RolePermissionName::UPDATE_TRACK,
+            'right_name' => RolePermissionNameEnum::UPDATE_TRACK,
             'role'       => RoleEnum::MUSIC_MANAGER
         ],
         [
-            'right_name' => RolePermissionName::DELETE_TRACK,
+            'right_name' => RolePermissionNameEnum::DELETE_TRACK,
             'role'       => RoleEnum::MUSIC_MANAGER
         ]
     ];
@@ -99,7 +100,7 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
 
         foreach ($this->rolePermissions as $rolePermission) {
             /** @var RolePermissionName $rolePermissionNameEntity */
-            $rolePermissionNameEntity = $this->getReference(sprintf('role-right-name-%s', $rolePermission['right_name']));
+            $rolePermissionNameEntity = $this->getReference(sprintf('role-right-name-%s', $rolePermission['right_name']->value));
 
             /** @var Role $roleEntity */
             $roleEntity = $this->getReference(sprintf('role-%s', $rolePermission['role']->value));

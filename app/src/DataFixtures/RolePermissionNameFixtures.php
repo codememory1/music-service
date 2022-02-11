@@ -25,7 +25,7 @@ class RolePermissionNameFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        foreach (RolePermissionNameEnum::values() as $rolePermissionName => $titleTranslationKey) {
+        foreach (RolePermissionNameEnum::getPermissionNames() as $rolePermissionName => $titleTranslationKey) {
             $rolePermissionNameEntity = new RolePermissionName();
 
             $rolePermissionNameEntity
