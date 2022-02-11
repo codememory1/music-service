@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use App\Enum\RolePermissionNameEnum;
 use App\Enum\StatusEnum;
 use App\Interface\EntityInterface;
 use App\Repository\SubscriptionRepository;
 use App\Trait\Entity\IdentifierTrait;
 use App\Trait\Entity\TimestampTrait;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -22,6 +24,11 @@ use JetBrains\PhpStorm\Pure;
  */
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 #[ORM\Table('subscriptions')]
+#[AppAssert\UserPermission(
+    RolePermissionNameEnum::CREATE_SUBSCRIPTION,
+    'common@accessDenied',
+    payload: 'not_enough_permissions'
+)]
 #[ORM\HasLifecycleCallbacks]
 class Subscription implements EntityInterface
 {
