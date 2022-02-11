@@ -30,6 +30,11 @@ class CreatorCRUDService extends AbstractCRUD
     protected bool $validateEntity = false;
 
     /**
+     * @var bool
+     */
+    protected bool $checkPermission = true;
+
+    /**
      * @inheritDoc
      * @throws UndefinedClassForDTOException
      * @throws Exception
@@ -38,6 +43,13 @@ class CreatorCRUDService extends AbstractCRUD
     {
 
         $collectedEntity = $entityOrDTO->getCollectedEntity();
+
+        // Checking the rights or whether the user is the owner of this entry
+        $resultCheckPermission = $this->accessPermissionsCheck($collectedEntity, $this->validator);
+
+        if ($this->checkPermission && true !== $resultCheckPermission) {
+            return $resultCheckPermission;
+        }
 
         // Validation of input POST data
         if (true !== $resultInputValidation = $this->inputValidation($entityOrDTO, $this->validator)) {
