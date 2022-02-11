@@ -24,6 +24,7 @@ use JetBrains\PhpStorm\Pure;
  */
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 #[ORM\Table('subscriptions')]
+#[AppAssert\Authorization('common@authRequired', payload: 'not_authorized')]
 #[AppAssert\UserPermission(
     RolePermissionNameEnum::CREATE_SUBSCRIPTION,
     'common@accessDenied',
