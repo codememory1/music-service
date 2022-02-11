@@ -42,6 +42,11 @@ class UpdaterCRUDService extends AbstractCRUD
     protected bool $validateEntity = false;
 
     /**
+     * @var bool
+     */
+    protected bool $checkPermission = true;
+
+    /**
      * @inheritDoc
      * @throws UndefinedClassForDTOException
      * @throws Exception
@@ -55,6 +60,13 @@ class UpdaterCRUDService extends AbstractCRUD
         // Check for the existence of an entity
         if ($finedEntity instanceof ApiResponseService) {
             return $finedEntity;
+        }
+
+        // Checking the rights or whether the user is the owner of this entry
+        $resultCheckPermission = $this->accessPermissionsCheck($finedEntity, $this->validator);
+
+        if ($this->checkPermission && true !== $resultCheckPermission) {
+            return $resultCheckPermission;
         }
 
         $collectedEntity = $entityOrDTO->update($finedEntity)->getCollectedEntity();

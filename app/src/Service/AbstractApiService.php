@@ -139,22 +139,34 @@ abstract class AbstractApiService
     protected function inputValidation(DTOInterface|EntityInterface $entityOrDTO, ValidatorInterface $validator): ApiResponseService|bool
     {
 
-        // Input Validation
-        if (count($errors = $validator->validate($entityOrDTO)) > 0) {
-            $validateInfo = $this->getValidateInfo($errors);
+        return $this->createValidation(
+            $entityOrDTO,
+            $validator,
+            'error',
+            400,
+            $validateInfo['type'] ?? ApiResponseTypeEnum::INPUT_VALIDATION,
 
-            $this
-                ->prepareApiResponse('error', 400)
-                ->setMessage(
-                    $validateInfo['type'] ?? ApiResponseTypeEnum::INPUT_VALIDATION,
-                    $validateInfo['name'],
-                    $this->getTranslation($validateInfo['message']) ?? ''
-                );
+        );
 
-            return $this->getPreparedApiResponse();
-        }
+    }
 
-        return true;
+    /**
+     * @param EntityInterface    $entity
+     * @param ValidatorInterface $validator
+     *
+     * @return ApiResponseService|bool
+     * @throws Exception
+     */
+    protected function accessPermissionsCheck(EntityInterface $entity, ValidatorInterface $validator): ApiResponseService|bool
+    {
+
+        return $this->createValidation(
+            $entity,
+            $validator,
+            'error',
+            403,
+            $validateInfo['type'] ?? ApiResponseTypeEnum::CHECK_PERMISSION
+        );
 
     }
 
@@ -266,6 +278,37 @@ abstract class AbstractApiService
         if (null !== $this->handler) {
             call_user_func($this->handler, $entity);
         }
+
+    }
+
+    /**
+     * @param DTOInterface|EntityInterface $entityOrDTO
+     * @param ValidatorInterface           $validator
+     * @param string                       $status
+     * @param int                          $statusCode
+     * @param ApiResponseTypeEnum          $messageType
+     *
+     * @return ApiResponseService|bool
+     * @throws Exception
+     */
+    private function createValidation(DTOInterface|EntityInterface $entityOrDTO, ValidatorInterface $validator, string $status, int $statusCode, ApiResponseTypeEnum $messageType): ApiResponseService|bool
+    {
+
+        if (count($errors = $validator->validate($entityOrDTO)) > 0) {
+            $validateInfo = $this->getValidateInfo($errors);
+
+            $this
+                ->prepareApiResponse($status, $statusCode)
+                ->setMessage(
+                    $messageType,
+                    $validateInfo['name'],
+                    $this->getTranslation($validateInfo['message']) ?? ''
+                );
+
+            return $this->getPreparedApiResponse();
+        }
+
+        return true;
 
     }
 
