@@ -8050,7 +8050,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Alerts_BaseAlert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/Alerts/BaseAlert */ "./assets/js/components/Alerts/BaseAlert.vue");
 /* harmony import */ var _components_Buttons_LoadingButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/Buttons/LoadingButton */ "./assets/js/components/Buttons/LoadingButton.vue");
 /* harmony import */ var _components_Sections_BaseInlineSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/Sections/BaseInlineSection */ "./assets/js/components/Sections/BaseInlineSection.vue");
-/* harmony import */ var _Account_components_Security_ActiveSessionComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Account/components/Security/ActiveSessionComponent */ "./assets/js/services/Account/components/Security/ActiveSessionComponent.vue");
+/* harmony import */ var _Account_components_Security_ActiveSessionComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Account/components/UserPermission/ActiveSessionComponent */ "./assets/js/services/Account/components/Security/ActiveSessionComponent.vue");
 /* harmony import */ var _components_Selects_BaseSelect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/Selects/BaseSelect */ "./assets/js/components/Selects/BaseSelect.vue");
 /* harmony import */ var _components_Buttons_BaseButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/Buttons/BaseButton */ "./assets/js/components/Buttons/BaseButton.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
@@ -8221,7 +8221,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/UserPermission/ActiveSessionComponent.vue?vue&type=script&lang=js& ***!
   \****************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
@@ -10200,7 +10200,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, "[data-v-ed90bec0]:root {\n  --accent: 
 
 /***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=style&index=0&lang=scss&":
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/UserPermission/ActiveSessionComponent.vue?vue&type=style&index=0&lang=scss& ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -19929,7 +19929,7 @@ try {
   // in case runtime.js accidentally runs in strict mode, in modern engines
   // we can explicitly access globalThis. In older engines we can escape
   // strict mode using a global Function call. This could conceivably fail
-  // if a Content Security Policy forbids using Function, but in that case
+  // if a Content UserPermission Policy forbids using Function, but in that case
   // the proper solution is to fix the accidental strict mode problem. If
   // you've misconfigured your bundler to force strict mode and applied a
   // CSP to forbid Function, and you're not willing to fix either of those
@@ -21687,7 +21687,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=style&index=0&lang=scss&":
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??clonedRuleSet-12[0].rules[0].use[3]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/UserPermission/ActiveSessionComponent.vue?vue&type=style&index=0&lang=scss& ***!
   \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
@@ -35440,7 +35440,7 @@ component.options.__file = "assets/js/services/Account/SecurityView.vue"
 
 /***/ "./assets/js/services/Account/components/Security/ActiveSessionComponent.vue":
 /*!***********************************************************************************!*\
-  !*** ./assets/js/services/Account/components/Security/ActiveSessionComponent.vue ***!
+  !*** ./assets/js/services/Account/components/UserPermission/ActiveSessionComponent.vue ***!
   \***********************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
@@ -35471,7 +35471,7 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "assets/js/services/Account/components/Security/ActiveSessionComponent.vue"
+component.options.__file = "assets/js/services/Account/components/UserPermission/ActiveSessionComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
@@ -36541,7 +36541,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ "./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************!*\
-  !*** ./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=script&lang=js& ***!
+  !*** ./assets/js/services/Account/components/UserPermission/ActiveSessionComponent.vue?vue&type=script&lang=js& ***!
   \************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
@@ -37360,7 +37360,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ "./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=style&index=0&lang=scss&":
 /*!*********************************************************************************************************************!*\
-  !*** ./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=style&index=0&lang=scss& ***!
+  !*** ./assets/js/services/Account/components/UserPermission/ActiveSessionComponent.vue?vue&type=style&index=0&lang=scss& ***!
   \*********************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
@@ -38653,7 +38653,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ "./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=template&id=f5a021c4&":
 /*!******************************************************************************************************************!*\
-  !*** ./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=template&id=f5a021c4& ***!
+  !*** ./assets/js/services/Account/components/UserPermission/ActiveSessionComponent.vue?vue&type=template&id=f5a021c4& ***!
   \******************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
@@ -39667,7 +39667,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("a", { attrs: { href: "#" } }, [_vm._v("Privacy Policy")]),
         _vm._v(" "),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Security")]),
+        _c("a", { attrs: { href: "#" } }, [_vm._v("UserPermission")]),
         _vm._v(" "),
         _c("a", { attrs: { href: "#" } }, [_vm._v("Sitemap")]),
       ]),
@@ -43244,7 +43244,7 @@ render._withStripped = true
 
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=template&id=f5a021c4&":
 /*!*********************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/Security/ActiveSessionComponent.vue?vue&type=template&id=f5a021c4& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./assets/js/services/Account/components/UserPermission/ActiveSessionComponent.vue?vue&type=template&id=f5a021c4& ***!
   \*********************************************************************************************************************************************************************************************************************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
@@ -59539,7 +59539,7 @@ function createCompileToFunctionFn (compile) {
         if (e.toString().match(/unsafe-eval|CSP/)) {
           warn$$1(
             'It seems you are using the standalone build of Vue.js in an ' +
-            'environment with Content Security Policy that prohibits unsafe-eval. ' +
+            'environment with Content UserPermission Policy that prohibits unsafe-eval. ' +
             'The template compiler cannot work in this environment. Consider ' +
             'relaxing the policy to allow unsafe-eval or pre-compiling your ' +
             'templates into render functions.'
