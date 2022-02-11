@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Enum\ApiResponseTypeEnum;
+use App\Enum\RolePermissionNameEnum;
 use App\Interface\EntityInterface;
 use App\Repository\SubscriptionPermissionNameRepository;
 use App\Trait\Entity\IdentifierTrait;
 use App\Trait\Entity\TimestampTrait;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -27,6 +29,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     'key',
     'subscriptionPermissionName@keyExist',
     payload: [ApiResponseTypeEnum::CHECK_EXIST, 'key_exist']
+)]
+#[AppAssert\Authorization('common@authRequired', payload: 'not_authorized')]
+#[AppAssert\UserPermission(
+    RolePermissionNameEnum::CREATE_SUBSCRIPTION,
+    'common@accessDenied',
+    payload: 'not_enough_permissions'
 )]
 #[ORM\HasLifecycleCallbacks]
 class SubscriptionPermissionName implements EntityInterface

@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Enum\ApiResponseTypeEnum;
+use App\Enum\RolePermissionNameEnum;
 use App\Interface\EntityInterface;
 use App\Repository\TranslationRepository;
 use App\Trait\Entity\IdentifierTrait;
 use App\Trait\Entity\TimestampTrait;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -24,6 +26,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     ['lang', 'translationKey'],
     'translation@exist',
     payload: [ApiResponseTypeEnum::CHECK_EXIST, 'translation_exist']
+)]
+#[AppAssert\Authorization('common@authRequired', payload: 'not_authorized')]
+#[AppAssert\UserPermission(
+    RolePermissionNameEnum::CREATE_SUBSCRIPTION,
+    'common@accessDenied',
+    payload: 'not_enough_permissions'
 )]
 #[ORM\HasLifecycleCallbacks]
 class Translation implements EntityInterface
