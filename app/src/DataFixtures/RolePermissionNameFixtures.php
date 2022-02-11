@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\RolePermissionName;
+use App\Enum\RolePermissionNameEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -24,7 +25,7 @@ class RolePermissionNameFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        foreach (RolePermissionName::NAMES as $rolePermissionName => $titleTranslationKey) {
+        foreach (RolePermissionNameEnum::values() as $rolePermissionName => $titleTranslationKey) {
             $rolePermissionNameEntity = new RolePermissionName();
 
             $rolePermissionNameEntity

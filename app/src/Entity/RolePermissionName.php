@@ -28,34 +28,6 @@ class RolePermissionName implements EntityInterface
     use IdentifierTrait;
     use TimestampTrait;
 
-    public const ADD_TRACK = 'add-music';
-    public const UPDATE_TRACK = 'update-music';
-    public const DELETE_TRACK = 'delete-music';
-    public const CREATE_SUBSCRIPTION = 'create-subscription';
-    public const UPDATE_SUBSCRIPTION = 'update-subscription';
-    public const DELETE_SUBSCRIPTION = 'delete-subscription';
-    public const CREATE_LANG = 'create-language';
-    public const UPDATE_LANG = 'update-language';
-    public const DELETE_LANG = 'delete-language';
-    public const ADD_TRANSLATION = 'add-translation-to-language';
-    public const UPDATE_TRANSLATION = 'update-language-translation';
-    public const DELETE_TRANSLATION = 'delete-translation-from-language';
-
-    public const NAMES = [
-        self::ADD_TRACK           => 'rolePermission@addTrack',
-        self::UPDATE_TRACK        => 'rolePermission@updateTrack',
-        self::DELETE_TRACK        => 'rolePermission@deleteTrack',
-        self::CREATE_SUBSCRIPTION => 'rolePermission@createSubscription',
-        self::UPDATE_SUBSCRIPTION => 'rolePermission@updateSubscription',
-        self::DELETE_SUBSCRIPTION => 'rolePermission@deleteSubscription',
-        self::CREATE_LANG         => 'rolePermission@createLang',
-        self::UPDATE_LANG         => 'rolePermission@updateLang',
-        self::DELETE_LANG         => 'rolePermission@deleteLang',
-        self::ADD_TRANSLATION     => 'rolePermission@addLangTranslation',
-        self::UPDATE_TRANSLATION  => 'rolePermission@updateLangTranslation',
-        self::DELETE_TRANSLATION  => 'rolePermission@deleteTranslationFromLanguage',
-    ];
-
     /**
      * @var string|null
      */
