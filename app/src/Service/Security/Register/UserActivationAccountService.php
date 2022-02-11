@@ -15,7 +15,7 @@ use Exception;
 /**
  * Class UserActivationAccountService
  *
- * @package App\Service\Security
+ * @package App\Service\Security\Register
  *
  * @author  Codememory
  */
@@ -90,7 +90,7 @@ class UserActivationAccountService extends AbstractApiService
         $parseCronTime = new ParseCronTimeService();
 
         $createdAt = $userActivationToken->getCreatedAt()->getTimestamp();
-        $updatedAt = $userActivationToken->getUpdatedAt()->getTimestamp();
+        $updatedAt = $userActivationToken->getUpdatedAt()?->getTimestamp();
         $createdOrUpdated = $updatedAt ?? $createdAt;
 
         $validInSecond = $parseCronTime
