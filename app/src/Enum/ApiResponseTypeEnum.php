@@ -22,5 +22,6 @@ enum ApiResponseTypeEnum: string
     case IS_INCORRECT = 'is_incorrect';
     case AUTH = 'auth';
     case CHECK_ACTIVE = 'check_active';
+    case CHECK_PERMISSION = 'check_permission';
 
 }
