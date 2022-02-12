@@ -7,7 +7,7 @@ namespace App\Enum;
  *
  * @package App\Enum
  *
- * @author  codememory
+ * @author  Codememory
  */
 enum RolePermissionNameEnum: string
 {
@@ -32,6 +32,10 @@ enum RolePermissionNameEnum: string
     case UPDATE_TRANSLATION = 'update-language-translation';
     case DELETE_TRANSLATION = 'delete-translation-from-language';
 
+    case CREATE_ALBUM_CATEGORY = 'create-album-category';
+    case UPDATE_ALBUM_CATEGORY = 'update-album-category';
+    case DELETE_ALBUM_CATEGORY = 'delete-album-category';
+
     /**
      * @return array
      */
@@ -39,18 +43,21 @@ enum RolePermissionNameEnum: string
     {
 
         return [
-            self::ADD_TRACK->value           => 'rolePermission@addTrack',
-            self::UPDATE_TRACK->value        => 'rolePermission@updateTrack',
-            self::DELETE_TRACK->value        => 'rolePermission@deleteTrack',
-            self::CREATE_SUBSCRIPTION->value => 'rolePermission@createSubscription',
-            self::UPDATE_SUBSCRIPTION->value => 'rolePermission@updateSubscription',
-            self::DELETE_SUBSCRIPTION->value => 'rolePermission@deleteSubscription',
-            self::CREATE_LANG->value         => 'rolePermission@createLang',
-            self::UPDATE_LANG->value         => 'rolePermission@updateLang',
-            self::DELETE_LANG->value         => 'rolePermission@deleteLang',
-            self::CREATE_TRANSLATION->value  => 'rolePermission@addLangTranslation',
-            self::UPDATE_TRANSLATION->value  => 'rolePermission@updateLangTranslation',
-            self::DELETE_TRANSLATION->value  => 'rolePermission@deleteTranslationFromLanguage',
+            self::ADD_TRACK->value             => 'rolePermission@addTrack',
+            self::UPDATE_TRACK->value          => 'rolePermission@updateTrack',
+            self::DELETE_TRACK->value          => 'rolePermission@deleteTrack',
+            self::CREATE_SUBSCRIPTION->value   => 'rolePermission@createSubscription',
+            self::UPDATE_SUBSCRIPTION->value   => 'rolePermission@updateSubscription',
+            self::DELETE_SUBSCRIPTION->value   => 'rolePermission@deleteSubscription',
+            self::CREATE_LANG->value           => 'rolePermission@createLang',
+            self::UPDATE_LANG->value           => 'rolePermission@updateLang',
+            self::DELETE_LANG->value           => 'rolePermission@deleteLang',
+            self::CREATE_TRANSLATION->value    => 'rolePermission@createLangTranslation',
+            self::UPDATE_TRANSLATION->value    => 'rolePermission@updateLangTranslation',
+            self::DELETE_TRANSLATION->value    => 'rolePermission@deleteTranslationFromLanguage',
+            self::CREATE_ALBUM_CATEGORY->value => 'rolePermission@createAlbumCategory',
+            self::UPDATE_ALBUM_CATEGORY->value => 'rolePermission@updateAlbumCategory',
+            self::DELETE_ALBUM_CATEGORY->value => 'rolePermission@deleteAlbumCategory',
         ];
 
     }
