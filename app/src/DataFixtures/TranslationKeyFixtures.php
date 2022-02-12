@@ -29,6 +29,18 @@ class TranslationKeyFixtures extends Fixture
         'rolePermission@addTrack',
         'rolePermission@updateTrack',
         'rolePermission@deleteTrack',
+        'rolePermission@createSubscription',
+        'rolePermission@updateSubscription',
+        'rolePermission@deleteSubscription',
+        'rolePermission@createLang',
+        'rolePermission@updateLang',
+        'rolePermission@deleteLang',
+        'rolePermission@createLangTranslation',
+        'rolePermission@updateLangTranslation',
+        'rolePermission@deleteLangTranslation',
+        'rolePermission@createAlbumCategory',
+        'rolePermission@updateAlbumCategory',
+        'rolePermission@deleteAlbumCategory',
 
         'common@titleIsRequired',
         'common@descriptionIsRequired',
@@ -132,6 +144,12 @@ class TranslationKeyFixtures extends Fixture
         'albumType@successCreate',
         'albumType@successUpdate',
         'albumType@successDelete',
+
+        'albumCategory@exist',
+        'albumCategory@notExist',
+        'albumCategory@successCreate',
+        'albumCategory@successUpdate',
+        'albumCategory@successDelete',
     ];
 
     /**

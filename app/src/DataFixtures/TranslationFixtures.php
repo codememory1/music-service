@@ -66,17 +66,78 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'rolePermission@deleteTrack',
             'translation' => 'Удаление музыки'
         ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@createSubscription',
+            'translation' => 'Создание подписки'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@updateSubscription',
+            'translation' => 'Обновление подписки'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@deleteSubscription',
+            'translation' => 'Удаление подписки'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@createLang',
+            'translation' => 'Создание языка'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@updateLang',
+            'translation' => 'Обновление языка'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@deleteLang',
+            'translation' => 'Удаление языка'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@createLangTranslation',
+            'translation' => 'Создание перевода языка'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@updateLangTranslation',
+            'translation' => 'Обновление перевода языка'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@deleteLangTranslation',
+            'translation' => 'Удаление перевода языка'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@createAlbumCategory',
+            'translation' => 'Создание категории альбома'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@updateAlbumCategory',
+            'translation' => 'Обновление категории альбома'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@deleteAlbumCategory',
+            'translation' => 'Удаление категории альбома'
+        ],
+
 
         // RU - Common
         [
             'lang'        => 'ru',
             'key'         => 'common@titleIsRequired',
-            'translation' => 'Название трека обязательно к заполнению'
+            'translation' => 'Название обязательно к заполнению'
         ],
         [
             'lang'        => 'ru',
             'key'         => 'common@descriptionIsRequired',
-            'translation' => 'Описание трека обязательно к заполнению'
+            'translation' => 'Описание обязательно к заполнению'
         ],
         [
             'lang'        => 'ru',
@@ -547,6 +608,33 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'lang'        => 'ru',
             'key'         => 'albumType@successDelete',
             'translation' => 'Тип альбома успешно удален'
+        ],
+
+        // RU - albumCategory
+        [
+            'lang'        => 'ru',
+            'key'         => 'albumCategory@exist',
+            'translation' => 'Данная категория альбома уже существует'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'albumCategory@notExist',
+            'translation' => 'Данная категория альбома не существует'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'albumCategory@successCreate',
+            'translation' => 'Категория альбома успешно создана'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'albumCategory@successUpdate',
+            'translation' => 'Категория альбома успешно обновлена'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'albumCategory@successDelete',
+            'translation' => 'Категория альбома успешно удалена'
         ],
     ];
 
