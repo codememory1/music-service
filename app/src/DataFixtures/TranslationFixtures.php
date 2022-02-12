@@ -126,6 +126,21 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'rolePermission@deleteAlbumCategory',
             'translation' => 'Удаление категории альбома'
         ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@createAlbumType',
+            'translation' => 'Создание типа альбома'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@updateAlbumType',
+            'translation' => 'Обновление типа альбома'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'rolePermission@deleteAlbumType',
+            'translation' => 'Удаление типа альбома'
+        ],
 
 
         // RU - Common

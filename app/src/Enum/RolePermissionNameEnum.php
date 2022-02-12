@@ -36,6 +36,10 @@ enum RolePermissionNameEnum: string
     case UPDATE_ALBUM_CATEGORY = 'update-album-category';
     case DELETE_ALBUM_CATEGORY = 'delete-album-category';
 
+    case CREATE_ALBUM_TYPE = 'create-album-type';
+    case UPDATE_ALBUM_TYPE = 'update-album-type';
+    case DELETE_ALBUM_TYPE = 'delete-album-type';
+
     /**
      * @return array
      */
@@ -58,6 +62,9 @@ enum RolePermissionNameEnum: string
             self::CREATE_ALBUM_CATEGORY->value => 'rolePermission@createAlbumCategory',
             self::UPDATE_ALBUM_CATEGORY->value => 'rolePermission@updateAlbumCategory',
             self::DELETE_ALBUM_CATEGORY->value => 'rolePermission@deleteAlbumCategory',
+            self::CREATE_ALBUM_TYPE->value     => 'rolePermission@createAlbumType',
+            self::UPDATE_ALBUM_TYPE->value     => 'rolePermission@updateAlbumType',
+            self::DELETE_ALBUM_TYPE->value     => 'rolePermission@deleteAlbumType',
         ];
 
     }

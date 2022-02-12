@@ -41,6 +41,9 @@ class TranslationKeyFixtures extends Fixture
         'rolePermission@createAlbumCategory',
         'rolePermission@updateAlbumCategory',
         'rolePermission@deleteAlbumCategory',
+        'rolePermission@createAlbumType',
+        'rolePermission@updateAlbumType',
+        'rolePermission@deleteAlbumType',
 
         'common@titleIsRequired',
         'common@descriptionIsRequired',
