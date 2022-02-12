@@ -23,7 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('album_types')]
 #[AppAssert\Authorization('common@authRequired', payload: 'not_authorized')]
 #[AppAssert\UserPermission(
-    RolePermissionNameEnum::CREATE_SUBSCRIPTION,
+    RolePermissionNameEnum::CREATE_ALBUM_TYPE,
     'common@accessDenied',
     payload: 'not_enough_permissions'
 )]
