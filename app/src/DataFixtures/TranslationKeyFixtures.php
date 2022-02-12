@@ -125,7 +125,13 @@ class TranslationKeyFixtures extends Fixture
 
         'userActivationAccount@tokenIsNotValid',
         'userActivationAccount@tokenNotExist',
-        'userActivationAccount@successActivation'
+        'userActivationAccount@successActivation',
+
+        'albumType@notExist',
+        'albumType@keyExist',
+        'albumType@successCreate',
+        'albumType@successUpdate',
+        'albumType@successDelete',
     ];
 
     /**

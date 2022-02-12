@@ -521,6 +521,33 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'userActivationAccount@successActivation',
             'translation' => 'Аккаунт успешно активирован'
         ],
+
+        // RU - albumType
+        [
+            'lang'        => 'ru',
+            'key'         => 'albumType@notExist',
+            'translation' => 'Тип альбома не существует'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'albumType@keyExist',
+            'translation' => 'Данный тип альбома уже существует'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'albumType@successCreate',
+            'translation' => 'Тип альбома успешно создан'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'albumType@successUpdate',
+            'translation' => 'Тип альбома успешно обновлен'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'albumType@successDelete',
+            'translation' => 'Тип альбома успешно удален'
+        ],
     ];
 
     /**
