@@ -33,7 +33,7 @@ class RequestDataService
      *
      * @return mixed
      */
-    public function get(string $key, mixed $default = null): mixed
+    public function get(string $key, mixed $default = ''): mixed
     {
 
         $value = $this->data[$key] ?? null;
