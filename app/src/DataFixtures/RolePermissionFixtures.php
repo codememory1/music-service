@@ -74,6 +74,18 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
             'right_name' => RolePermissionNameEnum::DELETE_TRANSLATION,
             'role'       => RoleEnum::DEVELOPER
         ],
+        [
+            'right_name' => RolePermissionNameEnum::CREATE_ALBUM_CATEGORY,
+            'role'       => RoleEnum::DEVELOPER
+        ],
+        [
+            'right_name' => RolePermissionNameEnum::UPDATE_ALBUM_CATEGORY,
+            'role'       => RoleEnum::DEVELOPER
+        ],
+        [
+            'right_name' => RolePermissionNameEnum::DELETE_ALBUM_CATEGORY,
+            'role'       => RoleEnum::DEVELOPER
+        ],
 
         // Music Manager
         [
@@ -87,7 +99,7 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
         [
             'right_name' => RolePermissionNameEnum::DELETE_TRACK,
             'role'       => RoleEnum::MUSIC_MANAGER
-        ]
+        ],
     ];
 
     /**
