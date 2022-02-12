@@ -25,16 +25,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 #[ORM\Entity(repositoryClass: SubscriptionPermissionNameRepository::class)]
 #[ORM\Table('subscription_permission_names')]
-#[UniqueEntity(
-    'key',
-    'subscriptionPermissionName@keyExist',
-    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'key_exist']
-)]
 #[AppAssert\Authorization('common@authRequired', payload: 'not_authorized')]
 #[AppAssert\UserPermission(
     RolePermissionNameEnum::CREATE_SUBSCRIPTION,
     'common@accessDenied',
     payload: 'not_enough_permissions'
+)]
+#[UniqueEntity(
+    'key',
+    'subscriptionPermissionName@keyExist',
+    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'key_exist']
 )]
 #[ORM\HasLifecycleCallbacks]
 class SubscriptionPermissionName implements EntityInterface

@@ -25,16 +25,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 #[ORM\Entity(repositoryClass: TranslationKeyRepository::class)]
 #[ORM\Table('translation_keys')]
-#[UniqueEntity(
-    'name',
-    'translationKey@keyExist',
-    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'key_exist']
-)]
 #[AppAssert\Authorization('common@authRequired', payload: 'not_authorized')]
 #[AppAssert\UserPermission(
     RolePermissionNameEnum::CREATE_SUBSCRIPTION,
     'common@accessDenied',
     payload: 'not_enough_permissions'
+)]
+#[UniqueEntity(
+    'name',
+    'translationKey@keyExist',
+    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'key_exist']
 )]
 #[ORM\HasLifecycleCallbacks]
 class TranslationKey implements EntityInterface

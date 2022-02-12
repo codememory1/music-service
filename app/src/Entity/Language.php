@@ -25,16 +25,16 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
 #[ORM\Table('languages')]
-#[UniqueEntity(
-    'code',
-    'lang@codeExist',
-    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'code_exist']
-)]
 #[AppAssert\Authorization('common@authRequired', payload: 'not_authorized')]
 #[AppAssert\UserPermission(
     RolePermissionNameEnum::CREATE_LANG,
     'common@accessDenied',
     payload: 'not_enough_permissions'
+)]
+#[UniqueEntity(
+    'code',
+    'lang@codeExist',
+    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'code_exist']
 )]
 #[ORM\HasLifecycleCallbacks]
 class Language implements EntityInterface
