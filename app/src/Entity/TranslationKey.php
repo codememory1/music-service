@@ -27,7 +27,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('translation_keys')]
 #[AppAssert\Authorization('common@authRequired', payload: 'not_authorized')]
 #[AppAssert\UserPermission(
-    RolePermissionNameEnum::CREATE_SUBSCRIPTION,
+    RolePermissionNameEnum::CREATE_TRANSLATION_KEY,
     'common@accessDenied',
     payload: 'not_enough_permissions'
 )]

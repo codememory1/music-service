@@ -29,7 +29,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 )]
 #[AppAssert\Authorization('common@authRequired', payload: 'not_authorized')]
 #[AppAssert\UserPermission(
-    RolePermissionNameEnum::CREATE_SUBSCRIPTION,
+    RolePermissionNameEnum::CREATE_TRANSLATION,
     'common@accessDenied',
     payload: 'not_enough_permissions'
 )]
