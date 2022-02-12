@@ -1,8 +1,7 @@
 <?php
 
-namespace App\DTO\User;
+namespace App\DTO;
 
-use App\DTO\AbstractDTO;
 use App\Entity\User;
 use App\Entity\UserProfile;
 use DateTimeInterface;
