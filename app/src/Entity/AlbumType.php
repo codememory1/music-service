@@ -9,7 +9,10 @@ use App\Repository\AlbumTypeRepository;
 use App\Trait\Entity\IdentifierTrait;
 use App\Trait\Entity\TimestampTrait;
 use App\Validator\Constraints as AppAssert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -56,6 +59,20 @@ class AlbumType implements EntityInterface
     private ?string $titleTranslationKey = null;
 
     /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'type', targetEntity: Album::class)]
+    private Collection $albums;
+
+    #[Pure]
+    public function __construct()
+    {
+
+        $this->albums = new ArrayCollection();
+
+    }
+
+    /**
      * @return string|null
      */
     public function getKey(): ?string
@@ -98,6 +115,52 @@ class AlbumType implements EntityInterface
     {
 
         $this->titleTranslationKey = $titleTranslationKey;
+
+        return $this;
+
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAlbums(): Collection
+    {
+
+        return $this->albums;
+
+    }
+
+    /**
+     * @param Album $album
+     *
+     * @return $this
+     */
+    public function addAlbum(Album $album): self
+    {
+
+        if (!$this->albums->contains($album)) {
+            $this->albums[] = $album;
+            $album->setType($this);
+        }
+
+        return $this;
+
+    }
+
+    /**
+     * @param Album $album
+     *
+     * @return $this
+     */
+    public function removeAlbum(Album $album): self
+    {
+
+        if ($this->albums->removeElement($album)) {
+            // set the owning side to null (unless already changed)
+            if ($album->getType() === $this) {
+                $album->setType(null);
+            }
+        }
 
         return $this;
 

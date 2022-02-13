@@ -9,7 +9,10 @@ use App\Repository\AlbumCategoryRepository;
 use App\Trait\Entity\IdentifierTrait;
 use App\Trait\Entity\TimestampTrait;
 use App\Validator\Constraints as AppAssert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -56,6 +59,20 @@ class AlbumCategory implements EntityInterface
     private ?string $titleTranslationKey;
 
     /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Album::class)]
+    private Collection $albums;
+
+    #[Pure]
+    public function __construct()
+    {
+
+        $this->albums = new ArrayCollection();
+
+    }
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -84,6 +101,52 @@ class AlbumCategory implements EntityInterface
     {
 
         $this->titleTranslationKey = $titleTranslationKey;
+
+        return $this;
+
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAlbums(): Collection
+    {
+
+        return $this->albums;
+
+    }
+
+    /**
+     * @param Album $album
+     *
+     * @return $this
+     */
+    public function addAlbum(Album $album): self
+    {
+
+        if (!$this->albums->contains($album)) {
+            $this->albums[] = $album;
+            $album->setCategory($this);
+        }
+
+        return $this;
+
+    }
+
+    /**
+     * @param Album $album
+     *
+     * @return $this
+     */
+    public function removeAlbum(Album $album): self
+    {
+
+        if ($this->albums->removeElement($album)) {
+            // set the owning side to null (unless already changed)
+            if ($album->getCategory() === $this) {
+                $album->setCategory(null);
+            }
+        }
 
         return $this;
 
