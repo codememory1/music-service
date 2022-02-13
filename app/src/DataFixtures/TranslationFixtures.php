@@ -651,6 +651,73 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'albumCategory@successDelete',
             'translation' => 'Категория альбома успешно удалена'
         ],
+
+        // RU - album
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@titleIsRequired',
+            'translation' => 'Название альбома обязательно к заполнению'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@titleMaxLength',
+            'translation' => 'Название альбома не должно превышать 255 символов'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@typeNotExistOrNotEntered',
+            'translation' => 'Тип альбома не найден или поле не заполнено'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@categoryNotExistOrNotEntered',
+            'translation' => 'Категория альбома не найдена или поле не заполнено'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@photoIsRequired',
+            'translation' => 'Фотография альбома обязательно к заполнению'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@photoMaxSize',
+            'translation' => 'Максимальный размер фотографии не должен превышать 1024K'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@photoMimeTypes',
+            'translation' => 'Загруженный файл не является картинкой'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@tagsIsRequired',
+            'translation' => 'Тэги альбома обязательны к заполнению'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@maxTags',
+            'translation' => 'Для альбома не должно быть указано более 255 тэгов'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@successCreate',
+            'translation' => 'Альбом успешно создан'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@successUpdate',
+            'translation' => 'Альбом успешно обновлен'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@successDelete',
+            'translation' => 'Альбом успешно удален'
+        ],
+        [
+            'lang'        => 'ru',
+            'key'         => 'album@notExist',
+            'translation' => 'Альбом не существует'
+        ],
     ];
 
     /**

@@ -153,6 +153,20 @@ class TranslationKeyFixtures extends Fixture
         'albumCategory@successCreate',
         'albumCategory@successUpdate',
         'albumCategory@successDelete',
+
+        'album@titleIsRequired',
+        'album@titleMaxLength',
+        'album@typeNotExistOrNotEntered',
+        'album@categoryNotExistOrNotEntered',
+        'album@photoIsRequired',
+        'album@photoMaxSize',
+        'album@photoMimeTypes',
+        'album@tagsIsRequired',
+        'album@maxTags',
+        'album@successCreate',
+        'album@successUpdate',
+        'album@successDelete',
+        'album@notExist',
     ];
 
     /**
