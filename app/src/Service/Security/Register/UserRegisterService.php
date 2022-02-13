@@ -6,7 +6,6 @@ use App\DTO\RegistrationDTO;
 use App\Entity\User;
 use App\Enum\EventsEnum;
 use App\Event\UserRegistrationEvent;
-use App\Exception\UndefinedClassForDTOException;
 use App\Repository\UserRepository;
 use App\Service\AbstractApiService;
 use App\Service\PasswordHashingService;
@@ -33,7 +32,6 @@ class UserRegisterService extends AbstractApiService
      *
      * @return ApiResponseService
      * @throws NonUniqueResultException
-     * @throws UndefinedClassForDTOException
      * @throws Exception
      */
     public function register(RegistrationDTO $registrationDTO, ValidatorInterface $validator, EventDispatcherInterface $dispatcher): ApiResponseService
@@ -45,6 +43,7 @@ class UserRegisterService extends AbstractApiService
 
         /** @var User $collectedEntity */
         $collectedEntity = $registrationDTO->update($isReRegistration)->getCollectedEntity();
+
         $collectedEntity->setUsername($registrationDTO->getUsername());
 
         // Validation of input POST data
@@ -65,7 +64,6 @@ class UserRegisterService extends AbstractApiService
 
         // Adding a handler after user registration
         $this->setHandler(function(User $registeredUser) use ($dispatcher) {
-
             $userRegistrationEvent = new UserRegistrationEvent($registeredUser);
 
             $dispatcher->dispatch($userRegistrationEvent, EventsEnum::USER_REGISTRATION->value);
