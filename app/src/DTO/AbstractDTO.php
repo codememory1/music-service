@@ -35,6 +35,11 @@ abstract class AbstractDTO implements DTOInterface
     /**
      * @var array
      */
+    protected array $excludeKeysForEntity = [];
+
+    /**
+     * @var array
+     */
     protected array $excludeKeyForEntity = [];
 
     /**
@@ -116,9 +121,13 @@ abstract class AbstractDTO implements DTOInterface
                 $setter = sprintf('set%s', ucfirst(Str::camelCase($key)));
                 $getter = sprintf('get%s', ucfirst(Str::camelCase($key)));
 
-                $entity->{$setter}($this->{$getter}());
+                if (!in_array($key, $this->excludeKeyForEntity)) {
+                    $entity->{$setter}($this->{$getter}());
+                }
             }
         }
+
+        $this->entity = $entity;
 
         if (null !== $this->afterEntityBuild) {
             call_user_func($this->afterEntityBuild, $entity);
