@@ -47,6 +47,11 @@ class UpdaterCRUDService extends AbstractCRUD
     protected bool $checkPermission = true;
 
     /**
+     * @var EntityInterface|null
+     */
+    protected ?EntityInterface $finedEntity = null;
+
+    /**
      * @inheritDoc
      * @throws UndefinedClassForDTOException
      * @throws Exception
@@ -61,6 +66,8 @@ class UpdaterCRUDService extends AbstractCRUD
         if ($finedEntity instanceof ApiResponseService) {
             return $finedEntity;
         }
+
+        $this->finedEntity = $finedEntity;
 
         // Checking the rights or whether the user is the owner of this entry
         $resultCheckPermission = $this->accessPermissionsCheck($finedEntity, $this->validator);
