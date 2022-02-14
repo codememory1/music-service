@@ -17,18 +17,6 @@ services:
       - mysql
       - redis
 
-  xhprof:
-    container_name: xhprof
-    user: root
-    build:
-      context: ./
-      dockerfile: "${DEV_PATH}/xhprof/Dockerfile"
-      args:
-        workdir: /usr/src/xhprof
-        app_path: ./xhprof
-    volumes:
-      - "./xhprof:/usr/src/xhprof"
-
   # Database MySQL
   mysql:
     container_name: mysql
