@@ -6,6 +6,7 @@ use App\Entity\Language;
 use App\Service\CRUD\DeleterCRUDService;
 use App\Service\Response\ApiResponseService;
 use Exception;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class DeleterLanguageService
@@ -18,14 +19,16 @@ class DeleterLanguageService extends DeleterCRUDService
 {
 
     /**
-     * @param int $id
+     * @param ValidatorInterface $validator
+     * @param int                $id
      *
      * @return ApiResponseService
      * @throws Exception
      */
-    public function delete(int $id): ApiResponseService
+    public function delete(ValidatorInterface $validator, int $id): ApiResponseService
     {
 
+        $this->validator = $validator;
         $this->messageNameNotExist = 'lang_not_exist';
         $this->translationKeyNotExist = 'lang@langNotExist';
 

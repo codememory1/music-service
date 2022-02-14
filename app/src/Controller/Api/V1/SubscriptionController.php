@@ -89,7 +89,7 @@ class SubscriptionController extends AbstractApiController
         /** @var DeleterSubscriptionService $service */
         $service = $this->getCollectedService($request, DeleterSubscriptionService::class);
 
-        return $service->delete($id)->make();
+        return $service->delete($this->validator, $id)->make();
 
     }
 

@@ -89,7 +89,7 @@ class LanguageController extends AbstractApiController
         /** @var DeleterLanguageService $service */
         $service = $this->getCollectedService($request, DeleterLanguageService::class);
 
-        return $service->delete($id)->make();
+        return $service->delete($this->validator, $id)->make();
 
     }
 

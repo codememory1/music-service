@@ -92,7 +92,7 @@ class SubscriptionPermissionController extends AbstractApiController
         /** @var DeleterPermissionService $service */
         $service = $this->getCollectedService($request, DeleterPermissionService::class);
 
-        return $service->delete($id)->make();
+        return $service->delete($this->validator, $id)->make();
 
     }
 

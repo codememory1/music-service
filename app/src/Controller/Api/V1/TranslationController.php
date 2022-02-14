@@ -89,7 +89,7 @@ class TranslationController extends AbstractApiController
         /** @var DeleterTranslationService $service */
         $service = $this->getCollectedService($request, DeleterTranslationService::class);
 
-        return $service->delete($id)->make();
+        return $service->delete($this->validator, $id)->make();
 
     }
 
