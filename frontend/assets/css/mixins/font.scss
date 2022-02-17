@@ -1,0 +1,16 @@
+@import "../vars";
+
+@mixin font($font-family, $path-without-font-name, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: $font-family;
+    src: url('#{$fonts-path + $font-family}/#{$path-without-font-name}.eot');
+    src: url('#{$fonts-path + $font-family}/#{$path-without-font-name}.eot?#iefix') format('embedded-opentype'),
+    url('#{$fonts-path + $font-family}/#{$path-without-font-name}.woff2') format('woff2'),
+    url('#{$fonts-path + $font-family}/#{$path-without-font-name}.woff') format('woff'),
+    url('#{$fonts-path + $font-family}/#{$path-without-font-name}.ttf') format('truetype'),
+    url('#{$fonts-path + $font-family}/#{$path-without-font-name}.svg?#' + $path-without-font-name) format('svg');
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+  }
+}

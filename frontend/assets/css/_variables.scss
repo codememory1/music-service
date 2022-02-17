@@ -1,0 +1,26 @@
+$accent: null;
+$white: null;
+$blue: null;
+$red: null;
+$green: null;
+$yellow: null;
+$orange: null;
+$gray: null;
+$light-gray: null;
+$dark: null;
+$light-dark: null;
+$fa-font-path: "/fonts/FontAwesome/";
+
+:root {
+  --accent: #{$accent};
+  --white: #{$white};
+  --blue: #{$blue};
+  --red: #{$red};
+  --green: #{$green};
+  --yellow: #{$yellow};
+  --orange: #{$orange};
+  --gray: #{$gray};
+  --light-gray: #{$light-gray};
+  --dark: #{$dark};
+  --light-dark: #{$light-dark};
+}
