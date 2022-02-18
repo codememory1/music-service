@@ -1,26 +1,12 @@
-$accent: null;
-$white: null;
-$blue: null;
-$red: null;
-$green: null;
-$yellow: null;
-$orange: null;
-$gray: null;
-$light-gray: null;
-$dark: null;
-$light-dark: null;
+$accent: #E03E10;
+$white: #FFF;
+$blue: #3C56D6;
+$red: #E53737;
+$green: #1BE809;
+$gray: #939393;
+$light-gray: #E1E1E1;
+$dark: #070E17;
+$bg: #09111D;
+$light-dark: #0C1A2C;
 $fa-font-path: "/fonts/FontAwesome/";
-
-:root {
-  --accent: #{$accent};
-  --white: #{$white};
-  --blue: #{$blue};
-  --red: #{$red};
-  --green: #{$green};
-  --yellow: #{$yellow};
-  --orange: #{$orange};
-  --gray: #{$gray};
-  --light-gray: #{$light-gray};
-  --dark: #{$dark};
-  --light-dark: #{$light-dark};
-}
+$path-to-fonts: "/fonts/";

@@ -1,11 +1,25 @@
 @import "variables";
+@import "fonts";
 @import "normilize";
 @import "classes";
-
-// Common mixins
-@import "mixins/font";
-
-// Common functions
+@import "common-components";
 
 // Common libs
 @import "vendor/font-awesome";
+
+body {
+  background-color: $bg;
+}
+
+:root {
+  --accent: #{$accent};
+  --white: #{$white};
+  --blue: #{$blue};
+  --red: #{$red};
+  --green: #{$green};
+  --gray: #{$gray};
+  --light-gray: #{$light-gray};
+  --dark: #{$dark};
+  --bg: #{$bg};
+  --light-dark: #{$light-dark};
+}

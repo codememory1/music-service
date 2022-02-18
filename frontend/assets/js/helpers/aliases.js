@@ -52,8 +52,8 @@ export const aliases = [
     path: "/assets/images/icons/instagram-square.svg"
   },
   {
-    name: "like-svg",
-    path: "/assets/images/icons/like.svg"
+    name: "like",
+    path: "/images/icons/like.svg"
   },
   {
     name: "min-volume-svg",
@@ -120,8 +120,8 @@ export const aliases = [
     path: "/assets/images/icons/unique-features.svg"
   },
   {
-    name: "vertical-ellipses-svg",
-    path: "/assets/images/icons/vertical-ellipses.svg"
+    name: "vertical-ellipses",
+    path: "/images/icons/vertical-ellipses.svg"
   },
   {
     name: "vk-sq-svg",

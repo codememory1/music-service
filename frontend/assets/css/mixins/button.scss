@@ -1,7 +1,8 @@
 // Background and hover for button
-@mixin buttonBackground($theme-name, $color, $functionHover: "darken", $hover-bg: null) {
+@mixin buttonBackground($theme-name, $bg, $color, $functionHover: "darken", $hover-bg: null) {
   &.bg--#{$theme-name} {
-    background-color: $color;
+    background-color: $bg;
+    color: $color;
 
     @if $hover-bg {
       &:hover {
@@ -9,25 +10,18 @@
       }
     } @else {
       &:hover {
-        background-color: call($functionHover, $color, 10%);
+        background-color: call(get-function($functionHover), $bg, 10%);
       }
     }
   }
 }
 
-// Color button
-@mixin buttonColor($theme-name, $color, $functionHover: "darken", $hover-bg: null) {
-  &.color--#{$theme-name} {
+@mixin withoutBackgroundWithHover($theme-name, $color, $hover-bg) {
+  &.hover-bg--#{$theme-name} {
     color: $color;
 
-    @if $hover-bg {
-      &:hover {
-        color: $hover-bg;
-      }
-    } @else {
-      &:hover {
-        color: call($functionHover, $color, 10%);
-      }
+    &:hover {
+      background-color: $hover-bg;
     }
   }
 }

@@ -1,4 +1,4 @@
 import Vue from "vue";
-import InlineSvgAlias from "../components/Images/ImageAlias";
+import SvgAlias from "../components/Images/SvgAlias";
 
-Vue.component("SvgAlias", InlineSvgAlias);
+Vue.component("svg-alias", SvgAlias);

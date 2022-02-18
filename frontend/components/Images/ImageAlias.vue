@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import ObjectFromArrayByKey from "@/helpers/object-from-array-by-key";
-import { aliases } from "@/helpers/aliases";
+import ObjectFromArrayByKey from "~/assets/js/helpers/object-from-array-by-key";
+import { aliases } from "~/assets/js/helpers/aliases";
 
 export default {
   name: "ImageAlias",
