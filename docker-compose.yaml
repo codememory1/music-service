@@ -16,6 +16,7 @@ services:
     links:
       - mysql
       - redis
+      - s3
 
   # Database MySQL
   mysql:
@@ -56,3 +57,20 @@ services:
       - "${APP_PATH}:${WORKDIR}"
     links:
       - app
+
+  # Minio s3
+  s3:
+    image: minio/minio
+    expose:
+      - "9001"
+    ports:
+      - "9001:9001"
+    volumes:
+      - ./data/minio/minio:/data
+    environment:
+      MINIO_ACCESS_KEY: R70CFWGEcEVikImeVguj
+      MINIO_SECRET_KEY: 9UrQj13Fjgcll0ocJI9NdN7Akl4bLCeS1BLVdo9E
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+      MINIO_DOMAIN: s3:9000
+    command: server /data --console-address ":9001"

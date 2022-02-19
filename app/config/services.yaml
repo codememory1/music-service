@@ -28,6 +28,23 @@ services:
 
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
+    Aws\S3\S3Client:
+        factory: [Aws\S3\S3Client, factory]
+        arguments:
+            -
+                credentials: {key: '%env(AWS_S3_KEY)%', secret: '%env(AWS_S3_SECRET)%'}
+                region: '%env(AWS_S3_REGION)%'
+                version: '%env(AWS_S3_VERSION)%'
+                endpoint: "s3:9000"
+                use_path_style_endpoint: true
+                disable_host_prefix_injection: true
+    Liip\ImagineBundle\Imagine\Cache\Resolver\AwsS3Resolver:
+        arguments:
+            - '@acme.amazon_s3'
+            - '%env(AWS_S3_BUCKET)%'
+        tags:
+            - {name: liip_imagine.cache.resolver, resolver: aws_s3_resolver}
+
     # Event Subscribers
     App\EventSubscriber\UserRegistration\:
         resource: '../src/EventSubscriber/UserRegistration/'
