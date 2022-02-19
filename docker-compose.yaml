@@ -4,6 +4,7 @@ services:
   # Application php8.0 and symfony
   app:
     container_name: app
+    platform: linux/amd64
     build:
       context: ./
       dockerfile: "${DEV_PATH}/php${PHP_VERSION}-fpm/Dockerfile"
@@ -22,6 +23,7 @@ services:
     container_name: mysql
     image: mysql:8.0
     restart: unless-stopped
+    platform: linux/amd64
     environment:
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_USER_PASSWORD}"
@@ -37,6 +39,7 @@ services:
     container_name: redis
     image: redis:6.2.6-alpine
     restart: always
+    platform: linux/arm64
     ports:
       - "6379:6379"
     volumes:
@@ -47,6 +50,7 @@ services:
     container_name: nginx
     image: nginx:stable-alpine
     restart: unless-stopped
+    platform: linux/arm64
     ports:
       - "80:80"
       - "9000:9000"
