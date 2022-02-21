@@ -80,12 +80,12 @@ export const aliases = [
     path: "/assets/images/icons/pause-bold.svg"
   },
   {
-    name: "play-svg",
-    path: "/assets/images/icons/play.svg"
+    name: "play",
+    path: "/images/icons/play.svg"
   },
   {
     name: "playlist-svg",
-    path: "/assets/images/icons/playlist.svg"
+    path: "/images/icons/playlist.svg"
   },
   {
     name: "prev-svg",

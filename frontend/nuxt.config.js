@@ -13,19 +13,17 @@ export default {
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
 
-  css: [
-    "normalize.css/normalize.css",
-    "~/assets/css/app"
-  ],
+  css: ["normalize.css/normalize.css", "~/assets/css/app"],
 
   plugins: [
-    "~/plugins/is-empty.js",
     "~/plugins/axios.js",
-    "~/plugins/v-tooltip.js",
     "~/plugins/inline-svg.js",
     "~/plugins/svg-alias.js",
     "~/plugins/img-alias.js",
-    "~/plugins/swiper.js"
+    "~/plugins/swiper.js",
+    "~/directives/hover.js",
+    "~/directives/tooltip.js",
+    "~/directives/click-out.js"
   ],
 
   components: true,

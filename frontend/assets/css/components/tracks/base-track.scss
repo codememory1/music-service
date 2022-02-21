@@ -42,16 +42,6 @@
     font-size: 14px;
   }
 
-  &__author-link {
-    color: $gray;
-    font-weight: 100;
-    font-size: 13px;
-
-    &:hover {
-      border-bottom: 1px solid $gray;
-    }
-  }
-
   &__duration-time {
     margin-right: 30px;
     color: $gray;

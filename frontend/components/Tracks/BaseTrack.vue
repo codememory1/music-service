@@ -6,16 +6,7 @@
     </div>
     <div class="track-names">
       <span class="track__title">{{ title }}</span>
-      <div class="track-authors">
-        <a
-          class="track__author-link"
-          v-for="(author, index) in authors"
-          :key="index"
-          href=""
-        >
-          {{ author.name }}
-        </a>
-      </div>
+      <base-authors class="track-authors" :authors="authors" />
     </div>
 
     <!--right-->
@@ -32,30 +23,22 @@
 </template>
 
 <script>
-import {
-  arrayValidator,
-  objectValidator
-} from "~/node_modules/vue-props-validation/src";
+import BaseAuthors from "@/components/Authors/BaseAuthors";
+import { authors } from "@/assets/js/props";
 
 export default {
   name: "BaseTrack",
+  components: {
+    BaseAuthors
+  },
+
   props: {
     title: {
       type: String,
       required: true
     },
 
-    authors: {
-      type: Array,
-      required: true,
-      validator: arrayValidator({
-        type: Object,
-        validator: objectValidator({
-          id: Number,
-          name: String
-        })
-      })
-    },
+    authors,
 
     image: {
       type: String,

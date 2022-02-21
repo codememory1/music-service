@@ -1,0 +1,28 @@
+@import "../../variables";
+
+.author__link {
+  color: $gray;
+  font-weight: 100;
+  font-size: 13px;
+  white-space: nowrap;
+
+  &:hover {
+    border-bottom: 1px solid $gray;
+  }
+}
+
+.author__separator {
+  color: $gray;
+  font-weight: 100;
+  font-size: 13px;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.author {
+  display: flex;
+
+  &:last-of-type .author__separator {
+    display: none;
+  }
+}

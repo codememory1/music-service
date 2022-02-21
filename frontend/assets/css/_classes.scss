@@ -11,6 +11,14 @@
   flex-direction: row;
 }
 
+.flex-x-center {
+  justify-content: center;
+}
+
+.flex-y-center {
+  align-items: center;
+}
+
 // Grid classes
 .grid {
   display: grid;
