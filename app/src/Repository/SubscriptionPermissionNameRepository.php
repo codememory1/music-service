@@ -9,7 +9,9 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * Class SubscriptionPermissionNameRepository
  *
- * @author Codememory
+ * @package App\Repository
+ *
+ * @author  Codememory
  *
  * @method SubscriptionPermissionName|null find($id, $lockMode = null, $lockVersion = null)
  * @method SubscriptionPermissionName|null findOneBy(array $criteria, array $orderBy = null)
@@ -19,14 +21,14 @@ use Doctrine\Persistence\ManagerRegistry;
 class SubscriptionPermissionNameRepository extends ServiceEntityRepository
 {
 
-    /**
-     * @param ManagerRegistry $registry
-     */
-    public function __construct(ManagerRegistry $registry)
-    {
+	/**
+	 * @param ManagerRegistry $registry
+	 */
+	public function __construct(ManagerRegistry $registry)
+	{
 
-        parent::__construct($registry, SubscriptionPermissionName::class);
+		parent::__construct($registry, SubscriptionPermissionName::class);
 
-    }
+	}
 
 }

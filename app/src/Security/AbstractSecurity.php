@@ -2,9 +2,9 @@
 
 namespace App\Security;
 
+use App\Rest\Translator;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class AbstractSecurity
@@ -13,29 +13,35 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author  Codememory
  */
-abstract class AbstractSecurity
+class AbstractSecurity
 {
 
-    /**
-     * @var Request
-     */
-    protected readonly Request $request;
+	/**
+	 * @var ManagerRegistry
+	 */
+	protected readonly ManagerRegistry $managerRegistry;
 
-    /**
-     * @var ObjectManager
-     */
-    protected readonly ObjectManager $em;
+	/**
+	 * @var ObjectManager
+	 */
+	protected readonly ObjectManager $em;
 
-    /**
-     * @param Request         $request
-     * @param ManagerRegistry $managerRegistry
-     */
-    public function __construct(Request $request, ManagerRegistry $managerRegistry)
-    {
+	/**
+	 * @var Translator
+	 */
+	protected readonly Translator $translator;
 
-        $this->request = $request;
-        $this->em = $managerRegistry->getManager();
+	/**
+	 * @param ManagerRegistry $managerRegistry
+	 * @param Translator      $translator
+	 */
+	public function __construct(ManagerRegistry $managerRegistry, Translator $translator)
+	{
 
-    }
+		$this->managerRegistry = $managerRegistry;
+		$this->em = $managerRegistry->getManager();
+		$this->translator = $translator;
+
+	}
 
 }

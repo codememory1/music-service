@@ -4,7 +4,9 @@ namespace App\Security;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Rest\Http\Request;
 use App\Service\JwtTokenGenerator;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class TokenAuthenticator
@@ -13,53 +15,65 @@ use App\Service\JwtTokenGenerator;
  *
  * @author  Codememory
  */
-class TokenAuthenticator extends AbstractSecurity
+class TokenAuthenticator
 {
 
-    /**
-     * @return string|null
-     */
-    public function getAccessToken(): ?string
-    {
+	/**
+	 * @param Request         $request
+	 * @param ManagerRegistry $managerRegistry
+	 */
+	public function __construct(Request $request, ManagerRegistry $managerRegistry)
+	{
 
-        $header = $this->request->headers->get('Authorization');
+		$this->request = $request;
+		$this->em = $managerRegistry->getManager();
 
-        if (null === $header) {
-            return null;
-        }
+	}
 
-        return explode(' ', $header, 2)[1] ?? null;
+	/**
+	 * @return User|null
+	 */
+	public function getUser(): ?User
+	{
 
-    }
+		/** @var UserRepository $repository */
+		$repository = $this->em->getRepository(User::class);
 
-    /**
-     * @return object|null
-     */
-    public function getAccessTokenData(): ?object
-    {
+		return $repository->findOneBy(['id' => $this->getAccessTokenData()?->id]);
 
-        $jwtTokenGenerator = new JwtTokenGenerator();
-        $token = $this->getAccessToken();
+	}
 
-        if (null == $token || !$decoded = $jwtTokenGenerator->decode($token, $_ENV['JWT_ACCESS_PUBLIC_KEY'])) {
-            return null;
-        }
+	/**
+	 * @return object|null
+	 */
+	public function getAccessTokenData(): ?object
+	{
 
-        return $decoded;
+		$jwtTokenGenerator = new JwtTokenGenerator();
+		$token = $this->getAccessToken();
 
-    }
+		if (null == $token || !$decoded = $jwtTokenGenerator->decode($token, $_ENV['JWT_ACCESS_PUBLIC_KEY'])) {
+			return null;
+		}
 
-    /**
-     * @return User|null
-     */
-    public function getUser(): ?User
-    {
+		return $decoded;
 
-        /** @var UserRepository $repository */
-        $repository = $this->em->getRepository(User::class);
+	}
 
-        return $repository->findOneBy(['id' => $this->getAccessTokenData()?->id]);
+	/**
+	 * @return string|null
+	 */
+	public function getAccessToken(): ?string
+	{
 
-    }
+		$header = $this->request->request->headers->get('Authorization');
+
+		if (null === $header) {
+			return null;
+		}
+
+		return explode(' ', $header, 2)[1] ?? null;
+
+	}
 
 }

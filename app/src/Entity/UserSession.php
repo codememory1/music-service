@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Interface\EntityInterface;
+use App\Interfaces\EntityInterface;
 use App\Repository\UserSessionRepository;
 use App\Trait\Entity\CreatedAtTrait;
 use App\Trait\Entity\IdentifierTrait;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,326 +22,384 @@ use Doctrine\ORM\Mapping as ORM;
 class UserSession implements EntityInterface
 {
 
-    use IdentifierTrait;
-    use CreatedAtTrait;
-
-    /**
-     * @var User|null
-     */
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userSessions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'text', options: [
-        'comment' => 'Refresh token to update the access token'
-    ])]
-    private ?string $refresh_token = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'string', length: 32, options: [
-        'comment' => 'IP address of authorized user'
-    ])]
-    private ?string $ip = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'string', length: 100, nullable: true, options: [
-        'comment' => 'Authorized user country'
-    ])]
-    private ?string $country = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'string', length: 3, nullable: true, options: [
-        'comment' => 'Country code in two letters'
-    ])]
-    private ?string $country_code = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'string', length: 100, nullable: true, options: [
-        'comment' => 'Authorized user region'
-    ])]
-    private ?string $region = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'string', length: 100, nullable: true, options: [
-        'comment' => 'Authorized user city'
-    ])]
-    private ?string $city = null;
-
-    /**
-     * @var float|null
-     */
-    #[ORM\Column(type: 'float', nullable: true, options: [
-        'comment' => 'Localization by X'
-    ])]
-    private ?float $latitude = null;
-
-    /**
-     * @var float|null
-     */
-    #[ORM\Column(type: 'float', nullable: true, options: [
-        'comment' => 'Localization by Y'
-    ])]
-    private ?float $longitude = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'string', length: 10, options: [
-        'comment' => 'Token lifetime in CronTime format'
-    ])]
-    private ?string $valid = null;
-
-    /**
-     * @return User|null
-     */
-    public function getUser(): ?User
-    {
-
-        return $this->user;
-
-    }
-
-    /**
-     * @param User|null $user
-     *
-     * @return $this
-     */
-    public function setUser(?User $user): self
-    {
-
-        $this->user = $user;
+	use IdentifierTrait;
+	use CreatedAtTrait;
+
+	/**
+	 * @var User|null
+	 */
+	#[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userSessions')]
+	#[ORM\JoinColumn(nullable: false)]
+	private ?User $user = null;
+
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::TEXT, options: [
+		'comment' => 'Refresh token to update the access token'
+	])]
+	private ?string $refreshToken = null;
+
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 32, options: [
+		'comment' => 'IP address of authorized user'
+	])]
+	private ?string $ip = null;
+
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 100, nullable: true, options: [
+		'comment' => 'Authorized user country'
+	])]
+	private ?string $country = null;
+
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 3, nullable: true, options: [
+		'comment' => 'Country code in two letters'
+	])]
+	private ?string $countryCode = null;
+
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 100, nullable: true, options: [
+		'comment' => 'Authorized user region'
+	])]
+	private ?string $region = null;
+
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 100, nullable: true, options: [
+		'comment' => 'Authorized user city'
+	])]
+	private ?string $city = null;
+
+	/**
+	 * @var float|null
+	 */
+	#[ORM\Column(type: Types::FLOAT, nullable: true, options: [
+		'comment' => 'Localization by X'
+	])]
+	private ?float $latitude = null;
+
+	/**
+	 * @var float|null
+	 */
+	#[ORM\Column(type: Types::FLOAT, nullable: true, options: [
+		'comment' => 'Localization by Y'
+	])]
+	private ?float $longitude = null;
+
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 50)]
+	private ?string $deviceModel = null;
+
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 50)]
+	private ?string $operatingSystem = null;
+
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 50)]
+	private ?string $browser = null;
+
+	/**
+	 * @return User|null
+	 */
+	public function getUser(): ?User
+	{
+
+		return $this->user;
+
+	}
 
-        return $this;
+	/**
+	 * @param User|null $user
+	 *
+	 * @return $this
+	 */
+	public function setUser(?User $user): self
+	{
 
-    }
+		$this->user = $user;
 
-    /**
-     * @return string|null
-     */
-    public function getRefreshToken(): ?string
-    {
+		return $this;
 
-        return $this->refresh_token;
+	}
 
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getRefreshToken(): ?string
+	{
 
-    /**
-     * @param string $refresh_token
-     *
-     * @return $this
-     */
-    public function setRefreshToken(string $refresh_token): self
-    {
+		return $this->refreshToken;
 
-        $this->refresh_token = $refresh_token;
+	}
 
-        return $this;
+	/**
+	 * @param string $refreshToken
+	 *
+	 * @return $this
+	 */
+	public function setRefreshToken(string $refreshToken): self
+	{
 
-    }
+		$this->refreshToken = $refreshToken;
 
-    /**
-     * @return string|null
-     */
-    public function getIp(): ?string
-    {
+		return $this;
 
-        return $this->ip;
+	}
 
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getIp(): ?string
+	{
 
-    /**
-     * @param string $ip
-     *
-     * @return $this
-     */
-    public function setIp(string $ip): self
-    {
+		return $this->ip;
 
-        $this->ip = $ip;
+	}
 
-        return $this;
+	/**
+	 * @param string $ip
+	 *
+	 * @return $this
+	 */
+	public function setIp(string $ip): self
+	{
 
-    }
+		$this->ip = $ip;
 
-    /**
-     * @return string|null
-     */
-    public function getCountry(): ?string
-    {
+		return $this;
 
-        return $this->country;
+	}
 
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getCountry(): ?string
+	{
 
-    /**
-     * @param string|null $country
-     *
-     * @return $this
-     */
-    public function setCountry(?string $country): self
-    {
+		return $this->country;
 
-        $this->country = $country;
+	}
 
-        return $this;
+	/**
+	 * @param string|null $country
+	 *
+	 * @return $this
+	 */
+	public function setCountry(?string $country): self
+	{
 
-    }
+		$this->country = $country;
 
-    /**
-     * @return string|null
-     */
-    public function getCountryCode(): ?string
-    {
+		return $this;
 
-        return $this->country_code;
+	}
 
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getCountryCode(): ?string
+	{
 
-    /**
-     * @param string|null $country_code
-     *
-     * @return $this
-     */
-    public function setCountryCode(?string $country_code): self
-    {
+		return $this->countryCode;
 
-        $this->country_code = $country_code;
+	}
 
-        return $this;
+	/**
+	 * @param string|null $countryCode
+	 *
+	 * @return $this
+	 */
+	public function setCountryCode(?string $countryCode): self
+	{
 
-    }
+		$this->countryCode = $countryCode;
 
-    /**
-     * @return string|null
-     */
-    public function getRegion(): ?string
-    {
+		return $this;
 
-        return $this->region;
+	}
 
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getRegion(): ?string
+	{
 
-    /**
-     * @param string|null $region
-     *
-     * @return $this
-     */
-    public function setRegion(?string $region): self
-    {
+		return $this->region;
 
-        $this->region = $region;
+	}
 
-        return $this;
+	/**
+	 * @param string|null $region
+	 *
+	 * @return $this
+	 */
+	public function setRegion(?string $region): self
+	{
 
-    }
+		$this->region = $region;
 
-    /**
-     * @return string|null
-     */
-    public function getCity(): ?string
-    {
+		return $this;
 
-        return $this->city;
+	}
 
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getCity(): ?string
+	{
 
-    /**
-     * @param string|null $city
-     *
-     * @return $this
-     */
-    public function setCity(?string $city): self
-    {
+		return $this->city;
 
-        $this->city = $city;
+	}
 
-        return $this;
+	/**
+	 * @param string|null $city
+	 *
+	 * @return $this
+	 */
+	public function setCity(?string $city): self
+	{
 
-    }
+		$this->city = $city;
 
-    /**
-     * @return float|null
-     */
-    public function getLatitude(): ?float
-    {
+		return $this;
 
-        return $this->latitude;
+	}
 
-    }
+	/**
+	 * @return float|null
+	 */
+	public function getLatitude(): ?float
+	{
 
-    /**
-     * @param float|null $latitude
-     *
-     * @return $this
-     */
-    public function setLatitude(?float $latitude): self
-    {
+		return $this->latitude;
 
-        $this->latitude = $latitude;
+	}
 
-        return $this;
+	/**
+	 * @param float|null $latitude
+	 *
+	 * @return $this
+	 */
+	public function setLatitude(?float $latitude): self
+	{
 
-    }
+		$this->latitude = $latitude;
 
-    /**
-     * @return float|null
-     */
-    public function getLongitude(): ?float
-    {
+		return $this;
 
-        return $this->longitude;
+	}
 
-    }
+	/**
+	 * @return float|null
+	 */
+	public function getLongitude(): ?float
+	{
 
-    /**
-     * @param float|null $longitude
-     *
-     * @return $this
-     */
-    public function setLongitude(?float $longitude): self
-    {
+		return $this->longitude;
 
-        $this->longitude = $longitude;
+	}
 
-        return $this;
+	/**
+	 * @param float|null $longitude
+	 *
+	 * @return $this
+	 */
+	public function setLongitude(?float $longitude): self
+	{
 
-    }
+		$this->longitude = $longitude;
 
-    /**
-     * @return string|null
-     */
-    public function getValid(): ?string
-    {
+		return $this;
 
-        return $this->valid;
+	}
 
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getDeviceModel(): ?string
+	{
 
-    /**
-     * @param string $valid
-     *
-     * @return $this
-     */
-    public function setValid(string $valid): self
-    {
+		return $this->deviceModel;
 
-        $this->valid = $valid;
+	}
 
-        return $this;
+	/**
+	 * @param string|null $deviceModel
+	 *
+	 * @return $this
+	 */
+	public function setDeviceModel(?string $deviceModel): self
+	{
 
-    }
+		$this->deviceModel = $deviceModel;
+
+		return $this;
+
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getOperatingSystem(): ?string
+	{
+
+		return $this->operatingSystem;
+
+	}
+
+	/**
+	 * @param string|null $operatingSystem
+	 *
+	 * @return $this
+	 */
+	public function setOperatingSystem(?string $operatingSystem): self
+	{
+
+		$this->operatingSystem = $operatingSystem;
+
+		return $this;
+
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getBrowser(): ?string
+	{
+
+		return $this->browser;
+
+	}
+
+	/**
+	 * @param string|null $browser
+	 *
+	 * @return $this
+	 */
+	public function setBrowser(?string $browser): self
+	{
+
+		$this->browser = $browser;
+
+		return $this;
+
+	}
 
 }

@@ -48,8 +48,8 @@ class JwtTokenGenerator
     {
 
         return JWT::encode(
-            $this->collectPayload($data, $lifeInCronTimeFormat),
-            base64_decode($privateKey),
+            $this->collectPayload($data, $_ENV[$lifeInCronTimeFormat]),
+            static::getKey($privateKey),
             'RS256'
         );
 
@@ -65,7 +65,7 @@ class JwtTokenGenerator
     {
 
         try {
-            return JWT::decode($token, new Key(base64_decode($publicKey), 'RS256'));
+            return JWT::decode($token, new Key(static::getKey($publicKey), 'RS256'));
         } catch (Exception) {
             return false;
         }
@@ -80,7 +80,7 @@ class JwtTokenGenerator
     public static function getKey(string $name): string
     {
 
-        return base64_decode($_ENV[$name]);
+        return file_get_contents($_SERVER['PWD'] . '/' . $_ENV[$name]);
 
     }
 

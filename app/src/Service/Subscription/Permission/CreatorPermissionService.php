@@ -3,11 +3,8 @@
 namespace App\Service\Subscription\Permission;
 
 use App\DTO\SubscriptionPermissionDTO;
-use App\Exception\UndefinedClassForDTOException;
-use App\Service\CRUD\CreatorCRUDService;
-use App\Service\Response\ApiResponseService;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Rest\CRUD\CreatorCRUD;
+use App\Rest\Http\Response;
 
 /**
  * Class CreatorPermissionService
@@ -16,31 +13,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorPermissionService extends CreatorCRUDService
+class CreatorPermissionService extends CreatorCRUD
 {
 
-    /**
-     * @param SubscriptionPermissionDTO $subscriptionPermissionDTO
-     * @param ValidatorInterface        $validator
-     *
-     * @return ApiResponseService
-     * @throws UndefinedClassForDTOException
-     * @throws Exception
-     */
-    public function create(SubscriptionPermissionDTO $subscriptionPermissionDTO, ValidatorInterface $validator): ApiResponseService
-    {
+	/**
+	 * @param SubscriptionPermissionDTO $subscriptionPermissionDTO
+	 *
+	 * @return Response
+	 */
+	public function create(SubscriptionPermissionDTO $subscriptionPermissionDTO): Response
+	{
 
-        $this->validator = $validator;
-        $this->validateEntity = true;
+		$this->validateEntity = true;
 
-        $createdEntity = $this->make($subscriptionPermissionDTO);
+		$createdEntity = $this->make($subscriptionPermissionDTO);
 
-        if ($createdEntity instanceof ApiResponseService) {
-            return $createdEntity;
-        }
+		if ($createdEntity instanceof Response) {
+			return $createdEntity;
+		}
 
-        return $this->push($createdEntity, 'subscriptionPermission@successCreate');
+		return $this->manager->push($createdEntity, 'subscriptionPermission@successCreate');
 
-    }
+	}
 
 }

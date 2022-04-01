@@ -3,11 +3,8 @@
 namespace App\Service\Album\Type;
 
 use App\DTO\AlbumTypeDTO;
-use App\Exception\UndefinedClassForDTOException;
-use App\Service\CRUD\UpdaterCRUDService;
-use App\Service\Response\ApiResponseService;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Rest\CRUD\UpdaterCRUD;
+use App\Rest\Http\Response;
 
 /**
  * Class UpdaterAlbumTypeService
@@ -16,34 +13,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class UpdaterAlbumTypeService extends UpdaterCRUDService
+class UpdaterAlbumTypeService extends UpdaterCRUD
 {
 
-    /**
-     * @param AlbumTypeDTO       $albumTypeDTO
-     * @param ValidatorInterface $validator
-     * @param int                $id
-     *
-     * @return ApiResponseService
-     * @throws UndefinedClassForDTOException
-     * @throws Exception
-     */
-    public function update(AlbumTypeDTO $albumTypeDTO, ValidatorInterface $validator, int $id): ApiResponseService
-    {
+	/**
+	 * @param AlbumTypeDTO $albumTypeDTO
+	 * @param int          $id
+	 *
+	 * @return Response
+	 */
+	public function update(AlbumTypeDTO $albumTypeDTO, int $id): Response
+	{
 
-        $this->validator = $validator;
-        $this->validateEntity = true;
-        $this->messageNameNotExist = 'album_type_not_exist';
-        $this->translationKeyNotExist = 'albumType@notExist';
+		$this->validateEntity = true;
+		$this->translationKeyNotExist = 'albumType@notExist';
 
-        $updatedEntity = $this->make($albumTypeDTO, ['id' => $id]);
+		$updatedEntity = $this->make($albumTypeDTO, ['id' => $id]);
 
-        if ($updatedEntity instanceof ApiResponseService) {
-            return $updatedEntity;
-        }
+		if ($updatedEntity instanceof Response) {
+			return $updatedEntity;
+		}
 
-        return $this->push($updatedEntity, 'albumType@successUpdate');
+		return $this->manager->update($updatedEntity, 'albumType@successUpdate');
 
-    }
+	}
 
 }

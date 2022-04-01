@@ -10,10 +10,10 @@ stop_mysql:
 stop_custom_server: stop_php stop_apache2 stop_mysql
 
 build:
-	sudo docker-compose --env-file .docker/development/.env build
+	sudo docker-compose build
 
 up_dev:
-	docker-compose --env-file .docker/development/.env up -d
+	docker-compose up -d --remove-orphans
 
 up_prod:
 	docker-compose --env-file .docker/production/.env up

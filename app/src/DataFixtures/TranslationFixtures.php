@@ -244,6 +244,11 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key'         => 'common@authRequired',
             'translation' => 'Не авторизованы'
         ],
+		[
+			'lang'        => 'ru',
+			'key'         => 'common@successRegister',
+			'translation' => 'Регистрация прошла успешна! На почту отправлено сообщение с активацией аккаунта'
+		],
 
         // RU - lang
         [
@@ -406,11 +411,6 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'lang'        => 'ru',
             'key'         => 'user@roleIsRequired',
             'translation' => 'Роль обязательна к заполнению'
-        ],
-        [
-            'lang'        => 'ru',
-            'key'         => 'user@successRegister',
-            'translation' => 'Регистрация прошла успешна! На почту отправлено сообщение с активацией аккаунта'
         ],
         [
             'lang'        => 'ru',

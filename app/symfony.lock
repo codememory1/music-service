@@ -165,11 +165,20 @@
             "fixtures/.gitignore"
         ]
     },
+    "jaybizzle/crawler-detect": {
+        "version": "v1.2.111"
+    },
+    "jenssegers/agent": {
+        "version": "v2.6.4"
+    },
     "justinrainbow/json-schema": {
         "version": "5.2.11"
     },
     "laminas/laminas-code": {
         "version": "4.5.1"
+    },
+    "mobiledetect/mobiledetectlib": {
+        "version": "2.8.39"
     },
     "monolog/monolog": {
         "version": "2.3.5"

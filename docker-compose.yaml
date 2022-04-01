@@ -18,16 +18,16 @@ services:
       - redis
       - s3
 
-  # Database MySQL
+  # Database mysql
   mysql:
     container_name: mysql
     image: mysql:8.0
     restart: unless-stopped
     environment:
-      MYSQL_USER: "${MYSQL_USER}"
-      MYSQL_PASSWORD: "${MYSQL_USER_PASSWORD}"
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_USER_PASSWORD}"
-      MYSQL_DATABASE: "${MYSQL_DBNAME}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${DB_NAME}"
     ports:
       - "3306:3306"
     volumes:
@@ -57,6 +57,7 @@ services:
       - "${APP_PATH}:${WORKDIR}"
     links:
       - app
+      - rabbitmq
 
   # Minio s3
   s3:
@@ -74,3 +75,15 @@ services:
       MINIO_ROOT_PASSWORD: minio123
       MINIO_DOMAIN: s3:9000
     command: server /data --console-address ":9001"
+
+  # Broker
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: 4t9uYM6X6p
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - "./data/rabbitmq/:/var/lib/rabbitmq/"

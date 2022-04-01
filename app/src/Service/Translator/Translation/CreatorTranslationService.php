@@ -3,11 +3,8 @@
 namespace App\Service\Translator\Translation;
 
 use App\DTO\TranslationDTO;
-use App\Exception\UndefinedClassForDTOException;
-use App\Service\CRUD\CreatorCRUDService;
-use App\Service\Response\ApiResponseService;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Rest\CRUD\CreatorCRUD;
+use App\Rest\Http\Response;
 
 /**
  * Class CreatorTranslationService
@@ -16,31 +13,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorTranslationService extends CreatorCRUDService
+class CreatorTranslationService extends CreatorCRUD
 {
 
-    /**
-     * @param TranslationDTO     $translationDTO
-     * @param ValidatorInterface $validator
-     *
-     * @return ApiResponseService
-     * @throws UndefinedClassForDTOException
-     * @throws Exception
-     */
-    public function create(TranslationDTO $translationDTO, ValidatorInterface $validator): ApiResponseService
-    {
+	/**
+	 * @param TranslationDTO $translationDTO
+	 *
+	 * @return Response
+	 */
+	public function create(TranslationDTO $translationDTO): Response
+	{
 
-        $this->validator = $validator;
-        $this->validateEntity = true;
+		$this->validateEntity = true;
 
-        $createdEntity = $this->make($translationDTO);
+		$createdEntity = $this->make($translationDTO);
 
-        if ($createdEntity instanceof ApiResponseService) {
-            return $createdEntity;
-        }
+		if ($createdEntity instanceof Response) {
+			return $createdEntity;
+		}
 
-        return $this->push($createdEntity, 'translation@successAdd');
+		return $this->manager->push($createdEntity, 'translation@successAdd');
 
-    }
+	}
 
 }

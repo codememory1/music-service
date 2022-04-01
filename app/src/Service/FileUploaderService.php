@@ -2,10 +2,11 @@
 
 namespace App\Service;
 
+use App\Rest\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBag;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\FileBag;
 
@@ -19,202 +20,203 @@ use Symfony\Component\HttpFoundation\FileBag;
 class FileUploaderService
 {
 
-    /**
-     * @var FileBag
-     */
-    private FileBag $fileBag;
+	/**
+	 * @var FileBag
+	 */
+	private FileBag $fileBag;
 
-    /**
-     * @var ContainerBag
-     */
-    private ContainerBag $parameters;
+	/**
+	 * @var ParameterBagInterface
+	 */
+	private ParameterBagInterface $parameters;
 
-    /**
-     * @var string|null
-     */
-    private ?string $saveTo = null;
+	/**
+	 * @var string|null
+	 */
+	private ?string $saveTo = null;
 
-    /**
-     * @var array
-     */
-    private array $uploadedFile = [];
+	/**
+	 * @var array
+	 */
+	private array $uploadedFile = [];
 
-    /**
-     * @var UploadedFile|null
-     */
-    private ?UploadedFile $file = null;
+	/**
+	 * @var UploadedFile|null
+	 */
+	private ?UploadedFile $file = null;
 
-    /**
-     * @param FileBag      $fileBag
-     * @param ContainerBag $parameters
-     */
-    public function __construct(FileBag $fileBag, ContainerBag $parameters)
-    {
+	/**
+	 * @param Request               $request
+	 * @param ParameterBagInterface $parameters
+	 */
+	public function __construct(Request $request, ParameterBagInterface $parameters)
+	{
 
-        $this->fileBag = $fileBag;
-        $this->parameters = $parameters;
+		$this->fileBag = $request->request->files;
+		$this->parameters = $parameters;
 
-    }
+	}
 
-    /**
-     * @param string $path
-     *
-     * @return $this
-     */
-    public function setSaveTo(string $path): FileUploaderService
-    {
+	/**
+	 * @return array
+	 */
+	public function getUploadedFile(): array
+	{
 
-        $this->saveTo = $path;
+		return $this->uploadedFile;
 
-        return $this;
+	}
 
-    }
+	/**
+	 * @param string $requestFileName
+	 *
+	 * @return FileUploaderService
+	 */
+	public function initRequestFile(string $requestFileName): FileUploaderService
+	{
 
-    /**
-     * @return string|null
-     */
-    public function getSaveTo(): ?string
-    {
+		$this->file = $this->fileBag->get($requestFileName);
 
-        return $this->saveTo;
+		return $this;
 
-    }
+	}
 
-    /**
-     * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function getAbsoluteSaveTo(): string
-    {
+	/**
+	 * @return UploadedFile|null
+	 */
+	public function getInitializedRequestFile(): ?UploadedFile
+	{
 
-        $kernelProjectDir = rtrim($this->parameters->get('kernel.project_dir'), '/');
+		return $this->file;
 
-        return sprintf('%s/%s', $kernelProjectDir, rtrim($this->saveTo, '/'));
+	}
 
-    }
+	/**
+	 * @param callable|null $handlerFilename
+	 *
+	 * @return $this
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	public function upload(?callable $handlerFilename = null): FileUploaderService
+	{
 
-    /**
-     * @return array
-     */
-    public function getUploadedFile(): array
-    {
+		if (null !== $this->file) {
+			$filename = $this->file->getClientOriginalName();
 
-        return $this->uploadedFile;
+			if (null !== $handlerFilename) {
+				$extension = $this->getExtensionFromFilename($filename);
+				$filenameWithoutExtension = $this->getFilenameWithoutExtension($filename);
 
-    }
-    /**
-     * @param string $requestFileName
-     *
-     * @return FileUploaderService
-     */
-    public function initRequestFile(string $requestFileName): FileUploaderService
-    {
+				$filename = call_user_func($handlerFilename, $filenameWithoutExtension) . $extension;
+			}
 
-        $this->file = $this->fileBag->get($requestFileName);
+			$this->file->move($this->getAbsoluteSaveTo(), $filename);
 
-        return $this;
+			$this->uploadedFile = $this->schemaUploadedFile($filename);
+		}
 
-    }
+		return $this;
 
-    /**
-     * @return UploadedFile|null
-     */
-    public function getInitializedRequestFile(): ?UploadedFile
-    {
+	}
 
-        return $this->file;
+	/**
+	 * @param string $filename
+	 *
+	 * @return string|null
+	 */
+	public function getExtensionFromFilename(string $filename): ?string
+	{
 
-    }
+		$position = strripos($filename, '.');
 
-    /**
-     * @param callable|null $handlerFilename
-     *
-     * @return $this
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function upload(?callable $handlerFilename = null): FileUploaderService
-    {
+		if (!$position) {
+			return null;
+		}
 
-        if (null !== $this->file) {
-            $filename = $this->file->getClientOriginalName();
+		return substr($filename, $position);
 
-            if (null !== $handlerFilename) {
-                $extension = $this->getExtensionFromFilename($filename);
-                $filenameWithoutExtension = $this->getFilenameWithoutExtension($filename);
+	}
 
-                $filename = call_user_func($handlerFilename, $filenameWithoutExtension) . $extension;
-            }
+	/**
+	 * @param string $filename
+	 *
+	 * @return string|null
+	 */
+	public function getFilenameWithoutExtension(string $filename): ?string
+	{
 
-            $this->file->move($this->getAbsoluteSaveTo(), $filename);
+		$position = strripos($filename, '.');
 
-            $this->uploadedFile = $this->schemaUploadedFile($filename);
-        }
+		if (!$position) {
+			return null;
+		}
 
-        return $this;
+		return substr($filename, 0, $position);
 
-    }
+	}
 
-    /**
-     * @param string $filename
-     *
-     * @return array
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    #[ArrayShape([
-        'filename'                    => "string",
-        'filename_without_extension'  => "false|string",
-        'filename_with_absolute_path' => "string",
-        'filename_with_path'          => "string"
-    ])]
-    private function schemaUploadedFile(string $filename): array
-    {
+	/**
+	 * @return string
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	public function getAbsoluteSaveTo(): string
+	{
 
-        return [
-            'filename'                    => $filename,
-            'filename_without_extension'  => $this->getFilenameWithoutExtension($filename),
-            'filename_with_absolute_path' => $this->getAbsoluteSaveTo() . '/' . $filename,
-            'filename_with_path'          => $this->getSaveTo() . '/' . $filename
-        ];
+		$kernelProjectDir = rtrim($this->parameters->get('kernel.project_dir'), '/');
 
-    }
+		return sprintf('%s/%s', $kernelProjectDir, rtrim($this->saveTo, '/'));
 
-    /**
-     * @param string $filename
-     *
-     * @return string|null
-     */
-    public function getExtensionFromFilename(string $filename): ?string
-    {
+	}
 
-        $position = strripos($filename, '.');
+	/**
+	 * @param string $filename
+	 *
+	 * @return array
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	#[ArrayShape([
+		'filename'                    => "string",
+		'filename_without_extension'  => "false|string",
+		'filename_with_absolute_path' => "string",
+		'filename_with_path'          => "string"
+	])]
+	private function schemaUploadedFile(string $filename): array
+	{
 
-        if (!$position) {
-            return null;
-        }
+		return [
+			'filename'                    => $filename,
+			'filename_without_extension'  => $this->getFilenameWithoutExtension($filename),
+			'filename_with_absolute_path' => $this->getAbsoluteSaveTo() . '/' . $filename,
+			'filename_with_path'          => $this->getSaveTo() . '/' . $filename
+		];
 
-        return substr($filename, $position);
+	}
 
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getSaveTo(): ?string
+	{
 
-    /**
-     * @param string $filename
-     *
-     * @return string|null
-     */
-    public function getFilenameWithoutExtension(string $filename): ?string
-    {
+		return $this->saveTo;
 
-        $position = strripos($filename, '.');
+	}
 
-        if (!$position) {
-            return null;
-        }
+	/**
+	 * @param string $path
+	 *
+	 * @return $this
+	 */
+	public function setSaveTo(string $path): FileUploaderService
+	{
 
-        return substr($filename, 0, $position);
+		$this->saveTo = $path;
 
-    }
+		return $this;
+
+	}
 
 }

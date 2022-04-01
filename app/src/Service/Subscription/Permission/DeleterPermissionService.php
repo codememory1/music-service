@@ -3,10 +3,9 @@
 namespace App\Service\Subscription\Permission;
 
 use App\Entity\SubscriptionPermission;
-use App\Service\CRUD\DeleterCRUDService;
-use App\Service\Response\ApiResponseService;
+use App\Rest\CRUD\DeleterCRUD;
+use App\Rest\Http\Response;
 use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class DeleterPermissionService
@@ -15,31 +14,28 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class DeleterPermissionService extends DeleterCRUDService
+class DeleterPermissionService extends DeleterCRUD
 {
 
-    /**
-     * @param ValidatorInterface $validator
-     * @param int                $id
-     *
-     * @return ApiResponseService
-     * @throws Exception
-     */
-    public function delete(ValidatorInterface $validator, int $id): ApiResponseService
-    {
+	/**
+	 * @param int $id
+	 *
+	 * @return Response
+	 * @throws Exception
+	 */
+	public function delete(int $id): Response
+	{
 
-        $this->validator = $validator;
-        $this->messageNameNotExist = 'permission_not_exist';
-        $this->translationKeyNotExist = 'subscriptionPermission@notExist';
+		$this->translationKeyNotExist = 'subscriptionPermission@notExist';
 
-        $deletedEntity = $this->make(SubscriptionPermission::class, ['id' => $id]);
+		$deletedEntity = $this->make(SubscriptionPermission::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof ApiResponseService) {
-            return $deletedEntity;
-        }
+		if ($deletedEntity instanceof Response) {
+			return $deletedEntity;
+		}
 
-        return $this->remove($deletedEntity, 'subscriptionPermission@successDelete');
+		return $this->manager->remove($deletedEntity, 'subscriptionPermission@successDelete');
 
-    }
+	}
 
 }

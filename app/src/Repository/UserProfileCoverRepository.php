@@ -7,6 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class UserProfileCoverRepository
+ *
+ * @package App\Repository
+ *
+ * @author  Codememory
+ *
  * @method UserProfileCover|null find($id, $lockMode = null, $lockVersion = null)
  * @method UserProfileCover|null findOneBy(array $criteria, array $orderBy = null)
  * @method UserProfileCover[]    findAll()

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Interface\EntityInterface;
+use App\Interfaces\EntityInterface;
 use App\Repository\RolePermissionNameRepository;
 use App\Trait\Entity\IdentifierTrait;
 use App\Trait\Entity\TimestampTrait;

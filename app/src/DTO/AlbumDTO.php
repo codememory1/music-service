@@ -2,14 +2,18 @@
 
 namespace App\DTO;
 
+use App\DTO\Interceptor\AlbumInputCategoryInterceptor;
+use App\DTO\Interceptor\AlbumInputTagsInterceptor;
+use App\DTO\Interceptor\AlbumInputTypeInterceptor;
 use App\Entity\Album;
 use App\Entity\AlbumCategory;
 use App\Entity\AlbumType;
-use App\Service\RequestDataService;
+use App\Rest\DTO\AbstractDTO;
 use App\Validator\Constraints as AppAssert;
-use Doctrine\Persistence\ManagerRegistry;
+use ReflectionException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
 
 /**
  * Class AlbumDTO
@@ -21,190 +25,78 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AlbumDTO extends AbstractDTO
 {
 
-    /**
-     * @var array
-     */
-    protected array $requestKeys = [
-        'title', 'type', 'category', 'tags'
-    ];
+	/**
+	 * @var string|null
+	 */
+	#[Assert\NotBlank(message: 'album@titleIsRequired')]
+	#[Assert\Length(max: 255, maxMessage: 'album@titleMaxLength')]
+	public ?string $title = null;
 
-    /**
-     * @var string|null
-     */
-    protected ?string $entityClass = Album::class;
+	/**
+	 * @var AlbumType|null
+	 */
+	#[Assert\NotBlank(
+		message: 'album@typeNotExistOrNotEntered',
+		payload: 'type_not_exist_or_not_entered'
+	)]
+	public ?AlbumType $type = null;
 
-    /**
-     * @var array
-     */
-    protected array $valueAsEntity = [
-        'type'     => [AlbumType::class, 'id'],
-        'category' => [AlbumCategory::class, 'id'],
-    ];
+	/**
+	 * @var AlbumCategory|null
+	 */
+	#[Assert\NotBlank(
+		message: 'album@categoryNotExistOrNotEntered',
+		payload: 'category_not_exist_or_not_entered'
+	)]
+	public ?AlbumCategory $category = null;
 
-    /**
-     * @var string|null
-     */
-    #[Assert\NotBlank(message: 'album@titleIsRequired', payload: 'title_is_required')]
-    #[Assert\Length(max: 255, maxMessage: 'album@titleMaxLength', payload: 'title_length')]
-    private ?string $title = null;
+	/**
+	 * @var File|null
+	 */
+	#[Assert\NotBlank(message: 'album@photoIsRequired')]
+	#[Assert\File(
+		maxSize: '1024k',
+		mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+		maxSizeMessage: 'album@photoMaxSize',
+		mimeTypesMessage: 'album@photoMimeTypes'
+	)]
+	public ?File $photo = null;
 
-    /**
-     * @var AlbumType|null
-     */
-    #[Assert\NotBlank(
-        message: 'album@typeNotExistOrNotEntered',
-        payload: 'type_not_exist_or_not_entered'
-    )]
-    private ?AlbumType $type = null;
+	/**
+	 * @var array
+	 */
+	#[Assert\NotBlank(message: 'album@tagsIsRequired')]
+	#[AppAssert\QuantityByDelimiter(
+		',',
+		max: 255,
+		maxMessage: 'album@maxTags',
+		payload: 'number_of_tags'
+	)]
+	public array $tags = [];
 
-    /**
-     * @var AlbumCategory|null
-     */
-    #[Assert\NotBlank(
-        message: 'album@categoryNotExistOrNotEntered',
-        payload: 'category_not_exist_or_not_entered'
-    )]
-    private ?AlbumCategory $category = null;
+	/**
+	 * @return void
+	 * @throws ReflectionException
+	 * @throws ClassNotFoundException
+	 */
+	protected function wrapper(): void
+	{
 
-    /**
-     * @var File|null
-     */
-    #[Assert\NotBlank(message: 'album@photoIsRequired', payload: 'photo_is_required')]
-    #[Assert\File(
-        maxSize: '1024k',
-        mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
-        maxSizeMessage: 'album@photoMaxSize',
-        mimeTypesMessage: 'album@photoMimeTypes',
-        payload: 'photo_error'
-    )]
-    private ?File $photo = null;
+		$this->setEntity(Album::class);
 
-    /**
-     * @var string|null
-     */
-    #[Assert\NotBlank(message: 'album@tagsIsRequired', payload: 'tags_is_required')]
-    #[AppAssert\QuantityByDelimiter(
-        ',',
-        max: 255,
-        maxMessage: 'album@maxTags',
-        payload: 'number_of_tags'
-    )]
-    private ?string $tags = null;
+		$this
+			->addExpectedRequestKey('title')
+			->addExpectedRequestKey('type')
+			->addExpectedRequestKey('category')
+			->addExpectedRequestKey('tags');
 
-    /**
-     * @param string|null $title
-     *
-     * @return AlbumDTO
-     */
-    public function setTitle(?string $title): self
-    {
+		$this
+			->addInterceptor('type', AlbumInputTypeInterceptor::class)
+			->addInterceptor('category', AlbumInputCategoryInterceptor::class)
+			->addInterceptor('tags', AlbumInputTagsInterceptor::class);
 
-        $this->title = $title;
+		$this->photo = $this->request->request->files->get('photo');
 
-        return $this;
-
-    }
-    /**
-     * @return string|null
-     */
-    public function getTitle(): ?string
-    {
-
-        return $this->title;
-
-    }
-    /**
-     * @param AlbumType|null $type
-     *
-     * @return AlbumDTO
-     */
-    public function setType(?AlbumType $type): self
-    {
-
-        $this->type = $type;
-
-        return $this;
-
-    }
-    /**
-     * @return AlbumType|null
-     */
-    public function getType(): ?AlbumType
-    {
-
-        return $this->type;
-
-    }
-    /**
-     * @param AlbumCategory|null $category
-     *
-     * @return AlbumDTO
-     */
-    public function setCategory(?AlbumCategory $category): self
-    {
-
-        $this->category = $category;
-
-        return $this;
-
-    }
-    /**
-     * @return AlbumCategory|null
-     */
-    public function getCategory(): ?AlbumCategory
-    {
-
-        return $this->category;
-
-    }
-    /**
-     * @param File|null $photo
-     *
-     * @return AlbumDTO
-     */
-    public function setPhoto(?File $photo): self
-    {
-
-        $this->photo = $photo;
-
-        return $this;
-
-    }
-    /**
-     * @return File|null
-     */
-    public function getPhoto(): ?File
-    {
-
-        return $this->photo;
-
-    }
-    /**
-     * @param string|null $tags
-     *
-     * @return AlbumDTO
-     */
-    public function setTags(?string $tags): self
-    {
-
-        $this->tags = $tags;
-
-        return $this;
-
-    }
-    /**
-     * @return array
-     */
-    public function getTags(): array
-    {
-
-        $tags = explode(',', $this->tags);
-
-        return array_map(function(string|int $value) {
-
-            return trim($value);
-        }, $tags);
-
-    }
+	}
 
 }

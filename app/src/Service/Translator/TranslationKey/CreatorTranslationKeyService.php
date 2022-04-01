@@ -3,10 +3,8 @@
 namespace App\Service\Translator\TranslationKey;
 
 use App\DTO\TranslationKeyDTO;
-use App\Service\CRUD\CreatorCRUDService;
-use App\Service\Response\ApiResponseService;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Rest\CRUD\CreatorCRUD;
+use App\Rest\Http\Response;
 
 /**
  * Class CreatorTranslationKeyService
@@ -15,30 +13,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorTranslationKeyService extends CreatorCRUDService
+class CreatorTranslationKeyService extends CreatorCRUD
 {
 
-    /**
-     * @param TranslationKeyDTO  $translationKeyDTO
-     * @param ValidatorInterface $validator
-     *
-     * @return ApiResponseService
-     * @throws Exception
-     */
-    public function create(TranslationKeyDTO $translationKeyDTO, ValidatorInterface $validator): ApiResponseService
-    {
+	/**
+	 * @param TranslationKeyDTO $translationKeyDTO
+	 *
+	 * @return Response
+	 */
+	public function create(TranslationKeyDTO $translationKeyDTO): Response
+	{
 
-        $this->validator = $validator;
-        $this->validateEntity = true;
+		$this->validateEntity = true;
 
-        $createdEntity = $this->make($translationKeyDTO);
+		$createdEntity = $this->make($translationKeyDTO);
 
-        if ($createdEntity instanceof ApiResponseService) {
-            return $createdEntity;
-        }
+		if ($createdEntity instanceof Response) {
+			return $createdEntity;
+		}
 
-        return $this->push($createdEntity, 'translationKey@successCreate');
+		return $this->manager->push($createdEntity, 'translationKey@successCreate');
 
-    }
+	}
 
 }

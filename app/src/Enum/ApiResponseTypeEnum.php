@@ -12,16 +12,21 @@ namespace App\Enum;
 enum ApiResponseTypeEnum: string
 {
 
-    case INPUT_VALIDATION = 'input_validation';
-    case CHECK_EXIST = 'check_exist';
-    case CREATE = 'create';
-    case UPDATE = 'update';
-    case DELETE = 'delete';
-    case EXIST = 'exist';
-    case IS_VALID = 'is_valid';
-    case IS_INCORRECT = 'is_incorrect';
-    case AUTH = 'auth';
-    case CHECK_ACTIVE = 'check_active';
-    case CHECK_PERMISSION = 'check_permission';
+    case INPUT_VALIDATION = 'INPUT_VALIDATION';
+    case CHECK_EXIST = 'CHECK_EXIST';
+    case CREATE = 'CREATE';
+    case UPDATE = 'UPDATE';
+    case DELETE = 'DELETE';
+    case CHECK_VALID = 'CHECK_VALID';
+    case CHECK_INCORRECT = 'CHECK_INCORRECT';
+    case CHECK_ACTIVE = 'CHECK_ACTIVE';
+    case CHECK_ROLE_PERMISSION = 'CHECK_PERMISSION';
+	case CHECK_AUTH = 'CHECK_AUTH';
+	case CHECK_ROLE = 'CHECK_ROLE';
+	case CHECK_SUBSCRIPTION = 'CHECK_SUBSCRIPTION';
+	case CHECK_SUBSCRIPTION_PERMISSION = 'CHECK_SUBSCRIPTION_PERMISSION';
+	case SHOW = 'SHOW';
+	case AUTH = 'AUTH';
+	case REGISTRATION = 'REGISTRATION';
 
 }

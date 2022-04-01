@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Interface\EntityInterface;
+use App\Interfaces\EntityInterface;
 use App\Repository\UserProfileCoverRepository;
 use App\Trait\Entity\IdentifierTrait;
 use App\Trait\Entity\TimestampTrait;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,72 +23,72 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UserProfileCover implements EntityInterface
 {
 
-    use IdentifierTrait;
-    use TimestampTrait;
+	use IdentifierTrait;
+	use TimestampTrait;
 
-    /**
-     * @var UserProfile|null
-     */
-    #[ORM\OneToOne(inversedBy: 'userProfileCover', targetEntity: UserProfile::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'common@userProfileIsRequired', payload: 'user_profile_is_required')]
-    private ?UserProfile $userProfile = null;
+	/**
+	 * @var UserProfile|null
+	 */
+	#[ORM\OneToOne(inversedBy: 'userProfileCover', targetEntity: UserProfile::class, cascade: ['persist', 'remove'])]
+	#[ORM\JoinColumn(nullable: false)]
+	#[Assert\NotBlank(message: 'common@userProfileIsRequired', payload: 'user_profile_is_required')]
+	private ?UserProfile $userProfile = null;
 
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'text', options: [
-        'comment' => 'Path to cover'
-    ])]
-    #[Assert\NotBlank(message: 'userProfileCover@coverIsRequired', payload: 'cover_is_required')]
-    private ?string $cover = null;
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::TEXT, options: [
+		'comment' => 'Path to cover'
+	])]
+	#[Assert\NotBlank(message: 'userProfileCover@coverIsRequired', payload: 'cover_is_required')]
+	private ?string $cover = null;
 
-    /**
-     * @return UserProfile|null
-     */
-    public function getUserProfile(): ?UserProfile
-    {
+	/**
+	 * @return UserProfile|null
+	 */
+	public function getUserProfile(): ?UserProfile
+	{
 
-        return $this->userProfile;
+		return $this->userProfile;
 
-    }
+	}
 
-    /**
-     * @param UserProfile $userProfile
-     *
-     * @return $this
-     */
-    public function setUserProfile(UserProfile $userProfile): self
-    {
+	/**
+	 * @param UserProfile $userProfile
+	 *
+	 * @return $this
+	 */
+	public function setUserProfile(UserProfile $userProfile): self
+	{
 
-        $this->userProfile = $userProfile;
+		$this->userProfile = $userProfile;
 
-        return $this;
+		return $this;
 
-    }
+	}
 
-    /**
-     * @return string|null
-     */
-    public function getCover(): ?string
-    {
+	/**
+	 * @return string|null
+	 */
+	public function getCover(): ?string
+	{
 
-        return $this->cover;
+		return $this->cover;
 
-    }
+	}
 
-    /**
-     * @param string $cover
-     *
-     * @return $this
-     */
-    public function setCover(string $cover): self
-    {
+	/**
+	 * @param string $cover
+	 *
+	 * @return $this
+	 */
+	public function setCover(string $cover): self
+	{
 
-        $this->cover = $cover;
+		$this->cover = $cover;
 
-        return $this;
+		return $this;
 
-    }
+	}
 
 }

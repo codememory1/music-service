@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Interface\EntityInterface;
+use App\Interfaces\EntityInterface;
 use App\Repository\UserProfileRepository;
 use App\Trait\Entity\IdentifierTrait;
 use App\Trait\Entity\TimestampTrait;
 use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,236 +23,271 @@ use Doctrine\ORM\Mapping as ORM;
 class UserProfile implements EntityInterface
 {
 
-    use IdentifierTrait;
-    use TimestampTrait;
+	use IdentifierTrait;
+	use TimestampTrait;
 
-    /**
-     * @var User|null
-     */
-    #[ORM\OneToOne(inversedBy: 'userProfile', targetEntity: User::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+	/**
+	 * @var User|null
+	 */
+	#[ORM\OneToOne(inversedBy: 'userProfile', targetEntity: User::class, cascade: ['persist', 'remove'])]
+	#[ORM\JoinColumn(nullable: false)]
+	private ?User $user = null;
 
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'string', length: 50, options: [
-        'comment' => 'User real name'
-    ])]
-    private ?string $name = null;
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 50, options: [
+		'comment' => 'User real name'
+	])]
+	private ?string $name = null;
 
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'string', length: 50, nullable: true, options: [
-        'comment' => 'User real surname'
-    ])]
-    private ?string $surname = null;
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 50, nullable: true, options: [
+		'comment' => 'User real surname'
+	])]
+	private ?string $surname = null;
 
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'string', length: 50, nullable: true, options: [
-        'comment' => 'User real patronymic'
-    ])]
-    private ?string $patronymic = null;
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 50, nullable: true, options: [
+		'comment' => 'User real patronymic'
+	])]
+	private ?string $patronymic = null;
 
-    /**
-     * @var DateTimeInterface|null
-     */
-    #[ORM\Column(type: 'date', options: [
-        'comment' => 'User date of birth'
-    ])]
-    private ?DateTimeInterface $birth = null;
+	/**
+	 * @var DateTimeInterface|null
+	 */
+	#[ORM\Column(type: Types::DATE_MUTABLE, options: [
+		'comment' => 'User date of birth'
+	])]
+	private ?DateTimeInterface $birth = null;
 
-    /**
-     * @var UserProfileCover|null
-     */
-    #[ORM\OneToOne(mappedBy: 'userProfile', targetEntity: UserProfileCover::class, cascade: ['persist', 'remove'])]
-    private ?UserProfileCover $userProfileCover = null;
+	/**
+	 * @var UserProfileCover|null
+	 */
+	#[ORM\OneToOne(mappedBy: 'userProfile', targetEntity: UserProfileCover::class, cascade: ['persist', 'remove'])]
+	private ?UserProfileCover $userProfileCover = null;
 
-    /**
-     * @var UserProfilePhoto|null
-     */
-    #[ORM\OneToOne(mappedBy: 'userProfile', targetEntity: UserProfilePhoto::class, cascade: ['persist', 'remove'])]
-    private ?UserProfilePhoto $userProfilePhoto;
+	/**
+	 * @var UserProfilePhoto|null
+	 */
+	#[ORM\OneToOne(mappedBy: 'userProfile', targetEntity: UserProfilePhoto::class, cascade: ['persist', 'remove'])]
+	private ?UserProfilePhoto $userProfilePhoto;
 
-    /**
-     * @return User|null
-     */
-    public function getUser(): ?User
-    {
+	/**
+	 * @var UserProfileDesign|null
+	 */
+	#[ORM\OneToOne(mappedBy: 'userProfile', targetEntity: UserProfileDesign::class, cascade: ['persist', 'remove'])]
+	private ?UserProfileDesign $userProfileDesign = null;
 
-        return $this->user;
+	/**
+	 * @return User|null
+	 */
+	public function getUser(): ?User
+	{
 
-    }
+		return $this->user;
 
-    /**
-     * @param User $user
-     *
-     * @return $this
-     */
-    public function setUser(User $user): self
-    {
+	}
 
-        $this->user = $user;
+	/**
+	 * @param User $user
+	 *
+	 * @return $this
+	 */
+	public function setUser(User $user): self
+	{
 
-        return $this;
+		$this->user = $user;
 
-    }
+		return $this;
 
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
+	}
 
-        return $this->name;
+	/**
+	 * @return string|null
+	 */
+	public function getName(): ?string
+	{
 
-    }
+		return $this->name;
 
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName(string $name): self
-    {
+	}
 
-        $this->name = $name;
+	/**
+	 * @param string $name
+	 *
+	 * @return $this
+	 */
+	public function setName(string $name): self
+	{
 
-        return $this;
+		$this->name = $name;
 
-    }
+		return $this;
 
-    /**
-     * @return string|null
-     */
-    public function getSurname(): ?string
-    {
+	}
 
-        return $this->surname;
+	/**
+	 * @return string|null
+	 */
+	public function getSurname(): ?string
+	{
 
-    }
+		return $this->surname;
 
-    /**
-     * @param string $surname
-     *
-     * @return $this
-     */
-    public function setSurname(string $surname): self
-    {
+	}
 
-        $this->surname = $surname;
+	/**
+	 * @param string $surname
+	 *
+	 * @return $this
+	 */
+	public function setSurname(string $surname): self
+	{
 
-        return $this;
+		$this->surname = $surname;
 
-    }
+		return $this;
 
-    /**
-     * @return string|null
-     */
-    public function getPatronymic(): ?string
-    {
+	}
 
-        return $this->patronymic;
+	/**
+	 * @return string|null
+	 */
+	public function getPatronymic(): ?string
+	{
 
-    }
+		return $this->patronymic;
 
-    /**
-     * @param string|null $patronymic
-     *
-     * @return $this
-     */
-    public function setPatronymic(?string $patronymic): self
-    {
+	}
 
-        $this->patronymic = $patronymic;
+	/**
+	 * @param string|null $patronymic
+	 *
+	 * @return $this
+	 */
+	public function setPatronymic(?string $patronymic): self
+	{
 
-        return $this;
+		$this->patronymic = $patronymic;
 
-    }
+		return $this;
 
-    /**
-     * @return DateTimeInterface|null
-     */
-    public function getBirth(): ?DateTimeInterface
-    {
+	}
 
-        return $this->birth;
+	/**
+	 * @return DateTimeInterface|null
+	 */
+	public function getBirth(): ?DateTimeInterface
+	{
 
-    }
+		return $this->birth;
 
-    /**
-     * @param DateTimeInterface $birth
-     *
-     * @return $this
-     */
-    public function setBirth(DateTimeInterface $birth): self
-    {
+	}
 
-        $this->birth = $birth;
+	/**
+	 * @param DateTimeInterface $birth
+	 *
+	 * @return $this
+	 */
+	public function setBirth(DateTimeInterface $birth): self
+	{
 
-        return $this;
+		$this->birth = $birth;
 
-    }
+		return $this;
 
-    /**
-     * @return UserProfileCover|null
-     */
-    public function getUserProfileCover(): ?UserProfileCover
-    {
+	}
 
-        return $this->userProfileCover;
+	/**
+	 * @return UserProfileCover|null
+	 */
+	public function getUserProfileCover(): ?UserProfileCover
+	{
 
-    }
+		return $this->userProfileCover;
 
-    /**
-     * @param UserProfileCover $userProfileCover
-     *
-     * @return $this
-     */
-    public function setUserProfileCover(UserProfileCover $userProfileCover): self
-    {
+	}
 
-        // set the owning side of the relation if necessary
-        if ($userProfileCover->getUserProfile() !== $this) {
-            $userProfileCover->setUserProfile($this);
-        }
+	/**
+	 * @param UserProfileCover $userProfileCover
+	 *
+	 * @return $this
+	 */
+	public function setUserProfileCover(UserProfileCover $userProfileCover): self
+	{
 
-        $this->userProfileCover = $userProfileCover;
+		// set the owning side of the relation if necessary
+		if ($userProfileCover->getUserProfile() !== $this) {
+			$userProfileCover->setUserProfile($this);
+		}
 
-        return $this;
+		$this->userProfileCover = $userProfileCover;
 
-    }
+		return $this;
 
-    /**
-     * @return UserProfilePhoto|null
-     */
-    public function getUserProfilePhoto(): ?UserProfilePhoto
-    {
+	}
 
-        return $this->userProfilePhoto;
+	/**
+	 * @return UserProfilePhoto|null
+	 */
+	public function getUserProfilePhoto(): ?UserProfilePhoto
+	{
 
-    }
+		return $this->userProfilePhoto;
 
-    /**
-     * @param UserProfilePhoto $userProfilePhoto
-     *
-     * @return $this
-     */
-    public function setUserProfilePhoto(UserProfilePhoto $userProfilePhoto): self
-    {
+	}
 
-        // set the owning side of the relation if necessary
-        if ($userProfilePhoto->getUserProfile() !== $this) {
-            $userProfilePhoto->setUserProfile($this);
-        }
+	/**
+	 * @param UserProfilePhoto $userProfilePhoto
+	 *
+	 * @return $this
+	 */
+	public function setUserProfilePhoto(UserProfilePhoto $userProfilePhoto): self
+	{
 
-        $this->userProfilePhoto = $userProfilePhoto;
+		// set the owning side of the relation if necessary
+		if ($userProfilePhoto->getUserProfile() !== $this) {
+			$userProfilePhoto->setUserProfile($this);
+		}
 
-        return $this;
+		$this->userProfilePhoto = $userProfilePhoto;
 
-    }
+		return $this;
+
+	}
+
+	/**
+	 * @return UserProfileDesign|null
+	 */
+	public function getUserProfileDesign(): ?UserProfileDesign
+	{
+
+		return $this->userProfileDesign;
+
+	}
+
+	/**
+	 * @param UserProfileDesign $userProfileDesign
+	 *
+	 * @return $this
+	 */
+	public function setUserProfileDesign(UserProfileDesign $userProfileDesign): self
+	{
+
+		// set the owning side of the relation if necessary
+		if ($userProfileDesign->getUserProfile() !== $this) {
+			$userProfileDesign->setUserProfile($this);
+		}
+
+		$this->userProfileDesign = $userProfileDesign;
+
+		return $this;
+
+	}
 
 }

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Interface\EntityInterface;
+use App\Interfaces\EntityInterface;
 use App\Repository\RolePermissionRepository;
 use App\Trait\Entity\IdentifierTrait;
 use App\Trait\Entity\TimestampTrait;
@@ -27,7 +27,7 @@ class RolePermission implements EntityInterface
     /**
      * @var RolePermissionName|null
      */
-    #[ORM\ManyToOne(targetEntity: RolePermissionName::class, inversedBy: 'rolePermissions')]
+    #[ORM\ManyToOne(targetEntity: RolePermissionName::class, cascade: ['persist', 'remove'], inversedBy: 'rolePermissions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?RolePermissionName $rolePermissionName = null;
 

@@ -7,6 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class UserProfileRepository
+ *
+ * @package App\Repository
+ *
+ * @author  Codememory
+ *
  * @method UserProfile|null find($id, $lockMode = null, $lockVersion = null)
  * @method UserProfile|null findOneBy(array $criteria, array $orderBy = null)
  * @method UserProfile[]    findAll()

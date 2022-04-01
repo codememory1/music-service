@@ -7,6 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class UserSubscriptionRepository
+ *
+ * @package App\Repository
+ *
+ * @author  Codememory
+ *
  * @method UserSubscription|null find($id, $lockMode = null, $lockVersion = null)
  * @method UserSubscription|null findOneBy(array $criteria, array $orderBy = null)
  * @method UserSubscription[]    findAll()

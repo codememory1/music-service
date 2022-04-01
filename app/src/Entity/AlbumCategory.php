@@ -3,14 +3,13 @@
 namespace App\Entity;
 
 use App\Enum\ApiResponseTypeEnum;
-use App\Enum\RolePermissionNameEnum;
-use App\Interface\EntityInterface;
+use App\Interfaces\EntityInterface;
 use App\Repository\AlbumCategoryRepository;
 use App\Trait\Entity\IdentifierTrait;
 use App\Trait\Entity\TimestampTrait;
-use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -25,131 +24,107 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: AlbumCategoryRepository::class)]
 #[ORM\Table('album_categories')]
 #[UniqueEntity(
-    'titleTranslationKey',
-    'albumCategory@exist',
-    payload: [ApiResponseTypeEnum::CHECK_EXIST, 'category_exist']
-)]
-#[AppAssert\Authorization('common@authRequired', payload: 'not_authorized')]
-#[AppAssert\UserPermission(
-    RolePermissionNameEnum::CREATE_ALBUM_CATEGORY,
-    'common@accessDenied',
-    payload: 'not_enough_permissions'
+	'titleTranslationKey',
+	'albumCategory@exist',
+	payload: ApiResponseTypeEnum::CHECK_EXIST
 )]
 #[ORM\HasLifecycleCallbacks]
 class AlbumCategory implements EntityInterface
 {
 
-    use IdentifierTrait;
-    use TimestampTrait;
+	use IdentifierTrait;
+	use TimestampTrait;
 
-    /**
-     * @var int|null
-     */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+	/**
+	 * @var string|null
+	 */
+	#[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
+		'comment' => 'Album category translation key'
+	])]
+	private ?string $titleTranslationKey;
 
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(type: 'string', length: 255, unique: true, options: [
-        'comment' => 'Album category translation key'
-    ])]
-    private ?string $titleTranslationKey;
+	/**
+	 * @var Collection
+	 */
+	#[ORM\OneToMany(mappedBy: 'category', targetEntity: Album::class)]
+	private Collection $albums;
 
-    /**
-     * @var Collection
-     */
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Album::class)]
-    private Collection $albums;
+	#[Pure]
+	public function __construct()
+	{
 
-    #[Pure]
-    public function __construct()
-    {
+		$this->albums = new ArrayCollection();
 
-        $this->albums = new ArrayCollection();
+	}
 
-    }
+	/**
+	 * @return string|null
+	 */
+	public function getTitleTranslationKey(): ?string
+	{
 
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
+		return $this->titleTranslationKey;
 
-        return $this->id;
+	}
 
-    }
+	/**
+	 * @param string $titleTranslationKey
+	 *
+	 * @return $this
+	 */
+	public function setTitleTranslationKey(string $titleTranslationKey): self
+	{
 
-    /**
-     * @return string|null
-     */
-    public function getTitleTranslationKey(): ?string
-    {
+		$this->titleTranslationKey = $titleTranslationKey;
 
-        return $this->titleTranslationKey;
+		return $this;
 
-    }
+	}
 
-    /**
-     * @param string $titleTranslationKey
-     *
-     * @return $this
-     */
-    public function setTitleTranslationKey(string $titleTranslationKey): self
-    {
+	/**
+	 * @return Collection
+	 */
+	public function getAlbums(): Collection
+	{
 
-        $this->titleTranslationKey = $titleTranslationKey;
+		return $this->albums;
 
-        return $this;
+	}
 
-    }
+	/**
+	 * @param Album $album
+	 *
+	 * @return $this
+	 */
+	public function addAlbum(Album $album): self
+	{
 
-    /**
-     * @return Collection
-     */
-    public function getAlbums(): Collection
-    {
+		if (!$this->albums->contains($album)) {
+			$this->albums[] = $album;
+			$album->setCategory($this);
+		}
 
-        return $this->albums;
+		return $this;
 
-    }
+	}
 
-    /**
-     * @param Album $album
-     *
-     * @return $this
-     */
-    public function addAlbum(Album $album): self
-    {
+	/**
+	 * @param Album $album
+	 *
+	 * @return $this
+	 */
+	public function removeAlbum(Album $album): self
+	{
 
-        if (!$this->albums->contains($album)) {
-            $this->albums[] = $album;
-            $album->setCategory($this);
-        }
+		if ($this->albums->removeElement($album)) {
+			// set the owning side to null (unless already changed)
+			if ($album->getCategory() === $this) {
+				$album->setCategory(null);
+			}
+		}
 
-        return $this;
+		return $this;
 
-    }
-
-    /**
-     * @param Album $album
-     *
-     * @return $this
-     */
-    public function removeAlbum(Album $album): self
-    {
-
-        if ($this->albums->removeElement($album)) {
-            // set the owning side to null (unless already changed)
-            if ($album->getCategory() === $this) {
-                $album->setCategory(null);
-            }
-        }
-
-        return $this;
-
-    }
+	}
 
 }

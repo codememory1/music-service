@@ -3,10 +3,9 @@
 namespace App\Service\Subscription;
 
 use App\Entity\Subscription;
-use App\Service\CRUD\DeleterCRUDService;
-use App\Service\Response\ApiResponseService;
+use App\Rest\CRUD\DeleterCRUD;
+use App\Rest\Http\Response;
 use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class DeleterSubscriptionService
@@ -15,31 +14,28 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class DeleterSubscriptionService extends DeleterCRUDService
+class DeleterSubscriptionService extends DeleterCRUD
 {
 
-    /**
-     * @param ValidatorInterface $validator
-     * @param int                $id
-     *
-     * @return ApiResponseService
-     * @throws Exception
-     */
-    public function delete(ValidatorInterface $validator, int $id): ApiResponseService
-    {
+	/**
+	 * @param int $id
+	 *
+	 * @return Response
+	 * @throws Exception
+	 */
+	public function delete(int $id): Response
+	{
 
-        $this->validator = $validator;
-        $this->messageNameNotExist = 'subscription_not_exist';
-        $this->translationKeyNotExist = 'subscription@notExist';
+		$this->translationKeyNotExist = 'subscription@notExist';
 
-        $deletedEntity = $this->make(Subscription::class, ['id' => $id]);
+		$deletedEntity = $this->make(Subscription::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof ApiResponseService) {
-            return $deletedEntity;
-        }
+		if ($deletedEntity instanceof Response) {
+			return $deletedEntity;
+		}
 
-        return $this->remove($deletedEntity, 'subscription@successDelete');
+		return $this->manager->remove($deletedEntity, 'subscription@successDelete');
 
-    }
+	}
 
 }

@@ -2,17 +2,19 @@
 
 namespace App\Controller\Api\V1;
 
-use App\Controller\Api\AbstractApiController;
+use App\Annotation\Auth;
+use App\Annotation\UserRolePermission;
+use App\Controller\Api\ApiController;
 use App\DTO\SubscriptionPermissionNameDTO;
 use App\Entity\SubscriptionPermissionName;
+use App\Enum\RolePermissionNameEnum;
 use App\Exception\UndefinedClassForDTOException;
-use App\Service\RequestDataService;
+use App\Rest\Http\Request;
 use App\Service\Subscription\Permission\Name\CreatorPermissionNameService;
 use App\Service\Subscription\Permission\Name\DeleterPermissionNameService;
 use App\Service\Subscription\Permission\Name\UpdaterPermissionNameService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,78 +24,80 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author  Codememory
  */
-class SubscriptionPermissionNameController extends AbstractApiController
+#[Route('/subscription/permission/name')]
+class SubscriptionPermissionNameController extends ApiController
 {
 
-    /**
-     * @return JsonResponse
-     */
-    #[Route('/subscription/permission-names', methods: 'GET')]
-    public function all(): JsonResponse
-    {
+	/**
+	 * @return JsonResponse
+	 */
+	#[Route('/all', methods: 'GET')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::SHOW_SUBSCRIPTION_PERMISSION_NAMES)]
+	public function all(): JsonResponse
+	{
 
-        return $this->showAllFromDatabase(
-            SubscriptionPermissionName::class,
-            SubscriptionPermissionNameDTO::class
-        );
+		return $this->showAllFromDatabase(
+			SubscriptionPermissionName::class,
+			SubscriptionPermissionNameDTO::class
+		);
 
-    }
+	}
 
-    /**
-     * @param Request            $request
-     * @param RequestDataService $requestDataService
-     *
-     * @return JsonResponse
-     * @throws UndefinedClassForDTOException
-     */
-    #[Route('/subscription/permission-name/create', methods: 'POST')]
-    public function create(Request $request, RequestDataService $requestDataService): JsonResponse
-    {
+	/**
+	 * @param CreatorPermissionNameService $creatorPermissionNameService
+	 * @param Request                      $request
+	 *
+	 * @return JsonResponse
+	 * @throws UndefinedClassForDTOException
+	 */
+	#[Route('/create', methods: 'POST')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::CREATE_SUBSCRIPTION_PERMISSION_NAME)]
+	public function create(CreatorPermissionNameService $creatorPermissionNameService, Request $request): JsonResponse
+	{
 
-        /** @var CreatorPermissionNameService $service */
-        $service = $this->getCollectedService($request, CreatorPermissionNameService::class);
-        $subscriptionPermissionNameDTO = new SubscriptionPermissionNameDTO($requestDataService, $this->managerRegistry);
+		return $creatorPermissionNameService
+			->create(new SubscriptionPermissionNameDTO($request, $this->managerRegistry))
+			->make();
 
-        return $service->create($subscriptionPermissionNameDTO, $this->validator)->make();
+	}
 
-    }
+	/**
+	 * @param UpdaterPermissionNameService $updaterPermissionNameService
+	 * @param Request                      $request
+	 * @param int                          $id
+	 *
+	 * @return JsonResponse
+	 * @throws UndefinedClassForDTOException
+	 */
+	#[Route('/{id<\d+>}/edit', methods: 'PUT')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_SUBSCRIPTION_PERMISSION_NAME)]
+	public function update(UpdaterPermissionNameService $updaterPermissionNameService, Request $request, int $id): JsonResponse
+	{
 
-    /**
-     * @param Request            $request
-     * @param RequestDataService $requestDataService
-     * @param int                $id
-     *
-     * @return JsonResponse
-     * @throws UndefinedClassForDTOException
-     */
-    #[Route('/subscription/permission-name/{id<\d+>}/edit', methods: 'PUT')]
-    public function update(Request $request, RequestDataService $requestDataService, int $id): JsonResponse
-    {
+		return $updaterPermissionNameService
+			->update(new SubscriptionPermissionNameDTO($request, $this->managerRegistry), $id)
+			->make();
 
-        /** @var UpdaterPermissionNameService $service */
-        $service = $this->getCollectedService($request, UpdaterPermissionNameService::class);
-        $subscriptionPermissionNameDTO = new SubscriptionPermissionNameDTO($requestDataService, $this->managerRegistry);
+	}
 
-        return $service->update($subscriptionPermissionNameDTO, $this->validator, $id)->make();
+	/**
+	 * @param DeleterPermissionNameService $deleterPermissionNameService
+	 * @param int                          $id
+	 *
+	 * @return JsonResponse
+	 * @throws Exception
+	 */
+	#[Route('/{id<\d+>}/delete', methods: 'DELETE')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::DELETE_SUBSCRIPTION_PERMISSION_NAME)]
+	public function delete(DeleterPermissionNameService $deleterPermissionNameService, int $id): JsonResponse
+	{
 
-    }
+		return $deleterPermissionNameService->delete($id)->make();
 
-    /**
-     * @param int     $id
-     * @param Request $request
-     *
-     * @return JsonResponse
-     * @throws Exception
-     */
-    #[Route('/subscription/permission-name/{id<\d+>}/delete', methods: 'DELETE')]
-    public function delete(int $id, Request $request): JsonResponse
-    {
-
-        /** @var DeleterPermissionNameService $service */
-        $service = $this->getCollectedService($request, DeleterPermissionNameService::class);
-
-        return $service->delete($this->validator, $id)->make();
-
-    }
+	}
 
 }

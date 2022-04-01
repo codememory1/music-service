@@ -7,6 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class UserProfilePhotoRepository
+ *
+ * @package App\Repository
+ *
+ * @author  Codememory
+ *
  * @method UserProfilePhoto|null find($id, $lockMode = null, $lockVersion = null)
  * @method UserProfilePhoto|null findOneBy(array $criteria, array $orderBy = null)
  * @method UserProfilePhoto[]    findAll()

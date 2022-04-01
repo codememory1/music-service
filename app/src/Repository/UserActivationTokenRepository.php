@@ -7,6 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class UserActivationTokenRepository
+ *
+ * @package App\Repository
+ *
+ * @author  Codememory
+ *
  * @method UserActivationToken|null find($id, $lockMode = null, $lockVersion = null)
  * @method UserActivationToken|null findOneBy(array $criteria, array $orderBy = null)
  * @method UserActivationToken[]    findAll()
@@ -15,14 +21,14 @@ use Doctrine\Persistence\ManagerRegistry;
 class UserActivationTokenRepository extends ServiceEntityRepository
 {
 
-    /**
-     * @param ManagerRegistry $registry
-     */
-    public function __construct(ManagerRegistry $registry)
-    {
+	/**
+	 * @param ManagerRegistry $registry
+	 */
+	public function __construct(ManagerRegistry $registry)
+	{
 
-        parent::__construct($registry, UserActivationToken::class);
+		parent::__construct($registry, UserActivationToken::class);
 
-    }
+	}
 
 }

@@ -2,11 +2,15 @@
 
 namespace App\DTO;
 
+use App\DTO\Interceptor\SubscriptionPermissionInputPermissionNameInterceptor;
+use App\DTO\Interceptor\SubscriptionPermissionInputSubscriptionInterceptor;
 use App\Entity\Subscription;
 use App\Entity\SubscriptionPermission;
 use App\Entity\SubscriptionPermissionName;
-use JetBrains\PhpStorm\ArrayShape;
+use App\Rest\DTO\AbstractDTO;
+use ReflectionException;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
 
 /**
  * Class SubscriptionPermissionDTO
@@ -18,121 +22,36 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SubscriptionPermissionDTO extends AbstractDTO
 {
 
-    /**
-     * @var array|string[]
-     */
-    protected array $requestKeys = [
-        'subscription_permission_name',
-        'subscription'
-    ];
+	/**
+	 * @var SubscriptionPermissionName|null
+	 */
+	#[Assert\NotBlank(message: 'subscriptionPermission@permissionNameNotExistOrNotEntered')]
+	public ?SubscriptionPermissionName $subscriptionPermissionName = null;
 
-    /**
-     * @var array
-     */
-    protected array $valueAsEntity = [
-        'subscription_permission_name' => [SubscriptionPermissionName::class, 'key'],
-        'subscription'                 => [Subscription::class, 'id'],
-    ];
+	/**
+	 * @var Subscription|null
+	 */
+	#[Assert\NotBlank(message: 'subscriptionPermission@subscriptionNotExistOrNotEnetred')]
+	public ?Subscription $subscription = null;
 
-    /**
-     * @var string|null
-     */
-    protected ?string $entityClass = SubscriptionPermission::class;
+	/**
+	 * @return void
+	 * @throws ReflectionException
+	 * @throws ClassNotFoundException
+	 */
+	protected function wrapper(): void
+	{
 
-    /**
-     * @var SubscriptionPermissionName|null
-     */
-    #[Assert\NotBlank(
-        message: 'subscriptionPermission@permissionNameNotExistOrNotEntered',
-        payload: 'right_name_not_exist_or_not_entered'
-    )]
-    private ?SubscriptionPermissionName $subscriptionPermissionName = null;
+		$this->setEntity(SubscriptionPermission::class);
 
-    /**
-     * @var Subscription|null
-     */
-    #[Assert\NotBlank(
-        message: 'subscriptionPermission@subscriptionNotExistOrNotEnetred',
-        payload: 'subscription_not_exist_or_not_entered'
-    )]
-    private ?Subscription $subscription = null;
+		$this
+			->addExpectedRequestKey('permission_name')
+			->addExpectedRequestKey('subscription');
 
-    /**
-     * @param SubscriptionPermission $subscriptionPermission
-     * @param array                  $exclude
-     *
-     * @return array
-     */
-    #[ArrayShape([
-        'id'              => "int|null",
-        'permission_name' => "mixed",
-        'created_at'      => "string",
-        'updated_at'      => "null|string"
-    ])]
-    public function toArray(SubscriptionPermission $subscriptionPermission, array $exclude = []): array
-    {
+		$this
+			->addInterceptor('permission_name', SubscriptionPermissionInputPermissionNameInterceptor::class)
+			->addInterceptor('subscription', SubscriptionPermissionInputSubscriptionInterceptor::class);
 
-        $permissionName = $subscriptionPermission->getSubscriptionPermissionName();
-
-        $subscriptionPermission = [
-            'id'              => $subscriptionPermission->getId(),
-            'permission_name' => (new SubscriptionPermissionNameDTO())->toArray($permissionName),
-            'created_at'      => $subscriptionPermission->getCreatedAt()->format('Y-m-d H:i:s'),
-            'updated_at'      => $subscriptionPermission->getCreatedAt()?->format('Y-m-d H:i:s'),
-        ];
-
-        $this->excludeKeys($subscriptionPermission, $exclude);
-
-        return $subscriptionPermission;
-
-    }
-
-    /**
-     * @param SubscriptionPermissionName|null $subscriptionPermissionName
-     *
-     * @return SubscriptionPermissionDTO
-     */
-    public function setSubscriptionPermissionName(?SubscriptionPermissionName $subscriptionPermissionName): self
-    {
-
-        $this->subscriptionPermissionName = $subscriptionPermissionName;
-
-        return $this;
-
-    }
-
-    /**
-     * @return SubscriptionPermissionName|null
-     */
-    public function getSubscriptionPermissionName(): ?SubscriptionPermissionName
-    {
-
-        return $this->subscriptionPermissionName;
-
-    }
-
-    /**
-     * @param Subscription|null $subscription
-     *
-     * @return SubscriptionPermissionDTO
-     */
-    public function setSubscription(?Subscription $subscription): self
-    {
-
-        $this->subscription = $subscription;
-
-        return $this;
-
-    }
-
-    /**
-     * @return Subscription|null
-     */
-    public function getSubscription(): ?Subscription
-    {
-
-        return $this->subscription;
-
-    }
+	}
 
 }

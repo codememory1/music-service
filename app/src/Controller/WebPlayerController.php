@@ -2,10 +2,6 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-
 /**
  * Class WebPlayerController
  *
@@ -13,18 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author  Codememory
  */
-class WebPlayerController extends AbstractController
+class WebPlayerController extends OtherController
 {
-
-    /**
-     * @return Response
-     */
-    #[Route('/{path}', requirements: ['path' => '.*'], methods: 'GET')]
-    public function index(): Response
-    {
-
-        return $this->render('template.html.twig');
-
-    }
 
 }

@@ -2,17 +2,19 @@
 
 namespace App\Controller\Api\V1;
 
-use App\Controller\Api\AbstractApiController;
+use App\Annotation\Auth;
+use App\Annotation\UserRolePermission;
+use App\Controller\Api\ApiController;
 use App\DTO\AlbumCategoryDTO;
 use App\Entity\AlbumCategory;
+use App\Enum\RolePermissionNameEnum;
 use App\Exception\UndefinedClassForDTOException;
+use App\Rest\Http\Request;
 use App\Service\Album\Category\CreatorAlbumCategoryService;
 use App\Service\Album\Category\DeleterAlbumCategoryService;
 use App\Service\Album\Category\UpdaterAlbumCategoryService;
-use App\Service\RequestDataService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,78 +24,78 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author  Codememory
  */
-class AlbumCategoryController extends AbstractApiController
+#[Route('/album/category')]
+class AlbumCategoryController extends ApiController
 {
 
-    /**
-     * @return JsonResponse
-     */
-    #[Route('/album/categories', methods: 'GET')]
-    public function all(): JsonResponse
-    {
+	/**
+	 * @return JsonResponse
+	 */
+	#[Route('/all', methods: 'GET')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::SHOW_ALBUM_CATEGORIES)]
+	public function all(): JsonResponse
+	{
 
-        return $this->showAllFromDatabase(
-            AlbumCategory::class,
-            AlbumCategoryDTO::class
-        );
+		return $this->showAllFromDatabase(
+			AlbumCategory::class,
+			AlbumCategoryDTO::class
+		);
 
-    }
+	}
 
-    /**
-     * @param Request            $request
-     * @param RequestDataService $requestDataService
-     *
-     * @return JsonResponse
-     * @throws UndefinedClassForDTOException
-     */
-    #[Route('/album/category/create', methods: 'POST')]
-    public function create(Request $request, RequestDataService $requestDataService): JsonResponse
-    {
+	/**
+	 * @param CreatorAlbumCategoryService $creatorAlbumCategoryService
+	 * @param Request                     $request
+	 *
+	 * @return JsonResponse
+	 */
+	#[Route('/create', methods: 'POST')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::CREATE_ALBUM_CATEGORY)]
+	public function create(CreatorAlbumCategoryService $creatorAlbumCategoryService, Request $request): JsonResponse
+	{
 
-        /** @var CreatorAlbumCategoryService $service */
-        $service = $this->getCollectedService($request, CreatorAlbumCategoryService::class);
-        $albumCategoryDTO = new AlbumCategoryDTO($requestDataService, $this->managerRegistry);
+		return $creatorAlbumCategoryService
+			->create(new AlbumCategoryDTO($request, $this->managerRegistry))
+			->make();
 
-        return $service->create($albumCategoryDTO, $this->validator)->make();
+	}
 
-    }
+	/**
+	 * @param UpdaterAlbumCategoryService $updaterAlbumCategoryService
+	 * @param Request                     $request
+	 * @param int                         $id
+	 *
+	 * @return JsonResponse
+	 */
+	#[Route('/{id<\d+>}/edit', methods: 'PUT')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_ALBUM_CATEGORY)]
+	public function update(UpdaterAlbumCategoryService $updaterAlbumCategoryService, Request $request, int $id): JsonResponse
+	{
 
-    /**
-     * @param Request            $request
-     * @param RequestDataService $requestDataService
-     * @param int                $id
-     *
-     * @return JsonResponse
-     * @throws UndefinedClassForDTOException
-     */
-    #[Route('/album/category/{id<\d+>}/edit', methods: 'PUT')]
-    public function update(Request $request, RequestDataService $requestDataService, int $id): JsonResponse
-    {
+		return $updaterAlbumCategoryService
+			->update(new AlbumCategoryDTO($request, $this->managerRegistry), $id)
+			->make();
 
-        /** @var UpdaterAlbumCategoryService $service */
-        $service = $this->getCollectedService($request, UpdaterAlbumCategoryService::class);
-        $albumCategoryDTO = new AlbumCategoryDTO($requestDataService, $this->managerRegistry);
+	}
 
-        return $service->update($albumCategoryDTO, $this->validator, $id)->make();
+	/**
+	 * @param DeleterAlbumCategoryService $deleterAlbumCategoryService
+	 * @param int                         $id
+	 *
+	 * @return JsonResponse
+	 * @throws Exception
+	 */
+	#[Route('/{id<\d+>}/delete', methods: 'DELETE')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::DELETE_ALBUM_CATEGORY)]
+	public function delete(DeleterAlbumCategoryService $deleterAlbumCategoryService, int $id): JsonResponse
+	{
 
-    }
+		return $deleterAlbumCategoryService->delete($id)->make();
 
-    /**
-     * @param Request $request
-     * @param int     $id
-     *
-     * @return JsonResponse
-     * @throws Exception
-     */
-    #[Route('/album/category/{id<\d+>}/delete', methods: 'DELETE')]
-    public function delete(Request $request, int $id): JsonResponse
-    {
-
-        /** @var DeleterAlbumCategoryService $service */
-        $service = $this->getCollectedService($request, DeleterAlbumCategoryService::class);
-
-        return $service->delete($this->validator, $id)->make();
-
-    }
+	}
 
 }

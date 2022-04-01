@@ -3,10 +3,8 @@
 namespace App\Service\Translator\Language;
 
 use App\DTO\LanguageDTO;
-use App\Service\CRUD\UpdaterCRUDService;
-use App\Service\Response\ApiResponseService;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Rest\CRUD\UpdaterCRUD;
+use App\Rest\Http\Response;
 
 /**
  * Class UpdaterLanguageService
@@ -15,33 +13,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class UpdaterLanguageService extends UpdaterCRUDService
+class UpdaterLanguageService extends UpdaterCRUD
 {
 
-    /**
-     * @param LanguageDTO        $languageDTO
-     * @param ValidatorInterface $validator
-     * @param int                $id
-     *
-     * @return ApiResponseService
-     * @throws Exception
-     */
-    public function update(LanguageDTO $languageDTO, ValidatorInterface $validator, int $id): ApiResponseService
-    {
+	/**
+	 * @param LanguageDTO $languageDTO
+	 * @param int         $id
+	 *
+	 * @return Response
+	 */
+	public function update(LanguageDTO $languageDTO, int $id): Response
+	{
 
-        $this->validator = $validator;
-        $this->validateEntity = true;
-        $this->messageNameNotExist = 'lang_not_exist';
-        $this->translationKeyNotExist = 'lang@langNotExist';
+		$this->validateEntity = true;
+		$this->translationKeyNotExist = 'lang@langNotExist';
 
-        $updatedEntity = $this->make($languageDTO, ['id' => $id]);
+		$updatedEntity = $this->make($languageDTO, ['id' => $id]);
 
-        if ($updatedEntity instanceof ApiResponseService) {
-            return $updatedEntity;
-        }
+		if ($updatedEntity instanceof Response) {
+			return $updatedEntity;
+		}
 
-        return $this->push($updatedEntity, 'lang@successUpdate', true);
+		return $this->manager->update($updatedEntity, 'lang@successUpdate');
 
-    }
+	}
 
 }

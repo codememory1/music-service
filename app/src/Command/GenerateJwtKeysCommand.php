@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Codememory\Support\Str;
 use sixlive\DotenvEditor\DotenvEditor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -73,26 +74,24 @@ class GenerateJwtKeysCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $editor = new DotenvEditor();
 
-        $publicPath = $this->params->get('jwt.path.public_key');
-        $privatePath = $this->params->get('jwt.path.private_key');
+        $publicPath = $this->generateFilename($variablePrefix);
+        $privatePath = $this->generateFilename($variablePrefix, true);
+
+        if (!is_dir($this->params->get('jwt.secrets'))) {
+            mkdir($this->params->get('jwt.secrets'), 0777, true);
+        }
 
         shell_exec("openssl genrsa -out $privatePath 2048");
         shell_exec("openssl rsa -in $privatePath -outform PEM -pubout -out $publicPath");
 
-        $publicKey = base64_encode(file_get_contents($publicPath));
-        $privateKey = base64_encode(file_get_contents($privatePath));
-
-        unlink($publicPath);
-        unlink($privatePath);
-
         $editor->load($envFile);
-        $editor->set($this->getFullPublic($variablePrefix), $publicKey);
-        $editor->set($this->getFullPrivate($variablePrefix), $privateKey);
+        $editor->set($this->generatePublicVariableName($variablePrefix), $publicPath);
+        $editor->set($this->generatePrivateVariableName($variablePrefix), $privatePath);
 
         $editor->save($envFile);
 
-        $io->success("New {$this->getFullPublic($variablePrefix)} was generated: $publicKey");
-        $io->success("New {$this->getFullPrivate($variablePrefix)} was generated: $privateKey");
+        $io->success("New {$this->generatePublicVariableName($variablePrefix)} was generated: $publicPath");
+        $io->success("New {$this->generatePrivateVariableName($variablePrefix)} was generated: $privatePath");
 
         return self::SUCCESS;
 
@@ -103,7 +102,7 @@ class GenerateJwtKeysCommand extends Command
      *
      * @return string
      */
-    private function getFullPublic(string $prefix): string
+    private function generatePublicVariableName(string $prefix): string
     {
 
         return $prefix . '_PUBLIC_KEY';
@@ -115,10 +114,26 @@ class GenerateJwtKeysCommand extends Command
      *
      * @return string
      */
-    private function getFullPrivate(string $prefix): string
+    private function generatePrivateVariableName(string $prefix): string
     {
 
         return $prefix . '_PRIVATE_KEY';
+
+    }
+
+    /**
+     * @param string $prefix
+     * @param bool   $isPrivate
+     *
+     * @return string
+     */
+    private function generateFilename(string $prefix, bool $isPrivate = false): string
+    {
+
+        $prefix = Str::toLowercase($prefix);
+        $prefix .= $isPrivate ? '_private.pem' : '_public.pem';
+
+        return $this->params->get('jwt.secrets') . $prefix;
 
     }
 

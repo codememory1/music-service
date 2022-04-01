@@ -7,6 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class TranslationRepository
+ *
+ * @package App\Repository
+ *
+ * @author  Codememory
+ *
  * @method Translation|null find($id, $lockMode = null, $lockVersion = null)
  * @method Translation|null findOneBy(array $criteria, array $orderBy = null)
  * @method Translation[]    findAll()
@@ -24,5 +30,5 @@ class TranslationRepository extends ServiceEntityRepository
         parent::__construct($registry, Translation::class);
 
     }
-
+    
 }

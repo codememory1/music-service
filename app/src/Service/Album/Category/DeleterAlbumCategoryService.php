@@ -3,10 +3,9 @@
 namespace App\Service\Album\Category;
 
 use App\Entity\AlbumCategory;
-use App\Service\CRUD\DeleterCRUDService;
-use App\Service\Response\ApiResponseService;
+use App\Rest\CRUD\DeleterCRUD;
+use App\Rest\Http\Response;
 use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class DeleterAlbumCategoryService
@@ -15,31 +14,28 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class DeleterAlbumCategoryService extends DeleterCRUDService
+class DeleterAlbumCategoryService extends DeleterCRUD
 {
 
-    /**
-     * @param ValidatorInterface $validator
-     * @param int                $id
-     *
-     * @return ApiResponseService
-     * @throws Exception
-     */
-    public function delete(ValidatorInterface $validator, int $id): ApiResponseService
-    {
+	/**
+	 * @param int $id
+	 *
+	 * @return Response
+	 * @throws Exception
+	 */
+	public function delete(int $id): Response
+	{
 
-        $this->validator = $validator;
-        $this->messageNameNotExist = 'album_category_not_exist';
-        $this->translationKeyNotExist = 'albumCategory@notExist';
+		$this->translationKeyNotExist = 'albumCategory@notExist';
 
-        $deletedEntity = $this->make(AlbumCategory::class, ['id' => $id]);
+		$deletedEntity = $this->make(AlbumCategory::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof ApiResponseService) {
-            return $deletedEntity;
-        }
+		if ($deletedEntity instanceof Response) {
+			return $deletedEntity;
+		}
 
-        return $this->remove($deletedEntity, 'albumCategory@successDelete');
+		return $this->manager->remove($deletedEntity, 'albumCategory@successDelete');
 
-    }
+	}
 
 }

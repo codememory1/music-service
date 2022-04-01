@@ -32,3 +32,6 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+@import "../../assets/css/components/players/base-desktop-player";
+</style>

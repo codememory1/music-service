@@ -3,11 +3,8 @@
 namespace App\Service\Subscription\Permission\Name;
 
 use App\DTO\SubscriptionPermissionNameDTO;
-use App\Exception\UndefinedClassForDTOException;
-use App\Service\CRUD\UpdaterCRUDService;
-use App\Service\Response\ApiResponseService;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Rest\CRUD\UpdaterCRUD;
+use App\Rest\Http\Response;
 
 /**
  * Class UpdaterPermissionNameService
@@ -16,34 +13,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class UpdaterPermissionNameService extends UpdaterCRUDService
+class UpdaterPermissionNameService extends UpdaterCRUD
 {
 
-    /**
-     * @param SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO
-     * @param ValidatorInterface            $validator
-     * @param int                           $id
-     *
-     * @return ApiResponseService
-     * @throws UndefinedClassForDTOException
-     * @throws Exception
-     */
-    public function update(SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO, ValidatorInterface $validator, int $id): ApiResponseService
-    {
+	/**
+	 * @param SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO
+	 * @param int                           $id
+	 *
+	 * @return Response
+	 */
+	public function update(SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO, int $id): Response
+	{
 
-        $this->validator = $validator;
-        $this->validateEntity = true;
-        $this->messageNameNotExist = 'subscription_permission_name_not_exist';
-        $this->translationKeyNotExist = 'subscriptionPermissionName@notExist';
+		$this->validateEntity = true;
+		$this->translationKeyNotExist = 'subscriptionPermissionName@notExist';
 
-        $updatedEntity = $this->make($subscriptionPermissionNameDTO, ['id' => $id]);
+		$updatedEntity = $this->make($subscriptionPermissionNameDTO, ['id' => $id]);
 
-        if ($updatedEntity instanceof ApiResponseService) {
-            return $updatedEntity;
-        }
+		if ($updatedEntity instanceof Response) {
+			return $updatedEntity;
+		}
 
-        return $this->push($updatedEntity, 'subscriptionPermissionName@successUpdate', true);
+		return $this->manager->update($updatedEntity, 'subscriptionPermissionName@successUpdate');
 
-    }
+	}
 
 }

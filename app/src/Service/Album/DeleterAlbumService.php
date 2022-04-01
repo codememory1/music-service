@@ -3,10 +3,9 @@
 namespace App\Service\Album;
 
 use App\Entity\Album;
-use App\Service\CRUD\DeleterCRUDService;
-use App\Service\Response\ApiResponseService;
+use App\Rest\CRUD\DeleterCRUD;
+use App\Rest\Http\Response;
 use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class DeleterAlbumService
@@ -15,52 +14,49 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class DeleterAlbumService extends DeleterCRUDService
+class DeleterAlbumService extends DeleterCRUD
 {
 
-    /**
-     * @param ValidatorInterface $validator
-     * @param string             $kernelProjectDir
-     * @param int                $id
-     *
-     * @return ApiResponseService
-     * @throws Exception
-     */
-    public function delete(ValidatorInterface $validator, string $kernelProjectDir, int $id): ApiResponseService
-    {
+	/**
+	 * @param string $kernelProjectDir
+	 * @param int    $id
+	 *
+	 * @return Response
+	 * @throws Exception
+	 */
+	public function delete(string $kernelProjectDir, int $id): Response
+	{
 
-        $this->validator = $validator;
-        $this->messageNameNotExist = 'album_not_exist';
-        $this->translationKeyNotExist = 'album@notExist';
+		$this->translationKeyNotExist = 'album@notExist';
 
-        /** @var ApiResponseService|Album $deletedEntity */
-        $deletedEntity = $this->make(Album::class, ['id' => $id]);
+		/** @var Response|Album $deletedEntity */
+		$deletedEntity = $this->make(Album::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof ApiResponseService) {
-            return $deletedEntity;
-        }
+		if ($deletedEntity instanceof Response) {
+			return $deletedEntity;
+		}
 
-        $this->deletePhoto($deletedEntity, $kernelProjectDir);
+		$this->deletePhoto($deletedEntity, $kernelProjectDir);
 
-        return $this->remove($deletedEntity, 'album@successDelete');
+		return $this->manager->remove($deletedEntity, 'album@successDelete');
 
-    }
+	}
 
-    /**
-     * @param Album  $album
-     * @param string $kernelProjectDir
-     *
-     * @return void
-     */
-    private function deletePhoto(Album $album, string $kernelProjectDir): void
-    {
+	/**
+	 * @param Album  $album
+	 * @param string $kernelProjectDir
+	 *
+	 * @return void
+	 */
+	private function deletePhoto(Album $album, string $kernelProjectDir): void
+	{
 
-        $absolutePathPhoto = sprintf('%s/%s', $kernelProjectDir, $album->getPhoto());
+		$absolutePathPhoto = sprintf('%s/%s', $kernelProjectDir, $album->getPhoto());
 
-        if (file_exists($absolutePathPhoto)) {
-            unlink($absolutePathPhoto);
-        }
+		if (file_exists($absolutePathPhoto)) {
+			unlink($absolutePathPhoto);
+		}
 
-    }
+	}
 
 }

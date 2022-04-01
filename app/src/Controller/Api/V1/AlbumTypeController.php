@@ -2,17 +2,19 @@
 
 namespace App\Controller\Api\V1;
 
-use App\Controller\Api\AbstractApiController;
+use App\Annotation\Auth;
+use App\Annotation\UserRolePermission;
+use App\Controller\Api\ApiController;
 use App\DTO\AlbumTypeDTO;
 use App\Entity\AlbumType;
+use App\Enum\RolePermissionNameEnum;
 use App\Exception\UndefinedClassForDTOException;
+use App\Rest\Http\Request;
 use App\Service\Album\Type\CreatorAlbumTypeService;
 use App\Service\Album\Type\DeleterAlbumTypeService;
 use App\Service\Album\Type\UpdaterAlbumTypeService;
-use App\Service\RequestDataService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,78 +24,80 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author  Codememory
  */
-class AlbumTypeController extends AbstractApiController
+#[Route('/album/type')]
+class AlbumTypeController extends ApiController
 {
 
-    /**
-     * @return JsonResponse
-     */
-    #[Route('/album/types', methods: 'GET')]
-    public function all(): JsonResponse
-    {
+	/**
+	 * @return JsonResponse
+	 */
+	#[Route('/all', methods: 'GET')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::SHOW_ALBUM_TYPES)]
+	public function all(): JsonResponse
+	{
 
-        return $this->showAllFromDatabase(
-            AlbumType::class,
-            AlbumTypeDTO::class
-        );
+		return $this->showAllFromDatabase(
+			AlbumType::class,
+			AlbumTypeDTO::class
+		);
 
-    }
+	}
 
-    /**
-     * @param Request            $request
-     * @param RequestDataService $requestDataService
-     *
-     * @return JsonResponse
-     * @throws UndefinedClassForDTOException
-     */
-    #[Route('/album/type/create', methods: 'POST')]
-    public function create(Request $request, RequestDataService $requestDataService): JsonResponse
-    {
+	/**
+	 * @param CreatorAlbumTypeService $creatorAlbumTypeService
+	 * @param Request                 $request
+	 *
+	 * @return JsonResponse
+	 * @throws UndefinedClassForDTOException
+	 */
+	#[Route('/create', methods: 'POST')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::CREATE_ALBUM_TYPE)]
+	public function create(CreatorAlbumTypeService $creatorAlbumTypeService, Request $request): JsonResponse
+	{
 
-        /** @var CreatorAlbumTypeService $service */
-        $service = $this->getCollectedService($request, CreatorAlbumTypeService::class);
-        $albumTypeDTO = new AlbumTypeDTO($requestDataService, $this->managerRegistry);
+		return $creatorAlbumTypeService
+			->create(new AlbumTypeDTO($request, $this->managerRegistry))
+			->make();
 
-        return $service->create($albumTypeDTO, $this->validator)->make();
+	}
 
-    }
+	/**
+	 * @param UpdaterAlbumTypeService $updaterAlbumTypeService
+	 * @param Request                 $request
+	 * @param int                     $id
+	 *
+	 * @return JsonResponse
+	 * @throws UndefinedClassForDTOException
+	 */
+	#[Route('/{id<\d+>}/edit', methods: 'PUT')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_ALBUM_TYPE)]
+	public function update(UpdaterAlbumTypeService $updaterAlbumTypeService, Request $request, int $id): JsonResponse
+	{
 
-    /**
-     * @param Request            $request
-     * @param RequestDataService $requestDataService
-     * @param int                $id
-     *
-     * @return JsonResponse
-     * @throws UndefinedClassForDTOException
-     */
-    #[Route('/album/type/{id<\d+>}/edit', methods: 'PUT')]
-    public function update(Request $request, RequestDataService $requestDataService, int $id): JsonResponse
-    {
+		return $updaterAlbumTypeService
+			->update(new AlbumTypeDTO($request, $this->managerRegistry), $id)
+			->make();
 
-        /** @var UpdaterAlbumTypeService $service */
-        $service = $this->getCollectedService($request, UpdaterAlbumTypeService::class);
-        $albumTypeDTO = new AlbumTypeDTO($requestDataService, $this->managerRegistry);
+	}
 
-        return $service->update($albumTypeDTO, $this->validator, $id)->make();
+	/**
+	 * @param DeleterAlbumTypeService $deleterAlbumTypeService
+	 * @param int                     $id
+	 *
+	 * @return JsonResponse
+	 * @throws Exception
+	 */
+	#[Route('/{id<\d+>}/delete', methods: 'DELETE')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::DELETE_ALBUM_TYPE)]
+	public function delete(DeleterAlbumTypeService $deleterAlbumTypeService, int $id): JsonResponse
+	{
 
-    }
+		return $deleterAlbumTypeService->delete($id)->make();
 
-    /**
-     * @param Request $request
-     * @param int     $id
-     *
-     * @return JsonResponse
-     * @throws Exception
-     */
-    #[Route('/album/type/{id<\d+>}/delete', methods: 'DELETE')]
-    public function delete(Request $request, int $id): JsonResponse
-    {
-
-        /** @var DeleterAlbumTypeService $service */
-        $service = $this->getCollectedService($request, DeleterAlbumTypeService::class);
-
-        return $service->delete($this->validator, $id)->make();
-
-    }
+	}
 
 }

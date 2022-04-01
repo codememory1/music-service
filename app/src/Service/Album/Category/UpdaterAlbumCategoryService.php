@@ -3,11 +3,8 @@
 namespace App\Service\Album\Category;
 
 use App\DTO\AlbumCategoryDTO;
-use App\Exception\UndefinedClassForDTOException;
-use App\Service\CRUD\UpdaterCRUDService;
-use App\Service\Response\ApiResponseService;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Rest\CRUD\UpdaterCRUD;
+use App\Rest\Http\Response;
 
 /**
  * Class UpdaterAlbumCategoryService
@@ -16,34 +13,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class UpdaterAlbumCategoryService extends UpdaterCRUDService
+class UpdaterAlbumCategoryService extends UpdaterCRUD
 {
 
-    /**
-     * @param AlbumCategoryDTO   $albumCategoryDTO
-     * @param ValidatorInterface $validator
-     * @param int                $id
-     *
-     * @return ApiResponseService
-     * @throws UndefinedClassForDTOException
-     * @throws Exception
-     */
-    public function update(AlbumCategoryDTO $albumCategoryDTO, ValidatorInterface $validator, int $id): ApiResponseService
-    {
+	/**
+	 * @param AlbumCategoryDTO $albumCategoryDTO
+	 * @param int              $id
+	 *
+	 * @return Response
+	 */
+	public function update(AlbumCategoryDTO $albumCategoryDTO, int $id): Response
+	{
 
-        $this->validator = $validator;
-        $this->validateEntity = true;
-        $this->messageNameNotExist = 'album_category_not_exist';
-        $this->translationKeyNotExist = 'albumCategory@notExist';
+		$this->validateEntity = true;
+		$this->translationKeyNotExist = 'albumCategory@notExist';
 
-        $updatedEntity = $this->make($albumCategoryDTO, ['id' => $id]);
+		$updatedEntity = $this->make($albumCategoryDTO, ['id' => $id]);
 
-        if ($updatedEntity instanceof ApiResponseService) {
-            return $updatedEntity;
-        }
+		if ($updatedEntity instanceof Response) {
+			return $updatedEntity;
+		}
 
-        return $this->push($updatedEntity, 'albumCategory@successUpdate', true);
+		return $this->manager->update($updatedEntity, 'albumCategory@successUpdate');
 
-    }
+	}
 
 }

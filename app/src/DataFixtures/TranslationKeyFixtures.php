@@ -65,6 +65,7 @@ class TranslationKeyFixtures extends Fixture
         'common@descriptionTranslationKeyNotExist',
         'common@accessDenied',
         'common@authRequired',
+		'common@successRegister',
 
         'lang@codeExist',
         'lang@langNotExist',
@@ -100,7 +101,6 @@ class TranslationKeyFixtures extends Fixture
         'user@passwordMinLength',
         'user@passwordRegex',
         'user@roleIsRequired',
-        'user@successRegister',
         'user@invalidPasswordConfirm',
         'user@passwordConfirmIsRequired',
         'user@failedToIdentityUser',

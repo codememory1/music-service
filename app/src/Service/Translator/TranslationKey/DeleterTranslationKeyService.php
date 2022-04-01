@@ -3,10 +3,9 @@
 namespace App\Service\Translator\TranslationKey;
 
 use App\Entity\TranslationKey;
-use App\Service\CRUD\DeleterCRUDService;
-use App\Service\Response\ApiResponseService;
+use App\Rest\CRUD\DeleterCRUD;
+use App\Rest\Http\Response;
 use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class DeleterTranslationKeyService
@@ -15,31 +14,28 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class DeleterTranslationKeyService extends DeleterCRUDService
+class DeleterTranslationKeyService extends DeleterCRUD
 {
 
-    /**
-     * @param ValidatorInterface $validator
-     * @param int                $id
-     *
-     * @return ApiResponseService
-     * @throws Exception
-     */
-    public function delete(ValidatorInterface $validator, int $id): ApiResponseService
-    {
+	/**
+	 * @param int $id
+	 *
+	 * @return Response
+	 * @throws Exception
+	 */
+	public function delete(int $id): Response
+	{
 
-        $this->validator = $validator;
-        $this->messageNameNotExist = 'translation_key_not_exist';
-        $this->translationKeyNotExist = 'translationKey@notExist';
+		$this->translationKeyNotExist = 'translationKey@notExist';
 
-        $deletedEntity = $this->make(TranslationKey::class, ['id' => $id]);
+		$deletedEntity = $this->make(TranslationKey::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof ApiResponseService) {
-            return $deletedEntity;
-        }
+		if ($deletedEntity instanceof Response) {
+			return $deletedEntity;
+		}
 
-        return $this->remove($deletedEntity, 'translationKey@successDelete');
+		return $this->manager->remove($deletedEntity, 'translationKey@successDelete');
 
-    }
+	}
 
 }

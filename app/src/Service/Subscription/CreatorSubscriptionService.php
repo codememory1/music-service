@@ -3,11 +3,8 @@
 namespace App\Service\Subscription;
 
 use App\DTO\SubscriptionDTO;
-use App\Exception\UndefinedClassForDTOException;
-use App\Service\CRUD\CreatorCRUDService;
-use App\Service\Response\ApiResponseService;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Rest\CRUD\CreatorCRUD;
+use App\Rest\Http\Response;
 
 /**
  * Class CreatorSubscriptionService
@@ -16,30 +13,25 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorSubscriptionService extends CreatorCRUDService
+class CreatorSubscriptionService extends CreatorCRUD
 {
 
-    /**
-     * @param SubscriptionDTO    $subscriptionDTO
-     * @param ValidatorInterface $validator
-     *
-     * @return ApiResponseService
-     * @throws UndefinedClassForDTOException
-     * @throws Exception
-     */
-    public function create(SubscriptionDTO $subscriptionDTO, ValidatorInterface $validator): ApiResponseService
-    {
+	/**
+	 * @param SubscriptionDTO $subscriptionDTO
+	 *
+	 * @return Response
+	 */
+	public function create(SubscriptionDTO $subscriptionDTO): Response
+	{
 
-        $this->validator = $validator;
+		$createdEntity = $this->make($subscriptionDTO);
 
-        $createdEntity = $this->make($subscriptionDTO);
+		if ($createdEntity instanceof Response) {
+			return $createdEntity;
+		}
 
-        if ($createdEntity instanceof ApiResponseService) {
-            return $createdEntity;
-        }
+		return $this->manager->push($createdEntity, 'subscription@successCreate');
 
-        return $this->push($createdEntity, 'subscription@successCreate');
-
-    }
+	}
 
 }

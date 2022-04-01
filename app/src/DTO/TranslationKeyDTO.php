@@ -3,7 +3,7 @@
 namespace App\DTO;
 
 use App\Entity\TranslationKey;
-use JetBrains\PhpStorm\ArrayShape;
+use App\Rest\DTO\AbstractDTO;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,68 +16,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 class TranslationKeyDTO extends AbstractDTO
 {
 
-    /**
-     * @var string|null
-     */
-    protected ?string $entityClass = TranslationKey::class;
+	/**
+	 * @var string|null
+	 */
+	#[Assert\NotBlank(message: 'translationKey@nameIsRequired')]
+	#[Assert\Length(max: 255, maxMessage: 'translationKey@nameMaxLength')]
+	public ?string $name = null;
 
-    /**
-     * @var string|null
-     */
-    #[Assert\NotBlank(message: 'translationKey@nameIsRequired', payload: 'name_is_required')]
-    #[Assert\Length(max: 255, maxMessage: 'translationKey@nameMaxLength', payload: 'name_length')]
-    private ?string $name = null;
+	/**
+	 * @inheritDoc
+	 */
+	protected function wrapper(): void
+	{
 
-    /**
-     * @param TranslationKey $translationKey
-     * @param array          $exclude
-     *
-     * @return array
-     */
-    #[ArrayShape([
-        'id'         => "int|null",
-        'name'       => "null|string",
-        'created_at' => "string",
-        'updated_at' => "null|string"
-    ])]
-    public function toArray(TranslationKey $translationKey, array $exclude = []): array
-    {
+		$this->setEntity(TranslationKey::class);
 
-        $translationKey = [
-            'id'         => $translationKey->getId(),
-            'name'       => $translationKey->getName(),
-            'created_at' => $translationKey->getCreatedAt()->format('Y-m-d H:i:s'),
-            'updated_at' => $translationKey->getUpdatedAt()?->format('Y-m-d H:i:s')
-        ];
+		$this->addExpectedRequestKey('name');
 
-        $this->excludeKeys($translationKey, $exclude);
-
-        return $translationKey;
-
-    }
-
-    /**
-     * @param string|null $name
-     *
-     * @return TranslationKeyDTO
-     */
-    public function setName(?string $name): self
-    {
-
-        $this->name = $name;
-
-        return $this;
-
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-
-        return $this->name;
-
-    }
+	}
 
 }

@@ -2,17 +2,19 @@
 
 namespace App\Controller\Api\V1;
 
-use App\Controller\Api\AbstractApiController;
+use App\Annotation\Auth;
+use App\Annotation\UserRolePermission;
+use App\Controller\Api\ApiController;
 use App\DTO\TranslationDTO;
 use App\Entity\Translation;
+use App\Enum\RolePermissionNameEnum;
 use App\Exception\UndefinedClassForDTOException;
-use App\Service\RequestDataService;
+use App\Rest\Http\Request;
 use App\Service\Translator\Translation\CreatorTranslationService;
 use App\Service\Translator\Translation\DeleterTranslationService;
 use App\Service\Translator\Translation\UpdaterTranslationService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,75 +24,75 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author  Codememory
  */
-class TranslationController extends AbstractApiController
+#[Route('/translation')]
+class TranslationController extends ApiController
 {
 
-    /**
-     * @return JsonResponse
-     */
-    #[Route('/translator/translations', methods: 'GET')]
-    public function all(): JsonResponse
-    {
+	/**
+	 * @return JsonResponse
+	 */
+	#[Route('/all', methods: 'GET')]
+	public function all(): JsonResponse
+	{
 
-        return $this->showAllFromDatabase(Translation::class, TranslationDTO::class);
+		return $this->showAllFromDatabase(Translation::class, TranslationDTO::class);
 
-    }
+	}
 
-    /**
-     * @param Request            $request
-     * @param RequestDataService $requestDataService
-     *
-     * @return JsonResponse
-     * @throws UndefinedClassForDTOException
-     */
-    #[Route('/translator/translation/create', methods: 'POST')]
-    public function create(Request $request, RequestDataService $requestDataService): JsonResponse
-    {
+	/**
+	 * @param CreatorTranslationService $creatorTranslationService
+	 * @param Request                   $request
+	 *
+	 * @return JsonResponse
+	 * @throws UndefinedClassForDTOException
+	 */
+	#[Route('/create', methods: 'POST')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::CREATE_TRANSLATION)]
+	public function create(CreatorTranslationService $creatorTranslationService, Request $request): JsonResponse
+	{
 
-        /** @var CreatorTranslationService $service */
-        $service = $this->getCollectedService($request, CreatorTranslationService::class);
-        $translationDTO = new TranslationDTO($requestDataService, $this->managerRegistry);
+		return $creatorTranslationService
+			->create(new TranslationDTO($request, $this->managerRegistry))
+			->make();
 
-        return $service->create($translationDTO, $this->validator)->make();
+	}
 
-    }
+	/**
+	 * @param UpdaterTranslationService $updaterTranslationService
+	 * @param Request                   $request
+	 * @param int                       $id
+	 *
+	 * @return JsonResponse
+	 * @throws UndefinedClassForDTOException
+	 */
+	#[Route('/{id<\d+>}/edit', methods: 'PUT')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_TRANSLATION)]
+	public function update(UpdaterTranslationService $updaterTranslationService, Request $request, int $id): JsonResponse
+	{
 
-    /**
-     * @param Request            $request
-     * @param RequestDataService $requestDataService
-     * @param int                $id
-     *
-     * @return JsonResponse
-     * @throws Exception
-     */
-    #[Route('/translator/translation/{id<\d+>}/edit', methods: 'PUT')]
-    public function update(Request $request, RequestDataService $requestDataService, int $id): JsonResponse
-    {
+		return $updaterTranslationService
+			->update(new TranslationDTO($request, $this->managerRegistry), $id)
+			->make();
 
-        /** @var UpdaterTranslationService $service */
-        $service = $this->getCollectedService($request, UpdaterTranslationService::class);
-        $translationDTO = new TranslationDTO($requestDataService, $this->managerRegistry);
+	}
 
-        return $service->update($translationDTO, $this->validator, $id)->make();
+	/**
+	 * @param DeleterTranslationService $deleterTranslationService
+	 * @param int                       $id
+	 *
+	 * @return JsonResponse
+	 * @throws Exception
+	 */
+	#[Route('/{id<\d+>}/delete', methods: 'DELETE')]
+	#[Auth]
+	#[UserRolePermission(permission: RolePermissionNameEnum::DELETE_TRANSLATION)]
+	public function delete(DeleterTranslationService $deleterTranslationService, int $id): JsonResponse
+	{
 
-    }
+		return $deleterTranslationService->delete($id)->make();
 
-    /**
-     * @param Request $request
-     * @param int     $id
-     *
-     * @return JsonResponse
-     * @throws Exception
-     */
-    #[Route('/translator/translation/{id<\d+>}/delete', methods: 'DELETE')]
-    public function delete(Request $request, int $id): JsonResponse
-    {
-
-        /** @var DeleterTranslationService $service */
-        $service = $this->getCollectedService($request, DeleterTranslationService::class);
-
-        return $service->delete($this->validator, $id)->make();
-
-    }
+	}
 
 }

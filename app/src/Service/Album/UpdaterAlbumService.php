@@ -5,13 +5,11 @@ namespace App\Service\Album;
 use App\DTO\AlbumDTO;
 use App\Entity\Album;
 use App\Entity\User;
-use App\Exception\UndefinedClassForDTOException;
-use App\Service\CRUD\UpdaterCRUDService;
+use App\Rest\CRUD\UpdaterCRUD;
+use App\Rest\Http\Response;
 use App\Service\FileUploaderService;
-use App\Service\Response\ApiResponseService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class UpdaterAlbumService
@@ -20,80 +18,77 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class UpdaterAlbumService extends UpdaterCRUDService
+class UpdaterAlbumService extends UpdaterCRUD
 {
 
-    /**
-     * @param AlbumDTO            $albumDTO
-     * @param ValidatorInterface  $validator
-     * @param FileUploaderService $uploadedFileService
-     * @param User|null           $user
-     * @param string              $kernelProjectDir
-     * @param int                 $id
-     *
-     * @return ApiResponseService
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws UndefinedClassForDTOException
-     */
-    public function update(AlbumDTO $albumDTO, ValidatorInterface $validator, FileUploaderService $uploadedFileService, ?User $user, string $kernelProjectDir, int $id): ApiResponseService
-    {
+	/**
+	 * @param AlbumDTO            $albumDTO
+	 * @param FileUploaderService $uploadedFileService
+	 * @param User|null           $user
+	 * @param string              $kernelProjectDir
+	 * @param int                 $id
+	 *
+	 * @return Response
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	public function update(AlbumDTO $albumDTO, FileUploaderService $uploadedFileService, ?User $user, string $kernelProjectDir, int $id): Response
+	{
 
-        $this->validator = $validator;
-        $this->messageNameNotExist = 'album_not_exist';
-        $this->translationKeyNotExist = 'album@notExist';
+		$this->translationKeyNotExist = 'album@notExist';
 
-        /** @var ApiResponseService|Album $createdEntity */
-        $createdEntity = $this->make($albumDTO, ['id' => $id]);
+		/** @var Response|Album $createdEntity */
+		$createdEntity = $this->make($albumDTO, ['id' => $id]);
 
-        if ($createdEntity instanceof ApiResponseService) {
-            return $createdEntity;
-        }
+		if ($createdEntity instanceof Response) {
+			return $createdEntity;
+		}
 
-        $this->deletePhoto($kernelProjectDir);
+		$this->deletePhoto($kernelProjectDir);
 
-        $createdEntity->setPhoto($this->uploadPhoto($uploadedFileService, $user));
+		$createdEntity->setPhoto($this->uploadPhoto($uploadedFileService, $user));
 
-        return $this->push($createdEntity, 'album@successUpdate', true);
+		return $this->manager->update($createdEntity, 'album@successUpdate');
 
-    }
+	}
 
-    /**
-     * @param FileUploaderService $uploadedFileService
-     * @param User                $user
-     *
-     * @return string
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    private function uploadPhoto(FileUploaderService $uploadedFileService, User $user): string
-    {
+	/**
+	 * @param string $kernelProjectDir
+	 *
+	 * @return void
+	 */
+	private function deletePhoto(string $kernelProjectDir): void
+	{
 
-        $uploadedFileService->upload(function() use ($user) {
-            return md5($user->getEmail() . random_bytes(10));
-        });
+		/** @var Album $album */
+		$album = $this->finedEntity;
 
-        return $uploadedFileService->getUploadedFile()['filename_with_path'];
+		$absolutePathPhoto = sprintf('%s/%s', $kernelProjectDir, $album->getPhoto());
 
-    }
+		if (file_exists($absolutePathPhoto)) {
+			unlink($absolutePathPhoto);
+		}
 
-    /**
-     * @param string $kernelProjectDir
-     *
-     * @return void
-     */
-    private function deletePhoto(string $kernelProjectDir): void
-    {
+	}
 
-        /** @var Album $album */
-        $album = $this->finedEntity;
+	/**
+	 * @param FileUploaderService $uploadedFileService
+	 * @param User                $user
+	 *
+	 * @return string
+	 * @throws ContainerExceptionInterface
+	 * @throws NotFoundExceptionInterface
+	 */
+	private function uploadPhoto(FileUploaderService $uploadedFileService, User $user): string
+	{
 
-        $absolutePathPhoto = sprintf('%s/%s', $kernelProjectDir, $album->getPhoto());
+		$uploadedFileService->upload(function() use ($user) {
 
-        if (file_exists($absolutePathPhoto)) {
-            unlink($absolutePathPhoto);
-        }
+			return md5($user->getEmail() . random_bytes(10));
+		});
 
-    }
+		return $uploadedFileService->getUploadedFile()['filename_with_path'];
+
+	}
 
 }

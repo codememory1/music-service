@@ -3,11 +3,8 @@
 namespace App\Service\Album\Category;
 
 use App\DTO\AlbumCategoryDTO;
-use App\Exception\UndefinedClassForDTOException;
-use App\Service\CRUD\CreatorCRUDService;
-use App\Service\Response\ApiResponseService;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Rest\CRUD\CreatorCRUD;
+use App\Rest\Http\Response;
 
 /**
  * Class CreatorAlbumCategoryService
@@ -16,31 +13,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorAlbumCategoryService extends CreatorCRUDService
+class CreatorAlbumCategoryService extends CreatorCRUD
 {
 
-    /**
-     * @param AlbumCategoryDTO   $albumCategoryDTO
-     * @param ValidatorInterface $validator
-     *
-     * @return ApiResponseService
-     * @throws UndefinedClassForDTOException
-     * @throws Exception
-     */
-    public function create(AlbumCategoryDTO $albumCategoryDTO, ValidatorInterface $validator): ApiResponseService
-    {
+	/**
+	 * @param AlbumCategoryDTO $albumCategoryDTO
+	 *
+	 * @return Response
+	 */
+	public function create(AlbumCategoryDTO $albumCategoryDTO): Response
+	{
 
-        $this->validator = $validator;
-        $this->validateEntity = true;
+		$this->validateEntity = true;
 
-        $createdEntity = $this->make($albumCategoryDTO);
+		$createdEntity = $this->make($albumCategoryDTO);
 
-        if ($createdEntity instanceof ApiResponseService) {
-            return $createdEntity;
-        }
+		if ($createdEntity instanceof Response) {
+			return $createdEntity;
+		}
 
-        return $this->push($createdEntity, 'albumCategory@successCreate');
+		return $this->manager->push($createdEntity, 'albumCategory@successCreate');
 
-    }
+	}
 
 }

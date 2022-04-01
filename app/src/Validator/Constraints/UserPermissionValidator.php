@@ -5,7 +5,7 @@ namespace App\Validator\Constraints;
 use App\Entity\RolePermission;
 use App\Entity\User;
 use App\Enum\RoleEnum;
-use App\Interface\EntityInterface;
+use App\Interfaces\EntityInterface;
 use App\Security\TokenAuthenticator;
 use Doctrine\Persistence\ManagerRegistry;
 use ReflectionClass;

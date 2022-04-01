@@ -2,7 +2,7 @@
 
 namespace App\Validator\Constraints;
 
-use App\Interface\EntityInterface;
+use App\Interfaces\EntityInterface;
 use App\Security\TokenAuthenticator;
 use Doctrine\Persistence\ManagerRegistry;
 use ReflectionClass;

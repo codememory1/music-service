@@ -6,11 +6,13 @@ use App\Entity\UserActivationToken;
 use App\Enum\EventsEnum;
 use App\Event\UserRegistrationEvent;
 use App\Repository\UserActivationTokenRepository;
+use App\Service\MailNotificationService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class SendConfirmationSubscriber
@@ -23,24 +25,24 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
 {
 
     /**
-     * @var MailerInterface
-     */
-    private MailerInterface $mailer;
-
-    /**
      * @var ManagerRegistry
      */
     private ManagerRegistry $managerRegistry;
 
     /**
-     * @param MailerInterface $mailer
-     * @param ManagerRegistry $managerRegistry
+     * @var MailNotificationService
      */
-    public function __construct(MailerInterface $mailer, ManagerRegistry $managerRegistry)
+    private MailNotificationService $mailerNotificationService;
+
+    /**
+     * @param ManagerRegistry         $managerRegistry
+     * @param MailNotificationService $mailNotificationService
+     */
+    public function __construct(ManagerRegistry $managerRegistry, MailNotificationService $mailNotificationService)
     {
 
-        $this->mailer = $mailer;
         $this->managerRegistry = $managerRegistry;
+        $this->mailerNotificationService = $mailNotificationService;
 
     }
 
@@ -61,6 +63,9 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
      *
      * @return void
      * @throws TransportExceptionInterface
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function onUserRegistration(UserRegistrationEvent $event): void
     {
@@ -72,14 +77,7 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
             'user' => $event->getUser()
         ]);
 
-        $email = new Email();
-        $email
-            ->from('kostynd1@gmail.com')
-            ->to($event->getUser()->getEmail())
-            ->subject('Регистрация')
-            ->html($userActivationToken->getToken());
-
-        $this->mailer->send($email);
+        $this->mailerNotificationService->registerNotification($event->getUser(), $userActivationToken);
 
     }
 

@@ -3,11 +3,8 @@
 namespace App\Service\Translator\Language;
 
 use App\DTO\LanguageDTO;
-use App\Exception\UndefinedClassForDTOException;
-use App\Service\CRUD\CreatorCRUDService;
-use App\Service\Response\ApiResponseService;
-use Exception;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Rest\CRUD\CreatorCRUD;
+use App\Rest\Http\Response;
 
 /**
  * Class CreatorLanguageService
@@ -16,31 +13,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author  Codememory
  */
-class CreatorLanguageService extends CreatorCRUDService
+class CreatorLanguageService extends CreatorCRUD
 {
 
-    /**
-     * @param LanguageDTO        $languageDTO
-     * @param ValidatorInterface $validator
-     *
-     * @return ApiResponseService
-     * @throws UndefinedClassForDTOException
-     * @throws Exception
-     */
-    public function create(LanguageDTO $languageDTO, ValidatorInterface $validator): ApiResponseService
-    {
+	/**
+	 * @param LanguageDTO $languageDTO
+	 *
+	 * @return Response
+	 */
+	public function create(LanguageDTO $languageDTO): Response
+	{
 
-        $this->validator = $validator;
-        $this->validateEntity = true;
+		$this->validateEntity = true;
 
-        $createdLanguage = $this->make($languageDTO);
+		$createdLanguage = $this->make($languageDTO);
 
-        if ($createdLanguage instanceof ApiResponseService) {
-            return $createdLanguage;
-        }
+		if ($createdLanguage instanceof Response) {
+			return $createdLanguage;
+		}
 
-        return $this->push($createdLanguage, 'lang@successCreate');
+		return $this->manager->push($createdLanguage, 'lang@successCreate');
 
-    }
+	}
 
 }

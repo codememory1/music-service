@@ -6,8 +6,8 @@ use App\DTO\AuthorizationDTO;
 use App\Entity\User;
 use App\Enum\ApiResponseTypeEnum;
 use App\Repository\UserRepository;
-use App\Service\AbstractApiService;
-use App\Service\Response\ApiResponseService;
+use App\Rest\ApiService;
+use App\Rest\Http\Response;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 
@@ -18,37 +18,34 @@ use Exception;
  *
  * @author  Codememory
  */
-class UserIdentificationService extends AbstractApiService
+class UserIdentificationService extends ApiService
 {
 
-    /**
-     * @param AuthorizationDTO $authorizationDTO
-     *
-     * @return ApiResponseService|User
-     * @throws NonUniqueResultException
-     * @throws Exception
-     */
-    public function identify(AuthorizationDTO $authorizationDTO): ApiResponseService|User
-    {
+	/**
+	 * @param AuthorizationDTO $authorizationDTO
+	 *
+	 * @return Response|User
+	 * @throws NonUniqueResultException
+	 * @throws Exception
+	 */
+	public function identify(AuthorizationDTO $authorizationDTO): Response|User
+	{
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $this->em->getRepository(User::class);
+		/** @var UserRepository $userRepository */
+		$userRepository = $this->em->getRepository(User::class);
 
-        // Checking the existence of a user by email or username
-        if (null === $finedUser = $userRepository->findByLogin($authorizationDTO->getLogin())) {
-            $this
-                ->prepareApiResponse('error', 404)
-                ->setMessage(
-                    ApiResponseTypeEnum::CHECK_EXIST,
-                    'authentication_user',
-                    $this->getTranslation('user@failedToIdentityUser')
-                );
+		// Checking the existence of a user by email or username
+		if (null === $finedUser = $userRepository->findByLogin($authorizationDTO->login)) {
+			$this->apiResponseSchema->setMessage(
+				ApiResponseTypeEnum::CHECK_EXIST,
+				$this->getTranslation('user@failedToIdentityUser')
+			);
 
-            return $this->getPreparedApiResponse();
-        }
+			return new Response($this->apiResponseSchema, 'error', 404);
+		}
 
-        return $finedUser;
+		return $finedUser;
 
-    }
+	}
 
 }

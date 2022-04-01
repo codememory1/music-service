@@ -27,15 +27,15 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
     private array $rolePermissions = [
         // Developer
         [
-            'right_name' => RolePermissionNameEnum::ADD_TRACK,
+            'right_name' => RolePermissionNameEnum::ADD_MUSIC,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionNameEnum::UPDATE_TRACK,
+            'right_name' => RolePermissionNameEnum::UPDATE_MUSIC,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
-            'right_name' => RolePermissionNameEnum::DELETE_TRACK,
+            'right_name' => RolePermissionNameEnum::DELETE_MUSIC,
             'role'       => RoleEnum::DEVELOPER
         ],
         [
@@ -101,15 +101,15 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
 
         // Music Manager
         [
-            'right_name' => RolePermissionNameEnum::ADD_TRACK,
+            'right_name' => RolePermissionNameEnum::ADD_MUSIC,
             'role'       => RoleEnum::MUSIC_MANAGER
         ],
         [
-            'right_name' => RolePermissionNameEnum::UPDATE_TRACK,
+            'right_name' => RolePermissionNameEnum::UPDATE_MUSIC,
             'role'       => RoleEnum::MUSIC_MANAGER
         ],
         [
-            'right_name' => RolePermissionNameEnum::DELETE_TRACK,
+            'right_name' => RolePermissionNameEnum::DELETE_MUSIC,
             'role'       => RoleEnum::MUSIC_MANAGER
         ],
     ];

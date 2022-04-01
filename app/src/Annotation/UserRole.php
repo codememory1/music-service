@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Annotation;
+
+use Attribute;
+
+/**
+ * Class UserRole
+ *
+ * @package App\Annotation
+ *
+ * @author  Codememory
+ */
+#[Attribute(Attribute::TARGET_METHOD)]
+class UserRole
+{
+
+	public readonly array $keys;
+
+	/**
+	 * @param array $keys
+	 */
+	public function __construct(array|string $keys)
+	{
+
+		$this->keys = is_string($keys) ? [$keys] : $keys;
+
+	}
+
+}

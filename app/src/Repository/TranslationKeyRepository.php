@@ -7,6 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class TranslationKeyRepository
+ *
+ * @package App\Repository
+ *
+ * @author  Codememory
+ *
  * @method TranslationKey|null find($id, $lockMode = null, $lockVersion = null)
  * @method TranslationKey|null findOneBy(array $criteria, array $orderBy = null)
  * @method TranslationKey[]    findAll()

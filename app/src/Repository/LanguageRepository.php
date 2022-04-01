@@ -7,6 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Class LanguageRepository
+ *
+ * @package App\Repository
+ *
+ * @author  Codememory
+ *
  * @method Language|null find($id, $lockMode = null, $lockVersion = null)
  * @method Language|null findOneBy(array $criteria, array $orderBy = null)
  * @method Language[]    findAll()
