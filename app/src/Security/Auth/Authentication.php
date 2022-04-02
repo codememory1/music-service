@@ -5,9 +5,10 @@ namespace App\Security\Auth;
 use App\DTO\AuthorizationDTO;
 use App\Entity\User;
 use App\Enum\ApiResponseTypeEnum;
+use App\Rest\Http\ApiResponseSchema;
 use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
-use App\Service\PasswordHashingService;
+use App\Service\HashingService;
 
 /**
  * Class Authentication
@@ -30,12 +31,13 @@ class Authentication extends AbstractSecurity
 
 		// Check compare password with identified user
 		if (!$this->comparePassword($identifiedUser, $authorizationDTO)) {
-			$this->apiResponseSchema->setMessage(
+			$apiResponseSchema = new ApiResponseSchema();
+			$apiResponseSchema->setMessage(
 				ApiResponseTypeEnum::CHECK_INCORRECT,
 				$this->translator->getTranslation('user@passwordIsIncorrect')
 			);
 
-			return new Response($this->apiResponseSchema, 'error', 400);
+			return new Response($apiResponseSchema, 'error', 400);
 		}
 
 		return $identifiedUser;
@@ -51,7 +53,7 @@ class Authentication extends AbstractSecurity
 	private function comparePassword(User $identifiedUser, AuthorizationDTO $authorizationDTO): bool
 	{
 
-		$passwordHashingService = new PasswordHashingService();
+		$passwordHashingService = new HashingService();
 
 		return $passwordHashingService->compare(
 			$authorizationDTO->password,

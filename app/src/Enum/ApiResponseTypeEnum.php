@@ -28,5 +28,6 @@ enum ApiResponseTypeEnum: string
 	case SHOW = 'SHOW';
 	case AUTH = 'AUTH';
 	case REGISTRATION = 'REGISTRATION';
+	case ACTIVATION_ACCOUNT = 'ACTIVATION_ACCOUNT';
 
 }

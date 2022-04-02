@@ -66,7 +66,7 @@ class CreatorSession extends AbstractSecurity
 				->setRegion($region->getName());
 		}
 
-		$this->em->persist($identifiedUser);
+		$this->em->persist($userSessionEntity);
 		$this->em->flush();
 
 		return $generatedTokens;

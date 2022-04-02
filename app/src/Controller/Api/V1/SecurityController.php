@@ -16,13 +16,13 @@ use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
 use App\Security\Auth\Identification;
 use App\Security\Auth\Validation as AuthValidation;
+use App\Security\ConfirmationRegistration\DeleterToken;
+use App\Security\ConfirmationRegistration\UserActivation;
 use App\Security\Registration\CreatorAccount;
 use App\Security\Registration\Registration;
 use App\Security\Registration\Validation as RegisterValidation;
 use App\Service\Security\PasswordReset\RecoveryRequestService;
-use App\Service\Security\Register\UserActivationAccountService;
 use Doctrine\ORM\NonUniqueResultException;
-use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -88,17 +88,29 @@ class SecurityController extends ApiController
 	}
 
 	/**
-	 * @param UserActivationAccountService $userActivationAccountService
-	 * @param string                       $token
+	 * @param UserActivation $userActivation
+	 * @param DeleterToken   $deleterToken
+	 * @param string         $token
 	 *
 	 * @return JsonResponse
-	 * @throws Exception
 	 */
-	#[Route('/activate-account/{token<[^\.]+>}', methods: 'GET')]
-	public function activateAccount(UserActivationAccountService $userActivationAccountService, string $token): JsonResponse
+	#[Route('/activate-account/{token<.+>}', methods: 'GET')]
+	public function activateAccount(
+		UserActivation $userActivation,
+		DeleterToken $deleterToken,
+		string $token
+	): JsonResponse
 	{
 
-		return $userActivationAccountService->activate($token)->make();
+		// Checking the validity of the token
+		if (true !== $response = $userActivation->isValid($token)) {
+			return $response->make();
+		}
+
+		// Account activation and activation token removal
+		$deleterToken->delete($userActivation->activate($token));
+
+		return $userActivation->successActivationResponse()->make();
 
 	}
 
