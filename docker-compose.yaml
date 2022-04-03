@@ -2,8 +2,8 @@ version: '3'
 
 services:
   # Application php8.0 and symfony
-  app:
-    container_name: app
+  api:
+    container_name: api
     build:
       context: ./
       dockerfile: "${DEV_PATH}/php${PHP_VERSION}-fpm/Dockerfile"
@@ -56,11 +56,12 @@ services:
       - "${DEV_PATH}/nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "${APP_PATH}:${WORKDIR}"
     links:
-      - app
+      - api
       - rabbitmq
 
   # Minio s3
   s3:
+    container_name: s3
     image: minio/minio
     expose:
       - "9001"
@@ -78,6 +79,7 @@ services:
 
   # Broker
   rabbitmq:
+    container_name: rabbitmq
     image: rabbitmq:3-management
     environment:
       RABBITMQ_DEFAULT_USER: admin

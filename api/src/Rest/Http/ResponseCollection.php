@@ -5,6 +5,7 @@ namespace App\Rest\Http;
 use App\Enum\ApiResponseTypeEnum;
 use App\Interfaces\ResponseCollectionInterface;
 use App\Rest\Translator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class ResponseCollection.
@@ -18,12 +19,12 @@ class ResponseCollection implements ResponseCollectionInterface
     /**
      * @var ApiResponseSchema
      */
-    private ApiResponseSchema $apiResponseSchema;
+    public readonly ApiResponseSchema $apiResponseSchema;
 
     /**
      * @var Translator
      */
-    private Translator $translator;
+    public readonly Translator $translator;
 
     /**
      * @var string
@@ -48,9 +49,9 @@ class ResponseCollection implements ResponseCollectionInterface
     /**
      * @param string $translationKey
      *
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function successCreate(string $translationKey): self
+    final public function successCreate(string $translationKey): ResponseCollectionInterface
     {
         return $this->prepareResponse(
             ApiResponseTypeEnum::CREATE,
@@ -63,9 +64,9 @@ class ResponseCollection implements ResponseCollectionInterface
     /**
      * @param string $translationKey
      *
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function successUpdate(string $translationKey): self
+    final public function successUpdate(string $translationKey): ResponseCollectionInterface
     {
         return $this->prepareResponse(
             ApiResponseTypeEnum::UPDATE,
@@ -78,9 +79,9 @@ class ResponseCollection implements ResponseCollectionInterface
     /**
      * @param string $translationKey
      *
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function successDelete(string $translationKey): self
+    final public function successDelete(string $translationKey): ResponseCollectionInterface
     {
         return $this->prepareResponse(
             ApiResponseTypeEnum::DELETE,
@@ -93,9 +94,9 @@ class ResponseCollection implements ResponseCollectionInterface
     /**
      * @param string $translationKey
      *
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function exist(string $translationKey): self
+    final public function exist(string $translationKey): ResponseCollectionInterface
     {
         return $this->prepareResponse(
             ApiResponseTypeEnum::CHECK_EXIST,
@@ -108,9 +109,9 @@ class ResponseCollection implements ResponseCollectionInterface
     /**
      * @param string $translationKey
      *
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function notExist(string $translationKey): self
+    final public function notExist(string $translationKey): ResponseCollectionInterface
     {
         return $this->prepareResponse(
             ApiResponseTypeEnum::CHECK_EXIST,
@@ -121,24 +122,28 @@ class ResponseCollection implements ResponseCollectionInterface
     }
 
     /**
-     * @param string $translationKey
+     * @param array $tokens
      *
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function successAuth(): self
+    final public function successAuth(array $tokens): ResponseCollectionInterface
     {
-        return $this->prepareResponse(
+        $preparedResponse = $this->prepareResponse(
             ApiResponseTypeEnum::AUTH,
             'common@successAuth',
             'success',
             200
         );
+
+        $this->apiResponseSchema->setData($tokens);
+
+        return $preparedResponse;
     }
 
     /**
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function successRegister(): self
+    final public function successRegister(): ResponseCollectionInterface
     {
         return $this->prepareResponse(
             ApiResponseTypeEnum::REGISTRATION,
@@ -151,9 +156,9 @@ class ResponseCollection implements ResponseCollectionInterface
     /**
      * @param string $translationKey
      *
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function errorInputValidation(string $translationKey): self
+    final public function errorInputValidation(string $translationKey): ResponseCollectionInterface
     {
         return $this->prepareResponse(
             ApiResponseTypeEnum::INPUT_VALIDATION,
@@ -166,9 +171,9 @@ class ResponseCollection implements ResponseCollectionInterface
     /**
      * @param null|string $translationKey
      *
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function accessIsDenied(?string $translationKey = null): self
+    final public function accessIsDenied(?string $translationKey = null): ResponseCollectionInterface
     {
         $translationKey ??= 'common@accessIsDenied';
 
@@ -181,9 +186,9 @@ class ResponseCollection implements ResponseCollectionInterface
     }
 
     /**
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function notAuth(): self
+    final public function notAuth(): ResponseCollectionInterface
     {
         return $this->prepareResponse(
             ApiResponseTypeEnum::CHECK_AUTH,
@@ -194,13 +199,15 @@ class ResponseCollection implements ResponseCollectionInterface
     }
 
     /**
-     * @return $this
+     * @param string $translationKey
+     *
+     * @return ResponseCollectionInterface
      */
-    final public function notValid(): self
+    final public function notValid(string $translationKey): ResponseCollectionInterface
     {
         return $this->prepareResponse(
             ApiResponseTypeEnum::CHECK_VALID,
-            'common@notValid',
+            $translationKey,
             'error',
             422
         );
@@ -209,9 +216,9 @@ class ResponseCollection implements ResponseCollectionInterface
     /**
      * @param string $translationKey
      *
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    final public function successActivation(string $translationKey): self
+    final public function successActivation(string $translationKey): ResponseCollectionInterface
     {
         return $this->prepareResponse(
             ApiResponseTypeEnum::ACTIVATION,
@@ -219,6 +226,56 @@ class ResponseCollection implements ResponseCollectionInterface
             'success',
             200
         );
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return ResponseCollectionInterface
+     */
+    final public function dataOutput(array $data): ResponseCollectionInterface
+    {
+        $preparedResponse = $this->prepareResponse(
+            ApiResponseTypeEnum::DATA_OUTPUT,
+            'common@dataOutput',
+            'success',
+            200
+        );
+
+        $this->apiResponseSchema->setData($data);
+
+        return $preparedResponse;
+    }
+
+    /**
+     * @param ApiResponseTypeEnum $type
+     * @param string              $translationKey
+     *
+     * @return ResponseCollectionInterface
+     */
+    final public function customErrorType(ApiResponseTypeEnum $type, string $translationKey): ResponseCollectionInterface
+    {
+        return $this->prepareResponse($type, $translationKey, 'error', 400);
+    }
+
+    /**
+     * @param string $translationKey
+     *
+     * @return ResponseCollectionInterface
+     */
+    final public function invalid(string $translationKey): ResponseCollectionInterface
+    {
+        return $this->prepareResponse(ApiResponseTypeEnum::INVALID, $translationKey, 'error', 400);
+    }
+
+    /**
+     * @param string $translationKey
+     *
+     * @return ResponseCollectionInterface
+     */
+    final public function notActive(string $translationKey): ResponseCollectionInterface
+    {
+        return $this->prepareResponse(ApiResponseTypeEnum::CHECK_ACTIVE, $translationKey, 'error', 403);
     }
 
     /**
@@ -233,19 +290,24 @@ class ResponseCollection implements ResponseCollectionInterface
     }
 
     /**
-     * @param ApiResponseTypeEnum $apiResponseTypeEnum
+     * @inheritDoc
+     */
+    public function sendResponse(?string $status = null, ?int $code = null, array $headers = []): JsonResponse
+    {
+        return $this->getResponse($status, $code)->make($headers);
+    }
+
+    /**
+     * @param ApiResponseTypeEnum $type
      * @param string              $translationKey
      * @param string              $status
      * @param int                 $code
      *
-     * @return $this
+     * @return ResponseCollectionInterface
      */
-    private function prepareResponse(ApiResponseTypeEnum $apiResponseTypeEnum, string $translationKey, string $status, int $code): self
+    private function prepareResponse(ApiResponseTypeEnum $type, string $translationKey, string $status, int $code): ResponseCollectionInterface
     {
-        $this->apiResponseSchema->setMessage(
-            $apiResponseTypeEnum,
-            $this->translator->getTranslation($translationKey)
-        );
+        $this->apiResponseSchema->setMessage($type, $this->translator->getTranslation($translationKey));
 
         $this->status = $status;
         $this->code = $code;

@@ -21,7 +21,9 @@ enum ApiResponseTypeEnum: string
     case CHECK_ACTIVE = 'CHECK_ACTIVE';
     case CHECK_AUTH = 'CHECK_AUTH';
     case CHECK_ROLE = 'CHECK_ROLE';
+    case INVALID = 'INVALID';
     case AUTH = 'AUTH';
     case REGISTRATION = 'REGISTRATION';
     case ACCESS_IS_DENIED = 'ACCESS_IS_DENIED';
+    case DATA_OUTPUT = 'DATA_OUTPUT';
 }

@@ -4,7 +4,6 @@ namespace App\Security\Auth;
 
 use App\DTO\AuthorizationDTO;
 use App\Entity\User;
-use App\Enum\ApiResponseTypeEnum;
 use App\Enum\StatusEnum;
 use App\Repository\UserRepository;
 use App\Rest\Http\Response;
@@ -34,22 +33,12 @@ class Identification extends AbstractSecurity
 
         // Checking the existence of a user by email or username
         if (null === $finedUser = $userRepository->findByLogin($authorizationDTO->login)) {
-            $this->apiResponseSchema->setMessage(
-                ApiResponseTypeEnum::CHECK_EXIST,
-                $this->translator->getTranslation('user@failedToIdentityUser')
-            );
-
-            return new Response($this->apiResponseSchema, 'error', 404);
+            return $this->responseCollection->notExist('user@failedToIdentityUser')->getResponse();
         }
 
         // Checking the active account
         if ($finedUser->getStatus() !== StatusEnum::ACTIVE->value) {
-            $this->apiResponseSchema->setMessage(
-                ApiResponseTypeEnum::CHECK_ACTIVE,
-                $this->translator->getTranslation('user@accountNotActive')
-            );
-
-            return new Response($this->apiResponseSchema, 'error', 400);
+            return $this->responseCollection->notActive('user@accountNotActive')->getResponse();
         }
 
         return $finedUser;

@@ -4,11 +4,9 @@ namespace App\Rest;
 
 use App\Interfaces\DTOInterface;
 use App\Interfaces\EntityInterface;
-use App\Rest\Http\ApiResponseSchema;
+use App\Rest\Http\ResponseCollection;
 use App\Rest\Validator\Validator;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class ApiService.
@@ -19,55 +17,48 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ApiService
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected ManagerRegistry $managerRegistry;
 
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    protected ObjectManager $em;
+    protected readonly EntityManagerInterface $em;
 
     /**
      * @var ApiManager
      */
-    protected ApiManager $manager;
+    protected readonly ApiManager $manager;
 
     /**
      * @var Translator
      */
-    protected Translator $translator;
+    protected readonly Translator $translator;
 
     /**
-     * @var ApiResponseSchema
+     * @var ResponseCollection
      */
-    protected ApiResponseSchema $apiResponseSchema;
+    protected readonly ResponseCollection $responseCollection;
 
     /**
      * @var Validator
      */
-    protected Validator $validator;
+    protected readonly Validator $validator;
 
     /**
-     * @param ManagerRegistry    $managerRegistry
-     * @param ApiManager         $apiManager
-     * @param Translator         $translator
-     * @param ApiResponseSchema  $apiResponseSchema
-     * @param ValidatorInterface $validator
+     * @param ApiManager        $apiManager
+     * @param Translator        $translator
+     * @param ResponseCollection $responseCollection
+     * @param Validator         $validator
      */
     public function __construct(
-        ManagerRegistry $managerRegistry,
         ApiManager $apiManager,
         Translator $translator,
-        ApiResponseSchema $apiResponseSchema,
+        ResponseCollection $responseCollection,
         Validator $validator
     ) {
-        $this->managerRegistry = $managerRegistry;
-        $this->em = $managerRegistry->getManager();
+        $this->em = $apiManager->em;
         $this->manager = $apiManager;
         $this->translator = $translator;
-        $this->apiResponseSchema = $apiResponseSchema;
+        $this->responseCollection = $responseCollection;
         $this->validator = $validator;
     }
 

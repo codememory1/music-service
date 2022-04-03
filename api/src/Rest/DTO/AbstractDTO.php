@@ -11,7 +11,6 @@ use App\Rest\Http\Request;
 use function call_user_func;
 use Codememory\Support\Str;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
@@ -29,11 +28,6 @@ abstract class AbstractDTO implements DTOInterface
      * @var null|Request
      */
     public readonly ?Request $request;
-
-    /**
-     * @var null|ManagerRegistry
-     */
-    public readonly ?ManagerRegistry $managerRegistry;
 
     /**
      * @var null|EntityManagerInterface
@@ -81,14 +75,13 @@ abstract class AbstractDTO implements DTOInterface
     private ?EntityInterface $collectedEntity = null;
 
     /**
-     * @param null|Request         $request
-     * @param null|ManagerRegistry $managerRegistry
+     * @param Request|null                $request
+     * @param EntityManagerInterface|null $em
      */
-    final public function __construct(?Request $request = null, ?ManagerRegistry $managerRegistry = null)
+    final public function __construct(?Request $request = null, ?EntityManagerInterface $em = null)
     {
         $this->request = $request;
-        $this->managerRegistry = $managerRegistry;
-        $this->em = $managerRegistry?->getManager();
+        $this->em = $em;
 
         if (null !== $request) {
             $this->wrapper();

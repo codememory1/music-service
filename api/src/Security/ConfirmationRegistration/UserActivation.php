@@ -3,15 +3,13 @@
 namespace App\Security\ConfirmationRegistration;
 
 use App\Entity\UserActivationToken;
-use App\Enum\ApiResponseTypeEnum;
 use App\Enum\StatusEnum;
 use App\Repository\UserActivationTokenRepository;
-use App\Rest\Http\ApiResponseSchema;
 use App\Rest\Http\Response;
-use App\Rest\Translator;
+use App\Rest\Http\ResponseCollection;
 use App\Security\AbstractSecurity;
 use App\Service\JwtTokenGenerator;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class UserActivation.
@@ -33,30 +31,22 @@ class UserActivation extends AbstractSecurity
     private JwtTokenGenerator $jwtTokenGenerator;
 
     /**
-     * @var ApiResponseSchema
-     */
-    private ApiResponseSchema $apiResponseSchema;
-
-    /**
-     * @param ManagerRegistry   $managerRegistry
-     * @param Translator        $translator
-     * @param JwtTokenGenerator $jwtTokenGenerator
-     * @param ApiResponseSchema $apiResponseSchema
+     * @param EntityManagerInterface $em
+     * @param ResponseCollection     $responseCollection
+     * @param JwtTokenGenerator      $jwtTokenGenerator
      */
     public function __construct(
-        ManagerRegistry $managerRegistry,
-        Translator $translator,
-        JwtTokenGenerator $jwtTokenGenerator,
-        ApiResponseSchema $apiResponseSchema
+        EntityManagerInterface $em,
+        ResponseCollection $responseCollection,
+        JwtTokenGenerator $jwtTokenGenerator
     ) {
-        parent::__construct($managerRegistry, $translator);
+        parent::__construct($em, $responseCollection);
 
         /** @var UserActivationTokenRepository $userActivationTokenRepository */
         $userActivationTokenRepository = $this->em->getRepository(UserActivationToken::class);
 
         $this->userActivationTokenRepository = $userActivationTokenRepository;
         $this->jwtTokenGenerator = $jwtTokenGenerator;
-        $this->apiResponseSchema = $apiResponseSchema;
     }
 
     /**
@@ -84,9 +74,7 @@ class UserActivation extends AbstractSecurity
      */
     public function existToken(string $token): bool
     {
-        return null !== $this->userActivationTokenRepository->findOneBy([
-                'token' => $token
-            ]);
+        return null !== $this->userActivationTokenRepository->findOneBy(['token' => $token]);
     }
 
     /**
@@ -99,12 +87,7 @@ class UserActivation extends AbstractSecurity
         $decodedToken = $this->jwtTokenGenerator->decode($token, 'JWT_ACCOUNT_ACTIVATION_PUBLIC_KEY');
 
         if (!$decodedToken) {
-            $this->apiResponseSchema->setMessage(
-                ApiResponseTypeEnum::CHECK_VALID,
-                $this->translator->getTranslation('userActivationAccount@tokenIsNotValid')
-            );
-
-            return new Response($this->apiResponseSchema, 'error', 400);
+            return $this->responseCollection->notValid('userActivationAccount@tokenIsNotValid')->getResponse();
         }
 
         return true;
@@ -115,11 +98,8 @@ class UserActivation extends AbstractSecurity
      */
     public function successActivationResponse(): Response
     {
-        $this->apiResponseSchema->setMessage(
-            ApiResponseTypeEnum::ACTIVATION_ACCOUNT,
-            $this->translator->getTranslation('userActivationAccount@successActivation')
-        );
-
-        return new Response($this->apiResponseSchema, 'success', 200);
+        return $this->responseCollection
+            ->successActivation('userActivationAccount@successActivation')
+            ->getResponse();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Security\Registration;
 
 use App\DTO\RegistrationDTO;
 use App\Entity\User;
+use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
 
 /**
@@ -46,5 +47,13 @@ class CreatorAccount extends AbstractSecurity
         $this->em->flush();
 
         return $user;
+    }
+
+    /**
+     * @return Response
+     */
+    public function successCreateAccountResponse(): Response
+    {
+        return $this->responseCollection->successCreate('user@successCreateAccount')->getResponse();
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Rest\CRUD;
 
-use App\Enum\ApiResponseTypeEnum;
 use App\Interfaces\DTOInterface;
 use App\Interfaces\EntityInterface;
 use App\Rest\Http\Response;
@@ -77,12 +76,7 @@ class UpdaterCRUD extends AbstractCRUD
         $finedEntity = $this->getRepository($DTO)->findOneBy($manipulationBy);
 
         if (null === $finedEntity) {
-            $this->apiResponseSchema->setMessage(
-                ApiResponseTypeEnum::CHECK_EXIST,
-                $this->getTranslation($this->translationKeyNotExist)
-            );
-
-            return new Response($this->apiResponseSchema, 'error', 404);
+            return $this->responseCollection->notExist($this->translationKeyNotExist)->getResponse();
         }
 
         return $finedEntity;

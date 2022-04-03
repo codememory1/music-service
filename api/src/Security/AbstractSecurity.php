@@ -2,9 +2,8 @@
 
 namespace App\Security;
 
-use App\Rest\Translator;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
+use App\Rest\Http\ResponseCollection;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class AbstractSecurity.
@@ -16,28 +15,22 @@ use Doctrine\Persistence\ObjectManager;
 class AbstractSecurity
 {
     /**
-     * @var ManagerRegistry
+     * @var EntityManagerInterface
      */
-    protected readonly ManagerRegistry $managerRegistry;
+    protected readonly EntityManagerInterface $em;
 
     /**
-     * @var ObjectManager
+     * @var ResponseCollection
      */
-    protected readonly ObjectManager $em;
+    protected readonly ResponseCollection $responseCollection;
 
     /**
-     * @var Translator
+     * @param EntityManagerInterface $em
+     * @param ResponseCollection     $responseCollection
      */
-    protected readonly Translator $translator;
-
-    /**
-     * @param ManagerRegistry $managerRegistry
-     * @param Translator      $translator
-     */
-    public function __construct(ManagerRegistry $managerRegistry, Translator $translator)
+    public function __construct(EntityManagerInterface $em, ResponseCollection $responseCollection)
     {
-        $this->managerRegistry = $managerRegistry;
-        $this->em = $managerRegistry->getManager();
-        $this->translator = $translator;
+        $this->em = $em;
+        $this->responseCollection = $responseCollection;
     }
 }

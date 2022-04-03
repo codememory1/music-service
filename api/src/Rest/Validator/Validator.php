@@ -2,12 +2,10 @@
 
 namespace App\Rest\Validator;
 
-use App\Enum\ApiResponseTypeEnum;
 use App\Interfaces\DTOInterface;
 use App\Interfaces\EntityInterface;
-use App\Rest\Http\ApiResponseSchema;
 use App\Rest\Http\Response;
-use App\Rest\Translator;
+use App\Rest\Http\ResponseCollection;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -27,14 +25,9 @@ class Validator
     private ValidatorInterface $validator;
 
     /**
-     * @var Translator
+     * @var ResponseCollection
      */
-    private Translator $translator;
-
-    /**
-     * @var ApiResponseSchema
-     */
-    private ApiResponseSchema $apiResponseSchema;
+    private ResponseCollection $responseCollection;
 
     /**
      * @var null|ConstraintViolationListInterface
@@ -48,14 +41,13 @@ class Validator
 
     /**
      * @param ValidatorInterface $validator
-     * @param Translator         $translator
+     * @param ResponseCollection $responseCollection
      */
     #[Pure]
-    public function __construct(ValidatorInterface $validator, Translator $translator)
+    public function __construct(ValidatorInterface $validator, ResponseCollection $responseCollection)
     {
         $this->validator = $validator;
-        $this->translator = $translator;
-        $this->apiResponseSchema = new ApiResponseSchema();
+        $this->responseCollection = $responseCollection;
     }
 
     /**
@@ -76,12 +68,7 @@ class Validator
         $this->errors = $this->validator->validate($entityOrDTO);
 
         if (count($this->errors) > 0) {
-            $info = $this->getInfo();
-
-            $this->apiResponseSchema->setMessage(
-                $info->getType() ?? ApiResponseTypeEnum::INPUT_VALIDATION,
-                $this->translator->getTranslation($info->getMessage())
-            );
+            $this->validationFailed($this->getInfo());
 
             $this->isValidate = false;
         } else {
@@ -114,6 +101,23 @@ class Validator
      */
     public function getResponse(int $code = 400): Response
     {
-        return new Response($this->apiResponseSchema, 'error', $code);
+        return $this->responseCollection->getResponse(code: $code);
+    }
+
+    /**
+     * @param ValidateInfo $info
+     *
+     * @return void
+     */
+    private function validationFailed(ValidateInfo $info): void
+    {
+        $type = $info->getType();
+        $message = $info->getMessage();
+
+        if(null === $type) {
+            $this->responseCollection->customErrorType($type, $message);
+        } else {
+            $this->responseCollection->errorInputValidation($message);
+        }
     }
 }

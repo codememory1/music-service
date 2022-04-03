@@ -7,7 +7,7 @@ WORKDIR $workdir
 
 RUN apt-get dist-upgrade && \
     apt-get update
-    
+
 RUN apt install -y  \
     lsb-release  \
     ca-certificates  \
@@ -26,7 +26,10 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libxml2-dev \
     libonig-dev \
-    libpq-dev
+    libpq-dev \
+    bash  \
+    bash-doc  \
+    bash-completion
 
 RUN docker-php-ext-install mysqli pdo zip pdo_mysql xml intl mbstring curl
 

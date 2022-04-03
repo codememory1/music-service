@@ -49,11 +49,11 @@ class LanguageDTO extends AbstractDTO
 
     /**
      * @param EntityInterface|Language $entity
-     * @param array                    $excludeKeys
+     * @param array           $excludeKeys
      *
      * @return array
      */
-    public function toArray(EntityInterface $entity, array $excludeKeys = []): array
+    public function toArray(EntityInterface|Language $entity, array $excludeKeys = []): array
     {
         return $this->toArrayHandler([
             'id' => $entity->getId(),

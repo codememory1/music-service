@@ -2,14 +2,12 @@
 
 namespace App\Rest;
 
-use App\Enum\ApiResponseTypeEnum;
 use App\Interfaces\EntityInterface;
-use App\Rest\Http\ApiResponseSchema;
 use App\Rest\Http\Response;
+use App\Rest\Http\ResponseCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use function call_user_func;
 use Closure;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 
 /**
  * Class ApiManager.
@@ -20,10 +18,11 @@ use Doctrine\Persistence\ObjectManager;
  */
 class ApiManager
 {
+
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    private ObjectManager $em;
+    public readonly EntityManagerInterface $em;
 
     /**
      * @var null|Closure
@@ -31,25 +30,18 @@ class ApiManager
     private ?Closure $handlerAfterFlush = null;
 
     /**
-     * @var Translator
+     * @var ResponseCollection
      */
-    private Translator $translator;
+    private ResponseCollection $responseCollection;
 
     /**
-     * @var ApiResponseSchema
+     * @param EntityManagerInterface $em
+     * @param ResponseCollection     $responseCollection
      */
-    private ApiResponseSchema $apiResponseSchema;
-
-    /**
-     * @param ManagerRegistry   $managerRegistry
-     * @param Translator        $translator
-     * @param ApiResponseSchema $apiResponseSchema
-     */
-    public function __construct(ManagerRegistry $managerRegistry, Translator $translator, ApiResponseSchema $apiResponseSchema)
+    public function __construct(EntityManagerInterface $em, ResponseCollection $responseCollection)
     {
-        $this->em = $managerRegistry->getManager();
-        $this->translator = $translator;
-        $this->apiResponseSchema = $apiResponseSchema;
+        $this->em = $em;
+        $this->responseCollection = $responseCollection;
     }
 
     /**
@@ -77,12 +69,7 @@ class ApiManager
 
         $this->callHandler($this->handlerAfterFlush, $entity);
 
-        $this->apiResponseSchema->setMessage(
-            ApiResponseTypeEnum::CREATE,
-            $this->translator->getTranslation($successTranslationKey)
-        );
-
-        return new Response($this->apiResponseSchema, 'success', 200);
+        return $this->responseCollection->successCreate($successTranslationKey)->getResponse();
     }
 
     /**
@@ -97,12 +84,7 @@ class ApiManager
 
         $this->callHandler($this->handlerAfterFlush, $entity);
 
-        $this->apiResponseSchema->setMessage(
-            ApiResponseTypeEnum::UPDATE,
-            $this->translator->getTranslation($successTranslationKey)
-        );
-
-        return new Response($this->apiResponseSchema, 'success', 200);
+        return $this->responseCollection->successUpdate($successTranslationKey)->getResponse();
     }
 
     /**
@@ -118,12 +100,7 @@ class ApiManager
 
         $this->callHandler($this->handlerAfterFlush, $entity);
 
-        $this->apiResponseSchema->setMessage(
-            ApiResponseTypeEnum::DELETE,
-            $this->translator->getTranslation($successTranslationKey)
-        );
-
-        return new Response($this->apiResponseSchema, 'success', 200);
+        return $this->responseCollection->successDelete($successTranslationKey)->getResponse();
     }
 
     /**

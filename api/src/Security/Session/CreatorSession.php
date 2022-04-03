@@ -5,12 +5,12 @@ namespace App\Security\Session;
 use App\DTO\AuthorizationDTO;
 use App\Entity\User;
 use App\Entity\UserSession;
+use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
 use App\Service\JwtTokenGenerator;
 use Codememory\Components\GEO\Geolocation;
 use Jenssegers\Agent\Agent;
 use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * Class CreatorSession.
@@ -71,6 +71,14 @@ class CreatorSession extends AbstractSecurity
     }
 
     /**
+     * @return Response
+     */
+    public function successCreateSessionResponse(): Response
+    {
+        return $this->responseCollection->successCreate('userSession@successCreate')->getResponse();
+    }
+
+    /**
      * @param User $user
      *
      * @return array
@@ -109,7 +117,6 @@ class CreatorSession extends AbstractSecurity
      *
      * @return array
      */
-    #[Pure]
     #[ArrayShape([
         'id' => 'int|null',
         'email' => 'null|string'

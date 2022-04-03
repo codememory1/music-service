@@ -4,8 +4,6 @@ namespace App\Security\Auth;
 
 use App\DTO\AuthorizationDTO;
 use App\Entity\User;
-use App\Enum\ApiResponseTypeEnum;
-use App\Rest\Http\ApiResponseSchema;
 use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
 use App\Service\HashingService;
@@ -29,13 +27,7 @@ class Authentication extends AbstractSecurity
     {
         // Check compare password with identified user
         if (!$this->comparePassword($identifiedUser, $authorizationDTO)) {
-            $apiResponseSchema = new ApiResponseSchema();
-            $apiResponseSchema->setMessage(
-                ApiResponseTypeEnum::CHECK_INCORRECT,
-                $this->translator->getTranslation('user@passwordIsIncorrect')
-            );
-
-            return new Response($apiResponseSchema, 'error', 400);
+            return $this->responseCollection->invalid('user@invalidPassword')->getResponse();
         }
 
         return $identifiedUser;

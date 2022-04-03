@@ -21,7 +21,7 @@ class DeleterSession extends AbstractSecurity
      *
      * @return UserSession
      */
-    public function delete(string $refreshToken): Response
+    public function delete(string $refreshToken): UserSession
     {
         /** @var UserSessionRepository $userSessionRepository */
         $userSessionRepository = $this->em->getRepository(UserSession::class);
@@ -32,5 +32,13 @@ class DeleterSession extends AbstractSecurity
         $this->em->flush();
 
         return $finedSession;
+    }
+
+    /**
+     * @return Response
+     */
+    public function successDeleteSession(): Response
+    {
+        return $this->responseCollection->successUpdate('userSession@successdelete')->getResponse();
     }
 }

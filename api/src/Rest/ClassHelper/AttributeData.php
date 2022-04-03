@@ -31,7 +31,7 @@ class AttributeData
     public function __construct(ReflectionAttribute $reflectionAttribute)
     {
         $this->reflectionAttribute = $reflectionAttribute;
-        $this->attributeArguments = $this->reflectionAttribute->getArguments();
+        $this->arguments = $this->reflectionAttribute->getArguments();
     }
 
     /**

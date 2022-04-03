@@ -12,10 +12,13 @@ function environment() {
   available=("dev" "prod")
   fined=false
 
+  # shellcheck disable=SC2068
   echo -n -e "\e[32m Выбирите окружение(\e[1;33m$(join , ${available[@]})\e[32m): \e[0m"
+  # shellcheck disable=SC2162
   read selected_env
 
   # Проверить существование окружения
+  # shellcheck disable=SC2068
   for env in ${available[@]}; do
     if [[ "$env" == "$selected_env" ]]; then
       fined=true
@@ -48,6 +51,7 @@ function mysqlSettings() {
   # Вопрос о имени пользователя
   mysqlUser() {
     echo -n -e "\e[32m Укажите имя пользователя: \e[0m"
+    # shellcheck disable=SC2162
     read username
 
     if [[ -z $username ]]; then
@@ -60,6 +64,7 @@ function mysqlSettings() {
   # Вопрос о пароле пользователя
   mysqlPassword() {
     echo -n -e "\e[32m Укажите пароль пользователя: \e[0m"
+    # shellcheck disable=SC2162
     read password
 
     if [[ -z $password ]]; then
@@ -72,6 +77,7 @@ function mysqlSettings() {
   # Вопрос о имени базы данных
   mysqlDbname() {
     echo -n -e "\e[32m Укажите имя базы данных: \e[0m"
+    # shellcheck disable=SC2162
     read dbname
 
     if [[ -z $dbname ]]; then
@@ -96,6 +102,7 @@ mysqlSettings
 # Сгенерировать JWT ключи, для авторизации
 function generateJWT() {
   echo -n -e "\e[32m Хотите сгенерировать jwt ключи? (\e[1;33mY/n\e[32m): \e[0m"
+  # shellcheck disable=SC2162
   read generateJWT
   isGenerateKeys=false
 
@@ -104,6 +111,7 @@ function generateJWT() {
     isGenerateKeys=true
     ;;
   "n" | "N")
+    # shellcheck disable=SC2034
     isGenerateKeys=false
     ;;
   *)

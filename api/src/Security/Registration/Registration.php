@@ -4,14 +4,12 @@ namespace App\Security\Registration;
 
 use App\DTO\RegistrationDTO;
 use App\Entity\User;
-use App\Enum\ApiResponseTypeEnum;
 use App\Enum\StatusEnum;
 use App\Repository\UserRepository;
-use App\Rest\Http\ApiResponseSchema;
 use App\Rest\Http\Response;
-use App\Rest\Translator;
+use App\Rest\Http\ResponseCollection;
 use App\Security\AbstractSecurity;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class Registration.
@@ -28,12 +26,12 @@ class Registration extends AbstractSecurity
     private UserRepository $userRepository;
 
     /**
-     * @param ManagerRegistry $managerRegistry
-     * @param Translator      $translator
+     * @param EntityManagerInterface $em
+     * @param ResponseCollection     $responseCollection
      */
-    public function __construct(ManagerRegistry $managerRegistry, Translator $translator)
+    public function __construct(EntityManagerInterface $em, ResponseCollection $responseCollection)
     {
-        parent::__construct($managerRegistry, $translator);
+        parent::__construct($em, $responseCollection);
 
         /** @var UserRepository $userRepository */
         $userRepository = $this->em->getRepository(User::class);
@@ -58,15 +56,8 @@ class Registration extends AbstractSecurity
     /**
      * @return Response
      */
-    public function successAuthResponse(): Response
+    public function successRegisterResponse(): Response
     {
-        $apiResponseSchema = new ApiResponseSchema();
-
-        $apiResponseSchema->setMessage(
-            ApiResponseTypeEnum::REGISTRATION,
-            $this->translator->getTranslation('common@successRegister')
-        );
-
-        return new Response($apiResponseSchema, 'success', 200);
+        return $this->responseCollection->successRegister()->getResponse();
     }
 }
