@@ -3,7 +3,7 @@
 namespace App\Enum;
 
 /**
- * Enum RoleEnum
+ * Enum RoleEnum.
  *
  * @package App\Enum
  *
@@ -11,11 +11,9 @@ namespace App\Enum;
  */
 enum RoleEnum: string
 {
-
     case USER = 'user';
     case DEVELOPER = 'developer';
     case ADMIN = 'administrator';
     case MUSIC_MANAGER = 'music-manager';
     case SUPPORT = 'support';
-
 }

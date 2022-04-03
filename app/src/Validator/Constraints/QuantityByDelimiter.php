@@ -6,7 +6,7 @@ use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class QuantityByDelimiter
+ * Class QuantityByDelimiter.
  *
  * @package App\Validator\Constraints
  *
@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class QuantityByDelimiter extends Constraint
 {
-
     /**
      * @var string
      */
@@ -27,33 +26,32 @@ class QuantityByDelimiter extends Constraint
     public int $min;
 
     /**
-     * @var int|null
+     * @var null|int
      */
     public ?int $max;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     public ?string $minMessage = 'The number of values for {{ property }} property must be at least {{ min }}';
 
     /**
-     * @var string|null
+     * @var null|string
      */
     public ?string $maxMessage = 'The number of values for the {{ property }} property must be no more than {{ max }}';
 
     /**
      * @param string      $delimiter
      * @param int         $min
-     * @param int|null    $max
-     * @param string|null $minMessage
-     * @param string|null $maxMessage
-     * @param mixed|null  $options
-     * @param array|null  $groups
-     * @param mixed|null  $payload
+     * @param null|int    $max
+     * @param null|string $minMessage
+     * @param null|string $maxMessage
+     * @param null|mixed  $options
+     * @param null|array  $groups
+     * @param null|mixed  $payload
      */
-    public function __construct(string $delimiter, int $min = 0, int $max = null, string $minMessage = null, string $maxMessage = null, mixed $options = null, array $groups = null, mixed $payload = null)
+    public function __construct(string $delimiter, int $min = 0, ?int $max = null, ?string $minMessage = null, ?string $maxMessage = null, mixed $options = null, ?array $groups = null, mixed $payload = null)
     {
-
         parent::__construct($options, $groups, $payload);
 
         $this->delimiter = $delimiter;
@@ -61,7 +59,5 @@ class QuantityByDelimiter extends Constraint
         $this->max = $max;
         $this->minMessage = $minMessage ?? $this->minMessage;
         $this->maxMessage = $maxMessage ?? $this->maxMessage;
-
     }
-
 }

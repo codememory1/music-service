@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class SubscriptionPermissionController
+ * Class SubscriptionPermissionController.
  *
  * @package App\Controller\Api\V1
  *
@@ -27,77 +27,70 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/subscription/permission')]
 class SubscriptionPermissionController extends ApiController
 {
+    /**
+     * @return JsonResponse
+     */
+    #[Route('/all', methods: 'GET')]
+    #[Auth]
+    #[UserRolePermission(permission: RolePermissionNameEnum::SHOW_SUBSCRIPTION_PERMISSIONS)]
+    public function all(): JsonResponse
+    {
+        return $this->showAllFromDatabase(
+            SubscriptionPermission::class,
+            SubscriptionPermissionDTO::class
+        );
+    }
 
-	/**
-	 * @return JsonResponse
-	 */
-	#[Route('/all', methods: 'GET')]
-	#[Auth]
-	#[UserRolePermission(permission: RolePermissionNameEnum::SHOW_SUBSCRIPTION_PERMISSIONS)]
-	public function all(): JsonResponse
-	{
+    /**
+     * @param CreatorPermissionService $creatorPermissionService
+     * @param Request                  $request
+     *
+     * @throws UndefinedClassForDTOException
+     *
+     * @return JsonResponse
+     */
+    #[Route('/create', methods: 'POST')]
+    #[Auth]
+    #[UserRolePermission(permission: RolePermissionNameEnum::CREATE_SUBSCRIPTION_PERMISSION)]
+    public function create(CreatorPermissionService $creatorPermissionService, Request $request): JsonResponse
+    {
+        return $creatorPermissionService
+            ->create(new SubscriptionPermissionDTO($request, $this->managerRegistry))
+            ->make();
+    }
 
-		return $this->showAllFromDatabase(
-			SubscriptionPermission::class,
-			SubscriptionPermissionDTO::class
-		);
+    /**
+     * @param UpdaterPermissionService $updaterPermissionService
+     * @param Request                  $request
+     * @param int                      $id
+     *
+     * @throws UndefinedClassForDTOException
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{id<\d+>}/edit', methods: 'PUT')]
+    #[Auth]
+    #[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_SUBSCRIPTION_PERMISSION)]
+    public function update(UpdaterPermissionService $updaterPermissionService, Request $request, int $id): JsonResponse
+    {
+        return $updaterPermissionService
+            ->update(new SubscriptionPermissionDTO($request, $this->managerRegistry), $id)
+            ->make();
+    }
 
-	}
-
-	/**
-	 * @param CreatorPermissionService $creatorPermissionService
-	 * @param Request                  $request
-	 *
-	 * @return JsonResponse
-	 * @throws UndefinedClassForDTOException
-	 */
-	#[Route('/create', methods: 'POST')]
-	#[Auth]
-	#[UserRolePermission(permission: RolePermissionNameEnum::CREATE_SUBSCRIPTION_PERMISSION)]
-	public function create(CreatorPermissionService $creatorPermissionService, Request $request): JsonResponse
-	{
-
-		return $creatorPermissionService
-			->create(new SubscriptionPermissionDTO($request, $this->managerRegistry))
-			->make();
-
-	}
-
-	/**
-	 * @param UpdaterPermissionService $updaterPermissionService
-	 * @param Request                  $request
-	 * @param int                      $id
-	 *
-	 * @return JsonResponse
-	 * @throws UndefinedClassForDTOException
-	 */
-	#[Route('/{id<\d+>}/edit', methods: 'PUT')]
-	#[Auth]
-	#[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_SUBSCRIPTION_PERMISSION)]
-	public function update(UpdaterPermissionService $updaterPermissionService, Request $request, int $id): JsonResponse
-	{
-
-		return $updaterPermissionService
-			->update(new SubscriptionPermissionDTO($request, $this->managerRegistry), $id)
-			->make();
-
-	}
-
-	/**
-	 * @param DeleterPermissionService $deleterPermissionService
-	 * @param int                      $id
-	 *
-	 * @return JsonResponse
-	 * @throws Exception
-	 */
-	#[Route('/{id<\d+>}/delete', methods: 'DELETE')]
-	#[Auth]
-	#[UserRolePermission(permission: RolePermissionNameEnum::DELETE_SUBSCRIPTION_PERMISSION)]
-	public function delete(DeleterPermissionService $deleterPermissionService, int $id): JsonResponse
-	{
-
-		return $deleterPermissionService->delete($id)->make();
-
-	}
-
+    /**
+     * @param DeleterPermissionService $deleterPermissionService
+     * @param int                      $id
+     *
+     * @throws Exception
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{id<\d+>}/delete', methods: 'DELETE')]
+    #[Auth]
+    #[UserRolePermission(permission: RolePermissionNameEnum::DELETE_SUBSCRIPTION_PERMISSION)]
+    public function delete(DeleterPermissionService $deleterPermissionService, int $id): JsonResponse
+    {
+        return $deleterPermissionService->delete($id)->make();
+    }
 }

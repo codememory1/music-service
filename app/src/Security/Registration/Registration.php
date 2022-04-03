@@ -14,7 +14,7 @@ use App\Security\AbstractSecurity;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class Registration
+ * Class Registration.
  *
  * @package App\Security\Registration
  *
@@ -22,59 +22,51 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class Registration extends AbstractSecurity
 {
+    /**
+     * @var UserRepository
+     */
+    private UserRepository $userRepository;
 
-	/**
-	 * @var UserRepository
-	 */
-	private UserRepository $userRepository;
+    /**
+     * @param ManagerRegistry $managerRegistry
+     * @param Translator      $translator
+     */
+    public function __construct(ManagerRegistry $managerRegistry, Translator $translator)
+    {
+        parent::__construct($managerRegistry, $translator);
 
-	/**
-	 * @param ManagerRegistry $managerRegistry
-	 * @param Translator      $translator
-	 */
-	public function __construct(ManagerRegistry $managerRegistry, Translator $translator)
-	{
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->em->getRepository(User::class);
+        $this->userRepository = $userRepository;
+    }
 
-		parent::__construct($managerRegistry, $translator);
+    /**
+     * @param RegistrationDTO $registrationDTO
+     *
+     * @return bool|User
+     */
+    public function isReRegistration(RegistrationDTO $registrationDTO): User|bool
+    {
+        $finedUser = $this->userRepository->findOneBy([
+            'email' => $registrationDTO->email,
+            'status' => StatusEnum::NOT_ACTIVE->value
+        ]);
 
-		/** @var UserRepository $userRepository */
-		$userRepository = $this->em->getRepository(User::class);
-		$this->userRepository = $userRepository;
+        return null === $finedUser ? false : $finedUser;
+    }
 
-	}
+    /**
+     * @return Response
+     */
+    public function successAuthResponse(): Response
+    {
+        $apiResponseSchema = new ApiResponseSchema();
 
-	/**
-	 * @param RegistrationDTO $registrationDTO
-	 *
-	 * @return User|bool
-	 */
-	public function isReRegistration(RegistrationDTO $registrationDTO): User|bool
-	{
+        $apiResponseSchema->setMessage(
+            ApiResponseTypeEnum::REGISTRATION,
+            $this->translator->getTranslation('common@successRegister')
+        );
 
-		$finedUser = $this->userRepository->findOneBy([
-			'email'  => $registrationDTO->email,
-			'status' => StatusEnum::NOT_ACTIVE->value
-		]);
-
-		return null === $finedUser ? false : $finedUser;
-
-	}
-
-	/**
-	 * @return Response
-	 */
-	public function successAuthResponse(): Response
-	{
-
-		$apiResponseSchema = new ApiResponseSchema();
-
-		$apiResponseSchema->setMessage(
-			ApiResponseTypeEnum::REGISTRATION,
-			$this->translator->getTranslation('common@successRegister')
-		);
-
-		return new Response($apiResponseSchema, 'success', 200);
-
-	}
-
+        return new Response($apiResponseSchema, 'success', 200);
+    }
 }

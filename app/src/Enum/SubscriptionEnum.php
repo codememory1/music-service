@@ -3,7 +3,7 @@
 namespace App\Enum;
 
 /**
- * Enum SubscriptionEnum
+ * Enum SubscriptionEnum.
  *
  * @package App\Enum
  *
@@ -11,8 +11,6 @@ namespace App\Enum;
  */
 enum SubscriptionEnum: string
 {
-
-	case BASIC = 'basic';
-	case ARTIST = 'artist';
-
+    case BASIC = 'basic';
+    case ARTIST = 'artist';
 }

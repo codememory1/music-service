@@ -5,7 +5,7 @@ namespace App\DTO;
 use App\Rest\DTO\AbstractDTO;
 
 /**
- * Class UserProfileDTO
+ * Class UserProfileDTO.
  *
  * @package App\DTO
  *
@@ -13,5 +13,4 @@ use App\Rest\DTO\AbstractDTO;
  */
 class UserProfileDTO extends AbstractDTO
 {
-
 }

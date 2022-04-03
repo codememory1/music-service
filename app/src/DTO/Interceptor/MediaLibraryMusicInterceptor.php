@@ -3,9 +3,11 @@
 namespace App\DTO\Interceptor;
 
 use App\Rest\DTO\AbstractInterceptor;
+use function is_array;
+use const JSON_ERROR_NONE;
 
 /**
- * Class MediaLibraryMusicInterceptor
+ * Class MediaLibraryMusicInterceptor.
  *
  * @package App\DTO\Interceptor
  *
@@ -13,25 +15,21 @@ use App\Rest\DTO\AbstractInterceptor;
  */
 class MediaLibraryMusicInterceptor extends AbstractInterceptor
 {
+    /**
+     * @inheritDoc
+     */
+    public function process(string $requestKey, mixed $requestValue): mixed
+    {
+        $decodedValue = json_decode($requestValue, true);
 
-	/**
-	 * @inheritDoc
-	 */
-	public function process(string $requestKey, mixed $requestValue): mixed
-	{
+        if (JSON_ERROR_NONE === json_last_error()) {
+            return $decodedValue;
+        }
 
-		$decodedValue = json_decode($requestValue, true);
+        if (is_array($requestValue)) {
+            return $requestValue;
+        }
 
-		if (json_last_error() === JSON_ERROR_NONE) {
-			return $decodedValue;
-		}
-
-		if (is_array($requestValue)) {
-			return $requestValue;
-		}
-
-		return [];
-
-	}
-
+        return [];
+    }
 }

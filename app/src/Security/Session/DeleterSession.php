@@ -8,7 +8,7 @@ use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
 
 /**
- * Class DeleterSession
+ * Class DeleterSession.
  *
  * @package App\Security\Session
  *
@@ -16,25 +16,21 @@ use App\Security\AbstractSecurity;
  */
 class DeleterSession extends AbstractSecurity
 {
+    /**
+     * @param string $refreshToken
+     *
+     * @return UserSession
+     */
+    public function delete(string $refreshToken): Response
+    {
+        /** @var UserSessionRepository $userSessionRepository */
+        $userSessionRepository = $this->em->getRepository(UserSession::class);
 
-	/**
-	 * @param string $refreshToken
-	 *
-	 * @return UserSession
-	 */
-	public function delete(string $refreshToken): Response
-	{
+        $finedSession = $userSessionRepository->findOneBy(['refresh_token' => $refreshToken]);
 
-		/** @var UserSessionRepository $userSessionRepository */
-		$userSessionRepository = $this->em->getRepository(UserSession::class);
+        $this->em->remove($finedSession);
+        $this->em->flush();
 
-		$finedSession = $userSessionRepository->findOneBy(['refresh_token' => $refreshToken]);
-
-		$this->em->remove($finedSession);
-		$this->em->flush();
-
-		return $finedSession;
-
-	}
-
+        return $finedSession;
+    }
 }

@@ -13,7 +13,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class CreatorSession
+ * Class CreatorSession.
  *
  * @package App\Security\Session
  *
@@ -21,131 +21,119 @@ use JetBrains\PhpStorm\Pure;
  */
 class CreatorSession extends AbstractSecurity
 {
+    /**
+     * @param User             $identifiedUser
+     * @param AuthorizationDTO $authorizationDTO
+     *
+     * @return array
+     */
+    #[ArrayShape([
+        'access_token' => 'string',
+        'refresh_token' => 'string'
+    ])]
+    public function create(User $identifiedUser, AuthorizationDTO $authorizationDTO): array
+    {
+        $geo = new Geolocation();
+        $agent = new Agent();
+        $userSessionEntity = new UserSession();
+        $generatedTokens = $this->generateTokens($identifiedUser);
 
-	/**
-	 * @param User             $identifiedUser
-	 * @param AuthorizationDTO $authorizationDTO
-	 *
-	 * @return array
-	 */
-	#[ArrayShape([
-		'access_token'  => "string",
-		'refresh_token' => "string"
-	])]
-	public function create(User $identifiedUser, AuthorizationDTO $authorizationDTO): array
-	{
+        $geo->setIp($authorizationDTO->clientIp);
 
-		$geo = new Geolocation();
-		$agent = new Agent();
-		$userSessionEntity = new UserSession();
-		$generatedTokens = $this->generateTokens($identifiedUser);
+        $userSessionEntity
+            ->setUser($identifiedUser)
+            ->setBrowser($agent->browser())
+            ->setIp($authorizationDTO->clientIp)
+            ->setDeviceModel($agent->device())
+            ->setOperatingSystem($agent->platform())
+            ->setRefreshToken($generatedTokens['refresh_token']);
 
-		$geo->setIp($authorizationDTO->clientIp);
+        // Set info by IP
+        if ($geo->isSuccess()) {
+            $location = $geo->getLocation();
+            $country = $location->getCountry();
+            $city = $location->getCity();
+            $region = $location->getRegion();
 
-		$userSessionEntity
-			->setUser($identifiedUser)
-			->setBrowser($agent->browser())
-			->setIp($authorizationDTO->clientIp)
-			->setDeviceModel($agent->device())
-			->setOperatingSystem($agent->platform())
-			->setRefreshToken($generatedTokens['refresh_token']);
+            $userSessionEntity
+                ->setCountry($country->getName())
+                ->setCountryCode($country->getCode())
+                ->setLatitude($country->getLatitude())
+                ->setLongitude($country->getLongitude())
+                ->setCity($city->getName())
+                ->setRegion($region->getName());
+        }
 
-		// Set info by IP
-		if ($geo->isSuccess()) {
-			$location = $geo->getLocation();
-			$country = $location->getCountry();
-			$city = $location->getCity();
-			$region = $location->getRegion();
+        $this->em->persist($userSessionEntity);
+        $this->em->flush();
 
-			$userSessionEntity
-				->setCountry($country->getName())
-				->setCountryCode($country->getCode())
-				->setLatitude($country->getLatitude())
-				->setLongitude($country->getLongitude())
-				->setCity($city->getName())
-				->setRegion($region->getName());
-		}
+        return $generatedTokens;
+    }
 
-		$this->em->persist($userSessionEntity);
-		$this->em->flush();
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
+    #[ArrayShape([
+        'access_token' => 'string',
+        'refresh_token' => 'string'
+    ])]
+    private function generateTokens(User $user): array
+    {
+        $jwtTokenGenerator = new JwtTokenGenerator();
 
-		return $generatedTokens;
+        return [
+            'access_token' => $this->generateAccessToken($jwtTokenGenerator, $user),
+            'refresh_token' => $this->generateRefreshToken($jwtTokenGenerator, $user)
+        ];
+    }
 
-	}
+    /**
+     * @param JwtTokenGenerator $jwtTokenGenerator
+     * @param User              $user
+     *
+     * @return string
+     */
+    private function generateAccessToken(JwtTokenGenerator $jwtTokenGenerator, User $user): string
+    {
+        return $jwtTokenGenerator->encode(
+            $this->tokenSchema($user),
+            'JWT_ACCESS_PRIVATE_KEY',
+            'JWT_ACCESS_TTL'
+        );
+    }
 
-	/**
-	 * @param User $user
-	 *
-	 * @return array
-	 */
-	#[ArrayShape([
-		'access_token'  => "string",
-		'refresh_token' => "string"
-	])]
-	private function generateTokens(User $user): array
-	{
+    /**
+     * @param User $identifiedUser
+     *
+     * @return array
+     */
+    #[Pure]
+    #[ArrayShape([
+        'id' => 'int|null',
+        'email' => 'null|string'
+    ])]
+    private function tokenSchema(User $identifiedUser): array
+    {
+        return [
+            'id' => $identifiedUser->getId(),
+            'email' => $identifiedUser->getEmail()
+        ];
+    }
 
-		$jwtTokenGenerator = new JwtTokenGenerator();
-
-		return [
-			'access_token'  => $this->generateAccessToken($jwtTokenGenerator, $user),
-			'refresh_token' => $this->generateRefreshToken($jwtTokenGenerator, $user)
-		];
-
-	}
-
-	/**
-	 * @param JwtTokenGenerator $jwtTokenGenerator
-	 * @param User              $user
-	 *
-	 * @return string
-	 */
-	private function generateAccessToken(JwtTokenGenerator $jwtTokenGenerator, User $user): string
-	{
-
-		return $jwtTokenGenerator->encode(
-			$this->tokenSchema($user),
-			'JWT_ACCESS_PRIVATE_KEY',
-			'JWT_ACCESS_TTL'
-		);
-
-	}
-
-	/**
-	 * @param User $identifiedUser
-	 *
-	 * @return array
-	 */
-	#[Pure]
-	#[ArrayShape([
-		'id'    => "int|null",
-		'email' => "null|string"
-	])]
-	private function tokenSchema(User $identifiedUser): array
-	{
-
-		return [
-			'id'    => $identifiedUser->getId(),
-			'email' => $identifiedUser->getEmail()
-		];
-
-	}
-
-	/**
-	 * @param JwtTokenGenerator $jwtTokenGenerator
-	 * @param User              $user
-	 *
-	 * @return string
-	 */
-	private function generateRefreshToken(JwtTokenGenerator $jwtTokenGenerator, User $user): string
-	{
-
-		return $jwtTokenGenerator->encode(
-			$this->tokenSchema($user),
-			'JWT_REFRESH_PRIVATE_KEY',
-			'JWT_REFRESH_TTL'
-		);
-
-	}
-
+    /**
+     * @param JwtTokenGenerator $jwtTokenGenerator
+     * @param User              $user
+     *
+     * @return string
+     */
+    private function generateRefreshToken(JwtTokenGenerator $jwtTokenGenerator, User $user): string
+    {
+        return $jwtTokenGenerator->encode(
+            $this->tokenSchema($user),
+            'JWT_REFRESH_PRIVATE_KEY',
+            'JWT_REFRESH_TTL'
+        );
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Tests\Translator;
 use App\Tests\AbstractApiTestCase;
 
 /**
- * Class CreateLanguageTest
+ * Class CreateLanguageTest.
  *
  * @package App\Tests\Translator
  *
@@ -13,20 +13,18 @@ use App\Tests\AbstractApiTestCase;
  */
 class CreateLanguageTest extends AbstractApiTestCase
 {
-
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     protected ?string $apiPath = '/translator/language/create';
 
     /**
-     * Code validation for minimum length
+     * Code validation for minimum length.
      *
      * @return void
      */
     public function testCodeMinLength(): void
     {
-
         $this->clearBase();
 
         // Min length 2
@@ -38,17 +36,15 @@ class CreateLanguageTest extends AbstractApiTestCase
             'input_validation',
             'code_length'
         );
-
     }
 
     /**
-     * Code validation for maximum length
+     * Code validation for maximum length.
      *
      * @return void
      */
     public function testCodeMaxLength(): void
     {
-
         $this->clearBase();
 
         // Max length 3
@@ -60,17 +56,15 @@ class CreateLanguageTest extends AbstractApiTestCase
             'input_validation',
             'code_length'
         );
-
     }
 
     /**
-     * Validation of the language name for mandatory completion
+     * Validation of the language name for mandatory completion.
      *
      * @return void
      */
     public function testTitleIsRequired(): void
     {
-
         $this->clearBase();
 
         $this->createRequest(['code' => 'en', 'title' => '']);
@@ -81,17 +75,15 @@ class CreateLanguageTest extends AbstractApiTestCase
             'input_validation',
             'title_is_required'
         );
-
     }
 
     /**
-     * Language name validation for maximum length
+     * Language name validation for maximum length.
      *
      * @return void
      */
     public function testTitleMaxLength(): void
     {
-
         $title = $this->faker->text(100);
         $this->clearBase();
 
@@ -104,17 +96,15 @@ class CreateLanguageTest extends AbstractApiTestCase
             'input_validation',
             'title_length'
         );
-
     }
 
     /**
-     * Checking for Code Existence
+     * Checking for Code Existence.
      *
      * @return void
      */
     public function testCodeExist(): void
     {
-
         $this->clearBase();
 
         $this->createRequest(['code' => 'en', 'title' => 'English']);
@@ -127,17 +117,15 @@ class CreateLanguageTest extends AbstractApiTestCase
             'input_validation',
             'code_exist'
         );
-
     }
 
     /**
-     * Successful Language Creation Test
+     * Successful Language Creation Test.
      *
      * @return void
      */
     public function testSuccessCreate(): void
     {
-
         $this->clearBase();
         $this->createRequest(['code' => 'en', 'title' => 'English']);
 
@@ -147,7 +135,5 @@ class CreateLanguageTest extends AbstractApiTestCase
             'create',
             'success_create'
         );
-
     }
-
 }

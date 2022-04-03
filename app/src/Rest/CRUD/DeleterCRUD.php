@@ -9,7 +9,7 @@ use App\Rest\Http\Response;
 use Exception;
 
 /**
- * Class DeleterCRUD
+ * Class DeleterCRUD.
  *
  * @package App\Service\CRUD
  *
@@ -17,32 +17,29 @@ use Exception;
  */
 class DeleterCRUD extends AbstractCRUD
 {
+    /**
+     * @var null|string
+     */
+    protected ?string $translationKeyNotExist = null;
 
-	/**
-	 * @var string|null
-	 */
-	protected ?string $translationKeyNotExist = null;
+    /**
+     * @inheritDoc
+     *
+     * @throws Exception
+     */
+    protected function make(DTOInterface|string $entityOrDTO, array $manipulationBy = []): Response|EntityInterface
+    {
+        $finedEntity = $this->getRepository($entityOrDTO)->findOneBy($manipulationBy);
 
-	/**
-	 * @inheritDoc
-	 * @throws Exception
-	 */
-	protected function make(DTOInterface|string $entityOrDTO, array $manipulationBy = []): Response|EntityInterface
-	{
+        if (null === $finedEntity) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_EXIST,
+                $this->getTranslation($this->translationKeyNotExist)
+            );
 
-		$finedEntity = $this->getRepository($entityOrDTO)->findOneBy($manipulationBy);
+            return new Response($this->apiResponseSchema, 'error', 404);
+        }
 
-		if (null === $finedEntity) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_EXIST,
-				$this->getTranslation($this->translationKeyNotExist)
-			);
-
-			return new Response($this->apiResponseSchema, 'error', 404);
-		}
-
-		return $finedEntity;
-
-	}
-
+        return $finedEntity;
+    }
 }

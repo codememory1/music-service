@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 /**
- * Class UserAccountController
+ * Class UserAccountController.
  *
  * @package App\Controller
  *
@@ -11,5 +11,4 @@ namespace App\Controller;
  */
 class UserAccountController extends OtherController
 {
-
 }

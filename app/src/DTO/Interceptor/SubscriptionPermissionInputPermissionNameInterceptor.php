@@ -7,7 +7,7 @@ use App\Repository\SubscriptionPermissionNameRepository;
 use App\Rest\DTO\AbstractInterceptor;
 
 /**
- * Class SubscriptionPermissionInputPermissionNameInterceptor
+ * Class SubscriptionPermissionInputPermissionNameInterceptor.
  *
  * @package App\DTO\Interceptor
  *
@@ -15,18 +15,14 @@ use App\Rest\DTO\AbstractInterceptor;
  */
 class SubscriptionPermissionInputPermissionNameInterceptor extends AbstractInterceptor
 {
+    /**
+     * @inheritDoc
+     */
+    public function process(string $requestKey, mixed $requestValue): ?SubscriptionPermissionName
+    {
+        /** @var SubscriptionPermissionNameRepository $subscriptionPermissionNameRepository */
+        $subscriptionPermissionNameRepository = $this->context->em->getRepository(SubscriptionPermissionName::class);
 
-	/**
-	 * @inheritDoc
-	 */
-	public function process(string $requestKey, mixed $requestValue): ?SubscriptionPermissionName
-	{
-
-		/** @var SubscriptionPermissionNameRepository $subscriptionPermissionNameRepository */
-		$subscriptionPermissionNameRepository = $this->context->em->getRepository(SubscriptionPermissionName::class);
-
-		return $subscriptionPermissionNameRepository->findOneBy(['key' => $requestValue]);
-
-	}
-
+        return $subscriptionPermissionNameRepository->findOneBy(['key' => $requestValue]);
+    }
 }

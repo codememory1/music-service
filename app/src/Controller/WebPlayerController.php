@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 /**
- * Class WebPlayerController
+ * Class WebPlayerController.
  *
  * @package App\Controller
  *
@@ -11,5 +11,4 @@ namespace App\Controller;
  */
 class WebPlayerController extends OtherController
 {
-
 }

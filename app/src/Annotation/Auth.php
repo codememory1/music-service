@@ -5,7 +5,7 @@ namespace App\Annotation;
 use Attribute;
 
 /**
- * Class Auth
+ * Class Auth.
  *
  * @package App\Annotation
  *
@@ -14,6 +14,4 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 class Auth
 {
-
-
 }

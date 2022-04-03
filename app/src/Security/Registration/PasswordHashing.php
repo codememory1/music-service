@@ -6,7 +6,7 @@ use App\Rest\DTO\AbstractPasswordDTO;
 use App\Service\HashingService;
 
 /**
- * Class PasswordHashing
+ * Class PasswordHashing.
  *
  * @package App\Security\Registration
  *
@@ -14,17 +14,13 @@ use App\Service\HashingService;
  */
 class PasswordHashing
 {
-
-	/**
-	 * @param AbstractPasswordDTO $passwordDTO
-	 *
-	 * @return string
-	 */
-	public function encode(AbstractPasswordDTO $passwordDTO): string
-	{
-
-		return (new HashingService())->encode($passwordDTO->password);
-
-	}
-
+    /**
+     * @param AbstractPasswordDTO $passwordDTO
+     *
+     * @return string
+     */
+    public function encode(AbstractPasswordDTO $passwordDTO): string
+    {
+        return (new HashingService())->encode($passwordDTO->password);
+    }
 }

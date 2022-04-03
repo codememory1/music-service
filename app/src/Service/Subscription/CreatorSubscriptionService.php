@@ -7,7 +7,7 @@ use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
 /**
- * Class CreatorSubscriptionService
+ * Class CreatorSubscriptionService.
  *
  * @package App\Service\Subscription
  *
@@ -15,23 +15,19 @@ use App\Rest\Http\Response;
  */
 class CreatorSubscriptionService extends CreatorCRUD
 {
+    /**
+     * @param SubscriptionDTO $subscriptionDTO
+     *
+     * @return Response
+     */
+    public function create(SubscriptionDTO $subscriptionDTO): Response
+    {
+        $createdEntity = $this->make($subscriptionDTO);
 
-	/**
-	 * @param SubscriptionDTO $subscriptionDTO
-	 *
-	 * @return Response
-	 */
-	public function create(SubscriptionDTO $subscriptionDTO): Response
-	{
+        if ($createdEntity instanceof Response) {
+            return $createdEntity;
+        }
 
-		$createdEntity = $this->make($subscriptionDTO);
-
-		if ($createdEntity instanceof Response) {
-			return $createdEntity;
-		}
-
-		return $this->manager->push($createdEntity, 'subscription@successCreate');
-
-	}
-
+        return $this->manager->push($createdEntity, 'subscription@successCreate');
+    }
 }

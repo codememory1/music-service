@@ -10,7 +10,7 @@ use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class AlbumCategoryDTO
+ * Class AlbumCategoryDTO.
  *
  * @package App\DTO
  *
@@ -18,33 +18,29 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class AlbumCategoryDTO extends AbstractDTO
 {
+    /**
+     * @var null|string
+     */
+    #[Assert\NotBlank(message: 'common@titleIsRequired')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'common@titleTranslationKeyMaxLength'
+    )]
+    #[AppAssert\Exist(
+        TranslationKey::class,
+        'name',
+        'common@titleTranslationKeyNotExist',
+        payload: ApiResponseTypeEnum::CHECK_EXIST
+    )]
+    public ?string $titleTranslationKey = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[Assert\NotBlank(message: 'common@titleIsRequired')]
-	#[Assert\Length(
-		max: 255,
-		maxMessage: 'common@titleTranslationKeyMaxLength'
-	)]
-	#[AppAssert\Exist(
-		TranslationKey::class,
-		'name',
-		'common@titleTranslationKeyNotExist',
-		payload: ApiResponseTypeEnum::CHECK_EXIST
-	)]
-	public ?string $titleTranslationKey = null;
+    /**
+     * @return void
+     */
+    protected function wrapper(): void
+    {
+        $this->setEntity(AlbumCategory::class);
 
-	/**
-	 * @return void
-	 */
-	protected function wrapper(): void
-	{
-
-		$this->setEntity(AlbumCategory::class);
-
-		$this->addExpectedRequestKey('title', 'title_translation_key');
-
-	}
-
+        $this->addExpectedRequestKey('title', 'title_translation_key');
+    }
 }

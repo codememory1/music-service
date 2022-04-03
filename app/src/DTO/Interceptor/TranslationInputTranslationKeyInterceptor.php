@@ -7,7 +7,7 @@ use App\Repository\TranslationKeyRepository;
 use App\Rest\DTO\AbstractInterceptor;
 
 /**
- * Class TranslationInputTranslationKeyInterceptor
+ * Class TranslationInputTranslationKeyInterceptor.
  *
  * @package App\DTO\Interceptor
  *
@@ -15,18 +15,14 @@ use App\Rest\DTO\AbstractInterceptor;
  */
 class TranslationInputTranslationKeyInterceptor extends AbstractInterceptor
 {
+    /**
+     * @inheritDoc
+     */
+    public function process(string $requestKey, mixed $requestValue): ?TranslationKey
+    {
+        /** @var TranslationKeyRepository $translationKeyRepository */
+        $translationKeyRepository = $this->context->em->getRepository(TranslationKey::class);
 
-	/**
-	 * @inheritDoc
-	 */
-	public function process(string $requestKey, mixed $requestValue): ?TranslationKey
-	{
-
-		/** @var TranslationKeyRepository $translationKeyRepository */
-		$translationKeyRepository = $this->context->em->getRepository(TranslationKey::class);
-
-		return $translationKeyRepository->findOneBy(['name' => $requestValue]);
-
-	}
-
+        return $translationKeyRepository->findOneBy(['name' => $requestValue]);
+    }
 }

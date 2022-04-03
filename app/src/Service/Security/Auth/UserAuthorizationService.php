@@ -12,7 +12,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 
 /**
- * Class UserAuthorizationService
+ * Class UserAuthorizationService.
  *
  * @package App\Service\Security\Auth
  *
@@ -20,111 +20,102 @@ use Exception;
  */
 class UserAuthorizationService extends ApiService
 {
+    /**
+     * @param AuthorizationDTO          $authorizationDTO
+     * @param UserIdentificationService $userIdentificationService
+     * @param UserAuthenticationService $userAuthenticationService
+     * @param CreatorUserSessionService $creatorUserSessionService
+     *
+     * @throws NonUniqueResultException
+     * @throws Exception
+     *
+     * @return Response
+     */
+    public function authorize(
+        AuthorizationDTO $authorizationDTO,
+        UserIdentificationService $userIdentificationService,
+        UserAuthenticationService $userAuthenticationService,
+        CreatorUserSessionService $creatorUserSessionService
+    ): Response {
+        // Validation of input POST data
+        if (true !== $resultInputValidation = $this->inputValidation($authorizationDTO)) {
+            return $resultInputValidation;
+        }
 
-	/**
-	 * @param AuthorizationDTO          $authorizationDTO
-	 * @param UserIdentificationService $userIdentificationService
-	 * @param UserAuthenticationService $userAuthenticationService
-	 * @param CreatorUserSessionService $creatorUserSessionService
-	 *
-	 * @return Response
-	 * @throws NonUniqueResultException
-	 * @throws Exception
-	 */
-	public function authorize(
-		AuthorizationDTO $authorizationDTO,
-		UserIdentificationService $userIdentificationService,
-		UserAuthenticationService $userAuthenticationService,
-		CreatorUserSessionService $creatorUserSessionService
-	): Response
-	{
+        // Check identify user
+        $identifiedUser = $userIdentificationService->identify($authorizationDTO);
 
-		// Validation of input POST data
-		if (true !== $resultInputValidation = $this->inputValidation($authorizationDTO)) {
-			return $resultInputValidation;
-		}
+        if ($identifiedUser instanceof Response) {
+            return $identifiedUser;
+        }
 
-		// Check identify user
-		$identifiedUser = $userIdentificationService->identify($authorizationDTO);
+        // Check status
+        if (true !== $resultCheckActive = $this->checkActivity($identifiedUser)) {
+            return $resultCheckActive;
+        }
 
-		if ($identifiedUser instanceof Response) {
-			return $identifiedUser;
-		}
+        // Check authentication user
+        $authenticationUser = $userAuthenticationService->authenticate($identifiedUser, $authorizationDTO);
 
-		// Check status
-		if (true !== $resultCheckActive = $this->checkActivity($identifiedUser)) {
-			return $resultCheckActive;
-		}
+        if ($authenticationUser instanceof Response) {
+            return $authenticationUser;
+        }
 
-		// Check authentication user
-		$authenticationUser = $userAuthenticationService->authenticate($identifiedUser, $authorizationDTO);
+        // Create user session
+        $createdUserSession = $this->createSession($identifiedUser, $authorizationDTO, $creatorUserSessionService);
 
-		if ($authenticationUser instanceof Response) {
-			return $authenticationUser;
-		}
+        return $this->getSuccessResponse($createdUserSession);
+    }
 
-		// Create user session
-		$createdUserSession = $this->createSession($identifiedUser, $authorizationDTO, $creatorUserSessionService);
+    /**
+     * @param User $identityUser
+     *
+     * @throws Exception
+     *
+     * @return bool|Response
+     */
+    private function checkActivity(User $identityUser): Response|bool
+    {
+        if ($identityUser->getStatus() !== StatusEnum::ACTIVE->value) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_ACTIVE,
+                $this->getTranslation('user@accountNotActive')
+            );
 
-		return $this->getSuccessResponse($createdUserSession);
+            return new Response($this->apiResponseSchema, 'error', 400);
+        }
 
-	}
+        return true;
+    }
 
-	/**
-	 * @param User $identityUser
-	 *
-	 * @return Response|bool
-	 * @throws Exception
-	 */
-	private function checkActivity(User $identityUser): Response|bool
-	{
+    /**
+     * @param User                      $identifiedUser
+     * @param AuthorizationDTO          $authorizationDTO
+     * @param CreatorUserSessionService $creatorUserSessionService
+     *
+     * @return CreatorUserSessionService
+     */
+    private function createSession(User $identifiedUser, AuthorizationDTO $authorizationDTO, CreatorUserSessionService $creatorUserSessionService): CreatorUserSessionService
+    {
+        $creatorUserSessionService->create($identifiedUser, $authorizationDTO);
 
-		if ($identityUser->getStatus() !== StatusEnum::ACTIVE->value) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_ACTIVE,
-				$this->getTranslation('user@accountNotActive')
-			);
+        return $creatorUserSessionService;
+    }
 
-			return new Response($this->apiResponseSchema, 'error', 400);
-		}
+    /**
+     * @param CreatorUserSessionService $createdUserSession
+     *
+     * @return Response
+     */
+    private function getSuccessResponse(CreatorUserSessionService $createdUserSession): Response
+    {
+        $this->apiResponseSchema
+            ->setMessage(ApiResponseTypeEnum::CHECK_AUTH, $this->getTranslation('user@successAuth'))
+            ->setData([
+                'access_token' => $createdUserSession->getAccessToken(),
+                'refresh_token' => $createdUserSession->getRefreshToken()
+            ]);
 
-		return true;
-
-	}
-
-	/**
-	 * @param User                      $identifiedUser
-	 * @param AuthorizationDTO          $authorizationDTO
-	 * @param CreatorUserSessionService $creatorUserSessionService
-	 *
-	 * @return CreatorUserSessionService
-	 */
-	private function createSession(User $identifiedUser, AuthorizationDTO $authorizationDTO, CreatorUserSessionService $creatorUserSessionService): CreatorUserSessionService
-	{
-
-		$creatorUserSessionService->create($identifiedUser, $authorizationDTO);
-
-		return $creatorUserSessionService;
-
-	}
-
-	/**
-	 * @param CreatorUserSessionService $createdUserSession
-	 *
-	 * @return Response
-	 */
-	private function getSuccessResponse(CreatorUserSessionService $createdUserSession): Response
-	{
-
-		$this->apiResponseSchema
-			->setMessage(ApiResponseTypeEnum::CHECK_AUTH, $this->getTranslation('user@successAuth'))
-			->setData([
-				'access_token'  => $createdUserSession->getAccessToken(),
-				'refresh_token' => $createdUserSession->getRefreshToken()
-			]);
-
-		return new Response($this->apiResponseSchema, 'success', 200);
-
-	}
-
+        return new Response($this->apiResponseSchema, 'success', 200);
+    }
 }

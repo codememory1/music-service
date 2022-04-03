@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Class AuthorizationValidator
+ * Class AuthorizationValidator.
  *
  * @package App\Validator\Constraints
  *
@@ -22,14 +22,13 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class AuthorizationValidator extends ConstraintValidator
 {
-
     /**
      * @var ManagerRegistry
      */
     private ManagerRegistry $managerRegistry;
 
     /**
-     * @var Request|null
+     * @var null|Request
      */
     private ?Request $request;
 
@@ -39,19 +38,17 @@ class AuthorizationValidator extends ConstraintValidator
      */
     public function __construct(ManagerRegistry $managerRegistry, RequestStack $requestStack)
     {
-
         $this->managerRegistry = $managerRegistry;
         $this->request = $requestStack->getCurrentRequest();
-
     }
 
     /**
      * @inheritDoc
+     *
      * @throws ReflectionException
      */
-    public function validate(mixed $value, Constraint $constraint)
+    public function validate(mixed $value, Constraint $constraint): void
     {
-
         $constraintReflection = new ReflectionClass($value);
 
         if (!$constraintReflection->implementsInterface(EntityInterface::class)) {
@@ -65,7 +62,5 @@ class AuthorizationValidator extends ConstraintValidator
                 ->buildViolation($constraint->message)
                 ->addViolation();
         }
-
     }
-
 }

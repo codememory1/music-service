@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class Translation
+ * Class Translation.
  *
  * @package App\Entity
  *
@@ -21,109 +21,96 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: TranslationRepository::class)]
 #[ORM\Table('translations')]
 #[UniqueEntity(
-	['lang', 'translationKey'],
-	'translation@exist',
-	payload: ApiResponseTypeEnum::CHECK_EXIST
+    ['lang', 'translationKey'],
+    'translation@exist',
+    payload: ApiResponseTypeEnum::CHECK_EXIST
 )]
 #[ORM\HasLifecycleCallbacks]
 class Translation implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var Language|null
-	 */
-	#[ORM\ManyToOne(targetEntity: Language::class, inversedBy: 'translations')]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?Language $lang = null;
+    /**
+     * @var null|Language
+     */
+    #[ORM\ManyToOne(targetEntity: Language::class, inversedBy: 'translations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Language $lang = null;
 
-	/**
-	 * @var TranslationKey|null
-	 */
-	#[ORM\ManyToOne(targetEntity: TranslationKey::class, cascade: ['persist', 'remove'], inversedBy: 'translations')]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?TranslationKey $translationKey = null;
+    /**
+     * @var null|TranslationKey
+     */
+    #[ORM\ManyToOne(targetEntity: TranslationKey::class, cascade: ['persist', 'remove'], inversedBy: 'translations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TranslationKey $translationKey = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::TEXT, options: [
-		'comment' => 'Translation of the key into the specified language'
-	])]
-	private ?string $translation = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::TEXT, options: [
+        'comment' => 'Translation of the key into the specified language'
+    ])]
+    private ?string $translation = null;
 
-	/**
-	 * @return Language|null
-	 */
-	public function getLang(): ?Language
-	{
+    /**
+     * @return null|Language
+     */
+    public function getLang(): ?Language
+    {
+        return $this->lang;
+    }
 
-		return $this->lang;
+    /**
+     * @param null|Language $lang
+     *
+     * @return $this
+     */
+    public function setLang(?Language $lang): self
+    {
+        $this->lang = $lang;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param Language|null $lang
-	 *
-	 * @return $this
-	 */
-	public function setLang(?Language $lang): self
-	{
+    /**
+     * @return null|TranslationKey
+     */
+    public function getTranslationKey(): ?TranslationKey
+    {
+        return $this->translationKey;
+    }
 
-		$this->lang = $lang;
+    /**
+     * @param null|TranslationKey $translationKey
+     *
+     * @return $this
+     */
+    public function setTranslationKey(?TranslationKey $translationKey): self
+    {
+        $this->translationKey = $translationKey;
 
-		return $this;
+        return $this;
+    }
 
-	}
+    /**
+     * @return null|string
+     */
+    public function getTranslation(): ?string
+    {
+        return $this->translation;
+    }
 
-	/**
-	 * @return TranslationKey|null
-	 */
-	public function getTranslationKey(): ?TranslationKey
-	{
+    /**
+     * @param string $translation
+     *
+     * @return $this
+     */
+    public function setTranslation(string $translation): self
+    {
+        $this->translation = $translation;
 
-		return $this->translationKey;
-
-	}
-
-	/**
-	 * @param TranslationKey|null $translationKey
-	 *
-	 * @return $this
-	 */
-	public function setTranslationKey(?TranslationKey $translationKey): self
-	{
-
-		$this->translationKey = $translationKey;
-
-		return $this;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getTranslation(): ?string
-	{
-
-		return $this->translation;
-
-	}
-
-	/**
-	 * @param string $translation
-	 *
-	 * @return $this
-	 */
-	public function setTranslation(string $translation): self
-	{
-
-		$this->translation = $translation;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

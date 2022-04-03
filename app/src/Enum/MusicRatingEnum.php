@@ -3,7 +3,7 @@
 namespace App\Enum;
 
 /**
- * Enum MusicRatingEnum
+ * Enum MusicRatingEnum.
  *
  * @package App\Enum
  *
@@ -11,8 +11,6 @@ namespace App\Enum;
  */
 enum MusicRatingEnum: string
 {
-
-	case LIKE = 'like';
-	case DISLIKE = 'dislike';
-
+    case LIKE = 'like';
+    case DISLIKE = 'dislike';
 }

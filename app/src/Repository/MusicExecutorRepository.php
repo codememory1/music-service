@@ -7,28 +7,24 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class MusicExecutorRepository
+ * Class MusicExecutorRepository.
  *
  * @package App\Repository
  *
  * @author  Codememory
  *
- * @method MusicExecutor|null find($id, $lockMode = null, $lockVersion = null)
- * @method MusicExecutor|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|MusicExecutor find($id, $lockMode = null, $lockVersion = null)
+ * @method null|MusicExecutor findOneBy(array $criteria, array $orderBy = null)
  * @method MusicExecutor[]    findAll()
  * @method MusicExecutor[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class MusicExecutorRepository extends ServiceEntityRepository
 {
-
-	/**
-	 * @param ManagerRegistry $registry
-	 */
-	public function __construct(ManagerRegistry $registry)
-	{
-
-		parent::__construct($registry, MusicExecutor::class);
-
-	}
-	
+    /**
+     * @param ManagerRegistry $registry
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, MusicExecutor::class);
+    }
 }

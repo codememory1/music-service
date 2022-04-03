@@ -6,7 +6,7 @@ use App\Entity\User;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class UserRegistrationEvent
+ * Class UserRegistrationEvent.
  *
  * @package App\Event
  *
@@ -14,7 +14,6 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class UserRegistrationEvent extends Event
 {
-
     /**
      * @var User
      */
@@ -25,9 +24,7 @@ class UserRegistrationEvent extends Event
      */
     public function __construct(User $user)
     {
-
         $this->user = $user;
-
     }
 
     /**
@@ -35,9 +32,6 @@ class UserRegistrationEvent extends Event
      */
     public function getUser(): User
     {
-
         return $this->user;
-
     }
-
 }

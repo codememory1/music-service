@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Trait UpdatedAtTrait
+ * Trait UpdatedAtTrait.
  *
  * @package App\Trait\Entity
  *
@@ -16,9 +16,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 trait UpdatedAtTrait
 {
-
     /**
-     * @var DateTimeImmutable|null
+     * @var null|DateTimeImmutable
      */
     #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
@@ -30,19 +29,14 @@ trait UpdatedAtTrait
     #[ORM\PreUpdate]
     public function setUpdatedAt(): void
     {
-
         $this->updatedAt = new DateTimeImmutable();
-
     }
 
     /**
-     * @return DateTimeImmutable|null
+     * @return null|DateTimeImmutable
      */
     public function getUpdatedAt(): ?DateTimeImmutable
     {
-
         return $this->updatedAt;
-
     }
-
 }

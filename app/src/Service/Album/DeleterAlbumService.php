@@ -8,7 +8,7 @@ use App\Rest\Http\Response;
 use Exception;
 
 /**
- * Class DeleterAlbumService
+ * Class DeleterAlbumService.
  *
  * @package App\Service\Album
  *
@@ -16,47 +16,42 @@ use Exception;
  */
 class DeleterAlbumService extends DeleterCRUD
 {
+    /**
+     * @param string $kernelProjectDir
+     * @param int    $id
+     *
+     * @throws Exception
+     *
+     * @return Response
+     */
+    public function delete(string $kernelProjectDir, int $id): Response
+    {
+        $this->translationKeyNotExist = 'album@notExist';
 
-	/**
-	 * @param string $kernelProjectDir
-	 * @param int    $id
-	 *
-	 * @return Response
-	 * @throws Exception
-	 */
-	public function delete(string $kernelProjectDir, int $id): Response
-	{
+        /** @var Album|Response $deletedEntity */
+        $deletedEntity = $this->make(Album::class, ['id' => $id]);
 
-		$this->translationKeyNotExist = 'album@notExist';
+        if ($deletedEntity instanceof Response) {
+            return $deletedEntity;
+        }
 
-		/** @var Response|Album $deletedEntity */
-		$deletedEntity = $this->make(Album::class, ['id' => $id]);
+        $this->deletePhoto($deletedEntity, $kernelProjectDir);
 
-		if ($deletedEntity instanceof Response) {
-			return $deletedEntity;
-		}
+        return $this->manager->remove($deletedEntity, 'album@successDelete');
+    }
 
-		$this->deletePhoto($deletedEntity, $kernelProjectDir);
+    /**
+     * @param Album  $album
+     * @param string $kernelProjectDir
+     *
+     * @return void
+     */
+    private function deletePhoto(Album $album, string $kernelProjectDir): void
+    {
+        $absolutePathPhoto = sprintf('%s/%s', $kernelProjectDir, $album->getPhoto());
 
-		return $this->manager->remove($deletedEntity, 'album@successDelete');
-
-	}
-
-	/**
-	 * @param Album  $album
-	 * @param string $kernelProjectDir
-	 *
-	 * @return void
-	 */
-	private function deletePhoto(Album $album, string $kernelProjectDir): void
-	{
-
-		$absolutePathPhoto = sprintf('%s/%s', $kernelProjectDir, $album->getPhoto());
-
-		if (file_exists($absolutePathPhoto)) {
-			unlink($absolutePathPhoto);
-		}
-
-	}
-
+        if (file_exists($absolutePathPhoto)) {
+            unlink($absolutePathPhoto);
+        }
+    }
 }

@@ -8,7 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class RolePermissionNameFixtures
+ * Class RolePermissionNameFixtures.
  *
  * @package App\DataFixtures
  *
@@ -16,7 +16,6 @@ use Doctrine\Persistence\ObjectManager;
  */
 class RolePermissionNameFixtures extends Fixture
 {
-
     /**
      * @param ObjectManager $manager
      *
@@ -24,7 +23,6 @@ class RolePermissionNameFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-
         foreach (RolePermissionNameEnum::getPermissionNames() as $rolePermissionName => $titleTranslationKey) {
             $rolePermissionNameEntity = new RolePermissionName();
 
@@ -38,7 +36,5 @@ class RolePermissionNameFixtures extends Fixture
         }
 
         $manager->flush();
-
     }
-
 }

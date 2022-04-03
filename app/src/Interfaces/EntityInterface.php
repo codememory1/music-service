@@ -3,7 +3,7 @@
 namespace App\Interfaces;
 
 /**
- * Interfaces EntityInterface
+ * Interfaces EntityInterface.
  *
  * @package  App\Interfaces
  *
@@ -11,10 +11,8 @@ namespace App\Interfaces;
  */
 interface EntityInterface
 {
-
     /**
-     * @return int|null
+     * @return null|int
      */
     public function getId(): ?int;
-
 }

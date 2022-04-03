@@ -2,10 +2,8 @@
 
 namespace App\Scheme;
 
-use App\Interfaces\SchemeInterface;
-
 /**
- * Class MediaLibraryMusicEventScheme
+ * Class MediaLibraryMusicEventScheme.
  *
  * @package App\Scheme
  *
@@ -13,13 +11,11 @@ use App\Interfaces\SchemeInterface;
  */
 class MediaLibraryMusicEventScheme
 {
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getScheme(): array
-	{
-		// TODO: Implement getScheme() method.
-	}
-
+    /**
+     * @inheritDoc
+     */
+    public function getScheme(): array
+    {
+        // TODO: Implement getScheme() method.
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Interfaces;
 use App\Rest\ClassHelper\AttributeData;
 
 /**
- * Interface AnnotationListenerInterface
+ * Interface AnnotationListenerInterface.
  *
  * @package  App\Interfaces
  *
@@ -13,12 +13,10 @@ use App\Rest\ClassHelper\AttributeData;
  */
 interface AnnotationListenerInterface
 {
-
-	/**
-	 * @param AttributeData $attributeData
-	 *
-	 * @return void
-	 */
-	public function listen(AttributeData $attributeData): void;
-
+    /**
+     * @param AttributeData $attributeData
+     *
+     * @return void
+     */
+    public function listen(AttributeData $attributeData): void;
 }

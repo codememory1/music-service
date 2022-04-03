@@ -13,7 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class Translator
+ * Class Translator.
  *
  * @package App\Rest
  *
@@ -21,63 +21,55 @@ use Doctrine\Persistence\ObjectManager;
  */
 class Translator
 {
+    /**
+     * @var ObjectManager
+     */
+    private ObjectManager $em;
 
-	/**
-	 * @var ObjectManager
-	 */
-	private ObjectManager $em;
+    /**
+     * @var Request
+     */
+    private Request $request;
 
-	/**
-	 * @var Request
-	 */
-	private Request $request;
+    /**
+     * @param ManagerRegistry $managerRegistry
+     * @param Request         $request
+     */
+    public function __construct(ManagerRegistry $managerRegistry, Request $request)
+    {
+        $this->em = $managerRegistry->getManager();
+        $this->request = $request;
+    }
 
-	/**
-	 * @param ManagerRegistry $managerRegistry
-	 * @param Request         $request
-	 */
-	public function __construct(ManagerRegistry $managerRegistry, Request $request)
-	{
+    /**
+     * @param string $key
+     * @param string $default
+     *
+     * @return string
+     */
+    public function getTranslation(string $key, string $default = ''): string
+    {
+        /** @var TranslationRepository $translationRepository */
+        $translationRepository = $this->em->getRepository(Translation::class);
 
-		$this->em = $managerRegistry->getManager();
-		$this->request = $request;
+        /** @var TranslationKeyRepository $translationKeyRepository */
+        $translationKeyRepository = $this->em->getRepository(TranslationKey::class);
 
-	}
+        return $translationRepository->findOneBy([
+            'lang' => $this->getActiveLang(),
+            'translationKey' => $translationKeyRepository->findOneBy(['name' => $key])
+        ])?->getTranslation() ?? $default;
+    }
 
-	/**
-	 * @param string $key
-	 * @param string $default
-	 *
-	 * @return string
-	 */
-	public function getTranslation(string $key, string $default = ''): string
-	{
+    /**
+     * @return null|Language
+     */
+    public function getActiveLang(): ?Language
+    {
+        /** @var LanguageRepository $languageRepository */
+        $languageRepository = $this->em->getRepository(Language::class);
+        $activeLangCode = $this->request->request->getLocale();
 
-		/** @var TranslationRepository $translationRepository */
-		$translationRepository = $this->em->getRepository(Translation::class);
-
-		/** @var TranslationKeyRepository $translationKeyRepository */
-		$translationKeyRepository = $this->em->getRepository(TranslationKey::class);
-
-		return $translationRepository->findOneBy([
-			'lang'           => $this->getActiveLang(),
-			'translationKey' => $translationKeyRepository->findOneBy(['name' => $key])
-		])?->getTranslation() ?? $default;
-
-	}
-
-	/**
-	 * @return Language|null
-	 */
-	public function getActiveLang(): ?Language
-	{
-
-		/** @var LanguageRepository $languageRepository */
-		$languageRepository = $this->em->getRepository(Language::class);
-		$activeLangCode = $this->request->request->getLocale();
-
-		return $languageRepository->findOneBy(['code' => $activeLangCode]);
-
-	}
-
+        return $languageRepository->findOneBy(['code' => $activeLangCode]);
+    }
 }

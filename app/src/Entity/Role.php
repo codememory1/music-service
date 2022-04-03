@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class Role
+ * Class Role.
  *
  * @package App\Entitiy
  *
@@ -24,183 +24,161 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\HasLifecycleCallbacks]
 class Role implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column('`key`', Types::STRING, length: 255, unique: true, options: [
-		'comment' => 'Unique role key against which the role will be checked'
-	])]
-	private ?string $key = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column('`key`', Types::STRING, length: 255, unique: true, options: [
+        'comment' => 'Unique role key against which the role will be checked'
+    ])]
+    private ?string $key = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::STRING, length: 255, options: [
-		'comment' => 'Role name translation key'
-	])]
-	private ?string $titleTranslationKey = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
+        'comment' => 'Role name translation key'
+    ])]
+    private ?string $titleTranslationKey = null;
 
-	/**
-	 * @var Collection
-	 */
-	#[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class, cascade: ['persist', 'remove'])]
-	private Collection $rolePermissions;
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class, cascade: ['persist', 'remove'])]
+    private Collection $rolePermissions;
 
-	/**
-	 * @var Collection
-	 */
-	#[ORM\OneToMany(mappedBy: 'role', targetEntity: User::class)]
-	private Collection $users;
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: User::class)]
+    private Collection $users;
 
-	#[Pure]
-	public function __construct()
-	{
+    #[Pure]
+    public function __construct()
+    {
+        $this->rolePermissions = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
 
-		$this->rolePermissions = new ArrayCollection();
-		$this->users = new ArrayCollection();
-	}
+    /**
+     * @return null|string
+     */
+    public function getKey(): ?string
+    {
+        return $this->key;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function getKey(): ?string
-	{
+    /**
+     * @param string $key
+     *
+     * @return $this
+     */
+    public function setKey(string $key): self
+    {
+        $this->key = $key;
 
-		return $this->key;
+        return $this;
+    }
 
-	}
+    /**
+     * @return null|string
+     */
+    public function getTitleTranslationKey(): ?string
+    {
+        return $this->titleTranslationKey;
+    }
 
-	/**
-	 * @param string $key
-	 *
-	 * @return $this
-	 */
-	public function setKey(string $key): self
-	{
+    /**
+     * @param string $titleTranslationKey
+     *
+     * @return $this
+     */
+    public function setTitleTranslationKey(string $titleTranslationKey): self
+    {
+        $this->titleTranslationKey = $titleTranslationKey;
 
-		$this->key = $key;
+        return $this;
+    }
 
-		return $this;
+    /**
+     * @return Collection
+     */
+    public function getRolePermissions(): Collection
+    {
+        return $this->rolePermissions;
+    }
 
-	}
+    /**
+     * @param RolePermission $rolePermission
+     *
+     * @return $this
+     */
+    public function addRoleRight(RolePermission $rolePermission): self
+    {
+        if (!$this->rolePermissions->contains($rolePermission)) {
+            $this->rolePermissions[] = $rolePermission;
+            $rolePermission->setRole($this);
+        }
 
-	/**
-	 * @return string|null
-	 */
-	public function getTitleTranslationKey(): ?string
-	{
+        return $this;
+    }
 
-		return $this->titleTranslationKey;
+    /**
+     * @param RolePermission $rolePermission
+     *
+     * @return $this
+     */
+    public function removeRoleRight(RolePermission $rolePermission): self
+    {
+        if ($this->rolePermissions->removeElement($rolePermission)) {
+            if ($rolePermission->getRole() === $this) {
+                $rolePermission->setRole(null);
+            }
+        }
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param string $titleTranslationKey
-	 *
-	 * @return $this
-	 */
-	public function setTitleTranslationKey(string $titleTranslationKey): self
-	{
+    /**
+     * @return Collection
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
 
-		$this->titleTranslationKey = $titleTranslationKey;
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setRole($this);
+        }
 
-		return $this;
+        return $this;
+    }
 
-	}
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getRole() === $this) {
+                $user->setRole(null);
+            }
+        }
 
-	/**
-	 * @return Collection
-	 */
-	public function getRolePermissions(): Collection
-	{
-
-		return $this->rolePermissions;
-
-	}
-
-	/**
-	 * @param RolePermission $rolePermission
-	 *
-	 * @return $this
-	 */
-	public function addRoleRight(RolePermission $rolePermission): self
-	{
-
-		if (!$this->rolePermissions->contains($rolePermission)) {
-			$this->rolePermissions[] = $rolePermission;
-			$rolePermission->setRole($this);
-		}
-
-		return $this;
-
-	}
-
-	/**
-	 * @param RolePermission $rolePermission
-	 *
-	 * @return $this
-	 */
-	public function removeRoleRight(RolePermission $rolePermission): self
-	{
-
-		if ($this->rolePermissions->removeElement($rolePermission)) {
-			if ($rolePermission->getRole() === $this) {
-				$rolePermission->setRole(null);
-			}
-		}
-
-		return $this;
-
-	}
-
-	/**
-	 * @return Collection
-	 */
-	public function getUsers(): Collection
-	{
-
-		return $this->users;
-
-	}
-
-	/**
-	 * @param User $user
-	 *
-	 * @return $this
-	 */
-	public function addUser(User $user): self
-	{
-
-		if (!$this->users->contains($user)) {
-			$this->users[] = $user;
-			$user->setRole($this);
-		}
-
-		return $this;
-
-	}
-
-	/**
-	 * @param User $user
-	 *
-	 * @return $this
-	 */
-	public function removeUser(User $user): self
-	{
-
-		if ($this->users->removeElement($user)) {
-			// set the owning side to null (unless already changed)
-			if ($user->getRole() === $this) {
-				$user->setRole(null);
-			}
-		}
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

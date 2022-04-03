@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
- * Class GenerateJwtKeysCommand
+ * Class GenerateJwtKeysCommand.
  *
  * @package App\Command
  *
@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class GenerateJwtKeysCommand extends Command
 {
-
     /**
      * @var string
      */
@@ -39,24 +38,20 @@ class GenerateJwtKeysCommand extends Command
 
     /**
      * @param ParameterBagInterface $params
-     * @param string|null           $name
+     * @param null|string           $name
      */
-    public function __construct(ParameterBagInterface $params, string $name = null)
+    public function __construct(ParameterBagInterface $params, ?string $name = null)
     {
-
         parent::__construct($name);
 
         $this->params = $params;
-
     }
 
     protected function configure(): void
     {
-
         $this
             ->addArgument('variable-prefix', InputArgument::REQUIRED, 'Variable prefix. Example: JWT_ACCESS')
             ->addOption('env-file', null, InputOption::VALUE_REQUIRED, 'Env file');
-
     }
 
     /**
@@ -67,7 +62,6 @@ class GenerateJwtKeysCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         $variablePrefix = $input->getArgument('variable-prefix');
         $envFile = $input->getOption('env-file') ?? '.env';
 
@@ -81,8 +75,8 @@ class GenerateJwtKeysCommand extends Command
             mkdir($this->params->get('jwt.secrets'), 0777, true);
         }
 
-        shell_exec("openssl genrsa -out $privatePath 2048");
-        shell_exec("openssl rsa -in $privatePath -outform PEM -pubout -out $publicPath");
+        shell_exec("openssl genrsa -out ${privatePath} 2048");
+        shell_exec("openssl rsa -in ${privatePath} -outform PEM -pubout -out ${publicPath}");
 
         $editor->load($envFile);
         $editor->set($this->generatePublicVariableName($variablePrefix), $publicPath);
@@ -90,11 +84,10 @@ class GenerateJwtKeysCommand extends Command
 
         $editor->save($envFile);
 
-        $io->success("New {$this->generatePublicVariableName($variablePrefix)} was generated: $publicPath");
-        $io->success("New {$this->generatePrivateVariableName($variablePrefix)} was generated: $privatePath");
+        $io->success("New {$this->generatePublicVariableName($variablePrefix)} was generated: ${publicPath}");
+        $io->success("New {$this->generatePrivateVariableName($variablePrefix)} was generated: ${privatePath}");
 
         return self::SUCCESS;
-
     }
 
     /**
@@ -104,9 +97,7 @@ class GenerateJwtKeysCommand extends Command
      */
     private function generatePublicVariableName(string $prefix): string
     {
-
         return $prefix . '_PUBLIC_KEY';
-
     }
 
     /**
@@ -116,9 +107,7 @@ class GenerateJwtKeysCommand extends Command
      */
     private function generatePrivateVariableName(string $prefix): string
     {
-
         return $prefix . '_PRIVATE_KEY';
-
     }
 
     /**
@@ -129,12 +118,9 @@ class GenerateJwtKeysCommand extends Command
      */
     private function generateFilename(string $prefix, bool $isPrivate = false): string
     {
-
         $prefix = Str::toLowercase($prefix);
         $prefix .= $isPrivate ? '_private.pem' : '_public.pem';
 
         return $this->params->get('jwt.secrets') . $prefix;
-
     }
-
 }

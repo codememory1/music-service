@@ -12,7 +12,7 @@ use App\Rest\DTO\AbstractPasswordConfirmationDTO;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class RegistrationDTO
+ * Class RegistrationDTO.
  *
  * @package App\DTO
  *
@@ -20,53 +20,49 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RegistrationDTO extends AbstractPasswordConfirmationDTO
 {
+    /**
+     * @var null|string
+     */
+    #[Assert\Email(message: 'common@invalidEmail')]
+    #[Assert\Length(max: 255, maxMessage: 'common@emailMaxLength')]
+    public ?string $email = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[Assert\Email(message: 'common@invalidEmail')]
-	#[Assert\Length(max: 255, maxMessage: 'common@emailMaxLength')]
-	public ?string $email = null;
+    /**
+     * @var null|string
+     */
+    #[Assert\NotBlank(message: 'user@usernameIsRequired')]
+    #[Assert\Length(max: 250, maxMessage: 'user@usernameMaxLength')]
+    public ?string $username = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[Assert\NotBlank(message: 'user@usernameIsRequired')]
-	#[Assert\Length(max: 250, maxMessage: 'user@usernameMaxLength')]
-	public ?string $username = null;
+    /**
+     * @return void
+     */
+    protected function wrapper(): void
+    {
+        $this->setEntity(User::class);
 
-	/**
-	 * @return void
-	 */
-	protected function wrapper(): void
-	{
+        $this
+            ->addExpectedRequestKey('email')
+            ->addExpectedRequestKey('password')
+            ->addExpectedRequestKey('password_confirm', 'passwordConfirm');
 
-		$this->setEntity(User::class);
+        $this->excludeRequestKeyForBuildEntity('passwordConfirm');
 
-		$this
-			->addExpectedRequestKey('email')
-			->addExpectedRequestKey('password')
-			->addExpectedRequestKey('password_confirm', 'passwordConfirm');
+        $this
+            ->addEventListener(EventNameDTOEnum::AFTER_SETTER, function(): void {
+                $this->username = explode('@', $this->email)[0] ?? null;
+            })
+            ->addEventListener(EventNameDTOEnum::AFTER_BUILD_ENTITY, function(User $userEntity): void {
+                /** @var RoleRepository $roleRepository */
+                $roleRepository = $this->em->getRepository(Role::class);
 
-		$this->excludeRequestKeyForBuildEntity('passwordConfirm');
+                $userEntity
+                    ->setStatus(StatusEnum::NOT_ACTIVE->value)
+                    ->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->value]));
 
-		$this
-			->addEventListener(EventNameDTOEnum::AFTER_SETTER, function() {
-				$this->username = explode('@', $this->email)[0] ?? null;
-			})
-			->addEventListener(EventNameDTOEnum::AFTER_BUILD_ENTITY, function(User $userEntity) {
-				/** @var RoleRepository $roleRepository */
-				$roleRepository = $this->em->getRepository(Role::class);
-
-				$userEntity
-					->setStatus(StatusEnum::NOT_ACTIVE->value)
-					->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->value]));
-
-				if (!empty($this->email)) {
-					$userEntity->setUsername($this->username);
-				}
-			});
-
-	}
-
+                if (!empty($this->email)) {
+                    $userEntity->setUsername($this->username);
+                }
+            });
+    }
 }

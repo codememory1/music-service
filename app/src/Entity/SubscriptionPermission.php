@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class SubscriptionPermission
+ * Class SubscriptionPermission.
  *
  * @package App\Entity
  *
@@ -20,81 +20,73 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: SubscriptionPermissionRepository::class)]
 #[ORM\Table('subscription_permissions')]
 #[UniqueEntity(
-	['subscriptionPermissionName', 'subscription'],
-	'subscriptionPermission@exist',
-	payload: ApiResponseTypeEnum::CHECK_EXIST
+    ['subscriptionPermissionName', 'subscription'],
+    'subscriptionPermission@exist',
+    payload: ApiResponseTypeEnum::CHECK_EXIST
 )]
 #[ORM\HasLifecycleCallbacks]
 class SubscriptionPermission implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var SubscriptionPermissionName|null
-	 */
-	#[ORM\ManyToOne(
-		targetEntity: SubscriptionPermissionName::class,
-		cascade: ['persist', 'remove'],
-		inversedBy: 'subscriptionPermissions')
-	]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?SubscriptionPermissionName $subscriptionPermissionName = null;
+    /**
+     * @var null|SubscriptionPermissionName
+     */
+    #[ORM\ManyToOne(
+        targetEntity: SubscriptionPermissionName::class,
+        cascade: ['persist', 'remove'],
+        inversedBy: 'subscriptionPermissions'
+    )
+    ]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SubscriptionPermissionName $subscriptionPermissionName = null;
 
-	/**
-	 * @var Subscription|null
-	 */
-	#[ORM\ManyToOne(targetEntity: Subscription::class, inversedBy: 'subscriptionPermissions')]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?Subscription $subscription = null;
+    /**
+     * @var null|Subscription
+     */
+    #[ORM\ManyToOne(targetEntity: Subscription::class, inversedBy: 'subscriptionPermissions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Subscription $subscription = null;
 
-	/**
-	 * @return SubscriptionPermissionName|null
-	 */
-	public function getSubscriptionPermissionName(): ?SubscriptionPermissionName
-	{
+    /**
+     * @return null|SubscriptionPermissionName
+     */
+    public function getSubscriptionPermissionName(): ?SubscriptionPermissionName
+    {
+        return $this->subscriptionPermissionName;
+    }
 
-		return $this->subscriptionPermissionName;
+    /**
+     * @param null|SubscriptionPermissionName $subscriptionPermissionName
+     *
+     * @return $this
+     */
+    public function setSubscriptionPermissionName(?SubscriptionPermissionName $subscriptionPermissionName): self
+    {
+        $this->subscriptionPermissionName = $subscriptionPermissionName;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param SubscriptionPermissionName|null $subscriptionPermissionName
-	 *
-	 * @return $this
-	 */
-	public function setSubscriptionPermissionName(?SubscriptionPermissionName $subscriptionPermissionName): self
-	{
+    /**
+     * @return null|Subscription
+     */
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
 
-		$this->subscriptionPermissionName = $subscriptionPermissionName;
+    /**
+     * @param null|Subscription $subscription
+     *
+     * @return $this
+     */
+    public function setSubscription(?Subscription $subscription): self
+    {
+        $this->subscription = $subscription;
 
-		return $this;
-
-	}
-
-	/**
-	 * @return Subscription|null
-	 */
-	public function getSubscription(): ?Subscription
-	{
-
-		return $this->subscription;
-
-	}
-
-	/**
-	 * @param Subscription|null $subscription
-	 *
-	 * @return $this
-	 */
-	public function setSubscription(?Subscription $subscription): self
-	{
-
-		$this->subscription = $subscription;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

@@ -15,7 +15,7 @@ use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class AlbumCategory
+ * Class AlbumCategory.
  *
  * @package App\Entity
  *
@@ -24,107 +24,94 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: AlbumCategoryRepository::class)]
 #[ORM\Table('album_categories')]
 #[UniqueEntity(
-	'titleTranslationKey',
-	'albumCategory@exist',
-	payload: ApiResponseTypeEnum::CHECK_EXIST
+    'titleTranslationKey',
+    'albumCategory@exist',
+    payload: ApiResponseTypeEnum::CHECK_EXIST
 )]
 #[ORM\HasLifecycleCallbacks]
 class AlbumCategory implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
-		'comment' => 'Album category translation key'
-	])]
-	private ?string $titleTranslationKey;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
+        'comment' => 'Album category translation key'
+    ])]
+    private ?string $titleTranslationKey;
 
-	/**
-	 * @var Collection
-	 */
-	#[ORM\OneToMany(mappedBy: 'category', targetEntity: Album::class)]
-	private Collection $albums;
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Album::class)]
+    private Collection $albums;
 
-	#[Pure]
-	public function __construct()
-	{
+    #[Pure]
+    public function __construct()
+    {
+        $this->albums = new ArrayCollection();
+    }
 
-		$this->albums = new ArrayCollection();
+    /**
+     * @return null|string
+     */
+    public function getTitleTranslationKey(): ?string
+    {
+        return $this->titleTranslationKey;
+    }
 
-	}
+    /**
+     * @param string $titleTranslationKey
+     *
+     * @return $this
+     */
+    public function setTitleTranslationKey(string $titleTranslationKey): self
+    {
+        $this->titleTranslationKey = $titleTranslationKey;
 
-	/**
-	 * @return string|null
-	 */
-	public function getTitleTranslationKey(): ?string
-	{
+        return $this;
+    }
 
-		return $this->titleTranslationKey;
+    /**
+     * @return Collection
+     */
+    public function getAlbums(): Collection
+    {
+        return $this->albums;
+    }
 
-	}
+    /**
+     * @param Album $album
+     *
+     * @return $this
+     */
+    public function addAlbum(Album $album): self
+    {
+        if (!$this->albums->contains($album)) {
+            $this->albums[] = $album;
+            $album->setCategory($this);
+        }
 
-	/**
-	 * @param string $titleTranslationKey
-	 *
-	 * @return $this
-	 */
-	public function setTitleTranslationKey(string $titleTranslationKey): self
-	{
+        return $this;
+    }
 
-		$this->titleTranslationKey = $titleTranslationKey;
+    /**
+     * @param Album $album
+     *
+     * @return $this
+     */
+    public function removeAlbum(Album $album): self
+    {
+        if ($this->albums->removeElement($album)) {
+            // set the owning side to null (unless already changed)
+            if ($album->getCategory() === $this) {
+                $album->setCategory(null);
+            }
+        }
 
-		return $this;
-
-	}
-
-	/**
-	 * @return Collection
-	 */
-	public function getAlbums(): Collection
-	{
-
-		return $this->albums;
-
-	}
-
-	/**
-	 * @param Album $album
-	 *
-	 * @return $this
-	 */
-	public function addAlbum(Album $album): self
-	{
-
-		if (!$this->albums->contains($album)) {
-			$this->albums[] = $album;
-			$album->setCategory($this);
-		}
-
-		return $this;
-
-	}
-
-	/**
-	 * @param Album $album
-	 *
-	 * @return $this
-	 */
-	public function removeAlbum(Album $album): self
-	{
-
-		if ($this->albums->removeElement($album)) {
-			// set the owning side to null (unless already changed)
-			if ($album->getCategory() === $this) {
-				$album->setCategory(null);
-			}
-		}
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

@@ -12,7 +12,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
- * Class UpdaterAlbumService
+ * Class UpdaterAlbumService.
  *
  * @package App\Service\Album
  *
@@ -20,75 +20,66 @@ use Psr\Container\NotFoundExceptionInterface;
  */
 class UpdaterAlbumService extends UpdaterCRUD
 {
+    /**
+     * @param AlbumDTO            $albumDTO
+     * @param FileUploaderService $uploadedFileService
+     * @param null|User           $user
+     * @param string              $kernelProjectDir
+     * @param int                 $id
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     *
+     * @return Response
+     */
+    public function update(AlbumDTO $albumDTO, FileUploaderService $uploadedFileService, ?User $user, string $kernelProjectDir, int $id): Response
+    {
+        $this->translationKeyNotExist = 'album@notExist';
 
-	/**
-	 * @param AlbumDTO            $albumDTO
-	 * @param FileUploaderService $uploadedFileService
-	 * @param User|null           $user
-	 * @param string              $kernelProjectDir
-	 * @param int                 $id
-	 *
-	 * @return Response
-	 * @throws ContainerExceptionInterface
-	 * @throws NotFoundExceptionInterface
-	 */
-	public function update(AlbumDTO $albumDTO, FileUploaderService $uploadedFileService, ?User $user, string $kernelProjectDir, int $id): Response
-	{
+        /** @var Album|Response $createdEntity */
+        $createdEntity = $this->make($albumDTO, ['id' => $id]);
 
-		$this->translationKeyNotExist = 'album@notExist';
+        if ($createdEntity instanceof Response) {
+            return $createdEntity;
+        }
 
-		/** @var Response|Album $createdEntity */
-		$createdEntity = $this->make($albumDTO, ['id' => $id]);
+        $this->deletePhoto($kernelProjectDir);
 
-		if ($createdEntity instanceof Response) {
-			return $createdEntity;
-		}
+        $createdEntity->setPhoto($this->uploadPhoto($uploadedFileService, $user));
 
-		$this->deletePhoto($kernelProjectDir);
+        return $this->manager->update($createdEntity, 'album@successUpdate');
+    }
 
-		$createdEntity->setPhoto($this->uploadPhoto($uploadedFileService, $user));
+    /**
+     * @param string $kernelProjectDir
+     *
+     * @return void
+     */
+    private function deletePhoto(string $kernelProjectDir): void
+    {
+        /** @var Album $album */
+        $album = $this->finedEntity;
 
-		return $this->manager->update($createdEntity, 'album@successUpdate');
+        $absolutePathPhoto = sprintf('%s/%s', $kernelProjectDir, $album->getPhoto());
 
-	}
+        if (file_exists($absolutePathPhoto)) {
+            unlink($absolutePathPhoto);
+        }
+    }
 
-	/**
-	 * @param string $kernelProjectDir
-	 *
-	 * @return void
-	 */
-	private function deletePhoto(string $kernelProjectDir): void
-	{
+    /**
+     * @param FileUploaderService $uploadedFileService
+     * @param User                $user
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     *
+     * @return string
+     */
+    private function uploadPhoto(FileUploaderService $uploadedFileService, User $user): string
+    {
+        $uploadedFileService->upload(fn() => md5($user->getEmail() . random_bytes(10)));
 
-		/** @var Album $album */
-		$album = $this->finedEntity;
-
-		$absolutePathPhoto = sprintf('%s/%s', $kernelProjectDir, $album->getPhoto());
-
-		if (file_exists($absolutePathPhoto)) {
-			unlink($absolutePathPhoto);
-		}
-
-	}
-
-	/**
-	 * @param FileUploaderService $uploadedFileService
-	 * @param User                $user
-	 *
-	 * @return string
-	 * @throws ContainerExceptionInterface
-	 * @throws NotFoundExceptionInterface
-	 */
-	private function uploadPhoto(FileUploaderService $uploadedFileService, User $user): string
-	{
-
-		$uploadedFileService->upload(function() use ($user) {
-
-			return md5($user->getEmail() . random_bytes(10));
-		});
-
-		return $uploadedFileService->getUploadedFile()['filename_with_path'];
-
-	}
-
+        return $uploadedFileService->getUploadedFile()['filename_with_path'];
+    }
 }

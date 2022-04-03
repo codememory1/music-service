@@ -8,7 +8,7 @@ use App\Interfaces\EntityInterface;
 use App\Rest\Http\Response;
 
 /**
- * Class UpdaterCRUD
+ * Class UpdaterCRUD.
  *
  * @package App\Service\CRUD
  *
@@ -16,81 +16,75 @@ use App\Rest\Http\Response;
  */
 class UpdaterCRUD extends AbstractCRUD
 {
+    /**
+     * @var null|string
+     */
+    protected ?string $translationKeyNotExist = null;
 
-	/**
-	 * @var string|null
-	 */
-	protected ?string $translationKeyNotExist = null;
+    /**
+     * @var bool
+     */
+    protected bool $validateEntity = false;
 
-	/**
-	 * @var bool
-	 */
-	protected bool $validateEntity = false;
+    /**
+     * @var null|EntityInterface
+     */
+    protected ?EntityInterface $finedEntity = null;
 
-	/**
-	 * @var EntityInterface|null
-	 */
-	protected ?EntityInterface $finedEntity = null;
+    /**
+     * @inheritDoc
+     */
+    protected function make(DTOInterface|string $entityOrDTO, array $manipulationBy = []): Response|EntityInterface
+    {
+        // Check exist translation
+        $finedEntity = $this->exist($entityOrDTO, $manipulationBy);
 
-	/**
-	 * @inheritDoc
-	 */
-	protected function make(DTOInterface|string $entityOrDTO, array $manipulationBy = []): Response|EntityInterface
-	{
+        // Check for the existence of an entity
+        if ($finedEntity instanceof Response) {
+            return $finedEntity;
+        }
 
-		// Check exist translation
-		$finedEntity = $this->exist($entityOrDTO, $manipulationBy);
+        $this->finedEntity = $finedEntity;
 
-		// Check for the existence of an entity
-		if ($finedEntity instanceof Response) {
-			return $finedEntity;
-		}
+        $collectedEntity = $entityOrDTO->updateEntity($finedEntity)->getCollectedEntity();
+        $validator = $this->inputValidation($entityOrDTO);
 
-		$this->finedEntity = $finedEntity;
+        // Validation of input POST data
+        if (!$validator->isValidate()) {
+            return $validator->getResponse();
+        }
 
-		$collectedEntity = $entityOrDTO->updateEntity($finedEntity)->getCollectedEntity();
-		$validator = $this->inputValidation($entityOrDTO);
+        // Validation when inserting into the database
+        if ($this->validateEntity) {
+            $validator = $this->inputValidation($collectedEntity);
 
-		// Validation of input POST data
-		if (!$validator->isValidate()) {
-			return $validator->getResponse();
-		}
+            if (!$validator->isValidate()) {
+                return $validator->getResponse();
+            }
+        }
 
-		// Validation when inserting into the database
-		if ($this->validateEntity) {
-			$validator = $this->inputValidation($collectedEntity);
+        return $collectedEntity;
+    }
 
-			if (!$validator->isValidate()) {
-				return $validator->getResponse();
-			}
-		}
+    /**
+     * @param DTOInterface $DTO
+     * @param array        $manipulationBy
+     *
+     * @return EntityInterface|Response
+     */
+    private function exist(DTOInterface $DTO, array $manipulationBy): Response|EntityInterface
+    {
+        $finedEntity = $this->getRepository($DTO)->findOneBy($manipulationBy);
 
-		return $collectedEntity;
+        if (null === $finedEntity) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_EXIST,
+                $this->getTranslation($this->translationKeyNotExist)
+            );
 
-	}
+            return new Response($this->apiResponseSchema, 'error', 404);
+        }
 
-	/**
-	 * @param DTOInterface $DTO
-	 * @param array        $manipulationBy
-	 *
-	 * @return Response|EntityInterface
-	 */
-	private function exist(DTOInterface $DTO, array $manipulationBy): Response|EntityInterface
-	{
-
-		$finedEntity = $this->getRepository($DTO)->findOneBy($manipulationBy);
-
-		if (null === $finedEntity) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_EXIST,
-				$this->getTranslation($this->translationKeyNotExist)
-			);
-
-			return new Response($this->apiResponseSchema, 'error', 404);
-		}
-
-		return $finedEntity;
-
-	}
-
+        return $finedEntity;
+    }
 }

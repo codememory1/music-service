@@ -5,7 +5,7 @@ namespace App\Rest\DTO;
 use App\Interfaces\InterceptorInterface;
 
 /**
- * Class AbstractInterceptor
+ * Class AbstractInterceptor.
  *
  * @package App\Rest\DTO
  *
@@ -13,20 +13,16 @@ use App\Interfaces\InterceptorInterface;
  */
 abstract class AbstractInterceptor implements InterceptorInterface
 {
+    /**
+     * @var AbstractDTO
+     */
+    protected readonly AbstractDTO $context;
 
-	/**
-	 * @var AbstractDTO
-	 */
-	protected readonly AbstractDTO $context;
-
-	/**
-	 * @param AbstractDTO $context
-	 */
-	public function __construct(AbstractDTO $context)
-	{
-
-		$this->context = $context;
-
-	}
-
+    /**
+     * @param AbstractDTO $context
+     */
+    public function __construct(AbstractDTO $context)
+    {
+        $this->context = $context;
+    }
 }

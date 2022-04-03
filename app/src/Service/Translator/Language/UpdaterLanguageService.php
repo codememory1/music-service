@@ -7,7 +7,7 @@ use App\Rest\CRUD\UpdaterCRUD;
 use App\Rest\Http\Response;
 
 /**
- * Class UpdaterLanguageService
+ * Class UpdaterLanguageService.
  *
  * @package App\Service\Translator\Language
  *
@@ -15,27 +15,23 @@ use App\Rest\Http\Response;
  */
 class UpdaterLanguageService extends UpdaterCRUD
 {
+    /**
+     * @param LanguageDTO $languageDTO
+     * @param int         $id
+     *
+     * @return Response
+     */
+    public function update(LanguageDTO $languageDTO, int $id): Response
+    {
+        $this->validateEntity = true;
+        $this->translationKeyNotExist = 'lang@langNotExist';
 
-	/**
-	 * @param LanguageDTO $languageDTO
-	 * @param int         $id
-	 *
-	 * @return Response
-	 */
-	public function update(LanguageDTO $languageDTO, int $id): Response
-	{
+        $updatedEntity = $this->make($languageDTO, ['id' => $id]);
 
-		$this->validateEntity = true;
-		$this->translationKeyNotExist = 'lang@langNotExist';
+        if ($updatedEntity instanceof Response) {
+            return $updatedEntity;
+        }
 
-		$updatedEntity = $this->make($languageDTO, ['id' => $id]);
-
-		if ($updatedEntity instanceof Response) {
-			return $updatedEntity;
-		}
-
-		return $this->manager->update($updatedEntity, 'lang@successUpdate');
-
-	}
-
+        return $this->manager->update($updatedEntity, 'lang@successUpdate');
+    }
 }

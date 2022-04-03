@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Security\AbstractSecurity;
 
 /**
- * Class CreatorAccount
+ * Class CreatorAccount.
  *
  * @package App\Security\Registration
  *
@@ -15,42 +15,36 @@ use App\Security\AbstractSecurity;
  */
 class CreatorAccount extends AbstractSecurity
 {
+    /**
+     * @param RegistrationDTO $registrationDTO
+     *
+     * @return User
+     */
+    public function create(RegistrationDTO $registrationDTO): User
+    {
+        /** @var User $userEntity */
+        $userEntity = $registrationDTO->getCollectedEntity();
 
-	/**
-	 * @param RegistrationDTO $registrationDTO
-	 *
-	 * @return User
-	 */
-	public function create(RegistrationDTO $registrationDTO): User
-	{
+        $this->em->persist($userEntity);
+        $this->em->flush();
 
-		/** @var User $userEntity */
-		$userEntity = $registrationDTO->getCollectedEntity();
+        return $userEntity;
+    }
 
-		$this->em->persist($userEntity);
-		$this->em->flush();
+    /**
+     * @param RegistrationDTO $registrationDTO
+     * @param User            $user
+     *
+     * @return User
+     */
+    public function reCreate(RegistrationDTO $registrationDTO, User $user): User
+    {
+        $passwordHashing = new PasswordHashing();
 
-		return $userEntity;
+        $user->setPassword($passwordHashing->encode($registrationDTO));
 
-	}
+        $this->em->flush();
 
-	/**
-	 * @param RegistrationDTO $registrationDTO
-	 * @param User            $user
-	 *
-	 * @return User
-	 */
-	public function reCreate(RegistrationDTO $registrationDTO, User $user): User
-	{
-
-		$passwordHashing = new PasswordHashing();
-
-		$user->setPassword($passwordHashing->encode($registrationDTO));
-
-		$this->em->flush();
-
-		return $user;
-
-	}
-
+        return $user;
+    }
 }

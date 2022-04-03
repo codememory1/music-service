@@ -7,7 +7,7 @@ use App\Rest\ClassHelper\AttributeData;
 use JetBrains\PhpStorm\NoReturn;
 
 /**
- * Class SubscriptionPermissionAnnotationListener
+ * Class SubscriptionPermissionAnnotationListener.
  *
  * @package App\AnnotationListener
  *
@@ -15,41 +15,35 @@ use JetBrains\PhpStorm\NoReturn;
  */
 class SubscriptionPermissionAnnotationListener extends AbstractAnnotationListener
 {
+    /**
+     * @inheritDoc
+     */
+    public function listen(AttributeData $attributeData): void
+    {
+        $user = $this->authenticator->getUser();
 
-	/**
-	 * @inheritDoc
-	 */
-	public function listen(AttributeData $attributeData): void
-	{
+        if (null === $user || null === $user->getUserSubscription()) {
+            $this->responseForbidden();
+        } else {
+            $subscription = $user->getUserSubscription()->getSubscription();
 
-		$user = $this->authenticator->getUser();
+            if (!$subscription->getPermissions()->contains($attributeData->permission)) {
+                $this->responseForbidden();
+            }
+        }
+    }
 
-		if (null === $user || null === $user->getUserSubscription()) {
-			$this->responseForbidden();
-		} else {
-			$subscription = $user->getUserSubscription()->getSubscription();
+    /**
+     * @return void
+     */
+    #[NoReturn]
+    private function responseForbidden(): void
+    {
+        $this->apiResponseSchema->setMessage(
+            ApiResponseTypeEnum::CHECK_SUBSCRIPTION_PERMISSION,
+            $this->getTranslation('common@accessDenied')
+        );
 
-			if (!$subscription->getPermissions()->contains($attributeData->permission)) {
-				$this->responseForbidden();
-			}
-		}
-
-	}
-
-	/**
-	 * @return void
-	 */
-	#[NoReturn]
-	private function responseForbidden(): void
-	{
-
-		$this->apiResponseSchema->setMessage(
-			ApiResponseTypeEnum::CHECK_SUBSCRIPTION_PERMISSION,
-			$this->getTranslation('common@accessDenied')
-		);
-
-		$this->response('error', 403);
-
-	}
-
+        $this->response('error', 403);
+    }
 }

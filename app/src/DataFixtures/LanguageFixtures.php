@@ -7,7 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class LanguageFixtures
+ * Class LanguageFixtures.
  *
  * @package App\DataFixtures
  *
@@ -15,17 +15,16 @@ use Doctrine\Persistence\ObjectManager;
  */
 class LanguageFixtures extends Fixture
 {
-
     /**
      * @var array
      */
     private array $languages = [
         [
-            'code'  => 'ru',
+            'code' => 'ru',
             'title' => 'Русский'
         ],
         [
-            'code'  => 'en',
+            'code' => 'en',
             'title' => 'English'
         ]
     ];
@@ -37,7 +36,6 @@ class LanguageFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-
         foreach ($this->languages as $language) {
             $languageEntity = new Language();
 
@@ -51,7 +49,5 @@ class LanguageFixtures extends Fixture
         }
 
         $manager->flush();
-
     }
-
 }

@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
 
 /**
- * Class SubscriptionDTO
+ * Class SubscriptionDTO.
  *
  * @package App\DTO
  *
@@ -22,81 +22,78 @@ use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
  */
 class SubscriptionDTO extends AbstractDTO
 {
+    /**
+     * @var null|string
+     */
+    #[Assert\NotBlank(message: 'subscription@nameIsRequired')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'subscription@nameMaxLength'
+    )]
+    #[AppAssert\Exist(
+        TranslationKey::class,
+        'name',
+        'common@titleTranslationKeyNotExist',
+        payload: ApiResponseTypeEnum::CHECK_EXIST
+    )]
+    public ?string $nameTranslationKey = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[Assert\NotBlank(message: 'subscription@nameIsRequired')]
-	#[Assert\Length(
-		max: 255,
-		maxMessage: 'subscription@nameMaxLength'
-	)]
-	#[AppAssert\Exist(
-		TranslationKey::class,
-		'name',
-		'common@titleTranslationKeyNotExist',
-		payload: ApiResponseTypeEnum::CHECK_EXIST
-	)]
-	public ?string $nameTranslationKey = null;
+    /**
+     * @var null|string
+     */
+    #[Assert\NotBlank(message: 'common@descriptionIsRequired')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'subscription@descriptionMaxLength'
+    )]
+    #[AppAssert\Exist(
+        TranslationKey::class,
+        'name',
+        'common@descriptionTranslationKeyNotExist',
+        payload: ApiResponseTypeEnum::CHECK_EXIST
+    )]
+    public ?string $descriptionTranslationKey = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[Assert\NotBlank(message: 'common@descriptionIsRequired')]
-	#[Assert\Length(
-		max: 255,
-		maxMessage: 'subscription@descriptionMaxLength'
-	)]
-	#[AppAssert\Exist(
-		TranslationKey::class,
-		'name',
-		'common@descriptionTranslationKeyNotExist',
-		payload: ApiResponseTypeEnum::CHECK_EXIST
-	)]
-	public ?string $descriptionTranslationKey = null;
+    /**
+     * @var null|float
+     */
+    #[Assert\NotBlank(message: 'common@priceIsRequired')]
+    public ?float $price = null;
 
-	/**
-	 * @var float|null
-	 */
-	#[Assert\NotBlank(message: 'common@priceIsRequired')]
-	public ?float $price = null;
+    /**
+     * @var null|float
+     */
+    public ?float $oldPrice = null;
 
-	/**
-	 * @var float|null
-	 */
-	public ?float $oldPrice = null;
+    /**
+     * @var null|int
+     */
+    #[Assert\NotBlank(message: 'common@statusIsRequired')]
+    #[Assert\Choice(
+        callback: [StatusEnum::class, 'values'],
+        message: 'common@statusInvalid'
+    )]
+    public ?int $status = null;
 
-	/**
-	 * @var int|null
-	 */
-	#[Assert\NotBlank(message: 'common@statusIsRequired')]
-	#[Assert\Choice(
-		callback: [StatusEnum::class, 'values'],
-		message: 'common@statusInvalid'
-	)]
-	public ?int $status = null;
+    /**
+     * @throws ReflectionException
+     * @throws ClassNotFoundException
+     *
+     * @return void
+     */
+    protected function wrapper(): void
+    {
+        $this->setEntity(Subscription::class);
 
-	/**
-	 * @return void
-	 * @throws ReflectionException
-	 * @throws ClassNotFoundException
-	 */
-	protected function wrapper(): void
-	{
+        $this
+            ->addExpectedRequestKey('name', 'name_translation_key')
+            ->addExpectedRequestKey('description', 'description_translation_key')
+            ->addExpectedRequestKey('price')
+            ->addExpectedRequestKey('old_price')
+            ->addExpectedRequestKey('status');
 
-		$this->setEntity(Subscription::class);
-
-		$this
-			->addExpectedRequestKey('name', 'name_translation_key')
-			->addExpectedRequestKey('description', 'description_translation_key')
-			->addExpectedRequestKey('price')
-			->addExpectedRequestKey('old_price')
-			->addExpectedRequestKey('status');
-
-		$this
-			->addInterceptor('price', SubscriptionInputPrice::class)
-			->addInterceptor('old_price', SubscriptionInputPrice::class);
-
-	}
-
+        $this
+            ->addInterceptor('price', SubscriptionInputPrice::class)
+            ->addInterceptor('old_price', SubscriptionInputPrice::class);
+    }
 }

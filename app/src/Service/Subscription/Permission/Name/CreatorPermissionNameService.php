@@ -7,7 +7,7 @@ use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
 /**
- * Class CreatorPermissionNameService
+ * Class CreatorPermissionNameService.
  *
  * @package App\Service\Subscription\Permission\Name
  *
@@ -15,25 +15,21 @@ use App\Rest\Http\Response;
  */
 class CreatorPermissionNameService extends CreatorCRUD
 {
+    /**
+     * @param SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO
+     *
+     * @return Response
+     */
+    public function create(SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO): Response
+    {
+        $this->validateEntity = true;
 
-	/**
-	 * @param SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO
-	 *
-	 * @return Response
-	 */
-	public function create(SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO): Response
-	{
+        $createdEntity = $this->make($subscriptionPermissionNameDTO);
 
-		$this->validateEntity = true;
+        if ($createdEntity instanceof Response) {
+            return $createdEntity;
+        }
 
-		$createdEntity = $this->make($subscriptionPermissionNameDTO);
-
-		if ($createdEntity instanceof Response) {
-			return $createdEntity;
-		}
-
-		return $this->manager->push($createdEntity, 'subscriptionPermissionName@successCreate');
-
-	}
-
+        return $this->manager->push($createdEntity, 'subscriptionPermissionName@successCreate');
+    }
 }

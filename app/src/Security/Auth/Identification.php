@@ -12,7 +12,7 @@ use App\Security\AbstractSecurity;
 use Doctrine\ORM\NonUniqueResultException;
 
 /**
- * Class Identification
+ * Class Identification.
  *
  * @package App\Security\Auth
  *
@@ -20,41 +20,38 @@ use Doctrine\ORM\NonUniqueResultException;
  */
 class Identification extends AbstractSecurity
 {
+    /**
+     * @param AuthorizationDTO $authorizationDTO
+     *
+     * @throws NonUniqueResultException
+     *
+     * @return Response|User
+     */
+    public function identify(AuthorizationDTO $authorizationDTO): Response|User
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->em->getRepository(User::class);
 
-	/**
-	 * @param AuthorizationDTO $authorizationDTO
-	 *
-	 * @return Response|User
-	 * @throws NonUniqueResultException
-	 */
-	public function identify(AuthorizationDTO $authorizationDTO): Response|User
-	{
+        // Checking the existence of a user by email or username
+        if (null === $finedUser = $userRepository->findByLogin($authorizationDTO->login)) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_EXIST,
+                $this->translator->getTranslation('user@failedToIdentityUser')
+            );
 
-		/** @var UserRepository $userRepository */
-		$userRepository = $this->em->getRepository(User::class);
+            return new Response($this->apiResponseSchema, 'error', 404);
+        }
 
-		// Checking the existence of a user by email or username
-		if (null === $finedUser = $userRepository->findByLogin($authorizationDTO->login)) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_EXIST,
-				$this->translator->getTranslation('user@failedToIdentityUser')
-			);
+        // Checking the active account
+        if ($finedUser->getStatus() !== StatusEnum::ACTIVE->value) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_ACTIVE,
+                $this->translator->getTranslation('user@accountNotActive')
+            );
 
-			return new Response($this->apiResponseSchema, 'error', 404);
-		}
+            return new Response($this->apiResponseSchema, 'error', 400);
+        }
 
-		// Checking the active account
-		if ($finedUser->getStatus() !== StatusEnum::ACTIVE->value) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_ACTIVE,
-				$this->translator->getTranslation('user@accountNotActive')
-			);
-
-			return new Response($this->apiResponseSchema, 'error', 400);
-		}
-
-		return $finedUser;
-
-	}
-
+        return $finedUser;
+    }
 }

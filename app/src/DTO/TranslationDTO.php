@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
 
 /**
- * Class TranslationDTO
+ * Class TranslationDTO.
  *
  * @package App\DTO
  *
@@ -21,44 +21,41 @@ use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
  */
 class TranslationDTO extends AbstractDTO
 {
+    /**
+     * @var null|Language
+     */
+    #[Assert\NotBlank(message: 'translation@langNotExistOrNotEntered')]
+    public ?Language $lang = null;
 
-	/**
-	 * @var Language|null
-	 */
-	#[Assert\NotBlank(message: 'translation@langNotExistOrNotEntered')]
-	public ?Language $lang = null;
+    /**
+     * @var null|TranslationKey
+     */
+    #[Assert\NotBlank(message: 'translation@keyNotExistOrNotEnetred')]
+    public ?TranslationKey $translationKey = null;
 
-	/**
-	 * @var TranslationKey|null
-	 */
-	#[Assert\NotBlank(message: 'translation@keyNotExistOrNotEnetred')]
-	public ?TranslationKey $translationKey = null;
+    /**
+     * @var null|string
+     */
+    #[Assert\NotBlank(message: 'translation@translationIsRequired')]
+    public ?string $translation = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[Assert\NotBlank(message: 'translation@translationIsRequired')]
-	public ?string $translation = null;
+    /**
+     * @throws ReflectionException
+     * @throws ClassNotFoundException
+     *
+     * @return void
+     */
+    protected function wrapper(): void
+    {
+        $this->setEntity(Translation::class);
 
-	/**
-	 * @return void
-	 * @throws ReflectionException
-	 * @throws ClassNotFoundException
-	 */
-	protected function wrapper(): void
-	{
+        $this
+            ->addExpectedRequestKey('lang')
+            ->addExpectedRequestKey('translation_key')
+            ->addExpectedRequestKey('translation');
 
-		$this->setEntity(Translation::class);
-
-		$this
-			->addExpectedRequestKey('lang')
-			->addExpectedRequestKey('translation_key')
-			->addExpectedRequestKey('translation');
-
-		$this
-			->addInterceptor('lang', TranslationInputLanguageInterceptor::class)
-			->addInterceptor('translation_key', TranslationInputTranslationKeyInterceptor::class);
-
-	}
-
+        $this
+            ->addInterceptor('lang', TranslationInputLanguageInterceptor::class)
+            ->addInterceptor('translation_key', TranslationInputTranslationKeyInterceptor::class);
+    }
 }

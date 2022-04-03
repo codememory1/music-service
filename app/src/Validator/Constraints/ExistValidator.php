@@ -9,7 +9,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Class ExistValidator
+ * Class ExistValidator.
  *
  * @package App\Validator\Constraints
  *
@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 final class ExistValidator extends ConstraintValidator
 {
-
     /**
      * @var ObjectManager
      */
@@ -28,9 +27,7 @@ final class ExistValidator extends ConstraintValidator
      */
     public function __construct(ManagerRegistry $managerRegistry)
     {
-
         $this->em = $managerRegistry->getManager();
-
     }
 
     /**
@@ -38,7 +35,6 @@ final class ExistValidator extends ConstraintValidator
      */
     public function validate(mixed $value, Constraint $constraint): void
     {
-
         if (!$constraint instanceof Exist) {
             throw new UnexpectedTypeException($constraint, Exist::class);
         }
@@ -53,7 +49,5 @@ final class ExistValidator extends ConstraintValidator
                 ->setParameter('{{ value }}', $value)
                 ->addViolation();
         }
-
     }
-
 }

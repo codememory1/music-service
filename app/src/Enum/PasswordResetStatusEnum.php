@@ -3,7 +3,7 @@
 namespace App\Enum;
 
 /**
- * Enum PasswordResetStatusEnum
+ * Enum PasswordResetStatusEnum.
  *
  * @package App\Enum
  *
@@ -11,8 +11,6 @@ namespace App\Enum;
  */
 enum PasswordResetStatusEnum: int
 {
-
     case WAITING_RESET = 1;
     case RESET = 2;
-
 }

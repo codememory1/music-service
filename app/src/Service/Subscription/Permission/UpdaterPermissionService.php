@@ -7,7 +7,7 @@ use App\Rest\CRUD\UpdaterCRUD;
 use App\Rest\Http\Response;
 
 /**
- * Class UpdaterPermissionService
+ * Class UpdaterPermissionService.
  *
  * @package App\Service\Subscription\Permission
  *
@@ -15,27 +15,23 @@ use App\Rest\Http\Response;
  */
 class UpdaterPermissionService extends UpdaterCRUD
 {
+    /**
+     * @param SubscriptionPermissionDTO $subscriptionPermissionDTO
+     * @param int                       $id
+     *
+     * @return Response
+     */
+    public function update(SubscriptionPermissionDTO $subscriptionPermissionDTO, int $id): Response
+    {
+        $this->validateEntity = true;
+        $this->translationKeyNotExist = 'subscriptionPermission@notExist';
 
-	/**
-	 * @param SubscriptionPermissionDTO $subscriptionPermissionDTO
-	 * @param int                       $id
-	 *
-	 * @return Response
-	 */
-	public function update(SubscriptionPermissionDTO $subscriptionPermissionDTO, int $id): Response
-	{
+        $updatedEntity = $this->make($subscriptionPermissionDTO, ['id' => $id]);
 
-		$this->validateEntity = true;
-		$this->translationKeyNotExist = 'subscriptionPermission@notExist';
+        if ($updatedEntity instanceof Response) {
+            return $updatedEntity;
+        }
 
-		$updatedEntity = $this->make($subscriptionPermissionDTO, ['id' => $id]);
-
-		if ($updatedEntity instanceof Response) {
-			return $updatedEntity;
-		}
-
-		return $this->manager->update($updatedEntity, 'subscriptionPermission@successUpdate');
-
-	}
-
+        return $this->manager->update($updatedEntity, 'subscriptionPermission@successUpdate');
+    }
 }

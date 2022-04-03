@@ -7,7 +7,7 @@ use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
 /**
- * Class CreatorAlbumTypeService
+ * Class CreatorAlbumTypeService.
  *
  * @package App\Service\Album\Type
  *
@@ -15,25 +15,21 @@ use App\Rest\Http\Response;
  */
 class CreatorAlbumTypeService extends CreatorCRUD
 {
+    /**
+     * @param AlbumTypeDTO $albumTypeDTO
+     *
+     * @return Response
+     */
+    public function create(AlbumTypeDTO $albumTypeDTO): Response
+    {
+        $this->validateEntity = true;
 
-	/**
-	 * @param AlbumTypeDTO $albumTypeDTO
-	 *
-	 * @return Response
-	 */
-	public function create(AlbumTypeDTO $albumTypeDTO): Response
-	{
+        $createdEntity = $this->make($albumTypeDTO);
 
-		$this->validateEntity = true;
+        if ($createdEntity instanceof Response) {
+            return $createdEntity;
+        }
 
-		$createdEntity = $this->make($albumTypeDTO);
-
-		if ($createdEntity instanceof Response) {
-			return $createdEntity;
-		}
-
-		return $this->manager->push($createdEntity, 'albumType@successCreate');
-
-	}
-
+        return $this->manager->push($createdEntity, 'albumType@successCreate');
+    }
 }

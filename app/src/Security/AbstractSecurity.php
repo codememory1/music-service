@@ -7,7 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class AbstractSecurity
+ * Class AbstractSecurity.
  *
  * @package App\Security
  *
@@ -15,33 +15,29 @@ use Doctrine\Persistence\ObjectManager;
  */
 class AbstractSecurity
 {
+    /**
+     * @var ManagerRegistry
+     */
+    protected readonly ManagerRegistry $managerRegistry;
 
-	/**
-	 * @var ManagerRegistry
-	 */
-	protected readonly ManagerRegistry $managerRegistry;
+    /**
+     * @var ObjectManager
+     */
+    protected readonly ObjectManager $em;
 
-	/**
-	 * @var ObjectManager
-	 */
-	protected readonly ObjectManager $em;
+    /**
+     * @var Translator
+     */
+    protected readonly Translator $translator;
 
-	/**
-	 * @var Translator
-	 */
-	protected readonly Translator $translator;
-
-	/**
-	 * @param ManagerRegistry $managerRegistry
-	 * @param Translator      $translator
-	 */
-	public function __construct(ManagerRegistry $managerRegistry, Translator $translator)
-	{
-
-		$this->managerRegistry = $managerRegistry;
-		$this->em = $managerRegistry->getManager();
-		$this->translator = $translator;
-
-	}
-
+    /**
+     * @param ManagerRegistry $managerRegistry
+     * @param Translator      $translator
+     */
+    public function __construct(ManagerRegistry $managerRegistry, Translator $translator)
+    {
+        $this->managerRegistry = $managerRegistry;
+        $this->em = $managerRegistry->getManager();
+        $this->translator = $translator;
+    }
 }

@@ -8,7 +8,7 @@ use App\Rest\Http\Response;
 use Exception;
 
 /**
- * Class DeleterTranslationKeyService
+ * Class DeleterTranslationKeyService.
  *
  * @package App\Service\Translator\TranslationKey
  *
@@ -16,26 +16,23 @@ use Exception;
  */
 class DeleterTranslationKeyService extends DeleterCRUD
 {
+    /**
+     * @param int $id
+     *
+     * @throws Exception
+     *
+     * @return Response
+     */
+    public function delete(int $id): Response
+    {
+        $this->translationKeyNotExist = 'translationKey@notExist';
 
-	/**
-	 * @param int $id
-	 *
-	 * @return Response
-	 * @throws Exception
-	 */
-	public function delete(int $id): Response
-	{
+        $deletedEntity = $this->make(TranslationKey::class, ['id' => $id]);
 
-		$this->translationKeyNotExist = 'translationKey@notExist';
+        if ($deletedEntity instanceof Response) {
+            return $deletedEntity;
+        }
 
-		$deletedEntity = $this->make(TranslationKey::class, ['id' => $id]);
-
-		if ($deletedEntity instanceof Response) {
-			return $deletedEntity;
-		}
-
-		return $this->manager->remove($deletedEntity, 'translationKey@successDelete');
-
-	}
-
+        return $this->manager->remove($deletedEntity, 'translationKey@successDelete');
+    }
 }

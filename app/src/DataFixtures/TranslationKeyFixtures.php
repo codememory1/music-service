@@ -7,7 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class TranslationKeyFixtures
+ * Class TranslationKeyFixtures.
  *
  * @package Aoo\DataFixtures
  *
@@ -15,7 +15,6 @@ use Doctrine\Persistence\ObjectManager;
  */
 class TranslationKeyFixtures extends Fixture
 {
-
     /**
      * @var array
      */
@@ -65,7 +64,7 @@ class TranslationKeyFixtures extends Fixture
         'common@descriptionTranslationKeyNotExist',
         'common@accessDenied',
         'common@authRequired',
-		'common@successRegister',
+        'common@successRegister',
 
         'lang@codeExist',
         'lang@langNotExist',
@@ -107,6 +106,7 @@ class TranslationKeyFixtures extends Fixture
         'user@passwordIsIncorrect',
         'user@accountNotActive',
         'user@successAuth',
+        'user@notExist',
 
         'userProfile@nameIsRequired',
         'userProfile@surnameMaxLength',
@@ -167,6 +167,8 @@ class TranslationKeyFixtures extends Fixture
         'album@successUpdate',
         'album@successDelete',
         'album@notExist',
+
+        'passwordReset@requestSuccessCreate'
     ];
 
     /**
@@ -176,7 +178,6 @@ class TranslationKeyFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-
         foreach ($this->keys as $key) {
             $translationKeyEntity = new TranslationKey();
 
@@ -188,7 +189,5 @@ class TranslationKeyFixtures extends Fixture
         }
 
         $manager->flush();
-
     }
-
 }

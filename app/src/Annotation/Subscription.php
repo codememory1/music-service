@@ -5,7 +5,7 @@ namespace App\Annotation;
 use Attribute;
 
 /**
- * Class Subscription
+ * Class Subscription.
  *
  * @package App\Annotation
  *
@@ -14,20 +14,16 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 class Subscription
 {
+    /**
+     * @var string
+     */
+    public readonly string $key;
 
-	/**
-	 * @var string
-	 */
-	public readonly string $key;
-
-	/**
-	 * @param string $key
-	 */
-	public function __construct(string $key)
-	{
-
-		$this->key = $key;
-
-	}
-
+    /**
+     * @param string $key
+     */
+    public function __construct(string $key)
+    {
+        $this->key = $key;
+    }
 }

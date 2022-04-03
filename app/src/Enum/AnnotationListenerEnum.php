@@ -10,7 +10,7 @@ use App\AnnotationListener\UserRoleAnnotationListener;
 use App\AnnotationListener\UserRolePermissionAnnotationListener;
 
 /**
- * Enum AnnotationListenerEnum
+ * Enum AnnotationListenerEnum.
  *
  * @package App\Enum
  *
@@ -18,11 +18,9 @@ use App\AnnotationListener\UserRolePermissionAnnotationListener;
  */
 enum AnnotationListenerEnum: string
 {
-
-	const LISTENERS = [
-		Auth::class               => AuthAnnotationListener::class,
-		UserRole::class           => UserRoleAnnotationListener::class,
-		UserRolePermission::class => UserRolePermissionAnnotationListener::class
-	];
-
+    public const LISTENERS = [
+        Auth::class => AuthAnnotationListener::class,
+        UserRole::class => UserRoleAnnotationListener::class,
+        UserRolePermission::class => UserRolePermissionAnnotationListener::class
+    ];
 }

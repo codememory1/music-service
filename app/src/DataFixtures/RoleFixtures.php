@@ -8,7 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class RoleFixtures
+ * Class RoleFixtures.
  *
  * @package App\DataFixtures
  *
@@ -16,29 +16,28 @@ use Doctrine\Persistence\ObjectManager;
  */
 class RoleFixtures extends Fixture
 {
-
     /**
      * @var array
      */
     private array $roles = [
         [
-            'key'   => RoleEnum::USER,
+            'key' => RoleEnum::USER,
             'title' => 'rule@user'
         ],
         [
-            'key'   => RoleEnum::DEVELOPER,
+            'key' => RoleEnum::DEVELOPER,
             'title' => 'rule@developer'
         ],
         [
-            'key'   => RoleEnum::ADMIN,
+            'key' => RoleEnum::ADMIN,
             'title' => 'rule@admin'
         ],
         [
-            'key'   => RoleEnum::MUSIC_MANAGER,
+            'key' => RoleEnum::MUSIC_MANAGER,
             'title' => 'rule@musicManager'
         ],
         [
-            'key'   => RoleEnum::SUPPORT,
+            'key' => RoleEnum::SUPPORT,
             'title' => 'rule@support'
         ]
     ];
@@ -50,7 +49,6 @@ class RoleFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-
         foreach ($this->roles as $role) {
             $roleEntity = new Role();
 
@@ -64,7 +62,5 @@ class RoleFixtures extends Fixture
         }
 
         $manager->flush();
-
     }
-
 }

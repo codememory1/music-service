@@ -11,7 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class ApiService
+ * Class ApiService.
  *
  * @package App\Rest
  *
@@ -19,87 +19,78 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ApiService
 {
+    /**
+     * @var ManagerRegistry
+     */
+    protected ManagerRegistry $managerRegistry;
 
-	/**
-	 * @var ManagerRegistry
-	 */
-	protected ManagerRegistry $managerRegistry;
+    /**
+     * @var ObjectManager
+     */
+    protected ObjectManager $em;
 
-	/**
-	 * @var ObjectManager
-	 */
-	protected ObjectManager $em;
+    /**
+     * @var ApiManager
+     */
+    protected ApiManager $manager;
 
-	/**
-	 * @var ApiManager
-	 */
-	protected ApiManager $manager;
+    /**
+     * @var Translator
+     */
+    protected Translator $translator;
 
-	/**
-	 * @var Translator
-	 */
-	protected Translator $translator;
+    /**
+     * @var ApiResponseSchema
+     */
+    protected ApiResponseSchema $apiResponseSchema;
 
-	/**
-	 * @var ApiResponseSchema
-	 */
-	protected ApiResponseSchema $apiResponseSchema;
+    /**
+     * @var Validator
+     */
+    protected Validator $validator;
 
-	/**
-	 * @var Validator
-	 */
-	protected Validator $validator;
+    /**
+     * @param ManagerRegistry    $managerRegistry
+     * @param ApiManager         $apiManager
+     * @param Translator         $translator
+     * @param ApiResponseSchema  $apiResponseSchema
+     * @param ValidatorInterface $validator
+     */
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        ApiManager $apiManager,
+        Translator $translator,
+        ApiResponseSchema $apiResponseSchema,
+        Validator $validator
+    ) {
+        $this->managerRegistry = $managerRegistry;
+        $this->em = $managerRegistry->getManager();
+        $this->manager = $apiManager;
+        $this->translator = $translator;
+        $this->apiResponseSchema = $apiResponseSchema;
+        $this->validator = $validator;
+    }
 
-	/**
-	 * @param ManagerRegistry    $managerRegistry
-	 * @param ApiManager         $apiManager
-	 * @param Translator         $translator
-	 * @param ApiResponseSchema  $apiResponseSchema
-	 * @param ValidatorInterface $validator
-	 */
-	public function __construct(
-		ManagerRegistry $managerRegistry,
-		ApiManager $apiManager,
-		Translator $translator,
-		ApiResponseSchema $apiResponseSchema,
-		Validator $validator
-	)
-	{
+    /**
+     * @param string $key
+     * @param string $default
+     *
+     * @return string
+     */
+    protected function getTranslation(string $key, string $default = ''): string
+    {
+        return $this->translator->getTranslation($key, $default);
+    }
 
-		$this->managerRegistry = $managerRegistry;
-		$this->em = $managerRegistry->getManager();
-		$this->manager = $apiManager;
-		$this->translator = $translator;
-		$this->apiResponseSchema = $apiResponseSchema;
-		$this->validator = $validator;
+    /**
+     * @param DTOInterface|EntityInterface $entityOrDTO
+     *
+     * @return Validator
+     */
+    public function inputValidation(EntityInterface|DTOInterface $entityOrDTO): Validator
+    {
+        $this->validator->validate($entityOrDTO);
 
-	}
-
-	/**
-	 * @param string $key
-	 * @param string $default
-	 *
-	 * @return string
-	 */
-	protected function getTranslation(string $key, string $default = ''): string
-	{
-
-		return $this->translator->getTranslation($key, $default);
-
-	}
-
-	/**
-	 * @param EntityInterface|DTOInterface $entityOrDTO
-	 *
-	 * @return Validator
-	 */
-	public function inputValidation(EntityInterface|DTOInterface $entityOrDTO): Validator
-	{
-
-		$this->validator->validate($entityOrDTO);
-
-		return $this->validator;
-
-	}
-
+        return $this->validator;
+    }
 }

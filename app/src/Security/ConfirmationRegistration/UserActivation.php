@@ -14,7 +14,7 @@ use App\Service\JwtTokenGenerator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class UserActivation
+ * Class UserActivation.
  *
  * @package App\Security\ConfirmationRegistration
  *
@@ -22,117 +22,104 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserActivation extends AbstractSecurity
 {
+    /**
+     * @var UserActivationTokenRepository
+     */
+    private UserActivationTokenRepository $userActivationTokenRepository;
 
-	/**
-	 * @var UserActivationTokenRepository
-	 */
-	private UserActivationTokenRepository $userActivationTokenRepository;
+    /**
+     * @var JwtTokenGenerator
+     */
+    private JwtTokenGenerator $jwtTokenGenerator;
 
-	/**
-	 * @var JwtTokenGenerator
-	 */
-	private JwtTokenGenerator $jwtTokenGenerator;
+    /**
+     * @var ApiResponseSchema
+     */
+    private ApiResponseSchema $apiResponseSchema;
 
-	/**
-	 * @var ApiResponseSchema
-	 */
-	private ApiResponseSchema $apiResponseSchema;
+    /**
+     * @param ManagerRegistry   $managerRegistry
+     * @param Translator        $translator
+     * @param JwtTokenGenerator $jwtTokenGenerator
+     * @param ApiResponseSchema $apiResponseSchema
+     */
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        Translator $translator,
+        JwtTokenGenerator $jwtTokenGenerator,
+        ApiResponseSchema $apiResponseSchema
+    ) {
+        parent::__construct($managerRegistry, $translator);
 
-	/**
-	 * @param ManagerRegistry   $managerRegistry
-	 * @param Translator        $translator
-	 * @param JwtTokenGenerator $jwtTokenGenerator
-	 * @param ApiResponseSchema $apiResponseSchema
-	 */
-	public function __construct(
-		ManagerRegistry $managerRegistry,
-		Translator $translator,
-		JwtTokenGenerator $jwtTokenGenerator,
-		ApiResponseSchema $apiResponseSchema
-	)
-	{
+        /** @var UserActivationTokenRepository $userActivationTokenRepository */
+        $userActivationTokenRepository = $this->em->getRepository(UserActivationToken::class);
 
-		parent::__construct($managerRegistry, $translator);
+        $this->userActivationTokenRepository = $userActivationTokenRepository;
+        $this->jwtTokenGenerator = $jwtTokenGenerator;
+        $this->apiResponseSchema = $apiResponseSchema;
+    }
 
-		/** @var UserActivationTokenRepository $userActivationTokenRepository */
-		$userActivationTokenRepository = $this->em->getRepository(UserActivationToken::class);
+    /**
+     * @param string $token
+     *
+     * @return UserActivationToken
+     */
+    public function activate(string $token): UserActivationToken
+    {
+        /** @var UserActivationToken $finedUserActivationToken */
+        $finedUserActivationToken = $this->userActivationTokenRepository->findOneBy(['token' => $token]);
+        $user = $finedUserActivationToken->getUser();
 
-		$this->userActivationTokenRepository = $userActivationTokenRepository;
-		$this->jwtTokenGenerator = $jwtTokenGenerator;
-		$this->apiResponseSchema = $apiResponseSchema;
+        $user->setStatus(StatusEnum::ACTIVE->value);
 
-	}
+        $this->em->flush();
 
-	/**
-	 * @param string $token
-	 *
-	 * @return UserActivationToken
-	 */
-	public function activate(string $token): UserActivationToken
-	{
+        return $finedUserActivationToken;
+    }
 
-		/** @var UserActivationToken $finedUserActivationToken */
-		$finedUserActivationToken = $this->userActivationTokenRepository->findOneBy(['token' => $token]);
-		$user = $finedUserActivationToken->getUser();
+    /**
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function existToken(string $token): bool
+    {
+        return null !== $this->userActivationTokenRepository->findOneBy([
+                'token' => $token
+            ]);
+    }
 
-		$user->setStatus(StatusEnum::ACTIVE->value);
+    /**
+     * @param string $token
+     *
+     * @return bool|Response
+     */
+    public function isValid(string $token): Response|bool
+    {
+        $decodedToken = $this->jwtTokenGenerator->decode($token, 'JWT_ACCOUNT_ACTIVATION_PUBLIC_KEY');
 
-		$this->em->flush();
+        if (!$decodedToken) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_VALID,
+                $this->translator->getTranslation('userActivationAccount@tokenIsNotValid')
+            );
 
-		return $finedUserActivationToken;
+            return new Response($this->apiResponseSchema, 'error', 400);
+        }
 
-	}
+        return true;
+    }
 
-	/**
-	 * @param string $token
-	 *
-	 * @return bool
-	 */
-	public function existToken(string $token): bool
-	{
+    /**
+     * @return Response
+     */
+    public function successActivationResponse(): Response
+    {
+        $this->apiResponseSchema->setMessage(
+            ApiResponseTypeEnum::ACTIVATION_ACCOUNT,
+            $this->translator->getTranslation('userActivationAccount@successActivation')
+        );
 
-		return null !== $this->userActivationTokenRepository->findOneBy([
-				'token' => $token
-			]);
-
-	}
-
-	/**
-	 * @param string $token
-	 *
-	 * @return Response|bool
-	 */
-	public function isValid(string $token): Response|bool
-	{
-
-		$decodedToken = $this->jwtTokenGenerator->decode($token, 'JWT_ACCOUNT_ACTIVATION_PUBLIC_KEY');
-
-		if (!$decodedToken) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_VALID,
-				$this->translator->getTranslation('userActivationAccount@tokenIsNotValid')
-			);
-
-			return new Response($this->apiResponseSchema, 'error', 400);
-		}
-
-		return true;
-
-	}
-
-	/**
-	 * @return Response
-	 */
-	public function successActivationResponse(): Response
-	{
-
-		$this->apiResponseSchema->setMessage(
-			ApiResponseTypeEnum::ACTIVATION_ACCOUNT,
-			$this->translator->getTranslation('userActivationAccount@successActivation')
-		);
-
-		return new Response($this->apiResponseSchema, 'success', 200);
-
-	}
-
+        return new Response($this->apiResponseSchema, 'success', 200);
+    }
 }

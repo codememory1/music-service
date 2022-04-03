@@ -15,7 +15,7 @@ use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class SubscriptionPermissionName
+ * Class SubscriptionPermissionName.
  *
  * @package App\Entity
  *
@@ -24,138 +24,122 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: SubscriptionPermissionNameRepository::class)]
 #[ORM\Table('subscription_permission_names')]
 #[UniqueEntity(
-	'key',
-	'subscriptionPermissionName@keyExist',
-	payload: ApiResponseTypeEnum::CHECK_EXIST
+    'key',
+    'subscriptionPermissionName@keyExist',
+    payload: ApiResponseTypeEnum::CHECK_EXIST
 )]
 #[ORM\HasLifecycleCallbacks]
 class SubscriptionPermissionName implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column('`key`', Types::STRING, length: 255, unique: true, options: [
-		'comment' => 'The unique key of the rule by which access will be checked'
-	])]
-	private ?string $key = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column('`key`', Types::STRING, length: 255, unique: true, options: [
+        'comment' => 'The unique key of the rule by which access will be checked'
+    ])]
+    private ?string $key = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::STRING, length: 255, options: [
-		'comment' => 'Rule name translation key'
-	])]
-	private ?string $titleTranslationKey = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
+        'comment' => 'Rule name translation key'
+    ])]
+    private ?string $titleTranslationKey = null;
 
-	/**
-	 * @var Collection
-	 */
-	#[ORM\OneToMany(mappedBy: 'subscriptionPermissionName', targetEntity: SubscriptionPermission::class)]
-	private Collection $subscriptionPermissions;
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'subscriptionPermissionName', targetEntity: SubscriptionPermission::class)]
+    private Collection $subscriptionPermissions;
 
-	#[Pure]
-	public function __construct()
-	{
+    #[Pure]
+    public function __construct()
+    {
+        $this->subscriptionPermissions = new ArrayCollection();
+    }
 
-		$this->subscriptionPermissions = new ArrayCollection();
-	}
+    /**
+     * @return null|string
+     */
+    public function getKey(): ?string
+    {
+        return $this->key;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function getKey(): ?string
-	{
+    /**
+     * @param string $key
+     *
+     * @return $this
+     */
+    public function setKey(string $key): self
+    {
+        $this->key = $key;
 
-		return $this->key;
+        return $this;
+    }
 
-	}
+    /**
+     * @return null|string
+     */
+    public function getTitleTranslationKey(): ?string
+    {
+        return $this->titleTranslationKey;
+    }
 
-	/**
-	 * @param string $key
-	 *
-	 * @return $this
-	 */
-	public function setKey(string $key): self
-	{
+    /**
+     * @param string $titleTranslationKey
+     *
+     * @return $this
+     */
+    public function setTitleTranslationKey(string $titleTranslationKey): self
+    {
+        $this->titleTranslationKey = $titleTranslationKey;
 
-		$this->key = $key;
+        return $this;
+    }
 
-		return $this;
+    /**
+     * @return Collection
+     */
+    public function getSubscriptionPermissions(): Collection
+    {
+        return $this->subscriptionPermissions;
+    }
 
-	}
+    /**
+     * @param SubscriptionPermission $subscriptionPermission
+     *
+     * @return $this
+     */
+    public function addSubscriptionRight(SubscriptionPermission $subscriptionPermission): self
+    {
+        if (!$this->subscriptionPermissions->contains($subscriptionPermission)) {
+            $this->subscriptionPermissions[] = $subscriptionPermission;
+            $subscriptionPermission->setSubscriptionPermissionName($this);
+        }
 
-	/**
-	 * @return string|null
-	 */
-	public function getTitleTranslationKey(): ?string
-	{
+        return $this;
+    }
 
-		return $this->titleTranslationKey;
+    /**
+     * @param SubscriptionPermission $subscriptionPermission
+     *
+     * @return $this
+     */
+    public function removeSubscriptionPermission(SubscriptionPermission $subscriptionPermission): self
+    {
+        if ($this->subscriptionPermissions->removeElement($subscriptionPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($subscriptionPermission->getSubscriptionPermissionName() === $this) {
+                $subscriptionPermission->setSubscriptionPermissionName(null);
+            }
+        }
 
-	}
-
-	/**
-	 * @param string $titleTranslationKey
-	 *
-	 * @return $this
-	 */
-	public function setTitleTranslationKey(string $titleTranslationKey): self
-	{
-
-		$this->titleTranslationKey = $titleTranslationKey;
-
-		return $this;
-
-	}
-
-	/**
-	 * @return Collection
-	 */
-	public function getSubscriptionPermissions(): Collection
-	{
-
-		return $this->subscriptionPermissions;
-
-	}
-
-	/**
-	 * @param SubscriptionPermission $subscriptionPermission
-	 *
-	 * @return $this
-	 */
-	public function addSubscriptionRight(SubscriptionPermission $subscriptionPermission): self
-	{
-
-		if (!$this->subscriptionPermissions->contains($subscriptionPermission)) {
-			$this->subscriptionPermissions[] = $subscriptionPermission;
-			$subscriptionPermission->setSubscriptionPermissionName($this);
-		}
-
-		return $this;
-
-	}
-
-	/**
-	 * @param SubscriptionPermission $subscriptionPermission
-	 *
-	 * @return $this
-	 */
-	public function removeSubscriptionPermission(SubscriptionPermission $subscriptionPermission): self
-	{
-
-		if ($this->subscriptionPermissions->removeElement($subscriptionPermission)) {
-			// set the owning side to null (unless already changed)
-			if ($subscriptionPermission->getSubscriptionPermissionName() === $this) {
-				$subscriptionPermission->setSubscriptionPermissionName(null);
-			}
-		}
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

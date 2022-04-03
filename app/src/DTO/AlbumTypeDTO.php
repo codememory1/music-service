@@ -10,7 +10,7 @@ use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class AlbumTypeDTO
+ * Class AlbumTypeDTO.
  *
  * @package App\DTO
  *
@@ -18,45 +18,41 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class AlbumTypeDTO extends AbstractDTO
 {
+    /**
+     * @var null|string
+     */
+    #[Assert\NotBlank(message: 'subscriptionPermissionName@keyIsRequired')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'subscriptionPermissionName@keyMaxLength'
+    )]
+    public ?string $key = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[Assert\NotBlank(message: 'subscriptionPermissionName@keyIsRequired')]
-	#[Assert\Length(
-		max: 255,
-		maxMessage: 'subscriptionPermissionName@keyMaxLength'
-	)]
-	public ?string $key = null;
+    /**
+     * @var null|string
+     */
+    #[Assert\NotBlank(message: 'common@titleIsRequired')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'common@titleTranslationKeyMaxLength'
+    )]
+    #[AppAssert\Exist(
+        TranslationKey::class,
+        'name',
+        'common@titleTranslationKeyNotExist',
+        payload: ApiResponseTypeEnum::CHECK_EXIST
+    )]
+    public ?string $titleTranslationKey = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[Assert\NotBlank(message: 'common@titleIsRequired')]
-	#[Assert\Length(
-		max: 255,
-		maxMessage: 'common@titleTranslationKeyMaxLength'
-	)]
-	#[AppAssert\Exist(
-		TranslationKey::class,
-		'name',
-		'common@titleTranslationKeyNotExist',
-		payload: ApiResponseTypeEnum::CHECK_EXIST
-	)]
-	public ?string $titleTranslationKey = null;
+    /**
+     * @return void
+     */
+    protected function wrapper(): void
+    {
+        $this->setEntity(AlbumType::class);
 
-	/**
-	 * @return void
-	 */
-	protected function wrapper(): void
-	{
-
-		$this->setEntity(AlbumType::class);
-
-		$this
-			->addExpectedRequestKey('key')
-			->addExpectedRequestKey('title', 'title_translation_key');
-
-	}
-
+        $this
+            ->addExpectedRequestKey('key')
+            ->addExpectedRequestKey('title', 'title_translation_key');
+    }
 }

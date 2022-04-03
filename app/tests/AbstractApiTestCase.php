@@ -2,15 +2,18 @@
 
 namespace App\Tests;
 
-use App\Tests\Translator\UpdateLanguageTest;
 use Faker\Factory;
 use Faker\Generator;
+use function is_array;
+use function is_int;
+use function is_string;
+use const JSON_ERROR_NONE;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class AbstractApiTestCase
+ * Class AbstractApiTestCase.
  *
  * @package App\Tests
  *
@@ -18,31 +21,30 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class AbstractApiTestCase extends WebTestCase
 {
-
     protected const API_PATH = null;
     protected const API_RESPONSE_SCHEMA = [
-        'status'      => 'string',
+        'status' => 'string',
         'status_code' => 'int',
-        'message'     => [
+        'message' => [
             'type' => 'string',
             'name' => 'string',
             'text' => 'string'
         ],
-        'data'        => 'array'
+        'data' => 'array'
     ];
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected ?string $apiPath = null;
 
     /**
-     * @var Generator|null
+     * @var null|Generator
      */
     protected ?Generator $faker = null;
 
     /**
-     * @var KernelBrowser|null
+     * @var null|KernelBrowser
      */
     protected ?KernelBrowser $client = null;
 
@@ -51,11 +53,9 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function setUp(): void
     {
-
         $this->faker = Factory::create('en');
 
         parent::setUp();
-
     }
 
     /**
@@ -63,10 +63,8 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function clearBase(): void
     {
-
         shell_exec('bin/console doctrine:schema:drop --env=test --force');
         shell_exec('bin/console doctrine:schema:create --env=test');
-
     }
 
     /**
@@ -77,7 +75,6 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function createRequest(array $params = [], string $method = 'POST'): void
     {
-
         $client = static::createClient();
         $apiPath = trim($this->apiPath, '/');
         $uri = sprintf('/api/%s/en/%s', $_SERVER['API_VERSION'], $apiPath);
@@ -85,7 +82,6 @@ abstract class AbstractApiTestCase extends WebTestCase
         $client->request($method, $uri, $params);
 
         $this->client = $client;
-
     }
 
     /**
@@ -93,11 +89,10 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function assertSuccessApiResponseSchema(): void
     {
-
         $status = true;
         $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (JSON_ERROR_NONE !== json_last_error()) {
             $status = false;
         } else {
             if (!is_string($jsonResponse['status'] ?? null)) {
@@ -132,7 +127,6 @@ abstract class AbstractApiTestCase extends WebTestCase
         );
 
         $this->assertEquals(true, $status, $message);
-
     }
 
     /**
@@ -143,11 +137,9 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function assertStatus(string $expected, string $message = ''): void
     {
-
         $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
 
         $this->assertEquals($expected, $jsonResponse['status'], $message);
-
     }
 
     /**
@@ -158,11 +150,9 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function assertStatusCode(int $expected, string $message = ''): void
     {
-
         $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
 
         $this->assertEquals($expected, $jsonResponse['status_code'], $message);
-
     }
 
     /**
@@ -173,11 +163,9 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function assertMessageType(string $expected, string $message = ''): void
     {
-
         $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
 
         $this->assertEquals($expected, $jsonResponse['message']['type'], $message);
-
     }
 
     /**
@@ -188,11 +176,9 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function assertMessageName(string $expected, string $message = ''): void
     {
-
         $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
 
         $this->assertEquals($expected, $jsonResponse['message']['name'], $message);
-
     }
 
     /**
@@ -203,11 +189,9 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function assertDataEquals(array $expected, string $message = ''): void
     {
-
         $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
 
         $this->assertEquals($expected, $jsonResponse['data'], $message);
-
     }
 
     /**
@@ -220,14 +204,12 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function apiResponseAssertsGroup(string $status, int $statusCode, string $messageType, string $messageName): void
     {
-
         $this->assertSuccessApiResponseSchema();
         $this->assertStatus($status);
         $this->assertStatusCode($statusCode);
         $this->assertResponseStatusCodeSame($statusCode);
         $this->assertMessageType($messageType);
         $this->assertMessageName($messageName);
-
     }
 
     /**
@@ -235,9 +217,6 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     private function getClientResponse(): Response
     {
-
         return $this->client->getResponse();
-
     }
-
 }

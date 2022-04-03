@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class MediaLibraryEvent
+ * Class MediaLibraryEvent.
  *
  * @package App\Entity
  *
@@ -22,105 +22,92 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('media_library_events')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(
-	'mediaLibrary',
-	'mediaLibrary@eventForMediaLibraryAdded',
-	payload: ApiResponseTypeEnum::CHECK_EXIST
+    'mediaLibrary',
+    'mediaLibrary@eventForMediaLibraryAdded',
+    payload: ApiResponseTypeEnum::CHECK_EXIST
 )]
 class MediaLibraryEvent implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var MediaLibrary|null
-	 */
-	#[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'mediaLibraryEvents')]
-	#[ORM\JoinColumn(unique: true, nullable: false)]
-	private ?MediaLibrary $mediaLibrary = null;
+    /**
+     * @var null|MediaLibrary
+     */
+    #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'mediaLibraryEvents')]
+    #[ORM\JoinColumn(unique: true, nullable: false)]
+    private ?MediaLibrary $mediaLibrary = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::STRING, length: 100)]
-	private ?string $name = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 100)]
+    private ?string $name = null;
 
-	/**
-	 * @var array
-	 */
-	#[ORM\Column(type: Types::JSON)]
-	private array $payload = [];
+    /**
+     * @var array
+     */
+    #[ORM\Column(type: Types::JSON)]
+    private array $payload = [];
 
-	/**
-	 * @return MediaLibrary|null
-	 */
-	public function getMediaLibrary(): ?MediaLibrary
-	{
+    /**
+     * @return null|MediaLibrary
+     */
+    public function getMediaLibrary(): ?MediaLibrary
+    {
+        return $this->mediaLibrary;
+    }
 
-		return $this->mediaLibrary;
+    /**
+     * @param null|MediaLibrary $mediaLibrary
+     *
+     * @return $this
+     */
+    public function setMediaLibrary(?MediaLibrary $mediaLibrary): self
+    {
+        $this->mediaLibrary = $mediaLibrary;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param MediaLibrary|null $mediaLibrary
-	 *
-	 * @return $this
-	 */
-	public function setMediaLibrary(?MediaLibrary $mediaLibrary): self
-	{
+    /**
+     * @return null|string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-		$this->mediaLibrary = $mediaLibrary;
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
-		return $this;
+        return $this;
+    }
 
-	}
+    /**
+     * @return null|array
+     */
+    public function getPayload(): ?array
+    {
+        return $this->payload;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function getName(): ?string
-	{
+    /**
+     * @param array $payload
+     *
+     * @return $this
+     */
+    public function setPayload(array $payload): self
+    {
+        $this->payload = $payload;
 
-		return $this->name;
-
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return $this
-	 */
-	public function setName(string $name): self
-	{
-
-		$this->name = $name;
-
-		return $this;
-
-	}
-
-	/**
-	 * @return array|null
-	 */
-	public function getPayload(): ?array
-	{
-
-		return $this->payload;
-
-	}
-
-	/**
-	 * @param array $payload
-	 *
-	 * @return $this
-	 */
-	public function setPayload(array $payload): self
-	{
-
-		$this->payload = $payload;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

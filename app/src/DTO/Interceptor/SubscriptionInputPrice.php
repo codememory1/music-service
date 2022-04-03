@@ -5,7 +5,7 @@ namespace App\DTO\Interceptor;
 use App\Rest\DTO\AbstractInterceptor;
 
 /**
- * Class SubscriptionInputPrice
+ * Class SubscriptionInputPrice.
  *
  * @package App\DTO\Interceptor
  *
@@ -13,23 +13,19 @@ use App\Rest\DTO\AbstractInterceptor;
  */
 class SubscriptionInputPrice extends AbstractInterceptor
 {
+    /**
+     * @inheritDoc
+     */
+    public function process(string $requestKey, mixed $requestValue): ?float
+    {
+        if ('price' === $requestKey) {
+            return (float) $requestValue;
+        }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function process(string $requestKey, mixed $requestValue): ?float
-	{
+        if ('old_price' === $requestKey) {
+            return empty($requestValue) ? null : (float) $requestValue;
+        }
 
-		if ('price' === $requestKey) {
-			return (float) $requestValue;
-		}
-
-		if ('old_price' === $requestKey) {
-			return empty($requestValue) ? null : (float) $requestValue;
-		}
-
-		return 0.0;
-
-	}
-
+        return 0.0;
+    }
 }

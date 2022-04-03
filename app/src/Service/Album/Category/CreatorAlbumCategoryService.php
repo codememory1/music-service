@@ -7,7 +7,7 @@ use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
 /**
- * Class CreatorAlbumCategoryService
+ * Class CreatorAlbumCategoryService.
  *
  * @package App\Service\Album\Category
  *
@@ -15,25 +15,21 @@ use App\Rest\Http\Response;
  */
 class CreatorAlbumCategoryService extends CreatorCRUD
 {
+    /**
+     * @param AlbumCategoryDTO $albumCategoryDTO
+     *
+     * @return Response
+     */
+    public function create(AlbumCategoryDTO $albumCategoryDTO): Response
+    {
+        $this->validateEntity = true;
 
-	/**
-	 * @param AlbumCategoryDTO $albumCategoryDTO
-	 *
-	 * @return Response
-	 */
-	public function create(AlbumCategoryDTO $albumCategoryDTO): Response
-	{
+        $createdEntity = $this->make($albumCategoryDTO);
 
-		$this->validateEntity = true;
+        if ($createdEntity instanceof Response) {
+            return $createdEntity;
+        }
 
-		$createdEntity = $this->make($albumCategoryDTO);
-
-		if ($createdEntity instanceof Response) {
-			return $createdEntity;
-		}
-
-		return $this->manager->push($createdEntity, 'albumCategory@successCreate');
-
-	}
-
+        return $this->manager->push($createdEntity, 'albumCategory@successCreate');
+    }
 }

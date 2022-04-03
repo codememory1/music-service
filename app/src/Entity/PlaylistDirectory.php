@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class PlaylistDirectory
+ * Class PlaylistDirectory.
  *
  * @package App\Entity
  *
@@ -21,69 +21,60 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class PlaylistDirectory implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::STRING, length: 255)]
-	private ?string $name = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $name = null;
 
-	/**
-	 * @var Playlist|null
-	 */
-	#[ORM\ManyToOne(targetEntity: Playlist::class, inversedBy: 'playlistDirectories')]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?Playlist $playlist;
+    /**
+     * @var null|Playlist
+     */
+    #[ORM\ManyToOne(targetEntity: Playlist::class, inversedBy: 'playlistDirectories')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Playlist $playlist;
 
-	/**
-	 * @return string|null
-	 */
-	public function getName(): ?string
-	{
+    /**
+     * @return null|string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-		return $this->name;
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param string $name
-	 *
-	 * @return $this
-	 */
-	public function setName(string $name): self
-	{
+    /**
+     * @return null|Playlist
+     */
+    public function getPlaylist(): ?Playlist
+    {
+        return $this->playlist;
+    }
 
-		$this->name = $name;
+    /**
+     * @param null|Playlist $playlist
+     *
+     * @return $this
+     */
+    public function setPlaylist(?Playlist $playlist): self
+    {
+        $this->playlist = $playlist;
 
-		return $this;
-
-	}
-
-	/**
-	 * @return Playlist|null
-	 */
-	public function getPlaylist(): ?Playlist
-	{
-
-		return $this->playlist;
-
-	}
-
-	/**
-	 * @param Playlist|null $playlist
-	 *
-	 * @return $this
-	 */
-	public function setPlaylist(?Playlist $playlist): self
-	{
-
-		$this->playlist = $playlist;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

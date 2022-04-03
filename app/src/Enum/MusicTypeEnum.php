@@ -3,7 +3,7 @@
 namespace App\Enum;
 
 /**
- * Enum MusicTypeEnum
+ * Enum MusicTypeEnum.
  *
  * @package App\Enum
  *
@@ -11,8 +11,6 @@ namespace App\Enum;
  */
 enum MusicTypeEnum: string
 {
-
-	case TRACK = 'track';
-	case CLIP = 'clip';
-
+    case TRACK = 'track';
+    case CLIP = 'clip';
 }

@@ -3,7 +3,7 @@
 namespace App\Interfaces;
 
 /**
- * Interface InterceptorInterface
+ * Interface InterceptorInterface.
  *
  * @package  App\Interfaces
  *
@@ -11,13 +11,11 @@ namespace App\Interfaces;
  */
 interface InterceptorInterface
 {
-
-	/**
-	 * @param string $requestKey
-	 * @param mixed  $requestValue
-	 *
-	 * @return mixed
-	 */
-	public function process(string $requestKey, mixed $requestValue): mixed;
-
+    /**
+     * @param string $requestKey
+     * @param mixed  $requestValue
+     *
+     * @return mixed
+     */
+    public function process(string $requestKey, mixed $requestValue): mixed;
 }

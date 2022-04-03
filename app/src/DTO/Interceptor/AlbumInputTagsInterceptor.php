@@ -5,7 +5,7 @@ namespace App\DTO\Interceptor;
 use App\Rest\DTO\AbstractInterceptor;
 
 /**
- * Class AlbumInputTagsInterceptor
+ * Class AlbumInputTagsInterceptor.
  *
  * @package App\DTO\Interceptor
  *
@@ -13,19 +13,13 @@ use App\Rest\DTO\AbstractInterceptor;
  */
 class AlbumInputTagsInterceptor extends AbstractInterceptor
 {
+    /**
+     * @inheritDoc
+     */
+    public function process(string $requestKey, mixed $requestValue): array
+    {
+        $tags = explode(',', $requestKey);
 
-	/**
-	 * @inheritDoc
-	 */
-	public function process(string $requestKey, mixed $requestValue): array
-	{
-
-		$tags = explode(',', $requestKey);
-
-		return array_map(function(string|int $value) {
-			return trim($value);
-		}, $tags);
-
-	}
-
+        return array_map(fn(string|int $value) => trim($value), $tags);
+    }
 }

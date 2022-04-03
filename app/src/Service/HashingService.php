@@ -2,8 +2,10 @@
 
 namespace App\Service;
 
+use const PASSWORD_ARGON2ID;
+
 /**
- * Class HashingService
+ * Class HashingService.
  *
  * @package App\Service
  *
@@ -11,30 +13,24 @@ namespace App\Service;
  */
 class HashingService
 {
+    /**
+     * @param string $password
+     *
+     * @return string
+     */
+    final public function encode(string $password): string
+    {
+        return password_hash(hash('sha256', $password), PASSWORD_ARGON2ID, ['cost' => 10]);
+    }
 
-	/**
-	 * @param string $password
-	 *
-	 * @return string
-	 */
-	final public function encode(string $password): string
-	{
-
-		return password_hash(hash('sha256', $password), PASSWORD_ARGON2ID, ['cost' => 10]);
-
-	}
-
-	/**
-	 * @param string $password
-	 * @param string $hash
-	 *
-	 * @return bool
-	 */
-	final public function compare(string $password, string $hash): bool
-	{
-
-		return password_verify(hash('sha256', $password), $hash);
-
-	}
-
+    /**
+     * @param string $password
+     * @param string $hash
+     *
+     * @return bool
+     */
+    final public function compare(string $password, string $hash): bool
+    {
+        return password_verify(hash('sha256', $password), $hash);
+    }
 }

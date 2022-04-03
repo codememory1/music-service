@@ -7,7 +7,7 @@ use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
 /**
- * Class CreatorLanguageService
+ * Class CreatorLanguageService.
  *
  * @package App\Service\Translator\Language
  *
@@ -15,25 +15,21 @@ use App\Rest\Http\Response;
  */
 class CreatorLanguageService extends CreatorCRUD
 {
+    /**
+     * @param LanguageDTO $languageDTO
+     *
+     * @return Response
+     */
+    public function create(LanguageDTO $languageDTO): Response
+    {
+        $this->validateEntity = true;
 
-	/**
-	 * @param LanguageDTO $languageDTO
-	 *
-	 * @return Response
-	 */
-	public function create(LanguageDTO $languageDTO): Response
-	{
+        $createdLanguage = $this->make($languageDTO);
 
-		$this->validateEntity = true;
+        if ($createdLanguage instanceof Response) {
+            return $createdLanguage;
+        }
 
-		$createdLanguage = $this->make($languageDTO);
-
-		if ($createdLanguage instanceof Response) {
-			return $createdLanguage;
-		}
-
-		return $this->manager->push($createdLanguage, 'lang@successCreate');
-
-	}
-
+        return $this->manager->push($createdLanguage, 'lang@successCreate');
+    }
 }

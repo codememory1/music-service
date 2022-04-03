@@ -8,7 +8,7 @@ use App\Rest\Http\Response;
 use Exception;
 
 /**
- * Class DeleterPermissionService
+ * Class DeleterPermissionService.
  *
  * @package App\Service\Subscription\Permission
  *
@@ -16,26 +16,23 @@ use Exception;
  */
 class DeleterPermissionService extends DeleterCRUD
 {
+    /**
+     * @param int $id
+     *
+     * @throws Exception
+     *
+     * @return Response
+     */
+    public function delete(int $id): Response
+    {
+        $this->translationKeyNotExist = 'subscriptionPermission@notExist';
 
-	/**
-	 * @param int $id
-	 *
-	 * @return Response
-	 * @throws Exception
-	 */
-	public function delete(int $id): Response
-	{
+        $deletedEntity = $this->make(SubscriptionPermission::class, ['id' => $id]);
 
-		$this->translationKeyNotExist = 'subscriptionPermission@notExist';
+        if ($deletedEntity instanceof Response) {
+            return $deletedEntity;
+        }
 
-		$deletedEntity = $this->make(SubscriptionPermission::class, ['id' => $id]);
-
-		if ($deletedEntity instanceof Response) {
-			return $deletedEntity;
-		}
-
-		return $this->manager->remove($deletedEntity, 'subscriptionPermission@successDelete');
-
-	}
-
+        return $this->manager->remove($deletedEntity, 'subscriptionPermission@successDelete');
+    }
 }

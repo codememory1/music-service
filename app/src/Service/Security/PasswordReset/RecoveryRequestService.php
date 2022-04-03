@@ -15,7 +15,7 @@ use App\Service\JwtTokenGenerator;
 use Exception;
 
 /**
- * Class RecoveryRequestService
+ * Class RecoveryRequestService.
  *
  * @package App\Service\PasswordReset
  *
@@ -23,90 +23,82 @@ use Exception;
  */
 class RecoveryRequestService extends ApiService
 {
+    /**
+     * @param PasswordRecoveryRequestDTO $passwordRecoveryRequestDTO
+     *
+     * @throws UndefinedClassForDTOException
+     * @throws Exception
+     *
+     * @return Response
+     */
+    public function send(PasswordRecoveryRequestDTO $passwordRecoveryRequestDTO): Response
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->em->getRepository(User::class);
 
-	/**
-	 * @param PasswordRecoveryRequestDTO $passwordRecoveryRequestDTO
-	 *
-	 * @return Response
-	 * @throws UndefinedClassForDTOException
-	 * @throws Exception
-	 */
-	public function send(PasswordRecoveryRequestDTO $passwordRecoveryRequestDTO): Response
-	{
+        /** @var User $collectedEntity */
+        $collectedEntity = $passwordRecoveryRequestDTO->getCollectedEntity();
 
-		/** @var UserRepository $userRepository */
-		$userRepository = $this->em->getRepository(User::class);
+        // POST input validation
+        if (false !== $resultInputValidation = $this->inputValidation($collectedEntity)) {
+            return $resultInputValidation;
+        }
 
-		/** @var User $collectedEntity */
-		$collectedEntity = $passwordRecoveryRequestDTO->getCollectedEntity();
+        // Send a message about a successful request without further action
+        $finedUser = $userRepository->findBy(['email' => $collectedEntity->getEmail()]);
 
-		// POST input validation
-		if (false !== $resultInputValidation = $this->inputValidation($collectedEntity)) {
-			return $resultInputValidation;
-		}
+        if (null !== $finedUser) {
+            return $this->successRecoveryRequest();
+        }
 
-		// Send a message about a successful request without further action
-		$finedUser = $userRepository->findBy(['email' => $collectedEntity->getEmail()]);
+        return $this->create($finedUser);
+    }
 
-		if (null !== $finedUser) {
-			return $this->successRecoveryRequest();
-		}
+    /**
+     * @return Response
+     */
+    private function successRecoveryRequest(): Response
+    {
+        $this->apiResponseSchema->setMessage(
+            ApiResponseTypeEnum::CREATE,
+            $this->getTranslation('recoveryRequest@successCreate')
+        );
 
-		return $this->create($finedUser);
+        return new Response($this->apiResponseSchema, 'success', 200);
+    }
 
-	}
+    /**
+     * @param User $user
+     *
+     * @throws Exception
+     *
+     * @return Response
+     */
+    private function create(User $user): Response
+    {
+        $passwordResetEntity = new PasswordReset();
 
-	/**
-	 * @return Response
-	 */
-	private function successRecoveryRequest(): Response
-	{
+        $passwordResetEntity
+            ->setUser($user)
+            ->setToken($this->generateToken($user))
+            ->setStatus(PasswordResetStatusEnum::WAITING_RESET);
 
-		$this->apiResponseSchema->setMessage(
-			ApiResponseTypeEnum::CREATE,
-			$this->getTranslation('recoveryRequest@successCreate')
-		);
+        return $this->manager->push($passwordResetEntity, 'recoveryRequest@successCreate');
+    }
 
-		return new Response($this->apiResponseSchema, 'success', 200);
+    /**
+     * @param User $user
+     *
+     * @return string
+     */
+    private function generateToken(User $user): string
+    {
+        $jwtTokenGenerator = new JwtTokenGenerator();
 
-	}
-
-	/**
-	 * @param User $user
-	 *
-	 * @return Response
-	 * @throws Exception
-	 */
-	private function create(User $user): Response
-	{
-
-		$passwordResetEntity = new PasswordReset();
-
-		$passwordResetEntity
-			->setUser($user)
-			->setToken($this->generateToken($user))
-			->setStatus(PasswordResetStatusEnum::WAITING_RESET);
-
-		return $this->manager->push($passwordResetEntity, 'recoveryRequest@successCreate');
-
-	}
-
-	/**
-	 * @param User $user
-	 *
-	 * @return string
-	 */
-	private function generateToken(User $user): string
-	{
-
-		$jwtTokenGenerator = new JwtTokenGenerator();
-
-		return $jwtTokenGenerator->encode(
-			['id' => $user->getId()],
-			'JWT_PASSWORD_RESET_PRIVATE_KEY',
-			$_ENV['JWT_PASSWORD_RESET_TTL']
-		);
-
-	}
-
+        return $jwtTokenGenerator->encode(
+            ['id' => $user->getId()],
+            'JWT_PASSWORD_RESET_PRIVATE_KEY',
+            $_ENV['JWT_PASSWORD_RESET_TTL']
+        );
+    }
 }

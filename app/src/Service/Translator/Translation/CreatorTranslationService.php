@@ -7,7 +7,7 @@ use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
 /**
- * Class CreatorTranslationService
+ * Class CreatorTranslationService.
  *
  * @package App\Service\Translator\Translation
  *
@@ -15,25 +15,21 @@ use App\Rest\Http\Response;
  */
 class CreatorTranslationService extends CreatorCRUD
 {
+    /**
+     * @param TranslationDTO $translationDTO
+     *
+     * @return Response
+     */
+    public function create(TranslationDTO $translationDTO): Response
+    {
+        $this->validateEntity = true;
 
-	/**
-	 * @param TranslationDTO $translationDTO
-	 *
-	 * @return Response
-	 */
-	public function create(TranslationDTO $translationDTO): Response
-	{
+        $createdEntity = $this->make($translationDTO);
 
-		$this->validateEntity = true;
+        if ($createdEntity instanceof Response) {
+            return $createdEntity;
+        }
 
-		$createdEntity = $this->make($translationDTO);
-
-		if ($createdEntity instanceof Response) {
-			return $createdEntity;
-		}
-
-		return $this->manager->push($createdEntity, 'translation@successAdd');
-
-	}
-
+        return $this->manager->push($createdEntity, 'translation@successAdd');
+    }
 }

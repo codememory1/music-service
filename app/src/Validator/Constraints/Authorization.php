@@ -6,7 +6,7 @@ use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class Authorization
+ * Class Authorization.
  *
  * @package App\Validator\Constraints
  *
@@ -15,25 +15,22 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_CLASS)]
 class Authorization extends Constraint
 {
-
     /**
      * @var string
      */
     public string $message = 'Authorization is required to perform this action';
 
     /**
-     * @param string|null $message
-     * @param mixed|null  $options
-     * @param array|null  $groups
-     * @param mixed|null  $payload
+     * @param null|string $message
+     * @param null|mixed  $options
+     * @param null|array  $groups
+     * @param null|mixed  $payload
      */
-    public function __construct(string $message = null, mixed $options = null, array $groups = null, mixed $payload = null)
+    public function __construct(?string $message = null, mixed $options = null, ?array $groups = null, mixed $payload = null)
     {
-
         parent::__construct($options, $groups, $payload);
 
         $this->message = $message;
-
     }
 
     /**
@@ -41,9 +38,6 @@ class Authorization extends Constraint
      */
     public function getTargets(): array
     {
-
         return [self::CLASS_CONSTRAINT];
-
     }
-
 }

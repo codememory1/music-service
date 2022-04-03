@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Trait CreatedAtTrait
+ * Trait CreatedAtTrait.
  *
  * @package App\Trait\Entity
  *
@@ -16,9 +16,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 trait CreatedAtTrait
 {
-
     /**
-     * @var DateTimeImmutable|null
+     * @var null|DateTimeImmutable
      */
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
@@ -30,19 +29,14 @@ trait CreatedAtTrait
     #[ORM\PrePersist]
     public function setCreatedAt(): void
     {
-
         $this->createdAt = new DateTimeImmutable();
-
     }
 
     /**
-     * @return DateTimeImmutable|null
+     * @return null|DateTimeImmutable
      */
     public function getCreatedAt(): ?DateTimeImmutable
     {
-
         return $this->createdAt;
-
     }
-
 }

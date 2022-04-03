@@ -6,12 +6,13 @@ use App\Enum\ApiResponseTypeEnum;
 use App\Interfaces\EntityInterface;
 use App\Rest\Http\ApiResponseSchema;
 use App\Rest\Http\Response;
+use function call_user_func;
 use Closure;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class ApiManager
+ * Class ApiManager.
  *
  * @package App\Rest
  *
@@ -19,136 +20,122 @@ use Doctrine\Persistence\ObjectManager;
  */
 class ApiManager
 {
+    /**
+     * @var ObjectManager
+     */
+    private ObjectManager $em;
 
-	/**
-	 * @var ObjectManager
-	 */
-	private ObjectManager $em;
+    /**
+     * @var null|Closure
+     */
+    private ?Closure $handlerAfterFlush = null;
 
-	/**
-	 * @var Closure|null
-	 */
-	private ?Closure $handlerAfterFlush = null;
+    /**
+     * @var Translator
+     */
+    private Translator $translator;
 
-	/**
-	 * @var Translator
-	 */
-	private Translator $translator;
+    /**
+     * @var ApiResponseSchema
+     */
+    private ApiResponseSchema $apiResponseSchema;
 
-	/**
-	 * @var ApiResponseSchema
-	 */
-	private ApiResponseSchema $apiResponseSchema;
+    /**
+     * @param ManagerRegistry   $managerRegistry
+     * @param Translator        $translator
+     * @param ApiResponseSchema $apiResponseSchema
+     */
+    public function __construct(ManagerRegistry $managerRegistry, Translator $translator, ApiResponseSchema $apiResponseSchema)
+    {
+        $this->em = $managerRegistry->getManager();
+        $this->translator = $translator;
+        $this->apiResponseSchema = $apiResponseSchema;
+    }
 
-	/**
-	 * @param ManagerRegistry   $managerRegistry
-	 * @param Translator        $translator
-	 * @param ApiResponseSchema $apiResponseSchema
-	 */
-	public function __construct(ManagerRegistry $managerRegistry, Translator $translator, ApiResponseSchema $apiResponseSchema)
-	{
+    /**
+     * @param callable $handler
+     *
+     * @return $this
+     */
+    public function setHandlerAfterFlush(callable $handler): self
+    {
+        $this->handlerAfterFlush = $handler;
 
-		$this->em = $managerRegistry->getManager();
-		$this->translator = $translator;
-		$this->apiResponseSchema = $apiResponseSchema;
+        return $this;
+    }
 
-	}
+    /**
+     * @param EntityInterface $entity
+     * @param string          $successTranslationKey
+     *
+     * @return Response
+     */
+    public function push(EntityInterface $entity, string $successTranslationKey): Response
+    {
+        $this->em->persist($entity);
+        $this->em->flush();
 
-	/**
-	 * @param callable $handler
-	 *
-	 * @return $this
-	 */
-	public function setHandlerAfterFlush(callable $handler): ApiManager
-	{
+        $this->callHandler($this->handlerAfterFlush, $entity);
 
-		$this->handlerAfterFlush = $handler;
+        $this->apiResponseSchema->setMessage(
+            ApiResponseTypeEnum::CREATE,
+            $this->translator->getTranslation($successTranslationKey)
+        );
 
-		return $this;
+        return new Response($this->apiResponseSchema, 'success', 200);
+    }
 
-	}
+    /**
+     * @param EntityInterface $entity
+     * @param string          $successTranslationKey
+     *
+     * @return Response
+     */
+    public function update(EntityInterface $entity, string $successTranslationKey): Response
+    {
+        $this->em->flush();
 
-	/**
-	 * @param EntityInterface $entity
-	 * @param string          $successTranslationKey
-	 *
-	 * @return Response
-	 */
-	public function push(EntityInterface $entity, string $successTranslationKey): Response
-	{
+        $this->callHandler($this->handlerAfterFlush, $entity);
 
-		$this->em->persist($entity);
-		$this->em->flush();
+        $this->apiResponseSchema->setMessage(
+            ApiResponseTypeEnum::UPDATE,
+            $this->translator->getTranslation($successTranslationKey)
+        );
 
-		$this->callHandler($this->handlerAfterFlush, $entity);
+        return new Response($this->apiResponseSchema, 'success', 200);
+    }
 
-		$this->apiResponseSchema->setMessage(
-			ApiResponseTypeEnum::CREATE,
-			$this->translator->getTranslation($successTranslationKey)
-		);
+    /**
+     * @param EntityInterface $entity
+     * @param string          $successTranslationKey
+     *
+     * @return Response
+     */
+    public function remove(EntityInterface $entity, string $successTranslationKey): Response
+    {
+        $this->em->remove($entity);
+        $this->em->flush();
 
-		return new Response($this->apiResponseSchema, 'success', 200);
+        $this->callHandler($this->handlerAfterFlush, $entity);
 
-	}
+        $this->apiResponseSchema->setMessage(
+            ApiResponseTypeEnum::DELETE,
+            $this->translator->getTranslation($successTranslationKey)
+        );
 
-	/**
-	 * @param EntityInterface $entity
-	 * @param string          $successTranslationKey
-	 *
-	 * @return Response
-	 */
-	public function update(EntityInterface $entity, string $successTranslationKey): Response
-	{
+        return new Response($this->apiResponseSchema, 'success', 200);
+    }
 
-		$this->em->flush();
-
-		$this->callHandler($this->handlerAfterFlush, $entity);
-
-		$this->apiResponseSchema->setMessage(
-			ApiResponseTypeEnum::UPDATE,
-			$this->translator->getTranslation($successTranslationKey)
-		);
-
-		return new Response($this->apiResponseSchema, 'success', 200);
-
-	}
-
-	/**
-	 * @param EntityInterface $entity
-	 * @param string          $successTranslationKey
-	 *
-	 * @return Response
-	 */
-	public function remove(EntityInterface $entity, string $successTranslationKey): Response
-	{
-
-		$this->em->remove($entity);
-		$this->em->flush();
-
-		$this->callHandler($this->handlerAfterFlush, $entity);
-
-		$this->apiResponseSchema->setMessage(
-			ApiResponseTypeEnum::DELETE,
-			$this->translator->getTranslation($successTranslationKey)
-		);
-
-		return new Response($this->apiResponseSchema, 'success', 200);
-
-	}
-
-	/**
-	 * @param Closure|null $closure
-	 * @param mixed        ...$arguments
-	 *
-	 * @return void
-	 */
-	private function callHandler(?Closure $closure, mixed ...$arguments): void
-	{
-
-		if (null !== $closure) {
-			call_user_func($closure, ...$arguments);
-		}
-
-	}
-
+    /**
+     * @param null|Closure $closure
+     * @param mixed        ...$arguments
+     *
+     * @return void
+     */
+    private function callHandler(?Closure $closure, mixed ...$arguments): void
+    {
+        if (null !== $closure) {
+            call_user_func($closure, ...$arguments);
+        }
+    }
 }

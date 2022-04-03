@@ -6,7 +6,7 @@ use App\Enum\ApiResponseTypeEnum;
 use App\Rest\ClassHelper\AttributeData;
 
 /**
- * Class SubscriptionAnnotationListener
+ * Class SubscriptionAnnotationListener.
  *
  * @package App\AnnotationListener
  *
@@ -14,27 +14,23 @@ use App\Rest\ClassHelper\AttributeData;
  */
 class SubscriptionAnnotationListener extends AbstractAnnotationListener
 {
+    /**
+     * @inheritDoc
+     */
+    public function listen(AttributeData $attributeData): void
+    {
+        $user = $this->authenticator->getUser();
 
-	/**
-	 * @inheritDoc
-	 */
-	public function listen(AttributeData $attributeData): void
-	{
+        if (null === $user
+            || null === $user->getUserSubscription()
+            || $user->getUserSubscription()->getSubscription()->getKey() !== $attributeData->key
+        ) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_SUBSCRIPTION,
+                $this->getTranslation('common@invalidSubscription')
+            );
 
-		$user = $this->authenticator->getUser();
-
-		if (null === $user
-			|| null === $user->getUserSubscription()
-			|| $user->getUserSubscription()->getSubscription()->getKey() !== $attributeData->key
-		) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_SUBSCRIPTION,
-				$this->getTranslation('common@invalidSubscription')
-			);
-
-			$this->response('error', 403);
-		}
-
-	}
-
+            $this->response('error', 403);
+        }
+    }
 }

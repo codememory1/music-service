@@ -6,7 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Trait IdentifierTrait
+ * Trait IdentifierTrait.
  *
  * @package App\Trait\Entity
  *
@@ -14,9 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 trait IdentifierTrait
 {
-
     /**
-     * @var int|null
+     * @var null|int
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,13 +23,10 @@ trait IdentifierTrait
     private ?int $id = null;
 
     /**
-     * @return int|null
+     * @return null|int
      */
     public function getId(): ?int
     {
-
         return $this->id;
-
     }
-
 }

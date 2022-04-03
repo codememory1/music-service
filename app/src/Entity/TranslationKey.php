@@ -15,7 +15,7 @@ use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class TranslationKey
+ * Class TranslationKey.
  *
  * @package App\Entity
  *
@@ -24,106 +24,94 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: TranslationKeyRepository::class)]
 #[ORM\Table('translation_keys')]
 #[UniqueEntity(
-	'name',
-	'translationKey@keyExist',
-	payload: ApiResponseTypeEnum::CHECK_EXIST
+    'name',
+    'translationKey@keyExist',
+    payload: ApiResponseTypeEnum::CHECK_EXIST
 )]
 #[ORM\HasLifecycleCallbacks]
 class TranslationKey implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
-		'comment' => 'A unique key by which it will be possible to receive a transfer'
-	])]
-	private ?string $name = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
+        'comment' => 'A unique key by which it will be possible to receive a transfer'
+    ])]
+    private ?string $name = null;
 
-	/**
-	 * @var Collection
-	 */
-	#[ORM\OneToMany(mappedBy: 'translationKey', targetEntity: Translation::class)]
-	private Collection $translations;
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'translationKey', targetEntity: Translation::class)]
+    private Collection $translations;
 
-	#[Pure]
-	public function __construct()
-	{
+    #[Pure]
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
 
-		$this->translations = new ArrayCollection();
+    /**
+     * @return null|string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-	}
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
-	/**
-	 * @return string|null
-	 */
-	public function getName(): ?string
-	{
+        return $this;
+    }
 
-		return $this->name;
+    /**
+     * @return Collection
+     */
+    public function getTranslations(): Collection
+    {
+        return $this->translations;
+    }
 
-	}
+    /**
+     * @param Translation $translation
+     *
+     * @return $this
+     */
+    public function addTranslation(Translation $translation): self
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations[] = $translation;
+            $translation->setTranslationKey($this);
+        }
 
-	/**
-	 * @param string $name
-	 *
-	 * @return $this
-	 */
-	public function setName(string $name): self
-	{
+        return $this;
+    }
 
-		$this->name = $name;
+    /**
+     * @param Translation $translation
+     *
+     * @return $this
+     */
+    public function removeTranslation(Translation $translation): self
+    {
+        if ($this->translations->removeElement($translation)) {
+            // set the owning side to null (unless already changed)
+            if ($translation->getTranslationKey() === $this) {
+                $translation->setTranslationKey(null);
+            }
+        }
 
-		return $this;
-	}
-
-	/**
-	 * @return Collection
-	 */
-	public function getTranslations(): Collection
-	{
-
-		return $this->translations;
-
-	}
-
-	/**
-	 * @param Translation $translation
-	 *
-	 * @return $this
-	 */
-	public function addTranslation(Translation $translation): self
-	{
-
-		if (!$this->translations->contains($translation)) {
-			$this->translations[] = $translation;
-			$translation->setTranslationKey($this);
-		}
-
-		return $this;
-
-	}
-
-	/**
-	 * @param Translation $translation
-	 *
-	 * @return $this
-	 */
-	public function removeTranslation(Translation $translation): self
-	{
-
-		if ($this->translations->removeElement($translation)) {
-			// set the owning side to null (unless already changed)
-			if ($translation->getTranslationKey() === $this) {
-				$translation->setTranslationKey(null);
-			}
-		}
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

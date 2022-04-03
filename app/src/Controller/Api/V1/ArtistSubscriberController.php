@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class ArtistSubscriberController
+ * Class ArtistSubscriberController.
  *
  * @package App\Controller\Api\V1
  *
@@ -19,19 +19,16 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/artist')]
 class ArtistSubscriberController extends ApiController
 {
+    #[Route('/subscribe/{artistId<\d+>}', methods: 'GET')]
+    #[Auth]
+    public function subscribe(TokenAuthenticator $authenticator, Subscribe $subscribeService, int $artistId): JsonResponse
+    {
+        return $subscribeService->subscribe($artistId, $authenticator)->make();
+    }
 
-	#[Route('/subscribe/{artistId<\d+>}', methods: 'GET')]
-	#[Auth]
-	public function subscribe(TokenAuthenticator $authenticator, Subscribe $subscribeService, int $artistId): JsonResponse
-	{
-
-		return $subscribeService->subscribe($artistId, $authenticator)->make();
-
-	}
-
-	#[Route('/unsubscribe/{artistId<\d+>}', methods: 'GET')]
-	#[Auth]
-	public function unsubscribe(int $artistId): JsonResponse
-	{}
-
+    #[Route('/unsubscribe/{artistId<\d+>}', methods: 'GET')]
+    #[Auth]
+    public function unsubscribe(int $artistId): JsonResponse
+    {
+    }
 }

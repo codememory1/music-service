@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class Album
+ * Class Album.
  *
  * @package App\Entity
  *
@@ -24,243 +24,213 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\HasLifecycleCallbacks]
 class Album implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var AlbumType|null
-	 */
-	#[ORM\ManyToOne(targetEntity: AlbumType::class, inversedBy: 'albums')]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?AlbumType $type = null;
+    /**
+     * @var null|AlbumType
+     */
+    #[ORM\ManyToOne(targetEntity: AlbumType::class, inversedBy: 'albums')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?AlbumType $type = null;
 
-	/**
-	 * @var AlbumCategory|null
-	 */
-	#[ORM\ManyToOne(targetEntity: AlbumCategory::class, inversedBy: 'albums')]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?AlbumCategory $category = null;
+    /**
+     * @var null|AlbumCategory
+     */
+    #[ORM\ManyToOne(targetEntity: AlbumCategory::class, inversedBy: 'albums')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?AlbumCategory $category = null;
 
-	/**
-	 * @var User|null
-	 */
-	#[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'albums')]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?User $user = null;
+    /**
+     * @var null|User
+     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'albums')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::STRING, length: 255, options: [
-		'comment' => 'Album name'
-	])]
-	private ?string $title = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
+        'comment' => 'Album name'
+    ])]
+    private ?string $title = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::TEXT, options: [
-		'comment' => 'Link to album photo'
-	])]
-	private ?string $photo = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::TEXT, options: [
+        'comment' => 'Link to album photo'
+    ])]
+    private ?string $photo = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::JSON, nullable: true, options: [
-		'comment' => 'Album tags'
-	])]
-	private ?string $tags = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::JSON, nullable: true, options: [
+        'comment' => 'Album tags'
+    ])]
+    private ?string $tags = null;
 
-	/**
-	 * @var int|null
-	 */
-	#[ORM\Column(type: Types::INTEGER, nullable: true, options: [
-		'comment' => 'Number of full plays',
-		'default' => 0
-	])]
-	private ?int $auditions = null;
+    /**
+     * @var null|int
+     */
+    #[ORM\Column(type: Types::INTEGER, nullable: true, options: [
+        'comment' => 'Number of full plays',
+        'default' => 0
+    ])]
+    private ?int $auditions = null;
 
-	/**
-	 * @var Collection
-	 */
-	#[ORM\OneToMany(mappedBy: 'album', targetEntity: Music::class, cascade: ['persist', 'remove'])]
-	private Collection $musics;
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'album', targetEntity: Music::class, cascade: ['persist', 'remove'])]
+    private Collection $musics;
 
-	#[Pure]
-	public function __construct()
-	{
+    #[Pure]
+    public function __construct()
+    {
+        $this->musics = new ArrayCollection();
+    }
 
-		$this->musics = new ArrayCollection();
-	}
+    /**
+     * @return null|AlbumType
+     */
+    public function getType(): ?AlbumType
+    {
+        return $this->type;
+    }
 
-	/**
-	 * @return AlbumType|null
-	 */
-	public function getType(): ?AlbumType
-	{
+    /**
+     * @param null|AlbumType $type
+     *
+     * @return $this
+     */
+    public function setType(?AlbumType $type): self
+    {
+        $this->type = $type;
 
-		return $this->type;
+        return $this;
+    }
 
-	}
+    /**
+     * @return null|AlbumCategory
+     */
+    public function getCategory(): ?AlbumCategory
+    {
+        return $this->category;
+    }
 
-	/**
-	 * @param AlbumType|null $type
-	 *
-	 * @return $this
-	 */
-	public function setType(?AlbumType $type): self
-	{
+    /**
+     * @param null|AlbumCategory $category
+     *
+     * @return $this
+     */
+    public function setCategory(?AlbumCategory $category): self
+    {
+        $this->category = $category;
 
-		$this->type = $type;
+        return $this;
+    }
 
-		return $this;
+    /**
+     * @return null|User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
-	}
+    /**
+     * @param null|User $user
+     *
+     * @return $this
+     */
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
-	/**
-	 * @return AlbumCategory|null
-	 */
-	public function getCategory(): ?AlbumCategory
-	{
+        return $this;
+    }
 
-		return $this->category;
+    /**
+     * @return null|string
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
 
-	}
+    /**
+     * @param string $title
+     *
+     * @return $this
+     */
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
-	/**
-	 * @param AlbumCategory|null $category
-	 *
-	 * @return $this
-	 */
-	public function setCategory(?AlbumCategory $category): self
-	{
+        return $this;
+    }
 
-		$this->category = $category;
+    /**
+     * @return null|string
+     */
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
 
-		return $this;
+    /**
+     * @param string $photo
+     *
+     * @return $this
+     */
+    public function setPhoto(string $photo): self
+    {
+        $this->photo = $photo;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @return User|null
-	 */
-	public function getUser(): ?User
-	{
+    /**
+     * @return null|string
+     */
+    public function getTags(): ?string
+    {
+        return json_decode($this->tags ?? '', true);
+    }
 
-		return $this->user;
+    /**
+     * @param array $tags
+     *
+     * @return $this
+     */
+    public function setTags(array $tags): self
+    {
+        $this->tags = json_encode($tags);
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param User|null $user
-	 *
-	 * @return $this
-	 */
-	public function setUser(?User $user): self
-	{
+    /**
+     * @return null|int
+     */
+    public function getAuditions(): ?int
+    {
+        return $this->auditions;
+    }
 
-		$this->user = $user;
+    /**
+     * @param int $auditions
+     *
+     * @return $this
+     */
+    public function setAuditions(int $auditions): self
+    {
+        $this->auditions = $auditions;
 
-		return $this;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getTitle(): ?string
-	{
-
-		return $this->title;
-
-	}
-
-	/**
-	 * @param string $title
-	 *
-	 * @return $this
-	 */
-	public function setTitle(string $title): self
-	{
-
-		$this->title = $title;
-
-		return $this;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getPhoto(): ?string
-	{
-
-		return $this->photo;
-
-	}
-
-	/**
-	 * @param string $photo
-	 *
-	 * @return $this
-	 */
-	public function setPhoto(string $photo): self
-	{
-
-		$this->photo = $photo;
-
-		return $this;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getTags(): ?string
-	{
-
-		return json_decode($this->tags ?? '', true);
-
-	}
-
-	/**
-	 * @param array $tags
-	 *
-	 * @return $this
-	 */
-	public function setTags(array $tags): self
-	{
-
-		$this->tags = json_encode($tags);
-
-		return $this;
-
-	}
-
-	/**
-	 * @return int|null
-	 */
-	public function getAuditions(): ?int
-	{
-
-		return $this->auditions;
-
-	}
-
-	/**
-	 * @param int $auditions
-	 *
-	 * @return $this
-	 */
-	public function setAuditions(int $auditions): self
-	{
-
-		$this->auditions = $auditions;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

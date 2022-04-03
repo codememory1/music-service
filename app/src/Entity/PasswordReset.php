@@ -11,7 +11,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class PasswordReset
+ * Class PasswordReset.
  *
  * @package App\Entity
  *
@@ -22,140 +22,124 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class PasswordReset implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var int|null
-	 */
-	#[ORM\Id]
-	#[ORM\GeneratedValue]
-	#[ORM\Column(type: Types::INTEGER)]
-	private ?int $id = null;
+    /**
+     * @var null|int
+     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $id = null;
 
-	/**
-	 * @var User|null
-	 */
-	#[ORM\OneToOne(targetEntity: User::class)]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?User $user = null;
+    /**
+     * @var null|User
+     */
+    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::TEXT, options: [
-		'comment' => 'Password reset token'
-	])]
-	private ?string $token = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::TEXT, options: [
+        'comment' => 'Password reset token'
+    ])]
+    private ?string $token = null;
 
-	/**
-	 * @var bool
-	 */
-	#[ORM\Column(type: Types::BOOLEAN)]
-	private bool $executed = false;
+    /**
+     * @var bool
+     */
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $executed = false;
 
-	/**
-	 * @var int|null
-	 */
-	#[ORM\Column(type: Types::INTEGER, options: [
-		'comment' => 'Token status'
-	])]
-	private ?int $status = null;
+    /**
+     * @var null|int
+     */
+    #[ORM\Column(type: Types::INTEGER, options: [
+        'comment' => 'Token status'
+    ])]
+    private ?int $status = null;
 
-	/**
-	 * @return User|null
-	 */
-	public function getUser(): ?User
-	{
+    /**
+     * @return null|User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
-		return $this->user;
-	}
+    /**
+     * @param null|User $user
+     *
+     * @return $this
+     */
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
-	/**
-	 * @param User|null $user
-	 *
-	 * @return $this
-	 */
-	public function setUser(?User $user): self
-	{
+        return $this;
+    }
 
-		$this->user = $user;
+    /**
+     * @return null|string
+     */
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
 
-		return $this;
+    /**
+     * @param string $token
+     *
+     * @return $this
+     */
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function getToken(): ?string
-	{
+    /**
+     * @return null|int
+     */
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
 
-		return $this->token;
+    /**
+     * @param PasswordResetStatusEnum $status
+     *
+     * @return $this
+     */
+    public function setStatus(PasswordResetStatusEnum $status): self
+    {
+        $this->status = $status->value;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param string $token
-	 *
-	 * @return $this
-	 */
-	public function setToken(string $token): self
-	{
+    /**
+     * @return bool
+     */
+    public function getExecuted(): bool
+    {
+        return $this->executed;
+    }
 
-		$this->token = $token;
+    /**
+     * @param bool $executed
+     *
+     * @return $this
+     */
+    public function setExecuted(bool $executed): self
+    {
+        $this->executed = $executed;
 
-		return $this;
-
-	}
-
-	/**
-	 * @return int|null
-	 */
-	public function getStatus(): ?int
-	{
-
-		return $this->status;
-
-	}
-
-	/**
-	 * @param PasswordResetStatusEnum $status
-	 *
-	 * @return $this
-	 */
-	public function setStatus(PasswordResetStatusEnum $status): self
-	{
-
-		$this->status = $status->value;
-
-		return $this;
-
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function getExecuted(): bool
-	{
-
-		return $this->executed;
-
-	}
-
-	/**
-	 * @param bool $executed
-	 *
-	 * @return $this
-	 */
-	public function setExecuted(bool $executed): self
-	{
-
-		$this->executed = $executed;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

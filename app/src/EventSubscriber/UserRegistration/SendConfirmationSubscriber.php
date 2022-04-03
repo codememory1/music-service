@@ -15,7 +15,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 /**
- * Class SendConfirmationSubscriber
+ * Class SendConfirmationSubscriber.
  *
  * @package App\EventSubscriber\UserRegistration
  *
@@ -23,7 +23,6 @@ use Twig\Error\SyntaxError;
  */
 class SendConfirmationSubscriber implements EventSubscriberInterface
 {
-
     /**
      * @var ManagerRegistry
      */
@@ -40,10 +39,8 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
      */
     public function __construct(ManagerRegistry $managerRegistry, MailNotificationService $mailNotificationService)
     {
-
         $this->managerRegistry = $managerRegistry;
         $this->mailerNotificationService = $mailNotificationService;
-
     }
 
     /**
@@ -51,25 +48,23 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-
         return [
             EventsEnum::USER_REGISTRATION->value => 'onUserRegistration'
         ];
-
     }
 
     /**
      * @param UserRegistrationEvent $event
      *
-     * @return void
      * @throws TransportExceptionInterface
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
+     *
+     * @return void
      */
     public function onUserRegistration(UserRegistrationEvent $event): void
     {
-
         /** @var UserActivationTokenRepository $userActivationTokenRepository */
         $userActivationTokenRepository = $this->managerRegistry->getRepository(UserActivationToken::class);
 
@@ -78,7 +73,5 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
         ]);
 
         $this->mailerNotificationService->registerNotification($event->getUser(), $userActivationToken);
-
     }
-
 }

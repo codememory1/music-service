@@ -14,7 +14,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Class UserRegisterService
+ * Class UserRegisterService.
  *
  * @package App\Service\Security\Register
  *
@@ -22,101 +22,92 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class UserRegisterService extends ApiService
 {
+    /**
+     * @param RegistrationDTO          $registrationDTO
+     * @param EventDispatcherInterface $dispatcher
+     *
+     * @throws NonUniqueResultException
+     *
+     * @return Response
+     */
+    public function register(RegistrationDTO $registrationDTO, EventDispatcherInterface $dispatcher): Response
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->em->getRepository(User::class);
+        $isReRegistration = $this->isReRegistration($userRepository, $registrationDTO);
 
-	/**
-	 * @param RegistrationDTO          $registrationDTO
-	 * @param EventDispatcherInterface $dispatcher
-	 *
-	 * @return Response
-	 * @throws NonUniqueResultException
-	 */
-	public function register(RegistrationDTO $registrationDTO, EventDispatcherInterface $dispatcher): Response
-	{
+        /** @var User $collectedEntity */
+        $collectedEntity = $registrationDTO->updateEntity($isReRegistration)->getCollectedEntity();
 
-		/** @var UserRepository $userRepository */
-		$userRepository = $this->em->getRepository(User::class);
-		$isReRegistration = $this->isReRegistration($userRepository, $registrationDTO);
+        $collectedEntity->setUsername($registrationDTO->username);
 
-		/** @var User $collectedEntity */
-		$collectedEntity = $registrationDTO->updateEntity($isReRegistration)->getCollectedEntity();
+        // Validation of input POST data
+        if (true !== $resultInputValidation = $this->inputValidation($registrationDTO)) {
+            return $resultInputValidation;
+        }
 
-		$collectedEntity->setUsername($registrationDTO->username);
+        // Validation when inserting into the database
+        if (true !== $resultInputValidation = $this->inputValidation($collectedEntity)) {
+            return $resultInputValidation;
+        }
 
-		// Validation of input POST data
-		if (true !== $resultInputValidation = $this->inputValidation($registrationDTO)) {
-			return $resultInputValidation;
-		}
+        // Hash password after validation
+        $this->hashPassword($collectedEntity, $registrationDTO);
 
-		// Validation when inserting into the database
-		if (true !== $resultInputValidation = $this->inputValidation($collectedEntity)) {
-			return $resultInputValidation;
-		}
+        // Generating or updating an activation token if re-registration is in progress
+        $this->createActivationToken($collectedEntity);
 
-		// Hash password after validation
-		$this->hashPassword($collectedEntity, $registrationDTO);
+        // Adding a handler after user registration
+        $this->manager->setHandlerAfterFlush(function(User $registeredUser) use ($dispatcher): void {
+            $userRegistrationEvent = new UserRegistrationEvent($registeredUser);
 
-		// Generating or updating an activation token if re-registration is in progress
-		$this->createActivationToken($collectedEntity);
+            $dispatcher->dispatch($userRegistrationEvent, EventsEnum::USER_REGISTRATION->value);
+        });
 
-		// Adding a handler after user registration
-		$this->manager->setHandlerAfterFlush(function(User $registeredUser) use ($dispatcher) {
+        // User registration or updates if re-registration
+        if (null !== $isReRegistration) {
+            $this->manager->update($collectedEntity, 'user@successRegister');
+        }
 
-			$userRegistrationEvent = new UserRegistrationEvent($registeredUser);
+        return $this->manager->push($collectedEntity, 'user@successRegister');
+    }
 
-			$dispatcher->dispatch($userRegistrationEvent, EventsEnum::USER_REGISTRATION->value);
-		});
+    /**
+     * @param UserRepository  $userRepository
+     * @param RegistrationDTO $registrationDTO
+     *
+     * @throws NonUniqueResultException
+     *
+     * @return null|User
+     */
+    private function isReRegistration(UserRepository $userRepository, RegistrationDTO $registrationDTO): ?User
+    {
+        return $userRepository->findByLogin($registrationDTO->email);
+    }
 
-		// User registration or updates if re-registration
-		if (null !== $isReRegistration) {
-			$this->manager->update($collectedEntity, 'user@successRegister');
-		}
+    /**
+     * @param User            $userEntity
+     * @param RegistrationDTO $registrationDTO
+     *
+     * @return void
+     */
+    private function hashPassword(User $userEntity, RegistrationDTO $registrationDTO): void
+    {
+        $hashingPasswordService = new PasswordHashingService();
+        $encodedPassword = $hashingPasswordService->encode($registrationDTO->password);
 
-		return $this->manager->push($collectedEntity, 'user@successRegister');
+        $userEntity->setPassword($encodedPassword);
+    }
 
-	}
+    /**
+     * @param User $registeredUser
+     *
+     * @return void
+     */
+    private function createActivationToken(User $registeredUser): void
+    {
+        $creatorActivationTokenService = new CreatorActivationTokenService($this->managerRegistry);
 
-	/**
-	 * @param UserRepository  $userRepository
-	 * @param RegistrationDTO $registrationDTO
-	 *
-	 * @return User|null
-	 * @throws NonUniqueResultException
-	 */
-	private function isReRegistration(UserRepository $userRepository, RegistrationDTO $registrationDTO): ?User
-	{
-
-		return $userRepository->findByLogin($registrationDTO->email);
-
-	}
-
-	/**
-	 * @param User            $userEntity
-	 * @param RegistrationDTO $registrationDTO
-	 *
-	 * @return void
-	 */
-	private function hashPassword(User $userEntity, RegistrationDTO $registrationDTO): void
-	{
-
-		$hashingPasswordService = new PasswordHashingService();
-		$encodedPassword = $hashingPasswordService->encode($registrationDTO->password);
-
-		$userEntity->setPassword($encodedPassword);
-
-	}
-
-	/**
-	 * @param User $registeredUser
-	 *
-	 * @return void
-	 */
-	private function createActivationToken(User $registeredUser): void
-	{
-
-		$creatorActivationTokenService = new CreatorActivationTokenService($this->managerRegistry);
-
-		$creatorActivationTokenService->create($registeredUser);
-
-	}
-
+        $creatorActivationTokenService->create($registeredUser);
+    }
 }

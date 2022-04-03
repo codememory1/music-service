@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class UserSubscription
+ * Class UserSubscription.
  *
  * @package App\Entity
  *
@@ -21,102 +21,89 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class UserSubscription implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var User|null
-	 */
-	#[ORM\OneToOne(inversedBy: 'userSubscription', targetEntity: User::class, cascade: ['persist', 'remove'])]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?User $user = null;
+    /**
+     * @var null|User
+     */
+    #[ORM\OneToOne(inversedBy: 'userSubscription', targetEntity: User::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
-	/**
-	 * @var Subscription|null
-	 */
-	#[ORM\OneToOne(inversedBy: 'userSubscription', targetEntity: Subscription::class, cascade: ['persist', 'remove'])]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?Subscription $subscription = null;
+    /**
+     * @var null|Subscription
+     */
+    #[ORM\OneToOne(inversedBy: 'userSubscription', targetEntity: Subscription::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Subscription $subscription = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::STRING, length: 255, options: [
-		'comment' => 'Subscription duration in the format 30d 10m, etc.'
-	])]
-	private ?string $validTo = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
+        'comment' => 'Subscription duration in the format 30d 10m, etc.'
+    ])]
+    private ?string $validTo = null;
 
-	/**
-	 * @return User|null
-	 */
-	public function getUser(): ?User
-	{
+    /**
+     * @return null|User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
-		return $this->user;
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param User $user
-	 *
-	 * @return $this
-	 */
-	public function setUser(User $user): self
-	{
+    /**
+     * @return null|Subscription
+     */
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
 
-		$this->user = $user;
+    /**
+     * @param Subscription $subscription
+     *
+     * @return $this
+     */
+    public function setSubscription(Subscription $subscription): self
+    {
+        $this->subscription = $subscription;
 
-		return $this;
+        return $this;
+    }
 
-	}
+    /**
+     * @return null|string
+     */
+    public function getValidTo(): ?string
+    {
+        return $this->validTo;
+    }
 
-	/**
-	 * @return Subscription|null
-	 */
-	public function getSubscription(): ?Subscription
-	{
+    /**
+     * @param string $validTo
+     *
+     * @return $this
+     */
+    public function setValidTo(string $validTo): self
+    {
+        $this->validTo = $validTo;
 
-		return $this->subscription;
-
-	}
-
-	/**
-	 * @param Subscription $subscription
-	 *
-	 * @return $this
-	 */
-	public function setSubscription(Subscription $subscription): self
-	{
-
-		$this->subscription = $subscription;
-
-		return $this;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getValidTo(): ?string
-	{
-
-		return $this->validTo;
-
-	}
-
-	/**
-	 * @param string $validTo
-	 *
-	 * @return $this
-	 */
-	public function setValidTo(string $validTo): self
-	{
-
-		$this->validTo = $validTo;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

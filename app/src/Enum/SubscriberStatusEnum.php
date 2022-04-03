@@ -3,7 +3,7 @@
 namespace App\Enum;
 
 /**
- * Enum SubscriberStatusEnum
+ * Enum SubscriberStatusEnum.
  *
  * @package App\Enum
  *
@@ -11,8 +11,6 @@ namespace App\Enum;
  */
 enum SubscriberStatusEnum: int
 {
-
-	case SUBSCRIBED = 1;
-	case UNSUBSCRIBED = 0;
-
+    case SUBSCRIBED = 1;
+    case UNSUBSCRIBED = 0;
 }

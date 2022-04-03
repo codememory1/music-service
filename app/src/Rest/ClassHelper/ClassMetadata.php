@@ -7,7 +7,7 @@ use ReflectionClass;
 use ReflectionException;
 
 /**
- * Class ClassMetadata
+ * Class ClassMetadata.
  *
  * @package App\Rest\ClassHelper
  *
@@ -15,39 +15,33 @@ use ReflectionException;
  */
 class ClassMetadata
 {
+    /**
+     * @var ReflectionClass
+     */
+    public readonly ReflectionClass $reflection;
 
-	/**
-	 * @var ReflectionClass
-	 */
-	public readonly ReflectionClass $reflection;
+    /**
+     * @var AttributeReader
+     */
+    public readonly AttributeReader $attributeReader;
 
-	/**
-	 * @var AttributeReader
-	 */
-	public readonly AttributeReader $attributeReader;
+    /**
+     * @param object|string $classNamespace
+     *
+     * @throws ReflectionException
+     */
+    public function __construct(string|object $classNamespace)
+    {
+        $this->reflection = new ReflectionClass($classNamespace);
+        $this->attributeReader = new AttributeReader($this->reflection);
+    }
 
-	/**
-	 * @param string|object $classNamespace
-	 *
-	 * @throws ReflectionException
-	 */
-	public function __construct(string|object $classNamespace)
-	{
-
-		$this->reflection = new ReflectionClass($classNamespace);
-		$this->attributeReader = new AttributeReader($this->reflection);
-
-	}
-
-	/**
-	 * @return string
-	 */
-	#[Pure]
-	public function className(): string
-	{
-
-		return $this->reflection->getShortName();
-
-	}
-
+    /**
+     * @return string
+     */
+    #[Pure]
+    public function className(): string
+    {
+        return $this->reflection->getShortName();
+    }
 }

@@ -7,7 +7,7 @@ use App\Rest\Http\Response;
 use App\Rest\Validator\Validator;
 
 /**
- * Class Validation
+ * Class Validation.
  *
  * @package App\Security\Auth
  *
@@ -15,34 +15,28 @@ use App\Rest\Validator\Validator;
  */
 class Validation
 {
+    /**
+     * @var Validator
+     */
+    private Validator $validator;
 
-	/**
-	 * @var Validator
-	 */
-	private Validator $validator;
+    /**
+     * @param Validator $validator
+     */
+    public function __construct(Validator $validator)
+    {
+        $this->validator = $validator;
+    }
 
-	/**
-	 * @param Validator $validator
-	 */
-	public function __construct(Validator $validator)
-	{
+    /**
+     * @param AuthorizationDTO $authorizationDTO
+     *
+     * @return bool|Response
+     */
+    public function validate(AuthorizationDTO $authorizationDTO): Response|bool
+    {
+        $validator = $this->validator->validate($authorizationDTO);
 
-		$this->validator = $validator;
-
-	}
-
-	/**
-	 * @param AuthorizationDTO $authorizationDTO
-	 *
-	 * @return Response|bool
-	 */
-	public function validate(AuthorizationDTO $authorizationDTO): Response|bool
-	{
-
-		$validator = $this->validator->validate($authorizationDTO);
-
-		return $validator->isValidate() ? true : $validator->getResponse();
-
-	}
-
+        return $validator->isValidate() ? true : $validator->getResponse();
+    }
 }

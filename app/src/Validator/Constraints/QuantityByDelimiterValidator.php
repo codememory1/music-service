@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Class QuantityByDelimiterValidator
+ * Class QuantityByDelimiterValidator.
  *
  * @package App\Validator\Constraints
  *
@@ -17,13 +17,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class QuantityByDelimiterValidator extends ConstraintValidator
 {
-
     /**
      * @inheritDoc
      */
     public function validate(mixed $value, Constraint $constraint): void
     {
-
         if (!$constraint instanceof QuantityByDelimiter) {
             throw new UnexpectedTypeException($constraint, QuantityByDelimiter::class);
         }
@@ -49,7 +47,5 @@ class QuantityByDelimiterValidator extends ConstraintValidator
                 ->setParameter('{{ max }}', $constraint->max)
                 ->addViolation();
         }
-
     }
-
 }

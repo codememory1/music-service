@@ -5,7 +5,7 @@ namespace App\DTO;
 use App\Rest\DTO\AbstractDTO;
 
 /**
- * Class MediaLibraryMusicEventDTO
+ * Class MediaLibraryMusicEventDTO.
  *
  * @package App\DTO
  *
@@ -13,20 +13,16 @@ use App\Rest\DTO\AbstractDTO;
  */
 class MediaLibraryMusicEventDTO extends AbstractDTO
 {
+    /**
+     * @var array
+     */
+    public array $payload = [];
 
-	/**
-	 * @var array
-	 */
-	public array $payload = [];
-
-	/**
-	 * @return void
-	 */
-	protected function wrapper(): void
-	{
-
-		$this->addExpectedRequestKey('payload');
-
-	}
-
+    /**
+     * @return void
+     */
+    protected function wrapper(): void
+    {
+        $this->addExpectedRequestKey('payload');
+    }
 }

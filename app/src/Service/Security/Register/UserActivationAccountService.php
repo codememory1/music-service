@@ -13,7 +13,7 @@ use DateTimeImmutable;
 use Exception;
 
 /**
- * Class UserActivationAccountService
+ * Class UserActivationAccountService.
  *
  * @package App\Service\Security\Register
  *
@@ -21,108 +21,101 @@ use Exception;
  */
 class UserActivationAccountService extends ApiService
 {
+    /**
+     * @param string $token
+     *
+     * @throws Exception
+     *
+     * @return Response
+     */
+    public function activate(string $token): Response
+    {
+        /** @var UserActivationTokenRepository $userActivationTokenRepository */
+        $userActivationTokenRepository = $this->em->getRepository(UserActivationToken::class);
+        $finedToken = $this->existToken($userActivationTokenRepository, $token);
 
-	/**
-	 * @param string $token
-	 *
-	 * @return Response
-	 * @throws Exception
-	 */
-	public function activate(string $token): Response
-	{
+        // Check exist token
+        if ($finedToken instanceof Response) {
+            return $finedToken;
+        }
 
-		/** @var UserActivationTokenRepository $userActivationTokenRepository */
-		$userActivationTokenRepository = $this->em->getRepository(UserActivationToken::class);
-		$finedToken = $this->existToken($userActivationTokenRepository, $token);
+        // Check is valid token
+        if (false !== $resultIsValid = $this->isValid($finedToken)) {
+            return $resultIsValid;
+        }
 
-		// Check exist token
-		if ($finedToken instanceof Response) {
-			return $finedToken;
-		}
+        // Change user status
+        $this->changeUserStatus($finedToken, StatusEnum::ACTIVE);
 
-		// Check is valid token
-		if (false !== $resultIsValid = $this->isValid($finedToken)) {
-			return $resultIsValid;
-		}
+        return $this->manager->remove($finedToken, 'userActivationAccount@successActivation');
+    }
 
-		// Change user status
-		$this->changeUserStatus($finedToken, StatusEnum::ACTIVE);
+    /**
+     * @param UserActivationTokenRepository $userActivationTokenRepository
+     * @param string                        $token
+     *
+     * @throws Exception
+     *
+     * @return Response|UserActivationToken
+     */
+    private function existToken(UserActivationTokenRepository $userActivationTokenRepository, string $token): UserActivationToken|Response
+    {
+        if (null === $finedToken = $userActivationTokenRepository->findOneBy(['token' => $token])) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_EXIST,
+                $this->getTranslation('userActivationAccount@tokenNotExist')
+            );
 
-		return $this->manager->remove($finedToken, 'userActivationAccount@successActivation');
+            return new Response($this->apiResponseSchema, 'error', 404);
+        }
 
-	}
+        return $finedToken;
+    }
 
-	/**
-	 * @param UserActivationTokenRepository $userActivationTokenRepository
-	 * @param string                        $token
-	 *
-	 * @return UserActivationToken|Response
-	 * @throws Exception
-	 */
-	private function existToken(UserActivationTokenRepository $userActivationTokenRepository, string $token): UserActivationToken|Response
-	{
+    /**
+     * @param UserActivationToken $userActivationToken
+     *
+     * @throws Exception
+     *
+     * @return bool|Response
+     */
+    private function isValid(UserActivationToken $userActivationToken): Response|bool
+    {
+        $parseCronTime = new ParseCronTimeService();
 
-		if (null === $finedToken = $userActivationTokenRepository->findOneBy(['token' => $token])) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_EXIST,
-				$this->getTranslation('userActivationAccount@tokenNotExist')
-			);
+        $createdAt = $userActivationToken->getCreatedAt()->getTimestamp();
+        $updatedAt = $userActivationToken->getUpdatedAt()?->getTimestamp();
+        $createdOrUpdated = $updatedAt ?? $createdAt;
 
-			return new Response($this->apiResponseSchema, 'error', 404);
-		}
+        $validInSecond = $parseCronTime
+            ->setTime($userActivationToken->getValid())
+            ->toSecond();
 
-		return $finedToken;
+        // Check valid token
+        if ((new DateTimeImmutable())->getTimestamp() >= $createdOrUpdated + $validInSecond) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_VALID,
+                $this->getTranslation('userActivationAccount@tokenIsNotValid')
+            );
 
-	}
+            return new Response($this->apiResponseSchema, 'error', 400);
+        }
 
-	/**
-	 * @param UserActivationToken $userActivationToken
-	 *
-	 * @return Response|bool
-	 * @throws Exception
-	 */
-	private function isValid(UserActivationToken $userActivationToken): Response|bool
-	{
+        return false;
+    }
 
-		$parseCronTime = new ParseCronTimeService();
+    /**
+     * @param UserActivationToken $userActivationToken
+     * @param StatusEnum          $statusEnum
+     *
+     * @return void
+     */
+    private function changeUserStatus(UserActivationToken $userActivationToken, StatusEnum $statusEnum): void
+    {
+        $userActivationToken
+            ->getUser()
+            ->setStatus($statusEnum->value);
 
-		$createdAt = $userActivationToken->getCreatedAt()->getTimestamp();
-		$updatedAt = $userActivationToken->getUpdatedAt()?->getTimestamp();
-		$createdOrUpdated = $updatedAt ?? $createdAt;
-
-		$validInSecond = $parseCronTime
-			->setTime($userActivationToken->getValid())
-			->toSecond();
-
-		// Check valid token
-		if ((new DateTimeImmutable())->getTimestamp() >= $createdOrUpdated + $validInSecond) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_VALID,
-				$this->getTranslation('userActivationAccount@tokenIsNotValid')
-			);
-
-			return new Response($this->apiResponseSchema, 'error', 400);
-		}
-
-		return false;
-
-	}
-
-	/**
-	 * @param UserActivationToken $userActivationToken
-	 * @param StatusEnum          $statusEnum
-	 *
-	 * @return void
-	 */
-	private function changeUserStatus(UserActivationToken $userActivationToken, StatusEnum $statusEnum): void
-	{
-
-		$userActivationToken
-			->getUser()
-			->setStatus($statusEnum->value);
-
-		$this->em->flush();
-
-	}
-
+        $this->em->flush();
+    }
 }

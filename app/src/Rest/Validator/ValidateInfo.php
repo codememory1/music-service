@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
- * Class ValidateInfo
+ * Class ValidateInfo.
  *
  * @package App\Rest\Validator
  *
@@ -16,41 +16,33 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ValidateInfo
 {
+    /**
+     * @var ConstraintViolation
+     */
+    private ConstraintViolation $constraintViolation;
 
-	/**
-	 * @var ConstraintViolation
-	 */
-	private ConstraintViolation $constraintViolation;
+    /**
+     * @param ConstraintViolationListInterface $constraintViolationList
+     */
+    public function __construct(ConstraintViolationListInterface $constraintViolationList)
+    {
+        $this->constraintViolation = $constraintViolationList->get(0);
+    }
 
-	/**
-	 * @param ConstraintViolationListInterface $constraintViolationList
-	 */
-	public function __construct(ConstraintViolationListInterface $constraintViolationList)
-	{
+    /**
+     * @return null|ApiResponseTypeEnum
+     */
+    #[Pure]
+    public function getType(): ?ApiResponseTypeEnum
+    {
+        return $this->constraintViolation->getConstraint()->payload;
+    }
 
-		$this->constraintViolation = $constraintViolationList->get(0);
-
-	}
-
-	/**
-	 * @return ApiResponseTypeEnum|null
-	 */
-	#[Pure]
-	public function getType(): ?ApiResponseTypeEnum
-	{
-
-		return $this->constraintViolation->getConstraint()->payload;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getMessage(): ?string
-	{
-
-		return $this->constraintViolation->getMessage();
-
-	}
-
+    /**
+     * @return null|string
+     */
+    public function getMessage(): ?string
+    {
+        return $this->constraintViolation->getMessage();
+    }
 }

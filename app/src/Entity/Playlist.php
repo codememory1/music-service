@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class Playlist
+ * Class Playlist.
  *
  * @package App\Entity
  *
@@ -24,181 +24,159 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\HasLifecycleCallbacks]
 class Playlist implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::STRING, length: 255)]
-	private ?string $name = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 255)]
+    private ?string $name = null;
 
-	/**
-	 * @var MediaLibrary|null
-	 */
-	#[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'playlists')]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?MediaLibrary $mediaLibrary = null;
+    /**
+     * @var null|MediaLibrary
+     */
+    #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'playlists')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MediaLibrary $mediaLibrary = null;
 
-	/**
-	 * @var Collection
-	 */
-	#[ORM\OneToMany(mappedBy: 'playlist', targetEntity: PlaylistDirectory::class, cascade: ['persist', 'remove'])]
-	private Collection $playlistDirectories;
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: PlaylistDirectory::class, cascade: ['persist', 'remove'])]
+    private Collection $playlistDirectories;
 
-	/**
-	 * @var Collection
-	 */
-	#[ORM\OneToMany(mappedBy: 'playlist', targetEntity: PlaylistEvent::class, cascade: ['persist', 'remove'])]
-	private Collection $playlistEvents;
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: PlaylistEvent::class, cascade: ['persist', 'remove'])]
+    private Collection $playlistEvents;
 
-	#[Pure]
-	public function __construct()
-	{
+    #[Pure]
+    public function __construct()
+    {
+        $this->playlistDirectories = new ArrayCollection();
+        $this->playlistEvents = new ArrayCollection();
+    }
 
-		$this->playlistDirectories = new ArrayCollection();
-		$this->playlistEvents = new ArrayCollection();
-	}
+    /**
+     * @return null|string
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function getName(): ?string
-	{
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
-		return $this->name;
+        return $this;
+    }
 
-	}
+    /**
+     * @return null|MediaLibrary
+     */
+    public function getMediaLibrary(): ?MediaLibrary
+    {
+        return $this->mediaLibrary;
+    }
 
-	/**
-	 * @param string $name
-	 *
-	 * @return $this
-	 */
-	public function setName(string $name): self
-	{
+    /**
+     * @param null|MediaLibrary $mediaLibrary
+     *
+     * @return $this
+     */
+    public function setMediaLibrary(?MediaLibrary $mediaLibrary): self
+    {
+        $this->mediaLibrary = $mediaLibrary;
 
-		$this->name = $name;
+        return $this;
+    }
 
-		return $this;
+    /**
+     * @return Collection
+     */
+    public function getDirectories(): Collection
+    {
+        return $this->playlistDirectories;
+    }
 
-	}
+    /**
+     * @param PlaylistDirectory $playlistDirectory
+     *
+     * @return $this
+     */
+    public function addDirectory(PlaylistDirectory $playlistDirectory): self
+    {
+        if (!$this->playlistDirectories->contains($playlistDirectory)) {
+            $this->playlistDirectories[] = $playlistDirectory;
+            $playlistDirectory->setPlaylist($this);
+        }
 
-	/**
-	 * @return MediaLibrary|null
-	 */
-	public function getMediaLibrary(): ?MediaLibrary
-	{
+        return $this;
+    }
 
-		return $this->mediaLibrary;
+    /**
+     * @param PlaylistDirectory $playlistDirectory
+     *
+     * @return $this
+     */
+    public function removeDirectory(PlaylistDirectory $playlistDirectory): self
+    {
+        if ($this->playlistDirectories->removeElement($playlistDirectory)) {
+            // set the owning side to null (unless already changed)
+            if ($playlistDirectory->getPlaylist() === $this) {
+                $playlistDirectory->setPlaylist(null);
+            }
+        }
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param MediaLibrary|null $mediaLibrary
-	 *
-	 * @return $this
-	 */
-	public function setMediaLibrary(?MediaLibrary $mediaLibrary): self
-	{
+    /**
+     * @return Collection
+     */
+    public function getEvents(): Collection
+    {
+        return $this->playlistEvents;
+    }
 
-		$this->mediaLibrary = $mediaLibrary;
+    /**
+     * @param PlaylistEvent $playlistEvent
+     *
+     * @return $this
+     */
+    public function addEvent(PlaylistEvent $playlistEvent): self
+    {
+        if (!$this->playlistEvents->contains($playlistEvent)) {
+            $this->playlistEvents[] = $playlistEvent;
+            $playlistEvent->setPlaylist($this);
+        }
 
-		return $this;
+        return $this;
+    }
 
-	}
+    /**
+     * @param PlaylistEvent $playlistEvent
+     *
+     * @return $this
+     */
+    public function removeEvent(PlaylistEvent $playlistEvent): self
+    {
+        if ($this->playlistEvents->removeElement($playlistEvent)) {
+            // set the owning side to null (unless already changed)
+            if ($playlistEvent->getPlaylist() === $this) {
+                $playlistEvent->setPlaylist(null);
+            }
+        }
 
-	/**
-	 * @return Collection
-	 */
-	public function getDirectories(): Collection
-	{
-
-		return $this->playlistDirectories;
-
-	}
-
-	/**
-	 * @param PlaylistDirectory $playlistDirectory
-	 *
-	 * @return $this
-	 */
-	public function addDirectory(PlaylistDirectory $playlistDirectory): self
-	{
-
-		if (!$this->playlistDirectories->contains($playlistDirectory)) {
-			$this->playlistDirectories[] = $playlistDirectory;
-			$playlistDirectory->setPlaylist($this);
-		}
-
-		return $this;
-
-	}
-
-	/**
-	 * @param PlaylistDirectory $playlistDirectory
-	 *
-	 * @return $this
-	 */
-	public function removeDirectory(PlaylistDirectory $playlistDirectory): self
-	{
-
-		if ($this->playlistDirectories->removeElement($playlistDirectory)) {
-			// set the owning side to null (unless already changed)
-			if ($playlistDirectory->getPlaylist() === $this) {
-				$playlistDirectory->setPlaylist(null);
-			}
-		}
-
-		return $this;
-
-	}
-
-	/**
-	 * @return Collection
-	 */
-	public function getEvents(): Collection
-	{
-
-		return $this->playlistEvents;
-
-	}
-
-	/**
-	 * @param PlaylistEvent $playlistEvent
-	 *
-	 * @return $this
-	 */
-	public function addEvent(PlaylistEvent $playlistEvent): self
-	{
-
-		if (!$this->playlistEvents->contains($playlistEvent)) {
-			$this->playlistEvents[] = $playlistEvent;
-			$playlistEvent->setPlaylist($this);
-		}
-
-		return $this;
-
-	}
-
-	/**
-	 * @param PlaylistEvent $playlistEvent
-	 *
-	 * @return $this
-	 */
-	public function removeEvent(PlaylistEvent $playlistEvent): self
-	{
-
-		if ($this->playlistEvents->removeElement($playlistEvent)) {
-			// set the owning side to null (unless already changed)
-			if ($playlistEvent->getPlaylist() === $this) {
-				$playlistEvent->setPlaylist(null);
-			}
-		}
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

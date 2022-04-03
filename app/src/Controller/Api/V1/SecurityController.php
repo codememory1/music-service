@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class SecurityController
+ * Class SecurityController.
  *
  * @package App\Controller\Api\V1
  *
@@ -36,145 +36,135 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SecurityController extends ApiController
 {
+    /**
+     * @param Request                  $request
+     * @param RegisterValidation       $validation
+     * @param Registration             $registration
+     * @param CreatorAccount           $creatorAccount
+     * @param EventDispatcherInterface $eventDispatcher
+     *
+     * @return JsonResponse
+     */
+    #[Route('/register', methods: 'POST')]
+    public function register(
+        Request $request,
+        RegisterValidation $validation,
+        Registration $registration,
+        CreatorAccount $creatorAccount,
+        EventDispatcherInterface $eventDispatcher
+    ): JsonResponse {
+        $registrationDTO = new RegistrationDTO($request, $this->managerRegistry);
 
-	/**
-	 * @param Request                  $request
-	 * @param RegisterValidation       $validation
-	 * @param Registration             $registration
-	 * @param CreatorAccount           $creatorAccount
-	 * @param EventDispatcherInterface $eventDispatcher
-	 *
-	 * @return JsonResponse
-	 */
-	#[Route('/register', methods: 'POST')]
-	public function register(
-		Request $request,
-		RegisterValidation $validation,
-		Registration $registration,
-		CreatorAccount $creatorAccount,
-		EventDispatcherInterface $eventDispatcher
-	): JsonResponse
-	{
+        /** @var User $userEntity */
+        $userEntity = $registrationDTO->getCollectedEntity();
 
-		$registrationDTO = new RegistrationDTO($request, $this->managerRegistry);
+        // Validation of input post data
+        if (true !== $inputValidationResponse = $validation->validate($registrationDTO)) {
+            return $inputValidationResponse->make();
+        }
 
-		/** @var User $userEntity */
-		$userEntity = $registrationDTO->getCollectedEntity();
+        // Checking for the existence of an unactivated account
+        if (false !== $finedUser = $registration->isReRegistration($registrationDTO)) {
+            $createdAccount = $creatorAccount->reCreate($registrationDTO, $finedUser);
+        } else {
+            // Entity validation, i.e. checking the existence of an activated account
+            if (true !== $entityValidationResponse = $validation->validate($userEntity)) {
+                return $entityValidationResponse->make();
+            }
 
-		// Validation of input post data
-		if (true !== $inputValidationResponse = $validation->validate($registrationDTO)) {
-			return $inputValidationResponse->make();
-		}
+            // Create a new user account
+            $createdAccount = $creatorAccount->create($registrationDTO);
+        }
 
-		// Checking for the existence of an unactivated account
-		if (false !== $finedUser = $registration->isReRegistration($registrationDTO)) {
-			$createdAccount = $creatorAccount->reCreate($registrationDTO, $finedUser);
-		} else {
-			// Entity validation, i.e. checking the existence of an activated account
-			if (true !== $entityValidationResponse = $validation->validate($userEntity)) {
-				return $entityValidationResponse->make();
-			}
+        $eventDispatcher->dispatch(
+            new UserRegistrationEvent($createdAccount),
+            EventsEnum::USER_REGISTRATION->value
+        );
 
-			// Create a new user account
-			$createdAccount = $creatorAccount->create($registrationDTO);
-		}
+        return $registration->successAuthResponse()->make();
+    }
 
-		$eventDispatcher->dispatch(
-			new UserRegistrationEvent($createdAccount),
-			EventsEnum::USER_REGISTRATION->value
-		);
+    /**
+     * @param UserActivation $userActivation
+     * @param DeleterToken   $deleterToken
+     * @param string         $token
+     *
+     * @return JsonResponse
+     */
+    #[Route('/activate-account/{token<.+>}', methods: 'GET')]
+    public function activateAccount(
+        UserActivation $userActivation,
+        DeleterToken $deleterToken,
+        string $token
+    ): JsonResponse {
+        // Checking the validity of the token
+        if (true !== $response = $userActivation->isValid($token)) {
+            return $response->make();
+        }
 
-		return $registration->successAuthResponse()->make();
-	}
+        // Account activation and activation token removal
+        $deleterToken->delete($userActivation->activate($token));
 
-	/**
-	 * @param UserActivation $userActivation
-	 * @param DeleterToken   $deleterToken
-	 * @param string         $token
-	 *
-	 * @return JsonResponse
-	 */
-	#[Route('/activate-account/{token<.+>}', methods: 'GET')]
-	public function activateAccount(
-		UserActivation $userActivation,
-		DeleterToken $deleterToken,
-		string $token
-	): JsonResponse
-	{
+        return $userActivation->successActivationResponse()->make();
+    }
 
-		// Checking the validity of the token
-		if (true !== $response = $userActivation->isValid($token)) {
-			return $response->make();
-		}
+    /**
+     * @param Request        $request
+     * @param AuthValidation $validation
+     * @param Identification $identification
+     * @param Authentication $authentication
+     * @param Authorization  $authorization
+     *
+     * @throws NonUniqueResultException
+     *
+     * @return JsonResponse
+     */
+    #[Route('/auth', methods: 'POST')]
+    public function auth(
+        Request $request,
+        AuthValidation $validation,
+        Identification $identification,
+        Authentication $authentication,
+        Authorization $authorization
+    ): JsonResponse {
+        $authorizationDTO = new AuthorizationDTO($request, $this->managerRegistry);
 
-		// Account activation and activation token removal
-		$deleterToken->delete($userActivation->activate($token));
+        // Validation of input post data
+        if (true !== $resultValidation = $validation->validate($authorizationDTO)) {
+            return $resultValidation->make();
+        }
 
-		return $userActivation->successActivationResponse()->make();
+        // User identification
+        $identifiedUser = $identification->identify($authorizationDTO);
 
-	}
+        if ($identifiedUser instanceof Response) {
+            return $identifiedUser->make();
+        }
 
-	/**
-	 * @param Request        $request
-	 * @param AuthValidation $validation
-	 * @param Identification $identification
-	 * @param Authentication $authentication
-	 * @param Authorization  $authorization
-	 *
-	 * @return JsonResponse
-	 * @throws NonUniqueResultException
-	 */
-	#[Route('/auth', methods: 'POST')]
-	public function auth(
-		Request $request,
-		AuthValidation $validation,
-		Identification $identification,
-		Authentication $authentication,
-		Authorization $authorization
-	): JsonResponse
-	{
+        // User authentication
+        $authenticatedUser = $authentication->authenticate($identifiedUser, $authorizationDTO);
 
-		$authorizationDTO = new AuthorizationDTO($request, $this->managerRegistry);
+        if ($authenticatedUser instanceof Response) {
+            return $authenticatedUser->make();
+        }
 
-		// Validation of input post data
-		if (true !== $resultValidation = $validation->validate($authorizationDTO)) {
-			return $resultValidation->make();
-		}
+        // User authorization
+        return $authorization->auth($identifiedUser, $authorizationDTO)->make();
+    }
 
-		// User identification
-		$identifiedUser = $identification->identify($authorizationDTO);
-
-		if ($identifiedUser instanceof Response) {
-			return $identifiedUser->make();
-		}
-
-		// User authentication
-		$authenticatedUser = $authentication->authenticate($identifiedUser, $authorizationDTO);
-
-		if ($authenticatedUser instanceof Response) {
-			return $authenticatedUser->make();
-		}
-
-		// User authorization
-		return $authorization->auth($identifiedUser, $authorizationDTO)->make();
-
-	}
-
-	/**
-	 * @param RecoveryRequestService $recoveryRequestService
-	 * @param Request                $request
-	 *
-	 * @return JsonResponse
-	 * @throws UndefinedClassForDTOException
-	 */
-	#[Route('/password-reset/recovery-request', methods: 'POST')]
-	public function recoveryRequest(RecoveryRequestService $recoveryRequestService, Request $request): JsonResponse
-	{
-
-		return $recoveryRequestService
-			->send(new PasswordRecoveryRequestDTO($request))
-			->make();
-
-	}
-
+    /**
+     * @param RecoveryRequestService $recoveryRequestService
+     * @param Request                $request
+     *
+     * @throws UndefinedClassForDTOException
+     *
+     * @return JsonResponse
+     */
+    #[Route('/password-reset/recovery-request', methods: 'POST')]
+    public function recoveryRequest(RecoveryRequestService $recoveryRequestService, Request $request): JsonResponse
+    {
+        return $recoveryRequestService
+            ->send(new PasswordRecoveryRequestDTO($request))
+            ->make();
+    }
 }

@@ -12,7 +12,7 @@ use Codememory\Components\GEO\Geolocation;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
- * Class CreatorUserSessionService
+ * Class CreatorUserSessionService.
  *
  * @package App\Service\Security\Auth
  *
@@ -20,155 +20,139 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class CreatorUserSessionService extends ApiService
 {
+    /**
+     * @var null|string
+     */
+    private ?string $accessToken = null;
 
-	/**
-	 * @var string|null
-	 */
-	private ?string $accessToken = null;
+    /**
+     * @var null|string
+     */
+    private ?string $refreshToken = null;
 
-	/**
-	 * @var string|null
-	 */
-	private ?string $refreshToken = null;
+    /**
+     * @param User             $authorizedUser
+     * @param AuthorizationDTO $authorizationDTO
+     *
+     * @return CreatorUserSessionService
+     */
+    public function create(User $authorizedUser, AuthorizationDTO $authorizationDTO): self
+    {
+        $jwtTokenGenerator = new JwtTokenGenerator();
 
-	/**
-	 * @param User             $authorizedUser
-	 * @param AuthorizationDTO $authorizationDTO
-	 *
-	 * @return CreatorUserSessionService
-	 */
-	public function create(User $authorizedUser, AuthorizationDTO $authorizationDTO): CreatorUserSessionService
-	{
+        // Saving generated tokens
+        $this->accessToken = $this->generateAccessToken($jwtTokenGenerator, $authorizedUser);
+        $this->refreshToken = $this->generateRefreshToken($jwtTokenGenerator, $authorizedUser);
 
-		$jwtTokenGenerator = new JwtTokenGenerator();
+        $this->em->persist($this->collectEntity($authorizedUser, $authorizationDTO));
+        $this->em->flush();
 
-		// Saving generated tokens
-		$this->accessToken = $this->generateAccessToken($jwtTokenGenerator, $authorizedUser);
-		$this->refreshToken = $this->generateRefreshToken($jwtTokenGenerator, $authorizedUser);
+        return $this;
+    }
 
-		$this->em->persist($this->collectEntity($authorizedUser, $authorizationDTO));
-		$this->em->flush();
+    /**
+     * @return null|string
+     */
+    public function getAccessToken(): ?string
+    {
+        return $this->accessToken;
+    }
 
-		return $this;
+    /**
+     * @return null|string
+     */
+    public function getRefreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
 
-	}
+    /**
+     * @param JwtTokenGenerator $generator
+     * @param User              $user
+     *
+     * @return string
+     */
+    private function generateAccessToken(JwtTokenGenerator $generator, User $user): string
+    {
+        return $generator->encode(
+            $this->getUserSchema($user),
+            'JWT_ACCESS_PRIVATE_KEY',
+            $_ENV['JWT_ACCESS_TTL']
+        );
+    }
 
-	/**
-	 * @param JwtTokenGenerator $generator
-	 * @param User              $user
-	 *
-	 * @return string
-	 */
-	private function generateAccessToken(JwtTokenGenerator $generator, User $user): string
-	{
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
+    #[ArrayShape([
+        'id' => 'int|null',
+        'email' => 'null|string',
+        'profile' => 'array',
+    ])]
+    private function getUserSchema(User $user): array
+    {
+        $userProfile = $user->getUserProfile();
+        $userProfileSchema = [];
 
-		return $generator->encode(
-			$this->getUserSchema($user),
-			'JWT_ACCESS_PRIVATE_KEY',
-			$_ENV['JWT_ACCESS_TTL']
-		);
+        if (null !== $userProfile) {
+            $userProfileSchema = (new UserProfileDTO(managerRegistry: $this->managerRegistry))->toArray($userProfile);
+        }
 
-	}
+        return [
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'profile' => $userProfileSchema
+        ];
+    }
 
-	/**
-	 * @param User $user
-	 *
-	 * @return array
-	 */
-	#[ArrayShape([
-		'id'      => "int|null",
-		'email'   => "null|string",
-		'profile' => "array",
-	])]
-	private function getUserSchema(User $user): array
-	{
+    /**
+     * @param JwtTokenGenerator $generator
+     * @param User              $user
+     *
+     * @return string
+     */
+    private function generateRefreshToken(JwtTokenGenerator $generator, User $user): string
+    {
+        return $generator->encode(
+            $this->getUserSchema($user),
+            'JWT_REFRESH_PRIVATE_KEY',
+            $_ENV['JWT_REFRESH_TTL']
+        );
+    }
 
-		$userProfile = $user->getUserProfile();
-		$userProfileSchema = [];
+    /**
+     * @param User             $authorizedUser
+     * @param AuthorizationDTO $authorizationDTO
+     *
+     * @return UserSession
+     */
+    private function collectEntity(User $authorizedUser, AuthorizationDTO $authorizationDTO): UserSession
+    {
+        $geo = new Geolocation();
+        $userSessionEntity = new UserSession();
 
-		if (null !== $userProfile) {
-			$userProfileSchema = (new UserProfileDTO(managerRegistry: $this->managerRegistry))->toArray($userProfile);
-		}
+        $geo->setIp($authorizationDTO->clientIp);
 
-		return [
-			'id'      => $user->getId(),
-			'email'   => $user->getEmail(),
-			'profile' => $userProfileSchema
-		];
+        $location = $geo->getLocation();
 
-	}
+        $userSessionEntity
+            ->setUser($authorizedUser)
+            ->setRefreshToken($this->refreshToken)
+            ->setIp($authorizationDTO->clientIp);
 
-	/**
-	 * @param JwtTokenGenerator $generator
-	 * @param User              $user
-	 *
-	 * @return string
-	 */
-	private function generateRefreshToken(JwtTokenGenerator $generator, User $user): string
-	{
+        // If there is information on this ip, fix it
+        if ($geo->isSuccess()) {
+            $userSessionEntity
+                ->setCountry($location->getCountry()->getName())
+                ->setCountryCode($location->getCountry()->getCode())
+                ->setRegion($location->getRegion()->getName())
+                ->setCity($location->getCity()->getName())
+                ->setLatitude($location->getCity()->getLatitude())
+                ->setLongitude($location->getCity()->getLongitude());
+        }
 
-		return $generator->encode(
-			$this->getUserSchema($user),
-			'JWT_REFRESH_PRIVATE_KEY',
-			$_ENV['JWT_REFRESH_TTL']
-		);
-
-	}
-
-	/**
-	 * @param User             $authorizedUser
-	 * @param AuthorizationDTO $authorizationDTO
-	 *
-	 * @return UserSession
-	 */
-	private function collectEntity(User $authorizedUser, AuthorizationDTO $authorizationDTO): UserSession
-	{
-
-		$geo = new Geolocation();
-		$userSessionEntity = new UserSession();
-
-		$geo->setIp($authorizationDTO->clientIp);
-
-		$location = $geo->getLocation();
-
-		$userSessionEntity
-			->setUser($authorizedUser)
-			->setRefreshToken($this->refreshToken)
-			->setIp($authorizationDTO->clientIp);
-
-		// If there is information on this ip, fix it
-		if ($geo->isSuccess()) {
-			$userSessionEntity
-				->setCountry($location->getCountry()->getName())
-				->setCountryCode($location->getCountry()->getCode())
-				->setRegion($location->getRegion()->getName())
-				->setCity($location->getCity()->getName())
-				->setLatitude($location->getCity()->getLatitude())
-				->setLongitude($location->getCity()->getLongitude());
-		}
-
-		return $userSessionEntity;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getAccessToken(): ?string
-	{
-
-		return $this->accessToken;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getRefreshToken(): ?string
-	{
-
-		return $this->refreshToken;
-
-	}
-
+        return $userSessionEntity;
+    }
 }

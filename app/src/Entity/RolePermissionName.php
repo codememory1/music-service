@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class RolePermissionName
+ * Class RolePermissionName.
  *
  * @package App\Entitiy
  *
@@ -24,12 +24,12 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\HasLifecycleCallbacks]
 class RolePermissionName implements EntityInterface
 {
-
     use IdentifierTrait;
+
     use TimestampTrait;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     #[ORM\Column('`key`', Types::STRING, length: 255, unique: true, options: [
         'comment' => 'A unique key that can be used to check availability'
@@ -37,7 +37,7 @@ class RolePermissionName implements EntityInterface
     private ?string $key = null;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Rule name translation key'
@@ -53,19 +53,15 @@ class RolePermissionName implements EntityInterface
     #[Pure]
     public function __construct()
     {
-
         $this->rolePermissions = new ArrayCollection();
-
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getKey(): ?string
     {
-
         return $this->key;
-
     }
 
     /**
@@ -75,21 +71,17 @@ class RolePermissionName implements EntityInterface
      */
     public function setKey(string $key): self
     {
-
         $this->key = $key;
 
         return $this;
-
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getTitleTranslationKey(): ?string
     {
-
         return $this->titleTranslationKey;
-
     }
 
     /**
@@ -99,11 +91,9 @@ class RolePermissionName implements EntityInterface
      */
     public function setTitleTranslationKey(string $titleTranslationKey): self
     {
-
         $this->titleTranslationKey = $titleTranslationKey;
 
         return $this;
-
     }
 
     /**
@@ -111,9 +101,7 @@ class RolePermissionName implements EntityInterface
      */
     public function getRolePermissions(): Collection
     {
-
         return $this->rolePermissions;
-
     }
 
     /**
@@ -123,14 +111,12 @@ class RolePermissionName implements EntityInterface
      */
     public function addRolePermission(RolePermission $rolePermission): self
     {
-
         if (!$this->rolePermissions->contains($rolePermission)) {
             $this->rolePermissions[] = $rolePermission;
             $rolePermission->setRolePermissionName($this);
         }
 
         return $this;
-
     }
 
     /**
@@ -140,7 +126,6 @@ class RolePermissionName implements EntityInterface
      */
     public function removeRolePermission(RolePermission $rolePermission): self
     {
-
         if ($this->rolePermissions->removeElement($rolePermission)) {
             if ($rolePermission->getRolePermissionName() === $this) {
                 $rolePermission->setRolePermissionName(null);
@@ -148,7 +133,5 @@ class RolePermissionName implements EntityInterface
         }
 
         return $this;
-
     }
-
 }

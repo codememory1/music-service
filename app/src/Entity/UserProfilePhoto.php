@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class UserProfilePhoto
+ * Class UserProfilePhoto.
  *
  * @package App\Entity
  *
@@ -21,71 +21,62 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class UserProfilePhoto implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var UserProfile|null
-	 */
-	#[ORM\OneToOne(inversedBy: 'userProfilePhoto', targetEntity: UserProfile::class, cascade: ['persist', 'remove'])]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?UserProfile $userProfile = null;
+    /**
+     * @var null|UserProfile
+     */
+    #[ORM\OneToOne(inversedBy: 'userProfilePhoto', targetEntity: UserProfile::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?UserProfile $userProfile = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::TEXT, options: [
-		'comment' => 'Path to photography'
-	])]
-	private ?string $photo = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::TEXT, options: [
+        'comment' => 'Path to photography'
+    ])]
+    private ?string $photo = null;
 
-	/**
-	 * @return UserProfile|null
-	 */
-	public function getUserProfile(): ?UserProfile
-	{
+    /**
+     * @return null|UserProfile
+     */
+    public function getUserProfile(): ?UserProfile
+    {
+        return $this->userProfile;
+    }
 
-		return $this->userProfile;
+    /**
+     * @param UserProfile $userProfile
+     *
+     * @return $this
+     */
+    public function setUserProfile(UserProfile $userProfile): self
+    {
+        $this->userProfile = $userProfile;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param UserProfile $userProfile
-	 *
-	 * @return $this
-	 */
-	public function setUserProfile(UserProfile $userProfile): self
-	{
+    /**
+     * @return null|string
+     */
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
 
-		$this->userProfile = $userProfile;
+    /**
+     * @param string $photo
+     *
+     * @return $this
+     */
+    public function setPhoto(string $photo): self
+    {
+        $this->photo = $photo;
 
-		return $this;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getPhoto(): ?string
-	{
-
-		return $this->photo;
-
-	}
-
-	/**
-	 * @param string $photo
-	 *
-	 * @return $this
-	 */
-	public function setPhoto(string $photo): self
-	{
-
-		$this->photo = $photo;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

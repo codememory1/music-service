@@ -7,7 +7,7 @@ use App\Rest\CRUD\UpdaterCRUD;
 use App\Rest\Http\Response;
 
 /**
- * Class UpdaterTranslationKeyService
+ * Class UpdaterTranslationKeyService.
  *
  * @package App\Service\Translator\TranslationKey
  *
@@ -15,27 +15,23 @@ use App\Rest\Http\Response;
  */
 class UpdaterTranslationKeyService extends UpdaterCRUD
 {
+    /**
+     * @param TranslationKeyDTO $translationKeyDTO
+     * @param int               $id
+     *
+     * @return Response
+     */
+    public function update(TranslationKeyDTO $translationKeyDTO, int $id): Response
+    {
+        $this->validateEntity = true;
+        $this->translationKeyNotExist = 'translationKey@notExist';
 
-	/**
-	 * @param TranslationKeyDTO $translationKeyDTO
-	 * @param int               $id
-	 *
-	 * @return Response
-	 */
-	public function update(TranslationKeyDTO $translationKeyDTO, int $id): Response
-	{
+        $updatedEntity = $this->make($translationKeyDTO, ['id' => $id]);
 
-		$this->validateEntity = true;
-		$this->translationKeyNotExist = 'translationKey@notExist';
+        if ($updatedEntity instanceof Response) {
+            return $updatedEntity;
+        }
 
-		$updatedEntity = $this->make($translationKeyDTO, ['id' => $id]);
-
-		if ($updatedEntity instanceof Response) {
-			return $updatedEntity;
-		}
-
-		return $this->manager->update($updatedEntity, 'translationKey@successUpdate');
-
-	}
-
+        return $this->manager->update($updatedEntity, 'translationKey@successUpdate');
+    }
 }

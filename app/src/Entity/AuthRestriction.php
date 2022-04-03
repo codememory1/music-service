@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class AuthRestriction
+ * Class AuthRestriction.
  *
  * @package App\Entity
  *
@@ -21,129 +21,112 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class AuthRestriction implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use UpdatedAtTrait;
+    use UpdatedAtTrait;
 
-	/**
-	 * @var User|null
-	 */
-	#[ORM\OneToOne(inversedBy: 'authRestriction', targetEntity: User::class)]
-	#[ORM\JoinColumn(unique: true, nullable: false)]
-	private ?User $user = null;
+    /**
+     * @var null|User
+     */
+    #[ORM\OneToOne(inversedBy: 'authRestriction', targetEntity: User::class)]
+    #[ORM\JoinColumn(unique: true, nullable: false)]
+    private ?User $user = null;
 
-	/**
-	 * @var array
-	 */
-	#[ORM\Column(type: Types::JSON)]
-	private array $devices = [];
+    /**
+     * @var array
+     */
+    #[ORM\Column(type: Types::JSON)]
+    private array $devices = [];
 
-	/**
-	 * @var array
-	 */
-	#[ORM\Column(type: Types::JSON)]
-	private array $operatingSystems = [];
+    /**
+     * @var array
+     */
+    #[ORM\Column(type: Types::JSON)]
+    private array $operatingSystems = [];
 
-	/**
-	 * @var array
-	 */
-	#[ORM\Column(type: Types::JSON)]
-	private array $browsers = [];
+    /**
+     * @var array
+     */
+    #[ORM\Column(type: Types::JSON)]
+    private array $browsers = [];
 
-	/**
-	 * @return User|null
-	 */
-	public function getUser(): ?User
-	{
+    /**
+     * @return null|User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
-		return $this->user;
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param User $user
-	 *
-	 * @return $this
-	 */
-	public function setUser(User $user): self
-	{
+    /**
+     * @return null|array
+     */
+    public function getDevices(): ?array
+    {
+        return $this->devices;
+    }
 
-		$this->user = $user;
+    /**
+     * @param array $devices
+     *
+     * @return $this
+     */
+    public function setDevices(array $devices): self
+    {
+        $this->devices = $devices;
 
-		return $this;
+        return $this;
+    }
 
-	}
+    /**
+     * @return null|array
+     */
+    public function getOperatingSystems(): ?array
+    {
+        return $this->operatingSystems;
+    }
 
-	/**
-	 * @return array|null
-	 */
-	public function getDevices(): ?array
-	{
+    /**
+     * @param array $operatingSystems
+     *
+     * @return $this
+     */
+    public function setOperatingSystems(array $operatingSystems): self
+    {
+        $this->operatingSystems = $operatingSystems;
 
-		return $this->devices;
+        return $this;
+    }
 
-	}
+    /**
+     * @return null|array
+     */
+    public function getBrowsers(): ?array
+    {
+        return $this->browsers;
+    }
 
-	/**
-	 * @param array $devices
-	 *
-	 * @return $this
-	 */
-	public function setDevices(array $devices): self
-	{
+    /**
+     * @param array $browsers
+     *
+     * @return $this
+     */
+    public function setBrowsers(array $browsers): self
+    {
+        $this->browsers = $browsers;
 
-		$this->devices = $devices;
-
-		return $this;
-
-	}
-
-	/**
-	 * @return array|null
-	 */
-	public function getOperatingSystems(): ?array
-	{
-
-		return $this->operatingSystems;
-
-	}
-
-	/**
-	 * @param array $operatingSystems
-	 *
-	 * @return $this
-	 */
-	public function setOperatingSystems(array $operatingSystems): self
-	{
-
-		$this->operatingSystems = $operatingSystems;
-
-		return $this;
-
-	}
-
-	/**
-	 * @return array|null
-	 */
-	public function getBrowsers(): ?array
-	{
-
-		return $this->browsers;
-
-	}
-
-	/**
-	 * @param array $browsers
-	 *
-	 * @return $this
-	 */
-	public function setBrowsers(array $browsers): self
-	{
-
-		$this->browsers = $browsers;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

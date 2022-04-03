@@ -6,7 +6,7 @@ use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class AbstractPasswordConfirmationDTO
+ * Class AbstractPasswordConfirmationDTO.
  *
  * @package App\Rest\DTO
  *
@@ -14,12 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class AbstractPasswordConfirmationDTO extends AbstractPasswordDTO
 {
-
-	/**
-	 * @var string|null
-	 */
-	#[Assert\NotBlank(message: 'user@passwordConfirmIsRequired')]
-	#[AppAssert\Between('password', message: 'user@invalidPasswordConfirm')]
-	public ?string $passwordConfirm = null;
-
+    /**
+     * @var null|string
+     */
+    #[Assert\NotBlank(message: 'user@passwordConfirmIsRequired')]
+    #[AppAssert\Between('password', message: 'user@invalidPasswordConfirm')]
+    public ?string $passwordConfirm = null;
 }

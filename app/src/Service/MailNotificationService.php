@@ -14,7 +14,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 /**
- * Class MailNotificationService
+ * Class MailNotificationService.
  *
  * @package App\Service
  *
@@ -22,102 +22,95 @@ use Twig\Error\SyntaxError;
  */
 class MailNotificationService
 {
+    /**
+     * @var MailerInterface
+     */
+    private MailerInterface $mailer;
 
-	/**
-	 * @var MailerInterface
-	 */
-	private MailerInterface $mailer;
+    /**
+     * @var Environment
+     */
+    private Environment $twig;
 
-	/**
-	 * @var Environment
-	 */
-	private Environment $twig;
+    /**
+     * @var Translator
+     */
+    private Translator $translator;
 
-	/**
-	 * @var Translator
-	 */
-	private Translator $translator;
+    /**
+     * @param MailerInterface $mailer
+     * @param Environment     $twig
+     * @param Translator      $translator
+     */
+    public function __construct(MailerInterface $mailer, Environment $twig, Translator $translator)
+    {
+        $this->mailer = $mailer;
+        $this->twig = $twig;
+        $this->translator = $translator;
+    }
 
-	/**
-	 * @param MailerInterface $mailer
-	 * @param Environment     $twig
-	 * @param Translator      $translator
-	 */
-	public function __construct(MailerInterface $mailer, Environment $twig, Translator $translator)
-	{
+    /**
+     * @param User                $user
+     * @param UserActivationToken $userActivationToken
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws TransportExceptionInterface
+     *
+     * @return void
+     */
+    public function registerNotification(User $user, UserActivationToken $userActivationToken): void
+    {
+        $email = new Email();
+        $email
+            ->from('kostynd1@gmail.com')
+            ->to($user->getEmail())
+            ->subject('Подтверждение регистрации')
+            ->html($this->render('confirm-registration', [
+                'token' => $userActivationToken->getToken()
+            ]));
 
-		$this->mailer = $mailer;
-		$this->twig = $twig;
-		$this->translator = $translator;
+        $this->mailer->send($email);
+    }
 
-	}
+    /**
+     * @param string $to
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws TransportExceptionInterface
+     *
+     * @return void
+     */
+    public function passwordRecoveryRequest(string $to): void
+    {
+        $email = new Email();
+        $email
+            ->from('kostynd1@gmail.com')
+            ->to($to)
+            ->subject('Запрос на восстановление пароля')
+            ->html($this->render('password-recovery-request'));
 
-	/**
-	 * @param User                $user
-	 * @param UserActivationToken $userActivationToken
-	 *
-	 * @return void
-	 * @throws LoaderError
-	 * @throws RuntimeError
-	 * @throws SyntaxError
-	 * @throws TransportExceptionInterface
-	 */
-	public function registerNotification(User $user, UserActivationToken $userActivationToken): void
-	{
+        $this->mailer->send($email);
+    }
 
-		$email = new Email();
-		$email
-			->from('kostynd1@gmail.com')
-			->to($user->getEmail())
-			->subject('Подтверждение регистрации')
-			->html($this->render('confirm-registration', [
-				'token' => $userActivationToken->getToken()
-			]));
-
-		$this->mailer->send($email);
-
-	}
-
-	/**
-	 * @param string $name
-	 * @param array  $params
-	 *
-	 * @return string
-	 * @throws LoaderError
-	 * @throws RuntimeError
-	 * @throws SyntaxError
-	 */
-	private function render(string $name, array $params = []): string
-	{
-
-		return $this->twig->render(
-			sprintf('mail/output/%s.html', $name),
-			$params
-		);
-
-	}
-
-	/**
-	 * @param string $to
-	 *
-	 * @return void
-	 * @throws LoaderError
-	 * @throws RuntimeError
-	 * @throws SyntaxError
-	 * @throws TransportExceptionInterface
-	 */
-	public function passwordRecoveryRequest(string $to): void
-	{
-
-		$email = new Email();
-		$email
-			->from('kostynd1@gmail.com')
-			->to($to)
-			->subject('Запрос на восстановление пароля')
-			->html($this->render('password-recovery-request'));
-
-		$this->mailer->send($email);
-
-	}
-
+    /**
+     * @param string $name
+     * @param array  $params
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     *
+     * @return string
+     */
+    private function render(string $name, array $params = []): string
+    {
+        return $this->twig->render(
+            sprintf('mail/output/%s.html', $name),
+            $params
+        );
+    }
 }

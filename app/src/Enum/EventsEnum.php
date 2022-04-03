@@ -3,7 +3,7 @@
 namespace App\Enum;
 
 /**
- * Enum EventsEnum
+ * Enum EventsEnum.
  *
  * @package App\Enum
  *
@@ -11,7 +11,5 @@ namespace App\Enum;
  */
 enum EventsEnum: string
 {
-
     case USER_REGISTRATION = 'user.registration';
-
 }

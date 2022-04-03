@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Class CronTimeValidator
+ * Class CronTimeValidator.
  *
  * @package App\Validator\Constraints
  *
@@ -16,13 +16,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 final class CronTimeValidator extends ConstraintValidator
 {
-
     /**
      * @inheritDoc
      */
     public function validate(mixed $value, Constraint $constraint): void
     {
-
         if (!$constraint instanceof CronTime) {
             throw new UnexpectedTypeException($constraint, CronTime::class);
         }
@@ -36,7 +34,5 @@ final class CronTimeValidator extends ConstraintValidator
                 ->setParameter('{{ formats }}', implode(', ', $parserCronTimeService->getFormats()))
                 ->addViolation();
         }
-
     }
-
 }

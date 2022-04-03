@@ -8,7 +8,7 @@ use App\Rest\Http\Response;
 use Exception;
 
 /**
- * Class DeleterAlbumTypeService
+ * Class DeleterAlbumTypeService.
  *
  * @package App\Service\Album\Type
  *
@@ -16,26 +16,23 @@ use Exception;
  */
 class DeleterAlbumTypeService extends DeleterCRUD
 {
+    /**
+     * @param int $id
+     *
+     * @throws Exception
+     *
+     * @return Response
+     */
+    public function delete(int $id): Response
+    {
+        $this->translationKeyNotExist = 'albumType@notExist';
 
-	/**
-	 * @param int $id
-	 *
-	 * @return Response
-	 * @throws Exception
-	 */
-	public function delete(int $id): Response
-	{
+        $deletedEntity = $this->make(AlbumType::class, ['id' => $id]);
 
-		$this->translationKeyNotExist = 'albumType@notExist';
+        if ($deletedEntity instanceof Response) {
+            return $deletedEntity;
+        }
 
-		$deletedEntity = $this->make(AlbumType::class, ['id' => $id]);
-
-		if ($deletedEntity instanceof Response) {
-			return $deletedEntity;
-		}
-
-		return $this->manager->remove($deletedEntity, 'albumType@successDelete');
-
-	}
-
+        return $this->manager->remove($deletedEntity, 'albumType@successDelete');
+    }
 }

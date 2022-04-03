@@ -7,7 +7,7 @@ use App\Enum\SubscriptionPermissionNameEnum;
 use Attribute;
 
 /**
- * Class SubscriptionPermission
+ * Class SubscriptionPermission.
  *
  * @package App\Annotation
  *
@@ -16,24 +16,20 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 class SubscriptionPermission
 {
+    /**
+     * @var SubscriptionPermissionName
+     */
+    public SubscriptionPermissionName $permission;
 
-	/**
-	 * @var SubscriptionPermissionName
-	 */
-	public SubscriptionPermissionName $permission;
+    /**
+     * @param SubscriptionPermissionNameEnum $permission
+     */
+    public function __construct(SubscriptionPermissionNameEnum $permission)
+    {
+        $subscriptionPermissionNameEntity = new SubscriptionPermissionName();
 
-	/**
-	 * @param SubscriptionPermissionNameEnum $permission
-	 */
-	public function __construct(SubscriptionPermissionNameEnum $permission)
-	{
+        $subscriptionPermissionNameEntity->setKey($permission->value);
 
-		$subscriptionPermissionNameEntity = new SubscriptionPermissionName();
-
-		$subscriptionPermissionNameEntity->setKey($permission->value);
-
-		$this->permission = $subscriptionPermissionNameEntity;
-
-	}
-
+        $this->permission = $subscriptionPermissionNameEntity;
+    }
 }

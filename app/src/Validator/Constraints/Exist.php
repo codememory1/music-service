@@ -6,7 +6,7 @@ use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class Exist
+ * Class Exist.
  *
  * @package App\Validator\Constraints
  *
@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class Exist extends Constraint
 {
-
     /**
      * @var string
      */
@@ -27,27 +26,24 @@ final class Exist extends Constraint
     public string $property;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     public ?string $message = 'No entry found in table {{ table }} with {{ property }} {{ value }}';
 
     /**
      * @param string      $entity
      * @param string      $property
-     * @param string|null $message
-     * @param mixed|null  $options
-     * @param array|null  $groups
-     * @param mixed|null  $payload
+     * @param null|string $message
+     * @param null|mixed  $options
+     * @param null|array  $groups
+     * @param null|mixed  $payload
      */
-    public function __construct(string $entity, string $property, string $message = null, mixed $options = null, array $groups = null, mixed $payload = null)
+    public function __construct(string $entity, string $property, ?string $message = null, mixed $options = null, ?array $groups = null, mixed $payload = null)
     {
-
         parent::__construct($options, $groups, $payload);
 
         $this->entity = $entity;
         $this->property = $property;
         $this->message = $message;
-
     }
-
 }

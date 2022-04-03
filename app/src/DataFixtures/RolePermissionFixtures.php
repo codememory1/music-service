@@ -12,7 +12,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class RolePermissionFixtures
+ * Class RolePermissionFixtures.
  *
  * @package App\DataFixtures
  *
@@ -20,7 +20,6 @@ use Doctrine\Persistence\ObjectManager;
  */
 class RolePermissionFixtures extends Fixture implements DependentFixtureInterface
 {
-
     /**
      * @var array
      */
@@ -28,89 +27,89 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
         // Developer
         [
             'right_name' => RolePermissionNameEnum::ADD_MUSIC,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::UPDATE_MUSIC,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::DELETE_MUSIC,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::CREATE_SUBSCRIPTION,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::UPDATE_SUBSCRIPTION,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::DELETE_SUBSCRIPTION,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::CREATE_LANG,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::UPDATE_LANG,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::DELETE_LANG,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::CREATE_TRANSLATION,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::UPDATE_TRANSLATION,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::DELETE_TRANSLATION,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::CREATE_ALBUM_CATEGORY,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::UPDATE_ALBUM_CATEGORY,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::DELETE_ALBUM_CATEGORY,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::CREATE_ALBUM_TYPE,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::UPDATE_ALBUM_TYPE,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
         [
             'right_name' => RolePermissionNameEnum::DELETE_ALBUM_TYPE,
-            'role'       => RoleEnum::DEVELOPER
+            'role' => RoleEnum::DEVELOPER
         ],
 
         // Music Manager
         [
             'right_name' => RolePermissionNameEnum::ADD_MUSIC,
-            'role'       => RoleEnum::MUSIC_MANAGER
+            'role' => RoleEnum::MUSIC_MANAGER
         ],
         [
             'right_name' => RolePermissionNameEnum::UPDATE_MUSIC,
-            'role'       => RoleEnum::MUSIC_MANAGER
+            'role' => RoleEnum::MUSIC_MANAGER
         ],
         [
             'right_name' => RolePermissionNameEnum::DELETE_MUSIC,
-            'role'       => RoleEnum::MUSIC_MANAGER
+            'role' => RoleEnum::MUSIC_MANAGER
         ],
     ];
 
@@ -121,7 +120,6 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
      */
     public function load(ObjectManager $manager): void
     {
-
         foreach ($this->rolePermissions as $rolePermission) {
             /** @var RolePermissionName $rolePermissionNameEntity */
             $rolePermissionNameEntity = $this->getReference(sprintf('role-right-name-%s', $rolePermission['right_name']->value));
@@ -138,7 +136,6 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
         }
 
         $manager->flush();
-
     }
 
     /**
@@ -146,12 +143,9 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
      */
     public function getDependencies(): array
     {
-
         return [
             RolePermissionNameFixtures::class,
             RoleFixtures::class
         ];
-
     }
-
 }

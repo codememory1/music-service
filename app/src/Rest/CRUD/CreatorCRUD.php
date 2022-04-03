@@ -7,7 +7,7 @@ use App\Interfaces\EntityInterface;
 use App\Rest\Http\Response;
 
 /**
- * Class CreatorCRUD
+ * Class CreatorCRUD.
  *
  * @package App\Service\CRUD
  *
@@ -15,38 +15,34 @@ use App\Rest\Http\Response;
  */
 class CreatorCRUD extends AbstractCRUD
 {
+    /**
+     * @var bool
+     */
+    protected bool $validateEntity = false;
 
-	/**
-	 * @var bool
-	 */
-	protected bool $validateEntity = false;
+    /**
+     * @inheritDoc
+     */
+    protected function make(DTOInterface|string $entityOrDTO, array $manipulationBy = []): Response|EntityInterface
+    {
+        $collectedEntity = $entityOrDTO->getCollectedEntity();
 
-	/**
-	 * @inheritDoc
-	 */
-	protected function make(DTOInterface|string $entityOrDTO, array $manipulationBy = []): Response|EntityInterface
-	{
+        // Validation of input POST data
+        $validator = $this->inputValidation($entityOrDTO);
 
-		$collectedEntity = $entityOrDTO->getCollectedEntity();
+        if (!$validator->isValidate()) {
+            return $validator->getResponse();
+        }
 
-		// Validation of input POST data
-		$validator = $this->inputValidation($entityOrDTO);
+        // Validation when inserting into the database
+        if ($this->validateEntity) {
+            $validator = $this->inputValidation($collectedEntity);
 
-		if (!$validator->isValidate()) {
-			return $validator->getResponse();
-		}
+            if (!$validator->isValidate()) {
+                return $validator->getResponse();
+            }
+        }
 
-		// Validation when inserting into the database
-		if ($this->validateEntity) {
-			$validator = $this->inputValidation($collectedEntity);
-
-			if (!$validator->isValidate()) {
-				return $validator->getResponse();
-			}
-		}
-
-		return $collectedEntity;
-
-	}
-
+        return $collectedEntity;
+    }
 }

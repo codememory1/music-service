@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class UserActivationToken
+ * Class UserActivationToken.
  *
  * @package App\Entity
  *
@@ -21,71 +21,62 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 class UserActivationToken implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var User|null
-	 */
-	#[ORM\OneToOne(inversedBy: 'userActivationToken', targetEntity: User::class, cascade: ['persist'])]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?User $user = null;
+    /**
+     * @var null|User
+     */
+    #[ORM\OneToOne(inversedBy: 'userActivationToken', targetEntity: User::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::TEXT, options: [
-		'comment' => 'Account activation token'
-	])]
-	private ?string $token = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::TEXT, options: [
+        'comment' => 'Account activation token'
+    ])]
+    private ?string $token = null;
 
-	/**
-	 * @return User|null
-	 */
-	public function getUser(): ?User
-	{
+    /**
+     * @return null|User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
-		return $this->user;
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param User $user
-	 *
-	 * @return $this
-	 */
-	public function setUser(User $user): self
-	{
+    /**
+     * @return null|string
+     */
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
 
-		$this->user = $user;
+    /**
+     * @param string $token
+     *
+     * @return $this
+     */
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
 
-		return $this;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getToken(): ?string
-	{
-
-		return $this->token;
-
-	}
-
-	/**
-	 * @param string $token
-	 *
-	 * @return $this
-	 */
-	public function setToken(string $token): self
-	{
-
-		$this->token = $token;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
 
 /**
- * Class SubscriptionPermissionDTO
+ * Class SubscriptionPermissionDTO.
  *
  * @package App\DTO
  *
@@ -21,37 +21,34 @@ use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
  */
 class SubscriptionPermissionDTO extends AbstractDTO
 {
+    /**
+     * @var null|SubscriptionPermissionName
+     */
+    #[Assert\NotBlank(message: 'subscriptionPermission@permissionNameNotExistOrNotEntered')]
+    public ?SubscriptionPermissionName $subscriptionPermissionName = null;
 
-	/**
-	 * @var SubscriptionPermissionName|null
-	 */
-	#[Assert\NotBlank(message: 'subscriptionPermission@permissionNameNotExistOrNotEntered')]
-	public ?SubscriptionPermissionName $subscriptionPermissionName = null;
+    /**
+     * @var null|Subscription
+     */
+    #[Assert\NotBlank(message: 'subscriptionPermission@subscriptionNotExistOrNotEnetred')]
+    public ?Subscription $subscription = null;
 
-	/**
-	 * @var Subscription|null
-	 */
-	#[Assert\NotBlank(message: 'subscriptionPermission@subscriptionNotExistOrNotEnetred')]
-	public ?Subscription $subscription = null;
+    /**
+     * @throws ReflectionException
+     * @throws ClassNotFoundException
+     *
+     * @return void
+     */
+    protected function wrapper(): void
+    {
+        $this->setEntity(SubscriptionPermission::class);
 
-	/**
-	 * @return void
-	 * @throws ReflectionException
-	 * @throws ClassNotFoundException
-	 */
-	protected function wrapper(): void
-	{
+        $this
+            ->addExpectedRequestKey('permission_name')
+            ->addExpectedRequestKey('subscription');
 
-		$this->setEntity(SubscriptionPermission::class);
-
-		$this
-			->addExpectedRequestKey('permission_name')
-			->addExpectedRequestKey('subscription');
-
-		$this
-			->addInterceptor('permission_name', SubscriptionPermissionInputPermissionNameInterceptor::class)
-			->addInterceptor('subscription', SubscriptionPermissionInputSubscriptionInterceptor::class);
-
-	}
-
+        $this
+            ->addInterceptor('permission_name', SubscriptionPermissionInputPermissionNameInterceptor::class)
+            ->addInterceptor('subscription', SubscriptionPermissionInputSubscriptionInterceptor::class);
+    }
 }

@@ -9,7 +9,7 @@ use App\Service\JwtTokenGenerator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class TokenAuthenticator
+ * Class TokenAuthenticator.
  *
  * @package App\Security
  *
@@ -17,63 +17,53 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TokenAuthenticator
 {
+    /**
+     * @param Request         $request
+     * @param ManagerRegistry $managerRegistry
+     */
+    public function __construct(Request $request, ManagerRegistry $managerRegistry)
+    {
+        $this->request = $request;
+        $this->em = $managerRegistry->getManager();
+    }
 
-	/**
-	 * @param Request         $request
-	 * @param ManagerRegistry $managerRegistry
-	 */
-	public function __construct(Request $request, ManagerRegistry $managerRegistry)
-	{
+    /**
+     * @return null|User
+     */
+    public function getUser(): ?User
+    {
+        /** @var UserRepository $repository */
+        $repository = $this->em->getRepository(User::class);
 
-		$this->request = $request;
-		$this->em = $managerRegistry->getManager();
+        return $repository->findOneBy(['id' => $this->getAccessTokenData()?->id]);
+    }
 
-	}
+    /**
+     * @return null|object
+     */
+    public function getAccessTokenData(): ?object
+    {
+        $jwtTokenGenerator = new JwtTokenGenerator();
+        $token = $this->getAccessToken();
 
-	/**
-	 * @return User|null
-	 */
-	public function getUser(): ?User
-	{
+        if (null === $token || !$decoded = $jwtTokenGenerator->decode($token, $_ENV['JWT_ACCESS_PUBLIC_KEY'])) {
+            return null;
+        }
 
-		/** @var UserRepository $repository */
-		$repository = $this->em->getRepository(User::class);
+        return $decoded;
+    }
 
-		return $repository->findOneBy(['id' => $this->getAccessTokenData()?->id]);
+    /**
+     * @return null|string
+     */
+    public function getAccessToken(): ?string
+    {
+        $header = $this->request->request->headers->get('Authorization');
 
-	}
+        if (null === $header) {
+            return null;
+        }
 
-	/**
-	 * @return object|null
-	 */
-	public function getAccessTokenData(): ?object
-	{
-
-		$jwtTokenGenerator = new JwtTokenGenerator();
-		$token = $this->getAccessToken();
-
-		if (null == $token || !$decoded = $jwtTokenGenerator->decode($token, $_ENV['JWT_ACCESS_PUBLIC_KEY'])) {
-			return null;
-		}
-
-		return $decoded;
-
-	}
-
-	/**
-	 * @return string|null
-	 */
-	public function getAccessToken(): ?string
-	{
-
-		$header = $this->request->request->headers->get('Authorization');
-
-		if (null === $header) {
-			return null;
-		}
-
-		return explode(' ', $header, 2)[1] ?? null;
-
-	}
-
+        return explode(' ', $header, 2)[1] ?? null;
+    }
 }

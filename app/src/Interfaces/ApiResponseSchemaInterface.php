@@ -5,7 +5,7 @@ namespace App\Interfaces;
 use App\Enum\ApiResponseTypeEnum;
 
 /**
- * Interfaces ApiResponseSchemaInterface
+ * Interfaces ApiResponseSchemaInterface.
  *
  * @package App\Interfaces
  *
@@ -13,20 +13,18 @@ use App\Enum\ApiResponseTypeEnum;
  */
 interface ApiResponseSchemaInterface
 {
+    /**
+     * @param ApiResponseTypeEnum $type
+     * @param string              $text
+     *
+     * @return ApiResponseSchemaInterface
+     */
+    public function setMessage(ApiResponseTypeEnum $type, string $text): self;
 
-	/**
-	 * @param ApiResponseTypeEnum $type
-	 * @param string              $text
-	 *
-	 * @return ApiResponseSchemaInterface
-	 */
-	public function setMessage(ApiResponseTypeEnum $type, string $text): ApiResponseSchemaInterface;
-
-	/**
-	 * @param array $data
-	 *
-	 * @return ApiResponseSchemaInterface
-	 */
-	public function setData(array $data): ApiResponseSchemaInterface;
-
+    /**
+     * @param array $data
+     *
+     * @return ApiResponseSchemaInterface
+     */
+    public function setData(array $data): self;
 }

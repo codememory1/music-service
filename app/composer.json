@@ -79,7 +79,8 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "fixer": "php ./vendor/bin/php-cs-fixer fix --allow-risky=yes"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -93,6 +94,7 @@
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.7",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "friendsofphp/php-cs-fixer": "^3.8",
         "hautelook/alice-bundle": "^2.10",
         "justinrainbow/json-schema": "^5.2",
         "phpunit/phpunit": "^9.5",

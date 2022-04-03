@@ -7,7 +7,7 @@ use App\Repository\LanguageRepository;
 use App\Rest\DTO\AbstractInterceptor;
 
 /**
- * Class TranslationInputLanguageInterceptor
+ * Class TranslationInputLanguageInterceptor.
  *
  * @package App\DTO\Interceptor
  *
@@ -15,18 +15,14 @@ use App\Rest\DTO\AbstractInterceptor;
  */
 class TranslationInputLanguageInterceptor extends AbstractInterceptor
 {
+    /**
+     * @inheritDoc
+     */
+    public function process(string $requestKey, mixed $requestValue): ?Language
+    {
+        /** @var LanguageRepository $languageRepository */
+        $languageRepository = $this->context->em->getRepository(Language::class);
 
-	/**
-	 * @inheritDoc
-	 */
-	public function process(string $requestKey, mixed $requestValue): ?Language
-	{
-
-		/** @var LanguageRepository $languageRepository */
-		$languageRepository = $this->context->em->getRepository(Language::class);
-
-		return $languageRepository->findOneBy(['code' => $requestValue]);
-
-	}
-
+        return $languageRepository->findOneBy(['code' => $requestValue]);
+    }
 }

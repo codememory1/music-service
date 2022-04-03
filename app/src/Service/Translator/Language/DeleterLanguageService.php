@@ -8,7 +8,7 @@ use App\Rest\Http\Response;
 use Exception;
 
 /**
- * Class DeleterLanguageService
+ * Class DeleterLanguageService.
  *
  * @package App\Service\Translator\Language
  *
@@ -16,26 +16,23 @@ use Exception;
  */
 class DeleterLanguageService extends DeleterCRUD
 {
+    /**
+     * @param int $id
+     *
+     * @throws Exception
+     *
+     * @return Response
+     */
+    public function delete(int $id): Response
+    {
+        $this->translationKeyNotExist = 'lang@langNotExist';
 
-	/**
-	 * @param int $id
-	 *
-	 * @return Response
-	 * @throws Exception
-	 */
-	public function delete(int $id): Response
-	{
+        $deletedEntity = $this->make(Language::class, ['id' => $id]);
 
-		$this->translationKeyNotExist = 'lang@langNotExist';
+        if ($deletedEntity instanceof Response) {
+            return $deletedEntity;
+        }
 
-		$deletedEntity = $this->make(Language::class, ['id' => $id]);
-
-		if ($deletedEntity instanceof Response) {
-			return $deletedEntity;
-		}
-
-		return $this->manager->remove($deletedEntity, 'lang@successDelete');
-
-	}
-
+        return $this->manager->remove($deletedEntity, 'lang@successDelete');
+    }
 }

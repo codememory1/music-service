@@ -7,7 +7,7 @@ use App\Rest\DTO\AbstractDTO;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TranslationKeyDTO
+ * Class TranslationKeyDTO.
  *
  * @package App\Dto
  *
@@ -15,24 +15,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TranslationKeyDTO extends AbstractDTO
 {
+    /**
+     * @var null|string
+     */
+    #[Assert\NotBlank(message: 'translationKey@nameIsRequired')]
+    #[Assert\Length(max: 255, maxMessage: 'translationKey@nameMaxLength')]
+    public ?string $name = null;
 
-	/**
-	 * @var string|null
-	 */
-	#[Assert\NotBlank(message: 'translationKey@nameIsRequired')]
-	#[Assert\Length(max: 255, maxMessage: 'translationKey@nameMaxLength')]
-	public ?string $name = null;
+    /**
+     * @inheritDoc
+     */
+    protected function wrapper(): void
+    {
+        $this->setEntity(TranslationKey::class);
 
-	/**
-	 * @inheritDoc
-	 */
-	protected function wrapper(): void
-	{
-
-		$this->setEntity(TranslationKey::class);
-
-		$this->addExpectedRequestKey('name');
-
-	}
-
+        $this->addExpectedRequestKey('name');
+    }
 }

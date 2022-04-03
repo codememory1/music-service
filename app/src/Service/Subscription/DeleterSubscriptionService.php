@@ -8,7 +8,7 @@ use App\Rest\Http\Response;
 use Exception;
 
 /**
- * Class DeleterSubscriptionService
+ * Class DeleterSubscriptionService.
  *
  * @package App\Service\Subscription
  *
@@ -16,26 +16,23 @@ use Exception;
  */
 class DeleterSubscriptionService extends DeleterCRUD
 {
+    /**
+     * @param int $id
+     *
+     * @throws Exception
+     *
+     * @return Response
+     */
+    public function delete(int $id): Response
+    {
+        $this->translationKeyNotExist = 'subscription@notExist';
 
-	/**
-	 * @param int $id
-	 *
-	 * @return Response
-	 * @throws Exception
-	 */
-	public function delete(int $id): Response
-	{
+        $deletedEntity = $this->make(Subscription::class, ['id' => $id]);
 
-		$this->translationKeyNotExist = 'subscription@notExist';
+        if ($deletedEntity instanceof Response) {
+            return $deletedEntity;
+        }
 
-		$deletedEntity = $this->make(Subscription::class, ['id' => $id]);
-
-		if ($deletedEntity instanceof Response) {
-			return $deletedEntity;
-		}
-
-		return $this->manager->remove($deletedEntity, 'subscription@successDelete');
-
-	}
-
+        return $this->manager->remove($deletedEntity, 'subscription@successDelete');
+    }
 }

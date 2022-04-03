@@ -6,7 +6,7 @@ use JetBrains\PhpStorm\Pure;
 use ReflectionAttribute;
 
 /**
- * Class AttributeData
+ * Class AttributeData.
  *
  * @package App\Rest\ClassHelper
  *
@@ -14,64 +14,54 @@ use ReflectionAttribute;
  */
 class AttributeData
 {
+    /**
+     * @var ReflectionAttribute
+     */
+    public readonly ReflectionAttribute $reflectionAttribute;
 
-	/**
-	 * @var ReflectionAttribute
-	 */
-	public readonly ReflectionAttribute $reflectionAttribute;
+    /**
+     * @var array
+     */
+    public readonly array $arguments;
 
-	/**
-	 * @var array
-	 */
-	public readonly array $arguments;
+    /**
+     * @param ReflectionAttribute $reflectionAttribute
+     */
+    #[Pure]
+    public function __construct(ReflectionAttribute $reflectionAttribute)
+    {
+        $this->reflectionAttribute = $reflectionAttribute;
+        $this->attributeArguments = $this->reflectionAttribute->getArguments();
+    }
 
-	/**
-	 * @param ReflectionAttribute $reflectionAttribute
-	 */
-	#[Pure]
-	public function __construct(ReflectionAttribute $reflectionAttribute)
-	{
+    /**
+     * @param array $arguments
+     *
+     * @return object
+     */
+    public function instance(array $arguments = []): object
+    {
+        $namespace = $this->getNamespace();
 
-		$this->reflectionAttribute = $reflectionAttribute;
-		$this->attributeArguments = $this->reflectionAttribute->getArguments();
+        return new $namespace(...$arguments);
+    }
 
-	}
+    /**
+     * @return string
+     */
+    #[Pure]
+    public function getNamespace(): string
+    {
+        return $this->reflectionAttribute->getName();
+    }
 
-	/**
-	 * @param array $arguments
-	 *
-	 * @return object
-	 */
-	public function instance(array $arguments = []): object
-	{
-
-		$namespace = $this->getNamespace();
-
-		return new $namespace(...$arguments);
-
-	}
-
-	/**
-	 * @return string
-	 */
-	#[Pure]
-	public function getNamespace(): string
-	{
-
-		return $this->reflectionAttribute->getName();
-
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return mixed
-	 */
-	public function __get(string $name): mixed
-	{
-
-		return $this->arguments[$name];
-
-	}
-
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function __get(string $name): mixed
+    {
+        return $this->arguments[$name];
+    }
 }

@@ -3,7 +3,7 @@
 namespace App\Trait\Entity;
 
 /**
- * Trait TimestampTrait
+ * Trait TimestampTrait.
  *
  * @package App\Trait\Entity
  *
@@ -11,8 +11,7 @@ namespace App\Trait\Entity;
  */
 trait TimestampTrait
 {
-
     use CreatedAtTrait;
-    use UpdatedAtTrait;
 
+    use UpdatedAtTrait;
 }

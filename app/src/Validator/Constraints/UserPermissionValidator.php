@@ -17,7 +17,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Class UserPermissionValidator
+ * Class UserPermissionValidator.
  *
  * @package App\Validator\Constraints
  *
@@ -25,14 +25,13 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class UserPermissionValidator extends ConstraintValidator
 {
-
     /**
      * @var ManagerRegistry
      */
     private ManagerRegistry $managerRegistry;
 
     /**
-     * @var Request|null
+     * @var null|Request
      */
     private ?Request $request;
 
@@ -42,19 +41,17 @@ class UserPermissionValidator extends ConstraintValidator
      */
     public function __construct(ManagerRegistry $managerRegistry, RequestStack $requestStack)
     {
-
         $this->managerRegistry = $managerRegistry;
         $this->request = $requestStack->getCurrentRequest();
-
     }
 
     /**
      * @inheritDoc
+     *
      * @throws ReflectionException
      */
-    public function validate(mixed $value, Constraint $constraint)
+    public function validate(mixed $value, Constraint $constraint): void
     {
-
         $constraintReflection = new ReflectionClass($value);
 
         if (!$constraintReflection->implementsInterface(EntityInterface::class)) {
@@ -71,9 +68,9 @@ class UserPermissionValidator extends ConstraintValidator
             $authorizedUserRole = $authorizedUser->getRole();
 
             // Check that the role is user and the data user is the owner of this entry
-            if ($authorizedUserRole->getKey() === RoleEnum::USER &&
-                null !== $manipulatedRecordUser &&
-                $manipulatedRecordUser->getId() === $authorizedUser->getId()) {
+            if (RoleEnum::USER === $authorizedUserRole->getKey()
+                && null !== $manipulatedRecordUser
+                && $manipulatedRecordUser->getId() === $authorizedUser->getId()) {
                 $isManipulate = true;
             }
 
@@ -86,8 +83,8 @@ class UserPermissionValidator extends ConstraintValidator
                 ->buildViolation($constraint->message)
                 ->addViolation();
         }
-
     }
+
     /**
      * @param User       $authorizedUser
      * @param Constraint $constraint
@@ -97,11 +94,10 @@ class UserPermissionValidator extends ConstraintValidator
      */
     private function isNotUserRole(User $authorizedUser, Constraint $constraint, bool &$isManipulate): void
     {
-
         $authorizedUserRole = $authorizedUser->getRole();
         $authorizedUserPermissions = $authorizedUserRole->getRolePermissions();
 
-        if ($authorizedUserRole->getKey() !== RoleEnum::USER) {
+        if (RoleEnum::USER !== $authorizedUserRole->getKey()) {
             /** @var RolePermission $authorizedUserPermission */
             foreach ($authorizedUserPermissions as $authorizedUserPermission) {
                 $permissionName = $authorizedUserPermission->getRolePermissionName()->getKey();
@@ -111,7 +107,5 @@ class UserPermissionValidator extends ConstraintValidator
                 }
             }
         }
-
     }
-
 }

@@ -7,7 +7,7 @@ use App\Repository\AlbumTypeRepository;
 use App\Rest\DTO\AbstractInterceptor;
 
 /**
- * Class AlbumInputTypeInterceptor
+ * Class AlbumInputTypeInterceptor.
  *
  * @package App\DTO\Interceptor
  *
@@ -15,18 +15,14 @@ use App\Rest\DTO\AbstractInterceptor;
  */
 class AlbumInputTypeInterceptor extends AbstractInterceptor
 {
+    /**
+     * @inheritDoc
+     */
+    public function process(string $requestKey, mixed $requestValue): ?AlbumType
+    {
+        /** @var AlbumTypeRepository $albumTypeRepository */
+        $albumTypeRepository = $this->context->em->getRepository(AlbumType::class);
 
-	/**
-	 * @inheritDoc
-	 */
-	public function process(string $requestKey, mixed $requestValue): ?AlbumType
-	{
-
-		/** @var AlbumTypeRepository $albumTypeRepository */
-		$albumTypeRepository = $this->context->em->getRepository(AlbumType::class);
-
-		return $albumTypeRepository->find($requestValue);
-
-	}
-
+        return $albumTypeRepository->find($requestValue);
+    }
 }

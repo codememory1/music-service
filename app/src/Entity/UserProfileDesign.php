@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class UserProfileDesign
+ * Class UserProfileDesign.
  *
  * @package App\Entity
  *
@@ -22,75 +22,66 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('user_profile_designs')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(
-	'userProfile',
-	'userProfileDesign@designExist',
-	payload: ApiResponseTypeEnum::CHECK_EXIST
+    'userProfile',
+    'userProfileDesign@designExist',
+    payload: ApiResponseTypeEnum::CHECK_EXIST
 )]
 class UserProfileDesign implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var UserProfile|null
-	 */
-	#[ORM\OneToOne(inversedBy: 'userProfileDesign', targetEntity: UserProfile::class)]
-	#[ORM\JoinColumn(unique: true, nullable: false)]
-	private ?UserProfile $userProfile = null;
+    /**
+     * @var null|UserProfile
+     */
+    #[ORM\OneToOne(inversedBy: 'userProfileDesign', targetEntity: UserProfile::class)]
+    #[ORM\JoinColumn(unique: true, nullable: false)]
+    private ?UserProfile $userProfile = null;
 
-	/**
-	 * @var array
-	 */
-	#[ORM\Column(type: Types::JSON)]
-	private array $payload = [];
+    /**
+     * @var array
+     */
+    #[ORM\Column(type: Types::JSON)]
+    private array $payload = [];
 
-	/**
-	 * @return UserProfile|null
-	 */
-	public function getUserProfile(): ?UserProfile
-	{
+    /**
+     * @return null|UserProfile
+     */
+    public function getUserProfile(): ?UserProfile
+    {
+        return $this->userProfile;
+    }
 
-		return $this->userProfile;
+    /**
+     * @param UserProfile $userProfile
+     *
+     * @return $this
+     */
+    public function setUserProfile(UserProfile $userProfile): self
+    {
+        $this->userProfile = $userProfile;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param UserProfile $userProfile
-	 *
-	 * @return $this
-	 */
-	public function setUserProfile(UserProfile $userProfile): self
-	{
+    /**
+     * @return null|array
+     */
+    public function getPayload(): ?array
+    {
+        return $this->payload;
+    }
 
-		$this->userProfile = $userProfile;
+    /**
+     * @param array $payload
+     *
+     * @return $this
+     */
+    public function setPayload(array $payload): self
+    {
+        $this->payload = $payload;
 
-		return $this;
-
-	}
-
-	/**
-	 * @return array|null
-	 */
-	public function getPayload(): ?array
-	{
-
-		return $this->payload;
-
-	}
-
-	/**
-	 * @param array $payload
-	 *
-	 * @return $this
-	 */
-	public function setPayload(array $payload): self
-	{
-
-		$this->payload = $payload;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

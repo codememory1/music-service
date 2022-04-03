@@ -7,7 +7,7 @@ use App\Repository\SubscriptionRepository;
 use App\Rest\DTO\AbstractInterceptor;
 
 /**
- * Class SubscriptionPermissionInputSubscriptionInterceptor
+ * Class SubscriptionPermissionInputSubscriptionInterceptor.
  *
  * @package App\DTO\Interceptor
  *
@@ -15,18 +15,14 @@ use App\Rest\DTO\AbstractInterceptor;
  */
 class SubscriptionPermissionInputSubscriptionInterceptor extends AbstractInterceptor
 {
+    /**
+     * @inheritDoc
+     */
+    public function process(string $requestKey, mixed $requestValue): ?Subscription
+    {
+        /** @var SubscriptionRepository $subscriptionRepository */
+        $subscriptionRepository = $this->context->em->getRepository(Subscription::class);
 
-	/**
-	 * @inheritDoc
-	 */
-	public function process(string $requestKey, mixed $requestValue): ?Subscription
-	{
-
-		/** @var SubscriptionRepository $subscriptionRepository */
-		$subscriptionRepository = $this->context->em->getRepository(Subscription::class);
-
-		return $subscriptionRepository->find($requestValue);
-
-	}
-
+        return $subscriptionRepository->find($requestValue);
+    }
 }

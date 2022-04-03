@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class AlbumTypeController
+ * Class AlbumTypeController.
  *
  * @package App\Controller\Api\V1
  *
@@ -27,77 +27,70 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/album/type')]
 class AlbumTypeController extends ApiController
 {
+    /**
+     * @return JsonResponse
+     */
+    #[Route('/all', methods: 'GET')]
+    #[Auth]
+    #[UserRolePermission(permission: RolePermissionNameEnum::SHOW_ALBUM_TYPES)]
+    public function all(): JsonResponse
+    {
+        return $this->showAllFromDatabase(
+            AlbumType::class,
+            AlbumTypeDTO::class
+        );
+    }
 
-	/**
-	 * @return JsonResponse
-	 */
-	#[Route('/all', methods: 'GET')]
-	#[Auth]
-	#[UserRolePermission(permission: RolePermissionNameEnum::SHOW_ALBUM_TYPES)]
-	public function all(): JsonResponse
-	{
+    /**
+     * @param CreatorAlbumTypeService $creatorAlbumTypeService
+     * @param Request                 $request
+     *
+     * @throws UndefinedClassForDTOException
+     *
+     * @return JsonResponse
+     */
+    #[Route('/create', methods: 'POST')]
+    #[Auth]
+    #[UserRolePermission(permission: RolePermissionNameEnum::CREATE_ALBUM_TYPE)]
+    public function create(CreatorAlbumTypeService $creatorAlbumTypeService, Request $request): JsonResponse
+    {
+        return $creatorAlbumTypeService
+            ->create(new AlbumTypeDTO($request, $this->managerRegistry))
+            ->make();
+    }
 
-		return $this->showAllFromDatabase(
-			AlbumType::class,
-			AlbumTypeDTO::class
-		);
+    /**
+     * @param UpdaterAlbumTypeService $updaterAlbumTypeService
+     * @param Request                 $request
+     * @param int                     $id
+     *
+     * @throws UndefinedClassForDTOException
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{id<\d+>}/edit', methods: 'PUT')]
+    #[Auth]
+    #[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_ALBUM_TYPE)]
+    public function update(UpdaterAlbumTypeService $updaterAlbumTypeService, Request $request, int $id): JsonResponse
+    {
+        return $updaterAlbumTypeService
+            ->update(new AlbumTypeDTO($request, $this->managerRegistry), $id)
+            ->make();
+    }
 
-	}
-
-	/**
-	 * @param CreatorAlbumTypeService $creatorAlbumTypeService
-	 * @param Request                 $request
-	 *
-	 * @return JsonResponse
-	 * @throws UndefinedClassForDTOException
-	 */
-	#[Route('/create', methods: 'POST')]
-	#[Auth]
-	#[UserRolePermission(permission: RolePermissionNameEnum::CREATE_ALBUM_TYPE)]
-	public function create(CreatorAlbumTypeService $creatorAlbumTypeService, Request $request): JsonResponse
-	{
-
-		return $creatorAlbumTypeService
-			->create(new AlbumTypeDTO($request, $this->managerRegistry))
-			->make();
-
-	}
-
-	/**
-	 * @param UpdaterAlbumTypeService $updaterAlbumTypeService
-	 * @param Request                 $request
-	 * @param int                     $id
-	 *
-	 * @return JsonResponse
-	 * @throws UndefinedClassForDTOException
-	 */
-	#[Route('/{id<\d+>}/edit', methods: 'PUT')]
-	#[Auth]
-	#[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_ALBUM_TYPE)]
-	public function update(UpdaterAlbumTypeService $updaterAlbumTypeService, Request $request, int $id): JsonResponse
-	{
-
-		return $updaterAlbumTypeService
-			->update(new AlbumTypeDTO($request, $this->managerRegistry), $id)
-			->make();
-
-	}
-
-	/**
-	 * @param DeleterAlbumTypeService $deleterAlbumTypeService
-	 * @param int                     $id
-	 *
-	 * @return JsonResponse
-	 * @throws Exception
-	 */
-	#[Route('/{id<\d+>}/delete', methods: 'DELETE')]
-	#[Auth]
-	#[UserRolePermission(permission: RolePermissionNameEnum::DELETE_ALBUM_TYPE)]
-	public function delete(DeleterAlbumTypeService $deleterAlbumTypeService, int $id): JsonResponse
-	{
-
-		return $deleterAlbumTypeService->delete($id)->make();
-
-	}
-
+    /**
+     * @param DeleterAlbumTypeService $deleterAlbumTypeService
+     * @param int                     $id
+     *
+     * @throws Exception
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{id<\d+>}/delete', methods: 'DELETE')]
+    #[Auth]
+    #[UserRolePermission(permission: RolePermissionNameEnum::DELETE_ALBUM_TYPE)]
+    public function delete(DeleterAlbumTypeService $deleterAlbumTypeService, int $id): JsonResponse
+    {
+        return $deleterAlbumTypeService->delete($id)->make();
+    }
 }

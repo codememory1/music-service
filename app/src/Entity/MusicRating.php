@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class MusicRating
+ * Class MusicRating.
  *
  * @package App\Entity
  *
@@ -22,106 +22,93 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('music_ratings')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(
-	['music', 'user'],
-	'musicRating@ratingAdded',
-	payload: ApiResponseTypeEnum::CHECK_EXIST
+    ['music', 'user'],
+    'musicRating@ratingAdded',
+    payload: ApiResponseTypeEnum::CHECK_EXIST
 )]
 class MusicRating implements EntityInterface
 {
+    use IdentifierTrait;
 
-	use IdentifierTrait;
-	use TimestampTrait;
+    use TimestampTrait;
 
-	/**
-	 * @var string|null
-	 */
-	#[ORM\Column(type: Types::STRING, length: 50)]
-	private ?string $type = null;
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 50)]
+    private ?string $type = null;
 
-	/**
-	 * @var Music|null
-	 */
-	#[ORM\ManyToOne(targetEntity: Music::class, inversedBy: 'musicRatings')]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?Music $music = null;
+    /**
+     * @var null|Music
+     */
+    #[ORM\ManyToOne(targetEntity: Music::class, inversedBy: 'musicRatings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Music $music = null;
 
-	/**
-	 * @var User|null
-	 */
-	#[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'musicRatings')]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?User $user = null;
+    /**
+     * @var null|User
+     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'musicRatings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
-	/**
-	 * @return string|null
-	 */
-	public function getType(): ?string
-	{
+    /**
+     * @return null|string
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
 
-		return $this->type;
+    /**
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
-	}
+        return $this;
+    }
 
-	/**
-	 * @param string $type
-	 *
-	 * @return $this
-	 */
-	public function setType(string $type): self
-	{
+    /**
+     * @return null|Music
+     */
+    public function getMusic(): ?Music
+    {
+        return $this->music;
+    }
 
-		$this->type = $type;
+    /**
+     * @param null|Music $music
+     *
+     * @return $this
+     */
+    public function setMusic(?Music $music): self
+    {
+        $this->music = $music;
 
-		return $this;
+        return $this;
+    }
 
-	}
+    /**
+     * @return null|User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
-	/**
-	 * @return Music|null
-	 */
-	public function getMusic(): ?Music
-	{
+    /**
+     * @param null|User $user
+     *
+     * @return $this
+     */
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
-		return $this->music;
-
-	}
-
-	/**
-	 * @param Music|null $music
-	 *
-	 * @return $this
-	 */
-	public function setMusic(?Music $music): self
-	{
-
-		$this->music = $music;
-
-		return $this;
-
-	}
-
-	/**
-	 * @return User|null
-	 */
-	public function getUser(): ?User
-	{
-
-		return $this->user;
-
-	}
-
-	/**
-	 * @param User|null $user
-	 *
-	 * @return $this
-	 */
-	public function setUser(?User $user): self
-	{
-
-		$this->user = $user;
-
-		return $this;
-
-	}
-
+        return $this;
+    }
 }

@@ -12,7 +12,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 
 /**
- * Class UserIdentificationService
+ * Class UserIdentificationService.
  *
  * @package App\Service\Security\Auth
  *
@@ -20,32 +20,29 @@ use Exception;
  */
 class UserIdentificationService extends ApiService
 {
+    /**
+     * @param AuthorizationDTO $authorizationDTO
+     *
+     * @throws NonUniqueResultException
+     * @throws Exception
+     *
+     * @return Response|User
+     */
+    public function identify(AuthorizationDTO $authorizationDTO): Response|User
+    {
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->em->getRepository(User::class);
 
-	/**
-	 * @param AuthorizationDTO $authorizationDTO
-	 *
-	 * @return Response|User
-	 * @throws NonUniqueResultException
-	 * @throws Exception
-	 */
-	public function identify(AuthorizationDTO $authorizationDTO): Response|User
-	{
+        // Checking the existence of a user by email or username
+        if (null === $finedUser = $userRepository->findByLogin($authorizationDTO->login)) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_EXIST,
+                $this->getTranslation('user@failedToIdentityUser')
+            );
 
-		/** @var UserRepository $userRepository */
-		$userRepository = $this->em->getRepository(User::class);
+            return new Response($this->apiResponseSchema, 'error', 404);
+        }
 
-		// Checking the existence of a user by email or username
-		if (null === $finedUser = $userRepository->findByLogin($authorizationDTO->login)) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_EXIST,
-				$this->getTranslation('user@failedToIdentityUser')
-			);
-
-			return new Response($this->apiResponseSchema, 'error', 404);
-		}
-
-		return $finedUser;
-
-	}
-
+        return $finedUser;
+    }
 }

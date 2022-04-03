@@ -11,7 +11,7 @@ use App\Service\PasswordHashingService;
 use Exception;
 
 /**
- * Class UserAuthenticationService
+ * Class UserAuthenticationService.
  *
  * @package App\Service\Security\Auth
  *
@@ -19,44 +19,39 @@ use Exception;
  */
 class UserAuthenticationService extends ApiService
 {
+    /**
+     * @param User             $identifiedUser
+     * @param AuthorizationDTO $authorizationDTO
+     *
+     * @throws Exception
+     *
+     * @return Response|User
+     */
+    public function authenticate(User $identifiedUser, AuthorizationDTO $authorizationDTO): Response|User
+    {
+        // Check compare password with identified user
+        if (!$this->compare($identifiedUser, $authorizationDTO)) {
+            $this->apiResponseSchema->setMessage(
+                ApiResponseTypeEnum::CHECK_INCORRECT,
+                $this->getTranslation('user@passwordIsIncorrect')
+            );
 
-	/**
-	 * @param User             $identifiedUser
-	 * @param AuthorizationDTO $authorizationDTO
-	 *
-	 * @return Response|User
-	 * @throws Exception
-	 */
-	public function authenticate(User $identifiedUser, AuthorizationDTO $authorizationDTO): Response|User
-	{
+            return new Response($this->apiResponseSchema, 'error', 400);
+        }
 
-		// Check compare password with identified user
-		if (!$this->compare($identifiedUser, $authorizationDTO)) {
-			$this->apiResponseSchema->setMessage(
-				ApiResponseTypeEnum::CHECK_INCORRECT,
-				$this->getTranslation('user@passwordIsIncorrect')
-			);
+        return $identifiedUser;
+    }
 
-			return new Response($this->apiResponseSchema, 'error', 400);
-		}
+    /**
+     * @param User             $identifiedUser
+     * @param AuthorizationDTO $authorizationDTO
+     *
+     * @return bool
+     */
+    public function compare(User $identifiedUser, AuthorizationDTO $authorizationDTO): bool
+    {
+        $passwordHashingService = new PasswordHashingService();
 
-		return $identifiedUser;
-
-	}
-
-	/**
-	 * @param User             $identifiedUser
-	 * @param AuthorizationDTO $authorizationDTO
-	 *
-	 * @return bool
-	 */
-	public function compare(User $identifiedUser, AuthorizationDTO $authorizationDTO): bool
-	{
-
-		$passwordHashingService = new PasswordHashingService();
-
-		return $passwordHashingService->compare($authorizationDTO->password, $identifiedUser->getPassword());
-
-	}
-
+        return $passwordHashingService->compare($authorizationDTO->password, $identifiedUser->getPassword());
+    }
 }

@@ -3,7 +3,7 @@
 namespace App\Enum;
 
 /**
- * Enum StatusEnum
+ * Enum StatusEnum.
  *
  * @package App\Enum
  *
@@ -11,7 +11,6 @@ namespace App\Enum;
  */
 enum StatusEnum: int
 {
-
     case NOT_ACTIVE = 0;
     case ACTIVE = 1;
     case BLOCKED = 2;
@@ -22,7 +21,6 @@ enum StatusEnum: int
      */
     public static function values(): array
     {
-
         $values = [];
 
         foreach (self::cases() as $case) {
@@ -30,7 +28,5 @@ enum StatusEnum: int
         }
 
         return $values;
-
     }
-
 }
