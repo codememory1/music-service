@@ -1,0 +1,13 @@
+api_v1:
+    resource: ../src/Controller/Api/V1/*Controller.php
+    type: annotation
+    prefix: /api/v1/{_locale}
+
+api_admin_v1:
+    resource: ../src/Controller/Api/V1/Admin/*Controller.php
+    type: annotation
+    prefix: /api/v1/{_locale}/admin
+
+kernel:
+    resource: ../src/Kernel.php
+    type: annotation

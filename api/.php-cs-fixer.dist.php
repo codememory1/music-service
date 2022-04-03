@@ -2,7 +2,6 @@
 
 $finder = (new PhpCsFixer\Finder())
 	->in(__DIR__)
-	->
 	->exclude(['var', 'vendor', 'public']);
 
 return (new PhpCsFixer\Config())
