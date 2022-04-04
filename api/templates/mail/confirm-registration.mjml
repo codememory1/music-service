@@ -1,0 +1,15 @@
+<mjml>
+    <mj-body>
+        <mj-section>
+            <mj-column>
+                <mj-text>
+                    <h1>Подверждение регистрации</h1>
+                </mj-text>
+
+                <mj-text>
+                    <a href="http://music-service/activate-account/{{ token }}">Подтвердить регистрацию</a>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

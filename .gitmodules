@@ -1,0 +1,3 @@
+[submodule "frontend/fronted"]
+	path = frontend/fronted
+	url = git@github.com:codememory1/music-service.git

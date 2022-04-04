@@ -1,0 +1,96 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    jwt.secrets: "config/secrets/"
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        autowire: true
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+            - '../src/Enum/'
+            - '../src/Service/'
+            - '../src/Rest/'
+
+    Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
+
+    Aws\S3\S3Client:
+        factory: [Aws\S3\S3Client, factory]
+        arguments:
+            -
+                credentials: {key: '%env(AWS_S3_KEY)%', secret: '%env(AWS_S3_SECRET)%'}
+                region: '%env(AWS_S3_REGION)%'
+                version: '%env(AWS_S3_VERSION)%'
+                endpoint: "s3:9000"
+                use_path_style_endpoint: true
+                disable_host_prefix_injection: true
+    Liip\ImagineBundle\Imagine\Cache\Resolver\AwsS3Resolver:
+        arguments:
+            - '@acme.amazon_s3'
+            - '%env(AWS_S3_BUCKET)%'
+        tags:
+            - {name: liip_imagine.cache.resolver, resolver: aws_s3_resolver}
+
+    # Rest services
+    App\Rest\Http\Request:
+        public: true
+
+    App\Rest\Http\ApiResponseSchema:
+        public: true
+
+    App\Rest\Translator:
+        public: true
+
+    App\Rest\ApiManager:
+        public: true
+
+    App\Rest\Validator\Validator:
+        public: true
+
+    App\Rest\Http\ResponseCollection:
+        public: true
+
+    # All Services
+    App\Service\:
+        resource: '../src/Service/'
+        public: true
+
+    App\DTO\:
+        resource: '../src/DTO/*DTO.php'
+        public: true
+
+    # Event Subscribers
+    App\EventSubscriber\UserRegistration\SendConfirmationSubscriber:
+        tags:
+            - {name: kernel.event_subscriber, event: user.registration}
+    App\EventSubscriber\UserRegistration\CreateActivationTokenSubscriber:
+        tags:
+            - { name: kernel.event_subscriber, event: user.registration }
+
+    # Event Listeners
+
+    # Commands
+    App\Command\GenerateJwtKeysCommand:
+        tags:
+            - {name: console.command}
+
+    # Resolvers
+
+    # Annotation
+    App\EventListener\AnnotationListener:
+        tags:
+            - {name: kernel.event_listener, event: kernel.controller, method: onKernelController}

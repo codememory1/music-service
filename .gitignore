@@ -9,3 +9,4 @@
 /app/.env.test
 
 /app/.phpunit.result.cache
+.DS_Store

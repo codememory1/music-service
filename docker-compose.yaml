@@ -2,9 +2,8 @@ version: '3'
 
 services:
   # Application php8.0 and symfony
-  app:
-    container_name: app
-    platform: linux/amd64
+  api:
+    container_name: api
     build:
       context: ./
       dockerfile: "${DEV_PATH}/php${PHP_VERSION}-fpm/Dockerfile"
@@ -17,18 +16,19 @@ services:
     links:
       - mysql
       - redis
+      - s3
 
-  # Database MySQL
+  # Database mysql
   mysql:
     container_name: mysql
     image: mysql:8.0
     restart: unless-stopped
     platform: linux/amd64
     environment:
-      MYSQL_USER: "${MYSQL_USER}"
-      MYSQL_PASSWORD: "${MYSQL_USER_PASSWORD}"
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_USER_PASSWORD}"
-      MYSQL_DATABASE: "${MYSQL_DBNAME}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${DB_NAME}"
     ports:
       - "3306:3306"
     volumes:
@@ -59,4 +59,36 @@ services:
       - "${DEV_PATH}/nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "${APP_PATH}:${WORKDIR}"
     links:
-      - app
+      - api
+      - rabbitmq
+
+  # Minio s3
+  s3:
+    container_name: s3
+    image: minio/minio
+    expose:
+      - "9001"
+    ports:
+      - "9001:9001"
+    volumes:
+      - ./data/minio/minio:/data
+    environment:
+      MINIO_ACCESS_KEY: R70CFWGEcEVikImeVguj
+      MINIO_SECRET_KEY: 9UrQj13Fjgcll0ocJI9NdN7Akl4bLCeS1BLVdo9E
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+      MINIO_DOMAIN: s3:9000
+    command: server /data --console-address ":9001"
+
+  # Broker
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: 4t9uYM6X6p
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - "./data/rabbitmq/:/var/lib/rabbitmq/"

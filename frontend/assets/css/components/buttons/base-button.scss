@@ -1,0 +1,24 @@
+@import "../../variables";
+@import "../../mixins/button";
+
+.button {
+  line-height: 36px;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background-color 0.3s ease-in-out;
+
+  // Background and hover
+  // class: bg--{name}
+  @include buttonBackground("accent", $accent, #fff);
+  @include buttonBackground("red", $red, #fff);
+  @include buttonBackground("blue", $blue, #fff);
+
+  // Without background with hover
+  // class: hover-bg--{name}
+  @include withoutBackgroundWithHover("light-dark-red", $red, $light-dark);
+  @include withoutBackgroundWithHover("accent-white", #fff, $accent);
+  @include withoutBackgroundWithHover("blue-white", #fff, $blue);
+  @include withoutBackgroundWithHover("red-white", #fff, $red);
+}

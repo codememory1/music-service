@@ -1,0 +1,57 @@
+@import "../../variables";
+
+.tooltip {
+  z-index: 99;
+  transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  top: -7px!important;
+
+  // Blocks
+  &-inner {
+    position: relative;
+    background-color: darken($light-dark, 5%);
+    padding: 4px 7px;
+    color: #fff;
+    border-radius: 5px;
+  }
+
+  &-arrow {
+    width: 0;
+    height: 0;
+    position: absolute;
+    z-index: 1;
+    margin-left: 1px;
+  }
+
+  // Attributes
+  &[x-placement="bottom"] {
+    .tooltip-arrow {
+      border: 7px solid transparent;
+      border-bottom: 7px solid darken($light-dark, 5%);
+      top: -12px;
+    }
+  }
+
+  &[x-placement="top"] {
+    .tooltip-arrow {
+      border: 7px solid transparent;
+      border-top: 7px solid darken($light-dark, 5%);
+      bottom: -12px;
+    }
+  }
+
+  &[aria-hidden="true"] {
+    transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &[aria-hidden="false"] {
+    transition: visibility 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.tooltip.accent > div.tooltip-inner {
+  background-color: $accent;
+}

@@ -1,0 +1,52 @@
+// Flex classes
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-x-center {
+  justify-content: center;
+}
+
+.flex-y-center {
+  align-items: center;
+}
+
+// Grid classes
+.grid {
+  display: grid;
+}
+
+// Position classes
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+// Translate classes
+.translate-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &-x {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &-y {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
