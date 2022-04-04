@@ -18,7 +18,7 @@ class UserRole
     public readonly array $keys;
 
     /**
-     * @param array $keys
+     * @param array|string $keys
      */
     public function __construct(array|string $keys)
     {

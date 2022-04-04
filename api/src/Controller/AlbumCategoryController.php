@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Controller\Api\V1;
+namespace App\Controller;
 
 use App\Annotation\Auth;
 use App\Annotation\UserRolePermission;
-use App\Controller\Api\ApiController;
 use App\DTO\AlbumCategoryDTO;
 use App\Entity\AlbumCategory;
 use App\Enum\RolePermissionNameEnum;
-use App\Rest\Http\Request;
+use App\Rest\ApiController;
 use App\Service\Album\Category\CreatorAlbumCategoryService;
 use App\Service\Album\Category\DeleterAlbumCategoryService;
 use App\Service\Album\Category\UpdaterAlbumCategoryService;
@@ -19,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class AlbumCategoryController.
  *
- * @package App\Controller\Api\V1
+ * @package App\Controller
  *
  * @author  Codememory
  */
@@ -42,23 +41,21 @@ class AlbumCategoryController extends ApiController
 
     /**
      * @param CreatorAlbumCategoryService $creatorAlbumCategoryService
-     * @param Request                     $request
+     * @param AlbumCategoryDTO            $albumCategoryDTO
      *
      * @return JsonResponse
      */
     #[Route('/create', methods: 'POST')]
     #[Auth]
     #[UserRolePermission(permission: RolePermissionNameEnum::CREATE_ALBUM_CATEGORY)]
-    public function create(CreatorAlbumCategoryService $creatorAlbumCategoryService, Request $request): JsonResponse
+    public function create(CreatorAlbumCategoryService $creatorAlbumCategoryService, AlbumCategoryDTO $albumCategoryDTO): JsonResponse
     {
-        return $creatorAlbumCategoryService
-            ->create(new AlbumCategoryDTO($request, $this->managerRegistry))
-            ->make();
+        return $creatorAlbumCategoryService->create($albumCategoryDTO)->make();
     }
 
     /**
      * @param UpdaterAlbumCategoryService $updaterAlbumCategoryService
-     * @param Request                     $request
+     * @param AlbumCategoryDTO            $albumCategoryDTO
      * @param int                         $id
      *
      * @return JsonResponse
@@ -66,11 +63,9 @@ class AlbumCategoryController extends ApiController
     #[Route('/{id<\d+>}/edit', methods: 'PUT')]
     #[Auth]
     #[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_ALBUM_CATEGORY)]
-    public function update(UpdaterAlbumCategoryService $updaterAlbumCategoryService, Request $request, int $id): JsonResponse
+    public function update(UpdaterAlbumCategoryService $updaterAlbumCategoryService, AlbumCategoryDTO $albumCategoryDTO, int $id): JsonResponse
     {
-        return $updaterAlbumCategoryService
-            ->update(new AlbumCategoryDTO($request, $this->managerRegistry), $id)
-            ->make();
+        return $updaterAlbumCategoryService->update($albumCategoryDTO, $id)->make();
     }
 
     /**

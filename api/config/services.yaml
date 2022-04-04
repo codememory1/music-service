@@ -61,9 +61,16 @@ services:
     App\Rest\Validator\Validator:
         public: true
 
+    App\Rest\Http\ResponseCollection:
+        public: true
+
     # All Services
     App\Service\:
         resource: '../src/Service/'
+        public: true
+
+    App\DTO\:
+        resource: '../src/DTO/*DTO.php'
         public: true
 
     # Event Subscribers

@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # shellcheck disable=SC2068
-docker-compose exec app composer $@
+docker-compose exec api composer $@

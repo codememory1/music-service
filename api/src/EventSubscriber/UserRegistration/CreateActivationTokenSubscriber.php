@@ -8,8 +8,7 @@ use App\Enum\EventsEnum;
 use App\Event\UserRegistrationEvent;
 use App\Repository\UserActivationTokenRepository;
 use App\Service\JwtTokenGenerator;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -21,17 +20,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class CreateActivationTokenSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ObjectManager
-     */
-    private ObjectManager $em;
 
     /**
-     * @param ManagerRegistry $managerRegistry
+     * @var EntityManagerInterface
      */
-    public function __construct(ManagerRegistry $managerRegistry)
+    private EntityManagerInterface $em;
+
+    /**
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->em = $managerRegistry->getManager();
+        $this->em = $em;
     }
 
     /**

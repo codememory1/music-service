@@ -7,7 +7,7 @@ use App\Enum\EventsEnum;
 use App\Event\UserRegistrationEvent;
 use App\Repository\UserActivationTokenRepository;
 use App\Service\MailNotificationService;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Twig\Error\LoaderError;
@@ -24,9 +24,9 @@ use Twig\Error\SyntaxError;
 class SendConfirmationSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ManagerRegistry
+     * @var EntityManagerInterface
      */
-    private ManagerRegistry $managerRegistry;
+    private EntityManagerInterface $em;
 
     /**
      * @var MailNotificationService
@@ -34,12 +34,12 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
     private MailNotificationService $mailerNotificationService;
 
     /**
-     * @param ManagerRegistry         $managerRegistry
+     * @param EntityManagerInterface  $em
      * @param MailNotificationService $mailNotificationService
      */
-    public function __construct(ManagerRegistry $managerRegistry, MailNotificationService $mailNotificationService)
+    public function __construct(EntityManagerInterface $em, MailNotificationService $mailNotificationService)
     {
-        $this->managerRegistry = $managerRegistry;
+        $this->em = $em;
         $this->mailerNotificationService = $mailNotificationService;
     }
 
@@ -66,7 +66,7 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
     public function onUserRegistration(UserRegistrationEvent $event): void
     {
         /** @var UserActivationTokenRepository $userActivationTokenRepository */
-        $userActivationTokenRepository = $this->managerRegistry->getRepository(UserActivationToken::class);
+        $userActivationTokenRepository = $this->em->getRepository(UserActivationToken::class);
 
         $userActivationToken = $userActivationTokenRepository->findOneBy([
             'user' => $event->getUser()

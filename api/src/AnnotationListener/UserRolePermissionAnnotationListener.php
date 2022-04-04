@@ -2,7 +2,6 @@
 
 namespace App\AnnotationListener;
 
-use App\Enum\ApiResponseTypeEnum;
 use App\Rest\ClassHelper\AttributeData;
 
 /**
@@ -22,12 +21,9 @@ class UserRolePermissionAnnotationListener extends AbstractAnnotationListener
         $user = $this->authenticator->getUser();
 
         if (null === $user || $user->getRole()->getRolePermissions()->contains($attributeData->permission)) {
-            $this->apiResponseSchema->setMessage(
-                ApiResponseTypeEnum::CHECK_ROLE_PERMISSION,
-                $this->getTranslation('common@accessDenied')
-            );
+            $this->responseCollection->accessIsDenied();
 
-            $this->response('error', 403);
+            $this->response();
         }
     }
 }

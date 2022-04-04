@@ -2,7 +2,6 @@
 
 namespace App\AnnotationListener;
 
-use App\Enum\ApiResponseTypeEnum;
 use App\Rest\ClassHelper\AttributeData;
 
 /**
@@ -20,12 +19,9 @@ class AuthAnnotationListener extends AbstractAnnotationListener
     public function listen(AttributeData $attributeData): void
     {
         if (null === $this->authenticator->getUser()) {
-            $this->apiResponseSchema->setMessage(
-                ApiResponseTypeEnum::CHECK_AUTH,
-                $this->getTranslation('common@checkAuth')
-            );
+            $this->responseCollection->notAuth();
 
-            $this->response('error', 401);
+            $this->response();
         }
     }
 }

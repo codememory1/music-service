@@ -9,8 +9,7 @@ use App\Repository\LanguageRepository;
 use App\Repository\TranslationKeyRepository;
 use App\Repository\TranslationRepository;
 use App\Rest\Http\Request;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class Translator.
@@ -22,9 +21,9 @@ use Doctrine\Persistence\ObjectManager;
 class Translator
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    private ObjectManager $em;
+    private EntityManagerInterface $em;
 
     /**
      * @var Request
@@ -32,12 +31,12 @@ class Translator
     private Request $request;
 
     /**
-     * @param ManagerRegistry $managerRegistry
-     * @param Request         $request
+     * @param EntityManagerInterface $em
+     * @param Request                $request
      */
-    public function __construct(ManagerRegistry $managerRegistry, Request $request)
+    public function __construct(EntityManagerInterface $em, Request $request)
     {
-        $this->em = $managerRegistry->getManager();
+        $this->em = $em;
         $this->request = $request;
     }
 

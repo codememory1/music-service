@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Controller\Api\V1;
+namespace App\Controller;
 
-use App\Controller\Api\ApiController;
 use App\DTO\AuthorizationDTO;
 use App\DTO\PasswordRecoveryRequestDTO;
 use App\DTO\RegistrationDTO;
@@ -10,6 +9,7 @@ use App\Entity\User;
 use App\Enum\EventsEnum;
 use App\Event\UserRegistrationEvent;
 use App\Exception\UndefinedClassForDTOException;
+use App\Rest\ApiController;
 use App\Rest\Http\Request;
 use App\Rest\Http\Response;
 use App\Security\Auth\Authentication;
@@ -30,14 +30,15 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class SecurityController.
  *
- * @package App\Controller\Api\V1
+ * @package App\Controller
  *
  * @author  Codememory
  */
 class SecurityController extends ApiController
 {
+
     /**
-     * @param Request                  $request
+     * @param RegistrationDTO          $registrationDTO
      * @param RegisterValidation       $validation
      * @param Registration             $registration
      * @param CreatorAccount           $creatorAccount
@@ -47,14 +48,12 @@ class SecurityController extends ApiController
      */
     #[Route('/register', methods: 'POST')]
     public function register(
-        Request $request,
+        RegistrationDTO $registrationDTO,
         RegisterValidation $validation,
         Registration $registration,
         CreatorAccount $creatorAccount,
         EventDispatcherInterface $eventDispatcher
     ): JsonResponse {
-        $registrationDTO = new RegistrationDTO($request, $this->managerRegistry);
-
         /** @var User $userEntity */
         $userEntity = $registrationDTO->getCollectedEntity();
 
@@ -81,7 +80,7 @@ class SecurityController extends ApiController
             EventsEnum::USER_REGISTRATION->value
         );
 
-        return $registration->successAuthResponse()->make();
+        return $registration->successRegisterResponse()->make();
     }
 
     /**
@@ -109,26 +108,23 @@ class SecurityController extends ApiController
     }
 
     /**
-     * @param Request        $request
-     * @param AuthValidation $validation
-     * @param Identification $identification
-     * @param Authentication $authentication
-     * @param Authorization  $authorization
-     *
-     * @throws NonUniqueResultException
+     * @param AuthorizationDTO $authorizationDTO
+     * @param AuthValidation   $validation
+     * @param Identification   $identification
+     * @param Authentication   $authentication
+     * @param Authorization    $authorization
      *
      * @return JsonResponse
+     * @throws NonUniqueResultException
      */
     #[Route('/auth', methods: 'POST')]
     public function auth(
-        Request $request,
+        AuthorizationDTO $authorizationDTO,
         AuthValidation $validation,
         Identification $identification,
         Authentication $authentication,
         Authorization $authorization
     ): JsonResponse {
-        $authorizationDTO = new AuthorizationDTO($request, $this->managerRegistry);
-
         // Validation of input post data
         if (true !== $resultValidation = $validation->validate($authorizationDTO)) {
             return $resultValidation->make();
@@ -149,7 +145,9 @@ class SecurityController extends ApiController
         }
 
         // User authorization
-        return $authorization->auth($identifiedUser, $authorizationDTO)->make();
+        $tokens = $authorization->auth($identifiedUser, $authorizationDTO);
+
+        return $authorization->successAuthResponse($tokens)->make();
     }
 
     /**

@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Controller\Api\V1;
+namespace App\Controller;
 
 use App\Annotation\Auth;
 use App\Annotation\UserRolePermission;
-use App\Controller\Api\ApiController;
 use App\DTO\SubscriptionPermissionNameDTO;
 use App\Entity\SubscriptionPermissionName;
 use App\Enum\RolePermissionNameEnum;
-use App\Exception\UndefinedClassForDTOException;
-use App\Rest\Http\Request;
+use App\Rest\ApiController;
 use App\Service\Subscription\Permission\Name\CreatorPermissionNameService;
 use App\Service\Subscription\Permission\Name\DeleterPermissionNameService;
 use App\Service\Subscription\Permission\Name\UpdaterPermissionNameService;
@@ -20,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class SubscriptionPermissionNameController.
  *
- * @package App\Controller\Api\V1
+ * @package App\Controller
  *
  * @author  Codememory
  */
@@ -42,40 +40,32 @@ class SubscriptionPermissionNameController extends ApiController
     }
 
     /**
-     * @param CreatorPermissionNameService $creatorPermissionNameService
-     * @param Request                      $request
-     *
-     * @throws UndefinedClassForDTOException
+     * @param CreatorPermissionNameService  $creatorPermissionNameService
+     * @param SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO
      *
      * @return JsonResponse
      */
     #[Route('/create', methods: 'POST')]
     #[Auth]
     #[UserRolePermission(permission: RolePermissionNameEnum::CREATE_SUBSCRIPTION_PERMISSION_NAME)]
-    public function create(CreatorPermissionNameService $creatorPermissionNameService, Request $request): JsonResponse
+    public function create(CreatorPermissionNameService $creatorPermissionNameService, SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO): JsonResponse
     {
-        return $creatorPermissionNameService
-            ->create(new SubscriptionPermissionNameDTO($request, $this->managerRegistry))
-            ->make();
+        return $creatorPermissionNameService->create($subscriptionPermissionNameDTO)->make();
     }
 
     /**
-     * @param UpdaterPermissionNameService $updaterPermissionNameService
-     * @param Request                      $request
-     * @param int                          $id
-     *
-     * @throws UndefinedClassForDTOException
+     * @param UpdaterPermissionNameService  $updaterPermissionNameService
+     * @param SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO
+     * @param int                           $id
      *
      * @return JsonResponse
      */
     #[Route('/{id<\d+>}/edit', methods: 'PUT')]
     #[Auth]
     #[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_SUBSCRIPTION_PERMISSION_NAME)]
-    public function update(UpdaterPermissionNameService $updaterPermissionNameService, Request $request, int $id): JsonResponse
+    public function update(UpdaterPermissionNameService $updaterPermissionNameService, SubscriptionPermissionNameDTO $subscriptionPermissionNameDTO, int $id): JsonResponse
     {
-        return $updaterPermissionNameService
-            ->update(new SubscriptionPermissionNameDTO($request, $this->managerRegistry), $id)
-            ->make();
+        return $updaterPermissionNameService->update($subscriptionPermissionNameDTO, $id)->make();
     }
 
     /**

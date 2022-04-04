@@ -7,9 +7,7 @@ use App\Entity\User;
 use App\Enum\StatusEnum;
 use App\Repository\UserRepository;
 use App\Rest\Http\Response;
-use App\Rest\Http\ResponseCollection;
 use App\Security\AbstractSecurity;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class Registration.
@@ -21,31 +19,16 @@ use Doctrine\ORM\EntityManagerInterface;
 class Registration extends AbstractSecurity
 {
     /**
-     * @var UserRepository
-     */
-    private UserRepository $userRepository;
-
-    /**
-     * @param EntityManagerInterface $em
-     * @param ResponseCollection     $responseCollection
-     */
-    public function __construct(EntityManagerInterface $em, ResponseCollection $responseCollection)
-    {
-        parent::__construct($em, $responseCollection);
-
-        /** @var UserRepository $userRepository */
-        $userRepository = $this->em->getRepository(User::class);
-        $this->userRepository = $userRepository;
-    }
-
-    /**
      * @param RegistrationDTO $registrationDTO
      *
      * @return bool|User
      */
     public function isReRegistration(RegistrationDTO $registrationDTO): User|bool
     {
-        $finedUser = $this->userRepository->findOneBy([
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->em->getRepository(User::class);
+
+        $finedUser = $userRepository->findOneBy([
             'email' => $registrationDTO->email,
             'status' => StatusEnum::NOT_ACTIVE->value
         ]);

@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Controller\Api\V1;
+namespace App\Controller;
 
 use App\Annotation\Auth;
 use App\Annotation\UserRolePermission;
-use App\Controller\Api\ApiController;
 use App\DTO\TranslationDTO;
 use App\Entity\Translation;
 use App\Enum\RolePermissionNameEnum;
-use App\Exception\UndefinedClassForDTOException;
-use App\Rest\Http\Request;
+use App\Rest\ApiController;
 use App\Service\Translator\Translation\CreatorTranslationService;
 use App\Service\Translator\Translation\DeleterTranslationService;
 use App\Service\Translator\Translation\UpdaterTranslationService;
@@ -20,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class TranslationController.
  *
- * @package App\Controller\Api\V1
+ * @package App\Controller
  *
  * @author  Codememory
  */
@@ -38,39 +36,31 @@ class TranslationController extends ApiController
 
     /**
      * @param CreatorTranslationService $creatorTranslationService
-     * @param Request                   $request
-     *
-     * @throws UndefinedClassForDTOException
+     * @param TranslationDTO            $translationDTO
      *
      * @return JsonResponse
      */
     #[Route('/create', methods: 'POST')]
     #[Auth]
     #[UserRolePermission(permission: RolePermissionNameEnum::CREATE_TRANSLATION)]
-    public function create(CreatorTranslationService $creatorTranslationService, Request $request): JsonResponse
+    public function create(CreatorTranslationService $creatorTranslationService, TranslationDTO $translationDTO): JsonResponse
     {
-        return $creatorTranslationService
-            ->create(new TranslationDTO($request, $this->managerRegistry))
-            ->make();
+        return $creatorTranslationService->create($translationDTO)->make();
     }
 
     /**
      * @param UpdaterTranslationService $updaterTranslationService
-     * @param Request                   $request
+     * @param TranslationDTO            $translationDTO
      * @param int                       $id
-     *
-     * @throws UndefinedClassForDTOException
      *
      * @return JsonResponse
      */
     #[Route('/{id<\d+>}/edit', methods: 'PUT')]
     #[Auth]
     #[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_TRANSLATION)]
-    public function update(UpdaterTranslationService $updaterTranslationService, Request $request, int $id): JsonResponse
+    public function update(UpdaterTranslationService $updaterTranslationService, TranslationDTO $translationDTO, int $id): JsonResponse
     {
-        return $updaterTranslationService
-            ->update(new TranslationDTO($request, $this->managerRegistry), $id)
-            ->make();
+        return $updaterTranslationService->update($translationDTO, $id)->make();
     }
 
     /**

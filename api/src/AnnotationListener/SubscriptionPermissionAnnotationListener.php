@@ -2,7 +2,6 @@
 
 namespace App\AnnotationListener;
 
-use App\Enum\ApiResponseTypeEnum;
 use App\Rest\ClassHelper\AttributeData;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -39,11 +38,8 @@ class SubscriptionPermissionAnnotationListener extends AbstractAnnotationListene
     #[NoReturn]
     private function responseForbidden(): void
     {
-        $this->apiResponseSchema->setMessage(
-            ApiResponseTypeEnum::CHECK_SUBSCRIPTION_PERMISSION,
-            $this->getTranslation('common@accessDenied')
-        );
+        $this->responseCollection->accessIsDenied();
 
-        $this->response('error', 403);
+        $this->response();
     }
 }

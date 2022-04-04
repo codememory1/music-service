@@ -3,13 +3,10 @@
 namespace App\AnnotationListener;
 
 use App\Interfaces\AnnotationListenerInterface;
-use App\Rest\Http\ApiResponseSchema;
 use App\Rest\Http\Request;
-use App\Rest\Http\Response;
-use App\Rest\Translator;
+use App\Rest\Http\ResponseCollection;
 use App\Security\TokenAuthenticator;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,25 +21,21 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
  */
 abstract class AbstractAnnotationListener implements AnnotationListenerInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected ManagerRegistry $managerRegistry;
 
     /**
-     * @var ObjectManager
+     * @var Request
      */
-    protected ObjectManager $em;
+    protected Request $request;
 
     /**
-     * @var Translator
+     * @var EntityManagerInterface
      */
-    protected Translator $translator;
+    protected EntityManagerInterface $em;
 
     /**
-     * @var ApiResponseSchema
+     * @var ResponseCollection
      */
-    protected ApiResponseSchema $apiResponseSchema;
+    protected ResponseCollection $responseCollection;
 
     /**
      * @var TokenAuthenticator
@@ -50,47 +43,30 @@ abstract class AbstractAnnotationListener implements AnnotationListenerInterface
     protected TokenAuthenticator $authenticator;
 
     /**
-     * @param Request           $request
-     * @param ManagerRegistry   $managerRegistry
-     * @param Translator        $translator
-     * @param ApiResponseSchema $apiResponseSchema
+     * @param Request                $request
+     * @param EntityManagerInterface $em
+     * @param ResponseCollection     $responseCollection
+     * @param TokenAuthenticator     $tokenAuthenticator
      */
     public function __construct(
         Request $request,
-        ManagerRegistry $managerRegistry,
-        Translator $translator,
-        ApiResponseSchema $apiResponseSchema
+        EntityManagerInterface $em,
+        ResponseCollection $responseCollection,
+        TokenAuthenticator $tokenAuthenticator
     ) {
-        $this->managerRegistry = $managerRegistry;
-        $this->em = $managerRegistry->getManager();
-        $this->translator = $translator;
-        $this->apiResponseSchema = $apiResponseSchema;
-        $this->authenticator = new TokenAuthenticator($request, $managerRegistry);
+        $this->request = $request;
+        $this->em = $em;
+        $this->responseCollection = $responseCollection;
+        $this->authenticator = $tokenAuthenticator;
     }
 
     /**
-     * @param string $status
-     * @param int    $code
-     *
      * @return void
      */
     #[NoReturn]
-    protected function response(string $status, int $code): void
+    protected function response(): void
     {
-        $response = new Response($this->apiResponseSchema, $status, $code);
-
-        exit($response->make());
-    }
-
-    /**
-     * @param string $key
-     * @param string $default
-     *
-     * @return string
-     */
-    protected function getTranslation(string $key, string $default = ''): string
-    {
-        return $this->translator->getTranslation($key, $default);
+        exit($this->responseCollection->getResponse()->make());
     }
 
     /**

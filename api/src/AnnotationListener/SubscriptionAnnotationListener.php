@@ -2,7 +2,6 @@
 
 namespace App\AnnotationListener;
 
-use App\Enum\ApiResponseTypeEnum;
 use App\Rest\ClassHelper\AttributeData;
 
 /**
@@ -25,12 +24,9 @@ class SubscriptionAnnotationListener extends AbstractAnnotationListener
             || null === $user->getUserSubscription()
             || $user->getUserSubscription()->getSubscription()->getKey() !== $attributeData->key
         ) {
-            $this->apiResponseSchema->setMessage(
-                ApiResponseTypeEnum::CHECK_SUBSCRIPTION,
-                $this->getTranslation('common@invalidSubscription')
-            );
+            $this->responseCollection->accessIsDenied('common@invalidSubscription');
 
-            $this->response('error', 403);
+            $this->response();
         }
     }
 }

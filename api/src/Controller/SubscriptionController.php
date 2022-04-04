@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Controller\Api\V1;
+namespace App\Controller;
 
 use App\Annotation\Auth;
 use App\Annotation\UserRolePermission;
-use App\Controller\Api\ApiController;
 use App\DTO\SubscriptionDTO;
 use App\Entity\Subscription;
 use App\Enum\RolePermissionNameEnum;
-use App\Exception\UndefinedClassForDTOException;
-use App\Rest\Http\Request;
+use App\Rest\ApiController;
 use App\Service\Subscription\CreatorSubscriptionService;
 use App\Service\Subscription\DeleterSubscriptionService;
 use App\Service\Subscription\UpdaterSubscriptionService;
@@ -20,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class SubscriptionController.
  *
- * @package App\Controller\Api\V1
+ * @package App\Controller
  *
  * @author  Codememory
  */
@@ -38,39 +36,31 @@ class SubscriptionController extends ApiController
 
     /**
      * @param CreatorSubscriptionService $creatorSubscriptionService
-     * @param Request                    $request
-     *
-     * @throws UndefinedClassForDTOException
+     * @param SubscriptionDTO            $subscriptionDTO
      *
      * @return JsonResponse
      */
     #[Route('/create', methods: 'POST')]
     #[Auth]
     #[UserRolePermission(permission: RolePermissionNameEnum::CREATE_SUBSCRIPTION)]
-    public function create(CreatorSubscriptionService $creatorSubscriptionService, Request $request): JsonResponse
+    public function create(CreatorSubscriptionService $creatorSubscriptionService, SubscriptionDTO $subscriptionDTO): JsonResponse
     {
-        return $creatorSubscriptionService
-            ->create(new SubscriptionDTO($request, $this->managerRegistry))
-            ->make();
+        return $creatorSubscriptionService->create($subscriptionDTO)->make();
     }
 
     /**
      * @param UpdaterSubscriptionService $updaterSubscriptionService
-     * @param Request                    $request
+     * @param SubscriptionDTO            $subscriptionDTO
      * @param int                        $id
-     *
-     * @throws UndefinedClassForDTOException
      *
      * @return JsonResponse
      */
     #[Route('/{id<\d+>}/edit', methods: 'PUT')]
     #[Auth]
     #[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_SUBSCRIPTION)]
-    public function update(UpdaterSubscriptionService $updaterSubscriptionService, Request $request, int $id): JsonResponse
+    public function update(UpdaterSubscriptionService $updaterSubscriptionService, SubscriptionDTO $subscriptionDTO, int $id): JsonResponse
     {
-        return $updaterSubscriptionService
-            ->update(new SubscriptionDTO($request, $this->managerRegistry), $id)
-            ->make();
+        return $updaterSubscriptionService->update($subscriptionDTO, $id)->make();
     }
 
     /**

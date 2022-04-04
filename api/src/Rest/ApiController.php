@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Rest;
+namespace App\Rest;
 
 use App\Rest\Http\ResponseCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,7 +47,7 @@ class ApiController extends AbstractController
     protected function showAllFromDatabase(string $entityNamespace, string $DTONamespace): JsonResponse
     {
 
-        $DTO = new $DTONamespace(managerRegistry: $this->em);
+        $DTO = new $DTONamespace(em: $this->em);
 
         $entityRepository = $this->em->getRepository($entityNamespace);
         $data = $DTO->transform($entityRepository->findAll());

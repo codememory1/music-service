@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose exec app bin/console doctrine:fixtures:load
+docker-compose exec api bin/console doctrine:fixtures:load

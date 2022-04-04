@@ -2,10 +2,8 @@
 
 namespace App\AnnotationListener;
 
-use App\Enum\ApiResponseTypeEnum;
 use App\Rest\ClassHelper\AttributeData;
 use JetBrains\PhpStorm\NoReturn;
-use ReflectionAttribute;
 
 /**
  * Class UserRoleAnnotationListener.
@@ -16,8 +14,9 @@ use ReflectionAttribute;
  */
 class UserRoleAnnotationListener extends AbstractAnnotationListener
 {
+
     /**
-     * @param ReflectionAttribute $attribute
+     * @param AttributeData $attributeData
      *
      * @return void
      */
@@ -27,12 +26,9 @@ class UserRoleAnnotationListener extends AbstractAnnotationListener
         $user = $this->authenticator->getUser();
 
         if (null !== $user && !in_array($user->getRole()->getKey(), $attributeData->keys, true)) {
-            $this->apiResponseSchema->setMessage(
-                ApiResponseTypeEnum::CHECK_ROLE,
-                $this->getTranslation('common@checkRole')
-            );
+            $this->responseCollection->accessIsDenied('common@checkRole');
 
-            $this->response('error', 403);
+            $this->response();
         }
     }
 }

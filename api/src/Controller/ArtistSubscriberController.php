@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller\Api\V1;
+namespace App\Controller;
 
 use App\Annotation\Auth;
-use App\Controller\Api\ApiController;
+use App\Rest\ApiController;
 use App\Security\TokenAuthenticator;
 use App\Service\ArtistSubscriber\Subscribe;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class ArtistSubscriberController.
  *
- * @package App\Controller\Api\V1
+ * @package App\Controller
  *
  * @author  Codememory
  */
@@ -23,12 +23,13 @@ class ArtistSubscriberController extends ApiController
     #[Auth]
     public function subscribe(TokenAuthenticator $authenticator, Subscribe $subscribeService, int $artistId): JsonResponse
     {
-        return $subscribeService->subscribe($artistId, $authenticator)->make();
+        return $subscribeService->subscribe($authenticator->getUser(), $artistId)->make();
     }
 
     #[Route('/unsubscribe/{artistId<\d+>}', methods: 'GET')]
     #[Auth]
     public function unsubscribe(int $artistId): JsonResponse
     {
+        return new JsonResponse();
     }
 }

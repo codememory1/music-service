@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Controller\Api\V1;
+namespace App\Controller;
 
 use App\Annotation\Auth;
 use App\Annotation\UserRolePermission;
-use App\Controller\Api\ApiController;
 use App\DTO\AlbumTypeDTO;
 use App\Entity\AlbumType;
 use App\Enum\RolePermissionNameEnum;
-use App\Exception\UndefinedClassForDTOException;
-use App\Rest\Http\Request;
+use App\Rest\ApiController;
 use App\Service\Album\Type\CreatorAlbumTypeService;
 use App\Service\Album\Type\DeleterAlbumTypeService;
 use App\Service\Album\Type\UpdaterAlbumTypeService;
@@ -20,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class AlbumTypeController.
  *
- * @package App\Controller\Api\V1
+ * @package App\Controller
  *
  * @author  Codememory
  */
@@ -43,39 +41,31 @@ class AlbumTypeController extends ApiController
 
     /**
      * @param CreatorAlbumTypeService $creatorAlbumTypeService
-     * @param Request                 $request
-     *
-     * @throws UndefinedClassForDTOException
+     * @param AlbumTypeDTO            $albumTypeDTO
      *
      * @return JsonResponse
      */
     #[Route('/create', methods: 'POST')]
     #[Auth]
     #[UserRolePermission(permission: RolePermissionNameEnum::CREATE_ALBUM_TYPE)]
-    public function create(CreatorAlbumTypeService $creatorAlbumTypeService, Request $request): JsonResponse
+    public function create(CreatorAlbumTypeService $creatorAlbumTypeService, AlbumTypeDTO $albumTypeDTO): JsonResponse
     {
-        return $creatorAlbumTypeService
-            ->create(new AlbumTypeDTO($request, $this->managerRegistry))
-            ->make();
+        return $creatorAlbumTypeService->create($albumTypeDTO)->make();
     }
 
     /**
      * @param UpdaterAlbumTypeService $updaterAlbumTypeService
-     * @param Request                 $request
+     * @param AlbumTypeDTO            $albumTypeDTO
      * @param int                     $id
-     *
-     * @throws UndefinedClassForDTOException
      *
      * @return JsonResponse
      */
     #[Route('/{id<\d+>}/edit', methods: 'PUT')]
     #[Auth]
     #[UserRolePermission(permission: RolePermissionNameEnum::UPDATE_ALBUM_TYPE)]
-    public function update(UpdaterAlbumTypeService $updaterAlbumTypeService, Request $request, int $id): JsonResponse
+    public function update(UpdaterAlbumTypeService $updaterAlbumTypeService, AlbumTypeDTO $albumTypeDTO, int $id): JsonResponse
     {
-        return $updaterAlbumTypeService
-            ->update(new AlbumTypeDTO($request, $this->managerRegistry), $id)
-            ->make();
+        return $updaterAlbumTypeService->update($albumTypeDTO, $id)->make();
     }
 
     /**

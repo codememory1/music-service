@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Controller\Api\V1;
+namespace App\Controller;
 
 use App\Annotation\Auth;
 use App\Annotation\SubscriptionPermission;
 use App\Annotation\UserRolePermission;
-use App\Controller\Api\ApiController;
 use App\DTO\AlbumDTO;
 use App\Entity\Album;
 use App\Enum\RolePermissionNameEnum;
 use App\Enum\SubscriptionPermissionNameEnum;
-use App\Rest\Http\Request;
+use App\Rest\ApiController;
 use App\Security\TokenAuthenticator;
 use App\Service\Album\CreatorAlbumService;
 use App\Service\Album\DeleterAlbumService;
@@ -25,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class AlbumController.
  *
- * @package App\Controller\Api\V1
+ * @package App\Controller
  *
  * @author  Codememory
  */
@@ -48,56 +47,50 @@ class AlbumController extends ApiController
 
     /**
      * @param CreatorAlbumService $creatorAlbumService
-     * @param Request             $request
+     * @param AlbumDTO            $albumDTO
+     * @param TokenAuthenticator  $tokenAuthenticator
      * @param FileUploaderService $fileUploaderService
      *
+     * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     *
-     * @return JsonResponse
      */
     #[Route('/create', methods: 'POST')]
     #[Auth]
     #[SubscriptionPermission(permission: SubscriptionPermissionNameEnum::CREATE_ALBUM)]
-    public function create(CreatorAlbumService $creatorAlbumService, Request $request, FileUploaderService $fileUploaderService): JsonResponse
+    public function create(CreatorAlbumService $creatorAlbumService, AlbumDTO $albumDTO, TokenAuthenticator $tokenAuthenticator, FileUploaderService $fileUploaderService): JsonResponse
     {
         $fileUploaderService
             ->initRequestFile('photo')
             ->setSaveTo('public/uploads/album');
 
-        $albumDTO = new AlbumDTO($request, $this->managerRegistry);
-        $user = (new TokenAuthenticator($request, $this->managerRegistry))->getUser();
-
-        return $creatorAlbumService->create($albumDTO, $fileUploaderService, $user)->make();
+        return $creatorAlbumService->create($albumDTO, $fileUploaderService, $tokenAuthenticator->getUser())->make();
     }
 
     /**
      * @param UpdaterAlbumService $updaterAlbumService
-     * @param Request             $request
+     * @param AlbumDTO            $albumDTO
+     * @param TokenAuthenticator  $tokenAuthenticator
      * @param FileUploaderService $fileUploaderService
      * @param int                 $id
      *
+     * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     *
-     * @return JsonResponse
      */
     #[Route('/{id<\d+>}/edit', methods: 'POST')]
     #[Auth]
     #[SubscriptionPermission(permission: SubscriptionPermissionNameEnum::UPDATE_ALBUM)]
-    public function update(UpdaterAlbumService $updaterAlbumService, Request $request, FileUploaderService $fileUploaderService, int $id): JsonResponse
+    public function update(UpdaterAlbumService $updaterAlbumService, AlbumDTO $albumDTO, TokenAuthenticator $tokenAuthenticator, FileUploaderService $fileUploaderService, int $id): JsonResponse
     {
         $fileUploaderService
             ->initRequestFile('photo')
             ->setSaveTo('public/uploads/album');
 
-        $albumDTO = new AlbumDTO($request, $this->managerRegistry);
-        $user = (new TokenAuthenticator($request, $this->managerRegistry))->getUser();
-
         return $updaterAlbumService->update(
             $albumDTO,
             $fileUploaderService,
-            $user,
+            $tokenAuthenticator->getUser(),
             $this->getParameter('kernel.project_dir'),
             $id
         )->make();
