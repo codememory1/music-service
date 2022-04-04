@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class ApiService
 {
-
     /**
      * @var EntityManagerInterface
      */
@@ -44,10 +43,10 @@ class ApiService
     protected readonly Validator $validator;
 
     /**
-     * @param ApiManager        $apiManager
-     * @param Translator        $translator
+     * @param ApiManager         $apiManager
+     * @param Translator         $translator
      * @param ResponseCollection $responseCollection
-     * @param Validator         $validator
+     * @param Validator          $validator
      */
     public function __construct(
         ApiManager $apiManager,

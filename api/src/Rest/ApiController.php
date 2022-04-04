@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ApiController extends AbstractController
 {
-
     /**
      * @var EntityManagerInterface
      */
@@ -33,7 +32,6 @@ class ApiController extends AbstractController
      */
     public function __construct(EntityManagerInterface $managerRegistry, ResponseCollection $responseCollection)
     {
-
         $this->em = $managerRegistry;
         $this->responseCollection = $responseCollection;
     }
@@ -46,7 +44,6 @@ class ApiController extends AbstractController
      */
     protected function showAllFromDatabase(string $entityNamespace, string $DTONamespace): JsonResponse
     {
-
         $DTO = new $DTONamespace(em: $this->em);
 
         $entityRepository = $this->em->getRepository($entityNamespace);
@@ -54,5 +51,4 @@ class ApiController extends AbstractController
 
         return $this->responseCollection->dataOutput($data)->sendResponse();
     }
-
 }

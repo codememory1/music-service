@@ -36,7 +36,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SecurityController extends ApiController
 {
-
     /**
      * @param RegistrationDTO          $registrationDTO
      * @param RegisterValidation       $validation
@@ -114,8 +113,9 @@ class SecurityController extends ApiController
      * @param Authentication   $authentication
      * @param Authorization    $authorization
      *
-     * @return JsonResponse
      * @throws NonUniqueResultException
+     *
+     * @return JsonResponse
      */
     #[Route('/auth', methods: 'POST')]
     public function auth(

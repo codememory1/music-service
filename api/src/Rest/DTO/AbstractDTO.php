@@ -75,8 +75,8 @@ abstract class AbstractDTO implements DTOInterface
     private ?EntityInterface $collectedEntity = null;
 
     /**
-     * @param Request|null                $request
-     * @param EntityManagerInterface|null $em
+     * @param null|Request                $request
+     * @param null|EntityManagerInterface $em
      */
     final public function __construct(?Request $request = null, ?EntityManagerInterface $em = null)
     {

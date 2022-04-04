@@ -234,18 +234,28 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
         ],
         [
             'lang' => 'ru',
-            'key' => 'common@accessDenied',
+            'key' => 'common@accessIsDenied',
             'translation' => 'Доступ запрещен'
         ],
         [
             'lang' => 'ru',
-            'key' => 'common@authRequired',
-            'translation' => 'Не авторизованы'
+            'key' => 'common@notAuth',
+            'translation' => 'Для выполнения данного действия, требуется авторизация'
         ],
         [
             'lang' => 'ru',
             'key' => 'common@successRegister',
             'translation' => 'Регистрация прошла успешна! На почту отправлено сообщение с активацией аккаунта'
+        ],
+        [
+            'lang' => 'ru',
+            'key' => 'common@successAuth',
+            'translation' => 'Авторизация прошла успешно'
+        ],
+        [
+            'lang' => 'ru',
+            'key' => 'common@dataOutput',
+            'translation' => 'Получение информации'
         ],
 
         // RU - lang

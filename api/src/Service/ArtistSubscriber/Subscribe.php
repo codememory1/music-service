@@ -5,7 +5,6 @@ namespace App\Service\ArtistSubscriber;
 use App\Entity\User;
 use App\Rest\ApiService;
 use App\Rest\Http\Response;
-use App\Security\TokenAuthenticator;
 
 /**
  * Class Subscribe.
@@ -18,6 +17,5 @@ class Subscribe extends ApiService
 {
     public function subscribe(User $user, int $artistId): Response
     {
-
     }
 }

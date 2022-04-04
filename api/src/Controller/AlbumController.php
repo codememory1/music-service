@@ -51,9 +51,10 @@ class AlbumController extends ApiController
      * @param TokenAuthenticator  $tokenAuthenticator
      * @param FileUploaderService $fileUploaderService
      *
-     * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return JsonResponse
      */
     #[Route('/create', methods: 'POST')]
     #[Auth]
@@ -74,9 +75,10 @@ class AlbumController extends ApiController
      * @param FileUploaderService $fileUploaderService
      * @param int                 $id
      *
-     * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     *
+     * @return JsonResponse
      */
     #[Route('/{id<\d+>}/edit', methods: 'POST')]
     #[Auth]

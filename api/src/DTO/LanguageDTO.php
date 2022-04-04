@@ -23,8 +23,7 @@ class LanguageDTO extends AbstractDTO
         min: 2,
         max: 3,
         minMessage: 'lang@codeMinLength',
-        maxMessage: 'lang@codeMaxLength',
-        payload: 'code_length'
+        maxMessage: 'lang@codeMaxLength'
     )]
     public ?string $code = null;
 
@@ -49,7 +48,7 @@ class LanguageDTO extends AbstractDTO
 
     /**
      * @param EntityInterface|Language $entity
-     * @param array           $excludeKeys
+     * @param array                    $excludeKeys
      *
      * @return array
      */

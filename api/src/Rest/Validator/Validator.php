@@ -114,10 +114,10 @@ class Validator
         $type = $info->getType();
         $message = $info->getMessage();
 
-        if(null === $type) {
-            $this->responseCollection->customErrorType($type, $message);
-        } else {
+        if (null === $type) {
             $this->responseCollection->errorInputValidation($message);
+        } else {
+            $this->responseCollection->customErrorType($type, $message);
         }
     }
 }

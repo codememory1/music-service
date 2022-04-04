@@ -21,7 +21,6 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
  */
 abstract class AbstractAnnotationListener implements AnnotationListenerInterface
 {
-
     /**
      * @var Request
      */

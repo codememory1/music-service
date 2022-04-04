@@ -14,7 +14,6 @@ use JetBrains\PhpStorm\NoReturn;
  */
 class UserRoleAnnotationListener extends AbstractAnnotationListener
 {
-
     /**
      * @param AttributeData $attributeData
      *

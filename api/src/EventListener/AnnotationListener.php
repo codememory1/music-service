@@ -5,10 +5,10 @@ namespace App\EventListener;
 use App\Enum\AnnotationListenerEnum;
 use App\Interfaces\AnnotationListenerInterface;
 use App\Rest\ClassHelper\AttributeData;
-use App\Rest\Http\ApiResponseSchema;
 use App\Rest\Http\Request;
-use App\Rest\Translator;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Rest\Http\ResponseCollection;
+use App\Security\TokenAuthenticator;
+use Doctrine\ORM\EntityManagerInterface;
 use function is_array;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -25,17 +25,41 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 class AnnotationListener
 {
     /**
-     * @param Request           $request
-     * @param ManagerRegistry   $managerRegistry
-     * @param Translator        $translator
-     * @param ApiResponseSchema $apiResponseSchema
+     * @var Request
+     */
+    private Request $request;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private EntityManagerInterface $em;
+
+    /**
+     * @var ResponseCollection
+     */
+    private ResponseCollection $responseCollection;
+
+    /**
+     * @var TokenAuthenticator
+     */
+    private TokenAuthenticator $authenticator;
+
+    /**
+     * @param Request                $request
+     * @param EntityManagerInterface $em
+     * @param ResponseCollection     $responseCollection
+     * @param TokenAuthenticator     $tokenAuthenticator
      */
     public function __construct(
-        private Request $request,
-        private ManagerRegistry $managerRegistry,
-        private Translator $translator,
-        private ApiResponseSchema $apiResponseSchema
+        Request $request,
+        EntityManagerInterface $em,
+        ResponseCollection $responseCollection,
+        TokenAuthenticator $tokenAuthenticator
     ) {
+        $this->request = $request;
+        $this->em = $em;
+        $this->responseCollection = $responseCollection;
+        $this->authenticator = $tokenAuthenticator;
     }
 
     /**
@@ -83,9 +107,9 @@ class AnnotationListener
             /** @var AnnotationListenerInterface $listener */
             $listener = new $listenerNamespace(
                 $this->request,
-                $this->managerRegistry,
-                $this->translator,
-                $this->apiResponseSchema
+                $this->em,
+                $this->responseCollection,
+                $this->authenticator
             );
 
             $listener->listen(new AttributeData($reflectionAttribute));

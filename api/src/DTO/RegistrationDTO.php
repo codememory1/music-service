@@ -50,19 +50,19 @@ class RegistrationDTO extends AbstractPasswordConfirmationDTO
 
         $this
             ->addEventListener(EventNameDTOEnum::AFTER_SETTER, function(): void {
-                $this->username = explode('@', $this->email)[0] ?? null;
-            })
+          $this->username = explode('@', $this->email)[0] ?? null;
+      })
             ->addEventListener(EventNameDTOEnum::AFTER_BUILD_ENTITY, function(User $userEntity): void {
-                /** @var RoleRepository $roleRepository */
-                $roleRepository = $this->em->getRepository(Role::class);
+          /** @var RoleRepository $roleRepository */
+          $roleRepository = $this->em->getRepository(Role::class);
 
-                $userEntity
-                    ->setStatus(StatusEnum::NOT_ACTIVE->value)
-                    ->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->value]));
+          $userEntity
+              ->setStatus(StatusEnum::NOT_ACTIVE->value)
+              ->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->value]));
 
-                if (!empty($this->email)) {
-                    $userEntity->setUsername($this->username);
-                }
-            });
+          if (!empty($this->email)) {
+              $userEntity->setUsername($this->username);
+          }
+      });
     }
 }

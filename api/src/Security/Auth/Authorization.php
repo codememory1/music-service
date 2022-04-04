@@ -18,7 +18,6 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class Authorization extends AbstractSecurity
 {
-
     /**
      * @param User             $identifiedUser
      * @param AuthorizationDTO $authorizationDTO

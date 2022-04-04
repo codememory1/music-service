@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Rest\ApiController;
 use App\DTO\LanguageDTO;
 use App\Entity\Language;
+use App\Rest\ApiController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 

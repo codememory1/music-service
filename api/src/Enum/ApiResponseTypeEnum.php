@@ -17,7 +17,7 @@ enum ApiResponseTypeEnum: string
     case UPDATE = 'UPDATE';
     case DELETE = 'DELETE';
     case CHECK_VALID = 'CHECK_VALID';
-	case CHECK_EXIST = 'CHECK_EXIST';
+    case CHECK_EXIST = 'CHECK_EXIST';
     case CHECK_ACTIVE = 'CHECK_ACTIVE';
     case CHECK_AUTH = 'CHECK_AUTH';
     case CHECK_ROLE = 'CHECK_ROLE';

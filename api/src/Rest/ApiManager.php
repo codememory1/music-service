@@ -5,9 +5,9 @@ namespace App\Rest;
 use App\Interfaces\EntityInterface;
 use App\Rest\Http\Response;
 use App\Rest\Http\ResponseCollection;
-use Doctrine\ORM\EntityManagerInterface;
 use function call_user_func;
 use Closure;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class ApiManager.
@@ -18,7 +18,6 @@ use Closure;
  */
 class ApiManager
 {
-
     /**
      * @var EntityManagerInterface
      */

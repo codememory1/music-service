@@ -15,15 +15,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class LanguageController
+ * Class LanguageController.
  *
  * @package App\Controller\Admin
  *
  * @author  Codememory
  */
+#[Route('/language')]
 class LanguageController extends UserLanguageController
 {
-
     /**
      * @param CreatorLanguageService $creatorLanguageService
      * @param LanguageDTO            $languageDTO
@@ -57,8 +57,9 @@ class LanguageController extends UserLanguageController
      * @param DeleterLanguageService $deleterLanguageService
      * @param int                    $id
      *
-     * @return JsonResponse
      * @throws Exception
+     *
+     * @return JsonResponse
      */
     #[Route('/{id<\d+>}/delete', methods: 'DELETE')]
     #[Auth]

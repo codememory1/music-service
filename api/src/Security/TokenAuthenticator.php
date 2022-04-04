@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Rest\Http\Request;
 use App\Service\JwtTokenGenerator;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class TokenAuthenticator.
@@ -18,13 +18,23 @@ use Doctrine\Persistence\ManagerRegistry;
 class TokenAuthenticator
 {
     /**
-     * @param Request         $request
-     * @param ManagerRegistry $managerRegistry
+     * @var Request
      */
-    public function __construct(Request $request, ManagerRegistry $managerRegistry)
+    private Request $request;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private EntityManagerInterface $em;
+
+    /**
+     * @param Request                $request
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(Request $request, EntityManagerInterface $em)
     {
         $this->request = $request;
-        $this->em = $managerRegistry->getManager();
+        $this->em = $em;
     }
 
     /**
@@ -46,7 +56,7 @@ class TokenAuthenticator
         $jwtTokenGenerator = new JwtTokenGenerator();
         $token = $this->getAccessToken();
 
-        if (null === $token || !$decoded = $jwtTokenGenerator->decode($token, $_ENV['JWT_ACCESS_PUBLIC_KEY'])) {
+        if (null === $token || !$decoded = $jwtTokenGenerator->decode($token, 'JWT_ACCESS_PUBLIC_KEY')) {
             return null;
         }
 

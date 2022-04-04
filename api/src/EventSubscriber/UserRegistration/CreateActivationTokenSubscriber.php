@@ -20,7 +20,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class CreateActivationTokenSubscriber implements EventSubscriberInterface
 {
-
     /**
      * @var EntityManagerInterface
      */

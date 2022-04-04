@@ -5,7 +5,7 @@ $finder = (new PhpCsFixer\Finder())
 	->exclude(['var', 'vendor', 'public']);
 
 return (new PhpCsFixer\Config())
-	->setIndent('  ')
+	->setIndent('    ')
 	->setRules([
 		'align_multiline_comment' => [
 			'comment_type' => 'all_multiline'

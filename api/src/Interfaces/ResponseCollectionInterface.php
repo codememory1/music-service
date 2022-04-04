@@ -23,8 +23,8 @@ interface ResponseCollectionInterface
     public function getResponse(?string $status = null, ?int $code = null): Response;
 
     /**
-     * @param string|null $status
-     * @param int|null    $code
+     * @param null|string $status
+     * @param null|int    $code
      * @param array       $headers
      *
      * @return JsonResponse

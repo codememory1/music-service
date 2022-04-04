@@ -34,7 +34,7 @@ class AttributeReader
     /**
      * @param string $attributeNamespace
      *
-     * @return ReflectionAttribute|null
+     * @return null|ReflectionAttribute
      */
     #[Pure]
     public function getAttributeClass(string $attributeNamespace): ?ReflectionAttribute
@@ -74,7 +74,7 @@ class AttributeReader
      * @param ReflectionFunctionAbstract|Reflector $reflectionFunctionAbstract
      * @param string                               $attributeNamespace
      *
-     * @return ReflectionAttribute|null
+     * @return null|ReflectionAttribute
      */
     #[Pure]
     private function getAttribute(ReflectionFunctionAbstract|Reflector $reflectionFunctionAbstract, string $attributeNamespace): ?ReflectionAttribute

@@ -255,7 +255,7 @@ class User implements EntityInterface
     {
         $permissions = $this->getRole()->getRolePermissions();
 
-        return $permissions->exists(fn(RolePermissionName $rolePermissionName) => $rolePermissionName->getKey() === $permission->value);
+        return $permissions->exists(fn(int $key, RolePermission $value) => $value->getRolePermissionName()->getKey() === $permission->value);
     }
 
     /**
