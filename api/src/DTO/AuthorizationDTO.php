@@ -2,6 +2,7 @@
 
 namespace App\DTO;
 
+use App\Interfaces\UserIdentificationInterface;
 use App\Rest\DTO\AbstractDTO;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author  Codememory
  */
-class AuthorizationDTO extends AbstractDTO
+class AuthorizationDTO extends AbstractDTO implements UserIdentificationInterface
 {
     /**
      * @var null|string
@@ -41,5 +42,13 @@ class AuthorizationDTO extends AbstractDTO
             ->addExpectedRequestKey('password');
 
         $this->clientIp = $this->request->request->getClientIp();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getLogin(): ?string
+    {
+        return $this->login;
     }
 }

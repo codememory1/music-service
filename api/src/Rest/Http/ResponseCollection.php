@@ -279,6 +279,16 @@ class ResponseCollection implements ResponseCollectionInterface
     }
 
     /**
+     * @param string $translationKey
+     *
+     * @return ResponseCollectionInterface
+     */
+    final public function successRecoveryRequest(string $translationKey): ResponseCollectionInterface
+    {
+        return $this->prepareResponse(ApiResponseTypeEnum::RECOVERY_REQUEST, $translationKey, 'success', 200);
+    }
+
+    /**
      * @inheritDoc
      */
     public function getResponse(?string $status = null, ?int $code = null): Response

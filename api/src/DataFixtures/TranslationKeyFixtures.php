@@ -67,6 +67,7 @@ class TranslationKeyFixtures extends Fixture
         'common@successRegister',
         'common@successAuth',
         'common@dataOutput',
+        'common@loginIsRequired',
 
         'lang@codeExist',
         'lang@langNotExist',

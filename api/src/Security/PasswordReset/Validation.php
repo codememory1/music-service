@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Security\Auth;
+namespace App\Security\PasswordReset;
 
-use App\DTO\AuthorizationDTO;
+use App\DTO\PasswordRecoveryRequestDTO;
+use App\Entity\PasswordReset;
 use App\Rest\Http\Response;
 use App\Rest\Validator\Validator;
 
 /**
  * Class Validation.
  *
- * @package App\Security\Auth
+ * @package App\Security\PasswordReset
  *
  * @author  Codememory
  */
@@ -29,13 +30,13 @@ class Validation
     }
 
     /**
-     * @param AuthorizationDTO $DTO
+     * @param PasswordRecoveryRequestDTO|PasswordReset $DTOOrEntity
      *
      * @return bool|Response
      */
-    public function validate(AuthorizationDTO $DTO): Response|bool
+    public function validate(PasswordRecoveryRequestDTO|PasswordReset $DTOOrEntity): Response|bool
     {
-        $this->validator->validate($DTO);
+        $this->validator->validate($DTOOrEntity);
 
         return $this->validator->isValidate() ? true : $this->validator->getResponse();
     }

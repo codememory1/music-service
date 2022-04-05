@@ -7,7 +7,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "mjml:build": "node_modules/mjml/bin/mjml ../app/templates/mail/*.mjml -o ../app/templates/mail/output/"
+    "mjml:build": "node_modules/mjml/bin/mjml ../api/templates/mail/*.mjml -o ../api/templates/mail/output/"
   },
   "browserslist": [
     "> 1%",

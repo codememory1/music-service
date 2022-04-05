@@ -257,6 +257,11 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key' => 'common@dataOutput',
             'translation' => 'Получение информации'
         ],
+        [
+            'lang' => 'ru',
+            'key' => 'common@loginIsRequired',
+            'translation' => 'Логин обязателен к заполнению'
+        ],
 
         // RU - lang
         [

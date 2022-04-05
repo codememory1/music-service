@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\PasswordReset;
 use App\Entity\User;
 use App\Entity\UserActivationToken;
 use App\Rest\Translator;
@@ -75,7 +76,8 @@ class MailNotificationService
     }
 
     /**
-     * @param string $to
+     * @param User          $user
+     * @param PasswordReset $passwordResetEntity
      *
      * @throws LoaderError
      * @throws RuntimeError
@@ -84,14 +86,17 @@ class MailNotificationService
      *
      * @return void
      */
-    public function passwordRecoveryRequest(string $to): void
+    public function passwordRecoveryRequest(User $user, PasswordReset $passwordResetEntity): void
     {
         $email = new Email();
         $email
             ->from('kostynd1@gmail.com')
-            ->to($to)
+            ->to($user->getEmail())
             ->subject('Запрос на восстановление пароля')
-            ->html($this->render('password-recovery-request'));
+            ->html($this->render('password-recovery-request', [
+                'user' => $user,
+                'token' => $passwordResetEntity->getToken()
+            ]));
 
         $this->mailer->send($email);
     }

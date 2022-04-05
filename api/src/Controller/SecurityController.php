@@ -5,23 +5,24 @@ namespace App\Controller;
 use App\DTO\AuthorizationDTO;
 use App\DTO\PasswordRecoveryRequestDTO;
 use App\DTO\RegistrationDTO;
+use App\Entity\PasswordReset;
 use App\Entity\User;
 use App\Enum\EventsEnum;
+use App\Event\PasswordRecoveryRequestEvent;
 use App\Event\UserRegistrationEvent;
-use App\Exception\UndefinedClassForDTOException;
 use App\Rest\ApiController;
-use App\Rest\Http\Request;
 use App\Rest\Http\Response;
 use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
-use App\Security\Auth\Identification;
 use App\Security\Auth\Validation as AuthValidation;
 use App\Security\ConfirmationRegistration\DeleterToken;
 use App\Security\ConfirmationRegistration\UserActivation;
+use App\Security\PasswordReset\RecoveryRequest;
+use App\Security\PasswordReset\Validation as PasswordResetValidation;
 use App\Security\Registration\CreatorAccount;
 use App\Security\Registration\Registration;
 use App\Security\Registration\Validation as RegisterValidation;
-use App\Service\Security\PasswordReset\RecoveryRequestService;
+use App\Security\User\Identification;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -151,18 +152,44 @@ class SecurityController extends ApiController
     }
 
     /**
-     * @param RecoveryRequestService $recoveryRequestService
-     * @param Request                $request
+     * @param PasswordRecoveryRequestDTO $passwordRecoveryRequestDTO
+     * @param PasswordResetValidation    $validation
+     * @param Identification             $identification
+     * @param EventDispatcherInterface   $eventDispatcher
+     * @param RecoveryRequest            $recoveryRequest
      *
-     * @throws UndefinedClassForDTOException
+     * @throws NonUniqueResultException
      *
      * @return JsonResponse
      */
     #[Route('/password-reset/recovery-request', methods: 'POST')]
-    public function recoveryRequest(RecoveryRequestService $recoveryRequestService, Request $request): JsonResponse
-    {
-        return $recoveryRequestService
-            ->send(new PasswordRecoveryRequestDTO($request))
-            ->make();
+    public function recoveryRequest(
+        PasswordRecoveryRequestDTO $passwordRecoveryRequestDTO,
+        PasswordResetValidation $validation,
+        Identification $identification,
+        EventDispatcherInterface $eventDispatcher,
+        RecoveryRequest $recoveryRequest,
+    ): JsonResponse {
+        /** @var PasswordReset $passwordResetEntity */
+        $passwordResetEntity = $passwordRecoveryRequestDTO->getCollectedEntity();
+
+        // Validation of input post data
+        if (true !== $resultValidation = $validation->validate($passwordRecoveryRequestDTO)) {
+            return $resultValidation->make();
+        }
+
+        // User identification
+        $identifiedUser = $identification->identify($passwordRecoveryRequestDTO);
+
+        if ($identifiedUser instanceof Response) {
+            return $identifiedUser->make();
+        }
+
+        $eventDispatcher->dispatch(
+            new PasswordRecoveryRequestEvent($identifiedUser, $passwordResetEntity),
+            EventsEnum::PASSWORD_RECOVERY_REQUEST->value
+        );
+
+        return $recoveryRequest->successRecoveryRequest()->make();
     }
 }

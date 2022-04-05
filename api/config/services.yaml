@@ -81,6 +81,13 @@ services:
         tags:
             - { name: kernel.event_subscriber, event: user.registration }
 
+    App\EventSubscriber\PasswordRecoveryRequest\CreateTokenSubscriber:
+        tags:
+            - {name: kernel.event_subscriber, event: password.recovery-request}
+    App\EventSubscriber\PasswordRecoveryRequest\SendToMailSubscriber:
+        tags:
+            - { name: kernel.event_subscriber, event: password.recovery-request }
+
     # Event Listeners
 
     # Commands

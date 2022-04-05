@@ -36,8 +36,8 @@ class Validation
      */
     public function validate(RegistrationDTO|User $registrationDTOOrEntity): Response|bool
     {
-        $validator = $this->validator->validate($registrationDTOOrEntity);
+        $this->validator->validate($registrationDTOOrEntity);
 
-        return $validator->isValidate() ? true : $validator->getResponse();
+        return $this->validator->isValidate() ? true : $this->validator->getResponse();
     }
 }

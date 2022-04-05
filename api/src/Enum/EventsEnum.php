@@ -12,4 +12,5 @@ namespace App\Enum;
 enum EventsEnum: string
 {
     case USER_REGISTRATION = 'user.registration';
+    case PASSWORD_RECOVERY_REQUEST = 'password.recovery-request';
 }

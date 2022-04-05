@@ -26,4 +26,5 @@ enum ApiResponseTypeEnum: string
     case REGISTRATION = 'REGISTRATION';
     case ACCESS_IS_DENIED = 'ACCESS_IS_DENIED';
     case DATA_OUTPUT = 'DATA_OUTPUT';
+    case RECOVERY_REQUEST = 'RECOVERY_REQUEST';
 }

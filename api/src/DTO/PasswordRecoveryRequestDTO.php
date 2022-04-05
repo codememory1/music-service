@@ -6,9 +6,9 @@ use App\Entity\PasswordReset;
 use App\Entity\User;
 use App\Enum\EventNameDTOEnum;
 use App\Enum\PasswordResetStatusEnum;
+use App\Interfaces\UserIdentificationInterface;
 use App\Repository\UserRepository;
 use App\Rest\DTO\AbstractDTO;
-use App\Service\JwtTokenGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,14 +18,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author  Codememory
  */
-class PasswordRecoveryRequestDTO extends AbstractDTO
+class PasswordRecoveryRequestDTO extends AbstractDTO implements UserIdentificationInterface
 {
     /**
      * @var null|string
      */
-    #[Assert\NotBlank(message: 'recoveryRequest@emailIsRequired')]
+    #[Assert\NotBlank(message: 'common@loginIsRequired')]
     #[Assert\Email(message: 'common@invalidEmail')]
-    public ?string $email = null;
+    public ?string $login = null;
 
     /**
      * @return void
@@ -34,35 +34,27 @@ class PasswordRecoveryRequestDTO extends AbstractDTO
     {
         $this->setEntity(PasswordReset::class);
 
-        $this->addExpectedRequestKey('email');
+        $this->addExpectedRequestKey('login');
 
-        $this->excludeRequestKeyForBuildEntity('email');
+        $this->excludeRequestKeyForBuildEntity('login');
 
         $this->addEventListener(EventNameDTOEnum::AFTER_BUILD_ENTITY, function(PasswordReset $passwordReset): void {
             /** @var UserRepository $userRepository */
             $userRepository = $this->em->getRepository(User::class);
-            $user = $userRepository->findOneBy(['email' => $this->email]);
+            $user = $userRepository->findByLogin($this->login);
 
             $passwordReset
                 ->setUser($user)
-                ->setToken($this->generateToken($user))
                 ->setExecuted(false)
                 ->setStatus(PasswordResetStatusEnum::WAITING_RESET);
         });
     }
 
     /**
-     * @param User $user
-     *
-     * @return string
+     * @inheritDoc
      */
-    private function generateToken(User $user): string
+    public function getLogin(): ?string
     {
-        $jwtTokenGenerator = new JwtTokenGenerator();
-
-        return $jwtTokenGenerator->encode([
-            'id' => $user->getId(),
-            'email' => $user->getEmail()
-        ], 'JWT_PASSWORD_RESET_PRIVATE_KEY', 'JWT_PASSWORD_RESET_TTL');
+        return $this->login;
     }
 }
