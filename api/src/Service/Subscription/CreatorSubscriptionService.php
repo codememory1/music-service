@@ -3,6 +3,7 @@
 namespace App\Service\Subscription;
 
 use App\DTO\SubscriptionDTO;
+use App\Entity\Subscription;
 use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
@@ -22,12 +23,13 @@ class CreatorSubscriptionService extends CreatorCRUD
      */
     public function create(SubscriptionDTO $subscriptionDTO): Response
     {
-        $createdEntity = $this->make($subscriptionDTO);
+        /** @var Subscription|Response $createdSubscription */
+        $createdSubscription = $this->make($subscriptionDTO);
 
-        if ($createdEntity instanceof Response) {
-            return $createdEntity;
+        if ($createdSubscription instanceof Response) {
+            return $createdSubscription;
         }
 
-        return $this->manager->push($createdEntity, 'subscription@successCreate');
+        return $this->manager->push($createdSubscription, 'subscription@successCreate');
     }
 }

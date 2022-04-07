@@ -8,6 +8,7 @@ use App\Enum\StatusEnum;
 use App\Repository\UserRepository;
 use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class Registration.
@@ -19,16 +20,31 @@ use App\Security\AbstractSecurity;
 class Registration extends AbstractSecurity
 {
     /**
+     * @var null|UserRepository
+     */
+    private ?UserRepository $userRepository = null;
+
+    /**
+     * @param UserRepository $userRepository
+     *
+     * @return $this
+     */
+    #[Required]
+    public function setUserRepository(UserRepository $userRepository): self
+    {
+        $this->userRepository = $userRepository;
+
+        return $this;
+    }
+
+    /**
      * @param RegistrationDTO $registrationDTO
      *
      * @return bool|User
      */
     public function isReRegistration(RegistrationDTO $registrationDTO): User|bool
     {
-        /** @var UserRepository $userRepository */
-        $userRepository = $this->em->getRepository(User::class);
-
-        $finedUser = $userRepository->findOneBy([
+        $finedUser = $this->userRepository->findOneBy([
             'email' => $registrationDTO->email,
             'status' => StatusEnum::NOT_ACTIVE->value
         ]);

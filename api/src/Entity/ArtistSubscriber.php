@@ -2,12 +2,15 @@
 
 namespace App\Entity;
 
+use App\Enum\ApiResponseTypeEnum;
+use App\Enum\ArtistSubscriberStatusEnum;
 use App\Interfaces\EntityInterface;
 use App\Repository\ArtistSubscriberRepository;
-use App\Trait\Entity\IdentifierTrait;
-use App\Trait\Entity\TimestampTrait;
+use App\Traits\Entity\IdentifierTrait;
+use App\Traits\Entity\TimestampTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class ArtistSubscriber.
@@ -18,6 +21,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ORM\Entity(repositoryClass: ArtistSubscriberRepository::class)]
 #[ORM\Table('artist_subscribers')]
+#[UniqueEntity(
+    ['artist', 'subscriber'],
+    'artist@alreadySubscribed',
+    payload: ApiResponseTypeEnum::CREATE
+)]
 #[ORM\HasLifecycleCallbacks]
 class ArtistSubscriber implements EntityInterface
 {
@@ -94,13 +102,13 @@ class ArtistSubscriber implements EntityInterface
     }
 
     /**
-     * @param int $status
+     * @param ArtistSubscriberStatusEnum $status
      *
      * @return $this
      */
-    public function setStatus(int $status): self
+    public function setStatus(ArtistSubscriberStatusEnum $status): self
     {
-        $this->status = $status;
+        $this->status = $status->value;
 
         return $this;
     }

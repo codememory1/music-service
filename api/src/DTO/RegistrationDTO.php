@@ -8,8 +8,10 @@ use App\Enum\EventNameDTOEnum;
 use App\Enum\RoleEnum;
 use App\Enum\StatusEnum;
 use App\Repository\RoleRepository;
-use App\Rest\DTO\AbstractPasswordConfirmationDTO;
-use App\Security\Registration\PasswordHashing;
+use App\Rest\DTO\AbstractDTO;
+use App\Service\HashingService;
+use App\Traits\DTO\PasswordConfirmTrait;
+use App\Traits\DTO\PasswordTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -19,8 +21,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author  Codememory
  */
-class RegistrationDTO extends AbstractPasswordConfirmationDTO
+class RegistrationDTO extends AbstractDTO
 {
+    use PasswordTrait;
+
+    use PasswordConfirmTrait;
+
     /**
      * @var null|string
      */
@@ -58,7 +64,7 @@ class RegistrationDTO extends AbstractPasswordConfirmationDTO
                 $roleRepository = $this->em->getRepository(Role::class);
 
                 $userEntity
-                    ->setPassword((new PasswordHashing())->encode($this))
+                    ->setPassword((new HashingService())->encode($this->password))
                     ->setStatus(StatusEnum::NOT_ACTIVE->value)
                     ->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->value]));
 

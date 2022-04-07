@@ -289,6 +289,36 @@ class ResponseCollection implements ResponseCollectionInterface
     }
 
     /**
+     * @param string $translationKey
+     *
+     * @return ResponseCollectionInterface
+     */
+    final public function successRecovery(string $translationKey): ResponseCollectionInterface
+    {
+        return $this->prepareResponse(ApiResponseTypeEnum::RECOVERY, $translationKey, 'success', 200);
+    }
+
+    /**
+     * @param string $translationKey
+     *
+     * @return ResponseCollectionInterface
+     */
+    final public function successSubscribe(string $translationKey): ResponseCollectionInterface
+    {
+        return $this->prepareResponse(ApiResponseTypeEnum::SUBSCRIBE, $translationKey, 'success', 200);
+    }
+
+    final public function alreadySubscribed(): ResponseCollectionInterface
+    {
+        return $this->prepareResponse(
+            ApiResponseTypeEnum::SUBSCRIBE,
+            'artist@alreadySubscribed',
+            'success',
+            200
+        );
+    }
+
+    /**
      * @inheritDoc
      */
     public function getResponse(?string $status = null, ?int $code = null): Response

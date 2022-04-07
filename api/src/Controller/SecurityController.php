@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\DTO\AuthorizationDTO;
 use App\DTO\PasswordRecoveryRequestDTO;
 use App\DTO\RegistrationDTO;
+use App\DTO\UserChangePasswordDTO;
 use App\Entity\PasswordReset;
 use App\Entity\User;
 use App\Enum\EventsEnum;
 use App\Event\PasswordRecoveryRequestEvent;
+use App\Event\UserPasswordChangeEvent;
 use App\Event\UserRegistrationEvent;
 use App\Rest\ApiController;
 use App\Rest\Http\Response;
@@ -17,12 +19,16 @@ use App\Security\Auth\Authorization;
 use App\Security\Auth\Validation as AuthValidation;
 use App\Security\ConfirmationRegistration\DeleterToken;
 use App\Security\ConfirmationRegistration\UserActivation;
+use App\Security\PasswordReset\Identification as PasswordResetIdentification;
+use App\Security\PasswordReset\PasswordChanger\Changer;
+use App\Security\PasswordReset\PasswordChanger\Validation as PasswordChangerValidation;
 use App\Security\PasswordReset\RecoveryRequest;
 use App\Security\PasswordReset\Validation as PasswordResetValidation;
 use App\Security\Registration\CreatorAccount;
 use App\Security\Registration\Registration;
 use App\Security\Registration\Validation as RegisterValidation;
-use App\Security\User\Identification;
+use App\Security\User\Identification as UserIdentification;
+use App\Security\User\UpdaterPassword;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -108,11 +114,11 @@ class SecurityController extends ApiController
     }
 
     /**
-     * @param AuthorizationDTO $authorizationDTO
-     * @param AuthValidation   $validation
-     * @param Identification   $identification
-     * @param Authentication   $authentication
-     * @param Authorization    $authorization
+     * @param AuthorizationDTO   $authorizationDTO
+     * @param AuthValidation     $validation
+     * @param UserIdentification $identification
+     * @param Authentication     $authentication
+     * @param Authorization      $authorization
      *
      * @throws NonUniqueResultException
      *
@@ -122,7 +128,7 @@ class SecurityController extends ApiController
     public function auth(
         AuthorizationDTO $authorizationDTO,
         AuthValidation $validation,
-        Identification $identification,
+        UserIdentification $identification,
         Authentication $authentication,
         Authorization $authorization
     ): JsonResponse {
@@ -154,7 +160,7 @@ class SecurityController extends ApiController
     /**
      * @param PasswordRecoveryRequestDTO $passwordRecoveryRequestDTO
      * @param PasswordResetValidation    $validation
-     * @param Identification             $identification
+     * @param UserIdentification         $identification
      * @param EventDispatcherInterface   $eventDispatcher
      * @param RecoveryRequest            $recoveryRequest
      *
@@ -166,7 +172,7 @@ class SecurityController extends ApiController
     public function recoveryRequest(
         PasswordRecoveryRequestDTO $passwordRecoveryRequestDTO,
         PasswordResetValidation $validation,
-        Identification $identification,
+        UserIdentification $identification,
         EventDispatcherInterface $eventDispatcher,
         RecoveryRequest $recoveryRequest,
     ): JsonResponse {
@@ -191,5 +197,49 @@ class SecurityController extends ApiController
         );
 
         return $recoveryRequest->successRecoveryRequest()->make();
+    }
+
+    /**
+     * @param UserChangePasswordDTO       $userChangePasswordDTO
+     * @param PasswordChangerValidation   $validation
+     * @param PasswordResetIdentification $identification
+     * @param Changer                     $changer
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param UpdaterPassword             $updaterPassword
+     * @param string                      $token
+     *
+     * @return JsonResponse
+     */
+    #[Route('/password-reset/change/{token<.+>}', methods: 'POST')]
+    public function passwordRecovery(
+        UserChangePasswordDTO $userChangePasswordDTO,
+        PasswordChangerValidation $validation,
+        PasswordResetIdentification $identification,
+        Changer $changer,
+        EventDispatcherInterface $eventDispatcher,
+        UpdaterPassword $updaterPassword,
+        string $token
+    ): JsonResponse {
+        // Validation of input post data
+        if (true !== $resultValidation = $validation->validate($userChangePasswordDTO)) {
+            return $resultValidation->make();
+        }
+
+        // Password reset identification
+        $identifiedPasswordReset = $identification->identify($token);
+
+        if ($identifiedPasswordReset instanceof Response) {
+            return $identifiedPasswordReset->make();
+        }
+
+        // Change Password
+        $changer->change($userChangePasswordDTO, $identifiedPasswordReset);
+
+        $eventDispatcher->dispatch(
+            new UserPasswordChangeEvent($identifiedPasswordReset->getUser()),
+            EventsEnum::USER_PASSWORD_CHANGE->value
+        );
+
+        return $updaterPassword->successChangePasswordResponse()->make();
     }
 }

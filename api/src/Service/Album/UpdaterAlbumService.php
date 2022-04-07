@@ -8,8 +8,7 @@ use App\Entity\User;
 use App\Rest\CRUD\UpdaterCRUD;
 use App\Rest\Http\Response;
 use App\Service\FileUploaderService;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use Exception;
 
 /**
  * Class UpdaterAlbumService.
@@ -20,6 +19,7 @@ use Psr\Container\NotFoundExceptionInterface;
  */
 class UpdaterAlbumService extends UpdaterCRUD
 {
+
     /**
      * @param AlbumDTO            $albumDTO
      * @param FileUploaderService $uploadedFileService
@@ -27,27 +27,25 @@ class UpdaterAlbumService extends UpdaterCRUD
      * @param string              $kernelProjectDir
      * @param int                 $id
      *
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     *
      * @return Response
+     * @throws Exception
      */
     public function update(AlbumDTO $albumDTO, FileUploaderService $uploadedFileService, ?User $user, string $kernelProjectDir, int $id): Response
     {
         $this->translationKeyNotExist = 'album@notExist';
 
-        /** @var Album|Response $createdEntity */
-        $createdEntity = $this->make($albumDTO, ['id' => $id]);
+        /** @var Album|Response $updatedAlbum */
+        $updatedAlbum = $this->make($albumDTO, ['id' => $id]);
 
-        if ($createdEntity instanceof Response) {
-            return $createdEntity;
+        if ($updatedAlbum instanceof Response) {
+            return $updatedAlbum;
         }
 
         $this->deletePhoto($kernelProjectDir);
 
-        $createdEntity->setPhoto($this->uploadPhoto($uploadedFileService, $user));
+        $updatedAlbum->setPhoto($this->uploadPhoto($uploadedFileService, $user));
 
-        return $this->manager->update($createdEntity, 'album@successUpdate');
+        return $this->manager->update($updatedAlbum, 'album@successUpdate');
     }
 
     /**
@@ -71,15 +69,11 @@ class UpdaterAlbumService extends UpdaterCRUD
      * @param FileUploaderService $uploadedFileService
      * @param User                $user
      *
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     *
      * @return string
+     * @throws Exception
      */
     private function uploadPhoto(FileUploaderService $uploadedFileService, User $user): string
     {
-        $uploadedFileService->upload(fn() => md5($user->getEmail() . random_bytes(10)));
-
-        return $uploadedFileService->getUploadedFile()['filename_with_path'];
+        return '';
     }
 }

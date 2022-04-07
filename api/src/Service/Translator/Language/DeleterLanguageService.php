@@ -27,12 +27,13 @@ class DeleterLanguageService extends DeleterCRUD
     {
         $this->translationKeyNotExist = 'lang@langNotExist';
 
-        $deletedEntity = $this->make(Language::class, ['id' => $id]);
+        /** @var Language|Response $deletedLanguage */
+        $deletedLanguage = $this->make(Language::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof Response) {
-            return $deletedEntity;
+        if ($deletedLanguage instanceof Response) {
+            return $deletedLanguage;
         }
 
-        return $this->manager->remove($deletedEntity, 'lang@successDelete');
+        return $this->manager->remove($deletedLanguage, 'lang@successDelete');
     }
 }

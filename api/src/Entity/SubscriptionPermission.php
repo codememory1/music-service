@@ -5,8 +5,8 @@ namespace App\Entity;
 use App\Enum\ApiResponseTypeEnum;
 use App\Interfaces\EntityInterface;
 use App\Repository\SubscriptionPermissionRepository;
-use App\Trait\Entity\IdentifierTrait;
-use App\Trait\Entity\TimestampTrait;
+use App\Traits\Entity\IdentifierTrait;
+use App\Traits\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 

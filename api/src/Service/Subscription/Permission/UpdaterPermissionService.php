@@ -3,6 +3,7 @@
 namespace App\Service\Subscription\Permission;
 
 use App\DTO\SubscriptionPermissionDTO;
+use App\Entity\SubscriptionPermission;
 use App\Rest\CRUD\UpdaterCRUD;
 use App\Rest\Http\Response;
 
@@ -26,12 +27,13 @@ class UpdaterPermissionService extends UpdaterCRUD
         $this->validateEntity = true;
         $this->translationKeyNotExist = 'subscriptionPermission@notExist';
 
-        $updatedEntity = $this->make($subscriptionPermissionDTO, ['id' => $id]);
+        /** @var SubscriptionPermission|Response $updatedSubscriptionPermission */
+        $updatedSubscriptionPermission = $this->make($subscriptionPermissionDTO, ['id' => $id]);
 
-        if ($updatedEntity instanceof Response) {
-            return $updatedEntity;
+        if ($updatedSubscriptionPermission instanceof Response) {
+            return $updatedSubscriptionPermission;
         }
 
-        return $this->manager->update($updatedEntity, 'subscriptionPermission@successUpdate');
+        return $this->manager->update($updatedSubscriptionPermission, 'subscriptionPermission@successUpdate');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Service\Translator\Language;
 
 use App\DTO\LanguageDTO;
+use App\Entity\Language;
 use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
@@ -24,6 +25,7 @@ class CreatorLanguageService extends CreatorCRUD
     {
         $this->validateEntity = true;
 
+        /** @var Language|Response $createdLanguage */
         $createdLanguage = $this->make($languageDTO);
 
         if ($createdLanguage instanceof Response) {

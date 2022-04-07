@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Interfaces\EntityInterface;
 use App\Repository\UserSessionRepository;
-use App\Trait\Entity\CreatedAtTrait;
-use App\Trait\Entity\IdentifierTrait;
+use App\Traits\Entity\CreatedAtTrait;
+use App\Traits\Entity\IdentifierTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

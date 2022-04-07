@@ -27,12 +27,13 @@ class DeleterAlbumCategoryService extends DeleterCRUD
     {
         $this->translationKeyNotExist = 'albumCategory@notExist';
 
-        $deletedEntity = $this->make(AlbumCategory::class, ['id' => $id]);
+        /** @var AlbumCategory|Response $deletedAlbumCategory */
+        $deletedAlbumCategory = $this->make(AlbumCategory::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof Response) {
-            return $deletedEntity;
+        if ($deletedAlbumCategory instanceof Response) {
+            return $deletedAlbumCategory;
         }
 
-        return $this->manager->remove($deletedEntity, 'albumCategory@successDelete');
+        return $this->manager->remove($deletedAlbumCategory, 'albumCategory@successDelete');
     }
 }

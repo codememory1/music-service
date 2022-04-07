@@ -5,8 +5,8 @@ namespace App\Entity;
 use App\Enum\PasswordResetStatusEnum;
 use App\Interfaces\EntityInterface;
 use App\Repository\PasswordResetRepository;
-use App\Trait\Entity\IdentifierTrait;
-use App\Trait\Entity\TimestampTrait;
+use App\Traits\Entity\IdentifierTrait;
+use App\Traits\Entity\TimestampTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,7 +37,7 @@ class PasswordReset implements EntityInterface
     /**
      * @var null|User
      */
-    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'passwordResets')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -48,12 +48,6 @@ class PasswordReset implements EntityInterface
         'comment' => 'Password reset token'
     ])]
     private ?string $token = null;
-
-    /**
-     * @var bool
-     */
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private bool $executed = false;
 
     /**
      * @var null|int
@@ -119,26 +113,6 @@ class PasswordReset implements EntityInterface
     public function setStatus(PasswordResetStatusEnum $status): self
     {
         $this->status = $status->value;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getExecuted(): bool
-    {
-        return $this->executed;
-    }
-
-    /**
-     * @param bool $executed
-     *
-     * @return $this
-     */
-    public function setExecuted(bool $executed): self
-    {
-        $this->executed = $executed;
 
         return $this;
     }

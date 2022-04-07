@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Trait\Entity;
+namespace App\Traits\Entity;
 
 /**
  * Trait TimestampTrait.
  *
- * @package App\Trait\Entity
+ * @package App\Traits\Entity
  *
  * @author  Codememory
  */

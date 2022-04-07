@@ -8,6 +8,7 @@ use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
 use App\Security\Session\CreatorSession;
 use JetBrains\PhpStorm\ArrayShape;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class Authorization.
@@ -18,6 +19,24 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class Authorization extends AbstractSecurity
 {
+    /**
+     * @var null|CreatorSession
+     */
+    private ?CreatorSession $creatorSession = null;
+
+    /**
+     * @param CreatorSession $creatorSession
+     *
+     * @return $this
+     */
+    #[Required]
+    public function setCreatorSession(CreatorSession $creatorSession): self
+    {
+        $this->creatorSession = $creatorSession;
+
+        return $this;
+    }
+
     /**
      * @param User             $identifiedUser
      * @param AuthorizationDTO $authorizationDTO
@@ -30,9 +49,7 @@ class Authorization extends AbstractSecurity
     ])]
     public function auth(User $identifiedUser, AuthorizationDTO $authorizationDTO): array
     {
-        $creatorSession = new CreatorSession($this->em, $this->responseCollection);
-
-        return $creatorSession->create($identifiedUser, $authorizationDTO);
+        return $this->creatorSession->create($identifiedUser, $authorizationDTO);
     }
 
     /**

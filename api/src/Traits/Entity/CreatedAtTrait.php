@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Trait\Entity;
+namespace App\Traits\Entity;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Trait CreatedAtTrait.
  *
- * @package App\Trait\Entity
+ * @package App\Traits\Entity
  *
  * @author  Codememory
  */

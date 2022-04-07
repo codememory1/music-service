@@ -88,6 +88,9 @@ services:
         tags:
             - { name: kernel.event_subscriber, event: password.recovery-request }
 
+    App\Security\PasswordReset\Identification:
+        public: true
+
     # Event Listeners
 
     # Commands

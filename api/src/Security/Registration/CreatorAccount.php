@@ -6,6 +6,7 @@ use App\DTO\RegistrationDTO;
 use App\Entity\User;
 use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
+use App\Service\HashingService;
 
 /**
  * Class CreatorAccount.
@@ -16,6 +17,23 @@ use App\Security\AbstractSecurity;
  */
 class CreatorAccount extends AbstractSecurity
 {
+    /**
+     * @var null|HashingService
+     */
+    private ?HashingService $hashingService = null;
+
+    /**
+     * @param HashingService $hashingService
+     *
+     * @return $this
+     */
+    public function setHashingService(HashingService $hashingService): self
+    {
+        $this->hashingService = $hashingService;
+
+        return $this;
+    }
+
     /**
      * @param RegistrationDTO $registrationDTO
      *
@@ -40,9 +58,7 @@ class CreatorAccount extends AbstractSecurity
      */
     public function reCreate(RegistrationDTO $registrationDTO, User $user): User
     {
-        $passwordHashing = new PasswordHashing();
-
-        $user->setPassword($passwordHashing->encode($registrationDTO));
+        $user->setPassword($this->hashingService->encode($registrationDTO->password));
 
         $this->em->flush();
 

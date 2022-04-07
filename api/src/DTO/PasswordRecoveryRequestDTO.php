@@ -45,7 +45,6 @@ class PasswordRecoveryRequestDTO extends AbstractDTO implements UserIdentificati
 
             $passwordReset
                 ->setUser($user)
-                ->setExecuted(false)
                 ->setStatus(PasswordResetStatusEnum::WAITING_RESET);
         });
     }

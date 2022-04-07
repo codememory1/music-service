@@ -6,10 +6,9 @@ use App\Entity\UserActivationToken;
 use App\Enum\StatusEnum;
 use App\Repository\UserActivationTokenRepository;
 use App\Rest\Http\Response;
-use App\Rest\Http\ResponseCollection;
 use App\Security\AbstractSecurity;
 use App\Service\JwtTokenGenerator;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class UserActivation.
@@ -21,32 +20,39 @@ use Doctrine\ORM\EntityManagerInterface;
 class UserActivation extends AbstractSecurity
 {
     /**
-     * @var UserActivationTokenRepository
+     * @var null|UserActivationTokenRepository
      */
-    private UserActivationTokenRepository $userActivationTokenRepository;
+    private ?UserActivationTokenRepository $userActivationTokenRepository = null;
 
     /**
-     * @var JwtTokenGenerator
+     * @var null|JwtTokenGenerator
      */
-    private JwtTokenGenerator $jwtTokenGenerator;
+    private ?JwtTokenGenerator $jwtTokenGenerator = null;
 
     /**
-     * @param EntityManagerInterface $em
-     * @param ResponseCollection     $responseCollection
-     * @param JwtTokenGenerator      $jwtTokenGenerator
+     * @param JwtTokenGenerator $jwtTokenGenerator
+     *
+     * @return $this
      */
-    public function __construct(
-        EntityManagerInterface $em,
-        ResponseCollection $responseCollection,
-        JwtTokenGenerator $jwtTokenGenerator
-    ) {
-        parent::__construct($em, $responseCollection);
-
-        /** @var UserActivationTokenRepository $userActivationTokenRepository */
-        $userActivationTokenRepository = $this->em->getRepository(UserActivationToken::class);
-
-        $this->userActivationTokenRepository = $userActivationTokenRepository;
+    #[Required]
+    public function setJwtTokenGenerator(JwtTokenGenerator $jwtTokenGenerator): self
+    {
         $this->jwtTokenGenerator = $jwtTokenGenerator;
+
+        return $this;
+    }
+
+    /**
+     * @param UserActivationTokenRepository $userActivationTokenRepository
+     *
+     * @return $this
+     */
+    #[Required]
+    public function setUserActivationTokenRepository(UserActivationTokenRepository $userActivationTokenRepository): self
+    {
+        $this->userActivationTokenRepository = $userActivationTokenRepository;
+
+        return $this;
     }
 
     /**

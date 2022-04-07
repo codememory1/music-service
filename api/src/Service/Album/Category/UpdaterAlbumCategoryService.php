@@ -3,6 +3,7 @@
 namespace App\Service\Album\Category;
 
 use App\DTO\AlbumCategoryDTO;
+use App\Entity\AlbumCategory;
 use App\Rest\CRUD\UpdaterCRUD;
 use App\Rest\Http\Response;
 
@@ -26,12 +27,13 @@ class UpdaterAlbumCategoryService extends UpdaterCRUD
         $this->validateEntity = true;
         $this->translationKeyNotExist = 'albumCategory@notExist';
 
-        $updatedEntity = $this->make($albumCategoryDTO, ['id' => $id]);
+        /** @var AlbumCategory|Response $updatedAlbumCategory */
+        $updatedAlbumCategory = $this->make($albumCategoryDTO, ['id' => $id]);
 
-        if ($updatedEntity instanceof Response) {
-            return $updatedEntity;
+        if ($updatedAlbumCategory instanceof Response) {
+            return $updatedAlbumCategory;
         }
 
-        return $this->manager->update($updatedEntity, 'albumCategory@successUpdate');
+        return $this->manager->update($updatedAlbumCategory, 'albumCategory@successUpdate');
     }
 }

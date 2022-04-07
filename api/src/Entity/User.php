@@ -8,8 +8,9 @@ use App\Enum\RolePermissionNameEnum;
 use App\Enum\StatusEnum;
 use App\Interfaces\EntityInterface;
 use App\Repository\UserRepository;
-use App\Trait\Entity\IdentifierTrait;
-use App\Trait\Entity\TimestampTrait;
+use App\Service\JwtTokenGenerator;
+use App\Traits\Entity\IdentifierTrait;
+use App\Traits\Entity\TimestampTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -136,6 +137,12 @@ class User implements EntityInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: AuthRestriction::class, cascade: ['persist', 'remove'])]
     private ?AuthRestriction $authRestriction = null;
 
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PasswordReset::class, cascade: ['persist', 'remove'])]
+    private Collection $passwordResets;
+
     #[Pure]
     public function __construct()
     {
@@ -144,6 +151,7 @@ class User implements EntityInterface
         $this->albums = new ArrayCollection();
         $this->musicRatings = new ArrayCollection();
         $this->artistSubscribers = new ArrayCollection();
+        $this->passwordResets = new ArrayCollection();
     }
 
     /**
@@ -565,6 +573,51 @@ class User implements EntityInterface
     public function setAuthRestriction(?AuthRestriction $authRestriction): self
     {
         $this->authRestriction = $authRestriction;
+
+        return $this;
+    }
+
+    /**
+     * @param PasswordReset $passwordReset
+     *
+     * @return $this
+     */
+    public function addPasswordReset(PasswordReset $passwordReset): self
+    {
+        if (!$this->passwordResets->contains($passwordReset)) {
+            $jwtTokenGenerator = new JwtTokenGenerator();
+            $tokenSchema = [
+                'id' => $this->getId(),
+                'email' => $this->getEmail()
+            ];
+
+            $this->passwordResets[] = $passwordReset;
+
+            $passwordReset
+                ->setUser($this)
+                ->setToken($jwtTokenGenerator->encode(
+                    $tokenSchema,
+                    'JWT_PASSWORD_RESET_PRIVATE_KEY',
+                    'JWT_PASSWORD_RESET_TTL'
+                ));
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param PasswordReset $passwordReset
+     *
+     * @return $this
+     */
+    public function removePasswordReset(PasswordReset $passwordReset): self
+    {
+        if ($this->passwordResets->removeElement($passwordReset)) {
+            // set the owning side to null (unless already changed)
+            if ($passwordReset->getUser() === $this) {
+                $passwordReset->setUser(null);
+            }
+        }
 
         return $this;
     }

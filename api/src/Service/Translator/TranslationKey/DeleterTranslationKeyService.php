@@ -27,12 +27,13 @@ class DeleterTranslationKeyService extends DeleterCRUD
     {
         $this->translationKeyNotExist = 'translationKey@notExist';
 
-        $deletedEntity = $this->make(TranslationKey::class, ['id' => $id]);
+        /** @var TranslationKey|Response $deletedTranslationKey */
+        $deletedTranslationKey = $this->make(TranslationKey::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof Response) {
-            return $deletedEntity;
+        if ($deletedTranslationKey instanceof Response) {
+            return $deletedTranslationKey;
         }
 
-        return $this->manager->remove($deletedEntity, 'translationKey@successDelete');
+        return $this->manager->remove($deletedTranslationKey, 'translationKey@successDelete');
     }
 }

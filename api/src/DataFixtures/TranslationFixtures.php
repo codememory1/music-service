@@ -460,6 +460,11 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key' => 'user@notExist',
             'translation' => 'Пользователь не найден'
         ],
+        [
+            'lang' => 'ru',
+            'key' => 'user@successChangePassword',
+            'translation' => 'Пароль успешно изменен'
+        ],
 
         // RU - userProfile
         [
@@ -603,7 +608,7 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
         [
             'lang' => 'ru',
             'key' => 'userActivationAccount@tokenIsNotValid',
-            'translation' => 'Токен активации не валидный'
+            'translation' => 'Токен активации недействительный'
         ],
         [
             'lang' => 'ru',
@@ -743,6 +748,50 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key' => 'passwordReset@requestSuccessCreate',
             'translation' => 'На почту отправленно сообщение для сброса пароля'
         ],
+        [
+            'lang' => 'ru',
+            'key' => 'passwordReset@tokenIsNotValid',
+            'translation' => 'Токен для смены пароля недействительный'
+        ],
+        [
+            'lang' => 'ru',
+            'key' => 'passwordReset@successCreateToken',
+            'translation' => 'Токен восстановления пароля упешно создан'
+        ],
+        [
+            'lang' => 'ru',
+            'key' => 'passwordReset@successRecoveryRequest',
+            'translation' => 'На почту отправлено сообщение для восстановление пароля'
+        ],
+        [
+            'lang' => 'ru',
+            'key' => 'passwordReset@invalidToken',
+            'translation' => 'Некорректный токен восстановления пароля'
+        ],
+
+        // RU - userSession
+        [
+            'lang' => 'ru',
+            'key' => 'userSession@successDelete',
+            'translation' => 'Сеанс успешно удален'
+        ],
+
+        // RU - artist
+        [
+            'lang' => 'ru',
+            'key' => 'artist@successSubscribe',
+            'translation' => 'Вы успешно подписались на артиста'
+        ],
+        [
+            'lang' => 'ru',
+            'key' => 'artist@alreadySubscribed',
+            'translation' => 'Вы уже подписаны на данного артиста'
+        ],
+        [
+            'lang' => 'ru',
+            'key' => 'artist@notExist',
+            'translation' => 'Артиста не найден'
+        ]
     ];
 
     /**

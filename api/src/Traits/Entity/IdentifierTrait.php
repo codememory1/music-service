@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Trait\Entity;
+namespace App\Traits\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Trait IdentifierTrait.
  *
- * @package App\Trait\Entity
+ * @package App\Traits\Entity
  *
  * @author  Codememory
  */

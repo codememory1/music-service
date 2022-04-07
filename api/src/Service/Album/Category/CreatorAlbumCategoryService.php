@@ -3,6 +3,7 @@
 namespace App\Service\Album\Category;
 
 use App\DTO\AlbumCategoryDTO;
+use App\Entity\AlbumCategory;
 use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
@@ -24,12 +25,13 @@ class CreatorAlbumCategoryService extends CreatorCRUD
     {
         $this->validateEntity = true;
 
-        $createdEntity = $this->make($albumCategoryDTO);
+        /** @var AlbumCategory|Response $createdAlbumCategory */
+        $createdAlbumCategory = $this->make($albumCategoryDTO);
 
-        if ($createdEntity instanceof Response) {
-            return $createdEntity;
+        if ($createdAlbumCategory instanceof Response) {
+            return $createdAlbumCategory;
         }
 
-        return $this->manager->push($createdEntity, 'albumCategory@successCreate');
+        return $this->manager->push($createdAlbumCategory, 'albumCategory@successCreate');
     }
 }

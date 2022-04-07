@@ -3,6 +3,7 @@
 namespace App\Service\Subscription\Permission\Name;
 
 use App\DTO\SubscriptionPermissionNameDTO;
+use App\Entity\SubscriptionPermissionName;
 use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
@@ -24,12 +25,16 @@ class CreatorPermissionNameService extends CreatorCRUD
     {
         $this->validateEntity = true;
 
-        $createdEntity = $this->make($subscriptionPermissionNameDTO);
+        /** @var SubscriptionPermissionName|Response $createdSubscriptionPermissionName */
+        $createdSubscriptionPermissionName = $this->make($subscriptionPermissionNameDTO);
 
-        if ($createdEntity instanceof Response) {
-            return $createdEntity;
+        if ($createdSubscriptionPermissionName instanceof Response) {
+            return $createdSubscriptionPermissionName;
         }
 
-        return $this->manager->push($createdEntity, 'subscriptionPermissionName@successCreate');
+        return $this->manager->push(
+            $createdSubscriptionPermissionName,
+            'subscriptionPermissionName@successCreate'
+        );
     }
 }

@@ -11,6 +11,7 @@ use App\Service\JwtTokenGenerator;
 use Codememory\Components\GEO\Geolocation;
 use Jenssegers\Agent\Agent;
 use JetBrains\PhpStorm\ArrayShape;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class CreatorSession.
@@ -21,6 +22,24 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 class CreatorSession extends AbstractSecurity
 {
+    /**
+     * @var null|JwtTokenGenerator
+     */
+    private ?JwtTokenGenerator $jwtTokenGenerator = null;
+
+    /**
+     * @param JwtTokenGenerator $jwtTokenGenerator
+     *
+     * @return $this
+     */
+    #[Required]
+    public function setJwtTokenGenerator(JwtTokenGenerator $jwtTokenGenerator): self
+    {
+        $this->jwtTokenGenerator = $jwtTokenGenerator;
+
+        return $this;
+    }
+
     /**
      * @param User             $identifiedUser
      * @param AuthorizationDTO $authorizationDTO
@@ -89,23 +108,20 @@ class CreatorSession extends AbstractSecurity
     ])]
     private function generateTokens(User $user): array
     {
-        $jwtTokenGenerator = new JwtTokenGenerator();
-
         return [
-            'access_token' => $this->generateAccessToken($jwtTokenGenerator, $user),
-            'refresh_token' => $this->generateRefreshToken($jwtTokenGenerator, $user)
+            'access_token' => $this->generateAccessToken($user),
+            'refresh_token' => $this->generateRefreshToken($user)
         ];
     }
 
     /**
-     * @param JwtTokenGenerator $jwtTokenGenerator
-     * @param User              $user
+     * @param User $user
      *
      * @return string
      */
-    private function generateAccessToken(JwtTokenGenerator $jwtTokenGenerator, User $user): string
+    private function generateAccessToken(User $user): string
     {
-        return $jwtTokenGenerator->encode(
+        return $this->jwtTokenGenerator->encode(
             $this->tokenSchema($user),
             'JWT_ACCESS_PRIVATE_KEY',
             'JWT_ACCESS_TTL'
@@ -130,14 +146,13 @@ class CreatorSession extends AbstractSecurity
     }
 
     /**
-     * @param JwtTokenGenerator $jwtTokenGenerator
-     * @param User              $user
+     * @param User $user
      *
      * @return string
      */
-    private function generateRefreshToken(JwtTokenGenerator $jwtTokenGenerator, User $user): string
+    private function generateRefreshToken(User $user): string
     {
-        return $jwtTokenGenerator->encode(
+        return $this->jwtTokenGenerator->encode(
             $this->tokenSchema($user),
             'JWT_REFRESH_PRIVATE_KEY',
             'JWT_REFRESH_TTL'

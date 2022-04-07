@@ -45,4 +45,14 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @param int $id
+     *
+     * @return User|null
+     */
+    public function getArtist(int $id): ?User
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
 }

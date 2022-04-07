@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Enum\ApiResponseTypeEnum;
 use App\Interfaces\EntityInterface;
 use App\Repository\MusicExecutorRepository;
-use App\Trait\Entity\IdentifierTrait;
+use App\Traits\Entity\IdentifierTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 

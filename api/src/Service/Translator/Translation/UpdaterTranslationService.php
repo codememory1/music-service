@@ -3,6 +3,7 @@
 namespace App\Service\Translator\Translation;
 
 use App\DTO\TranslationDTO;
+use App\Entity\Translation;
 use App\Rest\CRUD\UpdaterCRUD;
 use App\Rest\Http\Response;
 
@@ -26,12 +27,13 @@ class UpdaterTranslationService extends UpdaterCRUD
         $this->validateEntity = true;
         $this->translationKeyNotExist = 'translation@notExist';
 
-        $updatedEntity = $this->make($translationDTO, ['id' => $id]);
+        /** @var Translation|Response $updatedTranslation */
+        $updatedTranslation = $this->make($translationDTO, ['id' => $id]);
 
-        if ($updatedEntity instanceof Response) {
-            return $updatedEntity;
+        if ($updatedTranslation instanceof Response) {
+            return $updatedTranslation;
         }
 
-        return $this->manager->update($updatedEntity, 'translation@successUpdate');
+        return $this->manager->update($updatedTranslation, 'translation@successUpdate');
     }
 }

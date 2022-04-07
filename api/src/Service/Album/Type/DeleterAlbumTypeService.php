@@ -2,6 +2,7 @@
 
 namespace App\Service\Album\Type;
 
+use App\Entity\AlbumCategory;
 use App\Entity\AlbumType;
 use App\Rest\CRUD\DeleterCRUD;
 use App\Rest\Http\Response;
@@ -27,12 +28,13 @@ class DeleterAlbumTypeService extends DeleterCRUD
     {
         $this->translationKeyNotExist = 'albumType@notExist';
 
-        $deletedEntity = $this->make(AlbumType::class, ['id' => $id]);
+        /** @var AlbumCategory|Response $deletedAlbumType */
+        $deletedAlbumType = $this->make(AlbumType::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof Response) {
-            return $deletedEntity;
+        if ($deletedAlbumType instanceof Response) {
+            return $deletedAlbumType;
         }
 
-        return $this->manager->remove($deletedEntity, 'albumType@successDelete');
+        return $this->manager->remove($deletedAlbumType, 'albumType@successDelete');
     }
 }

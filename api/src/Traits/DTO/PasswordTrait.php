@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Rest\DTO;
+namespace App\Traits\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class AbstractPasswordDTO.
+ * Trait PasswordTrait.
  *
- * @package App\Rest\DTO
+ * @package App\Traits\DTO
  *
  * @author  Codememory
  */
-abstract class AbstractPasswordDTO extends AbstractDTO
+trait PasswordTrait
 {
     /**
      * @var null|string

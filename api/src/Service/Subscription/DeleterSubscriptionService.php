@@ -27,12 +27,13 @@ class DeleterSubscriptionService extends DeleterCRUD
     {
         $this->translationKeyNotExist = 'subscription@notExist';
 
-        $deletedEntity = $this->make(Subscription::class, ['id' => $id]);
+        /** @var Subscription|Response $deletedSubscription */
+        $deletedSubscription = $this->make(Subscription::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof Response) {
-            return $deletedEntity;
+        if ($deletedSubscription instanceof Response) {
+            return $deletedSubscription;
         }
 
-        return $this->manager->remove($deletedEntity, 'subscription@successDelete');
+        return $this->manager->remove($deletedSubscription, 'subscription@successDelete');
     }
 }

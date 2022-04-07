@@ -3,6 +3,7 @@
 namespace App\Service\Subscription;
 
 use App\DTO\SubscriptionDTO;
+use App\Entity\Subscription;
 use App\Rest\CRUD\UpdaterCRUD;
 use App\Rest\Http\Response;
 
@@ -25,12 +26,13 @@ class UpdaterSubscriptionService extends UpdaterCRUD
     {
         $this->translationKeyNotExist = 'subscription@notExist';
 
-        $updatedEntity = $this->make($subscriptionDTO, ['id' => $id]);
+        /** @var Subscription|Response $updatedSubscription */
+        $updatedSubscription = $this->make($subscriptionDTO, ['id' => $id]);
 
-        if ($updatedEntity instanceof Response) {
-            return $updatedEntity;
+        if ($updatedSubscription instanceof Response) {
+            return $updatedSubscription;
         }
 
-        return $this->manager->update($updatedEntity, 'subscription@successUpdate');
+        return $this->manager->update($updatedSubscription, 'subscription@successUpdate');
     }
 }

@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Interfaces\EntityInterface;
 use App\Repository\RolePermissionRepository;
-use App\Trait\Entity\IdentifierTrait;
-use App\Trait\Entity\TimestampTrait;
+use App\Traits\Entity\IdentifierTrait;
+use App\Traits\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

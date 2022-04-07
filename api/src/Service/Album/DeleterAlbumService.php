@@ -28,16 +28,16 @@ class DeleterAlbumService extends DeleterCRUD
     {
         $this->translationKeyNotExist = 'album@notExist';
 
-        /** @var Album|Response $deletedEntity */
-        $deletedEntity = $this->make(Album::class, ['id' => $id]);
+        /** @var Album|Response $deletedAlbum */
+        $deletedAlbum = $this->make(Album::class, ['id' => $id]);
 
-        if ($deletedEntity instanceof Response) {
-            return $deletedEntity;
+        if ($deletedAlbum instanceof Response) {
+            return $deletedAlbum;
         }
 
-        $this->deletePhoto($deletedEntity, $kernelProjectDir);
+        $this->deletePhoto($deletedAlbum, $kernelProjectDir);
 
-        return $this->manager->remove($deletedEntity, 'album@successDelete');
+        return $this->manager->remove($deletedAlbum, 'album@successDelete');
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Security\PasswordReset;
 
 use App\DTO\PasswordRecoveryRequestDTO;
 use App\Entity\PasswordReset;
+use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
 
 /**
@@ -29,5 +30,15 @@ class CreatorToken extends AbstractSecurity
         $this->em->flush();
 
         return $passwordResetEntity;
+    }
+
+    /**
+     * @return Response
+     */
+    public function successCreateToken(): Response
+    {
+        return $this->responseCollection
+            ->successCreate('passwordReset@successCreateToken')
+            ->getResponse();
     }
 }

@@ -110,6 +110,7 @@ class TranslationKeyFixtures extends Fixture
         'user@accountNotActive',
         'user@successAuth',
         'user@notExist',
+        'user@successChangePassword',
 
         'userProfile@nameIsRequired',
         'userProfile@surnameMaxLength',
@@ -171,7 +172,17 @@ class TranslationKeyFixtures extends Fixture
         'album@successDelete',
         'album@notExist',
 
-        'passwordReset@requestSuccessCreate'
+        'passwordReset@requestSuccessCreate',
+        'passwordReset@tokenIsNotValid',
+        'passwordReset@successCreateToken',
+        'passwordReset@successRecoveryRequest',
+        'passwordReset@invalidToken',
+
+        'userSession@successDelete',
+
+        'artist@successSubscribe',
+        'artist@alreadySubscribed',
+        'artist@notExist',
     ];
 
     /**

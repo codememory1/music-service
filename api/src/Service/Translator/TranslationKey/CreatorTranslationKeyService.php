@@ -3,6 +3,7 @@
 namespace App\Service\Translator\TranslationKey;
 
 use App\DTO\TranslationKeyDTO;
+use App\Entity\TranslationKey;
 use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
 
@@ -24,12 +25,13 @@ class CreatorTranslationKeyService extends CreatorCRUD
     {
         $this->validateEntity = true;
 
-        $createdEntity = $this->make($translationKeyDTO);
+        /** @var TranslationKey|Response $createdTranslationKey */
+        $createdTranslationKey = $this->make($translationKeyDTO);
 
-        if ($createdEntity instanceof Response) {
-            return $createdEntity;
+        if ($createdTranslationKey instanceof Response) {
+            return $createdTranslationKey;
         }
 
-        return $this->manager->push($createdEntity, 'translationKey@successCreate');
+        return $this->manager->push($createdTranslationKey, 'translationKey@successCreate');
     }
 }
