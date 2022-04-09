@@ -10,7 +10,7 @@ use App\Entity\Album;
 use App\Enum\RolePermissionNameEnum;
 use App\Enum\SubscriptionPermissionNameEnum;
 use App\Rest\ApiController;
-use App\Security\TokenAuthenticator;
+use App\Security\Auth\Authenticator;
 use App\Service\Album\CreatorAlbumService;
 use App\Service\Album\DeleterAlbumService;
 use App\Service\Album\UpdaterAlbumService;
@@ -48,18 +48,18 @@ class AlbumController extends ApiController
     /**
      * @param CreatorAlbumService $creatorAlbumService
      * @param AlbumDTO            $albumDTO
-     * @param TokenAuthenticator  $tokenAuthenticator
+     * @param Authenticator       $tokenAuthenticator
      * @param FileUploaderService $fileUploaderService
      *
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     *
      * @return JsonResponse
+     *@throws NotFoundExceptionInterface
+     *
+     * @throws ContainerExceptionInterface
      */
     #[Route('/create', methods: 'POST')]
     #[Auth]
     #[SubscriptionPermission(permission: SubscriptionPermissionNameEnum::CREATE_ALBUM)]
-    public function create(CreatorAlbumService $creatorAlbumService, AlbumDTO $albumDTO, TokenAuthenticator $tokenAuthenticator, FileUploaderService $fileUploaderService): JsonResponse
+    public function create(CreatorAlbumService $creatorAlbumService, AlbumDTO $albumDTO, Authenticator $tokenAuthenticator, FileUploaderService $fileUploaderService): JsonResponse
     {
         $fileUploaderService
             ->initRequestFile('photo')
@@ -71,19 +71,19 @@ class AlbumController extends ApiController
     /**
      * @param UpdaterAlbumService $updaterAlbumService
      * @param AlbumDTO            $albumDTO
-     * @param TokenAuthenticator  $tokenAuthenticator
+     * @param Authenticator       $tokenAuthenticator
      * @param FileUploaderService $fileUploaderService
      * @param int                 $id
      *
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     *
      * @return JsonResponse
+     *@throws NotFoundExceptionInterface
+     *
+     * @throws ContainerExceptionInterface
      */
     #[Route('/{id<\d+>}/edit', methods: 'POST')]
     #[Auth]
     #[SubscriptionPermission(permission: SubscriptionPermissionNameEnum::UPDATE_ALBUM)]
-    public function update(UpdaterAlbumService $updaterAlbumService, AlbumDTO $albumDTO, TokenAuthenticator $tokenAuthenticator, FileUploaderService $fileUploaderService, int $id): JsonResponse
+    public function update(UpdaterAlbumService $updaterAlbumService, AlbumDTO $albumDTO, Authenticator $tokenAuthenticator, FileUploaderService $fileUploaderService, int $id): JsonResponse
     {
         $fileUploaderService
             ->initRequestFile('photo')

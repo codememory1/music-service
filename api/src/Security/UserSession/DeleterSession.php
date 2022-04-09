@@ -10,7 +10,7 @@ use App\Security\AbstractSecurity;
 /**
  * Class DeleterSession.
  *
- * @package App\Security\Session
+ * @package App\Security\UserSession
  *
  * @author  Codememory
  */

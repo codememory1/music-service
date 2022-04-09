@@ -7,7 +7,7 @@ use App\Interfaces\AnnotationListenerInterface;
 use App\Rest\ClassHelper\AttributeData;
 use App\Rest\Http\Request;
 use App\Rest\Http\ResponseCollection;
-use App\Security\TokenAuthenticator;
+use App\Security\Auth\Authenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use function is_array;
 use ReflectionAttribute;
@@ -40,21 +40,21 @@ class AnnotationListener
     private ResponseCollection $responseCollection;
 
     /**
-     * @var TokenAuthenticator
+     * @var Authenticator
      */
-    private TokenAuthenticator $authenticator;
+    private Authenticator $authenticator;
 
     /**
      * @param Request                $request
      * @param EntityManagerInterface $em
      * @param ResponseCollection     $responseCollection
-     * @param TokenAuthenticator     $tokenAuthenticator
+     * @param Authenticator          $tokenAuthenticator
      */
     public function __construct(
         Request $request,
         EntityManagerInterface $em,
         ResponseCollection $responseCollection,
-        TokenAuthenticator $tokenAuthenticator
+        Authenticator $tokenAuthenticator
     ) {
         $this->request = $request;
         $this->em = $em;

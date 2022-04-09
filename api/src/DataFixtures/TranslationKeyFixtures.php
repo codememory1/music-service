@@ -68,6 +68,9 @@ class TranslationKeyFixtures extends Fixture
         'common@successAuth',
         'common@dataOutput',
         'common@loginIsRequired',
+        'common@refreshTokenIsRequired',
+        'common@invalidRefreshToken',
+        'common@successUpdateAccessToken',
 
         'lang@codeExist',
         'lang@langNotExist',

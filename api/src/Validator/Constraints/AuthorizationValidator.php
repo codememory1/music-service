@@ -3,7 +3,7 @@
 namespace App\Validator\Constraints;
 
 use App\Interfaces\EntityInterface;
-use App\Security\TokenAuthenticator;
+use App\Security\Auth\Authenticator;
 use Doctrine\Persistence\ManagerRegistry;
 use ReflectionClass;
 use ReflectionException;
@@ -55,7 +55,7 @@ class AuthorizationValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, EntityInterface::class);
         }
 
-        $tokenAuthenticator = new TokenAuthenticator($this->request, $this->managerRegistry);
+        $tokenAuthenticator = new Authenticator($this->request, $this->managerRegistry);
 
         if (null === $tokenAuthenticator->getUser()) {
             $this->context

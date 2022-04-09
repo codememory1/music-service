@@ -6,7 +6,7 @@ use App\DTO\AuthorizationDTO;
 use App\Entity\User;
 use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
-use App\Security\Session\CreatorSession;
+use App\Security\UserSession\CreatorSession;
 use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Contracts\Service\Attribute\Required;
 

@@ -262,6 +262,21 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key' => 'common@loginIsRequired',
             'translation' => 'Логин обязателен к заполнению'
         ],
+        [
+            'lang' => 'ru',
+            'key' => 'common@refreshTokenIsRequired',
+            'translation' => 'Refresh-Token обязательнный к заполнению'
+        ],
+        [
+            'lang' => 'ru',
+            'key' => 'common@invalidRefreshToken',
+            'translation' => 'Невалидный Refresh-Token'
+        ],
+        [
+            'lang' => 'ru',
+            'key' => 'common@successUpdateAccessToken',
+            'translation' => 'Access-Token успешно обновлен'
+        ],
 
         // RU - lang
         [

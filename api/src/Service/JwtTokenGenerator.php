@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use DateTime;
 use DateTimeImmutable;
 use Exception;
 use Firebase\JWT\JWT;
@@ -20,7 +19,7 @@ use Ramsey\Uuid\Uuid;
 class JwtTokenGenerator
 {
     /**
-     * @var DateTime
+     * @var DateTimeImmutable
      */
     private DateTimeImmutable $datetime;
 

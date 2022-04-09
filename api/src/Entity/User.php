@@ -126,12 +126,6 @@ class User implements EntityInterface
     private ?MediaLibrary $mediaLibrary = null;
 
     /**
-     * @var Collection
-     */
-    #[ORM\OneToMany(mappedBy: 'artist', targetEntity: ArtistSubscriber::class, cascade: ['persist', 'remove'])]
-    private Collection $artistSubscribers;
-
-    /**
      * @var null|AuthRestriction
      */
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: AuthRestriction::class, cascade: ['persist', 'remove'])]
@@ -150,7 +144,6 @@ class User implements EntityInterface
         $this->userSessions = new ArrayCollection();
         $this->albums = new ArrayCollection();
         $this->musicRatings = new ArrayCollection();
-        $this->artistSubscribers = new ArrayCollection();
         $this->passwordResets = new ArrayCollection();
     }
 
@@ -513,46 +506,6 @@ class User implements EntityInterface
         }
 
         $this->mediaLibrary = $mediaLibrary;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getArtistSubscribers(): Collection
-    {
-        return $this->artistSubscribers;
-    }
-
-    /**
-     * @param ArtistSubscriber $artistSubscriber
-     *
-     * @return $this
-     */
-    public function subscribeOnArtist(ArtistSubscriber $artistSubscriber): self
-    {
-        if (!$this->artistSubscribers->contains($artistSubscriber)) {
-            $this->artistSubscribers[] = $artistSubscriber;
-            $artistSubscriber->setArtist($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ArtistSubscriber $artistSubscriber
-     *
-     * @return $this
-     */
-    public function unsubscribeFromArtist(ArtistSubscriber $artistSubscriber): self
-    {
-        if ($this->artistSubscribers->removeElement($artistSubscriber)) {
-            // set the owning side to null (unless already changed)
-            if ($artistSubscriber->getArtist() === $this) {
-                $artistSubscriber->setArtist(null);
-            }
-        }
 
         return $this;
     }

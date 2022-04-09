@@ -5,7 +5,7 @@ namespace App\AnnotationListener;
 use App\Interfaces\AnnotationListenerInterface;
 use App\Rest\Http\Request;
 use App\Rest\Http\ResponseCollection;
-use App\Security\TokenAuthenticator;
+use App\Security\Auth\Authenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
@@ -37,26 +37,26 @@ abstract class AbstractAnnotationListener implements AnnotationListenerInterface
     protected ResponseCollection $responseCollection;
 
     /**
-     * @var TokenAuthenticator
+     * @var Authenticator
      */
-    protected TokenAuthenticator $authenticator;
+    protected Authenticator $authenticator;
 
     /**
      * @param Request                $request
      * @param EntityManagerInterface $em
      * @param ResponseCollection     $responseCollection
-     * @param TokenAuthenticator     $tokenAuthenticator
+     * @param Authenticator          $authenticator
      */
     public function __construct(
         Request $request,
         EntityManagerInterface $em,
         ResponseCollection $responseCollection,
-        TokenAuthenticator $tokenAuthenticator
+        Authenticator $authenticator
     ) {
         $this->request = $request;
         $this->em = $em;
         $this->responseCollection = $responseCollection;
-        $this->authenticator = $tokenAuthenticator;
+        $this->authenticator = $authenticator;
     }
 
     /**

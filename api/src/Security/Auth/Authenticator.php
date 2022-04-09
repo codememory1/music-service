@@ -1,40 +1,41 @@
 <?php
 
-namespace App\Security;
+namespace App\Security\Auth;
 
+use App\DTO\TokenAuthenticatorDTO;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Rest\Http\Request;
 use App\Service\JwtTokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\Pure;
 
 /**
- * Class TokenAuthenticator.
+ * Class Authenticator.
  *
- * @package App\Security
+ * @package App\Security\Auth
  *
  * @author  Codememory
  */
-class TokenAuthenticator
+class Authenticator
 {
-    /**
-     * @var Request
-     */
-    private Request $request;
-
     /**
      * @var EntityManagerInterface
      */
     private EntityManagerInterface $em;
 
     /**
-     * @param Request                $request
-     * @param EntityManagerInterface $em
+     * @var TokenAuthenticatorDTO
      */
-    public function __construct(Request $request, EntityManagerInterface $em)
+    private TokenAuthenticatorDTO $tokenAuthenticatorDTO;
+
+    /**
+     * @param EntityManagerInterface $em
+     * @param TokenAuthenticatorDTO  $tokenAuthenticatorDTO
+     */
+    public function __construct(EntityManagerInterface $em, TokenAuthenticatorDTO $tokenAuthenticatorDTO)
     {
-        $this->request = $request;
         $this->em = $em;
+        $this->tokenAuthenticatorDTO = $tokenAuthenticatorDTO;
     }
 
     /**
@@ -56,7 +57,7 @@ class TokenAuthenticator
         $jwtTokenGenerator = new JwtTokenGenerator();
         $token = $this->getAccessToken();
 
-        if (null === $token || !$decoded = $jwtTokenGenerator->decode($token, 'JWT_ACCESS_PUBLIC_KEY')) {
+        if (!$decoded = $jwtTokenGenerator->decode($token, 'JWT_ACCESS_PUBLIC_KEY')) {
             return null;
         }
 
@@ -64,16 +65,11 @@ class TokenAuthenticator
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function getAccessToken(): ?string
+    #[Pure]
+    public function getAccessToken(): string
     {
-        $header = $this->request->request->headers->get('Authorization');
-
-        if (null === $header) {
-            return null;
-        }
-
-        return explode(' ', $header, 2)[1] ?? null;
+        return $this->tokenAuthenticatorDTO->getAccessToken();
     }
 }

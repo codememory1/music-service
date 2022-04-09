@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Security\Session;
+namespace App\Security\UserSession;
 
 use App\DTO\AuthorizationDTO;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
-use App\Service\JwtTokenGenerator;
+use App\Security\Auth\TokenAuthenticator;
 use Codememory\Components\GEO\Geolocation;
 use Jenssegers\Agent\Agent;
 use JetBrains\PhpStorm\ArrayShape;
@@ -16,26 +16,26 @@ use Symfony\Contracts\Service\Attribute\Required;
 /**
  * Class CreatorSession.
  *
- * @package App\Security\Session
+ * @package App\Security\UserSession
  *
  * @author  Codememory
  */
 class CreatorSession extends AbstractSecurity
 {
     /**
-     * @var null|JwtTokenGenerator
+     * @var TokenAuthenticator|null
      */
-    private ?JwtTokenGenerator $jwtTokenGenerator = null;
+    private ?TokenAuthenticator $tokenAuthenticator = null;
 
     /**
-     * @param JwtTokenGenerator $jwtTokenGenerator
+     * @param TokenAuthenticator $tokenAuthenticator
      *
      * @return $this
      */
     #[Required]
-    public function setJwtTokenGenerator(JwtTokenGenerator $jwtTokenGenerator): self
+    public function setTokenAuthenticator(TokenAuthenticator $tokenAuthenticator): self
     {
-        $this->jwtTokenGenerator = $jwtTokenGenerator;
+        $this->tokenAuthenticator = $tokenAuthenticator;
 
         return $this;
     }
@@ -55,7 +55,7 @@ class CreatorSession extends AbstractSecurity
         $geo = new Geolocation();
         $agent = new Agent();
         $userSessionEntity = new UserSession();
-        $generatedTokens = $this->generateTokens($identifiedUser);
+        $generatedTokens = $this->tokenAuthenticator->generateTokens($identifiedUser);
 
         $geo->setIp($authorizationDTO->clientIp);
 
@@ -94,68 +94,8 @@ class CreatorSession extends AbstractSecurity
      */
     public function successCreateSessionResponse(): Response
     {
-        return $this->responseCollection->successCreate('userSession@successCreate')->getResponse();
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
-    #[ArrayShape([
-        'access_token' => 'string',
-        'refresh_token' => 'string'
-    ])]
-    private function generateTokens(User $user): array
-    {
-        return [
-            'access_token' => $this->generateAccessToken($user),
-            'refresh_token' => $this->generateRefreshToken($user)
-        ];
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return string
-     */
-    private function generateAccessToken(User $user): string
-    {
-        return $this->jwtTokenGenerator->encode(
-            $this->tokenSchema($user),
-            'JWT_ACCESS_PRIVATE_KEY',
-            'JWT_ACCESS_TTL'
-        );
-    }
-
-    /**
-     * @param User $identifiedUser
-     *
-     * @return array
-     */
-    #[ArrayShape([
-        'id' => 'int|null',
-        'email' => 'null|string'
-    ])]
-    private function tokenSchema(User $identifiedUser): array
-    {
-        return [
-            'id' => $identifiedUser->getId(),
-            'email' => $identifiedUser->getEmail()
-        ];
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return string
-     */
-    private function generateRefreshToken(User $user): string
-    {
-        return $this->jwtTokenGenerator->encode(
-            $this->tokenSchema($user),
-            'JWT_REFRESH_PRIVATE_KEY',
-            'JWT_REFRESH_TTL'
-        );
+        return $this->responseCollection
+            ->successCreate('userSession@successCreate')
+            ->getResponse();
     }
 }

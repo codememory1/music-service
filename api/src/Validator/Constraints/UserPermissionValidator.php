@@ -6,7 +6,7 @@ use App\Entity\RolePermission;
 use App\Entity\User;
 use App\Enum\RoleEnum;
 use App\Interfaces\EntityInterface;
-use App\Security\TokenAuthenticator;
+use App\Security\Auth\Authenticator;
 use Doctrine\Persistence\ManagerRegistry;
 use ReflectionClass;
 use ReflectionException;
@@ -58,7 +58,7 @@ class UserPermissionValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, EntityInterface::class);
         }
 
-        $tokenAuthenticator = new TokenAuthenticator($this->request, $this->managerRegistry);
+        $tokenAuthenticator = new Authenticator($this->request, $this->managerRegistry);
         $manipulatedRecordUser = method_exists($value, 'getUser') ? $value->getUser() : null;
 
         $authorizedUser = $tokenAuthenticator->getUser();

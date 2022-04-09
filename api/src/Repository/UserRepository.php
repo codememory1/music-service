@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Service\JwtTokenGenerator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,11 +23,19 @@ use Doctrine\Persistence\ManagerRegistry;
 class UserRepository extends ServiceEntityRepository
 {
     /**
-     * @param ManagerRegistry $registry
+     * @var JwtTokenGenerator
      */
-    public function __construct(ManagerRegistry $registry)
+    private JwtTokenGenerator $jwtTokenGenerator;
+
+    /**
+     * @param ManagerRegistry   $registry
+     * @param JwtTokenGenerator $jwtTokenGenerator
+     */
+    public function __construct(ManagerRegistry $registry, JwtTokenGenerator $jwtTokenGenerator)
     {
         parent::__construct($registry, User::class);
+
+        $this->jwtTokenGenerator = $jwtTokenGenerator;
     }
 
     /**
@@ -54,5 +63,21 @@ class UserRepository extends ServiceEntityRepository
     public function getArtist(int $id): ?User
     {
         return $this->findOneBy(['id' => $id]);
+    }
+
+    /**
+     * @param string $refreshToken
+     *
+     * @return User|null
+     */
+    public function getUserByRefreshToken(string $refreshToken): ?User
+    {
+        $decodedToken = $this->jwtTokenGenerator->decode($refreshToken, 'JWT_REFRESH_PUBLIC_KEY');
+
+        if(false === $decodedToken) {
+            return null;
+        }
+
+        return $this->findOneBy(['email' => $decodedToken->email]);
     }
 }
