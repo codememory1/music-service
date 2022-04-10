@@ -28,7 +28,7 @@ class PasswordRecoveryRequestDTO extends AbstractDTO implements UserIdentificati
     public ?string $login = null;
 
     /**
-     * @return void
+     * @inheritDoc
      */
     protected function wrapper(): void
     {

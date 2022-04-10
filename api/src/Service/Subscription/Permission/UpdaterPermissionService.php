@@ -27,7 +27,7 @@ class UpdaterPermissionService extends UpdaterCRUD
         $this->validateEntity = true;
         $this->translationKeyNotExist = 'subscriptionPermission@notExist';
 
-        /** @var SubscriptionPermission|Response $updatedSubscriptionPermission */
+        /** @var Response|SubscriptionPermission $updatedSubscriptionPermission */
         $updatedSubscriptionPermission = $this->make($subscriptionPermissionDTO, ['id' => $id]);
 
         if ($updatedSubscriptionPermission instanceof Response) {

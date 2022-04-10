@@ -18,14 +18,6 @@ class SubscriptionInputPrice extends AbstractInterceptor
      */
     public function process(string $requestKey, mixed $requestValue): ?float
     {
-        if ('price' === $requestKey) {
-            return (float) $requestValue;
-        }
-
-        if ('old_price' === $requestKey) {
-            return empty($requestValue) ? null : (float) $requestValue;
-        }
-
-        return 0.0;
+        return empty($requestValue) ? null : (float) $requestValue;
     }
 }

@@ -8,10 +8,12 @@ use App\DTO\Interceptor\AlbumInputTypeInterceptor;
 use App\Entity\Album;
 use App\Entity\AlbumCategory;
 use App\Entity\AlbumType;
+use App\Enum\ApiResponseTypeEnum;
+use App\Interfaces\EntityInterface;
 use App\Rest\DTO\AbstractDTO;
 use App\Validator\Constraints as AppAssert;
 use ReflectionException;
-use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\VarExporter\Exception\ClassNotFoundException;
 
@@ -36,7 +38,7 @@ class AlbumDTO extends AbstractDTO
      */
     #[Assert\NotBlank(
         message: 'album@typeNotExistOrNotEntered',
-        payload: 'type_not_exist_or_not_entered'
+        payload: ApiResponseTypeEnum::CHECK_EXIST
     )]
     public ?AlbumType $type = null;
 
@@ -45,12 +47,12 @@ class AlbumDTO extends AbstractDTO
      */
     #[Assert\NotBlank(
         message: 'album@categoryNotExistOrNotEntered',
-        payload: 'category_not_exist_or_not_entered'
+        payload: ApiResponseTypeEnum::CHECK_EXIST
     )]
     public ?AlbumCategory $category = null;
 
     /**
-     * @var null|File
+     * @var null|UploadedFile
      */
     #[Assert\NotBlank(message: 'album@photoIsRequired')]
     #[Assert\File(
@@ -59,25 +61,20 @@ class AlbumDTO extends AbstractDTO
         maxSizeMessage: 'album@photoMaxSize',
         mimeTypesMessage: 'album@photoMimeTypes'
     )]
-    public ?File $photo = null;
+    public ?UploadedFile $photo = null;
 
     /**
      * @var array
      */
     #[Assert\NotBlank(message: 'album@tagsIsRequired')]
-    #[AppAssert\QuantityByDelimiter(
-        ',',
-        max: 255,
-        maxMessage: 'album@maxTags',
-        payload: 'number_of_tags'
-    )]
+    #[AppAssert\ArrayValues(max: 255, maxMessage: 'album@maxTags')]
     public array $tags = [];
 
     /**
+     * @inheritDoc
+     *
      * @throws ReflectionException
      * @throws ClassNotFoundException
-     *
-     * @return void
      */
     protected function wrapper(): void
     {
@@ -95,5 +92,29 @@ class AlbumDTO extends AbstractDTO
             ->addInterceptor('tags', AlbumInputTagsInterceptor::class);
 
         $this->photo = $this->request->request->files->get('photo');
+    }
+
+    /**
+     * @param Album|EntityInterface $entity
+     * @param array                 $excludeKeys
+     *
+     * @return array
+     */
+    public function toArray(EntityInterface $entity, array $excludeKeys = []): array
+    {
+        return $this->toArrayHandler([
+            'id' => $entity->getId(),
+            'title' => $entity->getTitle(),
+            'type' => [
+                'key' => $entity->getType()->getKey(),
+                'title' => $entity->getType()->getTitleTranslationKey()
+            ],
+            'category' => [
+                'title' => $entity->getCategory()->getTitleTranslationKey()
+            ],
+            'tags' => $entity->getTags(),
+            'created_at' => $entity->getCreatedAt()->format('Y-m-d H:i'),
+            'updated_at' => $entity->getUpdatedAt()?->format('Y-m-d H:i')
+        ]);
     }
 }

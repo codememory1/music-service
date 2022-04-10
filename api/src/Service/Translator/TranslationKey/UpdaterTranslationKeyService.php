@@ -27,7 +27,7 @@ class UpdaterTranslationKeyService extends UpdaterCRUD
         $this->validateEntity = true;
         $this->translationKeyNotExist = 'translationKey@notExist';
 
-        /** @var TranslationKey|Response $updatedTranslationKey */
+        /** @var Response|TranslationKey $updatedTranslationKey */
         $updatedTranslationKey = $this->make($translationKeyDTO, ['id' => $id]);
 
         if ($updatedTranslationKey instanceof Response) {

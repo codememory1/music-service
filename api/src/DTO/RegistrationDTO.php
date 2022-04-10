@@ -42,7 +42,7 @@ class RegistrationDTO extends AbstractDTO
     public ?string $username = null;
 
     /**
-     * @return void
+     * @inheritDoc
      */
     protected function wrapper(): void
     {

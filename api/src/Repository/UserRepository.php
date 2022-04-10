@@ -58,7 +58,7 @@ class UserRepository extends ServiceEntityRepository
     /**
      * @param int $id
      *
-     * @return User|null
+     * @return null|User
      */
     public function getArtist(int $id): ?User
     {
@@ -68,13 +68,13 @@ class UserRepository extends ServiceEntityRepository
     /**
      * @param string $refreshToken
      *
-     * @return User|null
+     * @return null|User
      */
     public function getUserByRefreshToken(string $refreshToken): ?User
     {
         $decodedToken = $this->jwtTokenGenerator->decode($refreshToken, 'JWT_REFRESH_PUBLIC_KEY');
 
-        if(false === $decodedToken) {
+        if (false === $decodedToken) {
             return null;
         }
 

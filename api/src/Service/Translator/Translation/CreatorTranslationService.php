@@ -25,7 +25,7 @@ class CreatorTranslationService extends CreatorCRUD
     {
         $this->validateEntity = true;
 
-        /** @var Translation|Response $createdTranslation */
+        /** @var Response|Translation $createdTranslation */
         $createdTranslation = $this->make($translationDTO);
 
         if ($createdTranslation instanceof Response) {

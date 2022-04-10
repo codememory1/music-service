@@ -65,9 +65,9 @@ abstract class AbstractDTO implements DTOInterface
     private array $events = [];
 
     /**
-     * @var null|string
+     * @var null|EntityInterface|string
      */
-    private ?string $entity = null;
+    private null|string|EntityInterface $entity = null;
 
     /**
      * @var null|EntityInterface
@@ -87,7 +87,6 @@ abstract class AbstractDTO implements DTOInterface
             $this->wrapper();
             $this->initValuesByExpectedKeys();
             $this->callSetters();
-            $this->buildEntity();
         }
     }
 
@@ -205,9 +204,9 @@ abstract class AbstractDTO implements DTOInterface
     /**
      * @inheritDoc
      */
-    public function updateEntity(EntityInterface $entity): DTOInterface
+    public function setEntityForBuild(EntityInterface $entity): DTOInterface
     {
-        $this->collectedEntity = $entity;
+        $this->entity = $entity;
 
         return $this;
     }
@@ -239,6 +238,8 @@ abstract class AbstractDTO implements DTOInterface
      */
     public function getCollectedEntity(): ?EntityInterface
     {
+        $this->buildEntity();
+
         return $this->collectedEntity;
     }
 
@@ -316,8 +317,12 @@ abstract class AbstractDTO implements DTOInterface
         if (null !== $this->entity) {
             $this->callEventListeners(EventNameDTOEnum::BEFORE_BUILD_ENTITY);
 
-            $entityNamespace = $this->entity;
-            $entity = new $entityNamespace();
+            if ($this->entity instanceof EntityInterface) {
+                $entity = $this->entity;
+            } else {
+                $entityNamespace = $this->entity;
+                $entity = new $entityNamespace();
+            }
 
             foreach ($this->valuesByExpectedKeys as $key => $value) {
                 $key = $this->getAutoNameExpectedRequestKey($key);

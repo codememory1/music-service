@@ -3,10 +3,12 @@
 namespace App\DTO;
 
 use App\DTO\Interceptor\SubscriptionInputPrice;
+use App\DTO\Interceptor\ToIntInterceptor;
 use App\Entity\Subscription;
 use App\Entity\TranslationKey;
 use App\Enum\ApiResponseTypeEnum;
 use App\Enum\StatusEnum;
+use App\Interfaces\EntityInterface;
 use App\Rest\DTO\AbstractDTO;
 use App\Validator\Constraints as AppAssert;
 use ReflectionException;
@@ -76,24 +78,48 @@ class SubscriptionDTO extends AbstractDTO
     public ?int $status = null;
 
     /**
+     * @inheritDoc
+     *
      * @throws ReflectionException
      * @throws ClassNotFoundException
-     *
-     * @return void
      */
     protected function wrapper(): void
     {
         $this->setEntity(Subscription::class);
 
         $this
-            ->addExpectedRequestKey('name', 'name_translation_key')
-            ->addExpectedRequestKey('description', 'description_translation_key')
+            ->addExpectedRequestKey('name', 'nameTranslationKey')
+            ->addExpectedRequestKey('description', 'descriptionTranslationKey')
             ->addExpectedRequestKey('price')
             ->addExpectedRequestKey('old_price')
             ->addExpectedRequestKey('status');
 
         $this
             ->addInterceptor('price', SubscriptionInputPrice::class)
-            ->addInterceptor('old_price', SubscriptionInputPrice::class);
+            ->addInterceptor('old_price', SubscriptionInputPrice::class)
+            ->addInterceptor('status', ToIntInterceptor::class);
+    }
+
+    /**
+     * @param EntityInterface|Subscription $entity
+     * @param array                        $excludeKeys
+     *
+     * @return array
+     */
+    public function toArray(EntityInterface $entity, array $excludeKeys = []): array
+    {
+        $SubscriptionPermissionDTO = new SubscriptionPermissionDTO();
+
+        return $this->toArrayHandler([
+            'id' => $entity->getId(),
+            'name' => $entity->getNameTranslationKey(),
+            'description' => $entity->getDescriptionTranslationKey(),
+            'price' => $entity->getPrice(),
+            'old_price' => $entity->getOldPrice(),
+            'status' => $entity->getStatus(),
+            'permissions' => $SubscriptionPermissionDTO->transform($entity->getPermissions()),
+            'created_at' => $entity->getCreatedAt()->format('Y-m-d H:i'),
+            'updated_at' => $entity->getUpdatedAt()?->format('Y-m-d H:i')
+        ], $excludeKeys);
     }
 }

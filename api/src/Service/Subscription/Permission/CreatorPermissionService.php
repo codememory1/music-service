@@ -25,7 +25,7 @@ class CreatorPermissionService extends CreatorCRUD
     {
         $this->validateEntity = true;
 
-        /** @var SubscriptionPermission|Response $createdSubscriptionPermission */
+        /** @var Response|SubscriptionPermission $createdSubscriptionPermission */
         $createdSubscriptionPermission = $this->make($subscriptionPermissionDTO);
 
         if ($createdSubscriptionPermission instanceof Response) {

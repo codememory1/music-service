@@ -47,7 +47,7 @@ services:
             - {name: liip_imagine.cache.resolver, resolver: aws_s3_resolver}
 
     App\Rest\:
-        resource: '../src/Rest/'
+        resource: '../src/Rest/*'
         exclude:
             - '../src/Rest/Http/Response.php'
             - '../src/Rest/Abstract*.php'

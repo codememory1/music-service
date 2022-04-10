@@ -46,7 +46,7 @@ final class ExistValidator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ table }}', $classMetaData->getTableName())
                 ->setParameter('{{ property }}', $constraint->property)
-                ->setParameter('{{ value }}', $value)
+                ->setParameter('{{ value }}', $value ?? '')
                 ->addViolation();
         }
     }

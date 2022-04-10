@@ -10,7 +10,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class UpdaterAccessToken
+ * Class UpdaterAccessToken.
  *
  * @package App\Security\Auth
  *
@@ -19,12 +19,12 @@ use Symfony\Contracts\Service\Attribute\Required;
 class UpdaterAccessToken extends AbstractSecurity
 {
     /**
-     * @var UserRepository|null
+     * @var null|UserRepository
      */
     private ?UserRepository $userRepository = null;
 
     /**
-     * @var TokenAuthenticator|null
+     * @var null|TokenAuthenticator
      */
     private ?TokenAuthenticator $tokenAuthenticator = null;
 
@@ -60,8 +60,8 @@ class UpdaterAccessToken extends AbstractSecurity
      * @return array
      */
     #[ArrayShape([
-        'access_token' => "string",
-        'refresh_token' => "string"
+        'access_token' => 'string',
+        'refresh_token' => 'string'
     ])]
     public function update(TokenAuthenticatorDTO $updateAccessTokenDTO): array
     {
@@ -73,11 +73,11 @@ class UpdaterAccessToken extends AbstractSecurity
     /**
      * @param TokenAuthenticatorDTO $tokenAuthenticatorDTO
      *
-     * @return Response|bool
+     * @return bool|Response
      */
     public function isValidRefreshToken(TokenAuthenticatorDTO $tokenAuthenticatorDTO): Response|bool
     {
-        if(null === $this->userRepository->getUserByRefreshToken($tokenAuthenticatorDTO->getRefreshToken())) {
+        if (null === $this->userRepository->getUserByRefreshToken($tokenAuthenticatorDTO->getRefreshToken())) {
             return $this->responseCollection
                 ->notValid('common@invalidRefreshToken')
                 ->getResponse();

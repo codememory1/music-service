@@ -26,7 +26,7 @@ class UpdaterSubscriptionService extends UpdaterCRUD
     {
         $this->translationKeyNotExist = 'subscription@notExist';
 
-        /** @var Subscription|Response $updatedSubscription */
+        /** @var Response|Subscription $updatedSubscription */
         $updatedSubscription = $this->make($subscriptionDTO, ['id' => $id]);
 
         if ($updatedSubscription instanceof Response) {

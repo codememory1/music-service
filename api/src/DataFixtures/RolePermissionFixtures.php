@@ -24,80 +24,6 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
      * @var array
      */
     private array $rolePermissions = [
-        // Developer
-        [
-            'right_name' => RolePermissionNameEnum::ADD_MUSIC,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::UPDATE_MUSIC,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::DELETE_MUSIC,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::CREATE_SUBSCRIPTION,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::UPDATE_SUBSCRIPTION,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::DELETE_SUBSCRIPTION,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::CREATE_LANG,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::UPDATE_LANG,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::DELETE_LANG,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::CREATE_TRANSLATION,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::UPDATE_TRANSLATION,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::DELETE_TRANSLATION,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::CREATE_ALBUM_CATEGORY,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::UPDATE_ALBUM_CATEGORY,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::DELETE_ALBUM_CATEGORY,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::CREATE_ALBUM_TYPE,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::UPDATE_ALBUM_TYPE,
-            'role' => RoleEnum::DEVELOPER
-        ],
-        [
-            'right_name' => RolePermissionNameEnum::DELETE_ALBUM_TYPE,
-            'role' => RoleEnum::DEVELOPER
-        ],
-
         // Music Manager
         [
             'right_name' => RolePermissionNameEnum::ADD_MUSIC,
@@ -120,6 +46,8 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
      */
     public function load(ObjectManager $manager): void
     {
+        $this->addPermissionForDeveloper();
+
         foreach ($this->rolePermissions as $rolePermission) {
             /** @var RolePermissionName $rolePermissionNameEntity */
             $rolePermissionNameEntity = $this->getReference(sprintf('role-right-name-%s', $rolePermission['right_name']->value));
@@ -147,5 +75,18 @@ class RolePermissionFixtures extends Fixture implements DependentFixtureInterfac
             RolePermissionNameFixtures::class,
             RoleFixtures::class
         ];
+    }
+
+    /**
+     * @return void
+     */
+    private function addPermissionForDeveloper(): void
+    {
+        foreach (RolePermissionNameEnum::cases() as $rolePermissionName) {
+            $this->rolePermissions[] = [
+                'right_name' => $rolePermissionName,
+                'role' => RoleEnum::DEVELOPER
+            ];
+        }
     }
 }

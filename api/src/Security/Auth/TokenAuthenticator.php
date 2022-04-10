@@ -7,7 +7,7 @@ use App\Service\JwtTokenGenerator;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
- * Class TokenAuthenticator
+ * Class TokenAuthenticator.
  *
  * @package App\Security\Auth
  *

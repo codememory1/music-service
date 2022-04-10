@@ -77,6 +77,7 @@ enum RolePermissionNameEnum: string
             self::UPDATE_ALBUM_CATEGORY->value => 'rolePermission@updateAlbumCategory',
             self::DELETE_ALBUM_CATEGORY->value => 'rolePermission@deleteAlbumCategory',
 
+            self::SHOW_ALBUM_TYPES->value => 'rolePermission@showAbumTypes',
             self::CREATE_ALBUM_TYPE->value => 'rolePermission@createAlbumType',
             self::UPDATE_ALBUM_TYPE->value => 'rolePermission@updateAlbumType',
             self::DELETE_ALBUM_TYPE->value => 'rolePermission@deleteAlbumType',
@@ -99,14 +100,23 @@ enum RolePermissionNameEnum: string
             self::UPDATE_SUBSCRIPTION_PERMISSION->value => 'rolePermission@updateSubscriptionPermission',
             self::DELETE_SUBSCRIPTION_PERMISSION->value => 'rolePermission@deleteSubscriptionPermission',
 
+            self::SHOW_SUBSCRIPTION_PERMISSION_NAMES->value => 'rolePermission@showSubscriptionPermissionNames',
+            self::CREATE_SUBSCRIPTION_PERMISSION_NAME->value => 'rolePermission@createSubscriptionPermissionName',
+            self::UPDATE_SUBSCRIPTION_PERMISSION_NAME->value => 'rolePermission@updateSubscriptionPermissionName',
+            self::DELETE_SUBSCRIPTION_PERMISSION_NAME->value => 'rolePermission@deleteSubscriptionPermissionName',
+
             self::CREATE_LANG->value => 'rolePermission@createLang',
             self::UPDATE_LANG->value => 'rolePermission@updateLang',
             self::DELETE_LANG->value => 'rolePermission@deleteLang',
 
-            self::SHOW_TRANSLATION_KEYS->value => 'rolePermission@showTranslationKeys',
             self::CREATE_TRANSLATION->value => 'rolePermission@createLangTranslation',
             self::UPDATE_TRANSLATION->value => 'rolePermission@updateLangTranslation',
-            self::DELETE_TRANSLATION->value => 'rolePermission@deleteTranslationFromLanguage'
+            self::DELETE_TRANSLATION->value => 'rolePermission@deleteTranslationFromLanguage',
+
+            self::SHOW_TRANSLATION_KEYS->value => 'rolePermission@showTranslationKeys',
+            self::CREATE_TRANSLATION_KEY->value => 'rolePermission@createTranslationKey',
+            self::UPDATE_TRANSLATION_KEY->value => 'rolePermission@updateTranslationKey',
+            self::DELETE_TRANSLATION_KEY->value => 'rolePermission@deleteTranslationKey'
         ];
     }
 

@@ -30,9 +30,9 @@ interface DTOInterface
     /**
      * @param EntityInterface $entity
      *
-     * @return DTOInterface
+     * @return $this
      */
-    public function updateEntity(EntityInterface $entity): self;
+    public function setEntityForBuild(EntityInterface $entity): self;
 
     /**
      * @return null|EntityInterface

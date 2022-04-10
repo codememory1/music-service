@@ -7,7 +7,7 @@ use App\Entity\Album;
 use App\Entity\User;
 use App\Rest\CRUD\CreatorCRUD;
 use App\Rest\Http\Response;
-use App\Service\FileUploaderService;
+use App\Rest\S3\Uploader\ImageUploader;
 use Exception;
 
 /**
@@ -19,16 +19,16 @@ use Exception;
  */
 class CreatorAlbumService extends CreatorCRUD
 {
-
     /**
-     * @param AlbumDTO            $albumDTO
-     * @param FileUploaderService $uploadedFileService
-     * @param User                $user
+     * @param AlbumDTO      $albumDTO
+     * @param ImageUploader $imageUploader
+     * @param User          $user
+     *
+     * @throws Exception
      *
      * @return Response
-     * @throws Exception
      */
-    public function create(AlbumDTO $albumDTO, FileUploaderService $uploadedFileService, User $user): Response
+    public function create(AlbumDTO $albumDTO, ImageUploader $imageUploader, User $user): Response
     {
         /** @var Album|Response $createdAlbum */
         $createdAlbum = $this->make($albumDTO);
@@ -37,20 +37,12 @@ class CreatorAlbumService extends CreatorCRUD
             return $createdAlbum;
         }
 
-        $createdAlbum->setPhoto($this->uploadPhoto($uploadedFileService, $user));
+        $imageUploader->upload($albumDTO->photo, [$user->getEmail()]);
+
+        $createdAlbum
+            ->setUser($user)
+            ->setPhoto($imageUploader->getUploadedFile()->first());
 
         return $this->manager->push($createdAlbum, 'album@successCreate');
-    }
-
-    /**
-     * @param FileUploaderService $uploadedFileService
-     * @param User                $user
-     *
-     * @return string
-     * @throws Exception
-     */
-    private function uploadPhoto(FileUploaderService $uploadedFileService, User $user): string
-    {
-        return '';
     }
 }

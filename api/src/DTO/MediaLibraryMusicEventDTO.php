@@ -19,7 +19,7 @@ class MediaLibraryMusicEventDTO extends AbstractDTO
     public array $payload = [];
 
     /**
-     * @return void
+     * @inheritDoc
      */
     protected function wrapper(): void
     {

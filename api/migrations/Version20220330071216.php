@@ -19,10 +19,10 @@ final class Version20220330071216 extends AbstractMigration
      */
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE albums ADD user_id INT NOT NULL');
+        $this->addSql('ALTER TABLE albums ADD user_id INT NOT NULL AFTER category_id');
         $this->addSql('ALTER TABLE albums ADD CONSTRAINT FK_F4E2474FA76ED395 FOREIGN KEY (user_id) REFERENCES users (id)');
         $this->addSql('CREATE INDEX IDX_F4E2474FA76ED395 ON albums (user_id)');
-        $this->addSql('ALTER TABLE subscriptions ADD `key` VARCHAR(50) NOT NULL COMMENT \'Key for check\'');
+        $this->addSql('ALTER TABLE subscriptions ADD `key` VARCHAR(50) NOT NULL COMMENT \'Key for check\' AFTER id');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_4778A018A90ABA9 ON subscriptions (`key`)');
         $this->addSql('ALTER TABLE user_activation_tokens DROP valid');
     }

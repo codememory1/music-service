@@ -3,6 +3,7 @@
 namespace App\DTO;
 
 use App\Entity\TranslationKey;
+use App\Interfaces\EntityInterface;
 use App\Rest\DTO\AbstractDTO;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,5 +31,21 @@ class TranslationKeyDTO extends AbstractDTO
         $this->setEntity(TranslationKey::class);
 
         $this->addExpectedRequestKey('name');
+    }
+
+    /**
+     * @param EntityInterface|TranslationKey $entity
+     * @param array                          $excludeKeys
+     *
+     * @return array
+     */
+    public function toArray(EntityInterface $entity, array $excludeKeys = []): array
+    {
+        return $this->toArrayHandler([
+            'id' => $entity->getId(),
+            'name' => $entity->getName(),
+            'created_at' => $entity->getCreatedAt()->format('Y-m-d H:i'),
+            'updated_at' => $entity->getUpdatedAt()?->format('Y-md H:i')
+        ], $excludeKeys);
     }
 }

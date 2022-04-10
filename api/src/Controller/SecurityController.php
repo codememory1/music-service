@@ -40,7 +40,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SecurityController extends ApiController
 {
-
     /**
      * @param RegistrationDTO          $registrationDTO
      * @param Validator                $validator
@@ -118,8 +117,9 @@ class SecurityController extends ApiController
      * @param Authentication     $authentication
      * @param Authorization      $authorization
      *
-     * @return JsonResponse
      * @throws NonUniqueResultException
+     *
+     * @return JsonResponse
      */
     #[Route('/auth', methods: 'POST')]
     public function auth(
@@ -161,8 +161,9 @@ class SecurityController extends ApiController
      * @param EventDispatcherInterface   $eventDispatcher
      * @param RecoveryRequest            $recoveryRequest
      *
-     * @return JsonResponse
      * @throws NonUniqueResultException
+     *
+     * @return JsonResponse
      */
     #[Route('/password-reset/recovery-request', methods: 'POST')]
     public function recoveryRequest(

@@ -32,14 +32,6 @@ class Subscription implements EntityInterface
     /**
      * @var null|string
      */
-    #[ORM\Column(type: Types::STRING, length: 50, unique: true, options: [
-        'comment' => 'Key for check'
-    ])]
-    private ?string $key = null;
-
-    /**
-     * @var null|string
-     */
     #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Subscription name translation key'
     ])]
@@ -97,26 +89,6 @@ class Subscription implements EntityInterface
     }
 
     /**
-     * @return string
-     */
-    public function getKey(): string
-    {
-        return $this->key;
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return $this
-     */
-    public function setKey(string $key): self
-    {
-        $this->key = $key;
-
-        return $this;
-    }
-
-    /**
      * @return null|string
      */
     public function getNameTranslationKey(): ?string
@@ -157,21 +129,21 @@ class Subscription implements EntityInterface
     }
 
     /**
-     * @return null|string
+     * @return null|float
      */
-    public function getPrice(): ?string
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
     /**
-     * @param string $price
+     * @param null|float $price
      *
      * @return $this
      */
-    public function setPrice(string $price): self
+    public function setPrice(?float $price): self
     {
-        $this->price = (float) $price;
+        $this->price = $price;
 
         return $this;
     }
@@ -179,19 +151,19 @@ class Subscription implements EntityInterface
     /**
      * @return null|string
      */
-    public function getOldPrice(): ?string
+    public function getOldPrice(): ?float
     {
         return $this->oldPrice;
     }
 
     /**
-     * @param null|string $oldPrice
+     * @param null|float $oldPrice
      *
      * @return $this
      */
-    public function setOldPrice(?string $oldPrice): self
+    public function setOldPrice(?float $oldPrice): self
     {
-        $this->oldPrice = empty($oldPrice) ? null : (float) $oldPrice;
+        $this->oldPrice = $oldPrice;
 
         return $this;
     }
@@ -205,11 +177,11 @@ class Subscription implements EntityInterface
     }
 
     /**
-     * @param int $status
+     * @param null|int $status
      *
      * @return $this
      */
-    public function setStatus(int $status): self
+    public function setStatus(?int $status): self
     {
         $this->status = $status;
 

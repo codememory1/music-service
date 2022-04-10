@@ -7,6 +7,7 @@ use App\DTO\Interceptor\SubscriptionPermissionInputSubscriptionInterceptor;
 use App\Entity\Subscription;
 use App\Entity\SubscriptionPermission;
 use App\Entity\SubscriptionPermissionName;
+use App\Interfaces\EntityInterface;
 use App\Rest\DTO\AbstractDTO;
 use ReflectionException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -34,21 +35,41 @@ class SubscriptionPermissionDTO extends AbstractDTO
     public ?Subscription $subscription = null;
 
     /**
+     * @inheritDoc
+     *
      * @throws ReflectionException
      * @throws ClassNotFoundException
-     *
-     * @return void
      */
     protected function wrapper(): void
     {
         $this->setEntity(SubscriptionPermission::class);
 
         $this
-            ->addExpectedRequestKey('permission_name')
+            ->addExpectedRequestKey('permission_name', 'subscriptionPermissionName')
             ->addExpectedRequestKey('subscription');
 
         $this
             ->addInterceptor('permission_name', SubscriptionPermissionInputPermissionNameInterceptor::class)
             ->addInterceptor('subscription', SubscriptionPermissionInputSubscriptionInterceptor::class);
+    }
+
+    /**
+     * @param EntityInterface|SubscriptionPermission $entity
+     * @param array                                  $excludeKeys
+     *
+     * @return array
+     */
+    public function toArray(EntityInterface $entity, array $excludeKeys = []): array
+    {
+        $subscriptionPermissionNameDTO = new SubscriptionPermissionNameDTO();
+
+        return $this->toArrayHandler([
+            'id' => $entity->getId(),
+            'permission' => $subscriptionPermissionNameDTO->toArray($entity->getSubscriptionPermissionName(), [
+                'created_at', 'updated_at'
+            ]),
+            'created_at' => $entity->getCreatedAt()->format('Y-m-d H:i'),
+            'updated_at' => $entity->getUpdatedAt()?->format('Y-m-d H:i')
+        ], $excludeKeys);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Service\Album;
 use App\Entity\Album;
 use App\Rest\CRUD\DeleterCRUD;
 use App\Rest\Http\Response;
+use App\Rest\S3\Uploader\ImageUploader;
 use Exception;
 
 /**
@@ -24,7 +25,7 @@ class DeleterAlbumService extends DeleterCRUD
      *
      * @return Response
      */
-    public function delete(string $kernelProjectDir, int $id): Response
+    public function delete(ImageUploader $imageUploader, int $id): Response
     {
         $this->translationKeyNotExist = 'album@notExist';
 
@@ -35,23 +36,8 @@ class DeleterAlbumService extends DeleterCRUD
             return $deletedAlbum;
         }
 
-        $this->deletePhoto($deletedAlbum, $kernelProjectDir);
+        $imageUploader->delete($deletedAlbum->getPhoto());
 
         return $this->manager->remove($deletedAlbum, 'album@successDelete');
-    }
-
-    /**
-     * @param Album  $album
-     * @param string $kernelProjectDir
-     *
-     * @return void
-     */
-    private function deletePhoto(Album $album, string $kernelProjectDir): void
-    {
-        $absolutePathPhoto = sprintf('%s/%s', $kernelProjectDir, $album->getPhoto());
-
-        if (file_exists($absolutePathPhoto)) {
-            unlink($absolutePathPhoto);
-        }
     }
 }

@@ -66,12 +66,12 @@ class Album implements EntityInterface
     private ?string $photo = null;
 
     /**
-     * @var null|string
+     * @var array
      */
-    #[ORM\Column(type: Types::JSON, nullable: true, options: [
+    #[ORM\Column(type: Types::ARRAY, nullable: true, options: [
         'comment' => 'Album tags'
     ])]
-    private ?string $tags = null;
+    private array $tags = [];
 
     /**
      * @var null|int
@@ -197,9 +197,9 @@ class Album implements EntityInterface
     /**
      * @return null|string
      */
-    public function getTags(): ?string
+    public function getTags(): array
     {
-        return json_decode($this->tags ?? '', true);
+        return $this->tags;
     }
 
     /**
@@ -209,7 +209,7 @@ class Album implements EntityInterface
      */
     public function setTags(array $tags): self
     {
-        $this->tags = json_encode($tags);
+        $this->tags = $tags;
 
         return $this;
     }

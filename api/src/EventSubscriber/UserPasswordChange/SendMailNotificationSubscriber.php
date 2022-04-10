@@ -7,7 +7,7 @@ use App\Event\UserPasswordChangeEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class SendMailNotificationSubscriber
+ * Class SendMailNotificationSubscriber.
  *
  * @package App\UserPasswordChange\EventSubscriber
  *
@@ -15,7 +15,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class SendMailNotificationSubscriber implements EventSubscriberInterface
 {
-
     /**
      * @inheritDoc
      */
@@ -33,7 +32,5 @@ class SendMailNotificationSubscriber implements EventSubscriberInterface
      */
     public function onChangePassword(UserPasswordChangeEvent $event): void
     {
-
     }
-
 }

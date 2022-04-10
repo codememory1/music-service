@@ -23,7 +23,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 class CreatorSession extends AbstractSecurity
 {
     /**
-     * @var TokenAuthenticator|null
+     * @var null|TokenAuthenticator
      */
     private ?TokenAuthenticator $tokenAuthenticator = null;
 

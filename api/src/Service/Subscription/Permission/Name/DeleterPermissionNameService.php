@@ -27,7 +27,7 @@ class DeleterPermissionNameService extends DeleterCRUD
     {
         $this->translationKeyNotExist = 'subscriptionPermissionName@notExist';
 
-        /** @var SubscriptionPermissionName|Response $deletedSubscriptionPermissionName */
+        /** @var Response|SubscriptionPermissionName $deletedSubscriptionPermissionName */
         $deletedSubscriptionPermissionName = $this->make(SubscriptionPermissionName::class, ['id' => $id]);
 
         if ($deletedSubscriptionPermissionName instanceof Response) {

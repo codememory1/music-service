@@ -5,6 +5,7 @@ namespace App\DTO;
 use App\Entity\SubscriptionPermissionName;
 use App\Entity\TranslationKey;
 use App\Enum\ApiResponseTypeEnum;
+use App\Interfaces\EntityInterface;
 use App\Rest\DTO\AbstractDTO;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -44,12 +45,32 @@ class SubscriptionPermissionNameDTO extends AbstractDTO
     )]
     public ?string $titleTranslationKey = null;
 
+    /**
+     * @inheritDoc
+     */
     protected function wrapper(): void
     {
         $this->setEntity(SubscriptionPermissionName::class);
 
         $this
             ->addExpectedRequestKey('key')
-            ->addExpectedRequestKey('title', 'title_translation_key');
+            ->addExpectedRequestKey('title', 'titleTranslationKey');
+    }
+
+    /**
+     * @param EntityInterface|SubscriptionPermissionName $entity
+     * @param array                                      $excludeKeys
+     *
+     * @return array
+     */
+    public function toArray(EntityInterface $entity, array $excludeKeys = []): array
+    {
+        return $this->toArrayHandler([
+            'id' => $entity->getId(),
+            'key' => $entity->getKey(),
+            'title' => $entity->getTitleTranslationKey(),
+            'created_at' => $entity->getCreatedAt()->format('Y-m-d H:i'),
+            'updated_at' => $entity->getUpdatedAt()?->format('Y-m-d H:i')
+        ], $excludeKeys);
     }
 }

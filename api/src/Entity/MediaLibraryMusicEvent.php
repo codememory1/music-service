@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Enum\ApiResponseTypeEnum;
 use App\Interfaces\EntityInterface;
-use App\Repository\MusicEventRepository;
+use App\Repository\MediaLibraryEventRepository;
 use App\Traits\Entity\IdentifierTrait;
 use App\Traits\Entity\TimestampTrait;
 use Doctrine\DBAL\Types\Types;
@@ -18,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @author  Codememory
  */
-#[ORM\Entity(repositoryClass: MusicEventRepository::class)]
+#[ORM\Entity(repositoryClass: MediaLibraryEventRepository::class)]
 #[ORM\Table('media_library_music_events')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(
@@ -35,7 +35,7 @@ class MediaLibraryMusicEvent implements EntityInterface
     /**
      * @var null|MediaLibraryMusic
      */
-    #[ORM\ManyToOne(targetEntity: MediaLibraryMusic::class, inversedBy: 'musicEvents')]
+    #[ORM\ManyToOne(targetEntity: MediaLibraryMusic::class, inversedBy: 'mediaLibraryMusicEvents')]
     #[ORM\JoinColumn(unique: true, nullable: false)]
     private ?MediaLibraryMusic $mediaLibraryMusic = null;
 

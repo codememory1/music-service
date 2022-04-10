@@ -1,12 +1,12 @@
 /.idea/
 /data/
 
-/app/config/secrets/dev
-/app/config/secrets/jwt-private.pem
-/app/config/secrets/jwt-public.pem
+/api/config/secrets/dev
+/api/config/secrets/jwt-private.pem
+/api/config/secrets/jwt-public.pem
 
-/app/.env.local
-/app/.env.test
+/api/.env.local
+/api/.env.test
 
-/app/.phpunit.result.cache
+/api/.phpunit.result.cache
 .DS_Store

@@ -18,7 +18,11 @@ class AlbumInputTagsInterceptor extends AbstractInterceptor
      */
     public function process(string $requestKey, mixed $requestValue): array
     {
-        $tags = explode(',', $requestKey);
+        $tags = explode(',', $requestValue);
+
+        if (empty($requestValue)) {
+            return [];
+        }
 
         return array_map(fn(string|int $value) => trim($value), $tags);
     }

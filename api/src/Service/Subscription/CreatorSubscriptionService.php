@@ -23,7 +23,7 @@ class CreatorSubscriptionService extends CreatorCRUD
      */
     public function create(SubscriptionDTO $subscriptionDTO): Response
     {
-        /** @var Subscription|Response $createdSubscription */
+        /** @var Response|Subscription $createdSubscription */
         $createdSubscription = $this->make($subscriptionDTO);
 
         if ($createdSubscription instanceof Response) {

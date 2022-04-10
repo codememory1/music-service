@@ -5,7 +5,7 @@ namespace App\DTO;
 use App\Rest\DTO\AbstractDTO;
 
 /**
- * Class TokenAuthenticatorDTO
+ * Class TokenAuthenticatorDTO.
  *
  * @package App\DTO
  *
@@ -14,12 +14,12 @@ use App\Rest\DTO\AbstractDTO;
 class TokenAuthenticatorDTO extends AbstractDTO
 {
     /**
-     * @var string|null
+     * @var null|string
      */
     private ?string $accessToken = null;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     private ?string $refreshToken = null;
 
@@ -32,7 +32,7 @@ class TokenAuthenticatorDTO extends AbstractDTO
         $accessToken = explode(' ', $request->headers->get('Authorization'))[1] ?? null;
 
         $this->accessToken = (string) $accessToken;
-        $this->refreshToken = (string) $request->cookies->get('refresh_token');
+        $this->refreshToken = (string) $request->cookies->get('Refresh-Token');
     }
 
     /**

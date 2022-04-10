@@ -41,6 +41,4 @@ RUN composer global require bamarni/symfony-console-autocomplete
 
 COPY $app_path ./
 
-EXPOSE 9000
-
 CMD ["php-fpm"]

@@ -12,7 +12,6 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20220407213106 extends AbstractMigration
 {
-
     /**
      * @param Schema $schema
      *

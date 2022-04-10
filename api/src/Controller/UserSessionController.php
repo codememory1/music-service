@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class UserSessionController
+ * Class UserSessionController.
  *
  * @package App\Controller
  *
@@ -21,7 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user/session')]
 class UserSessionController extends ApiController
 {
-
     /**
      * @param TokenAuthenticatorDTO $tokenAuthenticatorDTO
      * @param UpdaterAccessToken    $updaterAccessToken
@@ -34,7 +33,7 @@ class UserSessionController extends ApiController
         // Checking the validity of the refresh token
         $refreshTokenValidResponse = $updaterAccessToken->isValidRefreshToken($tokenAuthenticatorDTO);
 
-        if($refreshTokenValidResponse instanceof Response) {
+        if ($refreshTokenValidResponse instanceof Response) {
             return $refreshTokenValidResponse->make();
         }
 
@@ -49,8 +48,6 @@ class UserSessionController extends ApiController
         TokenAuthenticatorDTO $tokenAuthenticatorDTO,
         DeleterSession $deleterSession,
         int $id
-    ): JsonResponse
-    {
-
+    ): JsonResponse {
     }
 }

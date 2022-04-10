@@ -33,7 +33,7 @@ class AuthorizationDTO extends AbstractDTO implements UserIdentificationInterfac
     public ?string $clientIp = null;
 
     /**
-     * @return void
+     * @inheritDoc
      */
     protected function wrapper(): void
     {

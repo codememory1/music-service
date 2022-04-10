@@ -38,7 +38,7 @@ class MediaLibraryMusic implements EntityInterface
     /**
      * @var null|MediaLibrary
      */
-    #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'mediaLibraryMusic')]
+    #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'mediaLibraryMusics')]
     private ?MediaLibrary $mediaLibrary = null;
 
     /**

@@ -4,11 +4,9 @@ namespace App\Service\Album;
 
 use App\DTO\AlbumDTO;
 use App\Entity\Album;
-use App\Entity\User;
 use App\Rest\CRUD\UpdaterCRUD;
 use App\Rest\Http\Response;
-use App\Service\FileUploaderService;
-use Exception;
+use App\Rest\S3\Uploader\ImageUploader;
 
 /**
  * Class UpdaterAlbumService.
@@ -19,18 +17,14 @@ use Exception;
  */
 class UpdaterAlbumService extends UpdaterCRUD
 {
-
     /**
-     * @param AlbumDTO            $albumDTO
-     * @param FileUploaderService $uploadedFileService
-     * @param null|User           $user
-     * @param string              $kernelProjectDir
-     * @param int                 $id
+     * @param AlbumDTO      $albumDTO
+     * @param ImageUploader $imageUploader
+     * @param int           $id
      *
      * @return Response
-     * @throws Exception
      */
-    public function update(AlbumDTO $albumDTO, FileUploaderService $uploadedFileService, ?User $user, string $kernelProjectDir, int $id): Response
+    public function update(AlbumDTO $albumDTO, ImageUploader $imageUploader, int $id): Response
     {
         $this->translationKeyNotExist = 'album@notExist';
 
@@ -41,39 +35,23 @@ class UpdaterAlbumService extends UpdaterCRUD
             return $updatedAlbum;
         }
 
-        $this->deletePhoto($kernelProjectDir);
-
-        $updatedAlbum->setPhoto($this->uploadPhoto($uploadedFileService, $user));
+        $this->updatePhoto($albumDTO, $imageUploader, $updatedAlbum);
 
         return $this->manager->update($updatedAlbum, 'album@successUpdate');
     }
 
     /**
-     * @param string $kernelProjectDir
+     * @param AlbumDTO      $albumDTO
+     * @param ImageUploader $imageUploader
+     * @param Album         $album
      *
      * @return void
      */
-    private function deletePhoto(string $kernelProjectDir): void
+    private function updatePhoto(AlbumDTO $albumDTO, ImageUploader $imageUploader, Album $album): void
     {
-        /** @var Album $album */
-        $album = $this->finedEntity;
+        $imageUploader->delete($album->getPhoto());
+        $imageUploader->upload($albumDTO->photo, ['email' => $album->getUser()->getEmail()]);
 
-        $absolutePathPhoto = sprintf('%s/%s', $kernelProjectDir, $album->getPhoto());
-
-        if (file_exists($absolutePathPhoto)) {
-            unlink($absolutePathPhoto);
-        }
-    }
-
-    /**
-     * @param FileUploaderService $uploadedFileService
-     * @param User                $user
-     *
-     * @return string
-     * @throws Exception
-     */
-    private function uploadPhoto(FileUploaderService $uploadedFileService, User $user): string
-    {
-        return '';
+        $album->setPhoto($imageUploader->getUploadedFile()->first());
     }
 }

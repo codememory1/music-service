@@ -35,7 +35,7 @@ class LanguageDTO extends AbstractDTO
     public ?string $title = null;
 
     /**
-     * @return void
+     * @inheritDoc
      */
     protected function wrapper(): void
     {

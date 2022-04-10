@@ -3,7 +3,7 @@
 namespace App\Enum;
 
 /**
- * Class ArtistSubscriberStatusEnum
+ * Class ArtistSubscriberStatusEnum.
  *
  * @package App\Enum
  *
