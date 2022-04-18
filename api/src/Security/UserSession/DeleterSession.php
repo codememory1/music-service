@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Session;
+namespace App\Security\UserSession;
 
 use App\Entity\UserSession;
 use App\Repository\UserSessionRepository;

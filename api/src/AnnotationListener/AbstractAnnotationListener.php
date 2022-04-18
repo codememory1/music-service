@@ -5,7 +5,7 @@ namespace App\AnnotationListener;
 use App\Interfaces\AnnotationListenerInterface;
 use App\Rest\Http\Request;
 use App\Rest\Http\ResponseCollection;
-use App\Security\Auth\Authenticator;
+use App\Security\Authenticator\Authenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;

@@ -8,9 +8,9 @@ use App\DTO\SubscriptionPermissionNameDTO;
 use App\Entity\SubscriptionPermissionName;
 use App\Enum\RolePermissionNameEnum;
 use App\Rest\ApiController;
-use App\Service\Subscription\Permission\Name\CreatorPermissionNameService;
-use App\Service\Subscription\Permission\Name\DeleterPermissionNameService;
-use App\Service\Subscription\Permission\Name\UpdaterPermissionNameService;
+use App\Service\SubscriptionPermissionName\CreatorPermissionNameService;
+use App\Service\SubscriptionPermissionName\DeleterPermissionNameService;
+use App\Service\SubscriptionPermissionName\UpdaterPermissionNameService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,10 +33,7 @@ class SubscriptionPermissionNameController extends ApiController
     #[UserRolePermission(permission: RolePermissionNameEnum::SHOW_SUBSCRIPTION_PERMISSION_NAMES)]
     public function all(): JsonResponse
     {
-        return $this->showAllFromDatabase(
-            SubscriptionPermissionName::class,
-            SubscriptionPermissionNameDTO::class
-        );
+        return $this->findAllResponse(SubscriptionPermissionName::class, SubscriptionPermissionNameDTO::class);
     }
 
     /**

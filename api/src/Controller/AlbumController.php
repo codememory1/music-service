@@ -11,7 +11,8 @@ use App\Enum\RolePermissionNameEnum;
 use App\Enum\SubscriptionPermissionNameEnum;
 use App\Rest\ApiController;
 use App\Rest\S3\Uploader\ImageUploader;
-use App\Security\Auth\Authenticator;
+use App\Security\Authenticator\Authenticator;
+use App\Security\Authenticator\DefineUserForTask;
 use App\Service\Album\CreatorAlbumService;
 use App\Service\Album\DeleterAlbumService;
 use App\Service\Album\UpdaterAlbumService;
@@ -37,32 +38,34 @@ class AlbumController extends ApiController
     #[UserRolePermission(permission: RolePermissionNameEnum::SHOW_ALBUMS)]
     public function all(): JsonResponse
     {
-        return $this->showAllFromDatabase(
-            Album::class,
-            AlbumDTO::class
-        );
+        return $this->findAllResponse(Album::class, AlbumDTO::class);
     }
 
     /**
      * @param CreatorAlbumService $creatorAlbumService
      * @param AlbumDTO            $albumDTO
      * @param Authenticator       $authenticator
+     * @param DefineUserForTask   $defineUserForTask
      * @param ImageUploader       $imageUploader
-     *
-     * @throws Exception
+     * @param int|null            $userid
      *
      * @return JsonResponse
+     * @throws Exception
      */
     #[Route('/create', methods: 'POST')]
     #[Auth]
     #[SubscriptionPermission(permission: SubscriptionPermissionNameEnum::CREATE_ALBUM)]
     public function create(
-        CreatorAlbumService $creatorAlbumService,
+        CreatorAlbumService $creatorAlbumService, 
         AlbumDTO $albumDTO,
         Authenticator $authenticator,
         ImageUploader $imageUploader
     ): JsonResponse {
-        return $creatorAlbumService->create($albumDTO, $imageUploader, $authenticator->getUser())->make();
+        return $creatorAlbumService->create(
+            $albumDTO,
+            $imageUploader,
+            $authenticator->getAuthorizedUser()
+        )->make();
     }
 
     /**

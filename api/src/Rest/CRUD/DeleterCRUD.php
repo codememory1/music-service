@@ -31,7 +31,9 @@ class DeleterCRUD extends AbstractCRUD
         $finedEntity = $this->getRepository($entityOrDTO)->findOneBy($manipulationBy);
 
         if (null === $finedEntity) {
-            return $this->responseCollection->notExist($this->translationKeyNotExist)->getResponse();
+            return $this->responseCollection
+                ->notExist($this->translationKeyNotExist)
+                ->getResponse();
         }
 
         return $finedEntity;

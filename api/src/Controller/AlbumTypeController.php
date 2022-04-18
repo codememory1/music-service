@@ -8,9 +8,9 @@ use App\DTO\AlbumTypeDTO;
 use App\Entity\AlbumType;
 use App\Enum\RolePermissionNameEnum;
 use App\Rest\ApiController;
-use App\Service\Album\Type\CreatorAlbumTypeService;
-use App\Service\Album\Type\DeleterAlbumTypeService;
-use App\Service\Album\Type\UpdaterAlbumTypeService;
+use App\Service\AlbumType\CreatorAlbumTypeService;
+use App\Service\AlbumType\DeleterAlbumTypeService;
+use App\Service\AlbumType\UpdaterAlbumTypeService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,10 +33,7 @@ class AlbumTypeController extends ApiController
     #[UserRolePermission(permission: RolePermissionNameEnum::SHOW_ALBUM_TYPES)]
     public function all(): JsonResponse
     {
-        return $this->showAllFromDatabase(
-            AlbumType::class,
-            AlbumTypeDTO::class
-        );
+        return $this->findAllResponse(AlbumType::class, AlbumTypeDTO::class);
     }
 
     /**

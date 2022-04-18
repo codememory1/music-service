@@ -46,12 +46,6 @@ class UpdaterCRUD extends AbstractCRUD
         $this->finedEntity = $finedEntity;
 
         $collectedEntity = $entityOrDTO->setEntityForBuild($finedEntity)->getCollectedEntity();
-        $validator = $this->inputValidation($entityOrDTO);
-
-        // Validation of input POST data
-        if (!$validator->isValidate()) {
-            return $validator->getResponse();
-        }
 
         // Validation when inserting into the database
         if ($this->validateEntity) {

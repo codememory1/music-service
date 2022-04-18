@@ -88,6 +88,10 @@ services:
         tags:
             - { name: kernel.event_subscriber, event: password.recovery-request }
 
+    App\EventSubscriber\UserPasswordChange\SendMailNotificationSubscriber:
+        tags:
+            - { name: kernel.event_subscriber, event: user.password.change }
+
     # Commands
     App\Command\GenerateJwtKeysCommand:
         tags:
@@ -97,3 +101,8 @@ services:
     App\EventListener\AnnotationListener:
         tags:
             - {name: kernel.event_listener, event: kernel.controller, method: onKernelController}
+
+    # Resolvers
+    App\Resolver\DTOResolver:
+        tags:
+            - {name: controller.argument_value_resolver, priority: 100}

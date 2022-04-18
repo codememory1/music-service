@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\PasswordReset;
+namespace App\Security\PasswordReset\PasswordChanger;
 
 use App\Entity\PasswordReset;
 use App\Repository\PasswordResetRepository;

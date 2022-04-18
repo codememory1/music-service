@@ -18,7 +18,7 @@ class UserRolePermissionAnnotationListener extends AbstractAnnotationListener
      */
     public function listen(AttributeData $attributeData): void
     {
-        $user = $this->authenticator->getUser();
+        $user = $this->authenticator->getAuthorizedUser();
 
         if (null === $user || false === $user->hasPermission($attributeData->permission)) {
             $this->responseCollection->accessIsDenied();

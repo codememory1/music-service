@@ -8,9 +8,9 @@ use App\DTO\LanguageDTO;
 use App\Entity\Language;
 use App\Enum\RolePermissionNameEnum;
 use App\Rest\ApiController;
-use App\Service\Translator\Language\CreatorLanguageService;
-use App\Service\Translator\Language\DeleterLanguageService;
-use App\Service\Translator\Language\UpdaterLanguageService;
+use App\Service\Language\CreatorLanguageService;
+use App\Service\Language\DeleterLanguageService;
+use App\Service\Language\UpdaterLanguageService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +31,7 @@ class LanguageController extends ApiController
     #[Route('/all', methods: 'GET')]
     public function all(): JsonResponse
     {
-        return $this->showAllFromDatabase(Language::class, LanguageDTO::class);
+        return $this->findAllResponse(Language::class, LanguageDTO::class);
     }
 
     /**

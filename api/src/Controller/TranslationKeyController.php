@@ -8,9 +8,9 @@ use App\DTO\TranslationKeyDTO;
 use App\Entity\TranslationKey;
 use App\Enum\RolePermissionNameEnum;
 use App\Rest\ApiController;
-use App\Service\Translator\TranslationKey\CreatorTranslationKeyService;
-use App\Service\Translator\TranslationKey\DeleterTranslationKeyService;
-use App\Service\Translator\TranslationKey\UpdaterTranslationKeyService;
+use App\Service\TranslationKey\CreatorTranslationKeyService;
+use App\Service\TranslationKey\DeleterTranslationKeyService;
+use App\Service\TranslationKey\UpdaterTranslationKeyService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,7 +33,7 @@ class TranslationKeyController extends ApiController
     #[UserRolePermission(permission: RolePermissionNameEnum::SHOW_TRANSLATION_KEYS)]
     public function all(): JsonResponse
     {
-        return $this->showAllFromDatabase(TranslationKey::class, TranslationKeyDTO::class);
+        return $this->findAllResponse(TranslationKey::class, TranslationKeyDTO::class);
     }
 
     /**

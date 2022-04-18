@@ -8,9 +8,9 @@ use App\DTO\TranslationDTO;
 use App\Entity\Translation;
 use App\Enum\RolePermissionNameEnum;
 use App\Rest\ApiController;
-use App\Service\Translator\Translation\CreatorTranslationService;
-use App\Service\Translator\Translation\DeleterTranslationService;
-use App\Service\Translator\Translation\UpdaterTranslationService;
+use App\Service\Translation\CreatorTranslationService;
+use App\Service\Translation\DeleterTranslationService;
+use App\Service\Translation\UpdaterTranslationService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +31,7 @@ class TranslationController extends ApiController
     #[Route('/all', methods: 'GET')]
     public function all(): JsonResponse
     {
-        return $this->showAllFromDatabase(Translation::class, TranslationDTO::class);
+        return $this->findAllResponse(Translation::class, TranslationDTO::class);
     }
 
     /**

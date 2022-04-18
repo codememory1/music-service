@@ -252,11 +252,17 @@ class User implements EntityInterface
      *
      * @return bool
      */
-    public function hasPermission(RolePermissionNameEnum $permission): bool
+    public function hasPermission(RolePermissionNameEnum $expectedPermission): bool
     {
         $permissions = $this->getRole()->getRolePermissions();
 
-        return $permissions->exists(fn(int $key, RolePermission $value) => $value->getRolePermissionName()->getKey() === $permission->value);
+        foreach ($permissions as $permission) {
+            if ($permission->getRolePermissionName()->getKey() === $expectedPermission->value) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

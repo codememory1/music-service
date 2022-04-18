@@ -18,7 +18,7 @@ class AuthAnnotationListener extends AbstractAnnotationListener
      */
     public function listen(AttributeData $attributeData): void
     {
-        if (null === $this->authenticator->getUser()) {
+        if (null === $this->authenticator->getAuthorizedUser()) {
             $this->responseCollection->notAuth();
 
             $this->response();

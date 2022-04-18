@@ -31,7 +31,7 @@ class SubscriptionController extends ApiController
     #[Route('/all', methods: 'GET')]
     public function all(): JsonResponse
     {
-        return $this->showAllFromDatabase(Subscription::class, SubscriptionDTO::class);
+        return $this->findAllResponse(Subscription::class, SubscriptionDTO::class);
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace App\DTO;
 
 use App\Rest\DTO\AbstractDTO;
+use App\Service\JwtTokenGenerator;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class TokenAuthenticatorDTO.
@@ -24,6 +26,24 @@ class TokenAuthenticatorDTO extends AbstractDTO
     private ?string $refreshToken = null;
 
     /**
+     * @var JwtTokenGenerator|null
+     */
+    private ?JwtTokenGenerator $jwtTokenGenerator = null;
+
+    /**
+     * @param JwtTokenGenerator $jwtTokenGenerator
+     *
+     * @return $this
+     */
+    #[Required]
+    public function setJwtTokenGenerator(JwtTokenGenerator $jwtTokenGenerator): self
+    {
+        $this->jwtTokenGenerator = $jwtTokenGenerator;
+
+        return $this;
+    }
+
+    /**
      * @inheritDoc
      */
     public function wrapper(): void
@@ -41,6 +61,23 @@ class TokenAuthenticatorDTO extends AbstractDTO
     public function getAccessToken(): string
     {
         return $this->accessToken;
+    }
+
+    /**
+     * @return object|null
+     */
+    public function getAccessTokenData(): ?object
+    {
+        $decodedToken = $this->jwtTokenGenerator->decode(
+            $this->getAccessToken(),
+            'JWT_ACCESS_PUBLIC_KEY'
+        );
+
+        if (false === $decodedToken) {
+            return null;
+        }
+
+        return $decodedToken;
     }
 
     /**

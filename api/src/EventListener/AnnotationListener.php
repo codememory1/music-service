@@ -7,7 +7,7 @@ use App\Interfaces\AnnotationListenerInterface;
 use App\Rest\ClassHelper\AttributeData;
 use App\Rest\Http\Request;
 use App\Rest\Http\ResponseCollection;
-use App\Security\Auth\Authenticator;
+use App\Security\Authenticator\Authenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use function is_array;
 use ReflectionAttribute;

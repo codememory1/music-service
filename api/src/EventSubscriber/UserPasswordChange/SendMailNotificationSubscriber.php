@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UserPasswordChange\EventSubscriber;
+namespace App\EventSubscriber\UserPasswordChange;
 
 use App\Enum\EventsEnum;
 use App\Event\UserPasswordChangeEvent;

@@ -2,7 +2,9 @@
 
 namespace App\Rest;
 
+use App\Entity\User;
 use App\Rest\Http\ResponseCollection;
+use App\Security\Authenticator\DefineUserForTask;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,28 +29,50 @@ class ApiController extends AbstractController
     protected ResponseCollection $responseCollection;
 
     /**
+     * @var DefineUserForTask
+     */
+    protected DefineUserForTask $defineUserForTask;
+
+    /**
      * @param EntityManagerInterface $managerRegistry
      * @param ResponseCollection     $responseCollection
+     * @param DefineUserForTask      $defineUserForTask
      */
-    public function __construct(EntityManagerInterface $managerRegistry, ResponseCollection $responseCollection)
+    public function __construct(
+        EntityManagerInterface $managerRegistry,
+        ResponseCollection $responseCollection,
+        DefineUserForTask $defineUserForTask
+    )
     {
         $this->em = $managerRegistry;
         $this->responseCollection = $responseCollection;
+        $this->defineUserForTask = $defineUserForTask;
     }
 
     /**
      * @param string $entityNamespace
      * @param string $DTONamespace
+     * @param array  $excludeKeys
      *
      * @return JsonResponse
      */
-    protected function showAllFromDatabase(string $entityNamespace, string $DTONamespace): JsonResponse
+    protected function findAllResponse(string $entityNamespace, string $DTONamespace, array $excludeKeys = []): JsonResponse
     {
         $DTO = new $DTONamespace(em: $this->em);
-
         $entityRepository = $this->em->getRepository($entityNamespace);
-        $data = $DTO->transform($entityRepository->findAll());
 
-        return $this->responseCollection->dataOutput($data)->sendResponse();
+        return $this->responseCollection
+            ->dataOutput($DTO->transform($entityRepository->findAll(), $excludeKeys))
+            ->sendResponse();
+    }
+
+    /**
+     * @param int|null $userid
+     *
+     * @return User|null
+     */
+    protected function definedUser(?int $userid = null): ?User
+    {
+        return $this->defineUserForTask->setUserid($userid)->getDefinedUser();
     }
 }

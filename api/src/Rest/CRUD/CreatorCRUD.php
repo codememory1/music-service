@@ -27,13 +27,6 @@ class CreatorCRUD extends AbstractCRUD
     {
         $collectedEntity = $entityOrDTO->getCollectedEntity();
 
-        // Validation of input POST data
-        $validator = $this->inputValidation($entityOrDTO);
-
-        if (!$validator->isValidate()) {
-            return $validator->getResponse();
-        }
-
         // Validation when inserting into the database
         if ($this->validateEntity) {
             $validator = $this->inputValidation($collectedEntity);
