@@ -66,6 +66,16 @@ services:
             - '../src/Service/*/Abstract*.php'
         public: false
 
+    App\Service\Google\GoogleOAuthClient:
+        arguments:
+            $clientId: '%env(GOOGLE_CLIENT_ID)%'
+            $clientSecret: '%env(GOOGLE_CLIENT_SECRET)%'
+            $redirectUrl: '%env(GOOGLE_CLIENT_REDIRECT_URL)%'
+            $scopes:
+                - !php/const App\Service\Google\GoogleOAuthClient::USERINFO_EMAIL
+                - !php/const App\Service\Google\GoogleOAuthClient::USERINFO_PROFILE
+                - !php/const App\Service\Google\GoogleOAuthClient::USERINFO_BIRTHDAY
+
     App\Security\:
         resource: '../src/Security/'
         exclude:

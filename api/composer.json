@@ -16,6 +16,7 @@
         "fakerphp/faker": "^1.18",
         "firebase/php-jwt": "^6.0",
         "gedmo/doctrine-extensions": "^3.5",
+        "google/apiclient": "^2.12",
         "jenssegers/agent": "^2.6",
         "ramsey/uuid": "^4.2",
         "sixlive/dotenv-editor": "^2.0",
