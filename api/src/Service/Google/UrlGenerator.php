@@ -3,7 +3,7 @@
 namespace App\Service\Google;
 
 /**
- * Class UrlGenerator
+ * Class UrlGenerator.
  *
  * @package App\Service\Google
  *
@@ -38,6 +38,7 @@ class UrlGenerator
             'access_type' => $accessType,
             'redirect_uri' => $this->googleOAuthClient->getRedirectUri(),
             'scope' => implode(' ', $this->googleOAuthClient->getScopes()),
+            'state' => 'type=google',
             ...$params
         ]);
     }

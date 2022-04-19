@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class AlbumCategoryController
+ * Class AlbumCategoryController.
  *
  * @package App\Controller\Admin
  *
@@ -35,8 +35,7 @@ class AlbumCategoryController
     public function create(
         CreatorAlbumCategoryService $creatorAlbumCategoryService,
         AlbumCategoryDTO $albumCategoryDTO
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return $creatorAlbumCategoryService->create($albumCategoryDTO)->make();
     }
 
@@ -54,8 +53,7 @@ class AlbumCategoryController
         UpdaterAlbumCategoryService $updaterAlbumCategoryService,
         AlbumCategoryDTO $albumCategoryDTO,
         int $id
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return $updaterAlbumCategoryService->update($albumCategoryDTO, $id)->make();
     }
 

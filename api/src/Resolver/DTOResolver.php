@@ -8,12 +8,12 @@ use App\Rest\Validator\Validator;
 use Doctrine\ORM\EntityManagerInterface;
 use ReflectionClass;
 use ReflectionException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class DTOResolver
+ * Class DTOResolver.
  *
  * @package App\Resolver
  *
@@ -50,6 +50,7 @@ class DTOResolver implements ArgumentValueResolverInterface
 
     /**
      * @inheritDoc
+     *
      * @throws ReflectionException
      */
     public function supports(Request $request, ArgumentMetadata $argument): bool

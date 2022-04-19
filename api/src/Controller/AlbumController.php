@@ -47,16 +47,17 @@ class AlbumController extends ApiController
      * @param Authenticator       $authenticator
      * @param DefineUserForTask   $defineUserForTask
      * @param ImageUploader       $imageUploader
-     * @param int|null            $userid
+     * @param null|int            $userid
+     *
+     * @throws Exception
      *
      * @return JsonResponse
-     * @throws Exception
      */
     #[Route('/create', methods: 'POST')]
     #[Auth]
     #[SubscriptionPermission(permission: SubscriptionPermissionNameEnum::CREATE_ALBUM)]
     public function create(
-        CreatorAlbumService $creatorAlbumService, 
+        CreatorAlbumService $creatorAlbumService,
         AlbumDTO $albumDTO,
         Authenticator $authenticator,
         ImageUploader $imageUploader

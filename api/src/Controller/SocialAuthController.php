@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class SocialAuthController
+ * Class SocialAuthController.
  *
  * @package App\Controller
  *
@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/social')]
 class SocialAuthController extends ApiController
 {
-
     /**
      * @param GoogleOAuthClient $googleOAuthClient
      *

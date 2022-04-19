@@ -5,7 +5,7 @@ namespace App\Interfaces;
 use App\Entity\User;
 
 /**
- * Interface DefineUserForTaskInterface
+ * Interface DefineUserForTaskInterface.
  *
  * @package  App\Interfaces
  *
@@ -13,16 +13,15 @@ use App\Entity\User;
  */
 interface DefineUserForTaskInterface
 {
-
     /**
-     * @param int|null $userid
+     * @param null|int $userid
      *
      * @return DefineUserForTaskInterface
      */
-    public function setUserid(?int $userid = null): DefineUserForTaskInterface;
+    public function setUserid(?int $userid = null): self;
 
     /**
-     * @return User|null
+     * @return null|User
      */
     public function getDefinedUser(): ?User;
 }

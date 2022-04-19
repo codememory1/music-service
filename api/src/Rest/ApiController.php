@@ -42,8 +42,7 @@ class ApiController extends AbstractController
         EntityManagerInterface $managerRegistry,
         ResponseCollection $responseCollection,
         DefineUserForTask $defineUserForTask
-    )
-    {
+    ) {
         $this->em = $managerRegistry;
         $this->responseCollection = $responseCollection;
         $this->defineUserForTask = $defineUserForTask;
@@ -67,9 +66,9 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @param int|null $userid
+     * @param null|int $userid
      *
-     * @return User|null
+     * @return null|User
      */
     protected function definedUser(?int $userid = null): ?User
     {

@@ -29,7 +29,7 @@ class Authenticator
     private ResponseCollection $responseCollection;
 
     /**
-     * @var UserRepository|null
+     * @var null|UserRepository
      */
     private ?UserRepository $userRepository = null;
 

@@ -84,6 +84,22 @@ class User implements EntityInterface
     private ?int $status;
 
     /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::STRING, length: 50, nullable: true, options: [
+        'comment' => 'Type of social network in which the user is authorized'
+    ])]
+    private ?string $typeAuthSocialNetwork = null;
+
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::TEXT, unique: true, nullable: true, options: [
+        'comment' => 'Unique identifier of an authorized user in a social network'
+    ])]
+    private ?string $socialNetworkAuthId = null;
+
+    /**
      * @var null|UserProfile
      */
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserProfile::class, cascade: ['persist', 'remove'])]
@@ -281,6 +297,46 @@ class User implements EntityInterface
     public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTypeAuthSocialNetwork(): ?string
+    {
+        return $this->typeAuthSocialNetwork;
+    }
+
+    /**
+     * @param null|string $typeAuthSocialNetwork
+     *
+     * @return $this
+     */
+    public function setTypeAuthSocialNetwork(?string $typeAuthSocialNetwork): self
+    {
+        $this->typeAuthSocialNetwork = $typeAuthSocialNetwork;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSocialNetworkAuthId(): ?string
+    {
+        return $this->socialNetworkAuthId;
+    }
+
+    /**
+     * @param null|string $socialNetworkAuthId
+     *
+     * @return $this
+     */
+    public function setSocialNetworkAuthId(?string $socialNetworkAuthId): self
+    {
+        $this->socialNetworkAuthId = $socialNetworkAuthId;
 
         return $this;
     }

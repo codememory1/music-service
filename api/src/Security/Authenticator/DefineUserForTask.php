@@ -8,7 +8,7 @@ use App\Repository\UserRepository;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class DefineUserForTask
+ * Class DefineUserForTask.
  *
  * @package App\Security\Authenticator
  *
@@ -22,12 +22,12 @@ class DefineUserForTask implements DefineUserForTaskInterface
     private Authenticator $authenticator;
 
     /**
-     * @var UserRepository|null
+     * @var null|UserRepository
      */
     private ?UserRepository $userRepository = null;
 
     /**
-     * @var User|null
+     * @var null|User
      */
     private ?User $definedUser = null;
 

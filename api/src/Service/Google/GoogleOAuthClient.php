@@ -2,17 +2,20 @@
 
 namespace App\Service\Google;
 
+use App\Interfaces\SocialNetworkUserInfoInterface;
+use App\Interfaces\SocialOAuthClientInterface;
+use Exception;
 use Google\Client;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class GoogleClient
+ * Class GoogleClient.
  *
  * @package App\Service\Google
  *
  * @author  Codememory
  */
-class GoogleOAuthClient extends Client
+class GoogleOAuthClient extends Client implements SocialOAuthClientInterface
 {
     public const USERINFO_EMAIL = 'https://www.googleapis.com/auth/userinfo.email';
     public const USERINFO_PROFILE = 'https://www.googleapis.com/auth/userinfo.profile';
@@ -31,7 +34,7 @@ class GoogleOAuthClient extends Client
     public function __construct(string $clientId, string $clientSecret, string $redirectUrl, array $scopes = [])
     {
         parent::__construct();
-        
+
         $this->setClientId($clientId);
         $this->setClientSecret($clientSecret);
         $this->setRedirectUri($redirectUrl);
@@ -45,5 +48,25 @@ class GoogleOAuthClient extends Client
     public function getUrlGenerator(): UrlGenerator
     {
         return new UrlGenerator($this);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function fetchAuthToken(string $code): array
+    {
+        try {
+            return $this->fetchAccessTokenWithAuthCode($code);
+        } catch (Exception) {
+            return [];
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUserData(): SocialNetworkUserInfoInterface
+    {
+        return new GoogleUserInfo($this);
     }
 }

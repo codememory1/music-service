@@ -26,7 +26,7 @@ class TokenAuthenticatorDTO extends AbstractDTO
     private ?string $refreshToken = null;
 
     /**
-     * @var JwtTokenGenerator|null
+     * @var null|JwtTokenGenerator
      */
     private ?JwtTokenGenerator $jwtTokenGenerator = null;
 
@@ -64,7 +64,7 @@ class TokenAuthenticatorDTO extends AbstractDTO
     }
 
     /**
-     * @return object|null
+     * @return null|object
      */
     public function getAccessTokenData(): ?object
     {
