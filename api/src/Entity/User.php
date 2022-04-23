@@ -6,6 +6,7 @@ use App\Enum\ApiResponseTypeEnum;
 use App\Enum\RoleEnum;
 use App\Enum\RolePermissionNameEnum;
 use App\Enum\StatusEnum;
+use App\Enum\UserStatusEnum;
 use App\Interfaces\EntityInterface;
 use App\Repository\UserRepository;
 use App\Service\JwtTokenGenerator;
@@ -32,11 +33,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     'user@emailExist',
     payload: ApiResponseTypeEnum::CHECK_EXIST
 )]
-#[UniqueEntity(
-    'username',
-    'user@usernameExist',
-    payload: ApiResponseTypeEnum::CHECK_EXIST
-)]
 #[ORM\HasLifecycleCallbacks]
 class User implements EntityInterface
 {
@@ -51,14 +47,6 @@ class User implements EntityInterface
         'comment' => 'User unique mail'
     ])]
     private ?string $email = null;
-
-    /**
-     * @var null|string
-     */
-    #[ORM\Column(type: Types::STRING, length: 250, unique: true, options: [
-        'comment' => 'The default username is the truncated mail then the symbol @'
-    ])]
-    private ?string $username = null;
 
     /**
      * @var null|string
@@ -94,7 +82,7 @@ class User implements EntityInterface
     /**
      * @var null|string
      */
-    #[ORM\Column(type: Types::TEXT, unique: true, nullable: true, options: [
+    #[ORM\Column(type: Types::TEXT, nullable: true, options: [
         'comment' => 'Unique identifier of an authorized user in a social network'
     ])]
     private ?string $socialNetworkAuthId = null;
@@ -186,26 +174,6 @@ class User implements EntityInterface
     /**
      * @return null|string
      */
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string $username
-     *
-     * @return $this
-     */
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -290,13 +258,13 @@ class User implements EntityInterface
     }
 
     /**
-     * @param int $status
+     * @param UserStatusEnum $status
      *
      * @return $this
      */
-    public function setStatus(int $status): self
+    public function setStatus(UserStatusEnum $status): self
     {
-        $this->status = $status;
+        $this->status = $status->value;
 
         return $this;
     }

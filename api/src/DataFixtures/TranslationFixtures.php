@@ -277,6 +277,11 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'key' => 'common@successUpdateAccessToken',
             'translation' => 'Access-Token успешно обновлен'
         ],
+        [
+            'lang' => 'ru',
+            'key' => 'common@emailIsRequired',
+            'translation' => 'Почта обязательна к заполнению'
+        ],
 
         // RU - lang
         [

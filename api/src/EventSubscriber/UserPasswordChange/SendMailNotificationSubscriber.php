@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber\UserPasswordChange;
 
-use App\Enum\EventsEnum;
+use App\Enum\EventEnum;
 use App\Event\UserPasswordChangeEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -21,7 +21,7 @@ class SendMailNotificationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            EventsEnum::USER_PASSWORD_CHANGE->value => 'onChangePassword'
+            EventEnum::USER_PASSWORD_CHANGE->value => 'onChangePassword'
         ];
     }
 

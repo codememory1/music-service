@@ -3,8 +3,8 @@
 namespace App\Security\Auth;
 
 use App\Entity\User;
+use App\Interfaces\AuthorizationTokenInterface;
 use App\Service\JwtTokenGenerator;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Class TokenAuthenticator.
@@ -13,12 +13,22 @@ use JetBrains\PhpStorm\ArrayShape;
  *
  * @author  Codememory
  */
-class TokenAuthenticator
+class TokenAuthenticator implements AuthorizationTokenInterface
 {
     /**
      * @var JwtTokenGenerator
      */
     private JwtTokenGenerator $jwtTokenGenerator;
+
+    /**
+     * @var null|string
+     */
+    private ?string $accessToken = null;
+
+    /**
+     * @var null|string
+     */
+    private ?string $refreshToken = null;
 
     /**
      * @param JwtTokenGenerator $jwtTokenGenerator
@@ -29,64 +39,74 @@ class TokenAuthenticator
     }
 
     /**
-     * @param User $user
+     * @param string $token
      *
-     * @return array
+     * @return $this
      */
-    #[ArrayShape([
-        'access_token' => 'string',
-        'refresh_token' => 'string'
-    ])]
-    public function generateTokens(User $user): array
+    public function setAccessToken(string $token): self
     {
-        return [
-            'access_token' => $this->generateAccessToken($user),
-            'refresh_token' => $this->generateRefreshToken($user)
-        ];
+        $this->accessToken = $token;
+
+        return $this;
     }
 
     /**
-     * @param User $user
+     * @param string $token
+     *
+     * @return $this
+     */
+    public function setRefreshToken(string $token): self
+    {
+        $this->refreshToken = $token;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAccessToken(): ?string
+    {
+        return $this->accessToken;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRefreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function generateAccessToken(User $user): AuthorizationTokenInterface
+    {
+        $this->accessToken = $this->generateToken($user, 'JWT_ACCESS_PRIVATE_KEY', 'JWT_ACCESS_TTL');
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function generateRefreshToken(User $user): AuthorizationTokenInterface
+    {
+        $this->refreshToken = $this->generateToken($user, 'JWT_REFRESH_PRIVATE_KEY', 'JWT_REFRESH_TTL');
+
+        return $this;
+    }
+
+    /**
+     * @param User   $user
+     * @param string $envPrivateKey
+     * @param string $envTTL
      *
      * @return string
      */
-    public function generateAccessToken(User $user): string
+    private function generateToken(User $user, string $envPrivateKey, string $envTTL): string
     {
-        return $this->jwtTokenGenerator->encode(
-            $this->tokenSchema($user),
-            'JWT_ACCESS_PRIVATE_KEY',
-            'JWT_ACCESS_TTL'
-        );
-    }
-
-    /**
-     * @param User $identifiedUser
-     *
-     * @return array
-     */
-    #[ArrayShape([
-        'id' => 'int|null',
-        'email' => 'null|string'
-    ])]
-    public function tokenSchema(User $identifiedUser): array
-    {
-        return [
-            'id' => $identifiedUser->getId(),
-            'email' => $identifiedUser->getEmail()
-        ];
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return string
-     */
-    public function generateRefreshToken(User $user): string
-    {
-        return $this->jwtTokenGenerator->encode(
-            $this->tokenSchema($user),
-            'JWT_REFRESH_PRIVATE_KEY',
-            'JWT_REFRESH_TTL'
-        );
+        return $this->jwtTokenGenerator->encode(['id' => $user->getId()], $envPrivateKey, $envTTL);
     }
 }

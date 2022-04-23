@@ -2,12 +2,12 @@
 
 namespace App\Security\Auth;
 
-use App\DTO\AuthorizationDTO;
 use App\Entity\User;
+use App\Enum\EventEnum;
+use App\Event\UserAuthorizationEvent;
 use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
-use App\Security\UserSession\CreatorSession;
-use JetBrains\PhpStorm\ArrayShape;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -20,36 +20,52 @@ use Symfony\Contracts\Service\Attribute\Required;
 class Authorization extends AbstractSecurity
 {
     /**
-     * @var null|CreatorSession
+     * @var null|EventDispatcherInterface
      */
-    private ?CreatorSession $creatorSession = null;
+    private ?EventDispatcherInterface $eventDispatcher = null;
 
     /**
-     * @param CreatorSession $creatorSession
+     * @var null|TokenAuthenticator
+     */
+    private ?TokenAuthenticator $tokenAuthenticator = null;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
      *
      * @return $this
      */
     #[Required]
-    public function setCreatorSession(CreatorSession $creatorSession): self
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): self
     {
-        $this->creatorSession = $creatorSession;
+        $this->eventDispatcher = $eventDispatcher;
+
+        return $this;
+    }
+
+    #[Required]
+    public function setTokenAuthenticator(TokenAuthenticator $tokenAuthenticator): self
+    {
+        $this->tokenAuthenticator = $tokenAuthenticator;
 
         return $this;
     }
 
     /**
-     * @param User             $identifiedUser
-     * @param AuthorizationDTO $authorizationDTO
+     * @param User $identifiedUser
      *
-     * @return array
+     * @return TokenAuthenticator
      */
-    #[ArrayShape([
-        'access_token' => 'string',
-        'refresh_token' => 'string'
-    ])]
-    public function auth(User $identifiedUser, AuthorizationDTO $authorizationDTO): array
+    public function auth(User $identifiedUser): TokenAuthenticator
     {
-        return $this->creatorSession->create($identifiedUser, $authorizationDTO);
+        $this->tokenAuthenticator->generateAccessToken($identifiedUser);
+        $this->tokenAuthenticator->generateRefreshToken($identifiedUser);
+
+        $this->eventDispatcher->dispatch(
+            new UserAuthorizationEvent($identifiedUser, $this->tokenAuthenticator),
+            EventEnum::USER_AUTHORIZATION->value
+        );
+
+        return $this->tokenAuthenticator;
     }
 
     /**

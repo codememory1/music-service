@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber\PasswordRecoveryRequest;
 
-use App\Enum\EventsEnum;
+use App\Enum\EventEnum;
 use App\Event\PasswordRecoveryRequestEvent;
 use App\Service\MailNotificationService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -39,7 +39,7 @@ class SendToMailSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            EventsEnum::PASSWORD_RECOVERY_REQUEST->value => 'onRecoveryRequest'
+            EventEnum::PASSWORD_RECOVERY_REQUEST->value => 'onRecoveryRequest'
         ];
     }
 
@@ -56,8 +56,8 @@ class SendToMailSubscriber implements EventSubscriberInterface
     public function onRecoveryRequest(PasswordRecoveryRequestEvent $event): void
     {
         $this->mailNotificationService->passwordRecoveryRequest(
-            $event->getUser(),
-            $event->getPasswordReset()
+            $event->user,
+            $event->passwordReset
         );
     }
 }

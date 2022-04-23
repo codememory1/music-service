@@ -1,0 +1,4 @@
+services:
+    App\EventListener\AnnotationListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

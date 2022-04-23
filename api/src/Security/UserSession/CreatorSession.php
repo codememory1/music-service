@@ -5,6 +5,7 @@ namespace App\Security\UserSession;
 use App\DTO\AuthorizationDTO;
 use App\Entity\User;
 use App\Entity\UserSession;
+use App\Enum\UserSessionTypeEnum;
 use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
 use App\Security\Auth\TokenAuthenticator;
@@ -61,6 +62,7 @@ class CreatorSession extends AbstractSecurity
 
         $userSessionEntity
             ->setUser($identifiedUser)
+            ->setType(UserSessionTypeEnum::TEMPORARY)
             ->setBrowser($agent->browser())
             ->setIp($authorizationDTO->clientIp)
             ->setDeviceModel($agent->device())

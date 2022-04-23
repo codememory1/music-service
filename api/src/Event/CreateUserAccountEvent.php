@@ -6,13 +6,13 @@ use App\Entity\User;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class UserRegistrationEvent.
+ * Class CreateUserAccountEvent.
  *
  * @package App\Event
  *
  * @author  Codememory
  */
-class UserRegistrationEvent extends Event
+class CreateUserAccountEvent extends Event
 {
     /**
      * @var User

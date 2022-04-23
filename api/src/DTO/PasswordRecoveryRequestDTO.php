@@ -7,7 +7,6 @@ use App\Entity\User;
 use App\Enum\EventNameDTOEnum;
 use App\Enum\PasswordResetStatusEnum;
 use App\Interfaces\UserIdentificationInterface;
-use App\Repository\UserRepository;
 use App\Rest\DTO\AbstractDTO;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,9 +22,9 @@ class PasswordRecoveryRequestDTO extends AbstractDTO implements UserIdentificati
     /**
      * @var null|string
      */
-    #[Assert\NotBlank(message: 'common@loginIsRequired')]
+    #[Assert\NotBlank(message: 'common@emailIsRequired')]
     #[Assert\Email(message: 'common@invalidEmail')]
-    public ?string $login = null;
+    public ?string $email = null;
 
     /**
      * @inheritDoc
@@ -34,17 +33,15 @@ class PasswordRecoveryRequestDTO extends AbstractDTO implements UserIdentificati
     {
         $this->setEntity(PasswordReset::class);
 
-        $this->addExpectedRequestKey('login');
+        $this->addExpectedRequestKey('email');
 
-        $this->excludeRequestKeyForBuildEntity('login');
+        $this->excludeRequestKeyForBuildEntity('email');
 
         $this->addEventListener(EventNameDTOEnum::AFTER_BUILD_ENTITY, function(PasswordReset $passwordReset): void {
-            /** @var UserRepository $userRepository */
             $userRepository = $this->em->getRepository(User::class);
-            $user = $userRepository->findByLogin($this->login);
 
             $passwordReset
-                ->setUser($user)
+                ->setUser($userRepository->findByEmail($this->email))
                 ->setStatus(PasswordResetStatusEnum::WAITING_RESET);
         });
     }
@@ -54,6 +51,6 @@ class PasswordRecoveryRequestDTO extends AbstractDTO implements UserIdentificati
      */
     public function getLogin(): ?string
     {
-        return $this->login;
+        return $this->email;
     }
 }

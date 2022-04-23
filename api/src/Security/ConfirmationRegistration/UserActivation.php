@@ -3,11 +3,14 @@
 namespace App\Security\ConfirmationRegistration;
 
 use App\Entity\UserActivationToken;
-use App\Enum\StatusEnum;
+use App\Enum\EventEnum;
+use App\Enum\UserStatusEnum;
+use App\Event\UserActivationAccountEvent;
 use App\Repository\UserActivationTokenRepository;
 use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
 use App\Service\JwtTokenGenerator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -56,31 +59,59 @@ class UserActivation extends AbstractSecurity
     }
 
     /**
-     * @param string $token
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $token
+     *
+     * @return Response|UserActivationToken
+     */
+    public function handle(EventDispatcherInterface $eventDispatcher, string $token): Response|UserActivationToken
+    {
+        // Checking for the existence of a token
+        if (false === $finedUserActivationToken = $this->existToken($token)) {
+            return $this->responseCollection
+                ->notExist('userActivationAccount@tokenNotExist')
+                ->getResponse();
+        }
+
+        // Token Validity Check
+        if (false === $this->isValid($token)) {
+            return $this->responseCollection
+                ->notValid('userActivationAccount@tokenIsNotValid')
+                ->getResponse();
+        }
+
+        // User activation...
+        return $this->activate($finedUserActivationToken, $eventDispatcher);
+    }
+
+    /**
+     * @param UserActivationToken      $userActivationToken
+     * @param EventDispatcherInterface $eventDispatcher
      *
      * @return UserActivationToken
      */
-    public function activate(string $token): UserActivationToken
+    public function activate(UserActivationToken $userActivationToken, EventDispatcherInterface $eventDispatcher): UserActivationToken
     {
-        /** @var UserActivationToken $finedUserActivationToken */
-        $finedUserActivationToken = $this->userActivationTokenRepository->findOneBy(['token' => $token]);
-        $user = $finedUserActivationToken->getUser();
-
-        $user->setStatus(StatusEnum::ACTIVE->value);
+        $userActivationToken->getUser()->setStatus(UserStatusEnum::ACTIVE);
 
         $this->em->flush();
 
-        return $finedUserActivationToken;
+        $eventDispatcher->dispatch(
+            new UserActivationAccountEvent($userActivationToken),
+            EventEnum::USER_ACTIVATION_ACCOUNT->value
+        );
+        
+        return $userActivationToken;
     }
 
     /**
      * @param string $token
      *
-     * @return bool
+     * @return UserActivationToken|bool
      */
-    public function existToken(string $token): bool
+    public function existToken(string $token): UserActivationToken|bool
     {
-        return null !== $this->userActivationTokenRepository->findOneBy(['token' => $token]);
+        return $this->userActivationTokenRepository->findOneBy(['token' => $token]) ?? false;
     }
 
     /**

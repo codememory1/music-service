@@ -2,11 +2,17 @@
 
 namespace App\Security\Registration;
 
-use App\DTO\RegistrationDTO;
+use App\Entity\Role;
 use App\Entity\User;
+use App\Enum\EventEnum;
+use App\Enum\RoleEnum;
+use App\Enum\UserStatusEnum;
+use App\Event\CreateUserAccountEvent;
 use App\Rest\Http\Response;
+use App\Rest\Validator\Validator;
 use App\Security\AbstractSecurity;
-use App\Service\HashingService;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class CreatorAccount.
@@ -18,49 +24,47 @@ use App\Service\HashingService;
 class CreatorAccount extends AbstractSecurity
 {
     /**
-     * @var null|HashingService
+     * @var null|Validator
      */
-    private ?HashingService $hashingService = null;
+    private ?Validator $validator = null;
 
     /**
-     * @param HashingService $hashingService
+     * @param Validator $validator
      *
      * @return $this
      */
-    public function setHashingService(HashingService $hashingService): self
+    #[Required]
+    public function setValidator(Validator $validator): self
     {
-        $this->hashingService = $hashingService;
+        $this->validator = $validator;
 
         return $this;
     }
 
     /**
-     * @param RegistrationDTO $registrationDTO
+     * @param User                     $user
+     * @param EventDispatcherInterface $eventDispatcher
      *
-     * @return User
+     * @return Response|User
      */
-    public function create(RegistrationDTO $registrationDTO): User
+    public function create(User $user, EventDispatcherInterface $eventDispatcher): Response|User
     {
-        /** @var User $userEntity */
-        $userEntity = $registrationDTO->getCollectedEntity();
+        $roleRepository = $this->em->getRepository(Role::class);
 
-        $this->em->persist($userEntity);
+        $user->setStatus(UserStatusEnum::NOT_ACTIVE);
+        $user->setRole($roleRepository->findByKey(RoleEnum::USER));
+
+        if (false === $this->validator->validate($user)->isValidate()) {
+            return $this->validator->getResponse();
+        }
+
+        $this->em->persist($user);
         $this->em->flush();
 
-        return $userEntity;
-    }
-
-    /**
-     * @param RegistrationDTO $registrationDTO
-     * @param User            $user
-     *
-     * @return User
-     */
-    public function reCreate(RegistrationDTO $registrationDTO, User $user): User
-    {
-        $user->setPassword($this->hashingService->encode($registrationDTO->password));
-
-        $this->em->flush();
+        $eventDispatcher->dispatch(
+            new CreateUserAccountEvent($user),
+            EventEnum::USER_CREATE_ACCOUNT->value
+        );
 
         return $user;
     }
@@ -68,8 +72,10 @@ class CreatorAccount extends AbstractSecurity
     /**
      * @return Response
      */
-    public function successCreateAccountResponse(): Response
+    public function successCreateResponse(): Response
     {
-        return $this->responseCollection->successCreate('user@successCreateAccount')->getResponse();
+        return $this->responseCollection
+            ->successCreate('user@successCreateAccount')
+            ->getResponse();
     }
 }

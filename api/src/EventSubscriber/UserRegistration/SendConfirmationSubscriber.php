@@ -3,7 +3,7 @@
 namespace App\EventSubscriber\UserRegistration;
 
 use App\Entity\UserActivationToken;
-use App\Enum\EventsEnum;
+use App\Enum\EventEnum;
 use App\Event\UserRegistrationEvent;
 use App\Repository\UserActivationTokenRepository;
 use App\Service\MailNotificationService;
@@ -49,7 +49,7 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            EventsEnum::USER_REGISTRATION->value => 'onUserRegistration'
+            EventEnum::USER_REGISTRATION->value => 'onUserRegistration'
         ];
     }
 
@@ -69,9 +69,9 @@ class SendConfirmationSubscriber implements EventSubscriberInterface
         $userActivationTokenRepository = $this->em->getRepository(UserActivationToken::class);
 
         $userActivationToken = $userActivationTokenRepository->findOneBy([
-            'user' => $event->getUser()
+            'user' => $event->user
         ]);
 
-        $this->mailerNotificationService->registerNotification($event->getUser(), $userActivationToken);
+        $this->mailerNotificationService->registerNotification($event->user, $userActivationToken);
     }
 }

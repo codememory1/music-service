@@ -3,7 +3,7 @@
 namespace App\EventSubscriber\PasswordRecoveryRequest;
 
 use App\Entity\User;
-use App\Enum\EventsEnum;
+use App\Enum\EventEnum;
 use App\Event\PasswordRecoveryRequestEvent;
 use App\Service\JwtTokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +34,7 @@ class CreateTokenSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            EventsEnum::PASSWORD_RECOVERY_REQUEST->value => 'onRecoveryRequest'
+            EventEnum::PASSWORD_RECOVERY_REQUEST->value => 'onRecoveryRequest'
         ];
     }
 
@@ -45,11 +45,11 @@ class CreateTokenSubscriber implements EventSubscriberInterface
      */
     public function onRecoveryRequest(PasswordRecoveryRequestEvent $event): void
     {
-        $token = $this->generateToken($event->getUser());
+        $token = $this->generateToken($event->user);
 
-        $event->getPasswordReset()->setToken($token);
+        $event->passwordReset->setToken($token);
 
-        $this->em->persist($event->getPasswordReset());
+        $this->em->persist($event->passwordReset);
         $this->em->flush();
     }
 

@@ -18,12 +18,12 @@ class PasswordRecoveryRequestEvent extends Event
     /**
      * @var User
      */
-    private User $user;
+    public readonly User $user;
 
     /**
      * @var PasswordReset
      */
-    private PasswordReset $passwordReset;
+    public readonly PasswordReset $passwordReset;
 
     /**
      * @param User          $user
@@ -33,21 +33,5 @@ class PasswordRecoveryRequestEvent extends Event
     {
         $this->user = $user;
         $this->passwordReset = $passwordReset;
-    }
-
-    /**
-     * @return User
-     */
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    /**
-     * @return PasswordReset
-     */
-    public function getPasswordReset(): PasswordReset
-    {
-        return $this->passwordReset;
     }
 }

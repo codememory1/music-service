@@ -6,7 +6,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Enum\EventNameDTOEnum;
 use App\Enum\RoleEnum;
-use App\Enum\StatusEnum;
+use App\Enum\UserStatusEnum;
 use App\Repository\RoleRepository;
 use App\Rest\DTO\AbstractDTO;
 use App\Service\HashingService;
@@ -24,22 +24,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RegistrationDTO extends AbstractDTO
 {
     use PasswordTrait;
-
     use PasswordConfirmTrait;
 
     /**
      * @var null|string
      */
+    #[Assert\NotBlank(message: 'common@emailIsRequired')]
     #[Assert\Email(message: 'common@invalidEmail')]
     #[Assert\Length(max: 255, maxMessage: 'common@emailMaxLength')]
     public ?string $email = null;
-
-    /**
-     * @var null|string
-     */
-    #[Assert\NotBlank(message: 'user@usernameIsRequired')]
-    #[Assert\Length(max: 250, maxMessage: 'user@usernameMaxLength')]
-    public ?string $username = null;
 
     /**
      * @inheritDoc
@@ -56,21 +49,14 @@ class RegistrationDTO extends AbstractDTO
         $this->excludeRequestKeyForBuildEntity('passwordConfirm');
 
         $this
-            ->addEventListener(EventNameDTOEnum::AFTER_SETTER, function(): void {
-                $this->username = explode('@', $this->email)[0] ?? null;
-            })
             ->addEventListener(EventNameDTOEnum::AFTER_BUILD_ENTITY, function(User $userEntity): void {
                 /** @var RoleRepository $roleRepository */
                 $roleRepository = $this->em->getRepository(Role::class);
 
                 $userEntity
                     ->setPassword((new HashingService())->encode($this->password))
-                    ->setStatus(StatusEnum::NOT_ACTIVE->value)
+                    ->setStatus(UserStatusEnum::NOT_ACTIVE)
                     ->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->value]));
-
-                if (!empty($this->email)) {
-                    $userEntity->setUsername($this->username);
-                }
             });
     }
 }

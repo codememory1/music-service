@@ -4,7 +4,7 @@ namespace App\EventSubscriber\UserRegistration;
 
 use App\Entity\User;
 use App\Entity\UserActivationToken;
-use App\Enum\EventsEnum;
+use App\Enum\EventEnum;
 use App\Event\UserRegistrationEvent;
 use App\Repository\UserActivationTokenRepository;
 use App\Service\JwtTokenGenerator;
@@ -39,7 +39,7 @@ class CreateActivationTokenSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            EventsEnum::USER_REGISTRATION->value => 'onUserRegistration'
+            EventEnum::USER_REGISTRATION->value => 'onUserRegistration'
         ];
     }
 
@@ -52,17 +52,17 @@ class CreateActivationTokenSubscriber implements EventSubscriberInterface
     {
         /** @var UserActivationTokenRepository $userActivationTokenRepository */
         $userActivationTokenRepository = $this->em->getRepository(UserActivationToken::class);
-        $finedToken = $userActivationTokenRepository->findOneBy(['user' => $event->getUser()]);
+        $finedToken = $userActivationTokenRepository->findOneBy(['user' => $event->user]);
 
         if (null !== $finedToken) {
-            $finedToken->setToken($this->generateToken($event->getUser()));
+            $finedToken->setToken($this->generateToken($event->user));
         } else {
             $userActivationToken = new UserActivationToken();
 
-            $generatedToken = $this->generateToken($event->getUser());
+            $generatedToken = $this->generateToken($event->user);
 
             $userActivationToken
-                ->setUser($event->getUser())
+                ->setUser($event->user)
                 ->setToken($generatedToken);
 
             $this->em->persist($userActivationToken);

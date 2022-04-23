@@ -71,6 +71,7 @@ class TranslationKeyFixtures extends Fixture
         'common@refreshTokenIsRequired',
         'common@invalidRefreshToken',
         'common@successUpdateAccessToken',
+        'common@emailIsRequired',
 
         'lang@codeExist',
         'lang@langNotExist',

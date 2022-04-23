@@ -1,19 +1,32 @@
 <?php
 
-namespace App\Security\ConfirmationRegistration;
+namespace App\Service\UserActivationToken;
 
 use App\Entity\UserActivationToken;
-use App\Security\AbstractSecurity;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class DeleterToken.
  *
- * @package App\Security\ConfirmationRegistration
+ * @package App\Service\UserActivationToken
  *
  * @author  Codememory
  */
-class DeleterToken extends AbstractSecurity
+class DeleterToken
 {
+    /**
+     * @var EntityManagerInterface 
+     */
+    private EntityManagerInterface $em;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+    }
+
     /**
      * @param UserActivationToken $userActivationToken
      *

@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\PasswordReset;
 use App\Entity\User;
 use App\Entity\UserActivationToken;
+use App\Entity\UserSession;
 use App\Rest\Translator;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -96,6 +97,32 @@ class MailNotificationService
             ->html($this->render('password-recovery-request', [
                 'user' => $user,
                 'token' => $passwordResetEntity->getToken()
+            ]));
+
+        $this->mailer->send($email);
+    }
+
+    /**
+     * @param User        $user
+     * @param UserSession $userSession
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws TransportExceptionInterface
+     *
+     * @return void
+     */
+    public function authFromUnknownDevice(User $user, UserSession $userSession): void
+    {
+        $email = new Email();
+        $email
+            ->from('kostynd1@gmail.com')
+            ->to($user->getEmail())
+            ->subject('Вход с незнакомого устройства')
+            ->html($this->render('auth-from-unknown-device', [
+                'user' => $user,
+                'session' => $userSession
             ]));
 
         $this->mailer->send($email);

@@ -1,0 +1,25 @@
+services:
+    App\EventSubscriber\UserRegistration\CreateActivationTokenSubscriber:
+        tags:
+            - { name: kernel.event_subscriber, event: user.registration }
+    App\EventSubscriber\UserRegistration\SendConfirmationSubscriber:
+        tags:
+            - { name: kernel.event_subscriber, event: user.registration }
+    App\EventSubscriber\UserRegistration\CreateRegisterSessionSubscriber:
+        tags:
+            - { name: kernel.event_subscriber, event: user.registration }
+
+    App\EventSubscriber\PasswordRecoveryRequest\CreateTokenSubscriber:
+        tags:
+            - { name: kernel.event_subscriber, event: user.password.recovery-request }
+    App\EventSubscriber\PasswordRecoveryRequest\SendToMailSubscriber:
+        tags:
+            - { name: kernel.event_subscriber, event: user.password.recovery-request }
+
+    App\EventSubscriber\UserPasswordChange\SendMailNotificationSubscriber:
+        tags:
+            - { name: kernel.event_subscriber, event: user.password.change }
+
+    App\EventSubscriber\UserActivationAccount\DeleteActivationTokenSubscriber:
+        tags:
+            - {name: kernel.event_subscriber, event: user.account.activation}

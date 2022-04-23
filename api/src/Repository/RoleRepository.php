@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Role;
+use App\Enum\RoleEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -26,5 +27,15 @@ class RoleRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Role::class);
+    }
+
+    /**
+     * @param RoleEnum $roleEnum
+     *
+     * @return null|Role
+     */
+    public function findByKey(RoleEnum $roleEnum): ?Role
+    {
+        return $this->findOneBy(['key' => $roleEnum->value]);
     }
 }

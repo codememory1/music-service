@@ -8,7 +8,6 @@ use App\Interfaces\UserIdentificationInterface;
 use App\Repository\UserRepository;
 use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
-use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * Class Identification.
@@ -22,8 +21,6 @@ class Identification extends AbstractSecurity
     /**
      * @param UserIdentificationInterface $userIdentification
      *
-     * @throws NonUniqueResultException
-     *
      * @return Response|User
      */
     public function identify(UserIdentificationInterface $userIdentification): Response|User
@@ -32,7 +29,7 @@ class Identification extends AbstractSecurity
         $userRepository = $this->em->getRepository(User::class);
 
         // Checking the existence of a user by email or username
-        if (null === $finedUser = $userRepository->findByLogin($userIdentification->getLogin())) {
+        if (null === $finedUser = $userRepository->findByEmail($userIdentification->getLogin())) {
             return $this->responseCollection->notExist('user@failedToIdentityUser')->getResponse();
         }
 

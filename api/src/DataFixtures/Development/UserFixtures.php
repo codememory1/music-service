@@ -6,7 +6,7 @@ use App\DataFixtures\RoleFixtures;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Enum\RoleEnum;
-use App\Enum\StatusEnum;
+use App\Enum\UserStatusEnum;
 use App\Service\HashingService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -64,9 +64,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
             $userEntity
                 ->setEmail($user['email'])
-                ->setUsername(explode('@', $user['email'])[0])
                 ->setPassword((new HashingService())->encode($user['password']))
-                ->setStatus(StatusEnum::ACTIVE->value)
+                ->setStatus(UserStatusEnum::ACTIVE)
                 ->setRole($role);
 
             $manager->persist($userEntity);

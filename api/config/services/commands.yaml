@@ -1,0 +1,4 @@
+services:
+    App\Command\GenerateJwtKeysCommand:
+        tags:
+            - { name: console.command }

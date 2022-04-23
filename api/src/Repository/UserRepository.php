@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Enum\UserStatusEnum;
 use App\Service\JwtTokenGenerator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,20 +39,26 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $login
-     *
-     * @throws NonUniqueResultException
+     * @param string $email
      *
      * @return null|User
      */
-    public function findByLogin(string $login): ?User
+    public function findByEmail(string $email): ?User
     {
-        return $this->createQueryBuilder('u')
-            ->orWhere('u.email = :login')
-            ->orWhere('u.username = :login')
-            ->setParameter('login', $login)
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $this->findOneBy(['email' => $email]);
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return null|User
+     */
+    public function findNotActiveByEmail(string $email): ?User
+    {
+        return $this->findOneBy([
+            'email' => $email,
+            'status' => UserStatusEnum::NOT_ACTIVE->value
+        ]);
     }
 
     /**

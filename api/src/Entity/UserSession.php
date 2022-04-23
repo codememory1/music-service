@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\UserSessionTypeEnum;
 use App\Interfaces\EntityInterface;
 use App\Repository\UserSessionRepository;
 use App\Traits\Entity\CreatedAtTrait;
@@ -35,7 +36,15 @@ class UserSession implements EntityInterface
     /**
      * @var null|string
      */
-    #[ORM\Column(type: Types::TEXT, options: [
+    #[ORM\Column(type: Types::STRING, length: 50, options: [
+        'comment' => 'Token type from UserSessionTypeEnum'
+    ])]
+    private ?string $type = null;
+
+    /**
+     * @var null|string
+     */
+    #[ORM\Column(type: Types::TEXT, nullable: true, options: [
         'comment' => 'Refresh token to update the access token'
     ])]
     private ?string $refreshToken = null;
@@ -137,17 +146,37 @@ class UserSession implements EntityInterface
     /**
      * @return null|string
      */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param UserSessionTypeEnum $type
+     *
+     * @return $this
+     */
+    public function setType(UserSessionTypeEnum $type): self
+    {
+        $this->type = $type->value;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
     public function getRefreshToken(): ?string
     {
         return $this->refreshToken;
     }
 
     /**
-     * @param string $refreshToken
+     * @param null|string $refreshToken
      *
      * @return $this
      */
-    public function setRefreshToken(string $refreshToken): self
+    public function setRefreshToken(?string $refreshToken): self
     {
         $this->refreshToken = $refreshToken;
 
