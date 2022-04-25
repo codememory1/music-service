@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class DeleterToken
 {
     /**
-     * @var EntityManagerInterface 
+     * @var EntityManagerInterface
      */
     private EntityManagerInterface $em;
 

@@ -6,14 +6,13 @@ use App\Entity\UserSession;
 use App\Enum\EventEnum;
 use App\Enum\UserSessionTypeEnum;
 use App\Event\CreateUserAccountEvent;
-use App\Event\UserRegistrationEvent;
 use App\Rest\Http\Request;
 use App\Service\UserSession\CreatorUserSessionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class CreateRegisterSessionSubscriber
+ * Class CreateRegisterSessionSubscriber.
  *
  * @package App\EventSubscriber\CreateUserAccount
  *
@@ -22,10 +21,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CreateRegisterSessionSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var EntityManagerInterface 
+     * @var EntityManagerInterface
      */
     private EntityManagerInterface $em;
-    
+
     /**
      * @var CreatorUserSessionService
      */
@@ -67,7 +66,7 @@ class CreateRegisterSessionSubscriber implements EventSubscriberInterface
     {
         $userSessionRepository = $this->em->getRepository(UserSession::class);
         $finedUserSession = $userSessionRepository->findOneBy([
-            'user' => $event->user, 
+            'user' => $event->user,
             'type' => UserSessionTypeEnum::REGISTRATION_SESSION->value
         ]);
 
@@ -75,7 +74,7 @@ class CreateRegisterSessionSubscriber implements EventSubscriberInterface
             $this->creatorUserSession->createRegistrationSession(
                 $event->user,
                 $this->request->request->getClientIp()
-            );   
+            );
         }
     }
 }

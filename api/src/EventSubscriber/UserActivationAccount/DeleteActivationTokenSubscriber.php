@@ -8,7 +8,7 @@ use App\Service\UserActivationToken\DeleterToken;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class DeleteActivationTokenSubscriber
+ * Class DeleteActivationTokenSubscriber.
  *
  * @package App\EventSubscriber\UserActivationAccount
  *

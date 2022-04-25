@@ -16,8 +16,8 @@ use App\Rest\Validator\Validator;
 use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
 use App\Security\ConfirmationRegistration\UserActivation;
-use App\Security\PasswordReset\PasswordChanger\Identification as PasswordResetIdentification;
 use App\Security\PasswordReset\PasswordChanger\Changer;
+use App\Security\PasswordReset\PasswordChanger\Identification as PasswordResetIdentification;
 use App\Security\PasswordReset\RecoveryRequest;
 use App\Security\Registration\Register;
 use App\Security\User\Identification as UserIdentification;
@@ -35,7 +35,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SecurityController extends ApiController
 {
-
     /**
      * @param RegistrationDTO          $registrationDTO
      * @param EventDispatcherInterface $eventDispatcher
@@ -63,7 +62,8 @@ class SecurityController extends ApiController
      * @return JsonResponse
      */
     #[Route('/activate-account/{token<.+>}', methods: 'GET')]
-    public function activateAccount(UserActivation $userActivation, EventDispatcherInterface $eventDispatcher, string $token): JsonResponse {
+    public function activateAccount(UserActivation $userActivation, EventDispatcherInterface $eventDispatcher, string $token): JsonResponse
+    {
         $tokenActivation = $userActivation->handle($eventDispatcher, $token);
 
         if ($tokenActivation instanceof Response) {

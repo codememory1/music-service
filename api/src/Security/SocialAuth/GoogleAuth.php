@@ -43,13 +43,14 @@ class GoogleAuth extends AbstractSocialAuth
 
     /**
      * @inheritDoc
+     *
      * @throws Exception
      */
     public function make(EventDispatcherInterface $eventDispatcher, string $code): Response|AuthorizationTokenInterface
     {
         try {
             $this->client->fetchAuthToken($code);
-            
+
             return $this->handler($this->client->getUserData(), $eventDispatcher);
         } catch (Exception) {
             return $this->responseCollection->invalid('socialAuth@authenticationRrror')->getResponse();

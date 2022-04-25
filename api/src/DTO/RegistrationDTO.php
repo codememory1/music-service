@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RegistrationDTO extends AbstractDTO
 {
     use PasswordTrait;
+
     use PasswordConfirmTrait;
 
     /**

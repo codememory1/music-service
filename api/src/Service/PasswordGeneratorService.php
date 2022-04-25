@@ -5,7 +5,7 @@ namespace App\Service;
 use Exception;
 
 /**
- * Class PasswordGeneratorService
+ * Class PasswordGeneratorService.
  *
  * @package App\Service
  *
@@ -38,7 +38,7 @@ class PasswordGeneratorService
         $countCharacters = count(self::$characters) - 1;
         $password = null;
 
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $password .= static::$characters[random_int(0, $countCharacters)];
         }
 

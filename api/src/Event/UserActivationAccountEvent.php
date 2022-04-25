@@ -6,7 +6,7 @@ use App\Entity\UserActivationToken;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class UserActivationAccountEvent
+ * Class UserActivationAccountEvent.
  *
  * @package App\Event
  *

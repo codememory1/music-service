@@ -34,7 +34,7 @@ abstract class AbstractSocialAuth extends AbstractSecurity
     protected ?Authorization $authorization = null;
 
     /**
-     * @var CreatorAccount|null
+     * @var null|CreatorAccount
      */
     protected ?CreatorAccount $creatorAccount = null;
 
@@ -42,29 +42,17 @@ abstract class AbstractSocialAuth extends AbstractSecurity
      * @param EventDispatcherInterface $eventDispatcher
      * @param string                   $code
      *
-     * @return Response|AuthorizationTokenInterface
+     * @return AuthorizationTokenInterface|Response
      */
     abstract public function make(EventDispatcherInterface $eventDispatcher, string $code): Response|AuthorizationTokenInterface;
-
-    /**
-     * @param CreatorAccount $creatorAccount
-     *
-     * @return $this
-     */
-    #[Required]
-    public function setCreatorAccount(CreatorAccount $creatorAccount): self
-    {
-        $this->creatorAccount = $creatorAccount;
-
-        return $this;
-    }
 
     /**
      * @param SocialNetworkUserInfoInterface $socialNetworkUserInfo
      * @param EventDispatcherInterface       $eventDispatcher
      *
-     * @return Response|AuthorizationTokenInterface
      * @throws Exception
+     *
+     * @return AuthorizationTokenInterface|Response
      */
     protected function handler(SocialNetworkUserInfoInterface $socialNetworkUserInfo, EventDispatcherInterface $eventDispatcher): Response|AuthorizationTokenInterface
     {
@@ -79,6 +67,19 @@ abstract class AbstractSocialAuth extends AbstractSecurity
         }
 
         return $this->authorize($user);
+    }
+
+    /**
+     * @param CreatorAccount $creatorAccount
+     *
+     * @return $this
+     */
+    #[Required]
+    public function setCreatorAccount(CreatorAccount $creatorAccount): self
+    {
+        $this->creatorAccount = $creatorAccount;
+
+        return $this;
     }
 
     /**
@@ -108,8 +109,9 @@ abstract class AbstractSocialAuth extends AbstractSecurity
      * @param SocialNetworkUserInfoInterface $socialNetworkUserInfo
      * @param EventDispatcherInterface       $eventDispatcher
      *
-     * @return Response|AuthorizationTokenInterface
      * @throws Exception
+     *
+     * @return AuthorizationTokenInterface|Response
      */
     private function register(SocialNetworkUserInfoInterface $socialNetworkUserInfo, EventDispatcherInterface $eventDispatcher): Response|AuthorizationTokenInterface
     {
@@ -126,8 +128,9 @@ abstract class AbstractSocialAuth extends AbstractSecurity
      * @param SocialNetworkUserInfoInterface $socialNetworkUserInfo
      * @param EventDispatcherInterface       $eventDispatcher
      *
-     * @return Response|User
      * @throws Exception
+     *
+     * @return Response|User
      */
     private function createUserAccount(SocialNetworkUserInfoInterface $socialNetworkUserInfo, EventDispatcherInterface $eventDispatcher): Response|User
     {

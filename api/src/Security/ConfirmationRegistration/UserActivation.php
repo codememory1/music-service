@@ -100,14 +100,14 @@ class UserActivation extends AbstractSecurity
             new UserActivationAccountEvent($userActivationToken),
             EventEnum::USER_ACTIVATION_ACCOUNT->value
         );
-        
+
         return $userActivationToken;
     }
 
     /**
      * @param string $token
      *
-     * @return UserActivationToken|bool
+     * @return bool|UserActivationToken
      */
     public function existToken(string $token): UserActivationToken|bool
     {

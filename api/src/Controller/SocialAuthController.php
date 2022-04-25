@@ -42,8 +42,9 @@ class SocialAuthController extends ApiController
      * @param Authorization            $authorization
      * @param EventDispatcherInterface $eventDispatcher
      *
-     * @return JsonResponse
      * @throws Exception
+     *
+     * @return JsonResponse
      */
     #[Route('/google/auth', methods: 'POST')]
     public function googleAuth(SocialAuthDTO $socialAuthDTO, GoogleAuth $googleAuth, Authorization $authorization, EventDispatcherInterface $eventDispatcher): JsonResponse
@@ -53,7 +54,7 @@ class SocialAuthController extends ApiController
         if ($authorizationToken instanceof Response) {
             return $authorizationToken->make();
         }
-        
+
         return $authorization->successAuthResponse([
             'access_token' => $authorizationToken->getAccessToken(),
             'refresh_token' => $authorizationToken->getRefreshToken()
