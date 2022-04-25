@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use App\DTO\SocialAuthDTO;
 use App\Rest\ApiController;
+use App\Rest\Http\Response;
 use App\Security\Auth\Authorization;
 use App\Security\SocialAuth\GoogleAuth;
 use App\Service\Google\GoogleOAuthClient;
+use Exception;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -34,17 +37,23 @@ class SocialAuthController extends ApiController
     }
 
     /**
-     * @param SocialAuthDTO $socialAuthDTO
-     * @param GoogleAuth    $googleAuth
-     * @param Authorization $authorization
+     * @param SocialAuthDTO            $socialAuthDTO
+     * @param GoogleAuth               $googleAuth
+     * @param Authorization            $authorization
+     * @param EventDispatcherInterface $eventDispatcher
      *
      * @return JsonResponse
+     * @throws Exception
      */
     #[Route('/google/auth', methods: 'POST')]
-    public function googleAuth(SocialAuthDTO $socialAuthDTO, GoogleAuth $googleAuth, Authorization $authorization): JsonResponse
+    public function googleAuth(SocialAuthDTO $socialAuthDTO, GoogleAuth $googleAuth, Authorization $authorization, EventDispatcherInterface $eventDispatcher): JsonResponse
     {
-        $authorizationToken = $googleAuth->make($socialAuthDTO->code);
+        $authorizationToken = $googleAuth->make($eventDispatcher, $socialAuthDTO->code);
 
+        if ($authorizationToken instanceof Response) {
+            return $authorizationToken->make();
+        }
+        
         return $authorization->successAuthResponse([
             'access_token' => $authorizationToken->getAccessToken(),
             'refresh_token' => $authorizationToken->getRefreshToken()

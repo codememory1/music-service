@@ -1,10 +1,11 @@
 <?php
 
-namespace App\EventSubscriber\UserRegistration;
+namespace App\EventSubscriber\CreateUserAccount;
 
 use App\Entity\UserSession;
 use App\Enum\EventEnum;
 use App\Enum\UserSessionTypeEnum;
+use App\Event\CreateUserAccountEvent;
 use App\Event\UserRegistrationEvent;
 use App\Rest\Http\Request;
 use App\Service\UserSession\CreatorUserSessionService;
@@ -14,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Class CreateRegisterSessionSubscriber
  *
- * @package App\EventSubscriber\UserRegistration
+ * @package App\EventSubscriber\CreateUserAccount
  *
  * @author  Codememory
  */
@@ -53,23 +54,23 @@ class CreateRegisterSessionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            EventEnum::USER_REGISTRATION->value => 'onUserRegistration'
+            EventEnum::USER_CREATE_ACCOUNT->value => 'onUserRegistration'
         ];
     }
 
     /**
-     * @param UserRegistrationEvent $event
+     * @param CreateUserAccountEvent $event
      *
      * @return void
      */
-    public function onUserRegistration(UserRegistrationEvent $event): void
+    public function onUserRegistration(CreateUserAccountEvent $event): void
     {
         $userSessionRepository = $this->em->getRepository(UserSession::class);
         $finedUserSession = $userSessionRepository->findOneBy([
             'user' => $event->user, 
             'type' => UserSessionTypeEnum::REGISTRATION_SESSION->value
         ]);
-        
+
         if (null === $finedUserSession) {
             $this->creatorUserSession->createRegistrationSession(
                 $event->user,

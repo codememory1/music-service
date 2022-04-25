@@ -5,9 +5,6 @@ services:
     App\EventSubscriber\UserRegistration\SendConfirmationSubscriber:
         tags:
             - { name: kernel.event_subscriber, event: user.registration }
-    App\EventSubscriber\UserRegistration\CreateRegisterSessionSubscriber:
-        tags:
-            - { name: kernel.event_subscriber, event: user.registration }
 
     App\EventSubscriber\PasswordRecoveryRequest\CreateTokenSubscriber:
         tags:
@@ -23,3 +20,7 @@ services:
     App\EventSubscriber\UserActivationAccount\DeleteActivationTokenSubscriber:
         tags:
             - {name: kernel.event_subscriber, event: user.account.activation}
+
+    App\EventSubscriber\CreateUserAccount\CreateRegisterSessionSubscriber:
+        tags:
+            - { name: kernel.event_subscriber, event: user.account.create }

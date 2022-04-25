@@ -2,16 +2,16 @@
 
 namespace App\Security\SocialAuth;
 
-use App\Entity\Role;
 use App\Entity\User;
-use App\Enum\RoleEnum;
-use App\Enum\UserStatusEnum;
 use App\Interfaces\AuthorizationTokenInterface;
 use App\Interfaces\SocialNetworkUserInfoInterface;
-use App\Repository\UserRepository;
+use App\Rest\Http\Response;
 use App\Security\AbstractSecurity;
 use App\Security\Auth\Authorization;
-use App\Utils\EmailUtil;
+use App\Security\Registration\CreatorAccount;
+use App\Service\PasswordGeneratorService;
+use Exception;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -34,20 +34,40 @@ abstract class AbstractSocialAuth extends AbstractSecurity
     protected ?Authorization $authorization = null;
 
     /**
-     * @param string $code
-     *
-     * @return AuthorizationTokenInterface
+     * @var CreatorAccount|null
      */
-    abstract public function make(string $code): AuthorizationTokenInterface;
+    protected ?CreatorAccount $creatorAccount = null;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $code
+     *
+     * @return Response|AuthorizationTokenInterface
+     */
+    abstract public function make(EventDispatcherInterface $eventDispatcher, string $code): Response|AuthorizationTokenInterface;
+
+    /**
+     * @param CreatorAccount $creatorAccount
+     *
+     * @return $this
+     */
+    #[Required]
+    public function setCreatorAccount(CreatorAccount $creatorAccount): self
+    {
+        $this->creatorAccount = $creatorAccount;
+
+        return $this;
+    }
 
     /**
      * @param SocialNetworkUserInfoInterface $socialNetworkUserInfo
+     * @param EventDispatcherInterface       $eventDispatcher
      *
-     * @return AuthorizationTokenInterface
+     * @return Response|AuthorizationTokenInterface
+     * @throws Exception
      */
-    protected function handler(SocialNetworkUserInfoInterface $socialNetworkUserInfo): AuthorizationTokenInterface
+    protected function handler(SocialNetworkUserInfoInterface $socialNetworkUserInfo, EventDispatcherInterface $eventDispatcher): Response|AuthorizationTokenInterface
     {
-        /** @var UserRepository $userRepository */
         $userRepository = $this->em->getRepository(User::class);
         $user = $userRepository->findOneBy([
             'typeAuthSocialNetwork' => $this->typeAuthSocialNetwork,
@@ -55,7 +75,7 @@ abstract class AbstractSocialAuth extends AbstractSecurity
         ]);
 
         if (null === $user) {
-            $user = $this->register($socialNetworkUserInfo);
+            return $this->register($socialNetworkUserInfo, $eventDispatcher);
         }
 
         return $this->authorize($user);
@@ -86,27 +106,38 @@ abstract class AbstractSocialAuth extends AbstractSecurity
 
     /**
      * @param SocialNetworkUserInfoInterface $socialNetworkUserInfo
+     * @param EventDispatcherInterface       $eventDispatcher
      *
-     * @return User
+     * @return Response|AuthorizationTokenInterface
+     * @throws Exception
      */
-    private function register(SocialNetworkUserInfoInterface $socialNetworkUserInfo): User
+    private function register(SocialNetworkUserInfoInterface $socialNetworkUserInfo, EventDispatcherInterface $eventDispatcher): Response|AuthorizationTokenInterface
     {
-        $emailToUsernameUtil = new EmailUtil($socialNetworkUserInfo->getEmail());
-        $roleRepository = $this->em->getRepository(Role::class);
-        $user = new User();
+        $createdUserAccount = $this->createUserAccount($socialNetworkUserInfo, $eventDispatcher);
 
-        $user
-            ->setPassword('err')
+        if ($createdUserAccount instanceof Response) {
+            return $createdUserAccount;
+        }
+
+        return $this->authorize($createdUserAccount);
+    }
+
+    /**
+     * @param SocialNetworkUserInfoInterface $socialNetworkUserInfo
+     * @param EventDispatcherInterface       $eventDispatcher
+     *
+     * @return Response|User
+     * @throws Exception
+     */
+    private function createUserAccount(SocialNetworkUserInfoInterface $socialNetworkUserInfo, EventDispatcherInterface $eventDispatcher): Response|User
+    {
+        $userEntity = new User();
+        $userEntity
+            ->setPassword(PasswordGeneratorService::generate())
             ->setTypeAuthSocialNetwork($this->typeAuthSocialNetwork)
             ->setSocialNetworkAuthId($socialNetworkUserInfo->getUniqueId())
-            ->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->value]))
-            ->setEmail($socialNetworkUserInfo->getEmail())
-            ->setUsername($emailToUsernameUtil->getUsername())
-            ->setStatus(UserStatusEnum::ACTIVE);
+            ->setEmail($socialNetworkUserInfo->getEmail());
 
-        $this->em->persist($user);
-        $this->em->flush();
-
-        return $user;
+        return $this->creatorAccount->create($userEntity, $eventDispatcher);
     }
 }

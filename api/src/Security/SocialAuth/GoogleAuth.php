@@ -3,7 +3,10 @@
 namespace App\Security\SocialAuth;
 
 use App\Interfaces\AuthorizationTokenInterface;
+use App\Rest\Http\Response;
 use App\Service\Google\GoogleOAuthClient;
+use Exception;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -40,11 +43,16 @@ class GoogleAuth extends AbstractSocialAuth
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
-    public function make(string $code): AuthorizationTokenInterface
+    public function make(EventDispatcherInterface $eventDispatcher, string $code): Response|AuthorizationTokenInterface
     {
-        $this->client->fetchAuthToken($code);
-
-        return $this->handler($this->client->getUserData());
+        try {
+            $this->client->fetchAuthToken($code);
+            
+            return $this->handler($this->client->getUserData(), $eventDispatcher);
+        } catch (Exception) {
+            return $this->responseCollection->invalid('socialAuth@authenticationRrror')->getResponse();
+        }
     }
 }
