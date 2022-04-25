@@ -6,4 +6,4 @@ bash fix-php.sh
 
 cd ../
 
-git push $@
+git add .
