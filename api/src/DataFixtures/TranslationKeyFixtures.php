@@ -187,6 +187,8 @@ class TranslationKeyFixtures extends Fixture
         'artist@successSubscribe',
         'artist@alreadySubscribed',
         'artist@notExist',
+
+        'socialAuth@authenticationRrror'
     ];
 
     /**

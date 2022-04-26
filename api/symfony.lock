@@ -713,5 +713,11 @@
     },
     "webmozart/assert": {
         "version": "1.10.0"
+    },
+    "yandex-market/yandex-market-php-common": {
+        "version": "v1.2.2"
+    },
+    "yandex-market/yandex-market-php-oauth": {
+        "version": "1.0.2"
     }
 }

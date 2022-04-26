@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b2709ae5e5d878511b8e950010769d6",
+    "content-hash": "61ade804d21b3dfb055f3ba1be441b53",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -7816,6 +7816,107 @@
                 }
             ],
             "time": "2022-04-06T06:47:41+00:00"
+        },
+        {
+            "name": "yandex-market/yandex-market-php-common",
+            "version": "v1.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yandex-market/yandex-market-php-common.git",
+                "reference": "7c5f6f0cdf3a080a7e71d96a0fce8e8d582d274d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yandex-market/yandex-market-php-common/zipball/7c5f6f0cdf3a080a7e71d96a0fce8e8d582d274d",
+                "reference": "7c5f6f0cdf3a080a7e71d96a0fce8e8d582d274d",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.3 || ^7.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "~5.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Yandex": "src/",
+                    "Yandex\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kirill Litvinov",
+                    "email": "Kirill.Litvinov@nixsolutions.com"
+                }
+            ],
+            "description": "Yandex PHP Common is a library that provides base SDK functionality.",
+            "keywords": [
+                "sdk",
+                "yandex"
+            ],
+            "support": {
+                "issues": "https://github.com/yandex-market/yandex-market-php-common/issues",
+                "source": "https://github.com/yandex-market/yandex-market-php-common/tree/v1.2.2"
+            },
+            "time": "2022-01-18T13:42:40+00:00"
+        },
+        {
+            "name": "yandex-market/yandex-market-php-oauth",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yandex-market/yandex-market-php-oauth.git",
+                "reference": "40c94ea106da2a6604284dad88e70238df8954b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yandex-market/yandex-market-php-oauth/zipball/40c94ea106da2a6604284dad88e70238df8954b6",
+                "reference": "40c94ea106da2a6604284dad88e70238df8954b6",
+                "shasum": ""
+            },
+            "require": {
+                "yandex-market/yandex-market-php-common": "1.*.*"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.0",
+                "phpunit/phpunit": "~5.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Yandex": "src/",
+                    "Yandex\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kirill Litvinov",
+                    "email": "ym-sdk@yandex-team.ru"
+                }
+            ],
+            "description": "Yandex PHP OAuth library.",
+            "keywords": [
+                "oauth",
+                "sdk",
+                "yandex"
+            ],
+            "support": {
+                "issues": "https://github.com/yandex-market/yandex-market-php-oauth/issues",
+                "source": "https://github.com/yandex-market/yandex-market-php-oauth/tree/master"
+            },
+            "time": "2019-11-15T13:10:47+00:00"
         }
     ],
     "packages-dev": [

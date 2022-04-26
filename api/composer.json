@@ -38,7 +38,8 @@
         "symfony/sendgrid-mailer": "6.0.*",
         "symfony/twig-bundle": "6.0.*",
         "symfony/validator": "6.0.*",
-        "symfony/yaml": "6.0.*"
+        "symfony/yaml": "6.0.*",
+        "yandex-market/yandex-market-php-oauth": "^1.0"
     },
     "config": {
         "allow-plugins": {

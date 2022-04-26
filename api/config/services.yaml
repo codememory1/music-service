@@ -51,6 +51,13 @@ services:
                 - !php/const App\Service\Google\GoogleOAuthClient::USERINFO_PROFILE
                 - !php/const App\Service\Google\GoogleOAuthClient::USERINFO_BIRTHDAY
 
+    App\Service\Yandex\YandexOAuthClient:
+        arguments:
+            $clientId: '%env(YANDEX_CLIENT_ID)%'
+            $clientSecret: '%env(YANDEX_CLIENT_SECRET)%'
+            $redirectUrl: '%env(YANDEX_CLIENT_REDIRECT_URL)%'
+            $avatarSize: '%env(YANDEX_CLIENT_AVATAR_SIZE)%'
+
     App\Security\:
         resource: '../src/Security/'
         exclude:

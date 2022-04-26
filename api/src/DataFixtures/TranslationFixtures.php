@@ -811,6 +811,13 @@ class TranslationFixtures extends Fixture implements DependentFixtureInterface
             'lang' => 'ru',
             'key' => 'artist@notExist',
             'translation' => 'Артиста не найден'
+        ],
+
+        // RU - socialAuth
+        [
+            'lang' => 'ru',
+            'key' => 'socialAuth@authenticationRrror',
+            'translation' => 'Произошла ошибка аутентификации'
         ]
     ];
 
