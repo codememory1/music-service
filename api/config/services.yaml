@@ -1,19 +1,10 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     jwt.secrets: "config/secrets/"
 
 services:
-    # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
-    # makes classes in src/ available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
+        autowire: true
+        autoconfigure: true
     App\:
         autowire: true
         resource: '../src/'
@@ -38,71 +29,3 @@ services:
                 endpoint: "s3:9000"
                 use_path_style_endpoint: true
                 disable_host_prefix_injection: true
-
-    Liip\ImagineBundle\Imagine\Cache\Resolver\AwsS3Resolver:
-        arguments:
-            - '@acme.amazon_s3'
-            - '%env(AWS_S3_BUCKET)%'
-        tags:
-            - {name: liip_imagine.cache.resolver, resolver: aws_s3_resolver}
-
-    App\Rest\:
-        resource: '../src/Rest/*'
-        exclude:
-            - '../src/Rest/Http/Response.php'
-            - '../src/Rest/Abstract*.php'
-            - '../src/Rest/*/Abstract*.php'
-            - '../src/Rest/*/Abstract*.php'
-        public: false
-
-    App\DTO\:
-        resource: '../src/DTO/*DTO.php'
-        public: false
-
-    App\Service\:
-        resource: '../src/Service/'
-        exclude:
-            - '../src/Service/Abstract*.php'
-            - '../src/Service/*/Abstract*.php'
-        public: false
-
-    App\Security\:
-        resource: '../src/Security/'
-        exclude:
-            - '../src/Security/Abstract*.php'
-            - '../src/Security/*/Abstract*.php'
-        public: false
-
-    # Event Subscribers
-    App\EventSubscriber\UserRegistration\SendConfirmationSubscriber:
-        tags:
-            - {name: kernel.event_subscriber, event: user.registration}
-    App\EventSubscriber\UserRegistration\CreateActivationTokenSubscriber:
-        tags:
-            - { name: kernel.event_subscriber, event: user.registration }
-
-    App\EventSubscriber\PasswordRecoveryRequest\CreateTokenSubscriber:
-        tags:
-            - {name: kernel.event_subscriber, event: password.recovery-request}
-    App\EventSubscriber\PasswordRecoveryRequest\SendToMailSubscriber:
-        tags:
-            - { name: kernel.event_subscriber, event: password.recovery-request }
-
-    App\EventSubscriber\UserPasswordChange\SendMailNotificationSubscriber:
-        tags:
-            - { name: kernel.event_subscriber, event: user.password.change }
-
-    # Commands
-    App\Command\GenerateJwtKeysCommand:
-        tags:
-            - {name: console.command}
-
-    # Annotation
-    App\EventListener\AnnotationListener:
-        tags:
-            - {name: kernel.event_listener, event: kernel.controller, method: onKernelController}
-
-    # Resolvers
-    App\Resolver\DTOResolver:
-        tags:
-            - {name: controller.argument_value_resolver, priority: 100}

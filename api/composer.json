@@ -20,6 +20,7 @@
         "ramsey/uuid": "^4.2",
         "sixlive/dotenv-editor": "^2.0",
         "starkbank/ecdsa": "^0.0.5",
+        "symfony/amqp-messenger": "6.0.*",
         "symfony/asset": "6.0.*",
         "symfony/console": "6.0.*",
         "symfony/doctrine-messenger": "6.0.*",
@@ -35,6 +36,7 @@
         "symfony/proxy-manager-bridge": "6.0.*",
         "symfony/runtime": "6.0.*",
         "symfony/sendgrid-mailer": "6.0.*",
+        "symfony/serializer": "6.0.*",
         "symfony/twig-bundle": "6.0.*",
         "symfony/validator": "6.0.*",
         "symfony/yaml": "6.0.*"
