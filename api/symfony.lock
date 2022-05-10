@@ -363,6 +363,9 @@
     "starkbank/ecdsa": {
         "version": "0.0.5"
     },
+    "symfony/amqp-messenger": {
+        "version": "v6.0.7"
+    },
     "symfony/asset": {
         "version": "v6.0.1"
     },
@@ -616,6 +619,9 @@
             "version": "4.4",
             "ref": "b46e4f8f1adb2864f0aa9c0ff57aea3324a07199"
         }
+    },
+    "symfony/serializer": {
+        "version": "v6.0.8"
     },
     "symfony/service-contracts": {
         "version": "v3.0.0"

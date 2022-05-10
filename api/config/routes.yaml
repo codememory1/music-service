@@ -3,11 +3,6 @@ api:
     type: annotation
     prefix: /api/{_locale}
 
-admin_api:
-    resource: ../src/Controller/Admin/*Controller.php
-    type: annotation
-    prefix: /api/{_locale}/admin
-
 kernel:
     resource: ../src/Kernel.php
     type: annotation
