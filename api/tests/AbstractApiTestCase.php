@@ -2,15 +2,11 @@
 
 namespace App\Tests;
 
-use Faker\Factory;
-use Faker\Generator;
-use function is_array;
-use function is_int;
-use function is_string;
 use const JSON_ERROR_NONE;
+use JsonSchema\Validator;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class AbstractApiTestCase.
@@ -21,41 +17,46 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class AbstractApiTestCase extends WebTestCase
 {
-    protected const API_PATH = null;
-    protected const API_RESPONSE_SCHEMA = [
-        'status' => 'string',
-        'status_code' => 'int',
-        'message' => [
-            'type' => 'string',
-            'name' => 'string',
-            'text' => 'string'
-        ],
-        'data' => 'array'
-    ];
+    /**
+     * @var KernelBrowser
+     */
+    private KernelBrowser $client;
 
     /**
-     * @var null|string
+     * @var Validator
      */
-    protected ?string $apiPath = null;
+    private Validator $jsonSchemaValidator;
 
     /**
-     * @var null|Generator
+     * @var array
      */
-    protected ?Generator $faker = null;
+    private array $schemes;
 
     /**
-     * @var null|KernelBrowser
+     * @param null|string $name
+     * @param array       $data
+     * @param string      $dataName
      */
-    protected ?KernelBrowser $client = null;
-
-    /**
-     * @return void
-     */
-    protected function setUp(): void
+    public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
-        $this->faker = Factory::create('en');
+        parent::__construct($name, $data, $dataName);
 
-        parent::setUp();
+        $this->client = static::createClient();
+        $this->jsonSchemaValidator = new Validator();
+
+        $this->schemes['api_response'] = $this->readSchema('api_response.json');
+    }
+
+    /**
+     * @param string $url
+     * @param string $method
+     * @param array  $data
+     *
+     * @return Crawler
+     */
+    protected function createRequest(string $url, string $method, array $data = []): Crawler
+    {
+        return $this->client->request($method, $url, $data);
     }
 
     /**
@@ -63,160 +64,109 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function clearBase(): void
     {
-        shell_exec('bin/console doctrine:schema:drop --env=test --force');
-        shell_exec('bin/console doctrine:schema:create --env=test');
+        shell_exec('bin/console doctrine:fixtures:load --env=test');
     }
 
     /**
-     * @param array  $params
-     * @param string $method
+     * @param null|string $message
      *
      * @return void
      */
-    protected function createRequest(array $params = [], string $method = 'POST'): void
+    protected function assertApiResponse(?string $message = null): void
     {
-        $client = static::createClient();
-        $apiPath = trim($this->apiPath, '/');
-        $uri = sprintf('/api/%s/en/%s', $_SERVER['API_VERSION'], $apiPath);
+        $jsonSchemaValidator = clone $this->jsonSchemaValidator;
+        $response = (object) $this->getApiResponse();
 
-        $client->request($method, $uri, $params);
+        $jsonSchemaValidator->validate($response, $this->getSchema('api_response'));
 
-        $this->client = $client;
+        $this->assertEquals(
+            true,
+            $jsonSchemaValidator->isValid(),
+            $message ?? 'Api response did not match schema config/scheme/api_response.json'
+        );
     }
 
     /**
+     * @param int         $expect
+     * @param null|string $message
+     *
      * @return void
      */
-    protected function assertSuccessApiResponseSchema(): void
+    protected function assertApiStatusCode(int $expect, ?string $message = null): void
     {
-        $status = true;
-        $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
+        $this->assertEquals($expect, $this->getApiResponse()['status_code'], $message ?? '');
+    }
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            $status = false;
-        } else {
-            if (!is_string($jsonResponse['status'] ?? null)) {
-                $status = false;
-            }
+    /**
+     * @param string      $expect
+     * @param null|string $message
+     *
+     * @return void
+     */
+    protected function assertApiType(string $expect, ?string $message = null): void
+    {
+        $this->assertEquals($expect, $this->getApiResponse()['type'], $message ?? '');
+    }
 
-            if ($status && !is_int($jsonResponse['status_code'] ?? null)) {
-                $status = false;
-            }
+    /**
+     * @param array|string $expect
+     * @param null|string  $message
+     *
+     * @return void
+     */
+    protected function assertApiMessage(string|array $expect, ?string $message = null): void
+    {
+        $this->assertEquals($expect, $this->getApiResponse()['message'], $message ?? '');
+    }
 
-            if ($status && (!array_key_exists('message', $jsonResponse) || !is_string($jsonResponse['message']['type'] ?? null))) {
-                $status = false;
-            }
+    /**
+     * @param array       $expect
+     * @param null|string $message
+     *
+     * @return void
+     */
+    protected function assertApiData(array $expect, ?string $message = null): void
+    {
+        $this->assertEquals($expect, $this->getApiResponse()['data'], $message ?? '');
+    }
 
-            if ($status && (!array_key_exists('message', $jsonResponse) || !is_string($jsonResponse['message']['name'] ?? null))) {
-                $status = false;
-            }
+    /**
+     * @return null|array
+     */
+    protected function getApiResponse(): ?array
+    {
+        $response = json_decode($this->client->getResponse()->getContent(), true);
 
-            if ($status && (!array_key_exists('message', $jsonResponse) || !is_string($jsonResponse['message']['text'] ?? null))) {
-                $status = false;
-            }
-
-            if ($status && !is_array($jsonResponse['data'] ?? null)) {
-                $status = false;
-            }
+        if (JSON_ERROR_NONE === json_last_error()) {
+            return $response;
         }
 
-        $message = sprintf(
-            'Expected response scheme api %s, but came %s',
-            json_encode(self::API_RESPONSE_SCHEMA),
-            json_encode($jsonResponse)
-        );
-
-        $this->assertEquals(true, $status, $message);
+        return null;
     }
 
     /**
-     * @param string $expected
-     * @param string $message
+     * @param string $name
      *
-     * @return void
+     * @return null|object
      */
-    protected function assertStatus(string $expected, string $message = ''): void
+    protected function readSchema(string $name): ?object
     {
-        $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
+        $fullPath = sprintf('%s/../config/scheme/%s', __DIR__, $name);
 
-        $this->assertEquals($expected, $jsonResponse['status'], $message);
+        if (file_exists($fullPath)) {
+            return json_decode(file_get_contents($fullPath));
+        }
+
+        return null;
     }
 
     /**
-     * @param int    $expected
-     * @param string $message
+     * @param string $name
      *
-     * @return void
+     * @return null|object
      */
-    protected function assertStatusCode(int $expected, string $message = ''): void
+    protected function getSchema(string $name): ?object
     {
-        $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
-
-        $this->assertEquals($expected, $jsonResponse['status_code'], $message);
-    }
-
-    /**
-     * @param string $expected
-     * @param string $message
-     *
-     * @return void
-     */
-    protected function assertMessageType(string $expected, string $message = ''): void
-    {
-        $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
-
-        $this->assertEquals($expected, $jsonResponse['message']['type'], $message);
-    }
-
-    /**
-     * @param string $expected
-     * @param string $message
-     *
-     * @return void
-     */
-    protected function assertMessageName(string $expected, string $message = ''): void
-    {
-        $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
-
-        $this->assertEquals($expected, $jsonResponse['message']['name'], $message);
-    }
-
-    /**
-     * @param array  $expected
-     * @param string $message
-     *
-     * @return void
-     */
-    protected function assertDataEquals(array $expected, string $message = ''): void
-    {
-        $jsonResponse = json_decode($this->getClientResponse()->getContent(), true);
-
-        $this->assertEquals($expected, $jsonResponse['data'], $message);
-    }
-
-    /**
-     * @param string $status
-     * @param int    $statusCode
-     * @param string $messageType
-     * @param string $messageName
-     *
-     * @return void
-     */
-    protected function apiResponseAssertsGroup(string $status, int $statusCode, string $messageType, string $messageName): void
-    {
-        $this->assertSuccessApiResponseSchema();
-        $this->assertStatus($status);
-        $this->assertStatusCode($statusCode);
-        $this->assertResponseStatusCodeSame($statusCode);
-        $this->assertMessageType($messageType);
-        $this->assertMessageName($messageName);
-    }
-
-    /**
-     * @return Response
-     */
-    private function getClientResponse(): Response
-    {
-        return $this->client->getResponse();
+        return $this->schemes[$name] ?? null;
     }
 }

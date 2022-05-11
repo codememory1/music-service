@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker-compose exec api php vendor/bin/phpunit $@

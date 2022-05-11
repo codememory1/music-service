@@ -19,11 +19,8 @@
     </php>
 
     <testsuites>
-        <testsuite name="Security Api Tests">
-            <directory>tests/Security</directory>
-        </testsuite>
-        <testsuite name="Translator Api Tests">
-            <directory>tests/Translator</directory>
+        <testsuite name="Api Tests">
+            <directory>tests/Api</directory>
         </testsuite>
     </testsuites>
 
