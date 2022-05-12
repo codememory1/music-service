@@ -29,3 +29,7 @@ services:
                 endpoint: "s3:9000"
                 use_path_style_endpoint: true
                 disable_host_prefix_injection: true
+
+    App\EventListener\ApiExceptionListener:
+      tags:
+        - { name: kernel.event_listener, event: kernel.exception }
