@@ -3,7 +3,7 @@
 namespace App\Rest\Http\Interfaces;
 
 /**
- * Interface ResponseSchemaInterface
+ * Interface ResponseSchemaInterface.
  *
  * @package  App\Rest\Http\Interfaces
  *

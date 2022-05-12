@@ -2,11 +2,11 @@
 
 namespace App\Rest\Http;
 
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Class Request
+ * Class Request.
  *
  * @package App\Rest\Http
  *
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 class Request
 {
     /**
-     * @var SymfonyRequest|null
+     * @var null|SymfonyRequest
      */
     public readonly ?SymfonyRequest $request;
 
@@ -29,7 +29,7 @@ class Request
 
     /**
      * @param string     $key
-     * @param mixed|null $default
+     * @param null|mixed $default
      *
      * @return mixed
      */
@@ -37,10 +37,10 @@ class Request
     {
         if ($this->exist($key)) {
             $value = $this->all()[$key];
-            
+
             return empty($value) ? null : $value;
         }
-        
+
         return $default;
     }
 

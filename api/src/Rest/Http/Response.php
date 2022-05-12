@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * Class Response
+ * Class Response.
  *
  * @package App\Rest\Http
  *

@@ -6,7 +6,7 @@ use JetBrains\PhpStorm\Pure;
 use RuntimeException;
 
 /**
- * Class ApiResponseException
+ * Class ApiResponseException.
  *
  * @package App\Rest\Http\Exceptions
  *

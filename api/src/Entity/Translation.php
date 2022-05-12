@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Translation
+ * Class Translation.
  *
  * @package App\Entity
  *
@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Translation implements EntityInterface
 {
     use IdentifierTrait;
+
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: Language::class, inversedBy: 'translations')]
@@ -38,7 +39,7 @@ class Translation implements EntityInterface
     private ?string $translation = null;
 
     /**
-     * @return Language|null
+     * @return null|Language
      */
     public function getLanguage(): ?Language
     {
@@ -46,7 +47,7 @@ class Translation implements EntityInterface
     }
 
     /**
-     * @param Language|null $language
+     * @param null|Language $language
      *
      * @return $this
      */
@@ -58,7 +59,7 @@ class Translation implements EntityInterface
     }
 
     /**
-     * @return TranslationKey|null
+     * @return null|TranslationKey
      */
     public function getTranslationKey(): ?TranslationKey
     {
@@ -66,7 +67,7 @@ class Translation implements EntityInterface
     }
 
     /**
-     * @param TranslationKey|null $translationKey
+     * @param null|TranslationKey $translationKey
      *
      * @return $this
      */
@@ -78,7 +79,7 @@ class Translation implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getTranslation(): ?string
     {

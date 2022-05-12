@@ -6,7 +6,7 @@ use App\Entity\Interfaces\EntityInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 /**
- * Interface DataFixtureTemplateInterface
+ * Interface DataFixtureTemplateInterface.
  *
  * @package  App\DataFixtures\Interfaces
  *

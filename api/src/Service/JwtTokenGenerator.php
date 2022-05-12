@@ -65,7 +65,7 @@ class JwtTokenGenerator
      * @param string $token
      * @param string $publicKeyParameterName
      *
-     * @return object|bool
+     * @return bool|object
      */
     public function decode(string $token, string $publicKeyParameterName): object|bool
     {
@@ -86,7 +86,7 @@ class JwtTokenGenerator
         $kernelProjectDir = $this->parameterBag->get('kernel.project_dir');
         $pathToFile = $this->parameterBag->get($parameterName);
 
-        return file_get_contents("$kernelProjectDir/$pathToFile");
+        return file_get_contents("${kernelProjectDir}/${pathToFile}");
     }
 
     /**

@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class TranslationKey
+ * Class TranslationKey.
  *
  * @package App\Entity
  *
@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 class TranslationKey implements EntityInterface
 {
     use IdentifierTrait;
+
     use TimestampTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
@@ -30,7 +31,7 @@ class TranslationKey implements EntityInterface
     private ?string $key = null;
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getKey(): ?string
     {

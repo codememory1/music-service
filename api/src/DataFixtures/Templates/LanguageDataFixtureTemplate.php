@@ -8,7 +8,7 @@ use App\Entity\Language;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 /**
- * Class LanguageDataFixtureTemplate
+ * Class LanguageDataFixtureTemplate.
  *
  * @package App\DataFixtures\Templates
  *
@@ -54,6 +54,6 @@ final class LanguageDataFixtureTemplate implements DataFixtureTemplateInterface
      */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureTemplateInterface
     {
-        return $this;   
+        return $this;
     }
 }

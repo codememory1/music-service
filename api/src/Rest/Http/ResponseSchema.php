@@ -10,11 +10,12 @@ use App\Repository\TranslationKeyRepository;
 use App\Repository\TranslationRepository;
 use App\Rest\Http\Interfaces\ResponseSchemaInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use function is_array;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Class ResponseSchema
+ * Class ResponseSchema.
  *
  * @package App\Rest\Http
  *
@@ -31,8 +32,9 @@ class ResponseSchema implements ResponseSchemaInterface
         'message' => [],
         'data' => []
     ];
+
     /**
-     * @var Request|null
+     * @var null|Request
      */
     private ?Request $request;
 
@@ -89,16 +91,14 @@ class ResponseSchema implements ResponseSchemaInterface
     }
 
     /**
-     * @param string|array $message
+     * @param array|string $message
      *
      * @return $this
      */
     public function setMessage(string|array $message): self
     {
         if (is_array($message)) {
-            $message = array_map(function(string $translationKey) {
-                return $this->getTranslation($translationKey);
-            }, $message);
+            $message = array_map(fn(string $translationKey) => $this->getTranslation($translationKey), $message);
         } else {
             $message = $this->getTranslation($message);
         }
@@ -138,18 +138,10 @@ class ResponseSchema implements ResponseSchemaInterface
         return empty($statusCode) ? 200 : $statusCode;
     }
 
-    public function __clone(): void
-    {
-        $this->schema['status_code'] = null;
-        $this->schema['type'] = null;
-        $this->schema['message'] = [];
-        $this->schema['data'] = [];
-    }
-
     /**
      * @param string $translationKey
      *
-     * @return string|null
+     * @return null|string
      */
     private function getTranslation(string $translationKey): ?string
     {
@@ -157,5 +149,13 @@ class ResponseSchema implements ResponseSchemaInterface
             'language' => $this->languageRepository->findOneBy(['code' => $this->request->getLocale()]),
             'translationKey' => $this->translationKeyRepository->findOneBy(['key' => $translationKey])
         ])?->getTranslation();
+    }
+
+    public function __clone(): void
+    {
+        $this->schema['status_code'] = null;
+        $this->schema['type'] = null;
+        $this->schema['message'] = [];
+        $this->schema['data'] = [];
     }
 }

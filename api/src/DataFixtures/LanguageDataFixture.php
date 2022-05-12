@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class LanguageDataFixture
+ * Class LanguageDataFixture.
  *
  * @package App\DataFixtures
  *
@@ -16,7 +16,7 @@ use JetBrains\PhpStorm\Pure;
  */
 final class LanguageDataFixture extends AbstractDataFixture
 {
-    #[Pure] 
+    #[Pure]
     public function __construct()
     {
         parent::__construct([

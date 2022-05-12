@@ -8,7 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class AbstractDataFixture
+ * Class AbstractDataFixture.
  *
  * @package App\DataFixtures
  *
@@ -30,12 +30,19 @@ abstract class AbstractDataFixture extends Fixture
     }
 
     /**
+     * @param ObjectManager $manager
+     *
+     * @return void
+     */
+    abstract public function load(ObjectManager $manager): void;
+
+    /**
      * @return EntityInterface[]
      */
     protected function getEntities(): array
     {
         $entities = [];
-        
+
         foreach ($this->templates as $template) {
             $template->setReferenceRepository($this->referenceRepository);
 
@@ -44,11 +51,4 @@ abstract class AbstractDataFixture extends Fixture
 
         return $entities;
     }
-
-    /**
-     * @param ObjectManager $manager
-     *
-     * @return void
-     */
-    abstract public function load(ObjectManager $manager): void;
 }

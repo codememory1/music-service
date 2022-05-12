@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 /**
- * Class ApiExceptionListener
+ * Class ApiExceptionListener.
  *
  * @package App\EventListener
  *

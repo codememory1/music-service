@@ -7,7 +7,7 @@ use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class TranslationKeyDataFixture
+ * Class TranslationKeyDataFixture.
  *
  * @package App\DataFixtures
  *

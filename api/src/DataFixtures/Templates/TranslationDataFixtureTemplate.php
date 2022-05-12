@@ -10,7 +10,7 @@ use App\Entity\TranslationKey;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 /**
- * Class TranslationDataFixtureTemplate
+ * Class TranslationDataFixtureTemplate.
  *
  * @package App\DataFixtures\Templates
  *
@@ -34,7 +34,7 @@ final class TranslationDataFixtureTemplate implements DataFixtureTemplateInterfa
     private string $translation;
 
     /**
-     * @var ReferenceRepository|null
+     * @var null|ReferenceRepository
      */
     private ?ReferenceRepository $referenceRepository = null;
 

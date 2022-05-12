@@ -8,7 +8,7 @@ use App\Entity\TranslationKey;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 /**
- * Class TranslationKeyDataFixtureTemplate
+ * Class TranslationKeyDataFixtureTemplate.
  *
  * @package App\DataFixtures\Templates
  *

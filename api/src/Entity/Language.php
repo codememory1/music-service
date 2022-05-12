@@ -8,12 +8,12 @@ use App\Entity\Traits\TimestampTrait;
 use App\Repository\LanguageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class Language
+ * Class Language.
  *
  * @package App\Entity
  *
@@ -25,6 +25,7 @@ use JetBrains\PhpStorm\Pure;
 class Language implements EntityInterface
 {
     use IdentifierTrait;
+
     use TimestampTrait;
 
     #[ORM\Column(type: Types::STRING, length: 5, unique: true, options: [
@@ -47,7 +48,7 @@ class Language implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getCode(): ?string
     {
@@ -67,7 +68,7 @@ class Language implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getOriginalTitle(): ?string
     {
