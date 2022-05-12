@@ -33,3 +33,8 @@ services:
     App\EventListener\ApiExceptionListener:
       tags:
         - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Rest\Http\ResponseSchema:
+      public: true
+    App\Rest\Http\Response:
+      public: true

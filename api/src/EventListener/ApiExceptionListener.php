@@ -2,17 +2,12 @@
 
 namespace App\EventListener;
 
-use App\Entity\Language;
-use App\Entity\Translation;
-use App\Entity\TranslationKey;
 use App\Repository\TranslationRepository;
 use App\Rest\Http\Exceptions\ApiResponseException;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use App\Rest\Http\Response;
+use App\Rest\Http\ResponseSchema;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Throwable;
 
 /**
  * Class ApiExceptionListener
@@ -24,23 +19,23 @@ use Throwable;
 class ApiExceptionListener
 {
     /**
-     * @var Request|null
+     * @var ResponseSchema
      */
-    private ?Request $request;
+    private ResponseSchema $responseSchema;
 
     /**
-     * @var EntityManagerInterface
+     * @var Response
      */
-    private EntityManagerInterface $em;
+    private Response $response;
 
     /**
      * @param RequestStack          $requestStack
      * @param TranslationRepository $translationRepository
      */
-    public function __construct(RequestStack $requestStack, EntityManagerInterface $entityManager)
+    public function __construct(ResponseSchema $responseSchema, Response $response)
     {
-        $this->request = $requestStack->getCurrentRequest();
-        $this->em = $entityManager;
+        $this->responseSchema = $responseSchema;
+        $this->response = $response;
     }
 
     /**
@@ -53,30 +48,12 @@ class ApiExceptionListener
         $throwable = $event->getThrowable();
 
         if ($throwable instanceof ApiResponseException) {
-            $jsonResponse = new JsonResponse(
-                [$this->getTranslation($throwable)?->getTranslation()],
-                $throwable->statusCode,
-                $throwable->headers
-            );
+            $this->responseSchema->setType($throwable->type);
+            $this->responseSchema->setMessage($throwable->translationKey);
+            $this->responseSchema->setStatusCode($throwable->statusCode);
+            $this->responseSchema->setData($throwable->data);
 
-            $jsonResponse->send();
+            $this->response->getResponse($this->responseSchema)->send();
         }
-    }
-
-    /**
-     * @param ApiResponseException<Throwable> $throwable
-     *
-     * @return Translation|null
-     */
-    private function getTranslation(Throwable $throwable): ?Translation
-    {
-        $languageRepository = $this->em->getRepository(Language::class);
-        $translationKeyRepository = $this->em->getRepository(TranslationKey::class);
-        $translationRepository = $this->em->getRepository(Translation::class);
-
-        return $translationRepository->findOneBy([
-            'language' => $languageRepository->findOneBy(['code' => $this->request->getLocale()]),
-            'translationKey' => $translationKeyRepository->findOneBy(['key' => $throwable->translationKey])
-        ]);
     }
 }
