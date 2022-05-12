@@ -8,6 +8,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use JetBrains\PhpStorm\ArrayShape;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Class JwtTokenGenerator.
@@ -19,60 +20,73 @@ use Ramsey\Uuid\Uuid;
 class JwtTokenGenerator
 {
     /**
+     * @var ParseCronTimeService
+     */
+    private ParseCronTimeService $parseCronTime;
+
+    /**
+     * @var ParameterBagInterface
+     */
+    private ParameterBagInterface $parameterBag;
+
+    /**
      * @var DateTimeImmutable
      */
     private DateTimeImmutable $datetime;
 
     /**
-     * @var ParseCronTimeService
+     * @param ParseCronTimeService  $parseCronTimeService
+     * @param ParameterBagInterface $parameterBag
      */
-    private ParseCronTimeService $parseCronTime;
-
-    public function __construct()
+    public function __construct(ParseCronTimeService $parseCronTimeService, ParameterBagInterface $parameterBag)
     {
+        $this->parseCronTime = $parseCronTimeService;
+        $this->parameterBag = $parameterBag;
         $this->datetime = new DateTimeImmutable();
-        $this->parseCronTime = new ParseCronTimeService();
     }
 
     /**
      * @param array  $data
-     * @param string $privateKey
-     * @param string $lifeInCronTimeFormat
+     * @param string $privateKeyParameterName
+     * @param string $ttlParameterName
      *
      * @return string
      */
-    public function encode(array $data, string $privateKey, string $lifeInCronTimeFormat): string
+    public function encode(array $data, string $privateKeyParameterName, string $ttlParameterName): string
     {
         return JWT::encode(
-            $this->collectPayload($data, $_ENV[$lifeInCronTimeFormat]),
-            static::getKey($privateKey),
+            $this->collectPayload($data, $this->parameterBag->get($ttlParameterName)),
+            $this->getKey($privateKeyParameterName),
             'RS256'
         );
     }
 
     /**
      * @param string $token
-     * @param string $publicKey
+     * @param string $publicKeyParameterName
      *
-     * @return bool|object
+     * @return object|bool
      */
-    public function decode(string $token, string $publicKey): object|bool
+    public function decode(string $token, string $publicKeyParameterName): object|bool
     {
         try {
-            return JWT::decode($token, new Key(static::getKey($publicKey), 'RS256'));
+            return JWT::decode($token, new Key($this->getKey($publicKeyParameterName), 'RS256'));
         } catch (Exception) {
             return false;
         }
     }
 
     /**
-     * @param string $name
+     * @param string $parameterName
      *
      * @return string
      */
-    public static function getKey(string $name): string
+    public function getKey(string $parameterName): string
     {
-        return file_get_contents($_SERVER['PWD'] . '/' . $_ENV[$name]);
+        $kernelProjectDir = $this->parameterBag->get('kernel.project_dir');
+        $pathToFile = $this->parameterBag->get($parameterName);
+
+        return file_get_contents("$kernelProjectDir/$pathToFile");
     }
 
     /**

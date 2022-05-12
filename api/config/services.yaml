@@ -1,5 +1,11 @@
 parameters:
-    jwt.secrets: "config/secrets/"
+    jwt.secrets: 'config/secrets/'
+    jwt.access_public_key: '%env(JWT_ACCESS_PUBLIC_KEY)%'
+    jwt.access_private_key: '%env(JWT_ACCESS_PRIVATE_KEY)%'
+    jwt.access_ttl: '%env(JWT_ACCESS_TTL)%'
+    jwt.refresh_public_key: '%env(JWT_REFRESH_PUBLIC_KEY)%'
+    jwt.refresh_private_key: '%env(JWT_REFRESH_PRIVATE_KEY)%'
+    jwt.refresh_ttl: '%env(JWT_REFRESH_TTL)%'
 
 services:
     _defaults:
@@ -26,7 +32,7 @@ services:
                 credentials: {key: '%env(AWS_S3_KEY)%', secret: '%env(AWS_S3_SECRET)%'}
                 region: '%env(AWS_S3_REGION)%'
                 version: '%env(AWS_S3_VERSION)%'
-                endpoint: "s3:9000"
+                endpoint: 's3:9000'
                 use_path_style_endpoint: true
                 disable_host_prefix_injection: true
 
@@ -34,7 +40,10 @@ services:
       tags:
         - { name: kernel.event_listener, event: kernel.exception }
 
-    App\Rest\Http\ResponseSchema:
+    App\Rest\Http\:
+      resource: '../src/Rest/Http/{Request,Response,ResponseSchema}.php'
       public: true
-    App\Rest\Http\Response:
+
+    App\Service\:
+      resource: '../src/Service/{HashingService,ParseCronTimeService,MimeTypeConverter,JwtTokenGenerator}.php'
       public: true

@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Language;
 use App\Rest\Http\Exceptions\ApiResponseException;
 use App\Rest\Http\Response;
 use App\Rest\Http\ResponseSchema;
+use App\Service\JwtTokenGenerator;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,11 +23,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class TestController extends AbstractController
 {
     #[Route('/red', methods: 'GET')]
-    public function t(ResponseSchema $responseSchema, Response $response)
+    public function t(JwtTokenGenerator $jwtTokenGenerator)
     {
-        throw new ApiResponseException(400, 'validation', 'common@red');
-//        $responseSchema->setType('red')->setMessage('common@red');
-//
-//        return $response->send($responseSchema);
+        dd($jwtTokenGenerator->encode([], 'jwt.access_private_key', 'jwt.access_ttl'));
     }
 }
