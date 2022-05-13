@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\DataFixtures\Templates\TranslationKeyDataFixtureTemplate;
 use App\Entity\TranslationKey;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -18,7 +19,16 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
     #[Pure]
     public function __construct()
     {
-        parent::__construct([]);
+        parent::__construct([
+            new TranslationKeyDataFixtureTemplate('entityNotFound@page'),
+            new TranslationKeyDataFixtureTemplate('entityNotFound@language'),
+            new TranslationKeyDataFixtureTemplate('entityNotFound@translationKey'),
+            new TranslationKeyDataFixtureTemplate('entityNotFound@translation'),
+
+            new TranslationKeyDataFixtureTemplate('auth@successAuthorization'),
+
+            new TranslationKeyDataFixtureTemplate('registration@successRegistration'),
+        ]);
     }
 
     /**

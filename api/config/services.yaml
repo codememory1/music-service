@@ -1,3 +1,6 @@
+imports:
+  - {resource: 'services/*.yaml'}
+
 parameters:
     jwt.secrets: 'config/secrets/'
     jwt.access_public_key: '%env(JWT_ACCESS_PUBLIC_KEY)%'

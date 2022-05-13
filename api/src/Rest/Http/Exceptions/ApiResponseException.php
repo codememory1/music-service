@@ -21,9 +21,9 @@ class ApiResponseException extends RuntimeException
     public readonly string $translationKey;
 
     /**
-     * @var string
+     * @var ResponseTypeEnum 
      */
-    public readonly string $type;
+    public readonly ResponseTypeEnum $type;
 
     /**
      * @var int
@@ -53,7 +53,7 @@ class ApiResponseException extends RuntimeException
         parent::__construct($translationKey);
 
         $this->translationKey = $translationKey;
-        $this->type = $type->name;
+        $this->type = $type;
         $this->statusCode = $statusCode;
         $this->data = $data;
         $this->headers = $headers;
