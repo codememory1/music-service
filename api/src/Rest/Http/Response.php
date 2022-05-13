@@ -3,7 +3,6 @@
 namespace App\Rest\Http;
 
 use App\Rest\Http\Interfaces\ResponseSchemaInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -15,19 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class Response
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->em = $entityManager;
-    }
-
     /**
      * @param ResponseSchemaInterface $responseSchema
      * @param array                   $headers

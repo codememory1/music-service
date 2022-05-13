@@ -5,6 +5,7 @@ namespace App\Rest\Http;
 use App\Entity\Language;
 use App\Entity\Translation;
 use App\Entity\TranslationKey;
+use App\Enum\ResponseTypeEnum;
 use App\Repository\LanguageRepository;
 use App\Repository\TranslationKeyRepository;
 use App\Repository\TranslationRepository;
@@ -79,13 +80,13 @@ class ResponseSchema implements ResponseSchemaInterface
     }
 
     /**
-     * @param string $type
+     * @param ResponseTypeEnum $type
      *
      * @return $this
      */
-    public function setType(string $type): self
+    public function setType(ResponseTypeEnum $type): self
     {
-        $this->schema['type'] = $type;
+        $this->schema['type'] = $type->name;
 
         return $this;
     }
