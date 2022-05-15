@@ -3,8 +3,6 @@
 namespace App\Resolver;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Enum\ResponseTypeEnum;
-use App\Rest\Http\Exceptions\ApiResponseException;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\ArrayShape;
@@ -17,7 +15,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use function Symfony\Component\String\u;
 
 /**
- * Class EntityFromRouteParameterResolver
+ * Class EntityFromRouteParameterResolver.
  *
  * @package App\Resolver
  *
@@ -36,7 +34,7 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
     private array $routeParameters = [];
 
     /**
-     * @var ReflectionClass|null
+     * @var null|ReflectionClass
      */
     private ?ReflectionClass $reflection = null;
 
@@ -50,6 +48,7 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
 
     /**
      * @inheritDoc
+     *
      * @throws ReflectionException
      */
     public function supports(Request $request, ArgumentMetadata $argument): bool
@@ -90,9 +89,9 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
     /**
      * @param string $entityNameInCamel
      *
-     * @return array|null
+     * @return null|array
      */
-    #[ArrayShape(['property_name' => "string", 'value' => "mixed"])]
+    #[ArrayShape(['property_name' => 'string', 'value' => 'mixed'])]
     private function finedRouteParameter(string $entityNameInCamel): ?array
     {
         foreach ($this->routeParameters as $parameterName => $value) {

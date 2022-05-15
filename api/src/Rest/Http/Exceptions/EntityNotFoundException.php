@@ -6,7 +6,7 @@ use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class EntityNotFoundException
+ * Class EntityNotFoundException.
  *
  * @package App\Rest\Http\Exceptions
  *

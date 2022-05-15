@@ -21,7 +21,7 @@ class ApiResponseException extends RuntimeException
     public readonly string $translationKey;
 
     /**
-     * @var ResponseTypeEnum 
+     * @var ResponseTypeEnum
      */
     public readonly ResponseTypeEnum $type;
 

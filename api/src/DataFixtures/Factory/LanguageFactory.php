@@ -1,20 +1,20 @@
 <?php
 
-namespace App\DataFixtures\Templates;
+namespace App\DataFixtures\Factory;
 
-use App\DataFixtures\Interfaces\DataFixtureTemplateInterface;
+use App\DataFixtures\Interfaces\DataFixtureFactoryInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Language;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 /**
- * Class LanguageDataFixtureTemplate.
+ * Class LanguageFactory.
  *
- * @package App\DataFixtures\Templates
+ * @package App\DataFixtures\Factory
  *
  * @author  Codememory
  */
-final class LanguageDataFixtureTemplate implements DataFixtureTemplateInterface
+final class LanguageFactory implements DataFixtureFactoryInterface
 {
     /**
      * @var string
@@ -39,7 +39,7 @@ final class LanguageDataFixtureTemplate implements DataFixtureTemplateInterface
     /**
      * @inheritDoc
      */
-    public function getEntity(): EntityInterface
+    public function factoryMethod(): EntityInterface
     {
         $languageEntity = new Language();
 
@@ -52,7 +52,7 @@ final class LanguageDataFixtureTemplate implements DataFixtureTemplateInterface
     /**
      * @inheritDoc
      */
-    public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureTemplateInterface
+    public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;
     }

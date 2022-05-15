@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\DataFixtures\Interfaces\DataFixtureTemplateInterface;
+use App\DataFixtures\Interfaces\DataFixtureFactoryInterface;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -17,16 +17,16 @@ use Doctrine\Persistence\ObjectManager;
 abstract class AbstractDataFixture extends Fixture
 {
     /**
-     * @var array<DataFixtureTemplateInterface>
+     * @var array<DataFixtureFactoryInterface>
      */
-    protected array $templates;
+    protected array $factories;
 
     /**
-     * @param array<DataFixtureTemplateInterface> $templates
+     * @param array<DataFixtureFactoryInterface> $factories
      */
-    protected function __construct(array $templates)
+    protected function __construct(array $factories)
     {
-        $this->templates = $templates;
+        $this->factories = $factories;
     }
 
     /**
@@ -43,10 +43,10 @@ abstract class AbstractDataFixture extends Fixture
     {
         $entities = [];
 
-        foreach ($this->templates as $template) {
-            $template->setReferenceRepository($this->referenceRepository);
+        foreach ($this->factories as $factory) {
+            $factory->setReferenceRepository($this->referenceRepository);
 
-            $entities[] = $template->getEntity();
+            $entities[] = $factory->factoryMethod();
         }
 
         return $entities;

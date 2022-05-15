@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\DataFixtures\Templates\LanguageDataFixtureTemplate;
+use App\DataFixtures\Factory\LanguageFactory;
 use App\Entity\Language;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -20,14 +20,14 @@ final class LanguageDataFixture extends AbstractDataFixture
     public function __construct()
     {
         parent::__construct([
-            new LanguageDataFixtureTemplate('en', 'English'),
-            new LanguageDataFixtureTemplate('ru', 'Русский'),
-            new LanguageDataFixtureTemplate('ua', 'Український'),
-            new LanguageDataFixtureTemplate('es', 'Español'),
-            new LanguageDataFixtureTemplate('fr', 'Français'),
-            new LanguageDataFixtureTemplate('it', 'Italiano'),
-            new LanguageDataFixtureTemplate('pl', 'Polski'),
-            new LanguageDataFixtureTemplate('ar', 'عرب'),
+            new LanguageFactory('en', 'English'),
+            new LanguageFactory('ru', 'Русский'),
+            new LanguageFactory('ua', 'Український'),
+            new LanguageFactory('es', 'Español'),
+            new LanguageFactory('fr', 'Français'),
+            new LanguageFactory('it', 'Italiano'),
+            new LanguageFactory('pl', 'Polski'),
+            new LanguageFactory('ar', 'عرب'),
         ]);
     }
 

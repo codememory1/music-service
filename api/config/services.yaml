@@ -25,6 +25,7 @@ services:
             - '../src/Enum/'
             - '../src/Service/'
             - '../src/Rest/'
+            - '../src/DataFixtures/{Factory,Interfaces}'
 
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
@@ -50,3 +51,9 @@ services:
     App\Service\:
       resource: '../src/Service/{HashingService,ParseCronTimeService,MimeTypeConverter,JwtTokenGenerator}.php'
       public: true
+
+    App\DTO\:
+      resource: '../src/DTO/*.php'
+      public: true
+      exclude:
+        - '../src/DTO/{Interfaces,Interceptors,AbstractDTO.php}'

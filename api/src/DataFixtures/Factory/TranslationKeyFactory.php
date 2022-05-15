@@ -1,20 +1,20 @@
 <?php
 
-namespace App\DataFixtures\Templates;
+namespace App\DataFixtures\Factory;
 
-use App\DataFixtures\Interfaces\DataFixtureTemplateInterface;
+use App\DataFixtures\Interfaces\DataFixtureFactoryInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\TranslationKey;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 /**
- * Class TranslationKeyDataFixtureTemplate.
+ * Class TranslationKeyFactory.
  *
- * @package App\DataFixtures\Templates
+ * @package App\DataFixtures\Factory
  *
  * @author  Codememory
  */
-final class TranslationKeyDataFixtureTemplate implements DataFixtureTemplateInterface
+final class TranslationKeyFactory implements DataFixtureFactoryInterface
 {
     /**
      * @var string
@@ -32,7 +32,7 @@ final class TranslationKeyDataFixtureTemplate implements DataFixtureTemplateInte
     /**
      * @inheritDoc
      */
-    public function getEntity(): EntityInterface
+    public function factoryMethod(): EntityInterface
     {
         $translationKeyEntity = new TranslationKey();
 
@@ -44,7 +44,7 @@ final class TranslationKeyDataFixtureTemplate implements DataFixtureTemplateInte
     /**
      * @inheritDoc
      */
-    public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureTemplateInterface
+    public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;
     }
