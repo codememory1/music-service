@@ -20,4 +20,5 @@ enum ResponseTypeEnum
     case SUCCESS_REGISTRATION;
     case EXIST;
     case NOT_EXIST;
+    case INPUT_VALIDATION;
 }

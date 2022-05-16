@@ -48,6 +48,10 @@ services:
       resource: '../src/Rest/Http/{Request,Response,ResponseSchema}.php'
       public: true
 
+    App\Rest\Validator\:
+      resource: '../src/Rest/Validator/'
+      public: true
+
     App\Service\:
       resource: '../src/Service/{HashingService,ParseCronTimeService,MimeTypeConverter,JwtTokenGenerator}.php'
       public: true
