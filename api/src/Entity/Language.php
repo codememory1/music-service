@@ -58,11 +58,11 @@ class Language implements EntityInterface
     }
 
     /**
-     * @param string $code
+     * @param string|null $code
      *
      * @return $this
      */
-    public function setCode(string $code): self
+    public function setCode(?string $code): self
     {
         $this->code = $code;
 
@@ -78,11 +78,11 @@ class Language implements EntityInterface
     }
 
     /**
-     * @param string $originalTitle
+     * @param string|null $originalTitle
      *
      * @return $this
      */
-    public function setOriginalTitle(string $originalTitle): self
+    public function setOriginalTitle(?string $originalTitle): self
     {
         $this->originalTitle = $originalTitle;
 
