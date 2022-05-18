@@ -7,7 +7,7 @@ use App\Entity\Language;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class LanguageDTO
+ * Class LanguageDTO.
  *
  * @package App\DTO
  * @template-extends AbstractDTO<Language>

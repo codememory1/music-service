@@ -50,7 +50,7 @@ class Validator
     private Response $response;
 
     /**
-     * @var ParameterBag|ParameterBagInterface 
+     * @var ParameterBag|ParameterBagInterface
      */
     private ParameterBagInterface|ParameterBag $parameterBag;
 
@@ -67,8 +67,7 @@ class Validator
         ResponseSchema $responseSchema,
         Request $request,
         Response $response,
-    )
-    {
+    ) {
         $this->validator = $validator;
         $this->groupExprLanguage = $groupExpressionLanguage;
         $this->responseSchema = $responseSchema;
@@ -83,8 +82,8 @@ class Validator
     {
         $this->groupExprLanguage
             ->createGroup()
-                ->addExpr('request_type', $this->parameterBag->get('request_type'))
-                ->addExpr('role_permission', 'user_role_permission');
+            ->addExpr('request_type', $this->parameterBag->get('request_type'))
+            ->addExpr('role_permission', 'user_role_permission');
 
         return $this;
     }
@@ -96,8 +95,8 @@ class Validator
     {
         $this->groupExprLanguage
             ->createGroup()
-                ->addExpr('request_type', $this->parameterBag->get('request_type'))
-                ->addExpr('subscription_permission', 'subscription_permission');
+            ->addExpr('request_type', $this->parameterBag->get('request_type'))
+            ->addExpr('subscription_permission', 'subscription_permission');
 
         return $this;
     }

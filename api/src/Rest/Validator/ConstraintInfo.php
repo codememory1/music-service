@@ -7,7 +7,7 @@ use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
- * Class ConstraintInfo
+ * Class ConstraintInfo.
  *
  * @package App\Rest\Validator
  *
@@ -29,7 +29,7 @@ class ConstraintInfo
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getMessage(): ?string
     {
@@ -46,7 +46,7 @@ class ConstraintInfo
     }
 
     /**
-     * @return ResponseTypeEnum|null
+     * @return null|ResponseTypeEnum
      */
     #[Pure]
     public function getType(): ?ResponseTypeEnum
@@ -55,7 +55,7 @@ class ConstraintInfo
     }
 
     /**
-     * @return int|null
+     * @return null|int
      */
     #[Pure]
     public function getStatusCode(): ?int
