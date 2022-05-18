@@ -28,6 +28,11 @@ interface DTOInterface
     public function preventSetterCallForKeys(array $propertyNames): self;
 
     /**
+     * @return $this
+     */
+    public function collect(): self;
+
+    /**
      * @param EntityInterface $entity
      *
      * @return $this

@@ -2,6 +2,7 @@
 
 namespace App\Resolver;
 
+use App\Annotation\EntityNotFound;
 use App\Entity\Interfaces\EntityInterface;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -74,12 +75,17 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
         $entityRepository = $this->em->getRepository($argument->getType());
         $entityNameInCamel = (string) u($this->reflection->getShortName())->camel();
         $finedRouteParameter = $this->finedRouteParameter($entityNameInCamel);
+        $entityNotFoundAttribute = $this->getAttribute($argument, EntityNotFound::class);
 
         $finedEntity = $entityRepository->findOneBy([
             $finedRouteParameter['property_name'] => $finedRouteParameter['value']
         ]);
 
         if (null === $finedEntity) {
+            if (null !== $entityNotFoundAttribute) {
+                throw $entityNotFoundAttribute->class::{$entityNotFoundAttribute->method}();
+            }
+
             throw EntityNotFoundException::page();
         }
 
@@ -106,5 +112,19 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
         }
 
         throw new LogicException("Failed to process ${entityNameInCamel} entity due to missing route parameter");
+    }
+
+    /**
+     * @template T
+     * @param ArgumentMetadata $argument
+     * @param class-string<T>  $class
+     *
+     * @return T|null
+     */
+    private function getAttribute(ArgumentMetadata $argument, string $class): ?object
+    {
+        $attribute = $argument->getAttributes($class);
+
+        return count($attribute) >= 1 ? $attribute[0] : null;
     }
 }
