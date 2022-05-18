@@ -12,6 +12,7 @@ use function is_string;
  * Class AbstractDTO.
  *
  * @package App\DTO
+ * @template Entity as mixed
  *
  * @author  Codememory
  */
@@ -33,9 +34,9 @@ abstract class AbstractDTO implements DTOInterface
     protected Request $request;
 
     /**
-     * @var null|string
+     * @var string
      */
-    private ?string $requestType = null;
+    private string $requestType;
 
     /**
      * @var array
@@ -65,6 +66,7 @@ abstract class AbstractDTO implements DTOInterface
     {
         $this->request = $request;
         $this->setterCallRuleInEntity = $setterCallRuleInEntity;
+        $this->requestType = $request->request->attributes->get('request_type');
 
         $this->wrapper();
         $this->init();
@@ -158,6 +160,7 @@ abstract class AbstractDTO implements DTOInterface
 
     /**
      * @inheritDoc
+     * @return Entity
      */
     public function getEntity(): ?EntityInterface
     {

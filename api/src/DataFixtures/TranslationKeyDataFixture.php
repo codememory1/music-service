@@ -28,6 +28,12 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('auth@successAuthorization'),
 
             new TranslationKeyFactory('registration@successRegistration'),
+
+            new TranslationKeyFactory('language@minCodeLength'),
+            new TranslationKeyFactory('language@maxCodeLength'),
+            new TranslationKeyFactory('language@originalTitleIsRequired'),
+            new TranslationKeyFactory('language@successCreate'),
+            new TranslationKeyFactory('language@codeExist'),
         ]);
     }
 

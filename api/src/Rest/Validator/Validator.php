@@ -5,9 +5,12 @@ namespace App\Rest\Validator;
 use App\DTO\Interfaces\DTOInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Enum\ResponseTypeEnum;
+use App\Rest\Http\Request;
 use App\Rest\Http\Response;
 use App\Rest\Http\ResponseSchema;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -47,22 +50,56 @@ class Validator
     private Response $response;
 
     /**
+     * @var ParameterBag|ParameterBagInterface 
+     */
+    private ParameterBagInterface|ParameterBag $parameterBag;
+
+    /**
      * @param ValidatorInterface      $validator
      * @param GroupExpressionLanguage $groupExpressionLanguage
      * @param ResponseSchema          $responseSchema
      * @param Response                $response
+     * @param ParameterBagInterface   $parameterBag
      */
     public function __construct(
         ValidatorInterface $validator,
         GroupExpressionLanguage $groupExpressionLanguage,
         ResponseSchema $responseSchema,
-        Response $response
+        Request $request,
+        Response $response,
     )
     {
         $this->validator = $validator;
         $this->groupExprLanguage = $groupExpressionLanguage;
         $this->responseSchema = $responseSchema;
         $this->response = $response;
+        $this->parameterBag = $request->request->attributes;
+    }
+
+    /**
+     * @return $this
+     */
+    public function byRolePermission(): self
+    {
+        $this->groupExprLanguage
+            ->createGroup()
+                ->addExpr('request_type', $this->parameterBag->get('request_type'))
+                ->addExpr('role_permission', 'user_role_permission');
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function bySubscriptionPermission(): self
+    {
+        $this->groupExprLanguage
+            ->createGroup()
+                ->addExpr('request_type', $this->parameterBag->get('request_type'))
+                ->addExpr('subscription_permission', 'subscription_permission');
+
+        return $this;
     }
 
     /**
@@ -89,10 +126,13 @@ class Validator
 
         /** @var ConstraintViolationInterface $value */
         foreach ($this->constraintViolation as $value) {
-            $messages[$value->getPropertyPath()] = $value->getMessage();
+            $constraintInto = new ConstraintInfo($value);
 
-            if (null !== $value->getConstraint()->payload) {
-                $this->responseSchema->setType($value->getConstraint()->payload);
+            $messages[$value->getPropertyPath()] = $constraintInto->getMessage();
+
+            if ([] !== $constraintInto->getPayload()) {
+                $this->responseSchema->setType($constraintInto->getType());
+                $this->responseSchema->setStatusCode($constraintInto->getStatusCode());
             }
         }
 

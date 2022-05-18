@@ -45,16 +45,22 @@ services:
         - { name: kernel.event_listener, event: kernel.exception }
 
     App\Rest\Http\:
-      resource: '../src/Rest/Http/{Request,Response,ResponseSchema}.php'
+      resource: '../src/Rest/Http/'
       public: true
+      exclude:
+        - '../src/Rest/Http/{Interfaces,Exceptions}'
 
     App\Rest\Validator\:
       resource: '../src/Rest/Validator/'
       public: true
+      exclude:
+        - '../src/Rest/Validator/ConstraintInfo.php'
 
     App\Service\:
-      resource: '../src/Service/{HashingService,ParseCronTimeService,MimeTypeConverter,JwtTokenGenerator}.php'
+      resource: '../src/Service/'
       public: true
+      exclude:
+        - '../src/Service/AbstractService.php'
 
     App\DTO\:
       resource: '../src/DTO/*.php'
