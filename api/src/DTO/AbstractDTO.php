@@ -69,7 +69,6 @@ abstract class AbstractDTO implements DTOInterface
         $this->requestType = $request->request->attributes->get('request_type');
 
         $this->wrapper();
-        $this->init();
     }
 
     /**
@@ -131,8 +130,6 @@ abstract class AbstractDTO implements DTOInterface
     {
         $this->requestType = $type;
 
-        $this->init();
-
         return $this;
     }
 
@@ -143,7 +140,16 @@ abstract class AbstractDTO implements DTOInterface
     {
         $this->forbiddenKeysForSetters = $propertyNames;
 
-        $this->init();
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function collect(): self
+    {
+        $this->createEntityObject();
+        $this->expectedKeyHandler();
 
         return $this;
     }
@@ -165,15 +171,6 @@ abstract class AbstractDTO implements DTOInterface
     public function getEntity(): ?EntityInterface
     {
         return $this->entity;
-    }
-
-    /**
-     * @return void
-     */
-    private function init(): void
-    {
-        $this->createEntityObject();
-        $this->expectedKeyHandler();
     }
 
     /**
