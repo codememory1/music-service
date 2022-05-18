@@ -5,7 +5,7 @@ namespace App\Annotation;
 use Attribute;
 
 /**
- * Class EntityNotFound
+ * Class EntityNotFound.
  *
  * @package App\Annotation
  *

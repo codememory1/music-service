@@ -9,7 +9,7 @@ use App\Rest\Validator\Validator;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Class AbstractService
+ * Class AbstractService.
  *
  * @package App\Service
  *
@@ -28,7 +28,7 @@ abstract class AbstractService
     protected Validator $validator;
 
     /**
-     * @var ResponseCollection 
+     * @var ResponseCollection
      */
     protected readonly ResponseCollection $responseCollection;
 

@@ -28,6 +28,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Language implements EntityInterface
 {
     use IdentifierTrait;
+
     use TimestampTrait;
 
     #[ORM\Column(type: Types::STRING, length: 5, unique: true, options: [
@@ -40,7 +41,7 @@ class Language implements EntityInterface
     ])]
     private ?string $originalTitle = null;
 
-    #[ORM\OneToMany(mappedBy: 'language', targetEntity: Translation::class)]
+    #[ORM\OneToMany(mappedBy: 'language', targetEntity: Translation::class, cascade: ['remove'])]
     private Collection $translations;
 
     #[Pure]
@@ -58,7 +59,7 @@ class Language implements EntityInterface
     }
 
     /**
-     * @param string|null $code
+     * @param null|string $code
      *
      * @return $this
      */
@@ -78,7 +79,7 @@ class Language implements EntityInterface
     }
 
     /**
-     * @param string|null $originalTitle
+     * @param null|string $originalTitle
      *
      * @return $this
      */

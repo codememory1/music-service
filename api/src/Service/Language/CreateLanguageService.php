@@ -7,7 +7,7 @@ use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * Class CreateLanguageService
+ * Class CreateLanguageService.
  *
  * @package App\Service\Language
  *

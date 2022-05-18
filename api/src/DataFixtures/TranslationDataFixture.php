@@ -34,6 +34,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'language@originalTitleIsRequired', 'Название языка обязательно к заполнению'),
             new TranslationFactory('ru', 'language@successCreate', 'Язык успешно создан'),
             new TranslationFactory('ru', 'language@successUpdate', 'Язык успешно обновлен'),
+            new TranslationFactory('ru', 'language@successDelete', 'Язык успешно удален'),
             new TranslationFactory('ru', 'language@codeExist', 'Данный код языка уже существует'),
         ]);
     }

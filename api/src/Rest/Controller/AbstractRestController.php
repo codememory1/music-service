@@ -7,7 +7,7 @@ use App\Security\Http\BearerToken;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * Class AbstractRestController
+ * Class AbstractRestController.
  *
  * @package App\Rest\Controller
  *

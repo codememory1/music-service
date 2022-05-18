@@ -166,6 +166,7 @@ abstract class AbstractDTO implements DTOInterface
 
     /**
      * @inheritDoc
+     *
      * @return Entity
      */
     public function getEntity(): ?EntityInterface

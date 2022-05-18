@@ -8,12 +8,13 @@ use App\Entity\Language;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Language\CreateLanguageService;
+use App\Service\Language\DeleteLanguageService;
 use App\Service\Language\UpdateLanguageService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class LanguageController
+ * Class LanguageController.
  *
  * @package App\Controller\Admin
  *
@@ -46,10 +47,23 @@ class LanguageController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
         LanguageDTO $languageDTO,
         UpdateLanguageService $updateLanguageService
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $languageDTO->setEntity($language)->collect();
 
         return $updateLanguageService->make($languageDTO);
+    }
+
+    /**
+     * @param Language              $language
+     * @param DeleteLanguageService $deleteLanguageService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{language_id<\d+>}/delete', methods: 'DELETE')]
+    public function delete(
+        #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
+        DeleteLanguageService $deleteLanguageService
+    ): JsonResponse {
+        return $deleteLanguageService->make($language);
     }
 }

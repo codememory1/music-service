@@ -116,10 +116,11 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
 
     /**
      * @template T
+     *
      * @param ArgumentMetadata $argument
      * @param class-string<T>  $class
      *
-     * @return T|null
+     * @return null|T
      */
     private function getAttribute(ArgumentMetadata $argument, string $class): ?object
     {

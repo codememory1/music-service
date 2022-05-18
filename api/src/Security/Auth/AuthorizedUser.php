@@ -3,7 +3,7 @@
 namespace App\Security\Auth;
 
 /**
- * Class AuthorizedUser
+ * Class AuthorizedUser.
  *
  * @package App\Security\Auth
  *
@@ -11,5 +11,4 @@ namespace App\Security\Auth;
  */
 class AuthorizedUser
 {
-
 }

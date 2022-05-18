@@ -3,7 +3,7 @@
 namespace App\Security\Http;
 
 /**
- * Class BearerToken
+ * Class BearerToken.
  *
  * @package App\Security\Http
  *
@@ -11,5 +11,4 @@ namespace App\Security\Http;
  */
 class BearerToken
 {
-
 }
