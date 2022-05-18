@@ -1,5 +1,14 @@
+imports:
+  - {resource: 'services/*.yaml'}
+
 parameters:
-    jwt.secrets: "config/secrets/"
+    jwt.secrets: 'config/secrets/'
+    jwt.access_public_key: '%env(JWT_ACCESS_PUBLIC_KEY)%'
+    jwt.access_private_key: '%env(JWT_ACCESS_PRIVATE_KEY)%'
+    jwt.access_ttl: '%env(JWT_ACCESS_TTL)%'
+    jwt.refresh_public_key: '%env(JWT_REFRESH_PUBLIC_KEY)%'
+    jwt.refresh_private_key: '%env(JWT_REFRESH_PRIVATE_KEY)%'
+    jwt.refresh_ttl: '%env(JWT_REFRESH_TTL)%'
 
 services:
     _defaults:
@@ -16,6 +25,7 @@ services:
             - '../src/Enum/'
             - '../src/Service/'
             - '../src/Rest/'
+            - '../src/DataFixtures/{Factory,Interfaces}'
 
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
@@ -26,6 +36,34 @@ services:
                 credentials: {key: '%env(AWS_S3_KEY)%', secret: '%env(AWS_S3_SECRET)%'}
                 region: '%env(AWS_S3_REGION)%'
                 version: '%env(AWS_S3_VERSION)%'
-                endpoint: "s3:9000"
+                endpoint: 's3:9000'
                 use_path_style_endpoint: true
                 disable_host_prefix_injection: true
+
+    App\EventListener\ApiExceptionListener:
+      tags:
+        - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Rest\Http\:
+      resource: '../src/Rest/Http/'
+      public: true
+      exclude:
+        - '../src/Rest/Http/{Interfaces,Exceptions}'
+
+    App\Rest\Validator\:
+      resource: '../src/Rest/Validator/'
+      public: true
+      exclude:
+        - '../src/Rest/Validator/ConstraintInfo.php'
+
+    App\Service\:
+      resource: '../src/Service/'
+      public: true
+      exclude:
+        - '../src/Service/AbstractService.php'
+
+    App\DTO\:
+      resource: '../src/DTO/*.php'
+      public: true
+      exclude:
+        - '../src/DTO/{Interfaces,Interceptors,AbstractDTO.php}'

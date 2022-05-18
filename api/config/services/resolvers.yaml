@@ -1,0 +1,6 @@
+services:
+  App\Resolver\EntityFromRouteParameterResolver:
+    arguments:
+      $manger: '@doctrine.orm.default_entity_manager'
+    tags:
+      - { name: controller.request_value_resolver, priority: 50 }

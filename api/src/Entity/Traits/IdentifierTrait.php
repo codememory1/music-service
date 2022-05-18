@@ -6,7 +6,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Trait IdentifierTrait
+ * Trait IdentifierTrait.
  *
  * @package App\Entity\Traits
  *

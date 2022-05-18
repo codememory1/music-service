@@ -5,15 +5,17 @@ namespace App\Entity;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Enum\ResponseTypeEnum;
 use App\Repository\LanguageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Class Language
+ * Class Language.
  *
  * @package App\Entity
  *
@@ -22,6 +24,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
 #[ORM\Table('languages')]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity('code', 'language@codeExist', payload: [ResponseTypeEnum::EXIST, 409])]
 class Language implements EntityInterface
 {
     use IdentifierTrait;
@@ -47,7 +50,7 @@ class Language implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getCode(): ?string
     {
@@ -67,7 +70,7 @@ class Language implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getOriginalTitle(): ?string
     {
