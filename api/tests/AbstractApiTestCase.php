@@ -2,8 +2,10 @@
 
 namespace App\Tests;
 
+use Ergebnis\Json\Pointer\JsonPointer;
+use Ergebnis\Json\SchemaValidator\Json;
+use Ergebnis\Json\SchemaValidator\SchemaValidator;
 use const JSON_ERROR_NONE;
-use JsonSchema\Validator;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -23,12 +25,12 @@ abstract class AbstractApiTestCase extends WebTestCase
     private KernelBrowser $client;
 
     /**
-     * @var Validator
+     * @var SchemaValidator
      */
-    private Validator $jsonSchemaValidator;
+    private SchemaValidator $jsonSchemaValidator;
 
     /**
-     * @var array
+     * @var array<Json>
      */
     private array $schemes;
 
@@ -42,7 +44,7 @@ abstract class AbstractApiTestCase extends WebTestCase
         parent::__construct($name, $data, $dataName);
 
         $this->client = static::createClient();
-        $this->jsonSchemaValidator = new Validator();
+        $this->jsonSchemaValidator = new SchemaValidator();
 
         $this->schemes['api_response'] = $this->readSchema('api_response.json');
     }
@@ -74,10 +76,11 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function assertApiResponse(?string $message = null): void
     {
-        $jsonSchemaValidator = clone $this->jsonSchemaValidator;
-        $response = (object) $this->getApiResponse();
-
-        $jsonSchemaValidator->validate($response, $this->getSchema('api_response'));
+        $jsonSchemaValidator = (clone $this->jsonSchemaValidator)->validate(
+            Json::fromString(json_encode($this->getApiResponse())),
+            $this->getSchema('api_response'),
+            JsonPointer::document()
+        );
 
         $this->assertEquals(
             true,
@@ -147,14 +150,14 @@ abstract class AbstractApiTestCase extends WebTestCase
     /**
      * @param string $name
      *
-     * @return null|object
+     * @return null|Json
      */
-    protected function readSchema(string $name): ?object
+    protected function readSchema(string $name): ?Json
     {
         $fullPath = sprintf('%s/../config/scheme/%s', __DIR__, $name);
 
         if (file_exists($fullPath)) {
-            return json_decode(file_get_contents($fullPath));
+            return Json::fromString(file_get_contents($fullPath));
         }
 
         return null;
@@ -163,9 +166,9 @@ abstract class AbstractApiTestCase extends WebTestCase
     /**
      * @param string $name
      *
-     * @return null|object
+     * @return null|Json
      */
-    protected function getSchema(string $name): ?object
+    protected function getSchema(string $name): ?Json
     {
         return $this->schemes[$name] ?? null;
     }

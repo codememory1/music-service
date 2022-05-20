@@ -139,6 +139,12 @@
     "egulias/email-validator": {
         "version": "3.1.2"
     },
+    "ergebnis/json-pointer": {
+        "version": "3.1.0"
+    },
+    "ergebnis/json-schema-validator": {
+        "version": "3.1.0"
+    },
     "fakerphp/faker": {
         "version": "v1.17.0"
     },
