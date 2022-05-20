@@ -84,7 +84,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      *
      * @return null|Entity
      */
-    public function find(mixed $id, ?int $lockMode = null, ?int $lockVersion = null): ?object
+    public function find(mixed $id, mixed $lockMode = null, mixed $lockVersion = null): mixed
     {
         return parent::find($id, $lockMode, $lockVersion);
     }
