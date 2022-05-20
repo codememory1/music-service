@@ -3,19 +3,19 @@
 namespace App\Repository;
 
 use App\Entity\TranslationKey;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method null|TranslationKey find($id, $lockMode = null, $lockVersion = null)
- * @method null|TranslationKey findOneBy(array $criteria, array $orderBy = null)
- * @method TranslationKey[]    findAll()
- * @method TranslationKey[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * Class TranslationKeyRepository.
+ *
+ * @package App\Repository
+ * @template-extends AbstractRepository<TranslationKey>
+ *
+ * @author  codememory
  */
-class TranslationKeyRepository extends ServiceEntityRepository
+class TranslationKeyRepository extends AbstractRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, TranslationKey::class);
-    }
+    /**
+     * @inheritDoc
+     */
+    protected ?string $entity = TranslationKey::class;
 }
