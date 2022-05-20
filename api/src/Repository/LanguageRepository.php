@@ -3,19 +3,35 @@
 namespace App\Repository;
 
 use App\Entity\Language;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method null|Language find($id, $lockMode = null, $lockVersion = null)
- * @method null|Language findOneBy(array $criteria, array $orderBy = null)
- * @method Language[]    findAll()
- * @method Language[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * Class LanguageRepository.
+ *
+ * @package App\Repository
+ * @template-extends AbstractRepository<Language>
+ *
+ * @author Codememory
  */
-class LanguageRepository extends ServiceEntityRepository
+class LanguageRepository extends AbstractRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @inheritDoc
+     */
+    protected ?string $entity = Language::class;
+
+    /**
+     * @inheritDoc
+     */
+    public function findByCriteria(array $criteria, array $orderBy = []): array
     {
-        parent::__construct($registry, Language::class);
+        if (false !== $sortByCode = $this->sortService->get('code')) {
+            $orderBy['code'] = $sortByCode;
+        }
+
+        if (false !== $sortByTitle = $this->sortService->get('title')) {
+            $orderBy['originalTitle'] = $sortByTitle;
+        }
+
+        return parent::findByCriteria([], $orderBy);
     }
 }
