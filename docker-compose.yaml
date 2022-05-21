@@ -12,6 +12,7 @@ services:
     volumes:
       - "${DOCKER_DEV_PATH}/nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "${API_PATH}:${API_WORKDIR}"
+      - ./var/log/nginx:/var/log/nginx:delegated
     links:
       - api
       - rabbitmq

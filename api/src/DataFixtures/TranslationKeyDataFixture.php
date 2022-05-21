@@ -20,6 +20,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
     public function __construct()
     {
         parent::__construct([
+            new TranslationKeyFactory('common@incorrectEmail'),
+            new TranslationKeyFactory('common@passwordIsRequired'),
+
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
             new TranslationKeyFactory('entityNotFound@translationKey'),
@@ -28,6 +31,12 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('auth@successAuthorization'),
 
             new TranslationKeyFactory('registration@successRegistration'),
+            new TranslationKeyFactory('registration@incorrectPassword'),
+            new TranslationKeyFactory('registration@minPasswordLength'),
+            new TranslationKeyFactory('registration@invalidConfirmPassword'),
+
+            new TranslationKeyFactory('userProfile@pseudonymIsRequired'),
+            new TranslationKeyFactory('userProfile@maxPseudonymLength'),
 
             new TranslationKeyFactory('language@minCodeLength'),
             new TranslationKeyFactory('language@maxCodeLength'),

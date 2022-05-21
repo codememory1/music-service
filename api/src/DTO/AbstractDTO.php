@@ -202,7 +202,9 @@ abstract class AbstractDTO implements DTOInterface
 
             $this->{$propertyName} = $expectedKeyValue;
 
-            $this->setterCallInEntityHandler($propertyName);
+            if (null !== $this->entity) {
+                $this->setterCallInEntityHandler($propertyName);   
+            }
         }
     }
 
