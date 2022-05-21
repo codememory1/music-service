@@ -43,74 +43,74 @@ final class UpdateLanguageTest extends AbstractApiTestCase
         $this->assertApiMessage('Язык не найден');
     }
 
-    /**
-     * @return void
-     */
-    public function testValidation(): void
-    {
-        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
-            'code' => null,
-            'original_title' => null
-        ]);
-
-        $this->assertApiResponse();
-        $this->assertApiStatusCode(422);
-        $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION->name);
-        $this->assertApiMessage([
-            'code' => 'Длина кода не должна быть меньше 2-х символов',
-            'originalTitle' => 'Название языка обязательно к заполнению'
-        ]);
-    }
-
-    /**
-     * @return void
-     */
-    public function testMaxCodeLength(): void
-    {
-        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
-            'code' => 'russian',
-            'original_title' => 'Название языка'
-        ]);
-
-        $this->assertApiResponse();
-        $this->assertApiStatusCode(422);
-        $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION->name);
-        $this->assertApiMessage([
-            'code' => 'Длина кода не должна превышать 5 символов'
-        ]);
-    }
-
-    /**
-     * @return void
-     */
-    public function testExistCode(): void
-    {
-        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
-            'code' => 'en',
-            'original_title' => 'English'
-        ]);
-
-        $this->assertApiResponse();
-        $this->assertApiStatusCode(409);
-        $this->assertApiType(ResponseTypeEnum::EXIST->name);
-        $this->assertApiMessage([
-            'code' => 'Данный код языка уже существует'
-        ]);
-    }
-
-    /**
-     * @return void
-     */
-    public function testSuccessUpdate(): void
-    {
-        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
-            'code' => 'ru',
-            'original_title' => 'Русский 2'
-        ]);
-
-        $this->assertApiResponse();
-        $this->assertApiStatusCode(200);
-        $this->assertApiType(ResponseTypeEnum::UPDATE->name);
-        $this->assertApiMessage('Язык успешно обновлен');
-    }
+//    /**
+//     * @return void
+//     */
+//    public function testValidation(): void
+//    {
+//        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
+//            'code' => null,
+//            'original_title' => null
+//        ]);
+//
+//        $this->assertApiResponse();
+//        $this->assertApiStatusCode(422);
+//        $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION->name);
+//        $this->assertApiMessage([
+//            'code' => 'Длина кода не должна быть меньше 2-х символов',
+//            'originalTitle' => 'Название языка обязательно к заполнению'
+//        ]);
+//    }
+//
+//    /**
+//     * @return void
+//     */
+//    public function testMaxCodeLength(): void
+//    {
+//        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
+//            'code' => 'russian',
+//            'original_title' => 'Название языка'
+//        ]);
+//
+//        $this->assertApiResponse();
+//        $this->assertApiStatusCode(422);
+//        $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION->name);
+//        $this->assertApiMessage([
+//            'code' => 'Длина кода не должна превышать 5 символов'
+//        ]);
+//    }
+//
+//    /**
+//     * @return void
+//     */
+//    public function testExistCode(): void
+//    {
+//        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
+//            'code' => 'en',
+//            'original_title' => 'English'
+//        ]);
+//
+//        $this->assertApiResponse();
+//        $this->assertApiStatusCode(409);
+//        $this->assertApiType(ResponseTypeEnum::EXIST->name);
+//        $this->assertApiMessage([
+//            'code' => 'Данный код языка уже существует'
+//        ]);
+//    }
+//
+//    /**
+//     * @return void
+//     */
+//    public function testSuccessUpdate(): void
+//    {
+//        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
+//            'code' => 'ru',
+//            'original_title' => 'Русский 2'
+//        ]);
+//
+//        $this->assertApiResponse();
+//        $this->assertApiStatusCode(200);
+//        $this->assertApiType(ResponseTypeEnum::UPDATE->name);
+//        $this->assertApiMessage('Язык успешно обновлен');
+//    }
 }

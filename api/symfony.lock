@@ -17,9 +17,6 @@
     "codememory/support": {
         "version": "v1.2.1"
     },
-    "composer/package-versions-deprecated": {
-        "version": "1.11.99.5"
-    },
     "composer/pcre": {
         "version": "3.0.0"
     },
@@ -37,9 +34,6 @@
             "version": "4.0",
             "ref": "56eaa387b5e48ebcc7c95a893b47dfa1ad51449c"
         }
-    },
-    "defuse/php-encryption": {
-        "version": "v2.3.1"
     },
     "doctrine/annotations": {
         "version": "1.13",
@@ -231,9 +225,6 @@
     },
     "nikic/php-parser": {
         "version": "v4.13.2"
-    },
-    "paragonie/random_compat": {
-        "version": "v9.99.100"
     },
     "phar-io/manifest": {
         "version": "2.0.3"
@@ -625,9 +616,6 @@
             "version": "4.4",
             "ref": "b46e4f8f1adb2864f0aa9c0ff57aea3324a07199"
         }
-    },
-    "symfony/serializer": {
-        "version": "v6.0.8"
     },
     "symfony/service-contracts": {
         "version": "v3.0.0"

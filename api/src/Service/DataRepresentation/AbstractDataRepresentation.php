@@ -104,7 +104,7 @@ abstract class AbstractDataRepresentation
      */
     private function getSettings(): array
     {
-        $settings = $this->request->request->query->all()[$this->keyName] ?? false;
+        $settings = $this->request->request?->query->all()[$this->keyName] ?? false;
 
         if (false === $settings || false === is_array($settings)) {
             return [];
