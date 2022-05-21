@@ -8,7 +8,7 @@
             "type": "string"
         },
         "message": {
-            "type": ["array", "string"],
+            "type": ["object", "string"],
             "items": {}
         },
         "data": {
