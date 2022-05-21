@@ -60,7 +60,13 @@ services:
       resource: '../src/Service/'
       public: true
       exclude:
-        - '../src/Service/AbstractService.php'
+        - '../src/Service/DataRepresentation/AbstractDataRepresentation.php'
+
+    App\Service\DataRepresentation\:
+      resource: '../src/Service/DataRepresentation/'
+      public: true
+      exclude:
+        - '../src/Service/DataRepresentation/AbstractDataRepresentation.php'
 
     App\DTO\:
       resource: '../src/DTO/*.php'
