@@ -13,6 +13,7 @@ use JetBrains\PhpStorm\Pure;
  * Class RolePermissionKeyDataFixture.
  *
  * @package App\DataFixtures
+ * @template-extends AbstractDataFixture<RolePermissionKey>
  *
  * @author  Codememory
  */
@@ -31,7 +32,6 @@ final class RolePermissionKeyDataFixture extends AbstractDataFixture implements 
      */
     public function load(ObjectManager $manager): void
     {
-        /** @var RolePermissionKey $entity */
         foreach ($this->getEntities() as $entity) {
             $manager->persist($entity);
 

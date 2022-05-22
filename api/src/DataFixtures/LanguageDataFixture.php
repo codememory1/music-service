@@ -11,6 +11,7 @@ use JetBrains\PhpStorm\Pure;
  * Class LanguageDataFixture.
  *
  * @package App\DataFixtures
+ * @template-extends AbstractDataFixture<Language>
  *
  * @author  Codememory
  */
@@ -36,7 +37,6 @@ final class LanguageDataFixture extends AbstractDataFixture
      */
     public function load(ObjectManager $manager): void
     {
-        /** @var Language $entity */
         foreach ($this->getEntities() as $entity) {
             $manager->persist($entity);
 

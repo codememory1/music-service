@@ -11,6 +11,7 @@ use JetBrains\PhpStorm\Pure;
  * Class TranslationKeyDataFixture.
  *
  * @package App\DataFixtures
+ * @template-extends AbstractDataFixture<TranslationKey>
  *
  * @author  Codememory
  */
@@ -63,7 +64,6 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
      */
     public function load(ObjectManager $manager): void
     {
-        /** @var TranslationKey $entity */
         foreach ($this->getEntities() as $entity) {
             $manager->persist($entity);
 

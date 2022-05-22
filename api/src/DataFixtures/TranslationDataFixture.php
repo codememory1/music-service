@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\TranslationFactory;
+use App\Entity\Translation;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -11,6 +12,7 @@ use JetBrains\PhpStorm\Pure;
  * Class TranslationDataFixture.
  *
  * @package App\DataFixtures
+ * @template-extends AbstractDataFixture<Translation>
  *
  * @author  Codememory
  */
