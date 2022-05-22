@@ -12,7 +12,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Role
+ * Class Role.
  *
  * @package App\Entity
  *
@@ -24,6 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Role implements EntityInterface
 {
     use IdentifierTrait;
+
     use TimestampTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
@@ -50,7 +51,7 @@ class Role implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getKey(): ?string
     {
@@ -58,7 +59,7 @@ class Role implements EntityInterface
     }
 
     /**
-     * @param string|null $key
+     * @param null|string $key
      *
      * @return $this
      */
@@ -70,7 +71,7 @@ class Role implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getTitle(): ?string
     {
@@ -85,7 +86,7 @@ class Role implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getShortDescription(): ?string
     {
@@ -93,7 +94,7 @@ class Role implements EntityInterface
     }
 
     /**
-     * @param string|null $shortDescriptionTranslationKey
+     * @param null|string $shortDescriptionTranslationKey
      *
      * @return $this
      */

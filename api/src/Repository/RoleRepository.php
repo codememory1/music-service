@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Role;
 
 /**
- * Class RoleRepository
+ * Class RoleRepository.
  *
  * @package App\Repository
  * @template-extends AbstractRepository<Role>

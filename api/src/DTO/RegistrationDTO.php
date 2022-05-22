@@ -2,11 +2,11 @@
 
 namespace App\DTO;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AppAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class RegistrationDTO
+ * Class RegistrationDTO.
  *
  * @package App\DTO
  *
@@ -39,5 +39,4 @@ class RegistrationDTO extends AbstractDTO
         $this->addExpectKey('password');
         $this->addExpectKey('password_confirm', 'passwordConfirm');
     }
-
 }

@@ -3,13 +3,13 @@
 namespace App\Enum;
 
 /**
- * Enum RolePermissionEnum.
+ * Enum UserProfileStatusEnum.
  *
  * @package App\Enum
  *
  * @author  Codememory
  */
-enum RolePermissionEnum
+enum UserProfileStatusEnum
 {
-    case CREATE_LANGUAGE;
+    case HIDE;
 }

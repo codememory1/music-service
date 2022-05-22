@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\RolePermission;
 
 /**
- * Class RolePermissionRepository
+ * Class RolePermissionRepository.
  *
  * @package App\Repository
  * @template-extends AbstractRepository<RolePermission>

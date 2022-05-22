@@ -45,6 +45,15 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('language@successUpdate'),
             new TranslationKeyFactory('language@successDelete'),
             new TranslationKeyFactory('language@codeExist'),
+
+            new TranslationKeyFactory('user@existByEmail'),
+
+            new TranslationKeyFactory('userProfile@existByUser'),
+
+            new TranslationKeyFactory('rolePermission@createLanguage'),
+
+            new TranslationKeyFactory('role@developer'),
+            new TranslationKeyFactory('role@developerDescription'),
         ]);
     }
 

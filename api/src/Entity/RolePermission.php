@@ -9,7 +9,7 @@ use App\Repository\RolePermissionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class RolePermission
+ * Class RolePermission.
  *
  * @package App\Entity
  *
@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 class RolePermission implements EntityInterface
 {
     use IdentifierTrait;
+
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'permissions')]
@@ -31,7 +32,7 @@ class RolePermission implements EntityInterface
     private ?RolePermissionKey $rolePermissionKey = null;
 
     /**
-     * @return Role|null
+     * @return null|Role
      */
     public function getRole(): ?Role
     {
@@ -39,7 +40,7 @@ class RolePermission implements EntityInterface
     }
 
     /**
-     * @param Role|null $role
+     * @param null|Role $role
      *
      * @return $this
      */
@@ -51,7 +52,7 @@ class RolePermission implements EntityInterface
     }
 
     /**
-     * @return RolePermissionKey|null
+     * @return null|RolePermissionKey
      */
     public function getPermissionKey(): ?RolePermissionKey
     {
@@ -59,7 +60,7 @@ class RolePermission implements EntityInterface
     }
 
     /**
-     * @param RolePermissionKey|null $rolePermissionKey
+     * @param null|RolePermissionKey $rolePermissionKey
      *
      * @return $this
      */

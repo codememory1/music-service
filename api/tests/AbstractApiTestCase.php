@@ -2,10 +2,10 @@
 
 namespace App\Tests;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Ergebnis\Json\Pointer\JsonPointer;
 use Ergebnis\Json\SchemaValidator\Json;
 use Ergebnis\Json\SchemaValidator\SchemaValidator;
-use Doctrine\ORM\EntityManagerInterface;
 use const JSON_ERROR_NONE;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

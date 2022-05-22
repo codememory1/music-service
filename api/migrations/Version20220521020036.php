@@ -53,7 +53,6 @@ final class Version20220521020036 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE role_permissions DROP CONSTRAINT FK_1FBA94E684273527');
         $this->addSql('ALTER TABLE role_permissions DROP CONSTRAINT FK_1FBA94E6D60322AC');
         $this->addSql('DROP SEQUENCE role_permission_keys_id_seq CASCADE');

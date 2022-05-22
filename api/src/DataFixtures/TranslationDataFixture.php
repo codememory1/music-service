@@ -36,7 +36,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'registration@invalidConfirmPassword', 'Некорректное подтверждение пароля'),
 
             new TranslationFactory('ru', 'userProfile@pseudonymIsRequired', 'Псевдоним обязательный к заполнению'),
-            new TranslationFactory('ru', 'userProfile@maxPseudonymLength', 'Псевдоним не должен превышать 25 символов'),
+            new TranslationFactory('ru', 'userProfile@maxPseudonymLength', 'Псевдоним не должен превышать 40 символов'),
 
             new TranslationFactory('ru', 'language@minCodeLength', 'Длина кода не должна быть меньше 2-х символов'),
             new TranslationFactory('ru', 'language@maxCodeLength', 'Длина кода не должна превышать 5 символов'),
@@ -45,6 +45,15 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'language@successUpdate', 'Язык успешно обновлен'),
             new TranslationFactory('ru', 'language@successDelete', 'Язык успешно удален'),
             new TranslationFactory('ru', 'language@codeExist', 'Данный код языка уже существует'),
+
+            new TranslationFactory('ru', 'user@existByEmail', 'Пользователь с данным E-mail уже существует'),
+
+            new TranslationFactory('ru', 'userProfile@existByUser', 'Для данного пользователя профиль уже существует'),
+
+            new TranslationFactory('ru', 'rolePermission@createLanguage', 'Создание языка'),
+
+            new TranslationFactory('ru', 'role@developer', 'Разработчик'),
+            new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
         ]);
     }
 
