@@ -20,7 +20,7 @@ use JetBrains\PhpStorm\Pure;
 final class RolePermissionDataFixture extends AbstractDataFixture implements DependentFixtureInterface
 {
     #[Pure]
-    protected function __construct()
+    public function __construct()
     {
         parent::__construct([
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::CREATE_LANGUAGE)

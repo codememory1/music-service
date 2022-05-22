@@ -19,10 +19,15 @@ use JetBrains\PhpStorm\Pure;
 final class RoleDataFixture extends AbstractDataFixture implements DependentFixtureInterface
 {
     #[Pure]
-    protected function __construct()
+    public function __construct()
     {
         parent::__construct([
-            new RoleFactory(RoleEnum::DEVELOPER, 'role@developer', 'role@developerDescription')
+            new RoleFactory(RoleEnum::FOUNDER, 'role@founder', 'role@founderDescription'),
+            new RoleFactory(RoleEnum::DEVELOPER, 'role@developer', 'role@developerDescription'),
+            new RoleFactory(RoleEnum::ADMIN, 'role@admin', 'role@adminDescription'),
+            new RoleFactory(RoleEnum::SUPPORT, 'role@support', 'role@supportDescription'),
+            new RoleFactory(RoleEnum::MUSIC_MANAGER, 'role@musicManager', 'role@musicManagerDescription'),
+            new RoleFactory(RoleEnum::USER, 'role@user', 'role@userDescription'),
         ]);
     }
 

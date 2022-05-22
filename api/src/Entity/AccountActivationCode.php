@@ -38,11 +38,11 @@ class AccountActivationCode implements EntityInterface
     #[ORM\Column(type: CronTimeType::NAME, options: [
         'comment' => 'Code lifetime in CronTime format'
     ])]
-    private ?int $ttl = null;
+    private string|int|null $ttl = null;
 
     public function __construct()
     {
-        $this->code = mt_rand(000000, 999999);
+        $this->generateCode();
     }
 
     /**
@@ -86,9 +86,19 @@ class AccountActivationCode implements EntityInterface
     }
 
     /**
-     * @return null|string
+     * @return $this
      */
-    public function getTtl(): ?string
+    public function generateCode(): self
+    {
+        $this->code = mt_rand(000000, 999999);
+
+        return $this;
+    }
+
+    /**
+     * @return null|int
+     */
+    public function getTtl(): ?int
     {
         return $this->ttl;
     }

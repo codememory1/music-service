@@ -3,23 +3,23 @@
 namespace App\Security\Register;
 
 use App\DTO\RegistrationDTO;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\UserProfile;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\RoleEnum;
 use App\Enum\UserProfileStatusEnum;
 use App\Enum\UserStatusEnum;
-use App\Rest\Http\Exceptions\ApiResponseException;
 use App\Service\AbstractService;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class Register.
+ * Class Registrar.
  *
- * @package App\Security\Register
+ * @package App\Security\Registration
  *
  * @author  Codememory
  */
-class Register extends AbstractService
+class Registrar extends AbstractService
 {
     /**
      * @var null|ReRegister
@@ -31,28 +31,22 @@ class Register extends AbstractService
      *
      * @return void
      */
+    #[Required]
     public function setReRegister(ReRegister $reRegister): void
     {
         $this->reRegister = $reRegister;
     }
 
-    public function register(RegistrationDTO $registrationDTO): JsonResponse
+    /**
+     * @param RegistrationDTO $registrationDTO
+     * @param null|User       $userByEmail
+     *
+     * @return User
+     */
+    public function make(RegistrationDTO $registrationDTO, ?User $userByEmail): User
     {
-        if (false === $this->validate($registrationDTO)) {
-            return $this->validator->getResponse();
-        }
-
-        $finedUser = $this->em->getRepository(User::class)->findOneBy([
-            'email' => $registrationDTO->email
-        ]);
-
-        if (null !== $finedUser && false === $finedUser->isStatus(UserStatusEnum::NOT_ACTIVE)) {
-            throw new ApiResponseException(409, ResponseTypeEnum::EXIST, 'user@existByEmail');
-        }
-
-        // Resign if there is a non-activated user
-        if (true === $finedUser?->isStatus(UserStatusEnum::NOT_ACTIVE)) {
-            $userEntity = $this->collectUserEntity($finedUser, $registrationDTO);
+        if (true === $userByEmail?->isStatus(UserStatusEnum::NOT_ACTIVE)) {
+            $userEntity = $this->collectUserEntity($userByEmail, $registrationDTO);
 
             $this->reRegister->make($registrationDTO, $userEntity);
         } else {
@@ -60,10 +54,11 @@ class Register extends AbstractService
             $userEntity->setProfile($this->collectUserProfileEntity($registrationDTO));
 
             $this->em->persist($userEntity);
-            $this->em->flush();
         }
 
-        return $this->responseCollection->successRegistration([]);
+        $this->em->flush();
+
+        return $userEntity;
     }
 
     /**
@@ -76,6 +71,10 @@ class Register extends AbstractService
     {
         $userEntity->setEmail($registrationDTO->email);
         $userEntity->setPassword($registrationDTO->password);
+        $userEntity->setRole($this->em->getRepository(Role::class)->findOneBy([
+            'key' => RoleEnum::USER->name
+        ]));
+        $userEntity->setStatus(UserStatusEnum::NOT_ACTIVE);
 
         return $userEntity;
     }

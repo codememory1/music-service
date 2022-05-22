@@ -19,7 +19,7 @@ use JetBrains\PhpStorm\Pure;
 final class RolePermissionKeyDataFixture extends AbstractDataFixture implements DependentFixtureInterface
 {
     #[Pure]
-    protected function __construct()
+    public function __construct()
     {
         parent::__construct([
             new RolePermissionKeyFactory(RolePermissionEnum::CREATE_LANGUAGE, 'rolePermission@createLanguage')

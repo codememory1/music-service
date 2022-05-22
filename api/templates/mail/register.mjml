@@ -3,11 +3,11 @@
         <mj-section>
             <mj-column>
                 <mj-text>
-                    <h1>Подверждение регистрации</h1>
+                    <h1>Регистрация прошла успешно</h1>
                 </mj-text>
 
                 <mj-text>
-                    <a href="http://music-service/activate-account/{{ token }}">Подтвердить регистрацию</a>
+                    Код для активации аккаунта: {{ accountActivationCode.getCode() }}
                 </mj-text>
             </mj-column>
         </mj-section>

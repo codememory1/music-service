@@ -44,6 +44,14 @@ services:
       tags:
         - { name: kernel.event_listener, event: kernel.exception }
 
+    App\EventListener\Registration\CreateAccountActivationCodeListener:
+      tags:
+        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 1 }
+
+    App\EventListener\Registration\SendAccountActivationCodeListener:
+      tags:
+        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration }
+
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
       public: true

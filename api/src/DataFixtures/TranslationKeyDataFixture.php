@@ -34,6 +34,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('registration@incorrectPassword'),
             new TranslationKeyFactory('registration@minPasswordLength'),
             new TranslationKeyFactory('registration@invalidConfirmPassword'),
+            new TranslationKeyFactory('registration@registration'),
 
             new TranslationKeyFactory('userProfile@pseudonymIsRequired'),
             new TranslationKeyFactory('userProfile@maxPseudonymLength'),

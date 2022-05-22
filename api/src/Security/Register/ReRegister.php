@@ -9,7 +9,7 @@ use App\Service\AbstractService;
 /**
  * Class ReRegister.
  *
- * @package App\Security\Register
+ * @package App\Security\Registration
  *
  * @author  Codememory
  */
@@ -24,7 +24,5 @@ class ReRegister extends AbstractService
     public function make(RegistrationDTO $registrationDTO, User $user): void
     {
         $user->getProfile()->setPseudonym($registrationDTO->pseudonym);
-
-        $this->em->flush();
     }
 }

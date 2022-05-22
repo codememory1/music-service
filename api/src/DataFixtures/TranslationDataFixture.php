@@ -34,6 +34,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'registration@incorrectPassword', 'Пароль может состоять только из букв, цифр и спец., символов'),
             new TranslationFactory('ru', 'registration@minPasswordLength', 'Пароль должен состоять не меньше чем из 8-ми символов'),
             new TranslationFactory('ru', 'registration@invalidConfirmPassword', 'Некорректное подтверждение пароля'),
+            new TranslationFactory('ru', 'registration@registration', 'Регистрация'),
 
             new TranslationFactory('ru', 'userProfile@pseudonymIsRequired', 'Псевдоним обязательный к заполнению'),
             new TranslationFactory('ru', 'userProfile@maxPseudonymLength', 'Псевдоним не должен превышать 40 символов'),

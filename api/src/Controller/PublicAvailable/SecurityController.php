@@ -4,7 +4,7 @@ namespace App\Controller\PublicAvailable;
 
 use App\DTO\RegistrationDTO;
 use App\Rest\Controller\AbstractRestController;
-use App\Security\Register\Register;
+use App\Security\Register\Registration;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,13 +19,13 @@ class SecurityController extends AbstractRestController
 {
     /**
      * @param RegistrationDTO $registrationDTO
-     * @param Register        $register
+     * @param Registration    $register
      *
      * @return JsonResponse
      */
     #[Route('/register', methods: 'POST')]
-    public function registration(RegistrationDTO $registrationDTO, Register $register): JsonResponse
+    public function registration(RegistrationDTO $registrationDTO, Registration $register): JsonResponse
     {
-        return $register->register($registrationDTO->collect());
+        return $register->handle($registrationDTO->collect());
     }
 }
