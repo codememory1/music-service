@@ -95,7 +95,7 @@ class ResponseCollection
      *
      * @return JsonResponse
      */
-    public function successRegistration(array $data, array $headers = []): JsonResponse
+    public function successRegistration(array $data = [], array $headers = []): JsonResponse
     {
         $this->initResponseSchema(200, ResponseTypeEnum::SUCCESS_REGISTRATION, 'registration@successRegistration', $data);
 

@@ -24,7 +24,7 @@ abstract class AbstractDataFixture extends Fixture
     /**
      * @param array<DataFixtureFactoryInterface> $factories
      */
-    protected function __construct(array $factories)
+    public function __construct(array $factories)
     {
         $this->factories = $factories;
     }

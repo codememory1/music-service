@@ -3,13 +3,13 @@
 namespace App\Enum;
 
 /**
- * Enum RolePermissionEnum.
+ * Enum EventEnum.
  *
  * @package App\Enum
  *
  * @author  Codememory
  */
-enum RolePermissionEnum
+enum EventEnum: string
 {
-    case CREATE_LANGUAGE;
+    case REGISTER = 'app.registration';
 }
