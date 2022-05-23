@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\DataFixtures\Interfaces\DataFixtureFactoryInterface;
-use App\Entity\Interfaces\EntityInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -11,6 +10,7 @@ use Doctrine\Persistence\ObjectManager;
  * Class AbstractDataFixture.
  *
  * @package App\DataFixtures
+ * @template Entity as mixed
  *
  * @author  Codememory
  */
@@ -37,7 +37,7 @@ abstract class AbstractDataFixture extends Fixture
     abstract public function load(ObjectManager $manager): void;
 
     /**
-     * @return EntityInterface[]
+     * @return array<Entity>
      */
     protected function getEntities(): array
     {

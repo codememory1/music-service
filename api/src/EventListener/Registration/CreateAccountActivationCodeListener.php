@@ -37,14 +37,14 @@ class CreateAccountActivationCodeListener
     {
         $accountActivationCodeRepository = $this->em->getRepository(AccountActivationCode::class);
         $finedAccountActivationCode = $accountActivationCodeRepository->findOneBy([
-            'user' => $event->getUser()
+            'user' => $event->user
         ]);
         $accountActivationCodeEntity = new AccountActivationCode();
 
         if (null !== $finedAccountActivationCode) {
             $finedAccountActivationCode->generateCode();
         } else {
-            $accountActivationCodeEntity->setUser($event->getUser());
+            $accountActivationCodeEntity->setUser($event->user);
             $accountActivationCodeEntity->setTtl('1h');
 
             $this->em->persist($accountActivationCodeEntity);

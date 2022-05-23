@@ -37,18 +37,23 @@ class UpdateSessionService extends AbstractService
     /**
      * @param UserDTO             $userDTO
      * @param User                $user
+     * @param UserSession|null    $userSession
      * @param UserSessionTypeEnum $type
      *
      * @return UserSession
      */
-    public function make(UserDTO $userDTO, UserSession $userSession, UserSessionTypeEnum $type): UserSession
+    public function make(UserDTO $userDTO, User $user, ?UserSession $userSession = null, UserSessionTypeEnum $type = UserSessionTypeEnum::TEMP): UserSession
     {
         $collectedUserSessionEntity = $this->collectorSessionService->collect(
             $userDTO,
-            $userSession->getUser(),
+            $user,
             $type,
             $userSession
         );
+
+        if (null === $collectedUserSessionEntity->getId()) {
+            $this->em->persist($collectedUserSessionEntity);
+        }
 
         $this->em->flush();
 
