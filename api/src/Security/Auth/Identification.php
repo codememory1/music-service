@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class Identification
+ * Class Identification.
  *
  * @package App\Security\Auth
  *
@@ -21,7 +21,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 class Identification extends AbstractService
 {
     /**
-     * @var EventDispatcherInterface|null
+     * @var null|EventDispatcherInterface
      */
     private ?EventDispatcherInterface $eventDispatcher = null;
 
@@ -39,7 +39,7 @@ class Identification extends AbstractService
     /**
      * @param AuthorizationDTO $authorizationDTO
      *
-     * @return User|null
+     * @return null|User
      */
     public function identify(AuthorizationDTO $authorizationDTO): ?User
     {

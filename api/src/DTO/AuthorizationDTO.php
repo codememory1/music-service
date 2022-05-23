@@ -5,7 +5,7 @@ namespace App\DTO;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class AuthorizationDTO
+ * Class AuthorizationDTO.
  *
  * @package App\DTO
  *

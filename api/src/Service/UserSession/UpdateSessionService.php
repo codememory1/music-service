@@ -37,7 +37,7 @@ class UpdateSessionService extends AbstractService
     /**
      * @param UserDTO             $userDTO
      * @param User                $user
-     * @param UserSession|null    $userSession
+     * @param null|UserSession    $userSession
      * @param UserSessionTypeEnum $type
      *
      * @return UserSession

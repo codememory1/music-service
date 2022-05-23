@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class Authorization
+ * Class Authorization.
  *
  * @package App\Security\Auth
  *
@@ -20,12 +20,12 @@ use Symfony\Contracts\Service\Attribute\Required;
 class Authorization extends AbstractService
 {
     /**
-     * @var AuthorizationToken|null
+     * @var null|AuthorizationToken
      */
     private ?AuthorizationToken $authorizationToken = null;
 
     /**
-     * @var EventDispatcherInterface|null 
+     * @var null|EventDispatcherInterface
      */
     private ?EventDispatcherInterface $eventDispatcher = null;
 
@@ -65,7 +65,7 @@ class Authorization extends AbstractService
             $authenticatedUser,
             $this->authorizationToken
         ), EventEnum::AUTHORIZATION->value);
-        
+
         return $this->responseCollection->successAuthorization([
             'access_token' => $accessToken,
             'refresh_token' => $refreshToken

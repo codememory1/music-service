@@ -6,7 +6,7 @@ use App\DTO\AuthorizationDTO;
 use App\Entity\User;
 
 /**
- * Class UserAuthenticationInAuthEvent
+ * Class UserAuthenticationInAuthEvent.
  *
  * @package App\Event
  *

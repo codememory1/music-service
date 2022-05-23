@@ -7,7 +7,7 @@ use App\Service\JwtTokenGenerator;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class AuthorizationToken
+ * Class AuthorizationToken.
  *
  * @package App\Security\Auth
  *
@@ -16,17 +16,17 @@ use Symfony\Contracts\Service\Attribute\Required;
 class AuthorizationToken
 {
     /**
-     * @var JwtTokenGenerator|null
+     * @var null|JwtTokenGenerator
      */
     private ?JwtTokenGenerator $jwtTokenGenerator = null;
 
     /**
-     * @var string|null 
+     * @var null|string
      */
     private ?string $accessToken = null;
 
     /**
-     * @var string|null 
+     * @var null|string
      */
     private ?string $refreshToken = null;
 
@@ -53,12 +53,12 @@ class AuthorizationToken
             'jwt.access_private_key',
             'jwt.access_ttl'
         );
-        
+
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getAccessToken(): ?string
     {
@@ -77,12 +77,12 @@ class AuthorizationToken
             'jwt.refresh_private_key',
             'jwt.refresh_ttl'
         );
-        
+
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getRefreshToken(): ?string
     {

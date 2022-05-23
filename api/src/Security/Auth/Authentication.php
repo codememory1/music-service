@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class Authentication
+ * Class Authentication.
  *
  * @package App\Security\Auth
  *
@@ -20,12 +20,12 @@ use Symfony\Contracts\Service\Attribute\Required;
 class Authentication
 {
     /**
-     * @var HashingService|null
+     * @var null|HashingService
      */
     private ?HashingService $hashingService = null;
 
     /**
-     * @var EventDispatcherInterface|null 
+     * @var null|EventDispatcherInterface
      */
     private ?EventDispatcherInterface $eventDispatcher = null;
 
@@ -70,7 +70,7 @@ class Authentication
             $authorizationDTO,
             $identifiedUser
         ));
-        
+
         return $identifiedUser;
     }
 }

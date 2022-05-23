@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Security\Auth\AuthorizationToken;
 
 /**
- * Class UserAuthorizationEvent
+ * Class UserAuthorizationEvent.
  *
  * @package App\Event
  *
