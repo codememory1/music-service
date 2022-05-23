@@ -31,7 +31,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
     - name: Install Dependencies
-      run: composer install --no-scripts --no-progress --prefer-dist
+      run: composer install --working-dir=api --no-scripts --no-progress --prefer-dist
     - name: Create Database
       run: |
         mkdir -p data
