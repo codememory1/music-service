@@ -13,6 +13,7 @@ use JetBrains\PhpStorm\Pure;
  * Class RoleDataFixture.
  *
  * @package App\DataFixtures
+ * @template-extends AbstractDataFixture<Role>
  *
  * @author  Codememory
  */
@@ -36,7 +37,6 @@ final class RoleDataFixture extends AbstractDataFixture implements DependentFixt
      */
     public function load(ObjectManager $manager): void
     {
-        /** @var Role $entity */
         foreach ($this->getEntities() as $entity) {
             $manager->persist($entity);
 

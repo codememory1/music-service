@@ -12,4 +12,7 @@ namespace App\Enum;
 enum EventEnum: string
 {
     case REGISTER = 'app.registration';
+    case IDENTIFICATION_IN_AUTH = 'app.auth.identification';
+    case AUTHENTICATION_IN_AUTH = 'app.auth.authentication';
+    case AUTHORIZATION = 'app.auth';
 }

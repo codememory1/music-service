@@ -50,7 +50,15 @@ services:
 
     App\EventListener\Registration\SendAccountActivationCodeListener:
       tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration }
+        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priotiy: 0 }
+
+    App\EventListener\Registration\CreateRegistrationSessionListener:
+      tags:
+        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priotity: -1 }
+
+    App\EventListener\Authorization\CreateTempSessionListener:
+      tags:
+        - { name: kernel.event_listener, event: app.auth, method: onAuth, priority: 1 }
 
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
