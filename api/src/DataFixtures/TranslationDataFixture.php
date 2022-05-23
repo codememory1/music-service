@@ -24,6 +24,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
         parent::__construct([
             new TranslationFactory('ru', 'common@incorrectEmail', 'Некорректный E-mail'),
             new TranslationFactory('ru', 'common@passwordIsRequired', 'Пароль обязательный к заполнению'),
+            new TranslationFactory('ru', 'common@incorrectPassword', 'Неверный пароль'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -57,6 +58,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
+
+            new TranslationFactory('ru', 'user@failedToIdentify', 'Не удалось идентифицировать пользователя'),
         ]);
     }
 

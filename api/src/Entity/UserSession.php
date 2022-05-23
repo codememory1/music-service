@@ -180,7 +180,7 @@ class UserSession implements EntityInterface
     /**
      * @return null|bool
      */
-    public function isIsActive(): ?bool
+    public function isActive(): ?bool
     {
         return $this->isActive;
     }

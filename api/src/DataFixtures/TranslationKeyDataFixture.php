@@ -23,6 +23,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
         parent::__construct([
             new TranslationKeyFactory('common@incorrectEmail'),
             new TranslationKeyFactory('common@passwordIsRequired'),
+            new TranslationKeyFactory('common@incorrectPassword'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
@@ -56,6 +57,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
+
+            new TranslationKeyFactory('user@failedToIdentify'),
         ]);
     }
 

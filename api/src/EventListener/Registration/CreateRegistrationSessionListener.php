@@ -66,13 +66,13 @@ class CreateRegistrationSessionListener
     {
         $userSessionRepository = $this->em->getRepository(UserSession::class);
         $finedUserSession = $userSessionRepository->findOneBy([
-            'user' => $event->getUser()
+            'user' => $event->user
         ]);
 
         if (null !== $finedUserSession) {
-            $this->updateUserSessionService->make($this->userDTO, $finedUserSession, UserSessionTypeEnum::REGISTRATION);
+            $this->updateUserSessionService->make($this->userDTO, $event->user, $finedUserSession, UserSessionTypeEnum::REGISTRATION);
         } else {
-            $this->createUserSessionService->make($this->userDTO, $event->getUser(), UserSessionTypeEnum::REGISTRATION);
+            $this->createUserSessionService->make($this->userDTO, $event->user, type: UserSessionTypeEnum::REGISTRATION);
         }
     }
 }
