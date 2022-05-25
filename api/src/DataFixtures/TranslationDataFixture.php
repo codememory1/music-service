@@ -28,6 +28,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@dataOutput', 'Вывод данных'),
             new TranslationFactory('ru', 'common@invalidRefreshToken', 'Не валидный Refresh-Token'),
             new TranslationFactory('ru', 'common@refreshTokenIsRequired', 'Не указан Refresh-Token'),
+            new TranslationFactory('ru', 'common@failedToUpdateAccessToken', 'Не удалось обновить Access-Token'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -65,6 +66,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'user@failedToIdentify', 'Не удалось идентифицировать пользователя'),
 
             new TranslationFactory('ru', 'token@successUpdate', 'Токен успешно обновлен'),
+
+            new TranslationFactory('ru', 'logout@successLogout', 'Вы успешно вышли из аккаунта'),
+            new TranslationFactory('ru', 'logout@failedToLogout', 'Не удалось выйти из аккаунта'),
         ]);
     }
 

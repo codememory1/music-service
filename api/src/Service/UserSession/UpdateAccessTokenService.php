@@ -2,9 +2,9 @@
 
 namespace App\Service\UserSession;
 
-use App\DTO\AccessTokenDTO;
+use App\DTO\RefreshTokenDTO;
 use App\Entity\UserSession;
-use App\Rest\Http\Exceptions\InvalidException;
+use App\Rest\Http\Exceptions\FailedException;
 use App\Security\Auth\AuthorizationToken;
 use App\Service\AbstractService;
 use DateTimeImmutable;
@@ -37,23 +37,23 @@ class UpdateAccessTokenService extends AbstractService
     }
 
     /**
-     * @param AccessTokenDTO $accessTokenDTO
+     * @param RefreshTokenDTO $refreshTokenDTO
      *
      * @return JsonResponse
      */
-    public function make(AccessTokenDTO $accessTokenDTO): JsonResponse
+    public function make(RefreshTokenDTO $refreshTokenDTO): JsonResponse
     {
-        if (false === $this->validate($accessTokenDTO)) {
+        if (false === $this->validate($refreshTokenDTO)) {
             return $this->validator->getResponse();
         }
 
         $userSessionRepository = $this->em->getRepository(UserSession::class);
         $finedUserSession = $userSessionRepository->findOneBy([
-            'refreshToken' => $accessTokenDTO->refreshToken
+            'refreshToken' => $refreshTokenDTO->refreshToken
         ]);
 
         if (null === $finedUserSession) {
-            throw InvalidException::invalidRefreshToken();
+            throw FailedException::failedToUpdateAccessToken();
         }
 
         $this->updateToken($finedUserSession);
