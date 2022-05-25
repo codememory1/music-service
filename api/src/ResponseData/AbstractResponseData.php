@@ -6,8 +6,9 @@ use App\Entity\Interfaces\EntityInterface;
 use App\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use App\ResponseData\Interfaces\ResponseDataInterface;
+use App\ResponseData\Interfaces\ValueHandlerInterface;
 use function is_array;
-use ReflectionAttribute;
+use JetBrains\PhpStorm\ArrayShape;
 use ReflectionClass;
 use ReflectionProperty;
 use Symfony\Component\DependencyInjection\ReverseContainer;
@@ -35,12 +36,12 @@ abstract class AbstractResponseData implements ResponseDataInterface
     /**
      * @var array
      */
-    private array $response = [];
+    private array $allowedProperties = [];
 
     /**
      * @var array
      */
-    private array $allowedProperties = [];
+    private array $response = [];
 
     /**
      * @param ReverseContainer $container
@@ -65,96 +66,118 @@ abstract class AbstractResponseData implements ResponseDataInterface
     /**
      * @return $this
      */
-    public function collect(): static
+    public function collect(): self
     {
-        $this->handleProperties();
+        $reflection = new ReflectionClass(static::class);
+        $properties = $reflection->getProperties();
 
-        foreach ($this->entities as $entity) {
-            $response = [];
+        foreach ($properties as $property) {
+            $propertyHandleResult = $this->handleProperty($property);
 
-            foreach ($this->allowedProperties as $allowedProperty) {
-                $nameToEntity = $allowedProperty['to_entity'];
-                $getterName = u("get_${nameToEntity}")->camel()->toString();
-
-                $response[$allowedProperty['to_response']] = $entity->$getterName();
+            if ($propertyHandleResult['isPassed']) {
+                $this->addAllowedProperty($property, $propertyHandleResult['interceptor']);
             }
-
-            $this->response[] = $response;
         }
+
+        $this->collectResponse();
 
         return $this;
     }
 
     /**
-     * @param bool $asFirst
+     * @return array
+     */
+    public function getResponse(): array
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param ReflectionProperty $reflectionProperty
      *
      * @return array
      */
-    public function getResponse(bool $asFirst = false): array
+    #[ArrayShape(['isPassed' => 'bool', 'interceptor' => 'array'])]
+    private function handleProperty(ReflectionProperty $reflectionProperty): array
     {
-        if ($asFirst) {
-            return $this->response[array_key_first($this->response)];
+        $result = [
+            'isPassed' => true,
+            'interceptor' => []
+        ];
+
+        foreach ($reflectionProperty->getAttributes() as $attribute) {
+            /** @var ConstraintInterface $constraint */
+            $constraint = $attribute->newInstance();
+            $constraintHandler = $this->getConstraintHandler($constraint);
+
+            if ($constraintHandler instanceof ConstraintHandlerInterface) {
+                if (false === $constraintHandler->handle($constraint)) {
+                    $result['isPassed'] = false;
+
+                    break;
+                }
+            }
+
+            if ($constraintHandler instanceof ValueHandlerInterface) {
+                $result['interceptor']['constraint'] = $constraint;
+                $result['interceptor']['handler'] = $constraintHandler;
+            }
         }
 
-        return $this->response;
+        return $result;
+    }
+
+    /**
+     * @param ReflectionProperty $reflectionProperty
+     * @param array              $interceptor
+     *
+     * @return void
+     */
+    private function addAllowedProperty(ReflectionProperty $reflectionProperty, array $interceptor = []): void
+    {
+        $propertyName = $reflectionProperty->getName();
+
+        $this->allowedProperties[] = [
+            'propertyName' => $propertyName,
+            'getterToEntity' => u("get_${propertyName}")->camel()->toString(),
+            'keyToResponse' => u($propertyName)->snake()->toString(),
+            'interceptor' => $interceptor
+        ];
     }
 
     /**
      * @return void
      */
-    private function handleProperties(): void
+    private function collectResponse(): void
     {
-        $reflection = new ReflectionClass(static::class);
+        foreach ($this->entities as $entity) {
+            $toArray = [];
 
-        foreach ($reflection->getProperties() as $property) {
-            if ($this->handleAttributes($property)) {
-                $this->addAllowedProperty($property);
+            foreach ($this->allowedProperties as $allowedProperty) {
+                $value = $entity->{$allowedProperty['getterToEntity']}();
+
+                if ([] !== $interceptor = $allowedProperty['interceptor']) {
+                    $value = $interceptor['handler']->handle($interceptor['constraint'], $this, $value);
+                }
+
+                $toArray[$allowedProperty['keyToResponse']] = empty($value) ? $this->{$allowedProperty['propertyName']} : $value;
+            }
+
+            if (1 === count($this->entities)) {
+                $this->response = $toArray;
+            } else {
+                $this->response[] = $toArray;
             }
         }
-    }
-
-    /**
-     * @param ReflectionAttribute $attribute
-     *
-     * @return bool
-     */
-    private function handleAttributes(ReflectionProperty $property): bool
-    {
-        foreach ($property->getAttributes() as $attribute) {
-            /** @var ConstraintInterface $constraint */
-            $constraint = $attribute->newInstance();
-
-            if (false === $this->getHandler($constraint)->handle($constraint)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
      * @param ConstraintInterface $constraint
      *
-     * @return ConstraintHandlerInterface
+     * @return object
      */
-    private function getHandler(ConstraintInterface $constraint): ConstraintHandlerInterface
+    private function getConstraintHandler(ConstraintInterface $constraint): object
     {
-        $namespaceHandler = $constraint->getHandler();
-
-        /** @var ConstraintHandlerInterface $service */
-        return $this->container->getService($namespaceHandler);
-    }
-
-    /**
-     * @param ReflectionProperty $property
-     *
-     * @return void
-     */
-    private function addAllowedProperty(ReflectionProperty $property): void
-    {
-        $this->allowedProperties[] = [
-            'to_entity' => $property->getName(),
-            'to_response' => u($property->getName())->snake()->toString()
-        ];
+        return $this->container->getService($constraint->getHandler());
     }
 }

@@ -4,6 +4,7 @@ namespace App\ResponseData;
 
 use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
+use App\ResponseData\Traits\DateTimeHandlerTrait;
 
 /**
  * Class LanguageResponseData.
@@ -14,14 +15,18 @@ use App\ResponseData\Interfaces\ResponseDataInterface;
  */
 class LanguageResponseData extends AbstractResponseData implements ResponseDataInterface
 {
-    #[ResponseDataConstraints\RequestType('admin')]
-    public ?int $id = null;
-    public ?string $code = null;
-    public ?string $originalTitle = null;
+    use DateTimeHandlerTrait;
 
     #[ResponseDataConstraints\RequestType('admin')]
-    public ?string $createdAt = null;
+    protected ?int $id = null;
+    protected ?string $code = null;
+    protected ?string $originalTitle = null;
 
     #[ResponseDataConstraints\RequestType('admin')]
-    public ?string $updatedAt = null;
+    #[ResponseDataConstraints\Callback('handleDateTime')]
+    protected ?string $createdAt = null;
+
+    #[ResponseDataConstraints\RequestType('admin')]
+    #[ResponseDataConstraints\Callback('handleDateTime')]
+    protected ?string $updatedAt = null;
 }
