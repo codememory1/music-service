@@ -29,7 +29,7 @@ class LanguageController extends AbstractRestController
     public function all(LanguageResponseData $languageResponseData, LanguageRepository $languageRepository): JsonResponse
     {
         $languageResponseData->setEntities($languageRepository->findAll());
-        
+
         return $this->responseCollection->dataOutput($languageResponseData->collect()->getResponse());
     }
 

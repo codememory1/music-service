@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class LanguageController
+ * Class LanguageController.
  *
  * @package App\Controller\PublicAvailable
  *
