@@ -25,10 +25,32 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/language')]
 class LanguageController extends AbstractRestController
 {
+    /**
+     * @param LanguageResponseData $languageResponseData
+     * @param LanguageRepository   $languageRepository
+     *
+     * @return JsonResponse
+     */
     #[Route('/all', methods: 'GET')]
     public function all(LanguageResponseData $languageResponseData, LanguageRepository $languageRepository): JsonResponse
     {
         $languageResponseData->setEntities($languageRepository->findAll());
+
+        return $this->responseCollection->dataOutput($languageResponseData->collect()->getResponse());
+    }
+
+    /**
+     * @param Language             $language
+     * @param LanguageResponseData $languageResponseData
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{language_code<[a-z]+>}/read', methods: 'GET')]
+    public function read(
+        #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
+        LanguageResponseData $languageResponseData
+    ): JsonResponse {
+        $languageResponseData->setEntities($language);
 
         return $this->responseCollection->dataOutput($languageResponseData->collect()->getResponse());
     }
