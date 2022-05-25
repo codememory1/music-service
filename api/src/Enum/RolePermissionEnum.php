@@ -11,4 +11,5 @@ namespace App\Enum;
  */
 enum RolePermissionEnum
 {
+    case CREATE_LANGUAGE;
 }

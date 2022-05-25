@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Ergebnis\Json\Pointer\JsonPointer;
 use Ergebnis\Json\SchemaValidator\Json;
 use Ergebnis\Json\SchemaValidator\SchemaValidator;
@@ -19,6 +20,11 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 abstract class AbstractApiTestCase extends WebTestCase
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    protected readonly EntityManagerInterface $em;
+
     /**
      * @var KernelBrowser
      */
@@ -43,10 +49,13 @@ abstract class AbstractApiTestCase extends WebTestCase
     {
         parent::__construct($name, $data, $dataName);
 
+        self::ensureKernelShutdown();
+
         $this->client = static::createClient();
         $this->jsonSchemaValidator = new SchemaValidator();
 
         $this->schemes['api_response'] = $this->readSchema('api_response.json');
+        $this->em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -138,6 +147,8 @@ abstract class AbstractApiTestCase extends WebTestCase
      */
     protected function getApiResponse(): ?array
     {
+        $this->saveRequestResponse();
+
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
         if (JSON_ERROR_NONE === json_last_error()) {
@@ -171,5 +182,16 @@ abstract class AbstractApiTestCase extends WebTestCase
     protected function getSchema(string $name): ?Json
     {
         return $this->schemes[$name] ?? null;
+    }
+
+    /**
+     * @return void
+     */
+    private function saveRequestResponse(): void
+    {
+        file_put_contents(
+            __DIR__ . '/../var/log/test_response.txt',
+            $this->client->getResponse()->getContent()
+        );
     }
 }

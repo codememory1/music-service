@@ -25,7 +25,7 @@ services:
             - '../src/Enum/'
             - '../src/Service/'
             - '../src/Rest/'
-            - '../src/DataFixtures/{Factory,Interfaces}'
+            - '../src/DataFixtures/{Factory,Interfaces,AbstractDataFixture.php}'
 
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
@@ -43,6 +43,22 @@ services:
     App\EventListener\ApiExceptionListener:
       tags:
         - { name: kernel.event_listener, event: kernel.exception }
+
+    App\EventListener\Registration\CreateAccountActivationCodeListener:
+      tags:
+        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 1 }
+
+    App\EventListener\Registration\SendAccountActivationCodeListener:
+      tags:
+        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priotiy: 0 }
+
+    App\EventListener\Registration\CreateRegistrationSessionListener:
+      tags:
+        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priotity: -1 }
+
+    App\EventListener\Authorization\CreateTempSessionListener:
+      tags:
+        - { name: kernel.event_listener, event: app.auth, method: onAuth, priority: 1 }
 
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
@@ -73,3 +89,7 @@ services:
       public: true
       exclude:
         - '../src/DTO/{Interfaces,Interceptors,AbstractDTO.php}'
+
+    App\ResponseData\Constraints\:
+      resource: '../src/ResponseData/Constraints/*Handler.php'
+      public: true

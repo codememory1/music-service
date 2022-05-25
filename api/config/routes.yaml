@@ -1,5 +1,5 @@
 public_api:
-    resource: ../src/Controller/Public/*Controller.php
+    resource: ../src/Controller/PublicAvailable/*Controller.php
     type: annotation
     prefix: /api/{_locale}/public
     trailing_slash_on_root: true
