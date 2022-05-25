@@ -2,6 +2,7 @@
 
 namespace App\Controller\PublicAvailable;
 
+use App\DTO\AccessTokenDTO;
 use App\DTO\AuthorizationDTO;
 use App\DTO\RegistrationDTO;
 use App\Rest\Controller\AbstractRestController;
@@ -10,6 +11,7 @@ use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
 use App\Security\Auth\Identification;
 use App\Security\Register\Registration;
+use App\Service\UserSession\UpdateAccessTokenService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -56,5 +58,17 @@ class SecurityController extends AbstractRestController
         $authenticatedUser = $authentication->authenticate($authorizationDTO, $identifiedUser);
 
         return $authorization->auth($authenticatedUser);
+    }
+
+    /**
+     * @param AccessTokenDTO           $accessTokenDTO
+     * @param UpdateAccessTokenService $updateAccessTokenService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/access-token/update', methods: 'PUT')]
+    public function updateAccessToken(AccessTokenDTO $accessTokenDTO, UpdateAccessTokenService $updateAccessTokenService): JsonResponse
+    {
+        return $updateAccessTokenService->make($accessTokenDTO);
     }
 }

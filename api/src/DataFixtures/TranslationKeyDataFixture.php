@@ -25,6 +25,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('common@passwordIsRequired'),
             new TranslationKeyFactory('common@incorrectPassword'),
             new TranslationKeyFactory('common@dataOutput'),
+            new TranslationKeyFactory('common@invalidRefreshToken'),
+            new TranslationKeyFactory('common@refreshTokenIsRequired'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
@@ -60,6 +62,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('role@developerDescription'),
 
             new TranslationKeyFactory('user@failedToIdentify'),
+
+            new TranslationKeyFactory('token@successUpdate'),
         ]);
     }
 
