@@ -24,6 +24,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('common@incorrectEmail'),
             new TranslationKeyFactory('common@passwordIsRequired'),
             new TranslationKeyFactory('common@incorrectPassword'),
+            new TranslationKeyFactory('common@dataOutput'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),

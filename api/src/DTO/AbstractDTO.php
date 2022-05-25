@@ -36,7 +36,7 @@ abstract class AbstractDTO implements DTOInterface
     /**
      * @var string
      */
-    private string $requestType;
+    protected string $requestType;
 
     /**
      * @var array

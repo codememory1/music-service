@@ -2,6 +2,7 @@
 
 namespace App\Rest\Controller;
 
+use App\Rest\Http\ResponseCollection;
 use App\Security\Auth\AuthorizedUser;
 use App\Security\Http\BearerToken;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,12 +27,19 @@ abstract class AbstractRestController extends AbstractController
     protected readonly BearerToken $bearerToken;
 
     /**
-     * @param AuthorizedUser $authorizedUser
-     * @param BearerToken    $bearerToken
+     * @var ResponseCollection
      */
-    public function __construct(AuthorizedUser $authorizedUser, BearerToken $bearerToken)
+    protected readonly ResponseCollection $responseCollection;
+
+    /**
+     * @param AuthorizedUser     $authorizedUser
+     * @param BearerToken        $bearerToken
+     * @param ResponseCollection $responseCollection
+     */
+    public function __construct(AuthorizedUser $authorizedUser, BearerToken $bearerToken, ResponseCollection $responseCollection)
     {
         $this->authorizedUser = $authorizedUser;
         $this->bearerToken = $bearerToken;
+        $this->responseCollection = $responseCollection;
     }
 }
