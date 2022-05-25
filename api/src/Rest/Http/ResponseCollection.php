@@ -103,6 +103,19 @@ class ResponseCollection
     }
 
     /**
+     * @param array $data
+     * @param array $headers
+     *
+     * @return JsonResponse
+     */
+    public function dataOutput(array $data, array $headers = []): JsonResponse
+    {
+        $this->initResponseSchema(200, ResponseTypeEnum::DATA_OUTPUT, 'common@dataOutput', $data);
+
+        return $this->response->getResponse($this->responseSchema, $headers);
+    }
+
+    /**
      * @param int              $statusCode
      * @param ResponseTypeEnum $type
      * @param array|string     $translationKey

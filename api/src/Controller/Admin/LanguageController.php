@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Annotation\EntityNotFound;
 use App\DTO\LanguageDTO;
 use App\Entity\Language;
+use App\Repository\LanguageRepository;
+use App\ResponseData\LanguageResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Language\CreateLanguageService;
@@ -24,9 +26,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class LanguageController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    public function all(): JsonResponse
+    public function all(LanguageResponseData $languageResponseData, LanguageRepository $languageRepository): JsonResponse
     {
-        return new JsonResponse();
+        $languageResponseData->setEntities($languageRepository->findAll());
+        
+        return $this->responseCollection->dataOutput($languageResponseData->collect()->getResponse());
     }
 
     /**
