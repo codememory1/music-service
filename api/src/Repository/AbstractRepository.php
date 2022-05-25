@@ -17,6 +17,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 abstract class AbstractRepository extends ServiceEntityRepository
 {
+    public const ORDER_TYPES = [
+        'ASC', 'DESC'
+    ];
+
     /**
      * @var null|string
      */
@@ -43,6 +47,17 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
         $this->filterService = $filterService;
         $this->sortService = $sortService;
+    }
+
+    /**
+     * @param string      $type
+     * @param null|string $default
+     *
+     * @return null|string
+     */
+    protected function getOrderType(string $type, ?string $default = null): ?string
+    {
+        return false === in_array($type, self::ORDER_TYPES, true) ? $default : $type;
     }
 
     /**

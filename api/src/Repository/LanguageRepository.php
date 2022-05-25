@@ -25,11 +25,11 @@ class LanguageRepository extends AbstractRepository
     public function findByCriteria(array $criteria, array $orderBy = []): array
     {
         if (false !== $sortByCode = $this->sortService->get('code')) {
-            $orderBy['code'] = $sortByCode;
+            $orderBy['code'] = $this->getOrderType($sortByCode);
         }
 
         if (false !== $sortByTitle = $this->sortService->get('title')) {
-            $orderBy['originalTitle'] = $sortByTitle;
+            $orderBy['originalTitle'] = $this->getOrderType($sortByTitle);
         }
 
         return parent::findByCriteria([], $orderBy);
