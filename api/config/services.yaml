@@ -89,3 +89,7 @@ services:
       public: true
       exclude:
         - '../src/DTO/{Interfaces,Interceptors,AbstractDTO.php}'
+
+    App\ResponseData\Constraints\:
+      resource: '../src/ResponseData/Constraints/*Handler.php'
+      public: true
