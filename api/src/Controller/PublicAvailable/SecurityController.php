@@ -2,14 +2,15 @@
 
 namespace App\Controller\PublicAvailable;
 
-use App\DTO\AccessTokenDTO;
 use App\DTO\AuthorizationDTO;
+use App\DTO\RefreshTokenDTO;
 use App\DTO\RegistrationDTO;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Validator\Validator;
 use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
 use App\Security\Auth\Identification;
+use App\Security\Logout\Logout;
 use App\Security\Register\Registration;
 use App\Service\UserSession\UpdateAccessTokenService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -61,14 +62,26 @@ class SecurityController extends AbstractRestController
     }
 
     /**
-     * @param AccessTokenDTO           $accessTokenDTO
+     * @param RefreshTokenDTO          $refreshTokenDTO
      * @param UpdateAccessTokenService $updateAccessTokenService
      *
      * @return JsonResponse
      */
     #[Route('/access-token/update', methods: 'PUT')]
-    public function updateAccessToken(AccessTokenDTO $accessTokenDTO, UpdateAccessTokenService $updateAccessTokenService): JsonResponse
+    public function updateAccessToken(RefreshTokenDTO $refreshTokenDTO, UpdateAccessTokenService $updateAccessTokenService): JsonResponse
     {
-        return $updateAccessTokenService->make($accessTokenDTO);
+        return $updateAccessTokenService->make($refreshTokenDTO);
+    }
+
+    /**
+     * @param RefreshTokenDTO $refreshTokenDTO
+     * @param Logout          $logout
+     *
+     * @return JsonResponse
+     */
+    #[Route('/logout', methods: 'GET')]
+    public function logout(RefreshTokenDTO $refreshTokenDTO, Logout $logout): JsonResponse
+    {
+        return $logout->logout($refreshTokenDTO);
     }
 }

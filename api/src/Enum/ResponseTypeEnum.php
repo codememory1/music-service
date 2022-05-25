@@ -22,4 +22,5 @@ enum ResponseTypeEnum
     case NOT_EXIST;
     case INPUT_VALIDATION;
     case DATA_OUTPUT;
+    case FAILED;
 }

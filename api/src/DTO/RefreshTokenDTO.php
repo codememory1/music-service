@@ -5,13 +5,13 @@ namespace App\DTO;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class AccessTokenDTO.
+ * Class RefreshTokenDTO.
  *
  * @package App\DTO
  *
  * @author  Codememory
  */
-class AccessTokenDTO extends AbstractDTO
+class RefreshTokenDTO extends AbstractDTO
 {
     #[Assert\NotBlank(message: 'common@refreshTokenIsRequired')]
     public ?string $refreshToken = null;
