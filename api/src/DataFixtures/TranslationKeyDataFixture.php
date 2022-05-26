@@ -35,6 +35,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('entityNotFound@translation'),
 
             new TranslationKeyFactory('auth@successAuthorization'),
+            new TranslationKeyFactory('auth@authRequired'),
 
             new TranslationKeyFactory('registration@successRegistration'),
             new TranslationKeyFactory('registration@incorrectPassword'),
@@ -68,6 +69,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
 
             new TranslationKeyFactory('logout@successLogout'),
             new TranslationKeyFactory('logout@failedToLogout'),
+
+            new TranslationKeyFactory('accessDenied@notEnoughPermissions'),
         ]);
     }
 
