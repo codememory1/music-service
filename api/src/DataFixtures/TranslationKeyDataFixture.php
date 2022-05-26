@@ -58,7 +58,10 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
 
             new TranslationKeyFactory('userProfile@existByUser'),
 
+            new TranslationKeyFactory('rolePermission@viewLanguagesWithFUllInfo'),
             new TranslationKeyFactory('rolePermission@createLanguage'),
+            new TranslationKeyFactory('rolePermission@updateLanguage'),
+            new TranslationKeyFactory('rolePermission@deleteLanguage'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
