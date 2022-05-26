@@ -37,6 +37,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
 
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
             new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),
+            new TranslationFactory('ru', 'auth@authNotRequired', 'Для выполнения данного действия вы должы выйти из аккаунта'),
 
             new TranslationFactory('ru', 'registration@successRegistration', 'Регистрация прошла успешно! На почту отправлена ссылка для активации аккаунта'),
             new TranslationFactory('ru', 'registration@incorrectPassword', 'Пароль может состоять только из букв, цифр и спец., символов'),

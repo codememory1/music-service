@@ -36,8 +36,10 @@ class AuthorizationHandler implements MethodAnnotationHandlerInterface
      */
     public function handle(MethodAnnotationInterface $annotation): void
     {
-        if (null === $this->authorizedUser->getUser()) {
+        if ($annotation->required && null === $this->authorizedUser->getUser()) {
             throw AuthorizationException::authorizedIsRequired();
         }
+
+        throw AuthorizationException::authorizedIsNotRequired();
     }
 }
