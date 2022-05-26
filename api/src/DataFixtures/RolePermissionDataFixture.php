@@ -24,7 +24,10 @@ final class RolePermissionDataFixture extends AbstractDataFixture implements Dep
     public function __construct()
     {
         parent::__construct([
-            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::CREATE_LANGUAGE)
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::VIEW_LANGUAGES_WITH_FULL_INFO),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::CREATE_LANGUAGE),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::UPDATE_LANGUAGE),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::DELETE_LANGUAGE)
         ]);
     }
 

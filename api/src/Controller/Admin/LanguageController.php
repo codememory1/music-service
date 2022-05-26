@@ -2,9 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
+use App\Annotation\UserRolePermission;
 use App\DTO\LanguageDTO;
 use App\Entity\Language;
+use App\Enum\RolePermissionEnum;
 use App\Repository\LanguageRepository;
 use App\ResponseData\LanguageResponseData;
 use App\Rest\Controller\AbstractRestController;
@@ -32,6 +35,8 @@ class LanguageController extends AbstractRestController
      * @return JsonResponse
      */
     #[Route('/all', methods: 'GET')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::VIEW_LANGUAGES_WITH_FULL_INFO)]
     public function all(LanguageResponseData $languageResponseData, LanguageRepository $languageRepository): JsonResponse
     {
         $languageResponseData->setEntities($languageRepository->findAll());
@@ -46,6 +51,8 @@ class LanguageController extends AbstractRestController
      * @return JsonResponse
      */
     #[Route('/{language_code<[a-z]+>}/read', methods: 'GET')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::VIEW_LANGUAGES_WITH_FULL_INFO)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
         LanguageResponseData $languageResponseData
@@ -62,6 +69,8 @@ class LanguageController extends AbstractRestController
      * @return JsonResponse
      */
     #[Route('/create', methods: 'POST')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::CREATE_LANGUAGE)]
     public function create(LanguageDTO $languageDTO, CreateLanguageService $createLanguageService): JsonResponse
     {
         return $createLanguageService->make($languageDTO->collect());
@@ -75,6 +84,8 @@ class LanguageController extends AbstractRestController
      * @return JsonResponse
      */
     #[Route('/{language_id<\d+>}/edit', methods: 'PUT')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::UPDATE_LANGUAGE)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
         LanguageDTO $languageDTO,
@@ -92,6 +103,8 @@ class LanguageController extends AbstractRestController
      * @return JsonResponse
      */
     #[Route('/{language_id<\d+>}/delete', methods: 'DELETE')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::DELETE_LANGUAGE)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
         DeleteLanguageService $deleteLanguageService

@@ -59,7 +59,10 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
 
             new TranslationFactory('ru', 'userProfile@existByUser', 'Для данного пользователя профиль уже существует'),
 
+            new TranslationFactory('ru', 'rolePermission@viewLanguagesWithFUllInfo', 'Просмотр полной информации о языках'),
             new TranslationFactory('ru', 'rolePermission@createLanguage', 'Создание языка'),
+            new TranslationFactory('ru', 'rolePermission@updateLanguage', 'Редактирование языка'),
+            new TranslationFactory('ru', 'rolePermission@deleteLanguage', 'Удаление языка'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
