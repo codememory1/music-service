@@ -36,6 +36,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
 
             new TranslationKeyFactory('auth@successAuthorization'),
             new TranslationKeyFactory('auth@authRequired'),
+            new TranslationKeyFactory('auth@authNotRequired'),
 
             new TranslationKeyFactory('registration@successRegistration'),
             new TranslationKeyFactory('registration@incorrectPassword'),
