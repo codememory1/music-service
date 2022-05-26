@@ -36,6 +36,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@translation', 'Перевод не найден'),
 
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
+            new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),
 
             new TranslationFactory('ru', 'registration@successRegistration', 'Регистрация прошла успешно! На почту отправлена ссылка для активации аккаунта'),
             new TranslationFactory('ru', 'registration@incorrectPassword', 'Пароль может состоять только из букв, цифр и спец., символов'),
@@ -69,6 +70,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
 
             new TranslationFactory('ru', 'logout@successLogout', 'Вы успешно вышли из аккаунта'),
             new TranslationFactory('ru', 'logout@failedToLogout', 'Не удалось выйти из аккаунта'),
+
+            new TranslationFactory('ru', 'accessDenied@notEnoughPermissions', 'Недостаточно прав для выполнения данного действия'),
         ]);
     }
 

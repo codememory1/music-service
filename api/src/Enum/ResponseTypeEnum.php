@@ -23,4 +23,6 @@ enum ResponseTypeEnum
     case INPUT_VALIDATION;
     case DATA_OUTPUT;
     case FAILED;
+    case CHECK_AUTH;
+    case CHECK_ACCESS;
 }

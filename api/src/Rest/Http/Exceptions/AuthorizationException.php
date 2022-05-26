@@ -31,4 +31,13 @@ class AuthorizationException extends ApiResponseException
     {
         return new self(400, ResponseTypeEnum::CHECK_CORRECTNESS, 'common@incorrectPassword');
     }
+
+    /**
+     * @return static
+     */
+    #[Pure]
+    public static function authorizedIsRequired(): self
+    {
+        return new self(401, ResponseTypeEnum::CHECK_AUTH, 'auth@authRequired');
+    }
 }
