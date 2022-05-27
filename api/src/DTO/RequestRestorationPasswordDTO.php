@@ -28,9 +28,7 @@ class RequestRestorationPasswordDTO extends AbstractDTO
     #[Assert\NotBlank(message: 'user@failedToIdentify')]
     public ?User $user = null;
 
-    /**
-     * @var null|EntityManagerInterface
-     */
+    #[Required]
     private ?EntityManagerInterface $em = null;
 
     /**
@@ -41,16 +39,5 @@ class RequestRestorationPasswordDTO extends AbstractDTO
         $this->addExpectKey('email', 'user');
 
         $this->addInterceptor('user', new AsEntityInterceptor($this->em, User::class, 'email'));
-    }
-
-    /**
-     * @param EntityManagerInterface $manager
-     *
-     * @return void
-     */
-    #[Required]
-    public function setEntityManager(EntityManagerInterface $manager): void
-    {
-        $this->em = $manager;
     }
 }
