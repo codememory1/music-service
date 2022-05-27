@@ -29,7 +29,7 @@ class RequestRestorationPasswordDTO extends AbstractDTO
     public ?User $user = null;
 
     #[Required]
-    private ?EntityManagerInterface $em = null;
+    public ?EntityManagerInterface $em = null;
 
     /**
      * @inheritDoc
