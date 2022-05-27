@@ -37,7 +37,7 @@ class CreateTempSessionListener
         UserDTO $userDTO
     ) {
         $this->updateUserSessionService = $updateSessionService;
-        $this->userDTO = $userDTO;
+        $this->userDTO = $userDTO->collect();
     }
 
     /**

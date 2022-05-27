@@ -54,7 +54,7 @@ class CreateRegistrationSessionListener
         $this->em = $manager;
         $this->createUserSessionService = $createSessionService;
         $this->updateUserSessionService = $updateSessionService;
-        $this->userDTO = $userDTO;
+        $this->userDTO = $userDTO->collect();
     }
 
     /**
