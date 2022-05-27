@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class PasswordResetController
+ * Class PasswordResetController.
  *
  * @package App\Controller\PublicAvailable
  *

@@ -12,7 +12,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class PasswordReset
+ * Class PasswordReset.
  *
  * @package App\Entity
  *
@@ -24,6 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PasswordReset implements EntityInterface
 {
     use IdentifierTrait;
+
     use TimestampTrait;
 
     #[ORM\OneToOne(inversedBy: 'passwordReset', targetEntity: User::class, cascade: ['persist', 'remove'])]
@@ -51,7 +52,7 @@ class PasswordReset implements EntityInterface
     }
 
     /**
-     * @return User|null
+     * @return null|User
      */
     public function getUser(): ?User
     {
@@ -59,7 +60,7 @@ class PasswordReset implements EntityInterface
     }
 
     /**
-     * @param User|null $user
+     * @param null|User $user
      *
      * @return $this
      */
@@ -71,7 +72,7 @@ class PasswordReset implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return null|int
      */
     public function getCode(): ?int
     {
@@ -101,7 +102,7 @@ class PasswordReset implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return null|string
      */
     public function getStatus(): ?string
     {
@@ -121,7 +122,7 @@ class PasswordReset implements EntityInterface
     }
 
     /**
-     * @return int|null
+     * @return null|int
      */
     public function getTtl(): ?int
     {
@@ -129,7 +130,7 @@ class PasswordReset implements EntityInterface
     }
 
     /**
-     * @param string|null $ttl
+     * @param null|string $ttl
      *
      * @return $this
      */

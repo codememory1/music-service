@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class RequestRestorationPasswordDTO
+ * Class RequestRestorationPasswordDTO.
  *
  * @package App\DTO
  * @template-extends AbstractDTO<PasswordReset>
@@ -29,9 +29,19 @@ class RequestRestorationPasswordDTO extends AbstractDTO
     public ?User $user = null;
 
     /**
-     * @var EntityManagerInterface|null
+     * @var null|EntityManagerInterface
      */
     private ?EntityManagerInterface $em = null;
+
+    /**
+     * @inheritDoc
+     */
+    protected function wrapper(): void
+    {
+        $this->addExpectKey('email', 'user');
+
+        $this->addInterceptor('user', new AsEntityInterceptor($this->em, User::class, 'email'));
+    }
 
     /**
      * @param EntityManagerInterface $manager
@@ -42,15 +52,5 @@ class RequestRestorationPasswordDTO extends AbstractDTO
     public function setEntityManager(EntityManagerInterface $manager): void
     {
         $this->em = $manager;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function wrapper(): void
-    {
-        $this->addExpectKey('email', 'user');
-
-        $this->addInterceptor('user', new AsEntityInterceptor($this->em, User::class, 'email'));
     }
 }

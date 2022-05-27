@@ -251,7 +251,7 @@ class User implements EntityInterface
     }
 
     /**
-     * @return PasswordReset|null
+     * @return null|PasswordReset
      */
     public function getPasswordReset(): ?PasswordReset
     {
