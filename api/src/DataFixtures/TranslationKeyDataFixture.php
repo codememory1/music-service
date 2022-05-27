@@ -77,6 +77,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('accessDenied@notEnoughPermissions'),
 
             new TranslationKeyFactory('passwordReset@successSendRequestRestoration'),
+            new TranslationKeyFactory('passwordReset@requestRestoration'),
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\AccountActivationCode;
+use App\Entity\PasswordReset;
 use App\Entity\User;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -66,6 +67,28 @@ class MailMessagingService
         $email->to($accountActivationCode->getUser()->getEmail());
         $email->subject($this->translationService->get('registration@registration'));
         $email->html($this->getTemplate('register', ['accountActivationCode' => $accountActivationCode]));
+
+        $this->mailer->send($email);
+    }
+
+    /**
+     * @param PasswordReset $passwordReset
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws TransportExceptionInterface
+     *
+     * @return void
+     */
+    public function sendRequestRestorationPassword(PasswordReset $passwordReset): void
+    {
+        $email = new Email();
+
+        $email->from('kostynd1@gmail.com');
+        $email->to($passwordReset->getUser()->getEmail());
+        $email->subject($this->translationService->get('passwordReset@requestRestoration'));
+        $email->html($this->getTemplate('request-restoration-password', ['passwordReset' => $passwordReset]));
 
         $this->mailer->send($email);
     }

@@ -76,8 +76,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'logout@failedToLogout', 'Не удалось выйти из аккаунта'),
 
             new TranslationFactory('ru', 'accessDenied@notEnoughPermissions', 'Недостаточно прав для выполнения данного действия'),
-            
+
             new TranslationFactory('ru', 'passwordReset@successSendRequestRestoration', 'На вашу почту отправлено сообщение для восстановление пароля'),
+            new TranslationFactory('ru', 'passwordReset@requestRestoration', 'Запрос на восстановление пароля'),
         ]);
     }
 

@@ -3,11 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\PasswordReset;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class PasswordResetRepository
+ * Class PasswordResetRepository.
  *
  * @package App\Repository
  * @template-extends AbstractRepository<PasswordReset>
@@ -17,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class PasswordResetRepository extends AbstractRepository
 {
     /**
-     * @inheritDoc 
+     * @inheritDoc
      */
     protected ?string $entity = PasswordReset::class;
 }
