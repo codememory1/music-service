@@ -25,4 +25,5 @@ enum ResponseTypeEnum
     case FAILED;
     case CHECK_AUTH;
     case CHECK_ACCESS;
+    case SUCCESS_SEND;
 }

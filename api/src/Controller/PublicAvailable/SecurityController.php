@@ -70,7 +70,7 @@ class SecurityController extends AbstractRestController
     #[Route('/access-token/update', methods: 'PUT')]
     public function updateAccessToken(RefreshTokenDTO $refreshTokenDTO, UpdateAccessTokenService $updateAccessTokenService): JsonResponse
     {
-        return $updateAccessTokenService->make($refreshTokenDTO);
+        return $updateAccessTokenService->make($refreshTokenDTO->collect());
     }
 
     /**
@@ -82,6 +82,6 @@ class SecurityController extends AbstractRestController
     #[Route('/logout', methods: 'GET')]
     public function logout(RefreshTokenDTO $refreshTokenDTO, Logout $logout): JsonResponse
     {
-        return $logout->logout($refreshTokenDTO);
+        return $logout->logout($refreshTokenDTO->collect());
     }
 }
