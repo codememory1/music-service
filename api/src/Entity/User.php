@@ -61,6 +61,9 @@ class User implements EntityInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: AccountActivationCode::class, cascade: ['persist', 'remove'])]
     private ?AccountActivationCode $accountActivationCode = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: PasswordReset::class, cascade: ['persist', 'remove'])]
+    private ?PasswordReset $passwordReset = null;
+
     #[Pure]
     public function __construct()
     {
@@ -132,7 +135,6 @@ class User implements EntityInterface
      *
      * @return bool
      */
-    #[Pure]
     public function isStatus(UserStatusEnum $userStatusEnum): bool
     {
         return $this->getStatus() === $userStatusEnum->name;
@@ -244,6 +246,31 @@ class User implements EntityInterface
         }
 
         $this->accountActivationCode = $accountActivationCode;
+
+        return $this;
+    }
+
+    /**
+     * @return PasswordReset|null
+     */
+    public function getPasswordReset(): ?PasswordReset
+    {
+        return $this->passwordReset;
+    }
+
+    /**
+     * @param PasswordReset $passwordReset
+     *
+     * @return $this
+     */
+    public function setPasswordReset(PasswordReset $passwordReset): self
+    {
+        // set the owning side of the relation if necessary
+        if ($passwordReset->getUser() !== $this) {
+            $passwordReset->setUser($this);
+        }
+
+        $this->passwordReset = $passwordReset;
 
         return $this;
     }

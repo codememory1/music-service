@@ -89,7 +89,7 @@ services:
         - '../src/Service/DataRepresentation/AbstractDataRepresentation.php'
 
     App\DTO\:
-      resource: '../src/DTO/*.php'
+      resource: '../src/DTO/*DTO.php'
       public: true
       exclude:
         - '../src/DTO/{Interfaces,Interceptors,AbstractDTO.php}'

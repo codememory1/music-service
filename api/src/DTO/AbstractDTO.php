@@ -67,8 +67,6 @@ abstract class AbstractDTO implements DTOInterface
         $this->request = $request;
         $this->setterCallRuleInEntity = $setterCallRuleInEntity;
         $this->requestType = $request->request->attributes->get('request_type');
-
-        $this->wrapper();
     }
 
     /**
@@ -148,6 +146,7 @@ abstract class AbstractDTO implements DTOInterface
      */
     public function collect(): self
     {
+        $this->wrapper();
         $this->createEntityObject();
         $this->expectedKeyHandler();
 
