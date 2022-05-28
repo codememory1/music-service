@@ -6,6 +6,7 @@ use App\DTO\Interfaces\DTOInterface;
 use App\DTO\Interfaces\ValueInterceptorInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Rest\Http\Request;
+use App\Security\Auth\AuthorizedUser;
 use function is_string;
 
 /**
@@ -37,6 +38,7 @@ abstract class AbstractDTO implements DTOInterface
      * @var string
      */
     protected string $requestType;
+    protected readonly AuthorizedUser $authorizedUser;
 
     /**
      * @var array
@@ -61,12 +63,14 @@ abstract class AbstractDTO implements DTOInterface
     /**
      * @param Request                $request
      * @param SetterCallRuleInEntity $setterCallRuleInEntity
+     * @param AuthorizedUser         $authorizedUser
      */
-    public function __construct(Request $request, SetterCallRuleInEntity $setterCallRuleInEntity)
+    public function __construct(Request $request, SetterCallRuleInEntity $setterCallRuleInEntity, AuthorizedUser $authorizedUser)
     {
         $this->request = $request;
         $this->setterCallRuleInEntity = $setterCallRuleInEntity;
         $this->requestType = $request->request->attributes->get('request_type');
+        $this->authorizedUser = $authorizedUser;
     }
 
     /**
