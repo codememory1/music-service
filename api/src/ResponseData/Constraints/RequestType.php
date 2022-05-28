@@ -2,6 +2,7 @@
 
 namespace App\ResponseData\Constraints;
 
+use App\Enum\RequestTypeEnum;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use Attribute;
 
@@ -21,11 +22,11 @@ class RequestType implements ConstraintInterface
     public readonly string $requestType;
 
     /**
-     * @param string $requestType
+     * @param RequestTypeEnum $requestTypeEnum
      */
-    public function __construct(string $requestType)
+    public function __construct(RequestTypeEnum $requestTypeEnum)
     {
-        $this->requestType = $requestType;
+        $this->requestType = $requestTypeEnum->value;
     }
 
     /**
