@@ -45,7 +45,7 @@ class ParseCronTimeService
      */
     public function setTime(?string $time): self
     {
-        $this->time = $time;
+        $this->time = trim($time);
 
         return $this;
     }

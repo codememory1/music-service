@@ -3,8 +3,7 @@
 namespace App\DTO;
 
 use App\DTO\Interceptors\AsEntityInterceptor;
-use App\Entity\Interfaces\EntityInterface;
-use App\Entity\PasswordReset;
+use App\DTO\Traits\SetPasswordTrait;
 use App\Entity\User;
 use App\Enum\UserStatusEnum;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,19 +11,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class RequestRestorationPasswordDTO.
+ * Class RestorePasswordDTO.
  *
  * @package App\DTO
- * @template-extends AbstractDTO<PasswordReset>
  *
  * @author  Codememory
  */
-class RequestRestorationPasswordDTO extends AbstractDTO
+class RestorePasswordDTO extends AbstractDTO
 {
-    /**
-     * @inheritDoc
-     */
-    protected EntityInterface|string|null $entity = PasswordReset::class;
+    use SetPasswordTrait;
+
+    #[Assert\Type('integer', message: 'common@invalidCode')]
+    public ?int $code = null;
 
     #[Assert\NotBlank(message: 'user@failedToIdentify')]
     public ?User $user = null;
@@ -38,6 +36,9 @@ class RequestRestorationPasswordDTO extends AbstractDTO
     protected function wrapper(): void
     {
         $this->addExpectKey('email', 'user');
+        $this->addExpectKey('code');
+        $this->addExpectKey('password');
+        $this->addExpectKey('password_confirm', 'passwordConfirm');
 
         $this->addInterceptor('user', new AsEntityInterceptor(
             $this->em,

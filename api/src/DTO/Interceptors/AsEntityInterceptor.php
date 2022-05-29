@@ -31,15 +31,22 @@ class AsEntityInterceptor implements ValueInterceptorInterface
     private string $by;
 
     /**
+     * @var array
+     */
+    private array $supplementBy;
+
+    /**
      * @param EntityManagerInterface $manager
      * @param string                 $entity
      * @param string                 $by
+     * @param array                  $supplementBy
      */
-    public function __construct(EntityManagerInterface $manager, string $entity, string $by = 'id')
+    public function __construct(EntityManagerInterface $manager, string $entity, string $by = 'id', array $supplementBy = [])
     {
         $this->em = $manager;
         $this->entity = $entity;
         $this->by = $by;
+        $this->supplementBy = $supplementBy;
     }
 
     /**
@@ -49,6 +56,6 @@ class AsEntityInterceptor implements ValueInterceptorInterface
     {
         $entityRepository = $this->em->getRepository($this->entity);
 
-        return $entityRepository->findOneBy([$this->by => $value]);
+        return $entityRepository->findOneBy([$this->by => $value, ...$this->supplementBy]);
     }
 }

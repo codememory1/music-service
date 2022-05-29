@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220526220703 extends AbstractMigration
+final class Version20220529134016 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -22,7 +22,7 @@ final class Version20220526220703 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SEQUENCE password_resets_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE password_resets (id INT NOT NULL, user_id INT NOT NULL, code INT NOT NULL, status VARCHAR(255) NOT NULL, ttl CHAR(10) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_9EDAFEA1A76ED395 ON password_resets (user_id)');
+        $this->addSql('CREATE INDEX IDX_9EDAFEA1A76ED395 ON password_resets (user_id)');
         $this->addSql('COMMENT ON COLUMN password_resets.code IS \'6-digit password change code\'');
         $this->addSql('COMMENT ON COLUMN password_resets.status IS \'One of the PasswordResetStatusEnum statuses\'');
         $this->addSql('COMMENT ON COLUMN password_resets.ttl IS \'Code lifetime in CronTime format\'');
@@ -44,7 +44,6 @@ final class Version20220526220703 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP SEQUENCE password_resets_id_seq CASCADE');
         $this->addSql('DROP TABLE password_resets');
         $this->addSql('ALTER TABLE users ALTER password TYPE TEXT');

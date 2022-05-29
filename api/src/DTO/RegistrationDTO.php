@@ -2,7 +2,7 @@
 
 namespace App\DTO;
 
-use App\Validator\Constraints as AppAssert;
+use App\DTO\Traits\SetPasswordTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -14,20 +14,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RegistrationDTO extends AbstractDTO
 {
+    use SetPasswordTrait;
+
     #[Assert\NotBlank(message: 'userProfile@pseudonymIsRequired')]
     #[Assert\Length(max: 25, maxMessage: 'userProfile@maxPseudonymLength')]
     public ?string $pseudonym = null;
 
     #[Assert\Email(message: 'common@incorrectEmail')]
     public ?string $email = null;
-
-    #[Assert\NotBlank(message: 'common@passwordIsRequired')]
-    #[Assert\Regex('/^[a-zA-Z0-9\-\_\%\@\.\&\+]+$/', message: 'registration@incorrectPassword')]
-    #[Assert\Length(min: 8, minMessage: 'registration@minPasswordLength')]
-    public ?string $password = null;
-
-    #[AppAssert\Between('password', message: 'registration@invalidConfirmPassword')]
-    public ?string $passwordConfirm = null;
 
     /**
      * @inheritDoc
