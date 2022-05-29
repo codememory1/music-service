@@ -18,21 +18,8 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class CreateSessionService extends AbstractService
 {
-    /**
-     * @var CollectorSessionService
-     */
-    private CollectorSessionService $collectorSessionService;
-
-    /**
-     * @param CollectorSessionService $collectorSessionService
-     *
-     * @return void
-     */
     #[Required]
-    public function setCollectorSessionService(CollectorSessionService $collectorSessionService): void
-    {
-        $this->collectorSessionService = $collectorSessionService;
-    }
+    public ?CollectorSessionService $collectorSessionService = null;
 
     /**
      * @param UserDTO             $userDTO

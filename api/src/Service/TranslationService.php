@@ -17,69 +17,17 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class TranslationService extends AbstractService
 {
-    /**
-     * @var null|LanguageRepository
-     */
-    private ?LanguageRepository $languageRepository = null;
-
-    /**
-     * @var null|TranslationKeyRepository
-     */
-    private ?TranslationKeyRepository $translationKeyRepository = null;
-
-    /**
-     * @var null|TranslationRepository
-     */
-    private ?TranslationRepository $translationRepository = null;
-
-    /**
-     * @var null|Request
-     */
-    private ?Request $request = null;
-
-    /**
-     * @param LanguageRepository $languageRepository
-     *
-     * @return void
-     */
     #[Required]
-    public function setLanguageRepository(LanguageRepository $languageRepository): void
-    {
-        $this->languageRepository = $languageRepository;
-    }
+    public ?LanguageRepository $languageRepository = null;
 
-    /**
-     * @param TranslationKeyRepository $translationKeyRepository
-     *
-     * @return void
-     */
     #[Required]
-    public function setTranslationKeyRepository(TranslationKeyRepository $translationKeyRepository): void
-    {
-        $this->translationKeyRepository = $translationKeyRepository;
-    }
+    public ?TranslationKeyRepository $translationKeyRepository = null;
 
-    /**
-     * @param TranslationRepository $translationRepository
-     *
-     * @return void
-     */
     #[Required]
-    public function setTranslationRepository(TranslationRepository $translationRepository): void
-    {
-        $this->translationRepository = $translationRepository;
-    }
+    public ?TranslationRepository $translationRepository = null;
 
-    /**
-     * @param Request $request
-     *
-     * @return void
-     */
     #[Required]
-    public function setRequest(Request $request): void
-    {
-        $this->request = $request;
-    }
+    public ?Request $request = null;
 
     /**
      * @param string $key

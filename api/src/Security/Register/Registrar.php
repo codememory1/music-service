@@ -21,21 +21,8 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class Registrar extends AbstractService
 {
-    /**
-     * @var null|ReRegister
-     */
-    private ?ReRegister $reRegister = null;
-
-    /**
-     * @param ReRegister $reRegister
-     *
-     * @return void
-     */
     #[Required]
-    public function setReRegister(ReRegister $reRegister): void
-    {
-        $this->reRegister = $reRegister;
-    }
+    public ?ReRegister $reRegister = null;
 
     /**
      * @param RegistrationDTO $registrationDTO

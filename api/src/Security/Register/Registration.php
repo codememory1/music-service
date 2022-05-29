@@ -23,37 +23,11 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class Registration extends AbstractService
 {
-    /**
-     * @var null|Registrar
-     */
-    private ?Registrar $registrar = null;
-
-    /**
-     * @var null|EventDispatcherInterface
-     */
-    private ?EventDispatcherInterface $eventDispatcher = null;
-
-    /**
-     * @param Registrar $registrar
-     *
-     * @return void
-     */
     #[Required]
-    public function setRegistrar(Registrar $registrar): void
-    {
-        $this->registrar = $registrar;
-    }
+    public ?Registrar $registrar = null;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return void
-     */
     #[Required]
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    public ?EventDispatcherInterface $eventDispatcher = null;
 
     /**
      * @param RegistrationDTO $registrationDTO
