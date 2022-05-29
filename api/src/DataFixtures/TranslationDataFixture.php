@@ -29,6 +29,10 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@invalidRefreshToken', 'Не валидный Refresh-Token'),
             new TranslationFactory('ru', 'common@refreshTokenIsRequired', 'Не указан Refresh-Token'),
             new TranslationFactory('ru', 'common@failedToUpdateAccessToken', 'Не удалось обновить Access-Token'),
+            new TranslationFactory('ru', 'common@incorrectPasswordBySchema', 'Пароль может состоять только из букв, цифр и спец., символов'),
+            new TranslationFactory('ru', 'common@minPasswordLength', 'Пароль должен состоять не меньше чем из 8-ми символов'),
+            new TranslationFactory('ru', 'common@invalidConfirmPassword', 'Некорректное подтверждение пароля'),
+            new TranslationFactory('ru', 'common@invalidCode', 'Некорректный код'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -40,9 +44,6 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'auth@authNotRequired', 'Для выполнения данного действия вы должы выйти из аккаунта'),
 
             new TranslationFactory('ru', 'registration@successRegistration', 'Регистрация прошла успешно! На почту отправлена ссылка для активации аккаунта'),
-            new TranslationFactory('ru', 'registration@incorrectPassword', 'Пароль может состоять только из букв, цифр и спец., символов'),
-            new TranslationFactory('ru', 'registration@minPasswordLength', 'Пароль должен состоять не меньше чем из 8-ми символов'),
-            new TranslationFactory('ru', 'registration@invalidConfirmPassword', 'Некорректное подтверждение пароля'),
             new TranslationFactory('ru', 'registration@registration', 'Регистрация'),
 
             new TranslationFactory('ru', 'userProfile@pseudonymIsRequired', 'Псевдоним обязательный к заполнению'),
@@ -79,6 +80,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
 
             new TranslationFactory('ru', 'passwordReset@successSendRequestRestoration', 'На вашу почту отправлено сообщение для восстановление пароля'),
             new TranslationFactory('ru', 'passwordReset@requestRestoration', 'Запрос на восстановление пароля'),
+            new TranslationFactory('ru', 'passwordReset@successRestorePassword', 'Пароль успешно восстановлен'),
         ]);
     }
 

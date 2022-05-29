@@ -27,7 +27,7 @@ class PasswordReset implements EntityInterface
 
     use TimestampTrait;
 
-    #[ORM\OneToOne(inversedBy: 'passwordReset', targetEntity: User::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'passwordResets')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

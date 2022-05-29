@@ -61,13 +61,14 @@ class User implements EntityInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: AccountActivationCode::class, cascade: ['persist', 'remove'])]
     private ?AccountActivationCode $accountActivationCode = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: PasswordReset::class, cascade: ['persist', 'remove'])]
-    private ?PasswordReset $passwordReset = null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PasswordReset::class, cascade: ['persist', 'remove'])]
+    private Collection $passwordResets;
 
     #[Pure]
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
+        $this->passwordResets = new ArrayCollection();
     }
 
     /**
@@ -251,11 +252,11 @@ class User implements EntityInterface
     }
 
     /**
-     * @return null|PasswordReset
+     * @return Collection
      */
-    public function getPasswordReset(): ?PasswordReset
+    public function getPasswordResets(): Collection
     {
-        return $this->passwordReset;
+        return $this->passwordResets;
     }
 
     /**
@@ -265,12 +266,10 @@ class User implements EntityInterface
      */
     public function setPasswordReset(PasswordReset $passwordReset): self
     {
-        // set the owning side of the relation if necessary
-        if ($passwordReset->getUser() !== $this) {
+        if (!$this->passwordResets->contains($passwordReset)) {
+            $this->passwordResets[] = $passwordReset;
             $passwordReset->setUser($this);
         }
-
-        $this->passwordReset = $passwordReset;
 
         return $this;
     }

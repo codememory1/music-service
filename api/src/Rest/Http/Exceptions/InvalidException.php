@@ -22,4 +22,13 @@ class InvalidException extends ApiResponseException
     {
         return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidRefreshToken');
     }
+
+    /**
+     * @return static
+     */
+    #[Pure]
+    public static function invalidCode(): self
+    {
+        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidCode');
+    }
 }

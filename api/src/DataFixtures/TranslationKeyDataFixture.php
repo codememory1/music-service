@@ -28,6 +28,10 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('common@invalidRefreshToken'),
             new TranslationKeyFactory('common@refreshTokenIsRequired'),
             new TranslationKeyFactory('common@failedToUpdateAccessToken'),
+            new TranslationKeyFactory('common@incorrectPasswordBySchema'),
+            new TranslationKeyFactory('common@minPasswordLength'),
+            new TranslationKeyFactory('common@invalidConfirmPassword'),
+            new TranslationKeyFactory('common@invalidCode'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
@@ -39,9 +43,6 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('auth@authNotRequired'),
 
             new TranslationKeyFactory('registration@successRegistration'),
-            new TranslationKeyFactory('registration@incorrectPassword'),
-            new TranslationKeyFactory('registration@minPasswordLength'),
-            new TranslationKeyFactory('registration@invalidConfirmPassword'),
             new TranslationKeyFactory('registration@registration'),
 
             new TranslationKeyFactory('userProfile@pseudonymIsRequired'),
@@ -78,6 +79,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
 
             new TranslationKeyFactory('passwordReset@successSendRequestRestoration'),
             new TranslationKeyFactory('passwordReset@requestRestoration'),
+            new TranslationKeyFactory('passwordReset@successRestorePassword'),
         ]);
     }
 
