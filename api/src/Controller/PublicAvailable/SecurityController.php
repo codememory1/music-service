@@ -2,11 +2,13 @@
 
 namespace App\Controller\PublicAvailable;
 
+use App\DTO\AccountActivationDTO;
 use App\DTO\AuthorizationDTO;
 use App\DTO\RefreshTokenDTO;
 use App\DTO\RegistrationDTO;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Validator\Validator;
+use App\Security\AccountActivation\AccountActivation;
 use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
 use App\Security\Auth\Identification;
@@ -23,6 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author  Codememory
  */
+#[Route('/user')]
 class SecurityController extends AbstractRestController
 {
     /**
@@ -83,5 +86,17 @@ class SecurityController extends AbstractRestController
     public function logout(RefreshTokenDTO $refreshTokenDTO, Logout $logout): JsonResponse
     {
         return $logout->logout($refreshTokenDTO->collect());
+    }
+
+    /**
+     * @param AccountActivationDTO $accountActivationDTO
+     * @param AccountActivation    $accountActivation
+     *
+     * @return JsonResponse
+     */
+    #[Route('/account-activation', methods: 'POST')]
+    public function activationAccount(AccountActivationDTO $accountActivationDTO, AccountActivation $accountActivation): JsonResponse
+    {
+        return $accountActivation->activate($accountActivationDTO->collect());
     }
 }

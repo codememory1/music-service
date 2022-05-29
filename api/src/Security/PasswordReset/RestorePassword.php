@@ -7,7 +7,6 @@ use App\Entity\PasswordReset;
 use App\Enum\PasswordResetStatusEnum;
 use App\Rest\Http\Exceptions\InvalidException;
 use App\Service\AbstractService;
-use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -36,7 +35,7 @@ class RestorePassword extends AbstractService
             'status' => PasswordResetStatusEnum::IN_PROCESS->name
         ]);
 
-        if (null === $finedPasswordReset || false === $this->isValidTtl($finedPasswordReset)) {
+        if (null === $finedPasswordReset || false === $finedPasswordReset->isValidTtlByCreatedAt()) {
             throw InvalidException::invalidCode();
         }
 
@@ -46,18 +45,5 @@ class RestorePassword extends AbstractService
         $this->em->flush();
 
         return $this->responseCollection->successUpdate('passwordReset@successRestorePassword');
-    }
-
-    /**
-     * @param PasswordReset $passwordReset
-     *
-     * @return bool
-     */
-    private function isValidTtl(PasswordReset $passwordReset): bool
-    {
-        $now = (new DateTimeImmutable())->getTimestamp();
-        $createdIn = $passwordReset->getCreatedAt()->getTimestamp();
-
-        return !($now > $createdIn + $passwordReset->getTtl());
     }
 }

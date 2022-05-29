@@ -6,6 +6,7 @@ use App\DBAL\Types\CronTimeType;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\ValidTtlTrait;
 use App\Repository\AccountActivationCodeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,6 +26,8 @@ class AccountActivationCode implements EntityInterface
     use IdentifierTrait;
 
     use TimestampTrait;
+
+    use ValidTtlTrait;
 
     #[ORM\OneToOne(inversedBy: 'accountActivationCode', targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]

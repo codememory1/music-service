@@ -6,6 +6,7 @@ use App\DBAL\Types\CronTimeType;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\ValidTtlTrait;
 use App\Enum\PasswordResetStatusEnum;
 use App\Repository\PasswordResetRepository;
 use Doctrine\DBAL\Types\Types;
@@ -26,6 +27,8 @@ class PasswordReset implements EntityInterface
     use IdentifierTrait;
 
     use TimestampTrait;
+
+    use ValidTtlTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'passwordResets')]
     #[ORM\JoinColumn(nullable: false)]
