@@ -11,6 +11,7 @@ use App\Enum\RolePermissionEnum;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\UserRole\CreateUserRoleService;
+use App\Service\UserRole\DeleteUserRoleService;
 use App\Service\UserRole\UpdateUserRoleService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -57,5 +58,21 @@ class UserRoleController extends AbstractRestController
         $userRoleDTO->setEntity($role);
 
         return $updateUserRoleService->make($userRoleDTO->collect());
+    }
+
+    /**
+     * @param Role                  $role
+     * @param DeleteUserRoleService $deleteUserRoleService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{role_id<\d+>}/delete', methods: 'DELETE')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::DELETE_USER_ROLE)]
+    public function delete(
+        #[EntityNotFound(EntityNotFoundException::class, 'role')] Role $role,
+        DeleteUserRoleService $deleteUserRoleService
+    ): JsonResponse {
+        return $deleteUserRoleService->make($role);
     }
 }

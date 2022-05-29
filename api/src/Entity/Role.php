@@ -46,7 +46,7 @@ class Role implements EntityInterface
     ])]
     private ?string $shortDescriptionTranslationKey = null;
 
-    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class, cascade: ['persist', 'remove'])]
     private Collection $permissions;
 
     #[Pure]

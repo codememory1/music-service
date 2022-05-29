@@ -80,6 +80,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'role@exist', 'Роль с данным ключем уже существует'),
             new TranslationFactory('ru', 'role@successCreate', 'Роль успешно создана'),
             new TranslationFactory('ru', 'role@successUpdate', 'Роль успешно обновлена'),
+            new TranslationFactory('ru', 'role@successDelete', 'Роль успешно удалена'),
 
             new TranslationFactory('ru', 'user@failedToIdentify', 'Не удалось идентифицировать пользователя'),
 
