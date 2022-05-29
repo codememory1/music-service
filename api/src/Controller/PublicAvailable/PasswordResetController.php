@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author  Codememory
  */
-#[Route('/password-reset')]
+#[Route('/user/password-reset')]
 class PasswordResetController extends AbstractRestController
 {
     /**
