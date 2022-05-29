@@ -5,11 +5,14 @@ namespace App\Entity;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Enum\ResponseTypeEnum;
 use App\Repository\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Role.
@@ -21,6 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
 #[ORM\Table('roles')]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity('key', message: 'role@exist', payload: [ResponseTypeEnum::EXIST, 409])]
 class Role implements EntityInterface
 {
     use IdentifierTrait;
@@ -42,9 +46,10 @@ class Role implements EntityInterface
     ])]
     private ?string $shortDescriptionTranslationKey = null;
 
-    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class)]
-    private $permissions;
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class, cascade: ['persist'])]
+    private Collection $permissions;
 
+    #[Pure]
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -113,6 +118,11 @@ class Role implements EntityInterface
         return $this->permissions;
     }
 
+    /**
+     * @param RolePermission $permission
+     *
+     * @return $this
+     */
     public function addPermission(RolePermission $permission): self
     {
         if (!$this->permissions->contains($permission)) {
@@ -123,6 +133,11 @@ class Role implements EntityInterface
         return $this;
     }
 
+    /**
+     * @param RolePermission $permission
+     *
+     * @return $this
+     */
     public function removePermission(RolePermission $permission): self
     {
         if ($this->permissions->removeElement($permission)) {

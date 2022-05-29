@@ -33,11 +33,14 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@minPasswordLength', 'Пароль должен состоять не меньше чем из 8-ми символов'),
             new TranslationFactory('ru', 'common@invalidConfirmPassword', 'Некорректное подтверждение пароля'),
             new TranslationFactory('ru', 'common@invalidCode', 'Некорректный код'),
+            new TranslationFactory('ru', 'common@titleTranslationKeyNotExist', 'Ключ перевода для имени не найден'),
+            new TranslationFactory('ru', 'common@shortDescriptionTranslationKeyNotExist', 'Ключ перевода для описания не найден'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
             new TranslationFactory('ru', 'entityNotFound@translationKey', 'Ключ перевода не найден'),
             new TranslationFactory('ru', 'entityNotFound@translation', 'Перевод не найден'),
+            new TranslationFactory('ru', 'entityNotFound@rolePermissionKey', 'Ключ разрешения не найден'),
 
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
             new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),
@@ -65,6 +68,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@createLanguage', 'Создание языка'),
             new TranslationFactory('ru', 'rolePermission@updateLanguage', 'Редактирование языка'),
             new TranslationFactory('ru', 'rolePermission@deleteLanguage', 'Удаление языка'),
+            new TranslationFactory('ru', 'rolePermission@createUserRole', 'Создание пользовательской роли'),
+            new TranslationFactory('ru', 'rolePermission@updateUserRole', 'Обновление пользовательской роли'),
+            new TranslationFactory('ru', 'rolePermission@deleteUserRole', 'Удаление пользовательской роли'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -83,6 +89,11 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'passwordReset@successRestorePassword', 'Пароль успешно восстановлен'),
 
             new TranslationFactory('ru', 'accountActivation@successActivate', 'Аккаунт успешно активирован'),
+
+            new TranslationFactory('ru', 'role@keyIsRequired', 'Ключ роли обязательный к заполнению'),
+            new TranslationFactory('ru', 'role@titleIsRequired', 'Название роли обязательно к заполнению'),
+            new TranslationFactory('ru', 'role@exist', 'Роль с данным ключем уже существует'),
+            new TranslationFactory('ru', 'role@successCreate', 'Роль успешно создана'),
         ]);
     }
 

@@ -64,7 +64,7 @@ class RolePermission implements EntityInterface
      *
      * @return $this
      */
-    public function setPermission(?RolePermissionKey $rolePermissionKey): self
+    public function setPermissionKey(?RolePermissionKey $rolePermissionKey): self
     {
         $this->rolePermissionKey = $rolePermissionKey;
 

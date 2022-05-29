@@ -58,7 +58,7 @@ final class RolePermissionFactory implements DataFixtureFactoryInterface
         $rolePermissionEntity = new RolePermission();
 
         $rolePermissionEntity->setRole($role);
-        $rolePermissionEntity->setPermission($rolePermissionKey);
+        $rolePermissionEntity->setPermissionKey($rolePermissionKey);
 
         return $rolePermissionEntity;
     }
