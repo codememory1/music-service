@@ -8,6 +8,8 @@ use App\Annotation\UserRolePermission;
 use App\DTO\UserRoleDTO;
 use App\Entity\Role;
 use App\Enum\RolePermissionEnum;
+use App\Repository\RoleRepository;
+use App\ResponseData\UserRoleResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\UserRole\CreateUserRoleService;
@@ -26,6 +28,40 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user/role')]
 class UserRoleController extends AbstractRestController
 {
+    /**
+     * @param UserRoleResponseData $userRoleResponseData
+     * @param RoleRepository       $roleRepository
+     *
+     * @return JsonResponse
+     */
+    #[Route('/all', methods: 'GET')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::SHOW_ROLES)]
+    public function all(UserRoleResponseData $userRoleResponseData, RoleRepository $roleRepository): JsonResponse
+    {
+        $userRoleResponseData->setEntities($roleRepository->findAll());
+
+        return $this->responseCollection->dataOutput($userRoleResponseData->collect()->getResponse());
+    }
+
+    /**
+     * @param Role                 $role
+     * @param UserRoleResponseData $userRoleResponseData
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{role_id<\d+>}/read', methods: 'GET')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::SHOW_ROLES)]
+    public function read(
+        #[EntityNotFound(EntityNotFoundException::class, 'role')] Role $role,
+        UserRoleResponseData $userRoleResponseData
+    ): JsonResponse {
+        $userRoleResponseData->setEntities($role);
+
+        return $this->responseCollection->dataOutput($userRoleResponseData->collect()->getResponse());
+    }
+
     /**
      * @param UserRoleDTO           $userRoleDTO
      * @param CreateUserRoleService $createUserRoleService

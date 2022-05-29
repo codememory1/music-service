@@ -28,6 +28,7 @@ final class RolePermissionDataFixture extends AbstractDataFixture implements Dep
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::CREATE_LANGUAGE),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::UPDATE_LANGUAGE),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::DELETE_LANGUAGE),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::SHOW_ROLES),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::CREATE_USER_ROLE),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::UPDATE_USER_ROLE),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::DELETE_USER_ROLE),
