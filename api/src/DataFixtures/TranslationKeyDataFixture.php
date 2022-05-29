@@ -40,6 +40,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('entityNotFound@translationKey'),
             new TranslationKeyFactory('entityNotFound@translation'),
             new TranslationKeyFactory('entityNotFound@rolePermissionKey'),
+            new TranslationKeyFactory('entityNotFound@role'),
 
             new TranslationKeyFactory('auth@successAuthorization'),
             new TranslationKeyFactory('auth@authRequired'),
@@ -77,6 +78,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('role@titleIsRequired'),
             new TranslationKeyFactory('role@exist'),
             new TranslationKeyFactory('role@successCreate'),
+            new TranslationKeyFactory('role@successUpdate'),
 
             new TranslationKeyFactory('user@failedToIdentify'),
 

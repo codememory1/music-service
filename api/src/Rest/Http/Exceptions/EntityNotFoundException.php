@@ -84,4 +84,16 @@ class EntityNotFoundException extends ApiResponseException
     {
         return new self('entityNotFound@rolePermissionKey', $data, $headers);
     }
+
+    /**
+     * @param array $data
+     * @param array $headers
+     *
+     * @return static
+     */
+    #[Pure]
+    final public static function role(array $data = [], array $headers = []): self
+    {
+        return new self('entityNotFound@role', $data, $headers);
+    }
 }
