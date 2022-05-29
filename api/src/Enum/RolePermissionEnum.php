@@ -15,6 +15,7 @@ enum RolePermissionEnum
     case CREATE_LANGUAGE;
     case UPDATE_LANGUAGE;
     case DELETE_LANGUAGE;
+    case SHOW_ROLES;
     case CREATE_USER_ROLE;
     case UPDATE_USER_ROLE;
     case DELETE_USER_ROLE;

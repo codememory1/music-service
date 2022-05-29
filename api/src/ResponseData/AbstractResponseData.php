@@ -24,9 +24,14 @@ use function Symfony\Component\String\u;
 abstract class AbstractResponseData implements ResponseDataInterface
 {
     /**
+     * @var array
+     */
+    protected array $ignoredProperties = [];
+
+    /**
      * @var ReverseContainer
      */
-    private ReverseContainer $container;
+    protected ReverseContainer $container;
 
     /**
      * @var array<EntityInterface>
@@ -49,6 +54,9 @@ abstract class AbstractResponseData implements ResponseDataInterface
     public function __construct(ReverseContainer $container)
     {
         $this->container = $container;
+
+        $this->ignoredProperties[] = 'ignoredProperties';
+        $this->ignoredProperties[] = 'container';
     }
 
     /**
@@ -72,6 +80,10 @@ abstract class AbstractResponseData implements ResponseDataInterface
         $properties = $reflection->getProperties();
 
         foreach ($properties as $property) {
+            if (in_array($property->getName(), $this->ignoredProperties, true)) {
+                continue;
+            }
+
             $propertyHandleResult = $this->handleProperty($property);
 
             if ($propertyHandleResult['isPassed']) {
