@@ -19,37 +19,11 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class Authentication
 {
-    /**
-     * @var null|HashingService
-     */
-    private ?HashingService $hashingService = null;
-
-    /**
-     * @var null|EventDispatcherInterface
-     */
-    private ?EventDispatcherInterface $eventDispatcher = null;
-
-    /**
-     * @param HashingService $hashingService
-     *
-     * @return void
-     */
     #[Required]
-    public function setHashingService(HashingService $hashingService): void
-    {
-        $this->hashingService = $hashingService;
-    }
+    public ?HashingService $hashingService = null;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return void
-     */
     #[Required]
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    public ?EventDispatcherInterface $eventDispatcher = null;
 
     /**
      * @param AuthorizationDTO $authorizationDTO

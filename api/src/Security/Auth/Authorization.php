@@ -19,37 +19,11 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class Authorization extends AbstractService
 {
-    /**
-     * @var null|AuthorizationToken
-     */
-    private ?AuthorizationToken $authorizationToken = null;
-
-    /**
-     * @var null|EventDispatcherInterface
-     */
-    private ?EventDispatcherInterface $eventDispatcher = null;
-
-    /**
-     * @param AuthorizationToken $authorizationToken
-     *
-     * @return void
-     */
     #[Required]
-    public function setAuthorizationToken(AuthorizationToken $authorizationToken): void
-    {
-        $this->authorizationToken = $authorizationToken;
-    }
+    public ?AuthorizationToken $authorizationToken = null;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return void
-     */
     #[Required]
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    public ?EventDispatcherInterface $eventDispatcher = null;
 
     /**
      * @param User $authenticatedUser

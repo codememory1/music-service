@@ -15,10 +15,8 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class AuthorizationToken
 {
-    /**
-     * @var null|JwtTokenGenerator
-     */
-    private ?JwtTokenGenerator $jwtTokenGenerator = null;
+    #[Required]
+    public ?JwtTokenGenerator $jwtTokenGenerator = null;
 
     /**
      * @var null|string
@@ -29,17 +27,6 @@ class AuthorizationToken
      * @var null|string
      */
     private ?string $refreshToken = null;
-
-    /**
-     * @param JwtTokenGenerator $jwtTokenGenerator
-     *
-     * @return void
-     */
-    #[Required]
-    public function setJwtTokenGenerator(JwtTokenGenerator $jwtTokenGenerator): void
-    {
-        $this->jwtTokenGenerator = $jwtTokenGenerator;
-    }
 
     /**
      * @param User $user

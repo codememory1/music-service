@@ -20,21 +20,8 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class UpdateAccessTokenService extends AbstractService
 {
-    /**
-     * @var null|AuthorizationToken
-     */
-    private ?AuthorizationToken $authorizationToken = null;
-
-    /**
-     * @param AuthorizationToken $authorizationToken
-     *
-     * @return void
-     */
     #[Required]
-    public function setAuthorizationToken(AuthorizationToken $authorizationToken): void
-    {
-        $this->authorizationToken = $authorizationToken;
-    }
+    public ?AuthorizationToken $authorizationToken = null;
 
     /**
      * @param RefreshTokenDTO $refreshTokenDTO

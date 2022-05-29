@@ -20,21 +20,8 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class Identification extends AbstractService
 {
-    /**
-     * @var null|EventDispatcherInterface
-     */
-    private ?EventDispatcherInterface $eventDispatcher = null;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return void
-     */
     #[Required]
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    public ?EventDispatcherInterface $eventDispatcher = null;
 
     /**
      * @param AuthorizationDTO $authorizationDTO
