@@ -43,6 +43,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@rolePermissionKey', 'Ключ разрешения не найден'),
             new TranslationFactory('ru', 'entityNotFound@role', 'Роль не найдена'),
 
+            new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
+
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
             new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),
             new TranslationFactory('ru', 'auth@authNotRequired', 'Для выполнения данного действия вы должы выйти из аккаунта'),
@@ -73,6 +75,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@createUserRole', 'Создание пользовательской роли'),
             new TranslationFactory('ru', 'rolePermission@updateUserRole', 'Обновление пользовательской роли'),
             new TranslationFactory('ru', 'rolePermission@deleteUserRole', 'Удаление пользовательской роли'),
+            new TranslationFactory('ru', 'rolePermission@updatePermissionsToRole', 'Обновление разрешений у роли'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -97,6 +100,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'passwordReset@successRestorePassword', 'Пароль успешно восстановлен'),
 
             new TranslationFactory('ru', 'accountActivation@successActivate', 'Аккаунт успешно активирован'),
+
+            new TranslationFactory('ru', 'rolePermission@successUpdatePermissionToRole', 'Разрешения роли успешно обновлены'),
         ]);
     }
 
