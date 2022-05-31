@@ -64,6 +64,9 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PasswordReset::class, cascade: ['persist', 'remove'])]
     private Collection $passwordResets;
 
+    #[ORM\ManyToOne(targetEntity: Subscription::class)]
+    private ?Subscription $subscription = null;
+
     #[Pure]
     public function __construct()
     {
@@ -270,6 +273,26 @@ class User implements EntityInterface
             $this->passwordResets[] = $passwordReset;
             $passwordReset->setUser($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return null|Subscription
+     */
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    /**
+     * @param null|Subscription $subscription
+     *
+     * @return $this
+     */
+    public function setSubscription(?Subscription $subscription): self
+    {
+        $this->subscription = $subscription;
 
         return $this;
     }
