@@ -34,16 +34,19 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('common@invalidCode'),
             new TranslationKeyFactory('common@titleTranslationKeyNotExist'),
             new TranslationKeyFactory('common@shortDescriptionTranslationKeyNotExist'),
+            new TranslationKeyFactory('common@invalidOldPrice'),
+            new TranslationKeyFactory('common@invalidPrice'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
             new TranslationKeyFactory('entityNotFound@translationKey'),
             new TranslationKeyFactory('entityNotFound@translation'),
-            new TranslationKeyFactory('entityNotFound@rolePermissionKey'),
+            new TranslationKeyFactory('entityNotFound@permissionKey'),
             new TranslationKeyFactory('entityNotFound@role'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
+            new TranslationKeyFactory('entityExist@subscription'),
 
             new TranslationKeyFactory('auth@successAuthorization'),
             new TranslationKeyFactory('auth@authRequired'),
@@ -102,6 +105,15 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('accountActivation@successActivate'),
 
             new TranslationKeyFactory('rolePermission@successUpdatePermissionToRole'),
+
+            new TranslationKeyFactory('subscription@keyIsRequired'),
+            new TranslationKeyFactory('subscription@titleIsRequired'),
+            new TranslationKeyFactory('subscription@descriptionIsRequired'),
+            new TranslationKeyFactory('subscription@priceIsRequired'),
+            new TranslationKeyFactory('subscription@recommendIsRequired'),
+            new TranslationKeyFactory('subscription@invalidIsRecommend'),
+            new TranslationKeyFactory('subscription@statusIsRequired'),
+            new TranslationKeyFactory('subscription@successCreate'),
         ]);
     }
 

@@ -22,14 +22,8 @@ class UpdateLanguageService extends AbstractService
      */
     public function make(LanguageDTO $languageDTO): JsonResponse
     {
-        $languageEntity = $languageDTO->getEntity();
-
-        if (false === $this->validate($languageDTO)) {
-            return $this->validator->getResponse();
-        }
-
-        if (false === $this->validate($languageEntity)) {
-            return $this->validator->getResponse();
+        if (true !== $response = $this->validateFullDTO($languageDTO)) {
+            return $response;
         }
 
         $this->em->flush();

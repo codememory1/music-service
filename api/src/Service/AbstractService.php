@@ -7,6 +7,7 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Rest\Http\ResponseCollection;
 use App\Rest\Validator\Validator;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class AbstractService.
@@ -52,5 +53,25 @@ abstract class AbstractService
     protected function validate(DTOInterface|EntityInterface $object): bool
     {
         return $this->validator->validate($object);
+    }
+
+    /**
+     * @param DTOInterface $DTO
+     *
+     * @return bool|JsonResponse
+     */
+    protected function validateFullDTO(DTOInterface $DTO): bool|JsonResponse
+    {
+        if (false === $this->validate($DTO)) {
+            return $this->validator->getResponse();
+        }
+
+        $entity = $DTO->getEntity();
+
+        if (false === $this->validate($entity)) {
+            return $this->validator->getResponse();
+        }
+
+        return true;
     }
 }

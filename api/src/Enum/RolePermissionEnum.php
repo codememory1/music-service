@@ -20,4 +20,5 @@ enum RolePermissionEnum
     case UPDATE_USER_ROLE;
     case DELETE_USER_ROLE;
     case UPDATE_PERMISSIONS_TO_ROLE;
+    case CREATE_SUBSCRIPTION;
 }

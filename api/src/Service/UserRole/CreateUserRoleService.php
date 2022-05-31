@@ -30,15 +30,11 @@ class CreateUserRoleService extends AbstractService
      */
     public function make(UserRoleDTO $userRoleDTO): JsonResponse
     {
-        if (false === $this->validate($userRoleDTO)) {
-            return $this->validator->getResponse();
+        if (true !== $response = $this->validateFullDTO($userRoleDTO)) {
+            return $response;
         }
-
+        
         $roleEntity = $userRoleDTO->getEntity();
-
-        if (false === $this->validate($roleEntity)) {
-            return $this->validator->getResponse();
-        }
 
         $this->addPermission($roleEntity, $userRoleDTO->permissions);
 

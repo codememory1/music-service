@@ -67,7 +67,7 @@ class Subscription implements EntityInterface
     ])]
     private ?string $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPermission::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPermission::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $permissions;
 
     #[Pure]
@@ -99,7 +99,7 @@ class Subscription implements EntityInterface
     /**
      * @return null|string
      */
-    public function getTitleTranslationKey(): ?string
+    public function getTitle(): ?string
     {
         return $this->titleTranslationKey;
     }
@@ -109,7 +109,7 @@ class Subscription implements EntityInterface
      *
      * @return $this
      */
-    public function setTitleTranslationKey(?string $titleTranslationKey): self
+    public function setTitle(?string $titleTranslationKey): self
     {
         $this->titleTranslationKey = $titleTranslationKey;
 
@@ -119,7 +119,7 @@ class Subscription implements EntityInterface
     /**
      * @return null|string
      */
-    public function getDescriptionTranslationKey(): ?string
+    public function getDescription(): ?string
     {
         return $this->descriptionTranslationKey;
     }
@@ -129,7 +129,7 @@ class Subscription implements EntityInterface
      *
      * @return $this
      */
-    public function setDescriptionTranslationKey(?string $descriptionTranslationKey): self
+    public function setDescription(?string $descriptionTranslationKey): self
     {
         $this->descriptionTranslationKey = $descriptionTranslationKey;
 
@@ -211,7 +211,11 @@ class Subscription implements EntityInterface
      */
     public function setStatus(?SubscriptionStatusEnum $statusEnum): self
     {
-        $this->status = $statusEnum->name;
+        if (null === $statusEnum) {
+            $this->status = SubscriptionStatusEnum::HIDE->name;
+        } else {
+            $this->status = $statusEnum?->name;
+        }
 
         return $this;
     }

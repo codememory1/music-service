@@ -22,15 +22,11 @@ class CreateLanguageService extends AbstractService
      */
     public function make(LanguageDTO $languageDTO): JsonResponse
     {
+        if (true !== $response = $this->validateFullDTO($languageDTO)) {
+            return $response;
+        }
+
         $languageEntity = $languageDTO->getEntity();
-
-        if (false === $this->validate($languageDTO)) {
-            return $this->validator->getResponse();
-        }
-
-        if (false === $this->validate($languageEntity)) {
-            return $this->validator->getResponse();
-        }
 
         $this->em->persist($languageEntity);
         $this->em->flush();
