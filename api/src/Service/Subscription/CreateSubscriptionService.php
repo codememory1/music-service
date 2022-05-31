@@ -33,7 +33,7 @@ class CreateSubscriptionService extends AbstractService
         if (true !== $response = $this->validateFullDTO($subscriptionDTO)) {
             return $response;
         }
-        
+
         $subscriptionEntity = $subscriptionDTO->getEntity();
 
         $this->addPermission($subscriptionEntity, $subscriptionDTO->permissions);

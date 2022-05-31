@@ -44,6 +44,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@translation', 'Перевод не найден'),
             new TranslationFactory('ru', 'entityNotFound@permissionKey', 'Ключ разрешения не найден'),
             new TranslationFactory('ru', 'entityNotFound@role', 'Роль не найдена'),
+            new TranslationFactory('ru', 'entityNotFound@subscription', 'Подписка не найдена'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -80,6 +81,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@updateUserRole', 'Обновление пользовательской роли'),
             new TranslationFactory('ru', 'rolePermission@deleteUserRole', 'Удаление пользовательской роли'),
             new TranslationFactory('ru', 'rolePermission@updatePermissionsToRole', 'Обновление разрешений у роли'),
+            new TranslationFactory('ru', 'rolePermission@createSubscription', 'Создание подписки'),
+            new TranslationFactory('ru', 'rolePermission@deleteSubscription', 'Удаление подписки'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -115,6 +118,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscription@invalidIsRecommend', 'Некорректное значение чекбокса рекомендации'),
             new TranslationFactory('ru', 'subscription@statusIsRequired', 'Статус подписки обязательный к заполнению'),
             new TranslationFactory('ru', 'subscription@successCreate', 'Подписка успешно создана'),
+            new TranslationFactory('ru', 'subscription@successDelete', 'Подписка успешно удалена'),
         ]);
     }
 

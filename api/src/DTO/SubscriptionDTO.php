@@ -11,8 +11,8 @@ use App\Entity\Subscription;
 use App\Entity\TranslationKey;
 use App\Enum\ResponseTypeEnum;
 use App\Enum\SubscriptionStatusEnum;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AppAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class SubscriptionDTO.

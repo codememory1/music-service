@@ -33,7 +33,7 @@ class CreateUserRoleService extends AbstractService
         if (true !== $response = $this->validateFullDTO($userRoleDTO)) {
             return $response;
         }
-        
+
         $roleEntity = $userRoleDTO->getEntity();
 
         $this->addPermission($roleEntity, $userRoleDTO->permissions);
