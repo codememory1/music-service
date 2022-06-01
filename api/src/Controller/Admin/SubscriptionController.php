@@ -37,11 +37,27 @@ class SubscriptionController extends AbstractRestController
     #[Route('/all', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
-    public function all(
-        SubscriptionResponseData $subscriptionResponseData,
-        SubscriptionRepository $subscriptionRepository
-    ): JsonResponse {
+    public function all(SubscriptionResponseData $subscriptionResponseData, SubscriptionRepository $subscriptionRepository): JsonResponse
+    {
         $subscriptionResponseData->setEntities($subscriptionRepository->findAll());
+
+        return $this->responseCollection->dataOutput($subscriptionResponseData->collect()->getResponse());
+    }
+
+    /**
+     * @param Subscription             $subscription
+     * @param SubscriptionResponseData $subscriptionResponseData
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{subscription_id<\d+>}/read', methods: 'GET')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
+    public function read(
+        #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,
+        SubscriptionResponseData $subscriptionResponseData
+    ): JsonResponse {
+        $subscriptionResponseData->setEntities($subscription);
 
         return $this->responseCollection->dataOutput($subscriptionResponseData->collect()->getResponse());
     }
