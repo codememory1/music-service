@@ -93,7 +93,7 @@ class UserRoleController extends AbstractRestController
     ): JsonResponse {
         $userRoleDTO->setEntity($role);
 
-        return $updateUserRoleService->make($userRoleDTO->collect());
+        return $updateUserRoleService->make($userRoleDTO->collect(), $role);
     }
 
     /**
