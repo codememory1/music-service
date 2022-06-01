@@ -24,4 +24,7 @@ enum RolePermissionEnum
     case CREATE_SUBSCRIPTION;
     case UPDATE_SUBSCRIPTION;
     case DELETE_SUBSCRIPTION;
+    case CREATE_TRANSLATION;
+    case UPDATE_TRANSLATION;
+    case DELETE_TRANSLATION;
 }

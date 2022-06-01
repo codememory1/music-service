@@ -72,7 +72,7 @@ class ResponseSchema implements ResponseSchemaInterface
     public function setMessage(string|array $message, array $parameters = []): self
     {
         if (is_array($message)) {
-            $message = array_map(static fn(string $translationKey) => $this->translationService->get($translationKey, $parameters), $message);
+            $message = array_map(fn(string $translationKey) => $this->translationService->get($translationKey, $parameters), $message);
         } else {
             $message = $this->translationService->get($message, $parameters);
         }

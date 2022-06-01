@@ -60,9 +60,9 @@ class TranslationService
     /**
      * @param string $key
      *
-     * @return TranslationKey
+     * @return null|TranslationKey
      */
-    public function getTranslationKey(string $key): TranslationKey
+    public function getTranslationKey(string $key): ?TranslationKey
     {
         return $this->translationKeyRepository->findOneBy([
             'key' => $key

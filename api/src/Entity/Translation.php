@@ -25,11 +25,11 @@ class Translation implements EntityInterface
 
     use TimestampTrait;
 
-    #[ORM\ManyToOne(targetEntity: Language::class, inversedBy: 'translations')]
+    #[ORM\ManyToOne(targetEntity: Language::class, cascade: ['persist'], inversedBy: 'translations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Language $language = null;
 
-    #[ORM\ManyToOne(targetEntity: TranslationKey::class)]
+    #[ORM\ManyToOne(targetEntity: TranslationKey::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?TranslationKey $translationKey = null;
 
