@@ -2,18 +2,10 @@
 
 namespace App\Rest\Http;
 
-use App\Entity\Language;
-use App\Entity\Translation;
-use App\Entity\TranslationKey;
 use App\Enum\ResponseTypeEnum;
-use App\Repository\LanguageRepository;
-use App\Repository\TranslationKeyRepository;
-use App\Repository\TranslationRepository;
 use App\Rest\Http\Interfaces\ResponseSchemaInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\TranslationService;
 use function is_array;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class ResponseSchema.
@@ -35,36 +27,16 @@ class ResponseSchema implements ResponseSchemaInterface
     ];
 
     /**
-     * @var null|Request
+     * @var TranslationService
      */
-    private ?Request $request;
+    private TranslationService $translationService;
 
     /**
-     * @var LanguageRepository
+     * @param TranslationService $translationService
      */
-    private LanguageRepository $languageRepository;
-
-    /**
-     * @var TranslationKeyRepository
-     */
-    private TranslationKeyRepository $translationKeyRepository;
-
-    /**
-     * @var TranslationRepository
-     */
-    private TranslationRepository $translationRepository;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param RequestStack           $requestStack
-     */
-    public function __construct(RequestStack $requestStack, EntityManagerInterface $entityManager)
+    public function __construct(TranslationService $translationService)
     {
-        $this->request = $requestStack->getCurrentRequest();
-
-        $this->languageRepository = $entityManager->getRepository(Language::class);
-        $this->translationKeyRepository = $entityManager->getRepository(TranslationKey::class);
-        $this->translationRepository = $entityManager->getRepository(Translation::class);
+        $this->translationService = $translationService;
     }
 
     /**
@@ -93,15 +65,16 @@ class ResponseSchema implements ResponseSchemaInterface
 
     /**
      * @param array|string $message
+     * @param array        $parameters
      *
      * @return $this
      */
-    public function setMessage(string|array $message): self
+    public function setMessage(string|array $message, array $parameters = []): self
     {
         if (is_array($message)) {
-            $message = array_map(fn(string $translationKey) => $this->getTranslation($translationKey), $message);
+            $message = array_map(static fn(string $translationKey) => $this->translationService->get($translationKey, $parameters), $message);
         } else {
-            $message = $this->getTranslation($message);
+            $message = $this->translationService->get($message, $parameters);
         }
 
         $this->schema['message'] = $message;
@@ -137,19 +110,6 @@ class ResponseSchema implements ResponseSchemaInterface
         $statusCode = $this->schema['status_code'];
 
         return empty($statusCode) ? 200 : $statusCode;
-    }
-
-    /**
-     * @param string $translationKey
-     *
-     * @return null|string
-     */
-    private function getTranslation(string $translationKey): ?string
-    {
-        return $this->translationRepository->findOneBy([
-            'language' => $this->languageRepository->findOneBy(['code' => $this->request->getLocale()]),
-            'translationKey' => $this->translationKeyRepository->findOneBy(['key' => $translationKey])
-        ])?->getTranslation();
     }
 
     public function __clone(): void

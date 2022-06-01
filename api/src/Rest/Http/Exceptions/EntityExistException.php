@@ -23,6 +23,6 @@ class EntityExistException extends ApiResponseException
     #[Pure]
     public static function rolePermission(array $data = [], array $headers = []): self
     {
-        return new self(409, ResponseTypeEnum::EXIST, 'entityExist@oneOfPermissionExistToRole', $data, $headers);
+        return new self(409, ResponseTypeEnum::EXIST, 'entityExist@oneOfPermissionExistToRole', data: $data, headers: $headers);
     }
 }
