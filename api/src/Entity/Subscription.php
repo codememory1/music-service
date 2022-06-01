@@ -233,15 +233,15 @@ class Subscription implements EntityInterface
      *
      * @return $this
      */
-    public function setPermissions(array $permissionsKeys): self
+    public function setPermissions(array $permissionKeys): self
     {
         $permissions = [];
 
-        foreach ($permissionsKeys as $permissionsKey) {
+        foreach ($permissionKeys as $permissionKey) {
             $subscriptionPermission = new SubscriptionPermission();
 
             $subscriptionPermission->setSubscription($this);
-            $subscriptionPermission->setSubscriptionPermissionKey($permissionsKey);
+            $subscriptionPermission->setPermissionKey($permissionKey);
 
             $permissions[] = $subscriptionPermission;
         }
