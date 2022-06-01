@@ -3,10 +3,6 @@
 namespace App\Service\UserRole;
 
 use App\DTO\UserRoleDTO;
-use App\Entity\Role;
-use App\Entity\RolePermission;
-use App\Repository\RolePermissionKeyRepository;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -21,7 +17,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 class CreateUserRoleService extends AbstractService
 {
     #[Required]
-    public ?RolePermissionKeyRepository $rolePermissionKeyRepository = null;
+    public ?SetPermissionsToRoleService $setPermissionsToRoleService = null;
 
     /**
      * @param UserRoleDTO $userRoleDTO
@@ -36,36 +32,11 @@ class CreateUserRoleService extends AbstractService
 
         $roleEntity = $userRoleDTO->getEntity();
 
-        $this->addPermission($roleEntity, $userRoleDTO->permissions);
+        $this->setPermissionsToRoleService->set($roleEntity, $userRoleDTO->permissions);
 
         $this->em->persist($roleEntity);
         $this->em->flush();
 
         return $this->responseCollection->successCreate('role@successCreate');
-    }
-
-    /**
-     * @param Role  $role
-     * @param array $permissionKeys
-     *
-     * @return void
-     */
-    public function addPermission(Role $role, array $permissionKeys): void
-    {
-        foreach ($permissionKeys as $permission) {
-            $rolePermissionKey = $this->rolePermissionKeyRepository->findOneBy([
-                'key' => $permission
-            ]);
-
-            if (null === $rolePermissionKey) {
-                throw EntityNotFoundException::rolePermissionKey();
-            }
-
-            $rolePermissionEntity = new RolePermission();
-
-            $rolePermissionEntity->setPermissionKey($rolePermissionKey);
-
-            $role->addPermission($rolePermissionEntity);
-        }
     }
 }

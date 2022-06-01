@@ -46,7 +46,7 @@ class Role implements EntityInterface
     ])]
     private ?string $shortDescriptionTranslationKey = null;
 
-    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: RolePermission::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $permissions;
 
     #[Pure]
@@ -116,6 +116,29 @@ class Role implements EntityInterface
     public function getPermissions(): Collection
     {
         return $this->permissions;
+    }
+
+    /**
+     * @param array<RolePermissionKey> $permissionKeys
+     *
+     * @return $this
+     */
+    public function setPermissions(array $permissionKeys): self
+    {
+        $permissions = [];
+
+        foreach ($permissionKeys as $permissionsKey) {
+            $rolePermission = new RolePermission();
+
+            $rolePermission->setRole($this);
+            $rolePermission->setPermissionKey($permissionsKey);
+
+            $permissions[] = $rolePermission;
+        }
+
+        $this->permissions = new ArrayCollection($permissions);
+
+        return $this;
     }
 
     /**
