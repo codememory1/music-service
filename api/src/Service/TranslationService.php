@@ -48,6 +48,16 @@ class TranslationService
     }
 
     /**
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->translationRepository->findBy([
+            'language' => $this->getLanguage()
+        ]);
+    }
+
+    /**
      * @return null|Language
      */
     public function getLanguage(): ?Language

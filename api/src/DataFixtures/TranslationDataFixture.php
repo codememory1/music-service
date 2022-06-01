@@ -86,6 +86,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@createSubscription', 'Создание подписки'),
             new TranslationFactory('ru', 'rolePermission@updateSubscription', 'Обновление подписки'),
             new TranslationFactory('ru', 'rolePermission@deleteSubscription', 'Удаление подписки'),
+            new TranslationFactory('ru', 'rolePermission@showFullInfoTranslations', 'Просмотр полной информации о переводах'),
             new TranslationFactory('ru', 'rolePermission@createTranslation', 'Создание перевода'),
             new TranslationFactory('ru', 'rolePermission@updateTranslation', 'Обновление перевода'),
             new TranslationFactory('ru', 'rolePermission@deleteTranslation', 'Удаление перевода'),
