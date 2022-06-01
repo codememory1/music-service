@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Service\DataRepresentation\FilterService;
 use App\Service\DataRepresentation\SortService;
+use function call_user_func;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -69,12 +70,13 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array $criteria
-     * @param array $orderBy
+     * @param array         $criteria
+     * @param array         $orderBy
+     * @param null|callable $callback
      *
      * @return array<Entity>
      */
-    public function findByCriteria(array $criteria, array $orderBy = []): array
+    public function findByCriteria(array $criteria, array $orderBy = [], ?callable $callback = null): array
     {
         $tableName = $this->getClassMetadata()->getTableName();
         $qb = $this->createQueryBuilder($tableName);
@@ -87,6 +89,10 @@ abstract class AbstractRepository extends ServiceEntityRepository
             $qb
                 ->andWhere("${tableName}.${propertyName} = :${propertyName}")
                 ->setParameter($propertyName, $value);
+        }
+
+        if (null !== $callback) {
+            call_user_func($callback, $qb, $tableName);
         }
 
         return $qb->getQuery()->getResult() ?: [];

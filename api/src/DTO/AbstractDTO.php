@@ -195,6 +195,7 @@ abstract class AbstractDTO implements DTOInterface
     private function expectedKeyHandler(): void
     {
         $allInputs = $this->request->all();
+        $allInputs = array_merge($allInputs, $this->request->request->query->all());
 
         foreach ($this->expectKeys as $expectKey) {
             $propertyName = $expectKey['alias'] ?: $expectKey['name'];

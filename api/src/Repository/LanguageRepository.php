@@ -22,7 +22,7 @@ class LanguageRepository extends AbstractRepository
     /**
      * @inheritDoc
      */
-    public function findByCriteria(array $criteria, array $orderBy = []): array
+    public function findByCriteria(array $criteria, array $orderBy = [], ?callable $callback = null): array
     {
         if (false !== $sortByCode = $this->sortService->get('code')) {
             $orderBy['code'] = $this->getOrderType($sortByCode);

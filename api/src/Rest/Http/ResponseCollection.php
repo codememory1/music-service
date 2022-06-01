@@ -43,7 +43,7 @@ class ResponseCollection
      */
     public function successCreate(string $translationKey, array $data = [], array $headers = []): JsonResponse
     {
-        $this->initResponseSchema(200, ResponseTypeEnum::CREATE, $translationKey, $data);
+        $this->initResponseSchema(200, ResponseTypeEnum::CREATE, $translationKey, data: $data);
 
         return $this->response->getResponse($this->responseSchema, $headers);
     }
@@ -57,7 +57,7 @@ class ResponseCollection
      */
     public function successUpdate(string $translationKey, array $data = [], array $headers = []): JsonResponse
     {
-        $this->initResponseSchema(200, ResponseTypeEnum::UPDATE, $translationKey, $data);
+        $this->initResponseSchema(200, ResponseTypeEnum::UPDATE, $translationKey, data: $data);
 
         return $this->response->getResponse($this->responseSchema, $headers);
     }
@@ -71,7 +71,7 @@ class ResponseCollection
      */
     public function successDelete(string $translationKey, array $data = [], array $headers = []): JsonResponse
     {
-        $this->initResponseSchema(200, ResponseTypeEnum::DELETE, $translationKey, $data);
+        $this->initResponseSchema(200, ResponseTypeEnum::DELETE, $translationKey, data: $data);
 
         return $this->response->getResponse($this->responseSchema, $headers);
     }
@@ -84,7 +84,7 @@ class ResponseCollection
      */
     public function successAuthorization(array $data, array $headers = []): JsonResponse
     {
-        $this->initResponseSchema(200, ResponseTypeEnum::SUCCESS_AUTHORIZATION, 'auth@successAuthorization', $data);
+        $this->initResponseSchema(200, ResponseTypeEnum::SUCCESS_AUTHORIZATION, 'auth@successAuthorization', data: $data);
 
         return $this->response->getResponse($this->responseSchema, $headers);
     }
@@ -97,7 +97,7 @@ class ResponseCollection
      */
     public function successRegistration(array $data = [], array $headers = []): JsonResponse
     {
-        $this->initResponseSchema(200, ResponseTypeEnum::SUCCESS_REGISTRATION, 'registration@successRegistration', $data);
+        $this->initResponseSchema(200, ResponseTypeEnum::SUCCESS_REGISTRATION, 'registration@successRegistration', data: $data);
 
         return $this->response->getResponse($this->responseSchema, $headers);
     }
@@ -110,7 +110,7 @@ class ResponseCollection
      */
     public function dataOutput(array $data, array $headers = []): JsonResponse
     {
-        $this->initResponseSchema(200, ResponseTypeEnum::DATA_OUTPUT, 'common@dataOutput', $data);
+        $this->initResponseSchema(200, ResponseTypeEnum::DATA_OUTPUT, 'common@dataOutput', data: $data);
 
         return $this->response->getResponse($this->responseSchema, $headers);
     }
@@ -123,7 +123,7 @@ class ResponseCollection
      */
     public function successLogout(array $data = [], array $headers = []): JsonResponse
     {
-        $this->initResponseSchema(200, ResponseTypeEnum::DELETE, 'logout@successLogout', $data);
+        $this->initResponseSchema(200, ResponseTypeEnum::DELETE, 'logout@successLogout', data: $data);
 
         return $this->response->getResponse($this->responseSchema, $headers);
     }
@@ -136,7 +136,7 @@ class ResponseCollection
      */
     public function successSendRequestRestorationPassword(array $data = [], array $headers = []): JsonResponse
     {
-        $this->initResponseSchema(200, ResponseTypeEnum::SUCCESS_SEND, 'passwordReset@successSendRequestRestoration', $data);
+        $this->initResponseSchema(200, ResponseTypeEnum::SUCCESS_SEND, 'passwordReset@successSendRequestRestoration', data: $data);
 
         return $this->response->getResponse($this->responseSchema, $headers);
     }
