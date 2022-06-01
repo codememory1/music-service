@@ -145,15 +145,16 @@ class ResponseCollection
      * @param int              $statusCode
      * @param ResponseTypeEnum $type
      * @param array|string     $translationKey
+     * @param array            $parameters
      * @param array            $data
      *
      * @return void
      */
-    private function initResponseSchema(int $statusCode, ResponseTypeEnum $type, array|string $translationKey, array $data = []): void
+    private function initResponseSchema(int $statusCode, ResponseTypeEnum $type, array|string $translationKey, array $parameters = [], array $data = []): void
     {
         $this->responseSchema->setStatusCode($statusCode);
         $this->responseSchema->setType($type);
-        $this->responseSchema->setMessage($translationKey);
+        $this->responseSchema->setMessage($translationKey, $parameters);
         $this->responseSchema->setData($data);
     }
 }

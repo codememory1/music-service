@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\Entity\Language;
+use App\Entity\TranslationKey;
 use App\Repository\LanguageRepository;
 use App\Repository\TranslationKeyRepository;
 use App\Repository\TranslationRepository;
@@ -15,7 +17,7 @@ use Symfony\Contracts\Service\Attribute\Required;
  *
  * @author  Codememory
  */
-class TranslationService extends AbstractService
+class TranslationService
 {
     #[Required]
     public ?LanguageRepository $languageRepository = null;
@@ -31,14 +33,49 @@ class TranslationService extends AbstractService
 
     /**
      * @param string $key
+     * @param array  $parameters
      *
      * @return null|string
      */
-    public function get(string $key): ?string
+    public function get(string $key, array $parameters = []): ?string
     {
-        return $this->translationRepository->findOneBy([
-            'language' => $this->languageRepository->findOneBy(['code' => $this->request->request->getLocale()]),
-            'translationKey' => $this->translationKeyRepository->findOneBy(['key' => $key])
+        $translation = $this->translationRepository->findOneBy([
+            'language' => $this->getLanguage(),
+            'translationKey' => $this->getTranslationKey($key)
         ])?->getTranslation();
+
+        return null === $translation ? null : str_replace($this->parametersToFormat($parameters), $parameters, $translation);
+    }
+
+    /**
+     * @return null|Language
+     */
+    public function getLanguage(): ?Language
+    {
+        return $this->languageRepository->findOneBy([
+            'code' => $this->request->request->getLocale()
+        ]);
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return TranslationKey
+     */
+    public function getTranslationKey(string $key): TranslationKey
+    {
+        return $this->translationKeyRepository->findOneBy([
+            'key' => $key
+        ]);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     */
+    private function parametersToFormat(array $parameters): array
+    {
+        return array_map(static fn(string $value) => "%${value}%", array_keys($parameters));
     }
 }

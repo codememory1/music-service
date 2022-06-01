@@ -16,13 +16,14 @@ class EntityNotFoundException extends ApiResponseException
 {
     /**
      * @param string $translationKey
+     * @param array  $parameters
      * @param array  $data
      * @param array  $headers
      */
     #[Pure]
-    public function __construct(string $translationKey, array $data = [], array $headers = [])
+    public function __construct(string $translationKey, array $parameters = [], array $data = [], array $headers = [])
     {
-        parent::__construct(404, ResponseTypeEnum::NOT_EXIST, $translationKey, $data, $headers);
+        parent::__construct(404, ResponseTypeEnum::NOT_EXIST, $translationKey, $parameters, $data, $headers);
     }
 
     /**
@@ -34,7 +35,7 @@ class EntityNotFoundException extends ApiResponseException
     #[Pure]
     final public static function page(array $data = [], array $headers = []): self
     {
-        return new self('entityNotFound@page', $data, $headers);
+        return new self('entityNotFound@page', data: $data, headers: $headers);
     }
 
     /**
@@ -46,7 +47,7 @@ class EntityNotFoundException extends ApiResponseException
     #[Pure]
     final public static function language(array $data = [], array $headers = []): self
     {
-        return new self('entityNotFound@language', $data, $headers);
+        return new self('entityNotFound@language', data: $data, headers: $headers);
     }
 
     /**
@@ -58,7 +59,7 @@ class EntityNotFoundException extends ApiResponseException
     #[Pure]
     final public static function translationKey(array $data = [], array $headers = []): self
     {
-        return new self('entityNotFound@translationKey', $data, $headers);
+        return new self('entityNotFound@translationKey', data: $data, headers: $headers);
     }
 
     /**
@@ -70,7 +71,7 @@ class EntityNotFoundException extends ApiResponseException
     #[Pure]
     final public static function translation(array $data = [], array $headers = []): self
     {
-        return new self('entityNotFound@translation', $data, $headers);
+        return new self('entityNotFound@translation', data: $data, headers: $headers);
     }
 
     /**
@@ -82,7 +83,7 @@ class EntityNotFoundException extends ApiResponseException
     #[Pure]
     final public static function rolePermissionKey(array $data = [], array $headers = []): self
     {
-        return new self('entityNotFound@permissionKey', $data, $headers);
+        return new self('entityNotFound@permissionKey', data: $data, headers: $headers);
     }
 
     /**
@@ -94,7 +95,7 @@ class EntityNotFoundException extends ApiResponseException
     #[Pure]
     final public static function role(array $data = [], array $headers = []): self
     {
-        return new self('entityNotFound@role', $data, $headers);
+        return new self('entityNotFound@role', data: $data, headers: $headers);
     }
 
     /**
@@ -106,7 +107,7 @@ class EntityNotFoundException extends ApiResponseException
     #[Pure]
     final public static function subscriptionPermissionKey(array $data = [], array $headers = []): self
     {
-        return new self('entityNotFound@permissionKey', $data, $headers);
+        return new self('entityNotFound@permissionKey', data: $data, headers: $headers);
     }
 
     /**
@@ -118,6 +119,6 @@ class EntityNotFoundException extends ApiResponseException
     #[Pure]
     final public static function subscription(array $data = [], array $headers = []): self
     {
-        return new self('entityNotFound@subscription', $data, $headers);
+        return new self('entityNotFound@subscription', data: $data, headers: $headers);
     }
 }
