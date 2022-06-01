@@ -29,6 +29,11 @@ abstract class AbstractResponseData implements ResponseDataInterface
     protected array $ignoredProperties = [];
 
     /**
+     * @var array
+     */
+    protected array $methodPrefixesForProperties = [];
+
+    /**
      * @var ReverseContainer
      */
     protected ReverseContainer $container;
@@ -57,6 +62,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
 
         $this->ignoredProperties[] = 'ignoredProperties';
         $this->ignoredProperties[] = 'container';
+        $this->ignoredProperties[] = 'methodPrefixesForProperties';
     }
 
     /**
@@ -148,10 +154,11 @@ abstract class AbstractResponseData implements ResponseDataInterface
     private function addAllowedProperty(ReflectionProperty $reflectionProperty, array $interceptor = []): void
     {
         $propertyName = $reflectionProperty->getName();
+        $methodPrefix = $this->methodPrefixesForProperties[$propertyName] ?? 'get__';
 
         $this->allowedProperties[] = [
             'propertyName' => $propertyName,
-            'getterToEntity' => u("get_${propertyName}")->camel()->toString(),
+            'getterToEntity' => u("${methodPrefix}${propertyName}")->camel()->toString(),
             'keyToResponse' => u($propertyName)->snake()->toString(),
             'interceptor' => $interceptor
         ];

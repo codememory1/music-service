@@ -82,7 +82,7 @@ class EntityNotFoundException extends ApiResponseException
     #[Pure]
     final public static function rolePermissionKey(array $data = [], array $headers = []): self
     {
-        return new self('entityNotFound@rolePermissionKey', $data, $headers);
+        return new self('entityNotFound@permissionKey', $data, $headers);
     }
 
     /**
@@ -95,5 +95,29 @@ class EntityNotFoundException extends ApiResponseException
     final public static function role(array $data = [], array $headers = []): self
     {
         return new self('entityNotFound@role', $data, $headers);
+    }
+
+    /**
+     * @param array $data
+     * @param array $headers
+     *
+     * @return static
+     */
+    #[Pure]
+    final public static function subscriptionPermissionKey(array $data = [], array $headers = []): self
+    {
+        return new self('entityNotFound@permissionKey', $data, $headers);
+    }
+
+    /**
+     * @param array $data
+     * @param array $headers
+     *
+     * @return static
+     */
+    #[Pure]
+    final public static function subscription(array $data = [], array $headers = []): self
+    {
+        return new self('entityNotFound@subscription', $data, $headers);
     }
 }

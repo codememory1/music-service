@@ -7,6 +7,8 @@ use App\DTO\Interfaces\ValueInterceptorInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Rest\Http\Request;
 use App\Security\Auth\AuthorizedUser;
+use function call_user_func;
+use function is_callable;
 use function is_string;
 
 /**
@@ -113,12 +115,12 @@ abstract class AbstractDTO implements DTOInterface
     }
 
     /**
-     * @param string                    $propertyName
-     * @param ValueInterceptorInterface $interceptor
+     * @param string                             $propertyName
+     * @param callable|ValueInterceptorInterface $interceptor
      *
      * @return $this
      */
-    final protected function addInterceptor(string $propertyName, ValueInterceptorInterface $interceptor): self
+    final protected function addInterceptor(string $propertyName, ValueInterceptorInterface|callable $interceptor): self
     {
         $this->valueInterceptors[$propertyName] = $interceptor;
 
@@ -200,7 +202,11 @@ abstract class AbstractDTO implements DTOInterface
             $expectedKeyValue = $allInputs[$expectKey['name']] ?? null;
 
             if (null !== $expectedKeyInterceptor) {
-                $expectedKeyValue = $expectedKeyInterceptor->handle($expectKey['name'], $expectedKeyValue);
+                if (is_callable($expectedKeyInterceptor)) {
+                    $expectedKeyValue = call_user_func($expectedKeyInterceptor, $expectKey['name'], $expectedKeyValue);
+                } else {
+                    $expectedKeyValue = $expectedKeyInterceptor->handle($expectKey['name'], $expectedKeyValue);
+                }
             }
 
             $this->{$propertyName} = $expectedKeyValue;
