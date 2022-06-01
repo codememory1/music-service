@@ -13,6 +13,7 @@ use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Translation\CreateTranslationService;
 use App\Service\Translation\DeleteTranslationService;
+use App\Service\Translation\UpdateTranslationService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -38,6 +39,26 @@ class TranslationController extends AbstractRestController
     public function create(TranslationDTO $translationDTO, CreateTranslationService $createTranslationService): JsonResponse
     {
         return $createTranslationService->make($translationDTO->collect());
+    }
+
+    /**
+     * @param Translation              $translation
+     * @param TranslationDTO           $translationDTO
+     * @param UpdateTranslationService $updateTranslationService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{translation_id<\d+>}/edit', methods: 'PUT')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::UPDATE_TRANSLATION)]
+    public function update(
+        #[EntityNotFound(EntityNotFoundException::class, 'translation')] Translation $translation,
+        TranslationDTO $translationDTO,
+        UpdateTranslationService $updateTranslationService
+    ): JsonResponse {
+        $translationDTO->setEntity($translation);
+
+        return $updateTranslationService->make($translationDTO->collect());
     }
 
     /**
