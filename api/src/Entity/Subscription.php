@@ -179,7 +179,7 @@ class Subscription implements EntityInterface
     /**
      * @return null|bool
      */
-    public function isIsRecommend(): ?bool
+    public function isRecommend(): ?bool
     {
         return $this->isRecommend;
     }
@@ -226,6 +226,29 @@ class Subscription implements EntityInterface
     public function getPermissions(): Collection
     {
         return $this->permissions;
+    }
+
+    /**
+     * @param array<SubscriptionPermissionKey> $permissions
+     *
+     * @return $this
+     */
+    public function setPermissions(array $permissionsKeys): self
+    {
+        $permissions = [];
+
+        foreach ($permissionsKeys as $permissionsKey) {
+            $subscriptionPermission = new SubscriptionPermission();
+
+            $subscriptionPermission->setSubscription($this);
+            $subscriptionPermission->setSubscriptionPermissionKey($permissionsKey);
+
+            $permissions[] = $subscriptionPermission;
+        }
+
+        $this->permissions = new ArrayCollection($permissions);
+
+        return $this;
     }
 
     /**

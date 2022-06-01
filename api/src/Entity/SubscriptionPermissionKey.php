@@ -61,7 +61,7 @@ class SubscriptionPermissionKey implements EntityInterface
     /**
      * @return null|string
      */
-    public function getTitleTranslationKey(): ?string
+    public function getTitle(): ?string
     {
         return $this->titleTranslationKey;
     }
@@ -71,7 +71,7 @@ class SubscriptionPermissionKey implements EntityInterface
      *
      * @return $this
      */
-    public function setTitleTranslationKey(?string $titleTranslationKey): self
+    public function setTitle(?string $titleTranslationKey): self
     {
         $this->titleTranslationKey = $titleTranslationKey;
 

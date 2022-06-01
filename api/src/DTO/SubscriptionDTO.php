@@ -3,6 +3,7 @@
 namespace App\DTO;
 
 use App\DTO\Interceptors\AsArrayInterceptor;
+use App\DTO\Interceptors\AsBooleanInterceptor;
 use App\DTO\Interceptors\AsEnumInterceptor;
 use App\DTO\Interceptors\AsFloatInterceptor;
 use App\DTO\Interceptors\AsFloatOrNullInterceptor;
@@ -57,9 +58,14 @@ class SubscriptionDTO extends AbstractDTO
     #[Assert\Type('float', message: 'common@invalidPrice')]
     public ?float $price = null;
 
-    #[Assert\NotBlank(message: 'subscription@recommendIsRequired')]
-    #[Assert\Type('boolean', message: 'subscription@invalidIsRecommend')]
+    /**
+     * @var null|bool
+     */
     public ?bool $isRecommend = null;
+
+    /**
+     * @var null|array
+     */
     public ?array $permissions = null;
 
     #[Assert\NotBlank(message: 'subscription@statusIsRequired')]
@@ -84,6 +90,7 @@ class SubscriptionDTO extends AbstractDTO
         $this->addInterceptor('permissions', new AsArrayInterceptor());
         $this->addInterceptor('oldPrice', new AsFloatOrNullInterceptor());
         $this->addInterceptor('price', new AsFloatInterceptor());
+        $this->addInterceptor('isRecommend', new AsBooleanInterceptor());
         $this->addInterceptor('status', new AsEnumInterceptor(SubscriptionStatusEnum::class));
     }
 }

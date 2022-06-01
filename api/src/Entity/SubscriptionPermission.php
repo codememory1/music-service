@@ -55,7 +55,7 @@ class SubscriptionPermission implements EntityInterface
     /**
      * @return null|SubscriptionPermissionKey
      */
-    public function getSubscriptionPermissionKey(): ?SubscriptionPermissionKey
+    public function getPermissionKey(): ?SubscriptionPermissionKey
     {
         return $this->subscriptionPermissionKey;
     }
@@ -65,7 +65,7 @@ class SubscriptionPermission implements EntityInterface
      *
      * @return $this
      */
-    public function setSubscriptionPermissionKey(?SubscriptionPermissionKey $subscriptionPermissionKey): self
+    public function setPermissionKey(?SubscriptionPermissionKey $subscriptionPermissionKey): self
     {
         $this->subscriptionPermissionKey = $subscriptionPermissionKey;
 

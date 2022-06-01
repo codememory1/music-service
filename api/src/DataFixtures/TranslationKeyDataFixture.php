@@ -80,7 +80,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('rolePermission@updateUserRole'),
             new TranslationKeyFactory('rolePermission@deleteUserRole'),
             new TranslationKeyFactory('rolePermission@updatePermissionsToRole'),
+            new TranslationKeyFactory('rolePermission@showFullInfoSubscriptions'),
             new TranslationKeyFactory('rolePermission@createSubscription'),
+            new TranslationKeyFactory('rolePermission@updateSubscription'),
             new TranslationKeyFactory('rolePermission@deleteSubscription'),
 
             new TranslationKeyFactory('role@developer'),
@@ -113,10 +115,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('subscription@titleIsRequired'),
             new TranslationKeyFactory('subscription@descriptionIsRequired'),
             new TranslationKeyFactory('subscription@priceIsRequired'),
-            new TranslationKeyFactory('subscription@recommendIsRequired'),
-            new TranslationKeyFactory('subscription@invalidIsRecommend'),
             new TranslationKeyFactory('subscription@statusIsRequired'),
             new TranslationKeyFactory('subscription@successCreate'),
+            new TranslationKeyFactory('subscription@successUpdate'),
             new TranslationKeyFactory('subscription@successDelete'),
         ]);
     }

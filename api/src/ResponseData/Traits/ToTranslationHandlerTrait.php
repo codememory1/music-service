@@ -3,7 +3,6 @@
 namespace App\ResponseData\Traits;
 
 use App\Service\TranslationService;
-use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Trait ToTranslationHandlerTrait.
@@ -14,9 +13,6 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 trait ToTranslationHandlerTrait
 {
-    #[Required]
-    public ?TranslationService $translationService = null;
-
     /**
      * @param null|string $translationKey
      *
@@ -24,6 +20,8 @@ trait ToTranslationHandlerTrait
      */
     public function handleToTranslation(?string $translationKey): ?string
     {
-        return $this->translationService->get($translationKey);
+        $translationService = $this->container->getService(TranslationService::class);
+
+        return $translationService->get($translationKey);
     }
 }
