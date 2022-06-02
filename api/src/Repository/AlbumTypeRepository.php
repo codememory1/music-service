@@ -25,11 +25,11 @@ class AlbumTypeRepository extends AbstractRepository
     protected ?string $entity = AlbumType::class;
 
     /**
-     * @param Language $language
+     * @param Language|null $language
      *
      * @return array
      */
-    public function all(Language $language): array
+    public function all(?Language $language): array
     {
         $sortService = $this->sortService;
         $repository = $this;
