@@ -7,13 +7,13 @@ use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * Class CreateAlbumTypeService.
+ * Class UpdateAlbumTypeService.
  *
  * @package App\Service\AlbumType
  *
  * @author  Codememory
  */
-class CreateAlbumTypeService extends AbstractService
+class UpdateAlbumTypeService extends AbstractService
 {
     /**
      * @param AlbumTypeDTO $albumTypeDTO
@@ -26,9 +26,8 @@ class CreateAlbumTypeService extends AbstractService
             return $response;
         }
 
-        $this->em->persist($albumTypeDTO->getEntity());
         $this->em->flush();
 
-        return $this->responseCollection->successCreate('albumType@successCreate');
+        return $this->responseCollection->successUpdate('albumType@successUpdate');
     }
 }
