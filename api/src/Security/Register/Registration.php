@@ -67,5 +67,7 @@ class Registration extends AbstractService
             new UserRegistrationEvent($registeredUser),
             EventEnum::REGISTER->value
         );
+
+        $this->em->flush();
     }
 }

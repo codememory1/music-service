@@ -59,10 +59,10 @@ class Request
      */
     public function all(): array
     {
-        if ($this->request->isXmlHttpRequest()) {
+        if ($this->request?->isXmlHttpRequest()) {
             return $this->request->toArray();
         }
 
-        return $this->request->request->all();
+        return $this->request?->request->all() ?: [];
     }
 }

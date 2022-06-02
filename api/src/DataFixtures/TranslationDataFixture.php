@@ -37,6 +37,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@shortDescriptionTranslationKeyNotExist', 'Ключ перевода для описания не найден'),
             new TranslationFactory('ru', 'common@invalidOldPrice', 'Некорректный формат старой цены'),
             new TranslationFactory('ru', 'common@invalidPrice', 'Некорректный формат цены'),
+            new TranslationFactory('ru', 'common@bannedDomainMail', 'Данный домен почты заблокирован'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),

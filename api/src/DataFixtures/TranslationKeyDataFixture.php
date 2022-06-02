@@ -36,6 +36,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('common@shortDescriptionTranslationKeyNotExist'),
             new TranslationKeyFactory('common@invalidOldPrice'),
             new TranslationKeyFactory('common@invalidPrice'),
+            new TranslationKeyFactory('common@bannedDomainMail'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
