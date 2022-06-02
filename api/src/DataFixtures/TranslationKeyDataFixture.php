@@ -44,11 +44,13 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('entityNotFound@permissionKey'),
             new TranslationKeyFactory('entityNotFound@role'),
             new TranslationKeyFactory('entityNotFound@subscription'),
+            new TranslationKeyFactory('entityNotFound@albumType'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
             new TranslationKeyFactory('entityExist@subscription'),
             new TranslationKeyFactory('entityExist@translationKey'),
+            new TranslationKeyFactory('entityExist@albumType'),
 
             new TranslationKeyFactory('auth@successAuthorization'),
             new TranslationKeyFactory('auth@authRequired'),
@@ -89,6 +91,10 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('rolePermission@createTranslation'),
             new TranslationKeyFactory('rolePermission@updateTranslation'),
             new TranslationKeyFactory('rolePermission@deleteTranslation'),
+            new TranslationKeyFactory('rolePermission@showFullInfoAlbumTypes'),
+            new TranslationKeyFactory('rolePermission@createAlbumType'),
+            new TranslationKeyFactory('rolePermission@updateAlbumType'),
+            new TranslationKeyFactory('rolePermission@deleteAlbumType'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -131,6 +137,12 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('translation@successCreate'),
             new TranslationKeyFactory('translation@successUpdate'),
             new TranslationKeyFactory('translation@successDelete'),
+
+            new TranslationKeyFactory('albumType@keyIsRequired'),
+            new TranslationKeyFactory('albumType@titleIsRequired'),
+            new TranslationKeyFactory('albumType@successCreate'),
+            new TranslationKeyFactory('albumType@successUpdate'),
+            new TranslationKeyFactory('albumType@successDelete'),
         ]);
     }
 
