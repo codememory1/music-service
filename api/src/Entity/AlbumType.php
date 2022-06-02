@@ -11,6 +11,13 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+/**
+ * Class AlbumType.
+ *
+ * @package App\Entity
+ *
+ * @author  Codememory
+ */
 #[ORM\Entity(repositoryClass: AlbumTypeRepository::class)]
 #[ORM\Table('album_types')]
 #[ORM\HasLifecycleCallbacks]

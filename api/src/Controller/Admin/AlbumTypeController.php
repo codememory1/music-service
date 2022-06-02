@@ -3,11 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Annotation\Authorization;
+use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
 use App\DTO\AlbumTypeDTO;
+use App\Entity\AlbumType;
 use App\Enum\RolePermissionEnum;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\AlbumType\CreateAlbumTypeService;
+use App\Service\AlbumType\DeleteAlbumTypeService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,5 +37,21 @@ class AlbumTypeController extends AbstractRestController
     public function create(AlbumTypeDTO $albumTypeDTO, CreateAlbumTypeService $createAlbumTypeService): JsonResponse
     {
         return $createAlbumTypeService->make($albumTypeDTO->collect());
+    }
+
+    /**
+     * @param AlbumType              $albumType
+     * @param DeleteAlbumTypeService $deleteAlbumTypeService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{albumType_id<\d+>}/delete', methods: 'DELETE')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::DELETE_ALBUM_TYPE)]
+    public function delete(
+        #[EntityNotFound(EntityNotFoundException::class, 'albumType')] AlbumType $albumType,
+        DeleteAlbumTypeService $deleteAlbumTypeService
+    ): JsonResponse {
+        return $deleteAlbumTypeService->make($albumType);
     }
 }
