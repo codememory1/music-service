@@ -28,4 +28,8 @@ enum RolePermissionEnum
     case CREATE_TRANSLATION;
     case UPDATE_TRANSLATION;
     case DELETE_TRANSLATION;
+    case SHOW_FULL_INFO_ALBUM_TYPES;
+    case CREATE_ALBUM_TYPE;
+    case UPDATE_ALBUM_TYPE;
+    case DELETE_ALBUM_TYPE;
 }

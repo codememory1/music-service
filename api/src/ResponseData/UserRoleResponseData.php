@@ -22,11 +22,6 @@ class UserRoleResponseData extends AbstractResponseData implements ResponseDataI
     use ToTranslationHandlerTrait;
 
     /**
-     * @inheritDoc
-     */
-    protected array $ignoredProperties = ['translationService'];
-
-    /**
      * @var null|int
      */
     public ?int $id = null;

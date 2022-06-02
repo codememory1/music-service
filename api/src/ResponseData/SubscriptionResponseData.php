@@ -26,11 +26,6 @@ class SubscriptionResponseData extends AbstractResponseData implements ResponseD
     /**
      * @inheritDoc
      */
-    protected array $ignoredProperties = ['translationService'];
-
-    /**
-     * @inheritDoc
-     */
     protected array $methodPrefixesForProperties = [
         'isRecommend' => ''
     ];
