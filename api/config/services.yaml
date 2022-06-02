@@ -50,11 +50,15 @@ services:
 
     App\EventListener\Registration\SendAccountActivationCodeListener:
       tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priotiy: 0 }
+        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 0 }
 
     App\EventListener\Registration\CreateRegistrationSessionListener:
       tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priotity: -1 }
+        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: -1 }
+
+    App\EventListener\Registration\MailDomainCheckListener:
+      tags:
+        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 2 }
 
     App\EventListener\Authorization\CreateTempSessionListener:
       tags:

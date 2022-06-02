@@ -39,7 +39,7 @@ class BearerToken
      */
     public function getToken(): ?string
     {
-        $authorization = $this->request->request->headers->get('Authorization');
+        $authorization = $this->request->request?->headers->get('Authorization');
         $authorizationData = explode(' ', $authorization, 2);
 
         if (count($authorizationData) > 1 && 'Bearer' === $authorizationData[0]) {

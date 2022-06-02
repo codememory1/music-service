@@ -43,8 +43,6 @@ class Registrar extends AbstractService
             $this->em->persist($userEntity);
         }
 
-        $this->em->flush();
-
         return $userEntity;
     }
 

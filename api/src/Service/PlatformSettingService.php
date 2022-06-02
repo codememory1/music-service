@@ -7,13 +7,13 @@ use App\Repository\PlatformSettingRepository;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class PlatformSetting.
+ * Class PlatformSettingService.
  *
  * @package App\Service
  *
  * @author  Codememory
  */
-class PlatformSetting
+class PlatformSettingService
 {
     #[Required]
     public ?PlatformSettingRepository $platformSettingRepository = null;

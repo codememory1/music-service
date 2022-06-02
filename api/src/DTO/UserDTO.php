@@ -24,6 +24,6 @@ class UserDTO extends AbstractDTO
      */
     protected function wrapper(): void
     {
-        $this->ip = $this->request->request->getClientIp();
+        $this->ip = $this->request->request?->getClientIp();
     }
 }

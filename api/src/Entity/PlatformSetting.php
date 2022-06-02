@@ -60,7 +60,7 @@ class PlatformSetting implements EntityInterface
      */
     public function getValue(): mixed
     {
-        return $this->value['value'] ?: null;
+        return $this->value['value'] ?? null;
     }
 
     /**

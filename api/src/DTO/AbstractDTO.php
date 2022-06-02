@@ -37,9 +37,13 @@ abstract class AbstractDTO implements DTOInterface
     protected Request $request;
 
     /**
-     * @var string
+     * @var null|mixed|string
      */
-    protected string $requestType;
+    protected ?string $requestType;
+
+    /**
+     * @var AuthorizedUser
+     */
     protected readonly AuthorizedUser $authorizedUser;
 
     /**
@@ -71,7 +75,7 @@ abstract class AbstractDTO implements DTOInterface
     {
         $this->request = $request;
         $this->setterCallRuleInEntity = $setterCallRuleInEntity;
-        $this->requestType = $request->request->attributes->get('request_type');
+        $this->requestType = $request->request?->attributes->get('request_type');
         $this->authorizedUser = $authorizedUser;
     }
 
@@ -195,7 +199,7 @@ abstract class AbstractDTO implements DTOInterface
     private function expectedKeyHandler(): void
     {
         $allInputs = $this->request->all();
-        $allInputs = array_merge($allInputs, $this->request->request->query->all());
+        $allInputs = array_merge($allInputs, $this->request->request?->query->all() ?: []);
 
         foreach ($this->expectKeys as $expectKey) {
             $propertyName = $expectKey['alias'] ?: $expectKey['name'];
