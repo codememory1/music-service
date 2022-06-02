@@ -8,11 +8,14 @@ use App\Annotation\UserRolePermission;
 use App\DTO\AlbumTypeDTO;
 use App\Entity\AlbumType;
 use App\Enum\RolePermissionEnum;
+use App\Repository\AlbumTypeRepository;
+use App\ResponseData\AlbumTypeResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\AlbumType\CreateAlbumTypeService;
 use App\Service\AlbumType\DeleteAlbumTypeService;
 use App\Service\AlbumType\UpdateAlbumTypeService;
+use App\Service\TranslationService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,6 +29,25 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/album-type')]
 class AlbumTypeController extends AbstractRestController
 {
+    /**
+     * @param AlbumTypeResponseData $albumTypeResponseData
+     * @param AlbumTypeRepository   $albumTypeRepository
+     * @param TranslationService    $translationService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/all', methods: 'GET')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUM_TYPES)]
+    public function all(AlbumTypeResponseData $albumTypeResponseData, AlbumTypeRepository $albumTypeRepository, TranslationService $translationService): JsonResponse
+    {
+        $albumTypeResponseData->setEntities($albumTypeRepository->all(
+            $translationService->getLanguage()
+        ));
+
+        return $this->responseCollection->dataOutput($albumTypeResponseData->collect()->getResponse());
+    }
+
     /**
      * @param AlbumTypeDTO           $albumTypeDTO
      * @param CreateAlbumTypeService $createAlbumTypeService

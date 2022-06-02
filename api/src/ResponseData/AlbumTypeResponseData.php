@@ -10,34 +10,33 @@ use App\ResponseData\Traits\DateTimeHandlerTrait;
 use App\ResponseData\Traits\ToTranslationHandlerTrait;
 
 /**
- * Class SubscriptionPermissionKeyResponseData.
+ * Class AlbumTypeResponseData.
  *
  * @package App\ResponseData
  *
  * @author  Codememory
  */
-class SubscriptionPermissionKeyResponseData extends AbstractResponseData implements ResponseDataInterface
+class AlbumTypeResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
 
     use ToTranslationHandlerTrait;
 
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
+    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUM_TYPES)]
     public ?int $id = null;
-
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
     public ?string $key = null;
 
     #[ResponseDataConstraints\Callback('handleToTranslation')]
     public ?string $title = null;
 
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
+    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUM_TYPES)]
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $createdAt = null;
 
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
+    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUM_TYPES)]
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
 }
