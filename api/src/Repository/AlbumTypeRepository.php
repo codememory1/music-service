@@ -25,7 +25,7 @@ class AlbumTypeRepository extends AbstractRepository
     protected ?string $entity = AlbumType::class;
 
     /**
-     * @param Language|null $language
+     * @param null|Language $language
      *
      * @return array
      */
