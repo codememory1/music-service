@@ -89,7 +89,9 @@ class AuthorizedUser
     public function hasRolePermission(RolePermissionEnum $rolePermissionEnum): bool
     {
         if (null !== $this->getUser()) {
-            return $this->getUser()->getRole()->getPermissions()->exists(fn(int $key, RolePermission $rolePermission) => $rolePermission->getPermissionKey()->getKey() === $rolePermissionEnum->name);
+            $userRolePermissions = $this->getUser()->getRole()->getPermissions();
+
+            return $userRolePermissions->exists(static fn(int $key, RolePermission $rolePermission) => $rolePermission->getPermissionKey()->getKey() === $rolePermissionEnum->name);
         }
 
         return false;
