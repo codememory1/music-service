@@ -67,11 +67,15 @@ class User implements EntityInterface
     #[ORM\ManyToOne(targetEntity: Subscription::class)]
     private ?Subscription $subscription = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Album::class, cascade: ['remove'])]
+    private Collection $albums;
+
     #[Pure]
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
         $this->passwordResets = new ArrayCollection();
+        $this->albums = new ArrayCollection();
     }
 
     /**
@@ -293,6 +297,38 @@ class User implements EntityInterface
     public function setSubscription(?Subscription $subscription): self
     {
         $this->subscription = $subscription;
+
+        return $this;
+    }
+
+    /**
+     * @param Album $album
+     *
+     * @return $this
+     */
+    public function addAlbum(Album $album): self
+    {
+        if (!$this->albums->contains($album)) {
+            $this->albums[] = $album;
+            $album->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Album $album
+     *
+     * @return $this
+     */
+    public function removeAlbum(Album $album): self
+    {
+        if ($this->albums->removeElement($album)) {
+            // set the owning side to null (unless already changed)
+            if ($album->getUser() === $this) {
+                $album->setUser(null);
+            }
+        }
 
         return $this;
     }
