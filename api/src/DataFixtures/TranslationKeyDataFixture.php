@@ -131,6 +131,14 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('subscription@successCreate'),
             new TranslationKeyFactory('subscription@successUpdate'),
             new TranslationKeyFactory('subscription@successDelete'),
+            new TranslationKeyFactory('subscription@premium'),
+            new TranslationKeyFactory('subscription@premiumDescription'),
+            new TranslationKeyFactory('subscription@artist'),
+            new TranslationKeyFactory('subscription@artistDescription'),
+            new TranslationKeyFactory('subscription@family'),
+            new TranslationKeyFactory('subscription@familyDescription'),
+
+            new TranslationKeyFactory('subscriptionPermissionKey@createAlbum'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),

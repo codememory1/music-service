@@ -11,4 +11,5 @@ namespace App\Enum;
  */
 enum SubscriptionPermissionEnum
 {
+    case CREATE_ALBUM;
 }
