@@ -40,8 +40,21 @@ class MailDomainCheckListener
     {
         $allowedEmails = $this->platformSettingService->get(PlatformSettingEnum::ALLOWED_REGISTRATION_DOMAINS) ?: [];
         $mailDomain = $this->getMailDomain($event->user);
+        $isPassed = true;
 
-        if ([] !== $allowedEmails && false === in_array($mailDomain, $allowedEmails, true)) {
+        foreach ($allowedEmails as $allowedEmail) {
+            if (str_starts_with($allowedEmail, '/') && str_ends_with($allowedEmail, '/')) {
+                $isPassed = 1 === preg_match($allowedEmail, $mailDomain);
+            } else {
+                $isPassed = $mailDomain === $allowedEmail;
+            }
+
+            if ($isPassed) {
+                break;
+            }
+        }
+
+        if (false === $isPassed) {
             throw new ApiResponseException(451, ResponseTypeEnum::UNAVAILABLE, 'common@bannedDomainMail');
         }
     }

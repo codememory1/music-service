@@ -21,7 +21,7 @@ class PlatformSettingDataFixture extends AbstractDataFixture
     {
         parent::__construct([
             new PlatformSettingFactory(PlatformSettingEnum::ALLOWED_REGISTRATION_DOMAINS, [
-                'gmail.com', 'yandex.ru', 'yahoo.com'
+                'gmail.com', '/^yandex.[a-z]{2,3}$/', 'yahoo.com'
             ])
         ]);
     }
