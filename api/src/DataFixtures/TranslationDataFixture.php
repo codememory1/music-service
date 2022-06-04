@@ -39,6 +39,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@invalidPrice', 'Некорректный формат цены'),
             new TranslationFactory('ru', 'common@bannedDomainMail', 'Данный домен почты заблокирован'),
             new TranslationFactory('ru', 'common@uploadFileNotImage', 'Загружаемый файл не является изображением'),
+            new TranslationFactory('ru', 'common@invalidStatus', 'Некорректный статус'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -101,6 +102,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@updateAlbumType', 'Обновление типа альбома'),
             new TranslationFactory('ru', 'rolePermission@deleteAlbumType', 'Удаление типа альбома'),
             new TranslationFactory('ru', 'rolePermission@createAlbumToUser', 'Создание альбомов для пользователей'),
+            new TranslationFactory('ru', 'rolePermission@updateAlbumToUser', 'Обновление альбомов у пользователей'),
             new TranslationFactory('ru', 'rolePermission@deleteAlbumToUser', 'Удаление альбомов у пользователей'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
@@ -147,6 +149,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscription@familyDescription', 'Одна подписка на 7-ми аккаунтах'),
 
             new TranslationFactory('ru', 'subscriptionPermissionKey@createAlbum', 'Создание альбомов'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@updateAlbum', 'Обновление альбомов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteAlbum', 'Удаление альбомов'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),

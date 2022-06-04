@@ -12,4 +12,5 @@ namespace App\Enum;
 enum AlbumStatusEnum
 {
     case SHOW;
+    case HIDE;
 }

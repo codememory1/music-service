@@ -38,6 +38,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('common@invalidPrice'),
             new TranslationKeyFactory('common@bannedDomainMail'),
             new TranslationKeyFactory('common@uploadFileNotImage'),
+            new TranslationKeyFactory('common@invalidStatus'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
@@ -101,6 +102,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('rolePermission@deleteAlbumType'),
             new TranslationKeyFactory('rolePermission@showFullInfoAlbums'),
             new TranslationKeyFactory('rolePermission@createAlbumToUser'),
+            new TranslationKeyFactory('rolePermission@updateAlbumToUser'),
             new TranslationKeyFactory('rolePermission@deleteAlbumToUser'),
 
             new TranslationKeyFactory('role@developer'),
@@ -148,6 +150,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
 
             new TranslationKeyFactory('subscriptionPermissionKey@showMyAlbums'),
             new TranslationKeyFactory('subscriptionPermissionKey@createAlbum'),
+            new TranslationKeyFactory('subscriptionPermissionKey@updateAlbum'),
             new TranslationKeyFactory('subscriptionPermissionKey@deleteAlbum'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),

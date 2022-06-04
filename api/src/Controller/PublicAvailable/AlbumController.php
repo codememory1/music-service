@@ -14,6 +14,7 @@ use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Album\CreateAlbumService;
 use App\Service\Album\DeleteAlbumService;
+use App\Service\Album\UpdateAlbumService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -57,6 +58,30 @@ class AlbumController extends AbstractRestController
     public function create(AlbumDTO $albumDTO, CreateAlbumService $createAlbumService): JsonResponse
     {
         return $createAlbumService->make($albumDTO->collect(), $this->authorizedUser->getUser());
+    }
+
+    /**
+     * @param Album              $album
+     * @param AlbumDTO           $albumDTO
+     * @param UpdateAlbumService $updateAlbumService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{album_id<\d+>}/edit', methods: 'POST')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_ALBUM)]
+    public function update(
+        #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
+        AlbumDTO $albumDTO,
+        UpdateAlbumService $updateAlbumService
+    ): JsonResponse {
+        if ($album->getUser() !== $this->authorizedUser->getUser()) {
+            throw EntityNotFoundException::album();
+        }
+
+        $albumDTO->setEntity($album);
+
+        return $updateAlbumService->make($albumDTO->collect(), $this->authorizedUser->getUser());
     }
 
     /**

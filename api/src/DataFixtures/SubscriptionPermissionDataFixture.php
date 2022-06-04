@@ -24,6 +24,7 @@ final class SubscriptionPermissionDataFixture extends AbstractDataFixture implem
         parent::__construct([
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::SHOW_MY_ALBUMS),
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::CREATE_ALBUM),
+            new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::UPDATE_ALBUM),
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::DELETE_ALBUM),
         ]);
     }

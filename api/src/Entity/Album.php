@@ -54,6 +54,11 @@ class Album implements EntityInterface
     ])]
     private ?string $status = null;
 
+    public function __construct()
+    {
+        $this->setStatus(AlbumStatusEnum::SHOW);
+    }
+
     /**
      * @return null|User
      */
