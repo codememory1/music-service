@@ -9,6 +9,8 @@ use App\DTO\AlbumDTO;
 use App\Entity\Album;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
+use App\Repository\AlbumRepository;
+use App\ResponseData\AlbumResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Album\CreateAlbumService;
@@ -25,6 +27,28 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AlbumController extends AbstractRestController
 {
+    /**
+     * @param User              $user
+     * @param AlbumResponseData $albumResponseData
+     * @param AlbumRepository   $albumRepository
+     *
+     * @return JsonResponse
+     */
+    #[Route('/user/{user_id<\d+>}/album/all', methods: 'GET')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUMS)]
+    public function all(
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
+        AlbumResponseData $albumResponseData,
+        AlbumRepository $albumRepository
+    ): JsonResponse {
+        $albumResponseData->setEntities($albumRepository->findByCriteria([
+            'user' => $user
+        ]));
+
+        return $this->responseCollection->dataOutput($albumResponseData->collect()->getResponse());
+    }
+
     /**
      * @param User               $user
      * @param AlbumDTO           $albumDTO

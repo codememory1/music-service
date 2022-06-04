@@ -99,6 +99,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('rolePermission@createAlbumType'),
             new TranslationKeyFactory('rolePermission@updateAlbumType'),
             new TranslationKeyFactory('rolePermission@deleteAlbumType'),
+            new TranslationKeyFactory('rolePermission@showFullInfoAlbums'),
             new TranslationKeyFactory('rolePermission@createAlbumToUser'),
             new TranslationKeyFactory('rolePermission@deleteAlbumToUser'),
 
@@ -145,6 +146,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('subscription@family'),
             new TranslationKeyFactory('subscription@familyDescription'),
 
+            new TranslationKeyFactory('subscriptionPermissionKey@showMyAlbums'),
             new TranslationKeyFactory('subscriptionPermissionKey@createAlbum'),
             new TranslationKeyFactory('subscriptionPermissionKey@deleteAlbum'),
 

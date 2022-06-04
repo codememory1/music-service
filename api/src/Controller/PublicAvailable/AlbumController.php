@@ -8,6 +8,8 @@ use App\Annotation\SubscriptionPermission;
 use App\DTO\AlbumDTO;
 use App\Entity\Album;
 use App\Enum\SubscriptionPermissionEnum;
+use App\Repository\AlbumRepository;
+use App\ResponseData\AlbumResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Album\CreateAlbumService;
@@ -25,6 +27,24 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/album')]
 class AlbumController extends AbstractRestController
 {
+    /**
+     * @param AlbumResponseData $albumResponseData
+     * @param AlbumRepository   $albumRepository
+     *
+     * @return JsonResponse
+     */
+    #[Route('/all', methods: 'GET')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_ALBUMS)]
+    public function all(AlbumResponseData $albumResponseData, AlbumRepository $albumRepository): JsonResponse
+    {
+        $albumResponseData->setEntities($albumRepository->findByCriteria([
+            'user' => $this->authorizedUser->getUser()
+        ]));
+
+        return $this->responseCollection->dataOutput($albumResponseData->collect()->getResponse());
+    }
+
     /**
      * @param AlbumDTO           $albumDTO
      * @param CreateAlbumService $createAlbumService

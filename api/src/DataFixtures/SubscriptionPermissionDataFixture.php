@@ -22,6 +22,7 @@ final class SubscriptionPermissionDataFixture extends AbstractDataFixture implem
     public function __construct()
     {
         parent::__construct([
+            new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::SHOW_MY_ALBUMS),
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::CREATE_ALBUM),
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::DELETE_ALBUM),
         ]);
