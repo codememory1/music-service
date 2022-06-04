@@ -34,7 +34,7 @@ class Album implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?AlbumType $type = null;
 
-    #[ORM\Column(type: Types::STRING, length: 255, options: [
+    #[ORM\Column(type: Types::STRING, length: 50, options: [
         'comment' => 'Album name'
     ])]
     private ?string $title = null;

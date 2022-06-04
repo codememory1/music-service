@@ -47,6 +47,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('entityNotFound@role'),
             new TranslationKeyFactory('entityNotFound@subscription'),
             new TranslationKeyFactory('entityNotFound@albumType'),
+            new TranslationKeyFactory('entityNotFound@user'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -97,6 +98,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('rolePermission@createAlbumType'),
             new TranslationKeyFactory('rolePermission@updateAlbumType'),
             new TranslationKeyFactory('rolePermission@deleteAlbumType'),
+            new TranslationKeyFactory('rolePermission@createAlbumToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),

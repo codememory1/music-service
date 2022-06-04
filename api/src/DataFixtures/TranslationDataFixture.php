@@ -48,6 +48,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@role', 'Роль не найдена'),
             new TranslationFactory('ru', 'entityNotFound@subscription', 'Подписка не найдена'),
             new TranslationFactory('ru', 'entityNotFound@albumType', 'Тип альбома не найден'),
+            new TranslationFactory('ru', 'entityNotFound@user', 'Пользователь не найден'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -98,6 +99,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@createAlbumType', 'Создание типа альбома'),
             new TranslationFactory('ru', 'rolePermission@updateAlbumType', 'Обновление типа альбома'),
             new TranslationFactory('ru', 'rolePermission@deleteAlbumType', 'Удаление типа альбома'),
+            new TranslationFactory('ru', 'rolePermission@createAlbumToUser', 'Создание альбомов для пользователей'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),

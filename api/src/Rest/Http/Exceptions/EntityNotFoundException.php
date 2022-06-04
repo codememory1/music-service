@@ -133,4 +133,16 @@ class EntityNotFoundException extends ApiResponseException
     {
         return new self('entityNotFound@albumType', data: $data, headers: $headers);
     }
+
+    /**
+     * @param array $data
+     * @param array $headers
+     *
+     * @return static
+     */
+    #[Pure]
+    final public static function user(array $data = [], array $headers = []): self
+    {
+        return new self('entityNotFound@user', data: $data, headers: $headers);
+    }
 }

@@ -27,7 +27,7 @@ class AlbumDTO extends AbstractDTO
     protected EntityInterface|string|null $entity = Album::class;
 
     #[Assert\NotBlank(message: 'album@titleIsRequired')]
-    #[Assert\Length(max: 255, maxMessage: 'album@maxTitleLength')]
+    #[Assert\Length(max: 50, maxMessage: 'album@maxTitleLength')]
     public ?string $title = null;
 
     #[Assert\NotBlank(message: 'album@descriptionIsRequired')]
