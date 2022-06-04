@@ -84,6 +84,13 @@ services:
       exclude:
         - '../src/Rest/Validator/ConstraintInfo.php'
 
+    App\Rest\S3\:
+      resource: '../src/Rest/S3/'
+      public: true
+      exclude:
+        - '../src/Rest/S3/{Interfaces}'
+        - '../src/Rest/S3/Uploader/{UploadedFile.php,AbstractUploader.php}'
+
     App\Service\:
       resource: '../src/Service/'
       public: true

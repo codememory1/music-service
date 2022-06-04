@@ -38,6 +38,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@invalidOldPrice', 'Некорректный формат старой цены'),
             new TranslationFactory('ru', 'common@invalidPrice', 'Некорректный формат цены'),
             new TranslationFactory('ru', 'common@bannedDomainMail', 'Данный домен почты заблокирован'),
+            new TranslationFactory('ru', 'common@uploadFileNotImage', 'Загружаемый файл не является изображением'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -155,6 +156,17 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'albumType@successCreate', 'Тип альбома успешно создан'),
             new TranslationFactory('ru', 'albumType@successUpdate', 'Тип альбома успешно обновлен'),
             new TranslationFactory('ru', 'albumType@successDelete', 'Тип альбома успешно удален'),
+
+            new TranslationFactory('ru', 'album@titleIsRequired', 'Имя альбома обязательно к заполнению'),
+            new TranslationFactory('ru', 'album@maxTitleLength', 'Название альбома не должно превышать 50 символов'),
+            new TranslationFactory('ru', 'album@descriptionIsRequired', 'Описание альбома обязательно к заполнению'),
+            new TranslationFactory('ru', 'album@maxDescriptionLength', 'Опиисание альбома не должно превышать 255 символов'),
+            new TranslationFactory('ru', 'album@imageIsRequired', 'Изображение альбома обязательно к заполнению'),
+            new TranslationFactory('ru', 'album@maxSizeImage', 'Изображение не должно превышать 5 МБ'),
+            new TranslationFactory('ru', 'album@typeIsRequired', 'Тип альбома обязательный к заполнению'),
+            new TranslationFactory('ru', 'album@successCreate', 'Альбом успешно создан'),
+            new TranslationFactory('ru', 'album@successUpdate', 'Альбом успешно обновлен'),
+            new TranslationFactory('ru', 'album@successDelete', 'Альбом успешно удален'),
         ]);
     }
 

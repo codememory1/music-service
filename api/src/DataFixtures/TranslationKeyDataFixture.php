@@ -37,6 +37,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('common@invalidOldPrice'),
             new TranslationKeyFactory('common@invalidPrice'),
             new TranslationKeyFactory('common@bannedDomainMail'),
+            new TranslationKeyFactory('common@uploadFileNotImage'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
@@ -154,6 +155,17 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('albumType@successCreate'),
             new TranslationKeyFactory('albumType@successUpdate'),
             new TranslationKeyFactory('albumType@successDelete'),
+
+            new TranslationKeyFactory('album@titleIsRequired'),
+            new TranslationKeyFactory('album@maxTitleLength'),
+            new TranslationKeyFactory('album@descriptionIsRequired'),
+            new TranslationKeyFactory('album@maxDescriptionLength'),
+            new TranslationKeyFactory('album@imageIsRequired'),
+            new TranslationKeyFactory('album@maxSizeImage'),
+            new TranslationKeyFactory('album@typeIsRequired'),
+            new TranslationKeyFactory('album@successCreate'),
+            new TranslationKeyFactory('album@successUpdate'),
+            new TranslationKeyFactory('album@successDelete'),
         ]);
     }
 

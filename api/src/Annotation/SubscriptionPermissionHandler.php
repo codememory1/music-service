@@ -38,7 +38,7 @@ class SubscriptionPermissionHandler implements MethodAnnotationHandlerInterface
     public function handle(MethodAnnotationInterface $annotation): void
     {
         $user = $this->authorizedUser->getUser();
-        $subscriptionPermissions = $user?->getSubscription()->getPermissions();
+        $subscriptionPermissions = $user?->getSubscription()?->getPermissions();
         $exist = $subscriptionPermissions?->exists(static fn(int $key, SubscriptionPermissionEntity $subscriptionPermission) => $subscriptionPermission->getPermissionKey()->getKey() === $annotation->permission->name);
 
         if (true !== $exist) {
