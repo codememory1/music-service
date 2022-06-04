@@ -21,7 +21,8 @@ final class SubscriptionPermissionKeyDataFixture extends AbstractDataFixture imp
     public function __construct()
     {
         parent::__construct([
-            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::CREATE_ALBUM, 'subscriptionPermissionKey@createAlbum')
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::CREATE_ALBUM, 'subscriptionPermissionKey@createAlbum'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_ALBUM, 'subscriptionPermissionKey@deleteAlbum'),
         ]);
     }
 
