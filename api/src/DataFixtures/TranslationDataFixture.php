@@ -38,6 +38,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@invalidOldPrice', 'Некорректный формат старой цены'),
             new TranslationFactory('ru', 'common@invalidPrice', 'Некорректный формат цены'),
             new TranslationFactory('ru', 'common@bannedDomainMail', 'Данный домен почты заблокирован'),
+            new TranslationFactory('ru', 'common@uploadFileNotImage', 'Загружаемый файл не является изображением'),
+            new TranslationFactory('ru', 'common@invalidStatus', 'Некорректный статус'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -47,6 +49,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@role', 'Роль не найдена'),
             new TranslationFactory('ru', 'entityNotFound@subscription', 'Подписка не найдена'),
             new TranslationFactory('ru', 'entityNotFound@albumType', 'Тип альбома не найден'),
+            new TranslationFactory('ru', 'entityNotFound@user', 'Пользователь не найден'),
+            new TranslationFactory('ru', 'entityNotFound@album', 'Альбом не найден'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -97,6 +101,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@createAlbumType', 'Создание типа альбома'),
             new TranslationFactory('ru', 'rolePermission@updateAlbumType', 'Обновление типа альбома'),
             new TranslationFactory('ru', 'rolePermission@deleteAlbumType', 'Удаление типа альбома'),
+            new TranslationFactory('ru', 'rolePermission@createAlbumToUser', 'Создание альбомов для пользователей'),
+            new TranslationFactory('ru', 'rolePermission@updateAlbumToUser', 'Обновление альбомов у пользователей'),
+            new TranslationFactory('ru', 'rolePermission@deleteAlbumToUser', 'Удаление альбомов у пользователей'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -115,6 +122,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'logout@failedToLogout', 'Не удалось выйти из аккаунта'),
 
             new TranslationFactory('ru', 'accessDenied@notEnoughPermissions', 'Недостаточно прав для выполнения данного действия'),
+            new TranslationFactory('ru', 'accessDenied@notSubscription', 'Для выполнения данного действия, требуется подписка'),
+            new TranslationFactory('ru', 'accessDenied@notSubscriptionPermissions', 'Недостаточно прав у подписки'),
 
             new TranslationFactory('ru', 'passwordReset@successSendRequestRestoration', 'На вашу почту отправлено сообщение для восстановление пароля'),
             new TranslationFactory('ru', 'passwordReset@requestRestoration', 'Запрос на восстановление пароля'),
@@ -140,6 +149,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscription@familyDescription', 'Одна подписка на 7-ми аккаунтах'),
 
             new TranslationFactory('ru', 'subscriptionPermissionKey@createAlbum', 'Создание альбомов'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@updateAlbum', 'Обновление альбомов'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@deleteAlbum', 'Удаление альбомов'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
@@ -153,6 +164,17 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'albumType@successCreate', 'Тип альбома успешно создан'),
             new TranslationFactory('ru', 'albumType@successUpdate', 'Тип альбома успешно обновлен'),
             new TranslationFactory('ru', 'albumType@successDelete', 'Тип альбома успешно удален'),
+
+            new TranslationFactory('ru', 'album@titleIsRequired', 'Имя альбома обязательно к заполнению'),
+            new TranslationFactory('ru', 'album@maxTitleLength', 'Название альбома не должно превышать 50 символов'),
+            new TranslationFactory('ru', 'album@descriptionIsRequired', 'Описание альбома обязательно к заполнению'),
+            new TranslationFactory('ru', 'album@maxDescriptionLength', 'Опиисание альбома не должно превышать 255 символов'),
+            new TranslationFactory('ru', 'album@imageIsRequired', 'Изображение альбома обязательно к заполнению'),
+            new TranslationFactory('ru', 'album@maxSizeImage', 'Изображение не должно превышать 5 МБ'),
+            new TranslationFactory('ru', 'album@typeIsRequired', 'Тип альбома обязательный к заполнению'),
+            new TranslationFactory('ru', 'album@successCreate', 'Альбом успешно создан'),
+            new TranslationFactory('ru', 'album@successUpdate', 'Альбом успешно обновлен'),
+            new TranslationFactory('ru', 'album@successDelete', 'Альбом успешно удален'),
         ]);
     }
 

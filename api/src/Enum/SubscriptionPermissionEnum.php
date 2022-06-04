@@ -11,5 +11,8 @@ namespace App\Enum;
  */
 enum SubscriptionPermissionEnum
 {
+    case SHOW_MY_ALBUMS;
     case CREATE_ALBUM;
+    case UPDATE_ALBUM;
+    case DELETE_ALBUM;
 }

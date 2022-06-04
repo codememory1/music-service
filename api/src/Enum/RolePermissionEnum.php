@@ -32,4 +32,8 @@ enum RolePermissionEnum
     case CREATE_ALBUM_TYPE;
     case UPDATE_ALBUM_TYPE;
     case DELETE_ALBUM_TYPE;
+    case SHOW_FULL_INFO_ALBUMS;
+    case CREATE_ALBUM_TO_USER;
+    case UPDATE_ALBUM_TO_USER;
+    case DELETE_ALBUM_TO_USER;
 }

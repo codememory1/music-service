@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Controller\PublicAvailable;
+namespace App\Controller\Admin;
 
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
-use App\Annotation\SubscriptionPermission;
+use App\Annotation\UserRolePermission;
 use App\DTO\AlbumDTO;
 use App\Entity\Album;
-use App\Enum\SubscriptionPermissionEnum;
+use App\Entity\User;
+use App\Enum\RolePermissionEnum;
 use App\Repository\AlbumRepository;
 use App\ResponseData\AlbumResponseData;
 use App\Rest\Controller\AbstractRestController;
@@ -21,43 +22,50 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class AlbumController.
  *
- * @package App\Controller\PublicAvailable
+ * @package App\Controller\Admin
  *
  * @author  Codememory
  */
-#[Route('/album')]
 class AlbumController extends AbstractRestController
 {
     /**
+     * @param User              $user
      * @param AlbumResponseData $albumResponseData
      * @param AlbumRepository   $albumRepository
      *
      * @return JsonResponse
      */
-    #[Route('/all', methods: 'GET')]
+    #[Route('/user/{user_id<\d+>}/album/all', methods: 'GET')]
     #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_ALBUMS)]
-    public function all(AlbumResponseData $albumResponseData, AlbumRepository $albumRepository): JsonResponse
-    {
+    #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUMS)]
+    public function all(
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
+        AlbumResponseData $albumResponseData,
+        AlbumRepository $albumRepository
+    ): JsonResponse {
         $albumResponseData->setEntities($albumRepository->findByCriteria([
-            'user' => $this->authorizedUser->getUser()
+            'user' => $user
         ]));
 
         return $this->responseCollection->dataOutput($albumResponseData->collect()->getResponse());
     }
 
     /**
+     * @param User               $user
      * @param AlbumDTO           $albumDTO
      * @param CreateAlbumService $createAlbumService
      *
      * @return JsonResponse
      */
-    #[Route('/create', methods: 'POST')]
+    #[Route('/user/{user_id<\d+>}/album/create', methods: 'POST')]
     #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_ALBUM)]
-    public function create(AlbumDTO $albumDTO, CreateAlbumService $createAlbumService): JsonResponse
-    {
-        return $createAlbumService->make($albumDTO->collect(), $this->authorizedUser->getUser());
+    #[UserRolePermission(RolePermissionEnum::CREATE_ALBUM_TO_USER)]
+    public function create(
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
+        AlbumDTO $albumDTO,
+        CreateAlbumService $createAlbumService
+    ): JsonResponse {
+        return $createAlbumService->make($albumDTO->collect(), $user);
     }
 
     /**
@@ -67,21 +75,17 @@ class AlbumController extends AbstractRestController
      *
      * @return JsonResponse
      */
-    #[Route('/{album_id<\d+>}/edit', methods: 'POST')]
+    #[Route('/user/album/{album_id<\d+>}/edit', methods: 'POST')]
     #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_ALBUM)]
+    #[UserRolePermission(RolePermissionEnum::UPDATE_ALBUM_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         AlbumDTO $albumDTO,
         UpdateAlbumService $updateAlbumService
     ): JsonResponse {
-        if ($album->getUser() !== $this->authorizedUser->getUser()) {
-            throw EntityNotFoundException::album();
-        }
-
         $albumDTO->setEntity($album);
 
-        return $updateAlbumService->make($albumDTO->collect(), $this->authorizedUser->getUser());
+        return $updateAlbumService->make($albumDTO->collect(), $album->getUser());
     }
 
     /**
@@ -90,17 +94,13 @@ class AlbumController extends AbstractRestController
      *
      * @return JsonResponse
      */
-    #[Route('/{album_id<\d+>}/delete', methods: 'DELETE')]
+    #[Route('/user/album/{album_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_ALBUM)]
+    #[UserRolePermission(RolePermissionEnum::DELETE_ALBUM_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         DeleteAlbumService $deleteAlbumService
     ): JsonResponse {
-        if ($album->getUser() !== $this->authorizedUser->getUser()) {
-            throw EntityNotFoundException::album();
-        }
-
         return $deleteAlbumService->make($album);
     }
 }

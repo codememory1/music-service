@@ -2,8 +2,8 @@
 
 namespace App\Rest\S3\Uploader;
 
-use App\Interfaces\S3UploaderInterface;
 use App\Rest\S3\Client;
+use App\Rest\S3\Interfaces\S3UploaderInterface;
 use App\Rest\S3\PathEncryptor;
 use App\Rest\S3\Uploader\UploadedFile as S3UploadedFile;
 use App\Service\MimeTypeConverter;

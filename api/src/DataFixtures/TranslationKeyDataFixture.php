@@ -37,6 +37,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('common@invalidOldPrice'),
             new TranslationKeyFactory('common@invalidPrice'),
             new TranslationKeyFactory('common@bannedDomainMail'),
+            new TranslationKeyFactory('common@uploadFileNotImage'),
+            new TranslationKeyFactory('common@invalidStatus'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
@@ -46,6 +48,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('entityNotFound@role'),
             new TranslationKeyFactory('entityNotFound@subscription'),
             new TranslationKeyFactory('entityNotFound@albumType'),
+            new TranslationKeyFactory('entityNotFound@user'),
+            new TranslationKeyFactory('entityNotFound@album'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -96,6 +100,10 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('rolePermission@createAlbumType'),
             new TranslationKeyFactory('rolePermission@updateAlbumType'),
             new TranslationKeyFactory('rolePermission@deleteAlbumType'),
+            new TranslationKeyFactory('rolePermission@showFullInfoAlbums'),
+            new TranslationKeyFactory('rolePermission@createAlbumToUser'),
+            new TranslationKeyFactory('rolePermission@updateAlbumToUser'),
+            new TranslationKeyFactory('rolePermission@deleteAlbumToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -114,6 +122,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('logout@failedToLogout'),
 
             new TranslationKeyFactory('accessDenied@notEnoughPermissions'),
+            new TranslationKeyFactory('accessDenied@notSubscription'),
+            new TranslationKeyFactory('accessDenied@notSubscriptionPermissions'),
 
             new TranslationKeyFactory('passwordReset@successSendRequestRestoration'),
             new TranslationKeyFactory('passwordReset@requestRestoration'),
@@ -138,7 +148,10 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('subscription@family'),
             new TranslationKeyFactory('subscription@familyDescription'),
 
+            new TranslationKeyFactory('subscriptionPermissionKey@showMyAlbums'),
             new TranslationKeyFactory('subscriptionPermissionKey@createAlbum'),
+            new TranslationKeyFactory('subscriptionPermissionKey@updateAlbum'),
+            new TranslationKeyFactory('subscriptionPermissionKey@deleteAlbum'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),
@@ -152,6 +165,17 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('albumType@successCreate'),
             new TranslationKeyFactory('albumType@successUpdate'),
             new TranslationKeyFactory('albumType@successDelete'),
+
+            new TranslationKeyFactory('album@titleIsRequired'),
+            new TranslationKeyFactory('album@maxTitleLength'),
+            new TranslationKeyFactory('album@descriptionIsRequired'),
+            new TranslationKeyFactory('album@maxDescriptionLength'),
+            new TranslationKeyFactory('album@imageIsRequired'),
+            new TranslationKeyFactory('album@maxSizeImage'),
+            new TranslationKeyFactory('album@typeIsRequired'),
+            new TranslationKeyFactory('album@successCreate'),
+            new TranslationKeyFactory('album@successUpdate'),
+            new TranslationKeyFactory('album@successDelete'),
         ]);
     }
 
