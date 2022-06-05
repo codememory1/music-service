@@ -4,6 +4,7 @@ namespace App\Command;
 
 use Codememory\Support\Str;
 use sixlive\DotenvEditor\DotenvEditor;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,18 +20,12 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  *
  * @author  Codememory
  */
+#[AsCommand(
+    'app:jwt-generate-keys',
+    'Generate public and private key for jwt'
+)]
 class GenerateJwtKeysCommand extends Command
 {
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'app:jwt-generate-keys';
-
-    /**
-     * @var string
-     */
-    protected static $defaultDescription = 'Generate public and private key for jwt';
-
     /**
      * @var ParameterBagInterface
      */
