@@ -102,8 +102,39 @@ services:
     volumes:
       - "${API_PATH}:${API_WORKDIR}"
       - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
-    command:
-      - sh -c "sleep 30 && bin/console --no-debug app:user:delete-invalid-sessions"
+    command: sh -c "sleep 30 && bin/console --no-debug app:user:delete-invalid-sessions"
+    restart: unless-stopped
+    depends_on:
+      - api
+
+  user-account-activation-code-process:
+    container_name: user-account-activation-code-process
+    build:
+      context: ./
+      dockerfile: "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/Dockerfile"
+      args:
+        workdir: ${API_WORKDIR}
+        app_path: ${API_PATH}
+    volumes:
+      - "${API_PATH}:${API_WORKDIR}"
+      - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
+    command: sh -c "sleep 30 && bin/console --no-debug app:user:delete-invalid-account-activation-codes"
+    restart: unless-stopped
+    depends_on:
+      - api
+
+  user-password-reset-process:
+    container_name: user-password-reset-process
+    build:
+      context: ./
+      dockerfile: "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/Dockerfile"
+      args:
+        workdir: ${API_WORKDIR}
+        app_path: ${API_PATH}
+    volumes:
+      - "${API_PATH}:${API_WORKDIR}"
+      - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
+    command: sh -c "sleep 30 && bin/console --no-debug app:user:delete-invalid-password-resets"
     restart: unless-stopped
     depends_on:
       - api
