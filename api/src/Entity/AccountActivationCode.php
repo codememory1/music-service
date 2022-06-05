@@ -29,7 +29,7 @@ class AccountActivationCode implements EntityInterface
 
     use ValidTtlTrait;
 
-    #[ORM\OneToOne(inversedBy: 'accountActivationCode', targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'accountActivationCodes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

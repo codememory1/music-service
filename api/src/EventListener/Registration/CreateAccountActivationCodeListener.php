@@ -35,21 +35,12 @@ class CreateAccountActivationCodeListener
      */
     public function onUserRegistration(UserRegistrationEvent $event): void
     {
-        $accountActivationCodeRepository = $this->em->getRepository(AccountActivationCode::class);
-        $finedAccountActivationCode = $accountActivationCodeRepository->findOneBy([
-            'user' => $event->user
-        ]);
         $accountActivationCodeEntity = new AccountActivationCode();
 
-        if (null !== $finedAccountActivationCode) {
-            $finedAccountActivationCode->generateCode();
-        } else {
-            $accountActivationCodeEntity->setUser($event->user);
-            $accountActivationCodeEntity->setTtl('1h');
+        $accountActivationCodeEntity->setUser($event->user);
+        $accountActivationCodeEntity->setTtl('1h');
 
-            $this->em->persist($accountActivationCodeEntity);
-        }
-
+        $this->em->persist($accountActivationCodeEntity);
         $this->em->flush();
     }
 }
