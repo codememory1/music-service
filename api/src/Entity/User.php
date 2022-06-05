@@ -58,8 +58,8 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserSession::class)]
     private Collection $sessions;
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: AccountActivationCode::class, cascade: ['persist', 'remove'])]
-    private ?AccountActivationCode $accountActivationCode = null;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AccountActivationCode::class, cascade: ['persist', 'remove'])]
+    private Collection $accountActivationCodes;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PasswordReset::class, cascade: ['persist', 'remove'])]
     private Collection $passwordResets;
@@ -74,6 +74,7 @@ class User implements EntityInterface
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
+        $this->accountActivationCodes = new ArrayCollection();
         $this->passwordResets = new ArrayCollection();
         $this->albums = new ArrayCollection();
     }
@@ -234,9 +235,9 @@ class User implements EntityInterface
     }
 
     /**
-     * @return null|AccountActivationCode
+     * @return Collection<AccountActivationCode>
      */
-    public function getAccountActivationCode(): ?AccountActivationCode
+    public function getAccountActivationCode(): Collection
     {
         return $this->accountActivationCode;
     }
@@ -248,12 +249,10 @@ class User implements EntityInterface
      */
     public function setAccountActivationCode(AccountActivationCode $accountActivationCode): self
     {
-        // set the owning side of the relation if necessary
-        if ($accountActivationCode->getUser() !== $this) {
+        if (!$this->accountActivationCodes->contains($accountActivationCode)) {
+            $this->accountActivationCodes[] = $accountActivationCode;
             $accountActivationCode->setUser($this);
         }
-
-        $this->accountActivationCode = $accountActivationCode;
 
         return $this;
     }

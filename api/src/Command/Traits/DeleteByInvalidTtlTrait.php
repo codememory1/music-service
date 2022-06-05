@@ -27,8 +27,6 @@ trait DeleteByInvalidTtlTrait
             $of = $entity->getUpdatedAt() ?: $entity->getCreatedAt();
             $of = $of->getTimestamp();
             $nowTimestamp = (new DateTimeImmutable())->getTimestamp();
-            echo $nowTimestamp . "\n";
-            echo $of + $entity->getTtl();
 
             if ($nowTimestamp > $of + $entity->getTtl()) {
                 $this->em->remove($entity);
