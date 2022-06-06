@@ -48,6 +48,7 @@ final class RolePermissionKeyDataFixture extends AbstractDataFixture implements 
             new RolePermissionKeyFactory(RolePermissionEnum::CREATE_ALBUM_TO_USER, 'rolePermission@createAlbumToUser'),
             new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_ALBUM_TO_USER, 'rolePermission@updateAlbumToUser'),
             new RolePermissionKeyFactory(RolePermissionEnum::DELETE_ALBUM_TO_USER, 'rolePermission@deleteAlbumToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::DELETE_USER_SESSION_TO_USER, 'rolePermission@deleteUserSessionToUser'),
         ]);
     }
 
