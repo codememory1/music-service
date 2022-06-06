@@ -106,6 +106,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@updateAlbumToUser', 'Обновление альбомов у пользователей'),
             new TranslationFactory('ru', 'rolePermission@deleteAlbumToUser', 'Удаление альбомов у пользователей'),
             new TranslationFactory('ru', 'rolePermission@deleteUserSessionToUser', 'Удаление сеансов у пользователя'),
+            new TranslationFactory('ru', 'rolePermission@showInfoAboutUserSession', 'Просмотр информации сеансов у пользователей'),
+            new TranslationFactory('ru', 'rolePermission@showUserSessionTokensToUser', 'Просмотр токенов сессии у пользователей'),
+            new TranslationFactory('ru', 'rolePermission@showUserSessions', 'Просмотр пользовательский сеансов'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),

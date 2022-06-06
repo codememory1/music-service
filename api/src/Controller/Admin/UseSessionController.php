@@ -8,9 +8,11 @@ use App\Annotation\UserRolePermission;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\RolePermissionEnum;
+use App\Repository\UserSessionRepository;
+use App\ResponseData\Admin\UserSessionResponseData;
+use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\UserSession\DeleteUserSessionService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,8 +23,28 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author  Codememory
  */
-class UseSessionController extends AbstractController
+class UseSessionController extends AbstractRestController
 {
+    /**
+     * @param User                    $user
+     * @param UserSessionResponseData $userSessionResponseData
+     * @param UserSessionRepository   $userSessionRepository
+     *
+     * @return JsonResponse
+     */
+    #[Route('/user/{user_id<\d+>}/session/all')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
+    public function all(
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
+        UserSessionResponseData $userSessionResponseData,
+        UserSessionRepository $userSessionRepository
+    ): JsonResponse {
+        $userSessionResponseData->setEntities($userSessionRepository->allByUser($user));
+
+        return $this->responseCollection->dataOutput($userSessionResponseData->collect()->getResponse());
+    }
+
     /**
      * @param UserSession              $userSession
      * @param DeleteUserSessionService $deleteUserSessionService

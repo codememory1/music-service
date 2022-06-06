@@ -5,6 +5,8 @@ namespace App\Controller\PublicAvailable;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Entity\UserSession;
+use App\Repository\UserSessionRepository;
+use App\ResponseData\User\UserSessionResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\UserSession\DeleteUserSessionService;
@@ -21,6 +23,21 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user/session')]
 class UserSessionController extends AbstractRestController
 {
+    /**
+     * @param UserSessionResponseData $userSessionResponseData
+     * @param UserSessionRepository   $userSessionRepository
+     *
+     * @return JsonResponse
+     */
+    #[Route('/all', methods: 'GET')]
+    #[Authorization]
+    public function all(UserSessionResponseData $userSessionResponseData, UserSessionRepository $userSessionRepository): JsonResponse
+    {
+        $userSessionResponseData->setEntities($userSessionRepository->authorizedUserSessions());
+
+        return $this->responseCollection->dataOutput($userSessionResponseData->collect()->getResponse());
+    }
+
     /**
      * @param UserSession              $userSession
      * @param DeleteUserSessionService $deleteUserSessionService

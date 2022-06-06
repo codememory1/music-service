@@ -106,6 +106,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('rolePermission@updateAlbumToUser'),
             new TranslationKeyFactory('rolePermission@deleteAlbumToUser'),
             new TranslationKeyFactory('rolePermission@deleteUserSessionToUser'),
+            new TranslationKeyFactory('rolePermission@showInfoAboutUserSession'),
+            new TranslationKeyFactory('rolePermission@showUserSessionTokensToUser'),
+            new TranslationKeyFactory('rolePermission@showUserSessions'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
