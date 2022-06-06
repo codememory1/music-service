@@ -70,6 +70,9 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Album::class, cascade: ['remove'])]
     private Collection $albums;
 
+    #[ORM\OneToMany(mappedBy: 'toUser', targetEntity: Notification::class, cascade: ['persist', 'remove'])]
+    private Collection $notifications;
+
     #[Pure]
     public function __construct()
     {
@@ -77,6 +80,7 @@ class User implements EntityInterface
         $this->accountActivationCodes = new ArrayCollection();
         $this->passwordResets = new ArrayCollection();
         $this->albums = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     /**
@@ -239,7 +243,7 @@ class User implements EntityInterface
      */
     public function getAccountActivationCode(): Collection
     {
-        return $this->accountActivationCode;
+        return $this->accountActivationCodes;
     }
 
     /**
@@ -326,6 +330,46 @@ class User implements EntityInterface
             // set the owning side to null (unless already changed)
             if ($album->getUser() === $this) {
                 $album->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * @param Notification $notification
+     *
+     * @return $this
+     */
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setToUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Notification $notification
+     *
+     * @return $this
+     */
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getToUser() === $this) {
+                $notification->setToUser(null);
             }
         }
 
