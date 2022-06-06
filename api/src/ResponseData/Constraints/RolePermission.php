@@ -17,16 +17,16 @@ use Attribute;
 class RolePermission implements ConstraintInterface
 {
     /**
-     * @var RolePermissionEnum
+     * @var array|RolePermissionEnum
      */
-    public readonly RolePermissionEnum $permission;
+    public readonly array|RolePermissionEnum $permissions;
 
     /**
      * @param RolePermissionEnum $rolePermissionEnum
      */
-    public function __construct(RolePermissionEnum $rolePermissionEnum)
+    public function __construct(array|RolePermissionEnum $rolePermissionEnum)
     {
-        $this->permission = $rolePermissionEnum;
+        $this->permissions = $rolePermissionEnum;
     }
 
     /**

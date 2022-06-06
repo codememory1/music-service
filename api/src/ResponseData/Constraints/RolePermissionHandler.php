@@ -5,6 +5,7 @@ namespace App\ResponseData\Constraints;
 use App\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use App\Security\Auth\AuthorizedUser;
+use function is_array;
 
 /**
  * Class RolePermissionHandler.
@@ -35,6 +36,16 @@ class RolePermissionHandler implements ConstraintHandlerInterface
      */
     public function handle(ConstraintInterface $constraint): bool
     {
-        return $this->authorizedUser->hasRolePermission($constraint->permission);
+        if (is_array($constraint->permissions)) {
+            foreach ($constraint->permissions as $permission) {
+                if ($this->authorizedUser->hasRolePermission($permission)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        return $this->authorizedUser->hasRolePermission($constraint->permissions);
     }
 }

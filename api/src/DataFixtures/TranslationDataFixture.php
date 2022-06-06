@@ -51,6 +51,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@albumType', 'Тип альбома не найден'),
             new TranslationFactory('ru', 'entityNotFound@user', 'Пользователь не найден'),
             new TranslationFactory('ru', 'entityNotFound@album', 'Альбом не найден'),
+            new TranslationFactory('ru', 'entityNotFound@userSession', 'Сеанс не найден'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -104,6 +105,10 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@createAlbumToUser', 'Создание альбомов для пользователей'),
             new TranslationFactory('ru', 'rolePermission@updateAlbumToUser', 'Обновление альбомов у пользователей'),
             new TranslationFactory('ru', 'rolePermission@deleteAlbumToUser', 'Удаление альбомов у пользователей'),
+            new TranslationFactory('ru', 'rolePermission@deleteUserSessionToUser', 'Удаление сеансов у пользователя'),
+            new TranslationFactory('ru', 'rolePermission@showInfoAboutUserSession', 'Просмотр информации сеансов у пользователей'),
+            new TranslationFactory('ru', 'rolePermission@showUserSessionTokensToUser', 'Просмотр токенов сессии у пользователей'),
+            new TranslationFactory('ru', 'rolePermission@showUserSessions', 'Просмотр пользовательский сеансов'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -175,6 +180,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'album@successCreate', 'Альбом успешно создан'),
             new TranslationFactory('ru', 'album@successUpdate', 'Альбом успешно обновлен'),
             new TranslationFactory('ru', 'album@successDelete', 'Альбом успешно удален'),
+
+            new TranslationFactory('ru', 'userSession@successDelete', 'Сеанс успешно удален'),
+            new TranslationFactory('ru', 'userSession@successDeleteMultiple', 'Сеансы успешно удалены'),
         ]);
     }
 
