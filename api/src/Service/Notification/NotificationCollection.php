@@ -5,7 +5,6 @@ namespace App\Service\Notification;
 use App\Entity\Notification;
 use App\Entity\User;
 use App\Enum\NotificationTypeEnum;
-use App\Service\Notification\Interfaces\NotificationActionInterface;
 use App\Service\TranslationService;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -61,17 +60,17 @@ class NotificationCollection
     }
 
     /**
-     * @param User                        $from
-     * @param User                        $to
-     * @param string                      $titleTranslationKey
-     * @param string                      $messageTranslationKey
-     * @param array                       $messageParameters
-     * @param NotificationTypeEnum        $type
-     * @param NotificationActionInterface ...$actions
+     * @param User                 $from
+     * @param User                 $to
+     * @param string               $titleTranslationKey
+     * @param string               $messageTranslationKey
+     * @param array                $messageParameters
+     * @param NotificationTypeEnum $type
+     * @param array                ...$actions
      *
      * @return $this
      */
-    private function init(User $from, User $to, string $titleTranslationKey, string $messageTranslationKey, array $messageParameters = [], NotificationTypeEnum $type = NotificationTypeEnum::INFORMATIONAL, NotificationActionInterface ...$actions): self
+    private function init(User $from, User $to, string $titleTranslationKey, string $messageTranslationKey, array $messageParameters = [], NotificationTypeEnum $type = NotificationTypeEnum::INFORMATIONAL, array ...$actions): self
     {
         $notificationEntity = new Notification();
 

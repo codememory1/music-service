@@ -109,6 +109,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@showInfoAboutUserSession', 'Просмотр информации сеансов у пользователей'),
             new TranslationFactory('ru', 'rolePermission@showUserSessionTokensToUser', 'Просмотр токенов сессии у пользователей'),
             new TranslationFactory('ru', 'rolePermission@showUserSessions', 'Просмотр пользовательский сеансов'),
+            new TranslationFactory('ru', 'rolePermission@createNotifications', 'Создание уведомлений'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -183,6 +184,13 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
 
             new TranslationFactory('ru', 'userSession@successDelete', 'Сеанс успешно удален'),
             new TranslationFactory('ru', 'userSession@successDeleteMultiple', 'Сеансы успешно удалены'),
+
+            new TranslationFactory('ru', 'notification@typeIsRequired', 'Тип уведомления обязателен к заполнению'),
+            new TranslationFactory('ru', 'notification@toIsRequired', 'Получаетель уведомления обязателен к заполнению'),
+            new TranslationFactory('ru', 'notification@titleIsRequired', 'Заголовок уведомления обязателен к заполнению'),
+            new TranslationFactory('ru', 'notification@messageIsRequired', 'Сообщение уведомления обязательно к заполнению'),
+            new TranslationFactory('ru', 'notification@invalidAction', 'Некорректное действие уведомления'),
+            new TranslationFactory('ru', 'notification@successCreate', 'Уведомление успешно создано'),
         ]);
     }
 

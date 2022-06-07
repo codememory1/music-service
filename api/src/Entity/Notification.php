@@ -7,7 +7,6 @@ use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\NotificationTypeEnum;
 use App\Repository\NotificationRepository;
-use App\Service\Notification\Interfaces\NotificationActionInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,7 +33,7 @@ class Notification implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?User $toUser = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $fromUser = null;
 
@@ -167,14 +166,14 @@ class Notification implements EntityInterface
     }
 
     /**
-     * @param NotificationActionInterface ...$actions
+     * @param array ...$actions
      *
      * @return $this
      */
-    public function setAction(NotificationActionInterface ...$actions): self
+    public function setAction(array ...$actions): self
     {
         foreach ($actions as $action) {
-            $this->action = array_merge($this->action, $action->getAction());
+            $this->action = array_merge($this->action, $action);
         }
 
         return $this;

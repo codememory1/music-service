@@ -1,0 +1,24 @@
+{
+    "type": "object",
+    "properties": {
+        "redirect": {
+            "type": "object",
+            "properties": {
+                "to_link": {
+                    "type": "string"
+                }
+            },
+            "required": ["to_link"]
+        },
+        "open_modal": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            },
+            "required": ["id"]
+        }
+    },
+    "additionalProperties": false
+}

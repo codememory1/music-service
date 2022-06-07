@@ -43,7 +43,7 @@ class User implements EntityInterface
     ])]
     private ?string $password = null;
 
-    #[ORM\ManyToOne(targetEntity: Role::class)]
+    #[ORM\ManyToOne(targetEntity: Role::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Role $role = null;
 
@@ -353,7 +353,7 @@ class User implements EntityInterface
     {
         if (!$this->notifications->contains($notification)) {
             $this->notifications[] = $notification;
-            $notification->setToUser($this);
+            $notification->setTo($this);
         }
 
         return $this;
@@ -368,8 +368,8 @@ class User implements EntityInterface
     {
         if ($this->notifications->removeElement($notification)) {
             // set the owning side to null (unless already changed)
-            if ($notification->getToUser() === $this) {
-                $notification->setToUser(null);
+            if ($notification->getTo() === $this) {
+                $notification->setTo(null);
             }
         }
 
