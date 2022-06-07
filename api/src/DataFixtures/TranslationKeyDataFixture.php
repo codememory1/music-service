@@ -109,6 +109,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('rolePermission@showInfoAboutUserSession'),
             new TranslationKeyFactory('rolePermission@showUserSessionTokensToUser'),
             new TranslationKeyFactory('rolePermission@showUserSessions'),
+            new TranslationKeyFactory('rolePermission@createNotifications'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -184,6 +185,13 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
 
             new TranslationKeyFactory('userSession@successDelete'),
             new TranslationKeyFactory('userSession@successDeleteMultiple'),
+
+            new TranslationKeyFactory('notification@typeIsRequired'),
+            new TranslationKeyFactory('notification@toIsRequired'),
+            new TranslationKeyFactory('notification@titleIsRequired'),
+            new TranslationKeyFactory('notification@messageIsRequired'),
+            new TranslationKeyFactory('notification@invalidAction'),
+            new TranslationKeyFactory('notification@successCreate'),
         ]);
     }
 

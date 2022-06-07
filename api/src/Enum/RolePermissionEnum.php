@@ -40,4 +40,5 @@ enum RolePermissionEnum
     case SHOW_INFO_ABOUT_USER_SESSION;
     case SHOW_USER_SESSIONS;
     case SHOW_USER_SESSION_TOKEN_TO_USER;
+    case CREATE_NOTIFICATION;
 }

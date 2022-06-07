@@ -53,6 +53,7 @@ final class RolePermissionDataFixture extends AbstractDataFixture implements Dep
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::SHOW_USER_SESSION_TOKEN_TO_USER),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::SHOW_USER_SESSIONS),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::CREATE_NOTIFICATION),
         ]);
     }
 

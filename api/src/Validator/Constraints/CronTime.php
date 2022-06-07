@@ -22,6 +22,8 @@ final class CronTime extends Constraint
 
     /**
      * @param null|string $message
+     * @param null|mixed  $options
+     * @param null|array  $groups
      * @param null|mixed  $payload
      */
     public function __construct(?string $message = null, mixed $options = null, ?array $groups = null, mixed $payload = null)

@@ -4,11 +4,12 @@ framework:
             async: '%env(MESSENGER_TRANSPORT_DSN)%'
             amqp_ws:
               dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-#              options:
-#                exchange:
-#                  name: ws-users
-#                  type: direct
-#                queues:
-#                  ws-users: ~
+              options:
+                exchange:
+                  name: ws-users
+                  type: direct
+                queues:
+                  ws-users: ~
         routing:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            App\Message\NotificationMessage: async

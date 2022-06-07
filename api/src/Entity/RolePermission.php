@@ -28,7 +28,7 @@ class RolePermission implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Role $role = null;
 
-    #[ORM\ManyToOne(targetEntity: RolePermissionKey::class)]
+    #[ORM\ManyToOne(targetEntity: RolePermissionKey::class, cascade: ['persist'])]
     private ?RolePermissionKey $rolePermissionKey = null;
 
     /**
