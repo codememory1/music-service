@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Enum\NotificationStatusEnum;
 use App\Enum\NotificationTypeEnum;
 use App\Repository\NotificationRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,16 +28,14 @@ class Notification implements EntityInterface
 
     use TimestampTrait;
 
-    /**
-     * @var null|User
-     */
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'notifications')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $toUser = null;
-
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
     private ?User $fromUser = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, options: [
+        'comment' => 'User email or all if you want to send all registered users'
+    ])]
+    private ?string $toUser = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Notification type from NotificationTypeEnum'
@@ -57,25 +57,15 @@ class Notification implements EntityInterface
     ])]
     private array $action = [];
 
-    /**
-     * @return null|User
-     */
-    public function getTo(): ?User
-    {
-        return $this->toUser;
-    }
+    #[ORM\Column(type: Types::STRING, options: [
+        'comment' => 'Notification status from NotificationStatusEnum'
+    ])]
+    private ?string $status = null;
 
-    /**
-     * @param null|User $toUser
-     *
-     * @return $this
-     */
-    public function setTo(?User $toUser): self
-    {
-        $this->toUser = $toUser;
-
-        return $this;
-    }
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true, options: [
+        'comment' => 'Notification status from NotificationStatusEnum'
+    ])]
+    private ?DateTimeImmutable $departureDate = null;
 
     /**
      * @return null|User
@@ -93,6 +83,26 @@ class Notification implements EntityInterface
     public function setFrom(?User $fromUser): self
     {
         $this->fromUser = $fromUser;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getToUser(): ?string
+    {
+        return $this->toUser;
+    }
+
+    /**
+     * @param null|string $toUser
+     *
+     * @return $this
+     */
+    public function setToUser(?string $toUser): self
+    {
+        $this->toUser = $toUser;
 
         return $this;
     }
@@ -175,6 +185,46 @@ class Notification implements EntityInterface
         foreach ($actions as $action) {
             $this->action = array_merge($this->action, $action);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param null|NotificationStatusEnum $statusEnum
+     *
+     * @return $this
+     */
+    public function setStatus(?NotificationStatusEnum $statusEnum): self
+    {
+        $this->status = $statusEnum->name;
+
+        return $this;
+    }
+
+    /**
+     * @return null|DateTimeImmutable
+     */
+    public function getDepartureDate(): ?DateTimeImmutable
+    {
+        return $this->departureDate;
+    }
+
+    /**
+     * @param null|DateTimeImmutable $dateTimeImmutable
+     *
+     * @return $this
+     */
+    public function setDepartureDate(?DateTimeImmutable $dateTimeImmutable): self
+    {
+        $this->departureDate = $dateTimeImmutable;
 
         return $this;
     }

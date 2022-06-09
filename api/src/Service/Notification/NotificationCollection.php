@@ -75,13 +75,15 @@ class NotificationCollection
         $notificationEntity = new Notification();
 
         $notificationEntity->setFrom($from);
-        $notificationEntity->setTo($to);
         $notificationEntity->setTitle($this->translationService->get($titleTranslationKey));
         $notificationEntity->setMessage($this->translationService->get($messageTranslationKey, $messageParameters));
         $notificationEntity->setType($type);
         $notificationEntity->setAction(...$actions);
 
         $this->em->persist($notificationEntity);
+
+        $to->addNotification($notificationEntity);
+
         $this->em->flush();
 
         return $this;

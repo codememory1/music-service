@@ -3,12 +3,15 @@
 namespace App\DTO;
 
 use App\DTO\Interceptors\AsArrayInterceptor;
+use App\DTO\Interceptors\AsDateTimeInterceptor;
 use App\DTO\Interceptors\AsEnumInterceptor;
+use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Notification;
 use App\Enum\NotificationTypeEnum;
 use App\Enum\UserStatusEnum;
 use App\Repository\UserRepository;
 use App\Validator\Constraints as AppAssert;
+use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Contracts\Service\Attribute\Required;
 
@@ -22,11 +25,17 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class NotificationDTO extends AbstractDTO
 {
+    /**
+     * @inheritDoc
+     */
+    protected EntityInterface|string|null $entity = Notification::class;
+
     #[Assert\NotBlank(message: 'notification@typeIsRequired')]
     public ?NotificationTypeEnum $type = null;
 
     #[Assert\NotBlank(message: 'notification@toIsRequired')]
-    public ?string $to = null;
+    public ?string $toUser = null;
+    public ?DateTimeImmutable $departureDate = null;
 
     #[Assert\NotBlank(message: 'notification@titleIsRequired')]
     public ?string $title = null;
@@ -46,12 +55,14 @@ class NotificationDTO extends AbstractDTO
     protected function wrapper(): void
     {
         $this->addExpectKey('type');
-        $this->addExpectKey('to');
+        $this->addExpectKey('to_user', 'toUser');
+        $this->addExpectKey('departure_date', 'departureDate');
         $this->addExpectKey('title');
         $this->addExpectKey('message');
         $this->addExpectKey('action');
 
         $this->addInterceptor('type', new AsEnumInterceptor(NotificationTypeEnum::class));
+        $this->addInterceptor('departureDate', new AsDateTimeInterceptor());
         $this->addInterceptor('to', function(string $key, mixed $value) {
             if ('all' !== $value) {
                 return $this->userRepository->findOneBy([

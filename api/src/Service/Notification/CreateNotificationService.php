@@ -4,7 +4,7 @@ namespace App\Service\Notification;
 
 use App\DTO\NotificationDTO;
 use App\Entity\User;
-use App\Message\NotificationMessage;
+use App\Enum\NotificationStatusEnum;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -34,13 +34,13 @@ class CreateNotificationService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $this->bus->dispatch(new NotificationMessage([
-            'type' => $notificationDTO->type,
-            'from' => $from->getId(),
-            'title' => $notificationDTO->title,
-            'message' => $notificationDTO->message,
-            'action' => $notificationDTO->action
-        ], $notificationDTO->to));
+        $notificationEntity = $notificationDTO->getEntity();
+
+        $notificationEntity->setStatus(NotificationStatusEnum::EXPECTS);
+        $notificationEntity->setFrom($from);
+
+        $this->em->persist($notificationEntity);
+        $this->em->flush();
 
         return $this->responseCollection->successCreate('notification@successCreate');
     }
