@@ -1,4 +1,4 @@
-![Codememory company](/bin/assets/codememory-logo.svg)
+![Codememory company](/bin/assets/codememory-logo.svg =500x110)
 
 ## Установка проекта
 
