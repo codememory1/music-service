@@ -70,7 +70,7 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Album::class, cascade: ['remove'])]
     private Collection $albums;
 
-    #[ORM\OneToMany(mappedBy: 'toUser', targetEntity: Notification::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'toUser', targetEntity: UserNotification::class, cascade: ['persist', 'remove'])]
     private Collection $notifications;
 
     #[Pure]
@@ -337,7 +337,7 @@ class User implements EntityInterface
     }
 
     /**
-     * @return Collection<int, Notification>
+     * @return Collection<int, UserNotification>
      */
     public function getNotifications(): Collection
     {
@@ -351,20 +351,24 @@ class User implements EntityInterface
      */
     public function addNotification(Notification $notification): self
     {
-        if (!$this->notifications->contains($notification)) {
-            $this->notifications[] = $notification;
-            $notification->setTo($this);
+        $userNotification = new UserNotification();
+
+        $userNotification->setTo($this);
+        $userNotification->setNotification($notification);
+
+        if (!$this->notifications->contains($userNotification)) {
+            $this->notifications[] = $userNotification;
         }
 
         return $this;
     }
 
     /**
-     * @param Notification $notification
+     * @param UserNotification $notification
      *
      * @return $this
      */
-    public function removeNotification(Notification $notification): self
+    public function removeNotification(UserNotification $notification): self
     {
         if ($this->notifications->removeElement($notification)) {
             // set the owning side to null (unless already changed)
