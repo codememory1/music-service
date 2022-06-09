@@ -6,7 +6,7 @@
 
 - ### Сборка контейнеров и запуск
 ```
-> docker-compose build
+> docker-compose up -d
 ```
 
 - ### Настройка окружения
