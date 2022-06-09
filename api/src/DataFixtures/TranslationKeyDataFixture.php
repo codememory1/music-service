@@ -189,7 +189,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('notification@typeIsRequired'),
             new TranslationKeyFactory('notification@toIsRequired'),
             new TranslationKeyFactory('notification@titleIsRequired'),
+            new TranslationKeyFactory('notification@maxLengthTitle'),
             new TranslationKeyFactory('notification@messageIsRequired'),
+            new TranslationKeyFactory('notification@maxLengthMessage'),
             new TranslationKeyFactory('notification@invalidAction'),
             new TranslationKeyFactory('notification@successCreate'),
         ]);

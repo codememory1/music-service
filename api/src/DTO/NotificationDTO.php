@@ -38,9 +38,11 @@ class NotificationDTO extends AbstractDTO
     public ?DateTimeImmutable $departureDate = null;
 
     #[Assert\NotBlank(message: 'notification@titleIsRequired')]
+    #[Assert\Length(max: 50, maxMessage: 'notification@maxLengthTitle')]
     public ?string $title = null;
 
     #[Assert\NotBlank(message: 'notification@messageIsRequired')]
+    #[Assert\Length(max: 255, maxMessage: 'notification@maxLengthMessage')]
     public ?string $message = null;
 
     #[AppAssert\JsonSchema('notification_actions', message: 'notification@invalidAction')]
