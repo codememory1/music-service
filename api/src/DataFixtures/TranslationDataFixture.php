@@ -188,7 +188,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'notification@typeIsRequired', 'Тип уведомления обязателен к заполнению'),
             new TranslationFactory('ru', 'notification@toIsRequired', 'Получаетель уведомления обязателен к заполнению'),
             new TranslationFactory('ru', 'notification@titleIsRequired', 'Заголовок уведомления обязателен к заполнению'),
+            new TranslationFactory('ru', 'notification@maxLengthTitle', 'Заголовок уведомления не должен превышать 50 символов'),
             new TranslationFactory('ru', 'notification@messageIsRequired', 'Сообщение уведомления обязательно к заполнению'),
+            new TranslationFactory('ru', 'notification@maxLengthMessage', 'Сообщение уведомления не должно превышать 500 символов'),
             new TranslationFactory('ru', 'notification@invalidAction', 'Некорректное действие уведомления'),
             new TranslationFactory('ru', 'notification@successCreate', 'Уведомление успешно создано'),
         ]);
