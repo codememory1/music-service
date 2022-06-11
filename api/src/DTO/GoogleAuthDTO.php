@@ -18,16 +18,10 @@ class GoogleAuthDTO extends AbstractDTO implements ServiceAuthorizationDTOInterf
     public ?string $code = null;
 
     /**
-     * @var null|string
-     */
-    public ?string $error = null;
-
-    /**
      * @inheritDoc
      */
     protected function wrapper(): void
     {
         $this->addExpectKey('code');
-        $this->addExpectKey('error');
     }
 }
