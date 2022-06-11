@@ -20,9 +20,13 @@ class PasswordType extends TextType
     /**
      * @inheritDoc
      */
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
         $hashingService = new HashingService();
+
+        if (empty($value)) {
+            return null;
+        }
 
         return $hashingService->encode($value);
     }

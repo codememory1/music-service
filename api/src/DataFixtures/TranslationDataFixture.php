@@ -62,9 +62,11 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
             new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),
             new TranslationFactory('ru', 'auth@authNotRequired', 'Для выполнения данного действия вы должы выйти из аккаунта'),
+            new TranslationFactory('ru', 'auth@authError', 'Произошла ошибка авторизации'),
 
             new TranslationFactory('ru', 'registration@successRegistration', 'Регистрация прошла успешно! На почту отправлена ссылка для активации аккаунта'),
             new TranslationFactory('ru', 'registration@registration', 'Регистрация'),
+            new TranslationFactory('ru', 'registration@didNotProvideData', 'Сервис не может зарегестировать из-за отсутствия запрашиваемых данных'),
 
             new TranslationFactory('ru', 'userProfile@pseudonymIsRequired', 'Псевдоним обязательный к заполнению'),
             new TranslationFactory('ru', 'userProfile@maxPseudonymLength', 'Псевдоним не должен превышать 40 символов'),
@@ -193,6 +195,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'notification@maxLengthMessage', 'Сообщение уведомления не должно превышать 500 символов'),
             new TranslationFactory('ru', 'notification@invalidAction', 'Некорректное действие уведомления'),
             new TranslationFactory('ru', 'notification@successCreate', 'Уведомление успешно создано'),
+
+            new TranslationFactory('ru', 'serviceAuth@authorizationCodeIsRequired', 'Код авторизации обязателен к заполнению'),
         ]);
     }
 
