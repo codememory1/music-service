@@ -116,3 +116,12 @@ services:
     App\Annotation\:
       resource: '../src/Annotation/*Handler.php'
       public: true
+
+    App\Service\Platform\Google\Client:
+      arguments:
+        $clientId: '%env(GOOGLE_CLIENT_ID)%'
+        $secretKey: '%env(GOOGLE_CLIENT_SECRET)%'
+        $redirectUrl: '%env(GOOGLE_CLIENT_REDIRECT_URL)%'
+        $scopes:
+          - !php/const App\Enum\GoogleScopeEnum::EMAIL
+          - !php/const App\Enum\GoogleScopeEnum::PROFILE

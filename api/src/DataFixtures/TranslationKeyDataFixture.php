@@ -61,9 +61,11 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('auth@successAuthorization'),
             new TranslationKeyFactory('auth@authRequired'),
             new TranslationKeyFactory('auth@authNotRequired'),
+            new TranslationKeyFactory('auth@authError'),
 
             new TranslationKeyFactory('registration@successRegistration'),
             new TranslationKeyFactory('registration@registration'),
+            new TranslationKeyFactory('registration@didNotProvideData'),
 
             new TranslationKeyFactory('userProfile@pseudonymIsRequired'),
             new TranslationKeyFactory('userProfile@maxPseudonymLength'),
@@ -194,6 +196,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('notification@maxLengthMessage'),
             new TranslationKeyFactory('notification@invalidAction'),
             new TranslationKeyFactory('notification@successCreate'),
+
+            new TranslationKeyFactory('serviceAuth@authorizationCodeIsRequired'),
         ]);
     }
 

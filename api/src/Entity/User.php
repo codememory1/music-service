@@ -38,7 +38,7 @@ class User implements EntityInterface
     ])]
     private ?string $email = null;
 
-    #[ORM\Column(type: PasswordType::NAME, options: [
+    #[ORM\Column(type: PasswordType::NAME, nullable: true, options: [
         'comment' => 'Password as secure hash'
     ])]
     private ?string $password = null;
@@ -72,6 +72,16 @@ class User implements EntityInterface
 
     #[ORM\OneToMany(mappedBy: 'toUser', targetEntity: UserNotification::class, cascade: ['persist', 'remove'])]
     private Collection $notifications;
+
+    #[ORM\Column(type: Types::STRING, length: 500, nullable: true, options: [
+        'comment' => 'Unique id of your profile in the authorization service'
+    ])]
+    private ?string $idInAuthService = null;
+
+    #[ORM\Column(type: Types::STRING, length: 25, nullable: true, options: [
+        'comment' => 'The type of service in which authorization occurred'
+    ])]
+    private ?string $authServiceType = null;
 
     #[Pure]
     public function __construct()
@@ -376,6 +386,46 @@ class User implements EntityInterface
                 $notification->setTo(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getIdInAuthService(): ?string
+    {
+        return $this->idInAuthService;
+    }
+
+    /**
+     * @param null|string $idInAuthService
+     *
+     * @return $this
+     */
+    public function setIdInAuthService(?string $idInAuthService): self
+    {
+        $this->idInAuthService = $idInAuthService;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getAuthServiceType(): ?string
+    {
+        return $this->authServiceType;
+    }
+
+    /**
+     * @param null|string $authServiceType
+     *
+     * @return $this
+     */
+    public function setAuthServiceType(?string $authServiceType): self
+    {
+        $this->authServiceType = $authServiceType;
 
         return $this;
     }
