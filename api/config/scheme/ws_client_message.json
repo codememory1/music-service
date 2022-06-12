@@ -1,0 +1,30 @@
+{
+    "type": "object",
+    "properties": {
+        "headers": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": ["string", "null"]
+                },
+                "refresh_token": {
+                    "type": ["string", "null"]
+                }
+            },
+            "required": ["access_token", "refresh_token"]
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "any"
+                }
+            },
+            "required": ["type", "message"]
+        }
+    },
+    "required": ["headers", "data"]
+}

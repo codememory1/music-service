@@ -41,7 +41,8 @@
         "symfony/sendgrid-mailer": "6.0.*",
         "symfony/twig-bundle": "6.0.*",
         "symfony/validator": "6.0.*",
-        "symfony/yaml": "6.0.*"
+        "symfony/yaml": "6.0.*",
+        "workerman/workerman": "^4.0"
     },
     "config": {
         "allow-plugins": {
