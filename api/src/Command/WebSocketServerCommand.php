@@ -95,7 +95,7 @@ class WebSocketServerCommand extends Command
 
         global $argv;
 
-        $argv[0] = 'app:ws-server:run';
+        $argv[0] = 'app:ws-server';
         $argv[1] = $input->getArgument('worker-command');
         $argv[2] = $input->getOption('demon');
 
