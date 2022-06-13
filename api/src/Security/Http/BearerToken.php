@@ -25,6 +25,11 @@ class BearerToken
     private Request $request;
 
     /**
+     * @var null|string
+     */
+    private ?string $token = null;
+
+    /**
      * @param JwtTokenGenerator $jwtTokenGenerator
      * @param Request           $request
      */
@@ -35,18 +40,34 @@ class BearerToken
     }
 
     /**
+     * @param string $token
+     *
+     * @return $this
+     */
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
      * @return null|string
      */
     public function getToken(): ?string
     {
-        $authorization = $this->request->request?->headers->get('Authorization');
-        $authorizationData = explode(' ', $authorization, 2);
+        if (null === $this->token) {
+            $authorization = $this->request->request?->headers->get('Authorization');
+            $authorizationData = explode(' ', $authorization, 2);
 
-        if (count($authorizationData) > 1 && 'Bearer' === $authorizationData[0]) {
-            return $authorizationData[1];
+            if (count($authorizationData) > 1 && 'Bearer' === $authorizationData[0]) {
+                return $authorizationData[1];
+            }
+
+            return null;
         }
 
-        return null;
+        return $this->token;
     }
 
     /**

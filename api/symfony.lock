@@ -11,6 +11,9 @@
     "brick/math": {
         "version": "0.9.3"
     },
+    "clue/stream-filter": {
+        "version": "v1.6.0"
+    },
     "codememory/geo": {
         "version": "v1.0"
     },
@@ -201,8 +204,14 @@
             "fixtures/.gitignore"
         ]
     },
+    "http-interop/http-factory-guzzle": {
+        "version": "1.2.0"
+    },
     "jaybizzle/crawler-detect": {
         "version": "v1.2.111"
+    },
+    "jean85/pretty-package-versions": {
+        "version": "2.0.5"
     },
     "jenssegers/agent": {
         "version": "v2.6.4"
@@ -255,6 +264,24 @@
     },
     "php-cs-fixer/diff": {
         "version": "v2.0.2"
+    },
+    "php-http/client-common": {
+        "version": "2.5.0"
+    },
+    "php-http/discovery": {
+        "version": "1.14.2"
+    },
+    "php-http/httplug": {
+        "version": "2.3.0"
+    },
+    "php-http/message": {
+        "version": "1.13.0"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
+    },
+    "php-http/promise": {
+        "version": "1.1.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -377,6 +404,21 @@
     },
     "sebastian/version": {
         "version": "3.0.2"
+    },
+    "sentry/sdk": {
+        "version": "3.2.0"
+    },
+    "sentry/sentry": {
+        "version": "3.6.0"
+    },
+    "sentry/sentry-symfony": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "9746f0823302d7980e5273ef7a69ef3f5ac80914"
+        }
     },
     "sixlive/dotenv-editor": {
         "version": "v2.0.0"
@@ -574,6 +616,9 @@
     "symfony/options-resolver": {
         "version": "v6.0.3"
     },
+    "symfony/password-hasher": {
+        "version": "v6.0.8"
+    },
     "symfony/phpunit-bridge": {
         "version": "6.0",
         "recipe": {
@@ -604,6 +649,9 @@
     "symfony/polyfill-php81": {
         "version": "v1.24.0"
     },
+    "symfony/polyfill-uuid": {
+        "version": "v1.26.0"
+    },
     "symfony/process": {
         "version": "v6.0.7"
     },
@@ -615,6 +663,9 @@
     },
     "symfony/proxy-manager-bridge": {
         "version": "v6.0.2"
+    },
+    "symfony/psr-http-message-bridge": {
+        "version": "v2.1.2"
     },
     "symfony/routing": {
         "version": "6.0",
@@ -631,6 +682,9 @@
     },
     "symfony/runtime": {
         "version": "v6.0.0"
+    },
+    "symfony/security-core": {
+        "version": "v6.0.8"
     },
     "symfony/sendgrid-mailer": {
         "version": "6.0",
