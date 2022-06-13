@@ -35,6 +35,10 @@ RUN apt-get update && apt-get install -y \
 
 RUN docker-php-ext-install pdo pdo_pgsql
 
+RUN docker-php-ext-configure pcntl --enable-pcntl \
+  && docker-php-ext-install \
+    pcntl
+
 RUN docker-php-ext-install zip xml intl mbstring curl
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions amqp

@@ -10,6 +10,9 @@ parameters:
     jwt.refresh_private_key: '%env(JWT_REFRESH_PRIVATE_KEY)%'
     jwt.refresh_ttl: '%env(JWT_REFRESH_TTL)%'
 
+    ws.count_process: '%env(int:WS_PROCESS_COUNT)%'
+    ws.url: '%env(WS_URL)%'
+
 services:
     _defaults:
         autowire: true

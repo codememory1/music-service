@@ -21,6 +21,7 @@
         "google/apiclient": "^2.12",
         "jenssegers/agent": "^2.6",
         "ramsey/uuid": "^4.2",
+        "sentry/sentry-symfony": "^4.3",
         "sixlive/dotenv-editor": "^2.0",
         "starkbank/ecdsa": "^0.0.5",
         "symfony/amqp-messenger": "6.0.*",
@@ -41,7 +42,8 @@
         "symfony/sendgrid-mailer": "6.0.*",
         "symfony/twig-bundle": "6.0.*",
         "symfony/validator": "6.0.*",
-        "symfony/yaml": "6.0.*"
+        "symfony/yaml": "6.0.*",
+        "workerman/workerman": "^4.0"
     },
     "config": {
         "allow-plugins": {

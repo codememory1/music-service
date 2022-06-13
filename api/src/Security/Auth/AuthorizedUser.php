@@ -60,6 +60,21 @@ class AuthorizedUser
     }
 
     /**
+     * @param string $token
+     *
+     * @return $this
+     */
+    public function setToken(string $token): self
+    {
+        $this->bearerToken->setToken($token);
+
+        $this->bearerTokenData = $this->bearerToken->getData();
+        $this->user = $this->findUser();
+
+        return $this;
+    }
+
+    /**
      * @return null|User
      */
     public function getUser(): ?User
