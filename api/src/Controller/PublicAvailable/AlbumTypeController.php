@@ -32,7 +32,8 @@ class AlbumTypeController extends AbstractRestController
         $albumTypeResponseData->setEntities($albumTypeRepository->all(
             $translationService->getLanguage()
         ));
+        $albumTypeResponseData->collect();
 
-        return $this->responseCollection->dataOutput($albumTypeResponseData->collect()->getResponse());
+        return $this->responseCollection->dataOutput($albumTypeResponseData->getResponse());
     }
 }

@@ -103,10 +103,18 @@ abstract class AbstractResponseData implements ResponseDataInterface
     }
 
     /**
+     * @param bool $first
+     *
      * @return array
      */
-    public function getResponse(): array
+    public function getResponse(bool $first = false): array
     {
+        if (true === $first) {
+            $key = array_key_first($this->response);
+
+            return $this->response[$key];
+        }
+
         return $this->response;
     }
 
@@ -182,11 +190,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
                 $toArray[$allowedProperty['keyToResponse']] = empty($value) ? $this->{$allowedProperty['propertyName']} : $value;
             }
 
-            if (1 === count($this->entities)) {
-                $this->response = $toArray;
-            } else {
-                $this->response[] = $toArray;
-            }
+            $this->response[] = $toArray;
         }
     }
 

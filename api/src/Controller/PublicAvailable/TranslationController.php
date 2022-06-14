@@ -37,7 +37,8 @@ class TranslationController extends AbstractRestController
         $translationResponseData->setEntities($translationRepository->findByCriteria([
             'language' => $language
         ]));
+        $translationResponseData->collect();
 
-        return $this->responseCollection->dataOutput($translationResponseData->collect()->getResponse());
+        return $this->responseCollection->dataOutput($translationResponseData->getResponse());
     }
 }

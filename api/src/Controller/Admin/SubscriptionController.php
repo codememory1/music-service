@@ -40,8 +40,9 @@ class SubscriptionController extends AbstractRestController
     public function all(SubscriptionResponseData $subscriptionResponseData, SubscriptionRepository $subscriptionRepository): JsonResponse
     {
         $subscriptionResponseData->setEntities($subscriptionRepository->findAll());
+        $subscriptionResponseData->collect();
 
-        return $this->responseCollection->dataOutput($subscriptionResponseData->collect()->getResponse());
+        return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse());
     }
 
     /**
@@ -58,8 +59,9 @@ class SubscriptionController extends AbstractRestController
         SubscriptionResponseData $subscriptionResponseData
     ): JsonResponse {
         $subscriptionResponseData->setEntities($subscription);
+        $subscriptionResponseData->collect();
 
-        return $this->responseCollection->dataOutput($subscriptionResponseData->collect()->getResponse());
+        return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse(true));
     }
 
     /**

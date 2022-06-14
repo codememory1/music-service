@@ -40,8 +40,9 @@ class UserRoleController extends AbstractRestController
     public function all(UserRoleResponseData $userRoleResponseData, RoleRepository $roleRepository): JsonResponse
     {
         $userRoleResponseData->setEntities($roleRepository->findAll());
+        $userRoleResponseData->collect();
 
-        return $this->responseCollection->dataOutput($userRoleResponseData->collect()->getResponse());
+        return $this->responseCollection->dataOutput($userRoleResponseData->getResponse());
     }
 
     /**
@@ -58,8 +59,9 @@ class UserRoleController extends AbstractRestController
         UserRoleResponseData $userRoleResponseData
     ): JsonResponse {
         $userRoleResponseData->setEntities($role);
+        $userRoleResponseData->collect();
 
-        return $this->responseCollection->dataOutput($userRoleResponseData->collect()->getResponse());
+        return $this->responseCollection->dataOutput($userRoleResponseData->getResponse());
     }
 
     /**
