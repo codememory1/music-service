@@ -7,6 +7,7 @@ use App\DTO\Interceptors\AsBooleanInterceptor;
 use App\DTO\Interceptors\AsEntityInterceptor;
 use App\DTO\Interceptors\AsEnumInterceptor;
 use App\Entity\Album;
+use App\Entity\MultimediaCategory;
 use App\Enum\MultimediaTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -37,7 +38,15 @@ class MultimediaDTO extends AbstractDTO
 
     #[Assert\NotBlank(message: 'multimedia@categoryIsRequired')]
     public ?string $category = null;
+
+    /**
+     * @var null|string
+     */
     public ?string $fullText = null;
+
+    /**
+     * @var null|UploadedFile
+     */
     public ?UploadedFile $subtitles = null;
 
     #[Assert\NotBlank(message: 'multimedia@isObsceneWordsIsRequired')]
@@ -45,6 +54,10 @@ class MultimediaDTO extends AbstractDTO
 
     #[Assert\NotBlank(message: 'multimedia@imageIsRequired')]
     public ?UploadedFile $image = null;
+
+    /**
+     * @var array
+     */
     public array $performers = [];
 
     #[Required]
@@ -70,6 +83,7 @@ class MultimediaDTO extends AbstractDTO
         $this->addInterceptor('album', new AsEntityInterceptor($this->em, Album::class, 'id', [
             'user' => $this->authorizedUser->getUser()
         ]));
+        $this->addInterceptor('category', new AsEntityInterceptor($this->em, MultimediaCategory::class, 'id'));
         $this->addInterceptor('fullText', new AsArrayInterceptor());
         $this->addInterceptor('isObsceneWords', new AsBooleanInterceptor());
         $this->addInterceptor('performers', new AsArrayInterceptor());
