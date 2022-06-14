@@ -34,8 +34,9 @@ class UserSessionController extends AbstractRestController
     public function all(UserSessionResponseData $userSessionResponseData, UserSessionRepository $userSessionRepository): JsonResponse
     {
         $userSessionResponseData->setEntities($userSessionRepository->authorizedUserSessions());
+        $userSessionResponseData->collect();
 
-        return $this->responseCollection->dataOutput($userSessionResponseData->collect()->getResponse());
+        return $this->responseCollection->dataOutput($userSessionResponseData->getResponse());
     }
 
     /**

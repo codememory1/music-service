@@ -30,7 +30,8 @@ class SubscriptionController extends AbstractRestController
         SubscriptionRepository $subscriptionRepository
     ): JsonResponse {
         $subscriptionResponseData->setEntities($subscriptionRepository->findAll());
+        $subscriptionResponseData->collect();
 
-        return $this->responseCollection->dataOutput($subscriptionResponseData->collect()->getResponse());
+        return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse());
     }
 }
