@@ -51,6 +51,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('entityNotFound@user'),
             new TranslationKeyFactory('entityNotFound@album'),
             new TranslationKeyFactory('entityNotFound@userSession'),
+            new TranslationKeyFactory('entityNotFound@multimediaCategory'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -112,6 +113,10 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('rolePermission@showUserSessionTokensToUser'),
             new TranslationKeyFactory('rolePermission@showUserSessions'),
             new TranslationKeyFactory('rolePermission@createNotifications'),
+            new TranslationKeyFactory('rolePermission@showFullInfoMultimediaCategories'),
+            new TranslationKeyFactory('rolePermission@createMultimediaCategory'),
+            new TranslationKeyFactory('rolePermission@updateMultimediaCategory'),
+            new TranslationKeyFactory('rolePermission@deleteMultimediaCategory'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -198,6 +203,11 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('notification@successCreate'),
 
             new TranslationKeyFactory('serviceAuth@authorizationCodeIsRequired'),
+
+            new TranslationKeyFactory('multimediaCategory@titleIsRequired'),
+            new TranslationKeyFactory('multimediaCategory@successCreate'),
+            new TranslationKeyFactory('multimediaCategory@successUpdate'),
+            new TranslationKeyFactory('multimediaCategory@successDelete'),
         ]);
     }
 

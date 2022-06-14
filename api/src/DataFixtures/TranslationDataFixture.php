@@ -52,6 +52,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@user', 'Пользователь не найден'),
             new TranslationFactory('ru', 'entityNotFound@album', 'Альбом не найден'),
             new TranslationFactory('ru', 'entityNotFound@userSession', 'Сеанс не найден'),
+            new TranslationFactory('ru', 'entityNotFound@multimediaCategory', 'Категория мультимедии не найдена'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -112,6 +113,10 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@showUserSessionTokensToUser', 'Просмотр токенов сессии у пользователей'),
             new TranslationFactory('ru', 'rolePermission@showUserSessions', 'Просмотр пользовательский сеансов'),
             new TranslationFactory('ru', 'rolePermission@createNotifications', 'Создание уведомлений'),
+            new TranslationFactory('ru', 'rolePermission@showFullInfoMultimediaCategories', 'Просмотр полной информации о категориях мульмедии'),
+            new TranslationFactory('ru', 'rolePermission@createMultimediaCategory', 'Создание категории мультмедии'),
+            new TranslationFactory('ru', 'rolePermission@updateMultimediaCategory', 'Обновление категории мультмедии'),
+            new TranslationFactory('ru', 'rolePermission@deleteMultimediaCategory', 'Удаление категории мультмедии'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -197,6 +202,11 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'notification@successCreate', 'Уведомление успешно создано'),
 
             new TranslationFactory('ru', 'serviceAuth@authorizationCodeIsRequired', 'Код авторизации обязателен к заполнению'),
+
+            new TranslationFactory('ru', 'multimediaCategory@titleIsRequired', 'Название категории обязательно к заполнению'),
+            new TranslationFactory('ru', 'multimediaCategory@successCreate', 'Категория мультимедии успешно создана'),
+            new TranslationFactory('ru', 'multimediaCategory@successUpdate', 'Категория мультимедии успешно обновлена'),
+            new TranslationFactory('ru', 'multimediaCategory@successDelete', 'Категория мультимедии успешно удалена'),
         ]);
     }
 
