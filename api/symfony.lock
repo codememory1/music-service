@@ -11,6 +11,9 @@
     "brick/math": {
         "version": "0.9.3"
     },
+    "captioning/captioning": {
+        "version": "2.6.3"
+    },
     "clue/stream-filter": {
         "version": "v1.6.0"
     },

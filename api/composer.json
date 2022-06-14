@@ -8,6 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "aws/aws-sdk-php": "^3.209",
+        "captioning/captioning": "^2.6",
         "codememory/geo": "^1.0",
         "dama/doctrine-test-bundle": "^7.0",
         "doctrine/annotations": "^1.13",
