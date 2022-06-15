@@ -7,6 +7,7 @@ use App\DTO\Interceptors\AsBooleanInterceptor;
 use App\DTO\Interceptors\AsEntityInterceptor;
 use App\DTO\Interceptors\AsEnumInterceptor;
 use App\Entity\Album;
+use App\Entity\Multimedia;
 use App\Entity\MultimediaCategory;
 use App\Enum\MultimediaTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,6 +19,7 @@ use Symfony\Contracts\Service\Attribute\Required;
  * Class MultimediaDTO.
  *
  * @package App\DTO
+ * @template-extends AbstractDTO<Multimedia>
  *
  * @author  Codememory
  */
@@ -42,7 +44,7 @@ class MultimediaDTO extends AbstractDTO
     /**
      * @var null|string
      */
-    public ?string $fullText = null;
+    public ?string $text = null;
 
     /**
      * @var null|UploadedFile
@@ -73,10 +75,11 @@ class MultimediaDTO extends AbstractDTO
         $this->addExpectKey('title');
         $this->addExpectKey('description');
         $this->addExpectKey('category');
-        $this->addExpectKey('full_text', 'fullText');
+        $this->addExpectKey('text');
         $this->addExpectKey('subtitles');
         $this->addExpectKey('is_obscene_words', 'isObsceneWords');
         $this->addExpectKey('image');
+        $this->addExpectKey('producer');
         $this->addExpectKey('performers');
 
         $this->addInterceptor('type', new AsEnumInterceptor(MultimediaTypeEnum::class));

@@ -7,6 +7,8 @@ use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\AlbumStatusEnum;
 use App\Repository\AlbumRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -49,6 +51,9 @@ class Album implements EntityInterface
     ])]
     private ?string $image = null;
 
+    #[ORM\OneToMany(mappedBy: 'album', targetEntity: Multimedia::class)]
+    private Collection $multimedia;
+
     #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Album status from AlbumStatusEnum'
     ])]
@@ -57,6 +62,7 @@ class Album implements EntityInterface
     public function __construct()
     {
         $this->setStatus(AlbumStatusEnum::SHOW);
+        $this->multimedia = new ArrayCollection();
     }
 
     /**
@@ -155,6 +161,46 @@ class Album implements EntityInterface
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Multimedia>
+     */
+    public function getMultimedia(): Collection
+    {
+        return $this->multimedia;
+    }
+
+    /**
+     * @param Multimedia $multimedia
+     *
+     * @return $this
+     */
+    public function addMultimedia(Multimedia $multimedia): self
+    {
+        if (!$this->multimedia->contains($multimedia)) {
+            $this->multimedia[] = $multimedia;
+            $multimedia->setAlbum($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Multimedia $multimedia
+     *
+     * @return $this
+     */
+    public function removeMultimedia(Multimedia $multimedia): self
+    {
+        if ($this->multimedia->removeElement($multimedia)) {
+            // set the owning side to null (unless already changed)
+            if ($multimedia->getAlbum() === $this) {
+                $multimedia->setAlbum(null);
+            }
+        }
 
         return $this;
     }

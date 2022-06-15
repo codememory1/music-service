@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   nginx:
@@ -26,7 +26,6 @@ services:
         app_path: ${API_PATH}
     expose:
       - "9000"
-      - "8282"
     volumes:
       - "${API_PATH}:${API_WORKDIR}"
       - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
@@ -164,10 +163,12 @@ services:
       args:
         workdir: ${API_WORKDIR}
         app_path: ${API_PATH}
+    ports:
+      - "8282:8282"
     volumes:
       - "${API_PATH}:${API_WORKDIR}"
       - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
-    command: sh -c "sleep 30 && bin/console --no-debug app:ws-server start"
+    command: sh -c "bin/console --no-debug app:ws-server start"
     restart: unless-stopped
     depends_on:
       - api
