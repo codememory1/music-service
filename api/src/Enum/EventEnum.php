@@ -17,4 +17,6 @@ enum EventEnum: string
     case AUTHORIZATION = 'app.auth';
     case REQUEST_RESTORATION_PASSWORD = 'app.password-reset.request';
     case ACCOUNT_ACTIVATION = 'app.account-activation';
+    case BEFORE_ADD_MULTIMEDIA = 'app.multimedia.before-add';
+    case AFTER_ADD_MULTIMEDIA = 'app.multimedia.after-add';
 }

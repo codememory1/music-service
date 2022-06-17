@@ -40,6 +40,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@bannedDomainMail', 'Данный домен почты заблокирован'),
             new TranslationFactory('ru', 'common@uploadFileNotImage', 'Загружаемый файл не является изображением'),
             new TranslationFactory('ru', 'common@invalidStatus', 'Некорректный статус'),
+            new TranslationFactory('ru', 'common@invalidSubtitles', 'Некорректный файл с субтитрами'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -53,6 +54,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@album', 'Альбом не найден'),
             new TranslationFactory('ru', 'entityNotFound@userSession', 'Сеанс не найден'),
             new TranslationFactory('ru', 'entityNotFound@multimediaCategory', 'Категория мультимедии не найдена'),
+            new TranslationFactory('ru', 'entityNotFound@performer', 'Исполнитель %performer% не найден'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -164,6 +166,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@createAlbum', 'Создание альбомов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@updateAlbum', 'Обновление альбомов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteAlbum', 'Удаление альбомов'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@addMultimedia', 'Добавление мультимедий'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
@@ -188,6 +191,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'album@successCreate', 'Альбом успешно создан'),
             new TranslationFactory('ru', 'album@successUpdate', 'Альбом успешно обновлен'),
             new TranslationFactory('ru', 'album@successDelete', 'Альбом успешно удален'),
+            new TranslationFactory('ru', 'album@badAddMultimediaToSingleAlbum', 'Сингл альбом не может содержать более 1-й мультимедии'),
 
             new TranslationFactory('ru', 'userSession@successDelete', 'Сеанс успешно удален'),
             new TranslationFactory('ru', 'userSession@successDeleteMultiple', 'Сеансы успешно удалены'),
@@ -207,6 +211,22 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimediaCategory@successCreate', 'Категория мультимедии успешно создана'),
             new TranslationFactory('ru', 'multimediaCategory@successUpdate', 'Категория мультимедии успешно обновлена'),
             new TranslationFactory('ru', 'multimediaCategory@successDelete', 'Категория мультимедии успешно удалена'),
+
+            new TranslationFactory('ru', 'multimedia@typeIsRequired', 'Тип мультимедии обязательный к заполнению'),
+            new TranslationFactory('ru', 'multimedia@albumIsRequired', 'Альбом обязательный к заполнению'),
+            new TranslationFactory('ru', 'multimedia@titleIsRequired', 'Название мультимедии обязательно к заполнению'),
+            new TranslationFactory('ru', 'multimedia@titleMaxLength', 'Название мультимедии не должно превышать 50 символов'),
+            new TranslationFactory('ru', 'multimedia@descriptionMaxLength', 'Описание мультимедии не должно превышать 500 символов'),
+            new TranslationFactory('ru', 'multimedia@categoryIsRequired', 'Категория мультимедии обязательна к заполнению'),
+            new TranslationFactory('ru', 'multimedia@uploadFileIsNotSubtitles', 'Загружаемый файл не является субтитрами'),
+            new TranslationFactory('ru', 'multimedia@isObsceneWordsIsRequired', 'Выбирите, содержится ли нецензурная лексика в мультимедии'),
+            new TranslationFactory('ru', 'multimedia@previewIsRequired', 'Превью обязательно к заполнению'),
+            new TranslationFactory('ru', 'multimedia@maxSizePreview', 'Превью не должно превышать 5МБ'),
+            new TranslationFactory('ru', 'multimedia@uploadFileIsNotPreview', 'Загружаемый файл не является превью'),
+            new TranslationFactory('ru', 'multimedia@successAddToModeration', 'Мультимедия успешно отправлена на модерацию'),
+            new TranslationFactory('ru', 'multimedia@invalidTrackMimeType', 'Платформа не поддерживает данный формат треков'),
+            new TranslationFactory('ru', 'multimedia@invalidClipMimeType', 'Платформа не поддерживает данный формат клипов'),
+            new TranslationFactory('ru', 'multimedia@multimediaIsRequired', 'Файл мультимедии обязательный к заполнению'),
         ]);
     }
 

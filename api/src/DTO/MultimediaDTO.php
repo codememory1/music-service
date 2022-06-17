@@ -7,6 +7,7 @@ use App\DTO\Interceptors\AsBooleanInterceptor;
 use App\DTO\Interceptors\AsEntityInterceptor;
 use App\DTO\Interceptors\AsEnumInterceptor;
 use App\Entity\Album;
+use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Multimedia;
 use App\Entity\MultimediaCategory;
 use App\Enum\MultimediaTypeEnum;
@@ -25,6 +26,11 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class MultimediaDTO extends AbstractDTO
 {
+    /**
+     * @inheritDoc
+     */
+    protected EntityInterface|string|null $entity = Multimedia::class;
+
     #[Assert\NotBlank(message: 'multimedia@typeIsRequired')]
     public ?MultimediaTypeEnum $type = null;
 
@@ -38,23 +44,33 @@ class MultimediaDTO extends AbstractDTO
     #[Assert\Length(max: 200, maxMessage: 'multimedia@descriptionMaxLength')]
     public ?string $description = null;
 
+    #[Assert\NotBlank(message: 'multimedia@multimediaIsRequired')]
+    public ?UploadedFile $multimedia = null;
+
     #[Assert\NotBlank(message: 'multimedia@categoryIsRequired')]
-    public ?string $category = null;
+    public ?MultimediaCategory $category = null;
 
     /**
-     * @var null|string
+     * @var null|array
      */
-    public ?string $text = null;
+    public ?array $text = null;
 
-    /**
-     * @var null|UploadedFile
-     */
+    #[Assert\File(
+        mimeTypes: ['application/x-subrip', 'text/vnd.dvb.subtitle', 'text/plain'],
+        mimeTypesMessage: 'multimedia@uploadFileIsNotSubtitles'
+    )]
     public ?UploadedFile $subtitles = null;
 
     #[Assert\NotBlank(message: 'multimedia@isObsceneWordsIsRequired')]
     public ?bool $isObsceneWords = null;
 
-    #[Assert\NotBlank(message: 'multimedia@imageIsRequired')]
+    #[Assert\NotBlank(message: 'multimedia@previewIsRequired')]
+    #[Assert\File(
+        maxSize: '5M',
+        mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+        maxSizeMessage: 'multimedia@maxSizePreview',
+        mimeTypesMessage: 'multimedia@uploadFileIsNotPreview'
+    )]
     public ?UploadedFile $image = null;
 
     /**
@@ -76,18 +92,22 @@ class MultimediaDTO extends AbstractDTO
         $this->addExpectKey('description');
         $this->addExpectKey('category');
         $this->addExpectKey('text');
-        $this->addExpectKey('subtitles');
         $this->addExpectKey('is_obscene_words', 'isObsceneWords');
-        $this->addExpectKey('image');
         $this->addExpectKey('producer');
         $this->addExpectKey('performers');
+
+        $this->preventSetterCallForKeys(['performers']);
+
+        $this->image = $this->request?->request->files->get('image');
+        $this->multimedia = $this->request?->request->files->get('multimedia');
+        $this->subtitles = $this->request?->request->files->get('subtitles');
 
         $this->addInterceptor('type', new AsEnumInterceptor(MultimediaTypeEnum::class));
         $this->addInterceptor('album', new AsEntityInterceptor($this->em, Album::class, 'id', [
             'user' => $this->authorizedUser->getUser()
         ]));
         $this->addInterceptor('category', new AsEntityInterceptor($this->em, MultimediaCategory::class, 'id'));
-        $this->addInterceptor('fullText', new AsArrayInterceptor());
+        $this->addInterceptor('text', new AsArrayInterceptor());
         $this->addInterceptor('isObsceneWords', new AsBooleanInterceptor());
         $this->addInterceptor('performers', new AsArrayInterceptor());
     }

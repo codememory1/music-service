@@ -15,4 +15,5 @@ enum SubscriptionPermissionEnum
     case CREATE_ALBUM;
     case UPDATE_ALBUM;
     case DELETE_ALBUM;
+    case ADD_MULTIMEDIA;
 }

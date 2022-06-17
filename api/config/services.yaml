@@ -75,6 +75,19 @@ services:
       tags:
         - { name: kernel.event_listener, event: app.password-reset.request, method: onRequestRestorationPassword }
 
+    # Add Multimedia
+    App\EventListener\AddMultimedia\AlbumTypeCheckListener:
+      tags:
+        - { name: kernel.event_listener, event: app.multimedia.before-add, method: onBeforeAddMultimedia, priority: 1 }
+
+    App\EventListener\AddMultimedia\CheckMultimediaMimeTypeListener:
+      tags:
+        - { name: kernel.event_listener, event: app.multimedia.before-add, method: onBeforeAddMultimedia, priority: 0 }
+
+    App\EventListener\AddMultimedia\SubtitleCheckListener:
+      tags:
+        - { name: kernel.event_listener, event: app.multimedia.before-add, method: onBeforeAddMultimedia, priority: -1 }
+
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
       public: true

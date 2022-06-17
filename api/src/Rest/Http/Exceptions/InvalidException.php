@@ -18,7 +18,7 @@ class InvalidException extends ApiResponseException
      * @return static
      */
     #[Pure]
-    public static function invalidRefreshToken(): self
+    final public static function invalidRefreshToken(): self
     {
         return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidRefreshToken');
     }
@@ -27,8 +27,17 @@ class InvalidException extends ApiResponseException
      * @return static
      */
     #[Pure]
-    public static function invalidCode(): self
+    final public static function invalidCode(): self
     {
         return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidCode');
+    }
+
+    /**
+     * @return static
+     */
+    #[Pure]
+    final public static function invalidSubtitles(): self
+    {
+        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidSubtitles');
     }
 }

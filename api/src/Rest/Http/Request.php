@@ -63,6 +63,9 @@ class Request
             return $this->request->toArray();
         }
 
-        return $this->request?->request->all() ?: [];
+        $requestData = $this->request?->request->all() ?: [];
+        $queryData = $this->request?->query->all() ?: [];
+
+        return array_merge($requestData, $queryData);
     }
 }

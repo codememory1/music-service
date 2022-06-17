@@ -62,10 +62,10 @@ class Multimedia implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?MultimediaCategory $category = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true, options: [
+    #[ORM\Column(type: Types::ARRAY, nullable: true, options: [
         'comment' => 'Full text of multimedia'
     ])]
-    private ?string $text = null;
+    private ?array $text = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true, options: [
         'comment' => 'Path to subtitle file'
@@ -87,7 +87,7 @@ class Multimedia implements EntityInterface
     ])]
     private ?string $producer = null;
 
-    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaPerformer::class)]
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaPerformer::class, cascade: ['persist'])]
     private Collection $performers;
 
     #[ORM\Column(type: Types::STRING, length: 255, options: [
@@ -254,7 +254,7 @@ class Multimedia implements EntityInterface
      *
      * @return $this
      */
-    public function setText(?string $text): self
+    public function setText(?array $text): self
     {
         $this->text = $text;
 
