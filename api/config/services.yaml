@@ -88,6 +88,10 @@ services:
       tags:
         - { name: kernel.event_listener, event: app.multimedia.before-add, method: onBeforeAddMultimedia, priority: -1 }
 
+    App\EventListener\AddMultimedia\UploadFilesListener:
+      tags:
+        - { name: kernel.event_listener, event: app.multimedia.after-add, method: onAfterAddMultimedia, priority: 1 }
+
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
       public: true

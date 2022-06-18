@@ -53,7 +53,7 @@ class Multimedia implements EntityInterface
     ])]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::STRING, options: [
+    #[ORM\Column(type: Types::STRING, nullable: true, options: [
         'comment' => 'Path to file'
     ])]
     private ?string $multimedia = null;
@@ -77,18 +77,21 @@ class Multimedia implements EntityInterface
     ])]
     private bool $isObsceneWords = false;
 
-    #[ORM\Column(type: Types::TEXT, options: [
+    #[ORM\Column(type: Types::TEXT, nullable: true, options: [
         'comment' => 'Path to image file (preview)'
     ])]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true, options: [
-        'comment' => 'multimedia producer'
+        'comment' => 'Multimedia producer'
     ])]
     private ?string $producer = null;
 
     #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaPerformer::class, cascade: ['persist'])]
     private Collection $performers;
+
+    #[ORM\OneToOne(mappedBy: 'multimedia', targetEntity: MultimediaMetadata::class, cascade: ['persist', 'remove'])]
+    private ?MultimediaMetadata $metadata = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Media status from MultimediaStatusEnum'
@@ -242,9 +245,9 @@ class Multimedia implements EntityInterface
     }
 
     /**
-     * @return null|string
+     * @return null|array
      */
-    public function getText(): ?string
+    public function getText(): ?array
     {
         return $this->text;
     }
@@ -377,6 +380,31 @@ class Multimedia implements EntityInterface
                 $performer->setMultimedia(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return null|MultimediaMetadata
+     */
+    public function getMetadata(): ?MultimediaMetadata
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @param MultimediaMetadata $metadata
+     *
+     * @return $this
+     */
+    public function setMetadata(MultimediaMetadata $metadata): self
+    {
+        // set the owning side of the relation if necessary
+        if ($metadata->getMultimedia() !== $this) {
+            $metadata->setMultimedia($this);
+        }
+
+        $this->metadata = $metadata;
 
         return $this;
     }

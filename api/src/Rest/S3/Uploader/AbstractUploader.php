@@ -4,11 +4,11 @@ namespace App\Rest\S3\Uploader;
 
 use App\Rest\S3\Client;
 use App\Rest\S3\Interfaces\S3UploaderInterface;
+use App\Rest\S3\ObjectPath;
 use App\Rest\S3\PathEncryptor;
 use App\Rest\S3\Uploader\UploadedFile as S3UploadedFile;
 use App\Service\MimeTypeConverter;
 use Aws\Result;
-use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\HttpFoundation\File\UploadedFile as HttpUploadedFile;
 
@@ -42,15 +42,22 @@ abstract class AbstractUploader implements S3UploaderInterface
     private array $uploadedPaths = [];
 
     /**
+     * @var ObjectPath
+     */
+    private ObjectPath $objectPath;
+
+    /**
      * @param Client            $client
      * @param PathEncryptor     $pathEncryptor
      * @param MimeTypeConverter $mimeTypeConverter
+     * @param ObjectPath        $objectPath
      */
-    public function __construct(Client $client, PathEncryptor $pathEncryptor, MimeTypeConverter $mimeTypeConverter)
+    public function __construct(Client $client, PathEncryptor $pathEncryptor, MimeTypeConverter $mimeTypeConverter, ObjectPath $objectPath)
     {
         $this->client = $client;
         $this->pathEncryptor = $pathEncryptor;
         $this->mimeTypeConverter = $mimeTypeConverter;
+        $this->objectPath = $objectPath;
 
         $this->client->bucket->create($this->getBucketName());
     }
@@ -76,23 +83,6 @@ abstract class AbstractUploader implements S3UploaderInterface
     }
 
     /**
-     * @param string $path
-     *
-     * @return string
-     */
-    #[ArrayShape([
-        'bucket' => 'string',
-        'key' => 'string'
-    ])]
-    protected function getDataFromPath(string $path): array
-    {
-        return [
-            'bucket' => explode('/', $path)[0],
-            'key' => mb_substr($path, mb_strpos($path, '/'))
-        ];
-    }
-
-    /**
      * @inheritDoc
      */
     public function upload(HttpUploadedFile $uploadedFile, array $dataForName, array $args = []): Result
@@ -111,9 +101,11 @@ abstract class AbstractUploader implements S3UploaderInterface
      */
     public function delete(string $path, array $argc = []): Result
     {
+        $this->objectPath->setPath($path);
+
         return $this->client->awsS3Client->deleteObject([
             'Bucket' => $this->getBucketName(),
-            'Key' => $this->getDataFromPath($path)['key'],
+            'Key' => $this->objectPath->getKey(),
             ...$argc
         ]);
     }

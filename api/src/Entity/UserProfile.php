@@ -30,7 +30,7 @@ class UserProfile implements EntityInterface
 
     use TimestampTrait;
 
-    #[ORM\OneToOne(targetEntity: User::class)]
+    #[ORM\OneToOne(inversedBy: 'profile', targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

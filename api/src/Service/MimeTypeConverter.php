@@ -104,6 +104,7 @@ class MimeTypeConverter
         'audio/mpeg3' => 'mp3',
         'audio/mp3' => 'mp3',
         'video/mp4' => 'mp4',
+        'video/x-m4v' => 'mp4',
         'video/mpeg' => 'mpeg',
         'application/oda' => 'oda',
         'audio/ogg' => 'ogg',
