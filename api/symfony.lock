@@ -8,9 +8,6 @@
     "behat/transliterator": {
         "version": "v1.3.0"
     },
-    "bluemoehre/flac-php": {
-        "version": "v1.0.2"
-    },
     "brick/math": {
         "version": "0.9.3"
     },
@@ -23,14 +20,8 @@
     "codememory/geo": {
         "version": "v1.0"
     },
-    "codememory/media-file-fork": {
-        "version": "v1.0"
-    },
     "codememory/support": {
         "version": "v1.2.1"
-    },
-    "codememory/wave-fork": {
-        "version": "v1.0"
     },
     "composer/pcre": {
         "version": "3.0.0"
@@ -794,15 +785,6 @@
     },
     "twig/twig": {
         "version": "v3.3.7"
-    },
-    "wapmorgan/binary-stream": {
-        "version": "0.4.0"
-    },
-    "wapmorgan/file-type-detector": {
-        "version": "1.1.2"
-    },
-    "wapmorgan/mp3info": {
-        "version": "0.0.8"
     },
     "webmozart/assert": {
         "version": "1.10.0"
