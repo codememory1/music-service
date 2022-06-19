@@ -132,7 +132,7 @@ class MultimediaMetadata implements EntityInterface
     /**
      * @return null|bool
      */
-    public function isIsLossless(): ?bool
+    public function IsLossless(): ?bool
     {
         return $this->isLossless;
     }

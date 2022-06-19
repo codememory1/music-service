@@ -287,7 +287,7 @@ class Multimedia implements EntityInterface
     /**
      * @return null|bool
      */
-    public function isIsObsceneWords(): ?bool
+    public function IsObsceneWords(): ?bool
     {
         return $this->isObsceneWords;
     }

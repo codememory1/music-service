@@ -39,6 +39,6 @@ class SubscriptionPermissionHandler implements ConstraintHandlerInterface
         $user = $this->authorizedUser->getUser();
         $subscriptionPermissions = $user?->getSubscription()?->getPermissions();
 
-        return $subscriptionPermissions?->exists(static fn(int $key, SubscriptionPermissionEntity $subscriptionPermission) => $subscriptionPermission->getPermissionKey()->getKey() === $constraint->permission->name);
+        return $subscriptionPermissions?->exists(static fn(int $key, SubscriptionPermissionEntity $subscriptionPermission) => $subscriptionPermission->getPermissionKey()->getKey() === $constraint->permission->name) ?? false;
     }
 }
