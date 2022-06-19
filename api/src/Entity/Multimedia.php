@@ -356,6 +356,22 @@ class Multimedia implements EntityInterface
     }
 
     /**
+     * @param array<MultimediaPerformer> $performers
+     *
+     * @return $this
+     */
+    public function setPerformers(array $performers): self
+    {
+        foreach ($performers as $performer) {
+            $performer->setMultimedia($this);
+        }
+
+        $this->performers = new ArrayCollection($performers);
+
+        return $this;
+    }
+
+    /**
      * @param MultimediaPerformer $performer
      *
      * @return $this

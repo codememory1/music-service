@@ -121,6 +121,11 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@createMultimediaCategory', 'Создание категории мультмедии'),
             new TranslationFactory('ru', 'rolePermission@updateMultimediaCategory', 'Обновление категории мультмедии'),
             new TranslationFactory('ru', 'rolePermission@deleteMultimediaCategory', 'Удаление категории мультмедии'),
+            new TranslationFactory('ru', 'rolePermission@multimediaStatusControlToUser', 'Управление статусами мультимедии пользователей'),
+            new TranslationFactory('ru', 'rolePermission@showAllUserMultimedia', 'Просмотр мультимедии пользователей'),
+            new TranslationFactory('ru', 'rolePermission@addMultimediaToUser', 'Добавление мультимедии к пользователю'),
+            new TranslationFactory('ru', 'rolePermission@updateMultimediaToUser', 'Обновление мультимедий пользователя'),
+            new TranslationFactory('ru', 'rolePermission@deleteMultimediaToUser', 'Просмотр мультимедий пользователей'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -240,6 +245,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimedia@multimediaIsRequired', 'Файл мультимедии обязательный к заполнению'),
             new TranslationFactory('ru', 'multimedia@badSendOnModeration', 'Невозможно отправить мультимедию на модерацию'),
             new TranslationFactory('ru', 'multimedia@successSendOnModeration', 'Мультимедия успешно отправлена на модерацию'),
+            new TranslationFactory('ru', 'multimedia@successUpdate', 'Мультимедия успешно обновлена'),
+            new TranslationFactory('ru', 'multimedia@successDelete', 'Мультимедия успешно удалена'),
         ]);
     }
 

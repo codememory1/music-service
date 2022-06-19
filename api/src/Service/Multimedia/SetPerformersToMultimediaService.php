@@ -9,13 +9,13 @@ use App\Rest\Http\Exceptions\EntityNotFoundException;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class AddMultimediaPerformersService.
+ * Class SetPerformersToMultimediaService.
  *
  * @package App\Service\Multimedia
  *
  * @author  Codememory
  */
-class AddMultimediaPerformersService
+class SetPerformersToMultimediaService
 {
     #[Required]
     public ?UserRepository $userRepository = null;
@@ -26,9 +26,11 @@ class AddMultimediaPerformersService
      *
      * @return void
      */
-    public function make(array $performers, Multimedia $multimedia): void
+    public function set(array $performersEmail, Multimedia $multimedia): void
     {
-        foreach ($performers as $performerEmail) {
+        $performers = [];
+
+        foreach ($performersEmail as $performerEmail) {
             $performer = $this->userRepository->getByEmail($performerEmail);
 
             if (null === $performer) {
@@ -37,10 +39,11 @@ class AddMultimediaPerformersService
 
             $multimediaPerformerEntity = new MultimediaPerformer();
 
-            $multimediaPerformerEntity->setMultimedia($multimedia);
             $multimediaPerformerEntity->setUser($performer);
 
-            $multimedia->addPerformer($multimediaPerformerEntity);
+            $performers[] = $multimediaPerformerEntity;
         }
+
+        $multimedia->setPerformers($performers);
     }
 }

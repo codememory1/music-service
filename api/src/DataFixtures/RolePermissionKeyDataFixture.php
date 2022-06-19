@@ -58,6 +58,11 @@ final class RolePermissionKeyDataFixture extends AbstractDataFixture implements 
             new RolePermissionKeyFactory(RolePermissionEnum::CREATE_MULTIMEDIA_CATEGORY, 'rolePermission@createMultimediaCategory'),
             new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_MULTIMEDIA_CATEGORY, 'rolePermission@updateMultimediaCategory'),
             new RolePermissionKeyFactory(RolePermissionEnum::DELETE_MULTIMEDIA_CATEGORY, 'rolePermission@deleteMultimediaCategory'),
+            new RolePermissionKeyFactory(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER, 'rolePermission@multimediaStatusControlToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_ALL_USER_MULTIMEDIA, 'rolePermission@showAllUserMultimedia'),
+            new RolePermissionKeyFactory(RolePermissionEnum::ADD_MULTIMEDIA_TO_USER, 'rolePermission@addMultimediaToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_MULTIMEDIA_TO_USER, 'rolePermission@updateMultimediaToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::DELETE_MULTIMEDIA_TO_USER, 'rolePermission@deleteMultimediaToUser'),
         ]);
     }
 
