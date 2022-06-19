@@ -6,6 +6,7 @@ use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\DTO\MultimediaDTO;
+use App\Entity\Multimedia;
 use App\Entity\User;
 use App\Enum\MultimediaStatusEnum;
 use App\Enum\SubscriptionPermissionEnum;
@@ -14,6 +15,7 @@ use App\ResponseData\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Multimedia\AddMultimediaService;
+use App\Service\Multimedia\SendOnModerationService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -80,5 +82,25 @@ class MultimediaController extends AbstractRestController
     public function add(MultimediaDTO $multimediaDTO, AddMultimediaService $addMultimediaService): JsonResponse
     {
         return $addMultimediaService->make($multimediaDTO->collect(), $this->authorizedUser->getUser());
+    }
+
+    /**
+     * @param Multimedia              $multimedia
+     * @param SendOnModerationService $sendOnModerationService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/multimedia/{multimedia_id<\d+>}/send-on-moderation', methods: 'PATCH')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
+    public function sendOnModeration(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        SendOnModerationService $sendOnModerationService
+    ): JsonResponse {
+        if ($multimedia->getUser() !== $this->authorizedUser->getUser()) {
+            throw EntityNotFoundException::multimedia();
+        }
+
+        return $sendOnModerationService->make($multimedia);
     }
 }

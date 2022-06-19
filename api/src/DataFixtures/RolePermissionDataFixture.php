@@ -6,6 +6,7 @@ use App\DataFixtures\Factory\RolePermissionFactory;
 use App\Entity\RolePermission;
 use App\Enum\RoleEnum;
 use App\Enum\RolePermissionEnum;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -18,7 +19,7 @@ use JetBrains\PhpStorm\Pure;
  *
  * @author  Codememory
  */
-final class RolePermissionDataFixture extends AbstractDataFixture implements DependentFixtureInterface
+final class RolePermissionDataFixture extends AbstractDataFixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     #[Pure]
     public function __construct()
@@ -81,6 +82,16 @@ final class RolePermissionDataFixture extends AbstractDataFixture implements Dep
         return [
             RoleDataFixture::class,
             RolePermissionKeyDataFixture::class
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
+    {
+        return [
+            'user'
         ];
     }
 }

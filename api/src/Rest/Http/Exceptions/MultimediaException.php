@@ -37,4 +37,16 @@ class MultimediaException extends ApiResponseException
     {
         return new self(400, ResponseTypeEnum::CHECK_VALID, 'multimedia@invalidClipMimeType', data: $data, headers: $headers);
     }
+
+    /**
+     * @param array $data
+     * @param array $headers
+     *
+     * @return $this
+     */
+    #[Pure]
+    final public static function badSendOnModeration(array $data = [], array $headers = []): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badSendOnModeration', data: $data, headers: $headers);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\TranslationFactory;
 use App\Entity\Translation;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -16,7 +17,7 @@ use JetBrains\PhpStorm\Pure;
  *
  * @author  Codememory
  */
-class TranslationDataFixture extends AbstractDataFixture implements DependentFixtureInterface
+class TranslationDataFixture extends AbstractDataFixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     #[Pure]
     public function __construct()
@@ -55,6 +56,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@userSession', 'Сеанс не найден'),
             new TranslationFactory('ru', 'entityNotFound@multimediaCategory', 'Категория мультимедии не найдена'),
             new TranslationFactory('ru', 'entityNotFound@performer', 'Исполнитель %performer% не найден'),
+            new TranslationFactory('ru', 'entityNotFound@multimedia', 'Мультимедия не найдена'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -232,10 +234,12 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimedia@previewIsRequired', 'Превью обязательно к заполнению'),
             new TranslationFactory('ru', 'multimedia@maxSizePreview', 'Превью не должно превышать 5МБ'),
             new TranslationFactory('ru', 'multimedia@uploadFileIsNotPreview', 'Загружаемый файл не является превью'),
-            new TranslationFactory('ru', 'multimedia@successAddToModeration', 'Мультимедия успешно отправлена на модерацию'),
+            new TranslationFactory('ru', 'multimedia@successAdd', 'Мультимедия успешно добавлена и ожидает отправки на модерацию'),
             new TranslationFactory('ru', 'multimedia@invalidTrackMimeType', 'Платформа не поддерживает данный формат треков'),
             new TranslationFactory('ru', 'multimedia@invalidClipMimeType', 'Платформа не поддерживает данный формат клипов'),
             new TranslationFactory('ru', 'multimedia@multimediaIsRequired', 'Файл мультимедии обязательный к заполнению'),
+            new TranslationFactory('ru', 'multimedia@badSendOnModeration', 'Невозможно отправить мультимедию на модерацию'),
+            new TranslationFactory('ru', 'multimedia@successSendOnModeration', 'Мультимедия успешно отправлена на модерацию'),
         ]);
     }
 
@@ -259,6 +263,16 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
         return [
             LanguageDataFixture::class,
             TranslationKeyDataFixture::class
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
+    {
+        return [
+            'translation'
         ];
     }
 }

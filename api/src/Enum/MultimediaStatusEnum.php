@@ -11,8 +11,9 @@ namespace App\Enum;
  */
 enum MultimediaStatusEnum
 {
+    case DRAFT;
     case MODERATION;
     case PUBLISHED;
     case REMOVED_FROM_PUBLICATION;
-    case HIDDEN_IN_PROFILE;
+    case APPEAL;
 }

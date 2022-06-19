@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\TranslationKeyFactory;
 use App\Entity\TranslationKey;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
@@ -15,7 +16,7 @@ use JetBrains\PhpStorm\Pure;
  *
  * @author  Codememory
  */
-final class TranslationKeyDataFixture extends AbstractDataFixture
+final class TranslationKeyDataFixture extends AbstractDataFixture implements FixtureGroupInterface
 {
     #[Pure]
     public function __construct()
@@ -54,6 +55,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('entityNotFound@userSession'),
             new TranslationKeyFactory('entityNotFound@multimediaCategory'),
             new TranslationKeyFactory('entityNotFound@performer'),
+            new TranslationKeyFactory('entityNotFound@multimedia'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -233,10 +235,12 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('multimedia@previewIsRequired'),
             new TranslationKeyFactory('multimedia@maxSizePreview'),
             new TranslationKeyFactory('multimedia@uploadFileIsNotPreview'),
-            new TranslationKeyFactory('multimedia@successAddToModeration'),
+            new TranslationKeyFactory('multimedia@successAdd'),
             new TranslationKeyFactory('multimedia@invalidTrackMimeType'),
             new TranslationKeyFactory('multimedia@invalidClipMimeType'),
             new TranslationKeyFactory('multimedia@multimediaIsRequired'),
+            new TranslationKeyFactory('multimedia@badSendOnModeration'),
+            new TranslationKeyFactory('multimedia@successSendOnModeration'),
         ]);
     }
 
@@ -252,5 +256,15 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
+    {
+        return [
+            'translation'
+        ];
     }
 }

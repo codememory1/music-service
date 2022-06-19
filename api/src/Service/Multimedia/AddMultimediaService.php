@@ -47,7 +47,7 @@ class AddMultimediaService extends AbstractService
         $multimediaEntity = $multimediaDTO->getEntity();
 
         $multimediaEntity->setUser($toUser);
-        $multimediaEntity->setStatus(MultimediaStatusEnum::MODERATION);
+        $multimediaEntity->setStatus(MultimediaStatusEnum::DRAFT);
 
         $this->addMultimediaPerformersService->make($multimediaDTO->performers, $multimediaEntity);
 
@@ -65,6 +65,6 @@ class AddMultimediaService extends AbstractService
         );
         $this->bus->dispatch(new MultimediaMetadataMessage($multimediaEntity->getId()));
 
-        return $this->responseCollection->successCreate('multimedia@successAddToModeration');
+        return $this->responseCollection->successCreate('multimedia@sucessAdd');
     }
 }

@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\DataFixtures\Factory\RoleFactory;
 use App\Entity\Role;
 use App\Enum\RoleEnum;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -17,7 +18,7 @@ use JetBrains\PhpStorm\Pure;
  *
  * @author  Codememory
  */
-final class RoleDataFixture extends AbstractDataFixture implements DependentFixtureInterface
+final class RoleDataFixture extends AbstractDataFixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     #[Pure]
     public function __construct()
@@ -53,6 +54,16 @@ final class RoleDataFixture extends AbstractDataFixture implements DependentFixt
     {
         return [
             TranslationDataFixture::class
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
+    {
+        return [
+            'user'
         ];
     }
 }
