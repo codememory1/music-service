@@ -49,4 +49,16 @@ class MultimediaException extends ApiResponseException
     {
         return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badSendOnModeration', data: $data, headers: $headers);
     }
+
+    /**
+     * @param array $data
+     * @param array $headers
+     *
+     * @return static
+     */
+    #[Pure]
+    final public static function badUnpublish(array $data = [], array $headers = []): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badUnpublish', data: $data, headers: $headers);
+    }
 }

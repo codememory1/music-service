@@ -98,6 +98,9 @@ class Multimedia implements EntityInterface
     ])]
     private ?string $status = null;
 
+    #[ORM\OneToOne(mappedBy: 'multimedia', targetEntity: MultimediaQueue::class, cascade: ['persist', 'remove'])]
+    private ?MultimediaQueue $queue = null;
+
     #[Pure]
     public function __construct()
     {
@@ -425,6 +428,31 @@ class Multimedia implements EntityInterface
     public function setStatus(?MultimediaStatusEnum $status): self
     {
         $this->status = $status?->name;
+
+        return $this;
+    }
+
+    /**
+     * @return null|MultimediaQueue
+     */
+    public function getQueue(): ?MultimediaQueue
+    {
+        return $this->queue;
+    }
+
+    /**
+     * @param MultimediaQueue $queue
+     *
+     * @return $this
+     */
+    public function setQueue(MultimediaQueue $queue): self
+    {
+        // set the owning side of the relation if necessary
+        if ($queue->getMultimedia() !== $this) {
+            $queue->setMultimedia($this);
+        }
+
+        $this->queue = $queue;
 
         return $this;
     }

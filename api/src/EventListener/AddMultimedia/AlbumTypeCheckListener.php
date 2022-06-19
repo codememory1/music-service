@@ -41,7 +41,7 @@ class AlbumTypeCheckListener
         $album = $event->multimediaDTO->album;
         $albumType = $album->getType();
 
-        if (AlbumTypeEnum::SINGLE === $albumType->getKey() && null !== $multimediaRepository->getByAlbum($album)) {
+        if (AlbumTypeEnum::SINGLE->name === $albumType->getKey() && null !== $multimediaRepository->getByAlbum($album)) {
             throw AlbumException::badAddMultimediaToSingleAlbum();
         }
     }

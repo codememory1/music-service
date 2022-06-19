@@ -13,13 +13,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class SendOnModerationService.
+ * Class PublishMultimediaService.
  *
  * @package App\Service\Multimedia
  *
  * @author  Codememory
  */
-class SendOnModerationService extends AbstractService
+class PublishMultimediaService extends AbstractService
 {
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
@@ -31,15 +31,15 @@ class SendOnModerationService extends AbstractService
      */
     public function make(Multimedia $multimedia): JsonResponse
     {
-        if ($multimedia->getStatus() !== MultimediaStatusEnum::DRAFT->name) {
-            throw MultimediaException::badSendOnModeration();
+        if (MultimediaStatusEnum::UNPUBLISHED !== $multimedia->getStatus()) {
+            throw MultimediaException::badUnpublish();
         }
 
         $this->eventDispatcher->dispatch(
-            new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::MODERATION),
+            new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::PUBLISHED),
             EventEnum::MULTIMEDIA_STATUS_CHANGE->value
         );
 
-        return $this->responseCollection->successUpdate('multimedia@successSendOnModeration');
+        return $this->responseCollection->successUpdate('multimedia@successUnpublish');
     }
 }

@@ -65,6 +65,6 @@ class AddMultimediaService extends AbstractService
         );
         $this->bus->dispatch(new MultimediaMetadataMessage($multimediaEntity->getId()));
 
-        return $this->responseCollection->successCreate('multimedia@sucessAdd');
+        return $this->responseCollection->successCreate('multimedia@successAdd');
     }
 }

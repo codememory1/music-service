@@ -14,6 +14,6 @@ enum MultimediaStatusEnum
     case DRAFT;
     case MODERATION;
     case PUBLISHED;
-    case REMOVED_FROM_PUBLICATION;
+    case UNPUBLISHED;
     case APPEAL;
 }

@@ -92,6 +92,10 @@ services:
       tags:
         - { name: kernel.event_listener, event: app.multimedia.after-add, method: onAfterAddMultimedia, priority: 1 }
 
+    App\EventListener\MultimediaStatusChange\StatusChangeHandlerListener:
+      tags:
+        - { name: kernel.event_listener, event: app.multimedia.status-change, method: onMultimediaStatusChange }
+
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
       public: true

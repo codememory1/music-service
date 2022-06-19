@@ -19,4 +19,5 @@ enum EventEnum: string
     case ACCOUNT_ACTIVATION = 'app.account-activation';
     case BEFORE_ADD_MULTIMEDIA = 'app.multimedia.before-add';
     case AFTER_ADD_MULTIMEDIA = 'app.multimedia.after-add';
+    case MULTIMEDIA_STATUS_CHANGE = 'app.multimedia.status-change';
 }
