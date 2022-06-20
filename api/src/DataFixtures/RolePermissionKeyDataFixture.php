@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\DataFixtures\Factory\RolePermissionKeyFactory;
 use App\Entity\RolePermissionKey;
 use App\Enum\RolePermissionEnum;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -17,7 +18,7 @@ use JetBrains\PhpStorm\Pure;
  *
  * @author  Codememory
  */
-final class RolePermissionKeyDataFixture extends AbstractDataFixture implements DependentFixtureInterface
+final class RolePermissionKeyDataFixture extends AbstractDataFixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     #[Pure]
     public function __construct()
@@ -57,6 +58,11 @@ final class RolePermissionKeyDataFixture extends AbstractDataFixture implements 
             new RolePermissionKeyFactory(RolePermissionEnum::CREATE_MULTIMEDIA_CATEGORY, 'rolePermission@createMultimediaCategory'),
             new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_MULTIMEDIA_CATEGORY, 'rolePermission@updateMultimediaCategory'),
             new RolePermissionKeyFactory(RolePermissionEnum::DELETE_MULTIMEDIA_CATEGORY, 'rolePermission@deleteMultimediaCategory'),
+            new RolePermissionKeyFactory(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER, 'rolePermission@multimediaStatusControlToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_ALL_USER_MULTIMEDIA, 'rolePermission@showAllUserMultimedia'),
+            new RolePermissionKeyFactory(RolePermissionEnum::ADD_MULTIMEDIA_TO_USER, 'rolePermission@addMultimediaToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_MULTIMEDIA_TO_USER, 'rolePermission@updateMultimediaToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::DELETE_MULTIMEDIA_TO_USER, 'rolePermission@deleteMultimediaToUser'),
         ]);
     }
 
@@ -81,6 +87,16 @@ final class RolePermissionKeyDataFixture extends AbstractDataFixture implements 
     {
         return [
             TranslationDataFixture::class
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
+    {
+        return [
+            'user'
         ];
     }
 }

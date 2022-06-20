@@ -109,7 +109,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
      */
     public function getResponse(bool $first = false): array
     {
-        if (true === $first) {
+        if (true === $first && [] !== $this->response) {
             $key = array_key_first($this->response);
 
             return $this->response[$key];

@@ -18,4 +18,14 @@ class UserRepository extends AbstractRepository
      * @inheritDoc
      */
     protected ?string $entity = User::class;
+
+    /**
+     * @param null|string $email
+     *
+     * @return null|User
+     */
+    public function getByEmail(?string $email): ?User
+    {
+        return $this->findOneBy(['email' => $email]);
+    }
 }

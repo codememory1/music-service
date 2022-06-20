@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\TranslationFactory;
 use App\Entity\Translation;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -16,7 +17,7 @@ use JetBrains\PhpStorm\Pure;
  *
  * @author  Codememory
  */
-class TranslationDataFixture extends AbstractDataFixture implements DependentFixtureInterface
+class TranslationDataFixture extends AbstractDataFixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     #[Pure]
     public function __construct()
@@ -40,6 +41,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@bannedDomainMail', 'Данный домен почты заблокирован'),
             new TranslationFactory('ru', 'common@uploadFileNotImage', 'Загружаемый файл не является изображением'),
             new TranslationFactory('ru', 'common@invalidStatus', 'Некорректный статус'),
+            new TranslationFactory('ru', 'common@invalidSubtitles', 'Некорректный файл с субтитрами'),
+            new TranslationFactory('ru', 'common@successAppealCanceled', 'Апелляция успешно отменена'),
+            new TranslationFactory('ru', 'common@badAppealCanceled', 'Невозможно отменить апелляцию'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -53,6 +57,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@album', 'Альбом не найден'),
             new TranslationFactory('ru', 'entityNotFound@userSession', 'Сеанс не найден'),
             new TranslationFactory('ru', 'entityNotFound@multimediaCategory', 'Категория мультимедии не найдена'),
+            new TranslationFactory('ru', 'entityNotFound@performer', 'Исполнитель %performer% не найден'),
+            new TranslationFactory('ru', 'entityNotFound@multimedia', 'Мультимедия не найдена'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -117,6 +123,11 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@createMultimediaCategory', 'Создание категории мультмедии'),
             new TranslationFactory('ru', 'rolePermission@updateMultimediaCategory', 'Обновление категории мультмедии'),
             new TranslationFactory('ru', 'rolePermission@deleteMultimediaCategory', 'Удаление категории мультмедии'),
+            new TranslationFactory('ru', 'rolePermission@multimediaStatusControlToUser', 'Управление статусами мультимедии пользователей'),
+            new TranslationFactory('ru', 'rolePermission@showAllUserMultimedia', 'Просмотр мультимедии пользователей'),
+            new TranslationFactory('ru', 'rolePermission@addMultimediaToUser', 'Добавление мультимедии к пользователю'),
+            new TranslationFactory('ru', 'rolePermission@updateMultimediaToUser', 'Обновление мультимедий пользователя'),
+            new TranslationFactory('ru', 'rolePermission@deleteMultimediaToUser', 'Просмотр мультимедий пользователей'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -164,6 +175,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@createAlbum', 'Создание альбомов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@updateAlbum', 'Обновление альбомов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteAlbum', 'Удаление альбомов'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@addMultimedia', 'Добавление мультимедий'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@listeningToMultimedia', 'Прослушивание мультимедии артистов'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
@@ -177,6 +190,14 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'albumType@successCreate', 'Тип альбома успешно создан'),
             new TranslationFactory('ru', 'albumType@successUpdate', 'Тип альбома успешно обновлен'),
             new TranslationFactory('ru', 'albumType@successDelete', 'Тип альбома успешно удален'),
+            new TranslationFactory('ru', 'albumType@remix', 'Альбом ремиксов'),
+            new TranslationFactory('ru', 'albumType@double', 'Двойной альбом'),
+            new TranslationFactory('ru', 'albumType@concert', 'Концертный альбом'),
+            new TranslationFactory('ru', 'albumType@megnetic', 'Магнитоальбом'),
+            new TranslationFactory('ru', 'albumType@minion', 'Мини-альбом'),
+            new TranslationFactory('ru', 'albumType@compilation', 'Сборник'),
+            new TranslationFactory('ru', 'albumType@bestCompilation', 'Сборник лучших хитов'),
+            new TranslationFactory('ru', 'albumType@single', 'Синг'),
 
             new TranslationFactory('ru', 'album@titleIsRequired', 'Имя альбома обязательно к заполнению'),
             new TranslationFactory('ru', 'album@maxTitleLength', 'Название альбома не должно превышать 50 символов'),
@@ -188,6 +209,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'album@successCreate', 'Альбом успешно создан'),
             new TranslationFactory('ru', 'album@successUpdate', 'Альбом успешно обновлен'),
             new TranslationFactory('ru', 'album@successDelete', 'Альбом успешно удален'),
+            new TranslationFactory('ru', 'album@badAddMultimediaToSingleAlbum', 'Сингл альбом не может содержать более 1-й мультимедии'),
 
             new TranslationFactory('ru', 'userSession@successDelete', 'Сеанс успешно удален'),
             new TranslationFactory('ru', 'userSession@successDeleteMultiple', 'Сеансы успешно удалены'),
@@ -207,6 +229,40 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimediaCategory@successCreate', 'Категория мультимедии успешно создана'),
             new TranslationFactory('ru', 'multimediaCategory@successUpdate', 'Категория мультимедии успешно обновлена'),
             new TranslationFactory('ru', 'multimediaCategory@successDelete', 'Категория мультимедии успешно удалена'),
+
+            new TranslationFactory('ru', 'multimedia@typeIsRequired', 'Тип мультимедии обязательный к заполнению'),
+            new TranslationFactory('ru', 'multimedia@albumIsRequired', 'Альбом обязательный к заполнению'),
+            new TranslationFactory('ru', 'multimedia@titleIsRequired', 'Название мультимедии обязательно к заполнению'),
+            new TranslationFactory('ru', 'multimedia@titleMaxLength', 'Название мультимедии не должно превышать 50 символов'),
+            new TranslationFactory('ru', 'multimedia@descriptionMaxLength', 'Описание мультимедии не должно превышать 500 символов'),
+            new TranslationFactory('ru', 'multimedia@categoryIsRequired', 'Категория мультимедии обязательна к заполнению'),
+            new TranslationFactory('ru', 'multimedia@uploadFileIsNotSubtitles', 'Загружаемый файл не является субтитрами'),
+            new TranslationFactory('ru', 'multimedia@isObsceneWordsIsRequired', 'Выбирите, содержится ли нецензурная лексика в мультимедии'),
+            new TranslationFactory('ru', 'multimedia@previewIsRequired', 'Превью обязательно к заполнению'),
+            new TranslationFactory('ru', 'multimedia@maxSizePreview', 'Превью не должно превышать 5МБ'),
+            new TranslationFactory('ru', 'multimedia@uploadFileIsNotPreview', 'Загружаемый файл не является превью'),
+            new TranslationFactory('ru', 'multimedia@successAdd', 'Мультимедия успешно добавлена и ожидает отправки на модерацию'),
+            new TranslationFactory('ru', 'multimedia@invalidTrackMimeType', 'Платформа не поддерживает данный формат треков'),
+            new TranslationFactory('ru', 'multimedia@invalidClipMimeType', 'Платформа не поддерживает данный формат клипов'),
+            new TranslationFactory('ru', 'multimedia@multimediaIsRequired', 'Файл мультимедии обязательный к заполнению'),
+            new TranslationFactory('ru', 'multimedia@badSendOnModeration', 'Невозможно отправить мультимедию на модерацию'),
+            new TranslationFactory('ru', 'multimedia@successSendOnModeration', 'Мультимедия успешно отправлена на модерацию'),
+            new TranslationFactory('ru', 'multimedia@successUpdate', 'Мультимедия успешно обновлена'),
+            new TranslationFactory('ru', 'multimedia@successDelete', 'Мультимедия успешно удалена'),
+            new TranslationFactory('ru', 'multimedia@badUpdateInStatus', 'Невозможно обновить мультимедию в статусе %status%'),
+            new TranslationFactory('ru', 'multimedia@successSendOnAppeal', 'Мультимедия успешно отправлена на апелляцию'),
+            new TranslationFactory('ru', 'multimedia@badSendOnAppeal', 'Невозможно отправить мультимедию на апелляцию в статусе %status%'),
+            new TranslationFactory('ru', 'multimedia@badPublish', 'Невозможно опубликовать мультимедию'),
+            new TranslationFactory('ru', 'multimedia@badUnpublish', 'Невозможно снять с публикации мультимедию'),
+            new TranslationFactory('ru', 'multimedia@successPublish', 'Мультимедиа успешно опубликована'),
+            new TranslationFactory('ru', 'multimedia@successUnpublish', 'Мультимедиа успешно снята с публикации'),
+
+            new TranslationFactory('ru', 'status@draft', 'Черновик'),
+            new TranslationFactory('ru', 'status@moderation', 'Модерация'),
+            new TranslationFactory('ru', 'status@published', 'Опубликован'),
+            new TranslationFactory('ru', 'status@unpublished', 'Снят с публикации'),
+            new TranslationFactory('ru', 'status@appeal', 'Апелляция'),
+            new TranslationFactory('ru', 'status@appealCanceld', 'Отменена апелляция'),
         ]);
     }
 
@@ -230,6 +286,16 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
         return [
             LanguageDataFixture::class,
             TranslationKeyDataFixture::class
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
+    {
+        return [
+            'translation'
         ];
     }
 }

@@ -49,7 +49,7 @@ class ApiExceptionListener
 
         if ($throwable instanceof ApiResponseException) {
             $this->responseSchema->setType($throwable->type);
-            $this->responseSchema->setMessage($throwable->translationKey);
+            $this->responseSchema->setMessage($throwable->translationKey, $throwable->parameters);
             $this->responseSchema->setStatusCode($throwable->statusCode);
             $this->responseSchema->setData($throwable->data);
 

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Enum\AlbumTypeEnum;
 use App\Enum\ResponseTypeEnum;
 use App\Repository\AlbumTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -59,13 +60,13 @@ class AlbumType implements EntityInterface
     }
 
     /**
-     * @param null|string $key
+     * @param null|AlbumTypeEnum $key
      *
      * @return $this
      */
-    public function setKey(?string $key): self
+    public function setKey(?AlbumTypeEnum $key): self
     {
-        $this->key = $key;
+        $this->key = $key?->name;
 
         return $this;
     }

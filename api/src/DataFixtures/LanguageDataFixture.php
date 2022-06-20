@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\LanguageFactory;
 use App\Entity\Language;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
@@ -15,7 +16,7 @@ use JetBrains\PhpStorm\Pure;
  *
  * @author  Codememory
  */
-final class LanguageDataFixture extends AbstractDataFixture
+final class LanguageDataFixture extends AbstractDataFixture implements FixtureGroupInterface
 {
     #[Pure]
     public function __construct()
@@ -44,5 +45,15 @@ final class LanguageDataFixture extends AbstractDataFixture
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
+    {
+        return [
+            'translation'
+        ];
     }
 }

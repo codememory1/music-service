@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\TranslationKeyFactory;
 use App\Entity\TranslationKey;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
@@ -15,7 +16,7 @@ use JetBrains\PhpStorm\Pure;
  *
  * @author  Codememory
  */
-final class TranslationKeyDataFixture extends AbstractDataFixture
+final class TranslationKeyDataFixture extends AbstractDataFixture implements FixtureGroupInterface
 {
     #[Pure]
     public function __construct()
@@ -39,6 +40,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('common@bannedDomainMail'),
             new TranslationKeyFactory('common@uploadFileNotImage'),
             new TranslationKeyFactory('common@invalidStatus'),
+            new TranslationKeyFactory('common@invalidSubtitles'),
+            new TranslationKeyFactory('common@successAppealCanceled'),
+            new TranslationKeyFactory('common@badAppealCanceled'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
@@ -52,6 +56,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('entityNotFound@album'),
             new TranslationKeyFactory('entityNotFound@userSession'),
             new TranslationKeyFactory('entityNotFound@multimediaCategory'),
+            new TranslationKeyFactory('entityNotFound@performer'),
+            new TranslationKeyFactory('entityNotFound@multimedia'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -117,6 +123,11 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('rolePermission@createMultimediaCategory'),
             new TranslationKeyFactory('rolePermission@updateMultimediaCategory'),
             new TranslationKeyFactory('rolePermission@deleteMultimediaCategory'),
+            new TranslationKeyFactory('rolePermission@multimediaStatusControlToUser'),
+            new TranslationKeyFactory('rolePermission@showAllUserMultimedia'),
+            new TranslationKeyFactory('rolePermission@addMultimediaToUser'),
+            new TranslationKeyFactory('rolePermission@updateMultimediaToUser'),
+            new TranslationKeyFactory('rolePermission@deleteMultimediaToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -165,6 +176,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('subscriptionPermissionKey@createAlbum'),
             new TranslationKeyFactory('subscriptionPermissionKey@updateAlbum'),
             new TranslationKeyFactory('subscriptionPermissionKey@deleteAlbum'),
+            new TranslationKeyFactory('subscriptionPermissionKey@addMultimedia'),
+            new TranslationKeyFactory('subscriptionPermissionKey@listeningToMultimedia'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),
@@ -178,6 +191,14 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('albumType@successCreate'),
             new TranslationKeyFactory('albumType@successUpdate'),
             new TranslationKeyFactory('albumType@successDelete'),
+            new TranslationKeyFactory('albumType@remix'),
+            new TranslationKeyFactory('albumType@double'),
+            new TranslationKeyFactory('albumType@concert'),
+            new TranslationKeyFactory('albumType@megnetic'),
+            new TranslationKeyFactory('albumType@minion'),
+            new TranslationKeyFactory('albumType@compilation'),
+            new TranslationKeyFactory('albumType@bestCompilation'),
+            new TranslationKeyFactory('albumType@single'),
 
             new TranslationKeyFactory('album@titleIsRequired'),
             new TranslationKeyFactory('album@maxTitleLength'),
@@ -189,6 +210,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('album@successCreate'),
             new TranslationKeyFactory('album@successUpdate'),
             new TranslationKeyFactory('album@successDelete'),
+            new TranslationKeyFactory('album@badAddMultimediaToSingleAlbum'),
 
             new TranslationKeyFactory('userSession@successDelete'),
             new TranslationKeyFactory('userSession@successDeleteMultiple'),
@@ -208,6 +230,40 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
             new TranslationKeyFactory('multimediaCategory@successCreate'),
             new TranslationKeyFactory('multimediaCategory@successUpdate'),
             new TranslationKeyFactory('multimediaCategory@successDelete'),
+
+            new TranslationKeyFactory('multimedia@typeIsRequired'),
+            new TranslationKeyFactory('multimedia@albumIsRequired'),
+            new TranslationKeyFactory('multimedia@titleIsRequired'),
+            new TranslationKeyFactory('multimedia@titleMaxLength'),
+            new TranslationKeyFactory('multimedia@descriptionMaxLength'),
+            new TranslationKeyFactory('multimedia@categoryIsRequired'),
+            new TranslationKeyFactory('multimedia@uploadFileIsNotSubtitles'),
+            new TranslationKeyFactory('multimedia@isObsceneWordsIsRequired'),
+            new TranslationKeyFactory('multimedia@previewIsRequired'),
+            new TranslationKeyFactory('multimedia@maxSizePreview'),
+            new TranslationKeyFactory('multimedia@uploadFileIsNotPreview'),
+            new TranslationKeyFactory('multimedia@successAdd'),
+            new TranslationKeyFactory('multimedia@invalidTrackMimeType'),
+            new TranslationKeyFactory('multimedia@invalidClipMimeType'),
+            new TranslationKeyFactory('multimedia@multimediaIsRequired'),
+            new TranslationKeyFactory('multimedia@badSendOnModeration'),
+            new TranslationKeyFactory('multimedia@successSendOnModeration'),
+            new TranslationKeyFactory('multimedia@successUpdate'),
+            new TranslationKeyFactory('multimedia@successDelete'),
+            new TranslationKeyFactory('multimedia@badUpdateInStatus'),
+            new TranslationKeyFactory('multimedia@successSendOnAppeal'),
+            new TranslationKeyFactory('multimedia@badSendOnAppeal'),
+            new TranslationKeyFactory('multimedia@badPublish'),
+            new TranslationKeyFactory('multimedia@badUnpublish'),
+            new TranslationKeyFactory('multimedia@successPublish'),
+            new TranslationKeyFactory('multimedia@successUnpublish'),
+
+            new TranslationKeyFactory('status@draft'),
+            new TranslationKeyFactory('status@moderation'),
+            new TranslationKeyFactory('status@published'),
+            new TranslationKeyFactory('status@unpublished'),
+            new TranslationKeyFactory('status@appeal'),
+            new TranslationKeyFactory('status@appealCanceld'),
         ]);
     }
 
@@ -223,5 +279,15 @@ final class TranslationKeyDataFixture extends AbstractDataFixture
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
+    {
+        return [
+            'translation'
+        ];
     }
 }

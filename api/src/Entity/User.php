@@ -83,6 +83,12 @@ class User implements EntityInterface
     ])]
     private ?string $authServiceType = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Multimedia::class)]
+    private Collection $multimedia;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaPerformer::class)]
+    private Collection $multimediaPerformers;
+
     #[Pure]
     public function __construct()
     {
@@ -91,6 +97,8 @@ class User implements EntityInterface
         $this->passwordResets = new ArrayCollection();
         $this->albums = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->multimedia = new ArrayCollection();
+        $this->multimediaPerformers = new ArrayCollection();
     }
 
     /**
@@ -426,6 +434,86 @@ class User implements EntityInterface
     public function setAuthServiceType(?string $authServiceType): self
     {
         $this->authServiceType = $authServiceType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Multimedia>
+     */
+    public function getMultimedia(): Collection
+    {
+        return $this->multimedia;
+    }
+
+    /**
+     * @param Multimedia $multimedia
+     *
+     * @return $this
+     */
+    public function addMultimedia(Multimedia $multimedia): self
+    {
+        if (!$this->multimedia->contains($multimedia)) {
+            $this->multimedia[] = $multimedia;
+            $multimedia->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Multimedia $multimedia
+     *
+     * @return $this
+     */
+    public function removeMultimedia(Multimedia $multimedia): self
+    {
+        if ($this->multimedia->removeElement($multimedia)) {
+            // set the owning side to null (unless already changed)
+            if ($multimedia->getUser() === $this) {
+                $multimedia->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaPerformer>
+     */
+    public function getMultimediaPerformers(): Collection
+    {
+        return $this->multimediaPerformers;
+    }
+
+    /**
+     * @param MultimediaPerformer $multimediaPerformer
+     *
+     * @return $this
+     */
+    public function addMultimediaPerformer(MultimediaPerformer $multimediaPerformer): self
+    {
+        if (!$this->multimediaPerformers->contains($multimediaPerformer)) {
+            $this->multimediaPerformers[] = $multimediaPerformer;
+            $multimediaPerformer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MultimediaPerformer $multimediaPerformer
+     *
+     * @return $this
+     */
+    public function removeMultimediaPerformer(MultimediaPerformer $multimediaPerformer): self
+    {
+        if ($this->multimediaPerformers->removeElement($multimediaPerformer)) {
+            // set the owning side to null (unless already changed)
+            if ($multimediaPerformer->getUser() === $this) {
+                $multimediaPerformer->setUser(null);
+            }
+        }
 
         return $this;
     }

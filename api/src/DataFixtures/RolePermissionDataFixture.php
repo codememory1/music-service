@@ -6,6 +6,7 @@ use App\DataFixtures\Factory\RolePermissionFactory;
 use App\Entity\RolePermission;
 use App\Enum\RoleEnum;
 use App\Enum\RolePermissionEnum;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -18,7 +19,7 @@ use JetBrains\PhpStorm\Pure;
  *
  * @author  Codememory
  */
-final class RolePermissionDataFixture extends AbstractDataFixture implements DependentFixtureInterface
+final class RolePermissionDataFixture extends AbstractDataFixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     #[Pure]
     public function __construct()
@@ -58,6 +59,11 @@ final class RolePermissionDataFixture extends AbstractDataFixture implements Dep
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::CREATE_MULTIMEDIA_CATEGORY),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::UPDATE_MULTIMEDIA_CATEGORY),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::DELETE_MULTIMEDIA_CATEGORY),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::SHOW_ALL_USER_MULTIMEDIA),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::ADD_MULTIMEDIA_TO_USER),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::UPDATE_MULTIMEDIA_TO_USER),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::DELETE_MULTIMEDIA_TO_USER),
         ]);
     }
 
@@ -81,6 +87,16 @@ final class RolePermissionDataFixture extends AbstractDataFixture implements Dep
         return [
             RoleDataFixture::class,
             RolePermissionKeyDataFixture::class
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getGroups(): array
+    {
+        return [
+            'user'
         ];
     }
 }

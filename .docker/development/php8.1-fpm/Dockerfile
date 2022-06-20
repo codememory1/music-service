@@ -16,7 +16,7 @@ RUN apt install -y  \
     apt-transport-https  \
     software-properties-common gpg
 
-RUN apt-get install -y gpg npm
+RUN apt-get install -y gpg npm ffmpeg
 
 RUN apt-get update && apt-get install -y \
     curl \
