@@ -24,7 +24,7 @@ class MultimediaQueue implements EntityInterface
 
     use TimestampTrait;
 
-    #[ORM\OneToOne(inversedBy: 'queue', targetEntity: Multimedia::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'queue', targetEntity: Multimedia::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Multimedia $multimedia = null;
 

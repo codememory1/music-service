@@ -6,13 +6,13 @@ use App\DTO\MultimediaDTO;
 use App\Entity\Multimedia;
 
 /**
- * Class AddMultimediaEvent.
+ * Class SaveMultimediaEvent.
  *
  * @package App\Event
  *
  * @author  Codememory
  */
-class AddMultimediaEvent
+class SaveMultimediaEvent
 {
     /**
      * @var MultimediaDTO

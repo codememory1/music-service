@@ -76,21 +76,21 @@ services:
         - { name: kernel.event_listener, event: app.password-reset.request, method: onRequestRestorationPassword }
 
     # Add Multimedia
-    App\EventListener\AddMultimedia\AlbumTypeCheckListener:
+    App\EventListener\SaveMultimedia\Before\AlbumTypeCheckListener:
       tags:
-        - { name: kernel.event_listener, event: app.multimedia.before-add, method: onBeforeAddMultimedia, priority: 1 }
+        - { name: kernel.event_listener, event: app.multimedia.before-save, method: onBeforeSaveMultimedia, priority: 1 }
 
-    App\EventListener\AddMultimedia\CheckMultimediaMimeTypeListener:
+    App\EventListener\SaveMultimedia\Before\MultimediaMimeTypeCheckListener:
       tags:
-        - { name: kernel.event_listener, event: app.multimedia.before-add, method: onBeforeAddMultimedia, priority: 0 }
+        - { name: kernel.event_listener, event: app.multimedia.before-save, method: onBeforeSaveMultimedia, priority: 0 }
 
-    App\EventListener\AddMultimedia\SubtitleCheckListener:
+    App\EventListener\SaveMultimedia\Before\SubtitlesCheckListener:
       tags:
-        - { name: kernel.event_listener, event: app.multimedia.before-add, method: onBeforeAddMultimedia, priority: -1 }
+        - { name: kernel.event_listener, event: app.multimedia.before-save, method: onBeforeSaveMultimedia, priority: -1 }
 
-    App\EventListener\AddMultimedia\UploadFilesListener:
+    App\EventListener\SaveMultimedia\After\FileUploadListener:
       tags:
-        - { name: kernel.event_listener, event: app.multimedia.after-add, method: onAfterAddMultimedia, priority: 1 }
+        - { name: kernel.event_listener, event: app.multimedia.after-save, method: onAfterSaveMultimedia, priority: 1 }
 
     App\EventListener\MultimediaStatusChange\StatusChangeHandlerListener:
       tags:

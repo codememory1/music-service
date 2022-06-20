@@ -4,14 +4,9 @@ namespace App\Service\Multimedia;
 
 use App\DTO\MultimediaDTO;
 use App\Entity\User;
-use App\Enum\EventEnum;
 use App\Enum\MultimediaStatusEnum;
-use App\Event\AddMultimediaEvent;
-use App\Message\MultimediaMetadataMessage;
 use App\Service\AbstractService;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -27,10 +22,7 @@ class AddMultimediaService extends AbstractService
     public ?SetPerformersToMultimediaService $setPerformersToMultimediaService = null;
 
     #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
-
-    #[Required]
-    public ?MessageBusInterface $bus = null;
+    public ?SaveMultimediaService $saveMultimediaService = null;
 
     /**
      * @param MultimediaDTO $multimediaDTO
@@ -51,19 +43,7 @@ class AddMultimediaService extends AbstractService
 
         $this->setPerformersToMultimediaService->set($multimediaDTO->performers, $multimediaEntity);
 
-        $this->eventDispatcher->dispatch(
-            new AddMultimediaEvent($multimediaDTO, $multimediaEntity),
-            EventEnum::BEFORE_ADD_MULTIMEDIA->value
-        );
-
-        $this->em->persist($multimediaEntity);
-        $this->em->flush();
-
-        $this->eventDispatcher->dispatch(
-            new AddMultimediaEvent($multimediaDTO, $multimediaEntity),
-            EventEnum::AFTER_ADD_MULTIMEDIA->value
-        );
-        $this->bus->dispatch(new MultimediaMetadataMessage($multimediaEntity->getId()));
+        $this->saveMultimediaService->make($multimediaDTO, $multimediaEntity);
 
         return $this->responseCollection->successCreate('multimedia@successAdd');
     }

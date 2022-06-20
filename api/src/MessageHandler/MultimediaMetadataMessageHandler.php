@@ -12,8 +12,6 @@ use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use FFMpeg\FFProbe\DataMapping\StreamCollection;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use wapmorgan\MediaFile\Adapters\VideoAdapter;
-use wapmorgan\MediaFile\Exceptions\FileAccessException;
 
 /**
  * Class MultimediaMetadataMessageHandler.
@@ -47,13 +45,27 @@ class MultimediaMetadataMessageHandler
 
     /**
      * @param Multimedia $multimedia
+     *
+     * @return MultimediaMetadata
+     */
+    private function getMultimediaMetadata(Multimedia $multimedia): ?MultimediaMetadata
+    {
+        if (null !== $multimedia->getMetadata()) {
+            return $multimedia->getMetadata();
+        }
+
+        return new MultimediaMetadata();
+    }
+
+    /**
+     * @param Multimedia $multimedia
      * @param Stream     $stream
      *
      * @return void
      */
     private function trackHandler(Multimedia $multimedia, Stream $stream): void
     {
-        $multimediaMetadataEntity = new MultimediaMetadata();
+        $multimediaMetadataEntity = $this->getMultimediaMetadata($multimedia);
 
         $multimediaMetadataEntity->setDuration((float) $stream->get('duration'));
         $multimediaMetadataEntity->setBitrate((int) $stream->get('bit_rate'));
@@ -62,14 +74,14 @@ class MultimediaMetadataMessageHandler
     }
 
     /**
-     * @param Multimedia   $multimedia
-     * @param VideoAdapter $adapter
+     * @param Multimedia $multimedia
+     * @param Stream     $stream
      *
      * @return void
      */
     private function clipHandler(Multimedia $multimedia, Stream $stream): void
     {
-        $multimediaMetadataEntity = new MultimediaMetadata();
+        $multimediaMetadataEntity = $this->getMultimediaMetadata($multimedia);
 
         $multimediaMetadataEntity->setDuration($stream->get('duration'));
         $multimediaMetadataEntity->setBitrate((int) $stream->get('bit_rate'));
@@ -97,27 +109,27 @@ class MultimediaMetadataMessageHandler
     }
 
     /**
-     * @throws FileAccessException
+     * @param MultimediaMetadataMessage $message
+     *
+     * @return void
      */
     public function __invoke(MultimediaMetadataMessage $message): void
     {
         $multimediaRepository = $this->em->getRepository(Multimedia::class);
         $multimedia = $multimediaRepository->find($message->multimediaId);
 
-        if (null !== $multimedia->getMultimedia()) {
-            $FFProbe = FFProbe::create();
-            $multimediaStream = $this->uploadedObject->getObject($multimedia->getMultimedia(), true);
-            $tempMultimedia = $this->uploadedObject->createTempFile($multimediaStream);
-            $tempMultimediaMetadata = stream_get_meta_data($tempMultimedia);
-            $tempMultimediaPath = $tempMultimediaMetadata['uri'];
+        $FFProbe = FFProbe::create();
+        $multimediaStream = $this->uploadedObject->getObject($multimedia->getMultimedia(), true);
+        $tempMultimedia = $this->uploadedObject->createTempFile($multimediaStream);
+        $tempMultimediaMetadata = stream_get_meta_data($tempMultimedia);
+        $tempMultimediaPath = $tempMultimediaMetadata['uri'];
 
-            if ($FFProbe->isValid($tempMultimediaPath)) {
-                $streamCollection = $FFProbe->streams($tempMultimediaPath);
+        if ($FFProbe->isValid($tempMultimediaPath)) {
+            $streamCollection = $FFProbe->streams($tempMultimediaPath);
 
-                $this->handlerTypes($multimedia, $streamCollection);
-            }
-
-            $this->em->flush();
+            $this->handlerTypes($multimedia, $streamCollection);
         }
+
+        $this->em->flush();
     }
 }

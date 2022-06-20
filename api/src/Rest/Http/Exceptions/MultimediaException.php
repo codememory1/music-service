@@ -2,6 +2,7 @@
 
 namespace App\Rest\Http\Exceptions;
 
+use App\Enum\MultimediaStatusEnum;
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
@@ -60,5 +61,57 @@ class MultimediaException extends ApiResponseException
     final public static function badUnpublish(array $data = [], array $headers = []): self
     {
         return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badUnpublish', data: $data, headers: $headers);
+    }
+
+    /**
+     * @param array $data
+     * @param array $headers
+     *
+     * @return static
+     */
+    #[Pure]
+    final public static function badPublish(array $data = [], array $headers = []): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badPublish', data: $data, headers: $headers);
+    }
+
+    /**
+     * @param MultimediaStatusEnum $status
+     * @param array                $data
+     * @param array                $headers
+     *
+     * @return static
+     */
+    final public static function badUpdateInStatus(string $status, array $data = [], array $headers = []): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badUpdateInStatus', [
+            'status' => MultimediaStatusEnum::getValueByName($status)
+        ], data: $data, headers: $headers);
+    }
+
+    /**
+     * @param string $status
+     * @param array  $data
+     * @param array  $headers
+     *
+     * @return static
+     */
+    final public static function badSendOnAppeal(string $status, array $data = [], array $headers = []): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badSendOnAppeal', [
+            'status' => MultimediaStatusEnum::getValueByName($status)
+        ], data: $data, headers: $headers);
+    }
+
+    /**
+     * @param array $data
+     * @param array $headers
+     *
+     * @return static
+     */
+    #[Pure]
+    final public static function badAppealCanceled(array $data = [], array $headers = []): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badAppealCanceled', data: $data, headers: $headers);
     }
 }

@@ -3,13 +3,10 @@
 namespace App\Service\Multimedia;
 
 use App\DTO\MultimediaDTO;
-use App\Enum\EventEnum;
-use App\Event\AddMultimediaEvent;
-use App\Message\MultimediaMetadataMessage;
+use App\Enum\MultimediaStatusEnum;
+use App\Rest\Http\Exceptions\MultimediaException;
 use App\Service\AbstractService;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -22,13 +19,10 @@ use Symfony\Contracts\Service\Attribute\Required;
 class UpdateMultimediaService extends AbstractService
 {
     #[Required]
-    public ?SetPerformersToMultimediaService $addMultimediaPerformersService = null;
+    public ?SetPerformersToMultimediaService $setPerformersToMultimediaService = null;
 
     #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
-
-    #[Required]
-    public ?MessageBusInterface $bus = null;
+    public ?SaveMultimediaService $saveMultimediaService = null;
 
     /**
      * @param MultimediaDTO $multimediaDTO
@@ -43,20 +37,16 @@ class UpdateMultimediaService extends AbstractService
 
         $multimediaEntity = $multimediaDTO->getEntity();
 
-        $this->addMultimediaPerformersService->set($multimediaDTO->performers, $multimediaEntity);
+        if (in_array($multimediaEntity->getStatus(), [
+            MultimediaStatusEnum::DRAFT->name,
+            MultimediaStatusEnum::APPEAL_CANCELED->name
+        ], true)) {
+            throw MultimediaException::badUpdateInStatus($multimediaEntity->getStatus());
+        }
 
-        $this->eventDispatcher->dispatch(
-            new AddMultimediaEvent($multimediaDTO, $multimediaEntity),
-            EventEnum::BEFORE_ADD_MULTIMEDIA->value
-        );
+        $this->setPerformersToMultimediaService->set($multimediaDTO->performers, $multimediaEntity);
 
-        $this->em->flush();
-
-        $this->eventDispatcher->dispatch(
-            new AddMultimediaEvent($multimediaDTO, $multimediaEntity),
-            EventEnum::AFTER_ADD_MULTIMEDIA->value
-        );
-        $this->bus->dispatch(new MultimediaMetadataMessage($multimediaEntity->getId()));
+        $this->saveMultimediaService->make($multimediaDTO, $multimediaEntity);
 
         return $this->responseCollection->successCreate('multimedia@successUpdate');
     }

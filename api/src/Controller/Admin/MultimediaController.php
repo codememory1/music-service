@@ -14,9 +14,11 @@ use App\ResponseData\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Multimedia\AddMultimediaService;
+use App\Service\Multimedia\AppealCanceledService;
 use App\Service\Multimedia\PublishMultimediaService;
 use App\Service\Multimedia\SendOnModerationService;
 use App\Service\Multimedia\UnpublishMultimediaService;
+use App\Service\Multimedia\UpdateMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -129,14 +131,42 @@ class MultimediaController extends AbstractRestController
         MultimediaDTO $multimediaDTO,
         AddMultimediaService $addMultimediaService
     ): JsonResponse {
-        return $addMultimediaService->make($multimediaDTO, $user);
+        return $addMultimediaService->make($multimediaDTO->collect(), $user);
     }
 
+    /**
+     * @param Multimedia              $multimedia
+     * @param MultimediaDTO           $multimediaDTO
+     * @param UpdateMultimediaService $updateMultimediaService
+     *
+     * @return JsonResponse
+     */
     #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_TO_USER)]
     public function update(
-        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        MultimediaDTO $multimediaDTO,
+        UpdateMultimediaService $updateMultimediaService
     ): JsonResponse {
+        $multimediaDTO->setEntity($multimedia);
+
+        return $updateMultimediaService->make($multimediaDTO->collect());
+    }
+
+    /**
+     * @param Multimedia            $multimedia
+     * @param AppealCanceledService $appealCanceledService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/multimedia/{multimedia_id<\d+>}/appeal-canceled', methods: 'PATCH')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]
+    public function appealCanceled(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        AppealCanceledService $appealCanceledService
+    ): JsonResponse {
+        return $appealCanceledService->make($multimedia);
     }
 }

@@ -13,13 +13,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class PublishMultimediaService.
+ * Class SendOnAppealService.
  *
  * @package App\Service\Multimedia
  *
  * @author  Codememory
  */
-class PublishMultimediaService extends AbstractService
+class SendOnAppealService extends AbstractService
 {
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
@@ -31,15 +31,18 @@ class PublishMultimediaService extends AbstractService
      */
     public function make(Multimedia $multimedia): JsonResponse
     {
-        if (MultimediaStatusEnum::PUBLISHED->name === $multimedia->getStatus()) {
-            throw MultimediaException::badPublish();
+        if (false === in_array($multimedia->getStatus(), [
+            MultimediaStatusEnum::UNPUBLISHED->name,
+            MultimediaStatusEnum::APPEAL_CANCELED->name
+        ], true)) {
+            throw MultimediaException::badSendOnAppeal($multimedia->getStatus());
         }
 
         $this->eventDispatcher->dispatch(
-            new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::PUBLISHED),
+            new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::APPEAL),
             EventEnum::MULTIMEDIA_STATUS_CHANGE->value
         );
 
-        return $this->responseCollection->successUpdate('multimedia@successPublish');
+        return $this->responseCollection->successUpdate('multimedia@successSendOnAppeal');
     }
 }

@@ -46,6 +46,10 @@ class StatusChangeHandlerListener
             case MultimediaStatusEnum::MODERATION:
                 $this->moderationStatusHandler($event);
                 break;
+            case MultimediaStatusEnum::APPEAL:
+            case MultimediaStatusEnum::APPEAL_CANCELED:
+                $this->changeStatus($event);
+                break;
             default:
                 break;
         }
@@ -73,7 +77,9 @@ class StatusChangeHandlerListener
     {
         $event->multimedia->setStatus($event->onStatus);
 
-        $this->em->remove($event->multimedia->getQueue());
+        if (null !== $event->multimedia->getQueue()) {
+            $this->em->remove($event->multimedia->getQueue());
+        }
     }
 
     /**
@@ -85,6 +91,18 @@ class StatusChangeHandlerListener
     {
         $event->multimedia->setStatus($event->onStatus);
 
-        $this->em->remove($event->multimedia->getQueue());
+        if (null !== $event->multimedia->getQueue()) {
+            $this->em->remove($event->multimedia->getQueue());
+        }
+    }
+
+    /**
+     * @param MultimediaStatusChangeEvent $event
+     *
+     * @return void
+     */
+    private function changeStatus(MultimediaStatusChangeEvent $event): void
+    {
+        $event->multimedia->setStatus($event->onStatus);
     }
 }

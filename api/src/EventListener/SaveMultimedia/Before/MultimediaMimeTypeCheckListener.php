@@ -1,27 +1,27 @@
 <?php
 
-namespace App\EventListener\AddMultimedia;
+namespace App\EventListener\SaveMultimedia\Before;
 
 use App\Enum\MultimediaMimeTypeEnum;
 use App\Enum\MultimediaTypeEnum;
-use App\Event\AddMultimediaEvent;
+use App\Event\SaveMultimediaEvent;
 use App\Rest\Http\Exceptions\MultimediaException;
 
 /**
- * Class CheckMultimediaMimeTypeListener.
+ * Class MultimediaMimeTypeCheckListener.
  *
- * @package App\EventListener\AddMultimedia
+ * @package App\EventListener\SaveMultimedia\Before
  *
  * @author  Codememory
  */
-class CheckMultimediaMimeTypeListener
+class MultimediaMimeTypeCheckListener
 {
     /**
-     * @param AddMultimediaEvent $event
+     * @param SaveMultimediaEvent $event
      *
      * @return void
      */
-    public function onBeforeAddMultimedia(AddMultimediaEvent $event): void
+    public function onBeforeSaveMultimedia(SaveMultimediaEvent $event): void
     {
         $multimediaMimeType = $event->multimediaDTO->multimedia->getMimeType();
 

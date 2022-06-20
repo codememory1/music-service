@@ -42,6 +42,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@uploadFileNotImage', 'Загружаемый файл не является изображением'),
             new TranslationFactory('ru', 'common@invalidStatus', 'Некорректный статус'),
             new TranslationFactory('ru', 'common@invalidSubtitles', 'Некорректный файл с субтитрами'),
+            new TranslationFactory('ru', 'common@successAppealCanceled', 'Апелляция успешно отменена'),
+            new TranslationFactory('ru', 'common@badAppealCanceled', 'Невозможно отменить апелляцию'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -247,6 +249,20 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimedia@successSendOnModeration', 'Мультимедия успешно отправлена на модерацию'),
             new TranslationFactory('ru', 'multimedia@successUpdate', 'Мультимедия успешно обновлена'),
             new TranslationFactory('ru', 'multimedia@successDelete', 'Мультимедия успешно удалена'),
+            new TranslationFactory('ru', 'multimedia@badUpdateInStatus', 'Невозможно обновить мультимедию в статусе %status%'),
+            new TranslationFactory('ru', 'multimedia@successSendOnAppeal', 'Мультимедия успешно отправлена на апелляцию'),
+            new TranslationFactory('ru', 'multimedia@badSendOnAppeal', 'Невозможно отправить мультимедию на апелляцию в статусе %status%'),
+            new TranslationFactory('ru', 'multimedia@badPublish', 'Невозможно опубликовать мультимедию'),
+            new TranslationFactory('ru', 'multimedia@badUnpublish', 'Невозможно снять с публикации мультимедию'),
+            new TranslationFactory('ru', 'multimedia@successPublish', 'Мультимедиа успешно опубликована'),
+            new TranslationFactory('ru', 'multimedia@successUnpublish', 'Мультимедиа успешно снята с публикации'),
+
+            new TranslationFactory('ru', 'status@draft', 'Черновик'),
+            new TranslationFactory('ru', 'status@moderation', 'Модерация'),
+            new TranslationFactory('ru', 'status@published', 'Опубликован'),
+            new TranslationFactory('ru', 'status@unpublished', 'Снят с публикации'),
+            new TranslationFactory('ru', 'status@appeal', 'Апелляция'),
+            new TranslationFactory('ru', 'status@appealCanceld', 'Отменена апелляция'),
         ]);
     }
 

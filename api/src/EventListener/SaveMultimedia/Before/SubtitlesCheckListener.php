@@ -1,27 +1,27 @@
 <?php
 
-namespace App\EventListener\AddMultimedia;
+namespace App\EventListener\SaveMultimedia\Before;
 
-use App\Event\AddMultimediaEvent;
+use App\Event\SaveMultimediaEvent;
 use App\Rest\Http\Exceptions\InvalidException;
 use Captioning\Format\SubripFile;
 use Exception;
 
 /**
- * Class SubtitleCheckListener.
+ * Class SubtitlesCheckListener.
  *
- * @package App\EventListener\AddMultimedia
+ * @package App\EventListener\SaveMultimedia\Before
  *
  * @author  Codememory
  */
-class SubtitleCheckListener
+class SubtitlesCheckListener
 {
     /**
-     * @param AddMultimediaEvent $event
+     * @param SaveMultimediaEvent $event
      *
      * @return void
      */
-    public function onBeforeAddMultimedia(AddMultimediaEvent $event): void
+    public function onBeforeSaveMultimedia(SaveMultimediaEvent $event): void
     {
         $subtitlesFile = $event->multimediaDTO->subtitles;
 

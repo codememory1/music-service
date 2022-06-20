@@ -39,12 +39,11 @@ class TranslationService
      */
     public function get(string $key, array $parameters = []): ?string
     {
-        $translation = $this->translationRepository->findOneBy([
-            'language' => $this->getLanguage(),
-            'translationKey' => $this->getTranslationKey($key)
-        ])?->getTranslation();
+        $translation = $this->getTranslation($key);
 
-        return null === $translation ? null : str_replace($this->parametersToFormat($parameters), $parameters, $translation);
+        $this->replaceParameters($translation, $parameters);
+
+        return $translation;
     }
 
     /**
@@ -80,12 +79,46 @@ class TranslationService
     }
 
     /**
-     * @param array $parameters
+     * @param string $key
      *
-     * @return array
+     * @return null|string
      */
-    private function parametersToFormat(array $parameters): array
+    public function getTranslation(string $key): ?string
     {
-        return array_map(static fn(string $value) => "%${value}%", array_keys($parameters));
+        return $this->translationRepository->findOneBy([
+            'language' => $this->getLanguage(),
+            'translationKey' => $this->getTranslationKey($key)
+        ])?->getTranslation();
+    }
+
+    /**
+     * @param null|string $translation
+     * @param array       $parameters
+     *
+     * @return void
+     */
+    private function replaceParameters(?string &$translation, array $parameters): void
+    {
+        if (null !== $translation) {
+            foreach ($parameters as $name => $value) {
+                $parameterName = $this->convertParametersToTemplate($name);
+
+                if (1 === preg_match('/^.+@.+$/', $value)) {
+                    $value = $this->getTranslation($value);
+                }
+
+                $translation = str_replace($parameterName, $value, $translation);
+            }
+        }
+    }
+
+    /**
+     * @param string $parameter
+     *
+     * @return string
+     */
+    private function convertParametersToTemplate(string $parameter): string
+    {
+        return "%${parameter}%";
     }
 }

@@ -41,6 +41,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('common@uploadFileNotImage'),
             new TranslationKeyFactory('common@invalidStatus'),
             new TranslationKeyFactory('common@invalidSubtitles'),
+            new TranslationKeyFactory('common@successAppealCanceled'),
+            new TranslationKeyFactory('common@badAppealCanceled'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
@@ -248,6 +250,20 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('multimedia@successSendOnModeration'),
             new TranslationKeyFactory('multimedia@successUpdate'),
             new TranslationKeyFactory('multimedia@successDelete'),
+            new TranslationKeyFactory('multimedia@badUpdateInStatus'),
+            new TranslationKeyFactory('multimedia@successSendOnAppeal'),
+            new TranslationKeyFactory('multimedia@badSendOnAppeal'),
+            new TranslationKeyFactory('multimedia@badPublish'),
+            new TranslationKeyFactory('multimedia@badUnpublish'),
+            new TranslationKeyFactory('multimedia@successPublish'),
+            new TranslationKeyFactory('multimedia@successUnpublish'),
+
+            new TranslationKeyFactory('status@draft'),
+            new TranslationKeyFactory('status@moderation'),
+            new TranslationKeyFactory('status@published'),
+            new TranslationKeyFactory('status@unpublished'),
+            new TranslationKeyFactory('status@appeal'),
+            new TranslationKeyFactory('status@appealCanceld'),
         ]);
     }
 

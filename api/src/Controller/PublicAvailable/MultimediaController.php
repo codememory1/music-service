@@ -15,6 +15,7 @@ use App\ResponseData\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Multimedia\AddMultimediaService;
+use App\Service\Multimedia\SendOnAppealService;
 use App\Service\Multimedia\SendOnModerationService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -102,5 +103,21 @@ class MultimediaController extends AbstractRestController
         }
 
         return $sendOnModerationService->make($multimedia);
+    }
+
+    /**
+     * @param Multimedia          $multimedia
+     * @param SendOnAppealService $sendOnAppealService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/multimedia/{multimedia_id<\d+>}/send-on-appeal', methods: 'PATCH')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
+    public function sendOnAppeal(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        SendOnAppealService $sendOnAppealService
+    ): JsonResponse {
+        return $sendOnAppealService->make($multimedia);
     }
 }

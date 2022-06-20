@@ -1,11 +1,11 @@
 <?php
 
-namespace App\EventListener\AddMultimedia;
+namespace App\EventListener\SaveMultimedia\After;
 
 use App\DTO\MultimediaDTO;
 use App\Entity\Multimedia;
 use App\Enum\MultimediaTypeEnum;
-use App\Event\AddMultimediaEvent;
+use App\Event\SaveMultimediaEvent;
 use App\Rest\S3\Uploader\ClipUploader;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Rest\S3\Uploader\SubtitlesUploader;
@@ -13,13 +13,13 @@ use App\Rest\S3\Uploader\TrackUploader;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Class UploadFilesListener.
+ * Class FileUploadListener.
  *
- * @package App\EventListener\AddMultimedia
+ * @package App\EventListener\SaveMultimedia\After
  *
  * @author  Codememory
  */
-class UploadFilesListener
+class FileUploadListener
 {
     /**
      * @var EntityManagerInterface
@@ -63,11 +63,11 @@ class UploadFilesListener
     }
 
     /**
-     * @param AddMultimediaEvent $event
+     * @param SaveMultimediaEvent $event
      *
      * @return void
      */
-    public function onAfterAddMultimedia(AddMultimediaEvent $event): void
+    public function onAfterSaveMultimedia(SaveMultimediaEvent $event): void
     {
         $event->multimedia->setImage($this->uploadPreviewToStorage(
             $event->multimediaDTO,
