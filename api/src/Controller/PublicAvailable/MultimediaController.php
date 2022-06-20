@@ -17,6 +17,7 @@ use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Multimedia\AddMultimediaService;
 use App\Service\Multimedia\SendOnAppealService;
 use App\Service\Multimedia\SendOnModerationService;
+use App\Service\Multimedia\UpdateMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -83,6 +84,26 @@ class MultimediaController extends AbstractRestController
     public function add(MultimediaDTO $multimediaDTO, AddMultimediaService $addMultimediaService): JsonResponse
     {
         return $addMultimediaService->make($multimediaDTO->collect(), $this->authorizedUser->getUser());
+    }
+
+    /**
+     * @param Multimedia              $multimedia
+     * @param MultimediaDTO           $multimediaDTO
+     * @param UpdateMultimediaService $updateMultimediaService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
+    public function update(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        MultimediaDTO $multimediaDTO,
+        UpdateMultimediaService $updateMultimediaService
+    ): JsonResponse {
+        $multimediaDTO->setEntity($multimedia);
+
+        return $updateMultimediaService->make($multimediaDTO->collect());
     }
 
     /**

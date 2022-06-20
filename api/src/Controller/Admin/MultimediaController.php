@@ -69,6 +69,44 @@ class MultimediaController extends AbstractRestController
     }
 
     /**
+     * @param User                 $user
+     * @param MultimediaDTO        $multimediaDTO
+     * @param AddMultimediaService $addMultimediaService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/{user_id<\d+>}/multimedia/add', methods: 'POST')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_TO_USER)]
+    public function add(
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
+        MultimediaDTO $multimediaDTO,
+        AddMultimediaService $addMultimediaService
+    ): JsonResponse {
+        return $addMultimediaService->make($multimediaDTO->collect(), $user);
+    }
+
+    /**
+     * @param Multimedia              $multimedia
+     * @param MultimediaDTO           $multimediaDTO
+     * @param UpdateMultimediaService $updateMultimediaService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_TO_USER)]
+    public function update(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        MultimediaDTO $multimediaDTO,
+        UpdateMultimediaService $updateMultimediaService
+    ): JsonResponse {
+        $multimediaDTO->setEntity($multimedia);
+
+        return $updateMultimediaService->make($multimediaDTO->collect());
+    }
+
+    /**
      * @param Multimedia              $multimedia
      * @param SendOnModerationService $sendOnModerationService
      *
@@ -114,44 +152,6 @@ class MultimediaController extends AbstractRestController
         UnpublishMultimediaService $unpublishMultimediaService
     ): JsonResponse {
         return $unpublishMultimediaService->make($multimedia);
-    }
-
-    /**
-     * @param User                 $user
-     * @param MultimediaDTO        $multimediaDTO
-     * @param AddMultimediaService $addMultimediaService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/{user_id<\d+>}/multimedia/add', methods: 'POST')]
-    #[Authorization]
-    #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_TO_USER)]
-    public function add(
-        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        MultimediaDTO $multimediaDTO,
-        AddMultimediaService $addMultimediaService
-    ): JsonResponse {
-        return $addMultimediaService->make($multimediaDTO->collect(), $user);
-    }
-
-    /**
-     * @param Multimedia              $multimedia
-     * @param MultimediaDTO           $multimediaDTO
-     * @param UpdateMultimediaService $updateMultimediaService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
-    #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_TO_USER)]
-    public function update(
-        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        MultimediaDTO $multimediaDTO,
-        UpdateMultimediaService $updateMultimediaService
-    ): JsonResponse {
-        $multimediaDTO->setEntity($multimedia);
-
-        return $updateMultimediaService->make($multimediaDTO->collect());
     }
 
     /**
