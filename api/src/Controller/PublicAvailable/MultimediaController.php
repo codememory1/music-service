@@ -41,9 +41,8 @@ class MultimediaController extends AbstractRestController
     #[Authorization]
     public function myAll(MultimediaResponseData $multimediaResponseData, MultimediaRepository $multimediaRepository): JsonResponse
     {
-        $multimediaResponseData->setEntities($multimediaRepository->findBy([
-            'user' => $this->authorizedUser->getUser()
-        ]));
+        $multimediaResponseData->setEntities($multimediaRepository->findAllByUser($this->authorizedUser->getUser()));
+
         $multimediaResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());

@@ -23,6 +23,11 @@ class UserSessionRepository extends AbstractRepository
      */
     protected ?string $entity = UserSession::class;
 
+    /**
+     * @inheritDoc
+     */
+    protected ?string $alias = 'us';
+
     #[Required]
     public ?AuthorizedUser $authorizedUser = null;
 

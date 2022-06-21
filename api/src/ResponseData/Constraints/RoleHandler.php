@@ -35,6 +35,6 @@ class RoleHandler implements ConstraintHandlerInterface
      */
     public function handle(ConstraintInterface $constraint): bool
     {
-        return $this->authorizedUser->hasRole($constraint->role);
+        return $this->authorizedUser->isRole($constraint->role);
     }
 }

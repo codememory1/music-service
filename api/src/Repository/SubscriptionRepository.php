@@ -18,4 +18,9 @@ class SubscriptionRepository extends AbstractRepository
      * @inheritDoc
      */
     protected ?string $entity = Subscription::class;
+
+    /**
+     * @inheritDoc
+     */
+    protected ?string $alias = 's';
 }

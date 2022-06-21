@@ -35,8 +35,6 @@ class SubscriptionHandler implements ConstraintHandlerInterface
      */
     public function handle(ConstraintInterface $constraint): bool
     {
-        $user = $this->authorizedUser->getUser();
-
-        return !($user?->getSubscription()->getKey() !== $constraint->subscription->name);
+        return $this->authorizedUser->isSubscription($constraint->subscription);
     }
 }

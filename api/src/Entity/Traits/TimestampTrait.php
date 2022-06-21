@@ -16,16 +16,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 trait TimestampTrait
 {
-    /**
-     * @var null|DateTimeImmutable
-     */
     #[Gedmo\Timestampable(on: 'create')]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?DateTimeImmutable $createdAt = null;
 
-    /**
-     * @var null|DateTimeImmutable
-     */
     #[Gedmo\Timestampable(on: 'update')]
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $updatedAt = null;

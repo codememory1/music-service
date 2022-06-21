@@ -21,6 +21,11 @@ class NotificationRepository extends AbstractRepository
     protected ?string $entity = Notification::class;
 
     /**
+     * @inheritDoc
+     */
+    protected ?string $alias = 'n';
+
+    /**
      * @return array
      */
     public function getPendingNotifications(): array
