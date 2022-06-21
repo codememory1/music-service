@@ -26,6 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author  Codememory
  */
+#[Route('/user')]
 class AlbumController extends AbstractRestController
 {
     /**
@@ -35,7 +36,7 @@ class AlbumController extends AbstractRestController
      *
      * @return JsonResponse
      */
-    #[Route('/user/{user_id<\d+>}/album/all', methods: 'GET')]
+    #[Route('/{user_id<\d+>}/album/all', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUMS)]
     public function all(
@@ -58,7 +59,7 @@ class AlbumController extends AbstractRestController
      *
      * @return JsonResponse
      */
-    #[Route('/user/{user_id<\d+>}/album/create', methods: 'POST')]
+    #[Route('/{user_id<\d+>}/album/create', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_ALBUM_TO_USER)]
     public function create(
@@ -76,7 +77,7 @@ class AlbumController extends AbstractRestController
      *
      * @return JsonResponse
      */
-    #[Route('/user/album/{album_id<\d+>}/edit', methods: 'POST')]
+    #[Route('/album/{album_id<\d+>}/edit', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_ALBUM_TO_USER)]
     public function update(
@@ -95,7 +96,7 @@ class AlbumController extends AbstractRestController
      *
      * @return JsonResponse
      */
-    #[Route('/user/album/{album_id<\d+>}/delete', methods: 'DELETE')]
+    #[Route('/album/{album_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_ALBUM_TO_USER)]
     public function delete(

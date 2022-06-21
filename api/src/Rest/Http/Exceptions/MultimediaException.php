@@ -114,4 +114,13 @@ class MultimediaException extends ApiResponseException
     {
         return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badAppealCanceled', data: $data, headers: $headers);
     }
+
+    /**
+     * @return static
+     */
+    #[Pure]
+    final public static function badAddMultimediaToUserInvalid(): self
+    {
+        return new self(400, ResponseTypeEnum::CHECK_CORRECTNESS, 'multimedia@badAddMultimediaToUserInvalidSubscription');
+    }
 }
