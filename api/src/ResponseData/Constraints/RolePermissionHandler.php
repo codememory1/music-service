@@ -4,7 +4,7 @@ namespace App\ResponseData\Constraints;
 
 use App\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\ResponseData\Interfaces\ConstraintInterface;
-use App\Security\Auth\AuthorizedUser;
+use App\Security\AuthorizedUser;
 use function is_array;
 
 /**

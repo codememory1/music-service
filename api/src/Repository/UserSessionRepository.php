@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
-use App\Security\Auth\AuthorizedUser;
+use App\Security\AuthorizedUser;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
