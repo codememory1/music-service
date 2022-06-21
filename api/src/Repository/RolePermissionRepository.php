@@ -18,4 +18,9 @@ class RolePermissionRepository extends AbstractRepository
      * @inheritDoc
      */
     protected ?string $entity = RolePermission::class;
+
+    /**
+     * @inheritDoc
+     */
+    protected ?string $alias = 'rp';
 }

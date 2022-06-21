@@ -18,4 +18,9 @@ class RoleRepository extends AbstractRepository
      * @inheritDoc
      */
     protected ?string $entity = Role::class;
+
+    /**
+     * @inheritDoc
+     */
+    protected ?string $alias = 'r';
 }

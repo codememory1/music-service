@@ -18,4 +18,9 @@ class MultimediaPerformerRepository extends AbstractRepository
      * @inheritDoc
      */
     protected ?string $entity = MultimediaPerformer::class;
+
+    /**
+     * @inheritDoc
+     */
+    protected ?string $alias = 'mp';
 }

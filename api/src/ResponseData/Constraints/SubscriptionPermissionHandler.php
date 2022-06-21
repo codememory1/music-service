@@ -2,7 +2,6 @@
 
 namespace App\ResponseData\Constraints;
 
-use App\Entity\SubscriptionPermission as SubscriptionPermissionEntity;
 use App\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use App\Security\AuthorizedUser;
@@ -36,9 +35,6 @@ class SubscriptionPermissionHandler implements ConstraintHandlerInterface
      */
     public function handle(ConstraintInterface $constraint): bool
     {
-        $user = $this->authorizedUser->getUser();
-        $subscriptionPermissions = $user?->getSubscription()?->getPermissions();
-
-        return $subscriptionPermissions?->exists(static fn(int $key, SubscriptionPermissionEntity $subscriptionPermission) => $subscriptionPermission->getPermissionKey()->getKey() === $constraint->permission->name ?? false);
+        return $this->authorizedUser->isSubscriptionPermission($constraint->permission);
     }
 }

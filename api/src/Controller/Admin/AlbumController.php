@@ -44,9 +44,7 @@ class AlbumController extends AbstractRestController
         AlbumResponseData $albumResponseData,
         AlbumRepository $albumRepository
     ): JsonResponse {
-        $albumResponseData->setEntities($albumRepository->findByCriteria([
-            'user' => $user
-        ]));
+        $albumResponseData->setEntities($albumRepository->findAllByUser($user));
         $albumResponseData->collect();
 
         return $this->responseCollection->dataOutput($albumResponseData->getResponse());

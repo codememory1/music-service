@@ -39,9 +39,7 @@ class AlbumController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_ALBUMS)]
     public function all(AlbumResponseData $albumResponseData, AlbumRepository $albumRepository): JsonResponse
     {
-        $albumResponseData->setEntities($albumRepository->findByCriteria([
-            'user' => $this->authorizedUser->getUser()
-        ]));
+        $albumResponseData->setEntities($albumRepository->findAllByUser($this->authorizedUser->getUser()));
         $albumResponseData->collect();
 
         return $this->responseCollection->dataOutput($albumResponseData->getResponse());
