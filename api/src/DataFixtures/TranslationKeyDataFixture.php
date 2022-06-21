@@ -257,6 +257,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('multimedia@badUnpublish'),
             new TranslationKeyFactory('multimedia@successPublish'),
             new TranslationKeyFactory('multimedia@successUnpublish'),
+            new TranslationKeyFactory('multimedia@badAddMultimediaToUserInvalidSubscription'),
 
             new TranslationKeyFactory('status@draft'),
             new TranslationKeyFactory('status@moderation'),
