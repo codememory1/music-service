@@ -4,4 +4,5 @@ framework:
             async: '%env(MESSENGER_TRANSPORT_DSN)%'
         routing:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            App\Message\MultimediaUploadFileMessage: async
             App\Message\MultimediaMetadataMessage: async

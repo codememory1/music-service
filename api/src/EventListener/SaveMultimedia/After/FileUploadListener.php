@@ -2,15 +2,9 @@
 
 namespace App\EventListener\SaveMultimedia\After;
 
-use App\DTO\MultimediaDTO;
-use App\Entity\Multimedia;
-use App\Enum\MultimediaTypeEnum;
 use App\Event\SaveMultimediaEvent;
-use App\Rest\S3\Uploader\ClipUploader;
-use App\Rest\S3\Uploader\ImageUploader;
-use App\Rest\S3\Uploader\SubtitlesUploader;
-use App\Rest\S3\Uploader\TrackUploader;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Message\MultimediaUploadFileMessage;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * Class FileUploadListener.
@@ -22,44 +16,16 @@ use Doctrine\ORM\EntityManagerInterface;
 class FileUploadListener
 {
     /**
-     * @var EntityManagerInterface
+     * @var MessageBusInterface
      */
-    private EntityManagerInterface $em;
+    private MessageBusInterface $bus;
 
     /**
-     * @var ImageUploader
+     * @param MessageBusInterface $bus
      */
-    private ImageUploader $imageUploader;
-
-    /**
-     * @var TrackUploader
-     */
-    private TrackUploader $trackUploader;
-
-    /**
-     * @var ClipUploader
-     */
-    private ClipUploader $clipUploader;
-
-    /**
-     * @var SubtitlesUploader
-     */
-    private SubtitlesUploader $subtitlesUploader;
-
-    /**
-     * @param EntityManagerInterface $manager
-     * @param ImageUploader          $imageUploader
-     * @param TrackUploader          $trackUploader
-     * @param ClipUploader           $clipUploader
-     * @param SubtitlesUploader      $subtitlesUploader
-     */
-    public function __construct(EntityManagerInterface $manager, ImageUploader $imageUploader, TrackUploader $trackUploader, ClipUploader $clipUploader, SubtitlesUploader $subtitlesUploader)
+    public function __construct(MessageBusInterface $bus)
     {
-        $this->em = $manager;
-        $this->imageUploader = $imageUploader;
-        $this->trackUploader = $trackUploader;
-        $this->clipUploader = $clipUploader;
-        $this->subtitlesUploader = $subtitlesUploader;
+        $this->bus = $bus;
     }
 
     /**
@@ -69,70 +35,25 @@ class FileUploadListener
      */
     public function onAfterSaveMultimedia(SaveMultimediaEvent $event): void
     {
-        $event->multimedia->setImage($this->uploadPreviewToStorage(
-            $event->multimediaDTO,
-            $event->multimedia
-        ));
-        $event->multimedia->setMultimedia($this->uploadMultimediaToStorage(
-            $event->multimediaDTO,
-            $event->multimedia
-        ));
-        $event->multimedia->setSubtitles($this->uploadSubtitlesToStorage(
-            $event->multimediaDTO,
-            $event->multimedia
-        ));
+        $multimediaFile = $event->multimediaDTO->multimedia;
+        $subtitlesFile = $event->multimediaDTO->subtitles;
+        $imageFile = $event->multimediaDTO->image;
 
-        $this->em->flush();
-    }
+        $multimediaUploadFileMessage = new MultimediaUploadFileMessage($event->multimedia->getId());
 
-    /**
-     * @param MultimediaDTO $multimediaDTO
-     * @param Multimedia    $multimedia
-     *
-     * @return string
-     */
-    private function uploadPreviewToStorage(MultimediaDTO $multimediaDTO, Multimedia $multimedia): string
-    {
-        $this->imageUploader->upload($multimediaDTO->image, [$multimedia->getId()]);
+        $multimediaUploadFileMessage->setMultimediaFile(
+            $multimediaFile->getRealPath(),
+            $multimediaFile->getMimeType()
+        );
+        $multimediaUploadFileMessage->setSubtitlesFile(
+            $subtitlesFile?->getRealPath(),
+            $subtitlesFile?->getClientMimeType()
+        );
+        $multimediaUploadFileMessage->setImage(
+            $imageFile->getRealPath(),
+            $imageFile->getMimeType()
+        );
 
-        return $this->imageUploader->getUploadedFile()->last();
-    }
-
-    /**
-     * @param MultimediaDTO $multimediaDTO
-     * @param Multimedia    $multimedia
-     *
-     * @return null|string
-     */
-    private function uploadMultimediaToStorage(MultimediaDTO $multimediaDTO, Multimedia $multimedia): ?string
-    {
-        if (MultimediaTypeEnum::TRACK === $multimediaDTO->type) {
-            $this->trackUploader->upload($multimediaDTO->multimedia, [$multimedia->getId()]);
-
-            return $this->trackUploader->getUploadedFile()->last();
-        } elseif (MultimediaTypeEnum::CLIP === $multimediaDTO->type) {
-            $this->clipUploader->upload($multimediaDTO->multimedia, [$multimedia->getId()]);
-
-            return $this->clipUploader->getUploadedFile()->last();
-        }
-
-        return null;
-    }
-
-    /**
-     * @param MultimediaDTO $multimediaDTO
-     * @param Multimedia    $multimedia
-     *
-     * @return null|string
-     */
-    private function uploadSubtitlesToStorage(MultimediaDTO $multimediaDTO, Multimedia $multimedia): ?string
-    {
-        if (null !== $multimediaDTO->subtitles) {
-            $this->subtitlesUploader->upload($multimediaDTO->subtitles, [$multimedia->getId()]);
-
-            return $this->subtitlesUploader->getUploadedFile()->last();
-        }
-
-        return null;
+        $this->bus->dispatch($multimediaUploadFileMessage);
     }
 }

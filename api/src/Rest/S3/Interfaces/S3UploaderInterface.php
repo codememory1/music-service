@@ -45,14 +45,14 @@ interface S3UploaderInterface
     public function upload(string $pathInSystem, string $mimeType, array $args = []): Result;
 
     /**
-     * @param string $oldFilePathInStorage
-     * @param string $newFilePathInSystem
-     * @param string $mimeType
-     * @param array  $args
+     * @param null|string $oldFilePathInStorage
+     * @param string      $newFilePathInSystem
+     * @param string      $mimeType
+     * @param array       $args
      *
      * @return null|Result
      */
-    public function save(string $oldFilePathInStorage, string $newFilePathInSystem, string $mimeType, array $args = []): ?Result;
+    public function save(?string $oldFilePathInStorage, string $newFilePathInSystem, string $mimeType, array $args = []): ?Result;
 
     /**
      * @param string $pathInStorage

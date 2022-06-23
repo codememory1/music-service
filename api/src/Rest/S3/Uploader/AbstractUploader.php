@@ -82,7 +82,7 @@ abstract class AbstractUploader implements S3UploaderInterface
             throw new LogicException('To create a hash of a file, you need to specify the entity to which this file will belong');
         }
 
-        $contentHash = sha1($this->getContent($pathInSystem));
+        $contentHash = sha1($pathInSystem);
         $uniqueHash = hash('sha3-512', "{$this->user->getId()}_{$this->entity->getId()}");
         $fileExtensionFromMimeType = $this->mimeTypeConverter->convertToExtension($mimeType);
         $generatedKey = "${contentHash}_${uniqueHash}.${fileExtensionFromMimeType}";
@@ -134,7 +134,7 @@ abstract class AbstractUploader implements S3UploaderInterface
         return $this->client->awsS3Client->putObject([
             'Bucket' => $this->getBucketName(),
             'Key' => $this->generateKey($pathInSystem, $mimeType),
-            'Body' => $this->getContent($pathInSystem),
+            'Body' => base64_decode($pathInSystem, true),
             'ContentType' => $mimeType,
             ...$args
         ]);
@@ -143,15 +143,17 @@ abstract class AbstractUploader implements S3UploaderInterface
     /**
      * @inheritDoc
      */
-    public function save(string $oldFilePathInStorage, string $newFilePathInSystem, string $mimeType, array $args = []): ?Result
+    public function save(?string $oldFilePathInStorage, string $newFilePathInSystem, string $mimeType, array $args = []): ?Result
     {
-        if ($oldFilePathInStorage === $this->generateKey($newFilePathInSystem, $mimeType)) {
-            return null;
+        if (null === $oldFilePathInStorage) {
+            return $this->upload($newFilePathInSystem, $mimeType);
+        } elseif ($oldFilePathInStorage !== $this->generateKey($newFilePathInSystem, $mimeType)) {
+            $this->delete($oldFilePathInStorage);
+
+            return $this->upload($newFilePathInSystem, $mimeType);
         }
 
-        $this->delete($oldFilePathInStorage);
-
-        return $this->upload($newFilePathInSystem, $mimeType);
+        return null;
     }
 
     /**

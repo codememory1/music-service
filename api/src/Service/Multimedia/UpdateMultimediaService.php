@@ -38,8 +38,9 @@ class UpdateMultimediaService extends AbstractService
         $multimediaEntity = $multimediaDTO->getEntity();
 
         if (in_array($multimediaEntity->getStatus(), [
-            MultimediaStatusEnum::DRAFT->name,
-            MultimediaStatusEnum::APPEAL_CANCELED->name
+            MultimediaStatusEnum::PUBLISHED->name,
+            MultimediaStatusEnum::MODERATION->name,
+            MultimediaStatusEnum::APPEAL->name
         ], true)) {
             throw MultimediaException::badUpdateInStatus($multimediaEntity->getStatus());
         }
