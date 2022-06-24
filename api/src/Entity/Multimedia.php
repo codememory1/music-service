@@ -87,7 +87,7 @@ class Multimedia implements EntityInterface
     ])]
     private ?string $producer = null;
 
-    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaPerformer::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaPerformer::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $performers;
 
     #[ORM\OneToOne(mappedBy: 'multimedia', targetEntity: MultimediaMetadata::class, cascade: ['persist', 'remove'])]
