@@ -46,7 +46,7 @@ class Album implements EntityInterface
     ])]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::TEXT, options: [
+    #[ORM\Column(type: Types::TEXT, nullable: true, options: [
         'comment' => 'Album image as path to s3'
     ])]
     private ?string $image = null;
