@@ -49,6 +49,6 @@ class UpdateMultimediaService extends AbstractService
 
         $this->saveMultimediaService->make($multimediaDTO, $multimediaEntity);
 
-        return $this->responseCollection->successCreate('multimedia@successUpdate');
+        return $this->responseCollection->successUpdate('multimedia@successUpdate');
     }
 }

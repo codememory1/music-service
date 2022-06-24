@@ -69,10 +69,11 @@ abstract class AbstractUploader implements S3UploaderInterface
     /**
      * @param string $pathInSystem
      * @param string $mimeType
+     * @param bool   $asPathInStorage
      *
      * @return string
      */
-    protected function generateKey(string $pathInSystem, string $mimeType): string
+    protected function generateKey(string $pathInSystem, string $mimeType, bool $asPathInStorage = false): string
     {
         if (null === $this->user) {
             throw new LogicException('To create a hash of a file, you need to specify a user');
@@ -82,12 +83,17 @@ abstract class AbstractUploader implements S3UploaderInterface
             throw new LogicException('To create a hash of a file, you need to specify the entity to which this file will belong');
         }
 
-        $contentHash = sha1($pathInSystem);
+        $contentHash = sha1($this->getContent($pathInSystem));
         $uniqueHash = hash('sha3-512', "{$this->user->getId()}_{$this->entity->getId()}");
         $fileExtensionFromMimeType = $this->mimeTypeConverter->convertToExtension($mimeType);
         $generatedKey = "${contentHash}_${uniqueHash}.${fileExtensionFromMimeType}";
+        $generatedKeyWithBucket = sprintf('%s/%s', $this->getBucketName(), $generatedKey);
 
-        $this->uploadedPaths[] = sprintf('%s/%s', $this->getBucketName(), $generatedKey);
+        $this->uploadedPaths[] = $generatedKeyWithBucket;
+
+        if ($asPathInStorage) {
+            return $generatedKeyWithBucket;
+        }
 
         return $generatedKey;
     }
@@ -134,7 +140,7 @@ abstract class AbstractUploader implements S3UploaderInterface
         return $this->client->awsS3Client->putObject([
             'Bucket' => $this->getBucketName(),
             'Key' => $this->generateKey($pathInSystem, $mimeType),
-            'Body' => base64_decode($pathInSystem, true),
+            'Body' => $this->getContent($pathInSystem),
             'ContentType' => $mimeType,
             ...$args
         ]);
@@ -147,7 +153,7 @@ abstract class AbstractUploader implements S3UploaderInterface
     {
         if (null === $oldFilePathInStorage) {
             return $this->upload($newFilePathInSystem, $mimeType);
-        } elseif ($oldFilePathInStorage !== $this->generateKey($newFilePathInSystem, $mimeType)) {
+        } elseif ($oldFilePathInStorage !== $this->generateKey($newFilePathInSystem, $mimeType, true)) {
             $this->delete($oldFilePathInStorage);
 
             return $this->upload($newFilePathInSystem, $mimeType);
@@ -164,7 +170,7 @@ abstract class AbstractUploader implements S3UploaderInterface
         $this->objectPath->setPath($pathInStorage);
 
         return $this->client->awsS3Client->deleteObject([
-            'Bucket' => $this->getBucketName(),
+            'Bucket' => $this->objectPath->getBucket(),
             'Key' => $this->objectPath->getKey(),
             ...$argc
         ]);
