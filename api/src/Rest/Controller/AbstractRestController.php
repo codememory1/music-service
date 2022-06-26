@@ -3,7 +3,7 @@
 namespace App\Rest\Controller;
 
 use App\Rest\Http\ResponseCollection;
-use App\Security\AuthorizedUser;
+use App\Security\Auth\AuthorizedUser;
 use App\Security\Http\BearerToken;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 

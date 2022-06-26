@@ -48,6 +48,6 @@ class AlbumResponseData extends AbstractResponseData implements ResponseDataInte
 
         $albumTypeResponseData->setEntities($albumType);
 
-        return $albumTypeResponseData->collect()->getResponse(true);
+        return $albumTypeResponseData->collect()->getResponse();
     }
 }

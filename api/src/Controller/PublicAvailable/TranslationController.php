@@ -34,7 +34,9 @@ class TranslationController extends AbstractRestController
         TranslationResponseData $translationResponseData,
         TranslationRepository $translationRepository
     ): JsonResponse {
-        $translationResponseData->setEntities($translationRepository->findAllByLanguage($language));
+        $translationResponseData->setEntities($translationRepository->findByCriteria([
+            'language' => $language
+        ]));
         $translationResponseData->collect();
 
         return $this->responseCollection->dataOutput($translationResponseData->getResponse());

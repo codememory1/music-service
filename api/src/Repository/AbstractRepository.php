@@ -4,8 +4,8 @@ namespace App\Repository;
 
 use App\Service\DataRepresentation\FilterService;
 use App\Service\DataRepresentation\SortService;
+use function call_user_func;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -28,16 +28,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
     protected ?string $entity = null;
 
     /**
-     * @var null|string
-     */
-    protected ?string $alias = null;
-
-    /**
-     * @var QueryBuilder
-     */
-    protected readonly QueryBuilder $qb;
-
-    /**
      * @var FilterService
      */
     protected readonly FilterService $filterService;
@@ -58,8 +48,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
         $this->filterService = $filterService;
         $this->sortService = $sortService;
-
-        $this->qb = $this->createQueryBuilder($this->alias);
     }
 
     /**
@@ -74,44 +62,40 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return QueryBuilder
-     */
-    protected function getQueryBuilder(): QueryBuilder
-    {
-        return $this->qb;
-    }
-
-    /**
-     * @param array             $criteria
-     * @param array             $orderBy
-     * @param null|QueryBuilder $qb
-     *
-     * @return array<Entity>
-     */
-    protected function findByCriteria(array $criteria, array $orderBy = []): array
-    {
-        $qb = $this->getQueryBuilder();
-
-        foreach ($orderBy as $propertyName => $as) {
-            $qb->orderBy($propertyName, $as);
-        }
-
-        foreach ($criteria as $propertyName => $value) {
-            $parameterName = str_replace('.', '_', $propertyName);
-
-            $qb->andWhere("${propertyName} = :${parameterName}");
-            $qb->setParameter($parameterName, $value);
-        }
-
-        return $qb->getQuery()->getResult() ?: [];
-    }
-
-    /**
      * @return array<Entity>
      */
     public function findAll(): array
     {
         return $this->findByCriteria([]);
+    }
+
+    /**
+     * @param array         $criteria
+     * @param array         $orderBy
+     * @param null|callable $callback
+     *
+     * @return array<Entity>
+     */
+    public function findByCriteria(array $criteria, array $orderBy = [], ?callable $callback = null): array
+    {
+        $tableName = $this->getClassMetadata()->getTableName();
+        $qb = $this->createQueryBuilder($tableName);
+
+        foreach ($orderBy as $propertyName => $as) {
+            $qb->orderBy("${tableName}.${propertyName}", $as);
+        }
+
+        foreach ($criteria as $propertyName => $value) {
+            $qb
+                ->andWhere("${tableName}.${propertyName} = :${propertyName}")
+                ->setParameter($propertyName, $value);
+        }
+
+        if (null !== $callback) {
+            call_user_func($callback, $qb, $tableName);
+        }
+
+        return $qb->getQuery()->getResult() ?: [];
     }
 
     /**

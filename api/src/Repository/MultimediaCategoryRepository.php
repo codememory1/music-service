@@ -18,9 +18,4 @@ class MultimediaCategoryRepository extends AbstractRepository
      * @inheritDoc
      */
     protected ?string $entity = MultimediaCategory::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected ?string $alias = 'mc';
 }

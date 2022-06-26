@@ -96,10 +96,6 @@ services:
       tags:
         - { name: kernel.event_listener, event: app.multimedia.status-change, method: onMultimediaStatusChange }
 
-    App\EventListener\SaveAlbum\UploadImageListener:
-      tags:
-        - { name: kernel.event_listener, event: app.album.save, method: onSaveAlbum, priority: 1 }
-
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
       public: true

@@ -3,7 +3,7 @@
 namespace App\Service\WebSocket;
 
 use App\Enum\WebSocketClientMessageTypeEnum;
-use App\Security\AuthorizedUser;
+use App\Security\Auth\AuthorizedUser;
 use App\Service\AbstractService;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -58,7 +58,7 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
     protected function getAuthorizedUser(): ?AuthorizedUser
     {
         if ([] !== $this->messageHeaders && array_key_exists('access_token', $this->messageHeaders)) {
-            $this->authorizedUser->setAccessToken($this->messageHeaders['access_token']);
+            $this->authorizedUser->setToken($this->messageHeaders['access_token']);
         }
 
         return $this->authorizedUser;

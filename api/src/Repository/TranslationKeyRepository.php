@@ -18,9 +18,4 @@ class TranslationKeyRepository extends AbstractRepository
      * @inheritDoc
      */
     protected ?string $entity = TranslationKey::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected ?string $alias = 'tk';
 }

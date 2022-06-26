@@ -6,8 +6,10 @@ use App\DTO\MultimediaDTO;
 use App\Entity\Multimedia;
 use App\Enum\EventEnum;
 use App\Event\SaveMultimediaEvent;
+use App\Message\MultimediaMetadataMessage;
 use App\Service\AbstractService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -21,6 +23,9 @@ class SaveMultimediaService extends AbstractService
 {
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
+
+    #[Required]
+    public ?MessageBusInterface $bus = null;
 
     /**
      * @param MultimediaDTO $multimediaDTO
@@ -45,5 +50,7 @@ class SaveMultimediaService extends AbstractService
             new SaveMultimediaEvent($multimediaDTO, $multimedia),
             EventEnum::AFTER_SAVE_MULTIMEDIA->value
         );
+
+        $this->bus->dispatch(new MultimediaMetadataMessage($multimedia->getId()));
     }
 }

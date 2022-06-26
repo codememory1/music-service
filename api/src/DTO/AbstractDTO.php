@@ -6,7 +6,7 @@ use App\DTO\Interfaces\DTOInterface;
 use App\DTO\Interfaces\ValueInterceptorInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Rest\Http\Request;
-use App\Security\AuthorizedUser;
+use App\Security\Auth\AuthorizedUser;
 use function call_user_func;
 use function is_callable;
 use function is_string;

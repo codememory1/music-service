@@ -101,12 +101,11 @@ class TranslationService
     {
         if (null !== $translation) {
             foreach ($parameters as $name => $value) {
-                if (str_starts_with($name, '@')) {
-                    $name = mb_substr($name, 1);
+                $parameterName = $this->convertParametersToTemplate($name);
+
+                if (1 === preg_match('/^.+@.+$/', $value)) {
                     $value = $this->getTranslation($value);
                 }
-
-                $parameterName = $this->convertParametersToTemplate($name);
 
                 $translation = str_replace($parameterName, $value, $translation);
             }
