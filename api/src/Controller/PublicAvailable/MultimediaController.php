@@ -18,6 +18,8 @@ use App\Service\Multimedia\AddMultimediaService;
 use App\Service\Multimedia\DeleteMultimediaService;
 use App\Service\Multimedia\SendOnAppealService;
 use App\Service\Multimedia\SendOnModerationService;
+use App\Service\Multimedia\SetDisLikeMultimediaService;
+use App\Service\Multimedia\SetLikeMultimediaService;
 use App\Service\Multimedia\UpdateMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -161,5 +163,35 @@ class MultimediaController extends AbstractRestController
         SendOnAppealService $sendOnAppealService
     ): JsonResponse {
         return $sendOnAppealService->make($multimedia);
+    }
+
+    /**
+     * @param Multimedia               $multimedia
+     * @param SetLikeMultimediaService $setLikeMultimediaService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/multimedia/{multimedia_id<\d+>}/like', methods: 'PATCH')]
+    #[Authorization]
+    public function like(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        SetLikeMultimediaService $setLikeMultimediaService
+    ): JsonResponse {
+        return $setLikeMultimediaService->make($multimedia, $this->authorizedUser->getUser());
+    }
+
+    /**
+     * @param Multimedia                  $multimedia
+     * @param SetDisLikeMultimediaService $setDisLikeMultimediaService
+     *
+     * @return JsonResponse §§§§    §§§§§§§§
+     */
+    #[Route('/multimedia/{multimedia_id<\d+>}/dislike', methods: 'PATCH')]
+    #[Authorization]
+    public function dislike(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        SetDisLikeMultimediaService $setDisLikeMultimediaService
+    ): JsonResponse {
+        return $setDisLikeMultimediaService->make($multimedia, $this->authorizedUser->getUser());
     }
 }
