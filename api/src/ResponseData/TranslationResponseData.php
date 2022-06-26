@@ -45,6 +45,6 @@ class TranslationResponseData extends AbstractResponseData implements ResponseDa
 
         $translationKeyResponseData->setEntities($translationKey);
 
-        return $translationKeyResponseData->collect()->getResponse();
+        return $translationKeyResponseData->collect()->getResponse(true);
     }
 }

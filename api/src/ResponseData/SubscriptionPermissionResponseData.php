@@ -48,6 +48,6 @@ class SubscriptionPermissionResponseData extends AbstractResponseData implements
 
         $responseData->setEntities($subscriptionPermissionKey);
 
-        return $responseData->collect()->getResponse();
+        return $responseData->collect()->getResponse(true);
     }
 }
