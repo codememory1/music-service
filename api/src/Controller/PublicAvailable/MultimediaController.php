@@ -15,6 +15,7 @@ use App\ResponseData\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Multimedia\AddMultimediaService;
+use App\Service\Multimedia\DeleteMultimediaService;
 use App\Service\Multimedia\SendOnAppealService;
 use App\Service\Multimedia\SendOnModerationService;
 use App\Service\Multimedia\UpdateMultimediaService;
@@ -39,6 +40,7 @@ class MultimediaController extends AbstractRestController
      */
     #[Route('/multimedia/all', methods: 'GET')]
     #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_MULTIMEDIA)]
     public function myAll(MultimediaResponseData $multimediaResponseData, MultimediaRepository $multimediaRepository): JsonResponse
     {
         $multimediaResponseData->setEntities($multimediaRepository->findAllByUser($this->authorizedUser->getUser()));
@@ -94,7 +96,7 @@ class MultimediaController extends AbstractRestController
      */
     #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
     #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         MultimediaDTO $multimediaDTO,
@@ -103,6 +105,26 @@ class MultimediaController extends AbstractRestController
         $multimediaDTO->setEntity($multimedia);
 
         return $updateMultimediaService->make($multimediaDTO->collect());
+    }
+
+    /**
+     * @param Multimedia              $multimedia
+     * @param DeleteMultimediaService $deleteMultimediaService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_MULTIMEDIA)]
+    public function delete(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        DeleteMultimediaService $deleteMultimediaService
+    ): JsonResponse {
+        if ($multimedia->getUser() !== $this->authorizedUser->getUser()) {
+            throw EntityNotFoundException::multimedia();
+        }
+
+        return $deleteMultimediaService->make($multimedia);
     }
 
     /**

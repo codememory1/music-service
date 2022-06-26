@@ -34,6 +34,11 @@ abstract class AbstractResponseData implements ResponseDataInterface
     protected array $methodPrefixesForProperties = [];
 
     /**
+     * @var array
+     */
+    protected array $aliases = [];
+
+    /**
      * @var ReverseContainer
      */
     protected ReverseContainer $container;
@@ -63,6 +68,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
         $this->ignoredProperties[] = 'ignoredProperties';
         $this->ignoredProperties[] = 'container';
         $this->ignoredProperties[] = 'methodPrefixesForProperties';
+        $this->ignoredProperties[] = 'aliases';
     }
 
     /**
@@ -182,12 +188,17 @@ abstract class AbstractResponseData implements ResponseDataInterface
 
             foreach ($this->allowedProperties as $allowedProperty) {
                 $value = $entity->{$allowedProperty['getterToEntity']}();
+                $keyToResponse = $allowedProperty['keyToResponse'];
 
                 if ([] !== $interceptor = $allowedProperty['interceptor']) {
                     $value = $interceptor['handler']->handle($interceptor['constraint'], $this, $value);
                 }
 
-                $toArray[$allowedProperty['keyToResponse']] = empty($value) ? $this->{$allowedProperty['propertyName']} : $value;
+                if (array_key_exists($allowedProperty['keyToResponse'], $this->aliases)) {
+                    $keyToResponse = $this->aliases[$allowedProperty['keyToResponse']];
+                }
+
+                $toArray[$keyToResponse] = empty($value) ? $this->{$allowedProperty['propertyName']} : $value;
             }
 
             $this->response[] = $toArray;
