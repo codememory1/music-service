@@ -6,11 +6,14 @@ use App\Entity\Album;
 use App\Entity\MultimediaCategory;
 use App\Entity\MultimediaMetadata;
 use App\Entity\MultimediaQueue;
+use App\Entity\MultimediaRating;
+use App\Enum\MultimediaRatingTypeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 use Doctrine\Common\Collections\Collection;
+use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * Class MultimediaResponseData.
@@ -90,6 +93,15 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
     #[ResponseDataConstraints\Callback('handleQueue')]
     public array $queue = [];
 
+    #[ResponseDataConstraints\Callback('handleShares')]
+    public int $shares = 0;
+
+    #[ResponseDataConstraints\Callback('handleAuditions')]
+    public int $auditions = 0;
+
+    #[ResponseDataConstraints\Callback('handleRatings')]
+    public int $ratings = 0;
+
     /**
      * @var null|string
      */
@@ -110,6 +122,7 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
     {
         $albumResponseData = new AlbumResponseData($this->container);
 
+        $albumResponseData->setIgnoreProperty('multimedia');
         $albumResponseData->setEntities($album);
 
         return $albumResponseData->collect()->getResponse(true);
@@ -169,5 +182,39 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
         $multimediaQueueResponseData->setEntities($multimediaQueue ?? []);
 
         return $multimediaQueueResponseData->collect()->getResponse(true);
+    }
+
+    /**
+     * @param Collection $shares
+     *
+     * @return int
+     */
+    public function handleShares(Collection $shares): int
+    {
+        return $shares->count();
+    }
+
+    /**
+     * @param Collection $auditions
+     *
+     * @return int
+     */
+    public function handleAuditions(Collection $auditions): int
+    {
+        return $auditions->count();
+    }
+
+    /**
+     * @param Collection $ratings
+     *
+     * @return array
+     */
+    #[ArrayShape(['like' => 'int', 'dislike' => 'int'])]
+    public function handleRatings(Collection $ratings): array
+    {
+        return [
+            'like' => $ratings->filter(static fn(MultimediaRating $multimediaRating) => $multimediaRating->getType() === MultimediaRatingTypeEnum::LIKE->name)->count(),
+            'dislike' => $ratings->filter(static fn(MultimediaRating $multimediaRating) => $multimediaRating->getType() === MultimediaRatingTypeEnum::DISLIKE->name)->count()
+        ];
     }
 }
