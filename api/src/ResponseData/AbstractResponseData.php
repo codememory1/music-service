@@ -72,9 +72,17 @@ abstract class AbstractResponseData implements ResponseDataInterface
     }
 
     /**
-     * @param array<EntityInterface>|EntityInterface $entities
-     *
-     * @return $this
+     * @inheritDoc
+     */
+    public function setIgnoreProperty(string $name): ResponseDataInterface
+    {
+        $this->ignoredProperties[] = $name;
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function setEntities(EntityInterface|array $entities): self
     {
@@ -84,7 +92,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
     }
 
     /**
-     * @return $this
+     * @inheritDoc
      */
     public function collect(): self
     {
@@ -109,9 +117,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
     }
 
     /**
-     * @param bool $first
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getResponse(bool $first = false): array
     {
