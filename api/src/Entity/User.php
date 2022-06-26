@@ -89,6 +89,18 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaPerformer::class)]
     private Collection $multimediaPerformers;
 
+    #[ORM\OneToMany(mappedBy: 'fromUser', targetEntity: MultimediaShare::class)]
+    private Collection $multimediaSharedByMe;
+
+    #[ORM\OneToMany(mappedBy: 'toUser', targetEntity: MultimediaShare::class)]
+    private Collection $multimediaSharedWithMe;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaAudition::class)]
+    private Collection $multimediaAuditions;
+
+    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: MultimediaRating::class)]
+    private $multimediaRatings;
+
     #[Pure]
     public function __construct()
     {
@@ -99,6 +111,10 @@ class User implements EntityInterface
         $this->notifications = new ArrayCollection();
         $this->multimedia = new ArrayCollection();
         $this->multimediaPerformers = new ArrayCollection();
+        $this->multimediaSharedByMe = new ArrayCollection();
+        $this->multimediaSharedWithMe = new ArrayCollection();
+        $this->multimediaAuditions = new ArrayCollection();
+        $this->multimediaRatings = new ArrayCollection();
     }
 
     /**
@@ -512,6 +528,136 @@ class User implements EntityInterface
             // set the owning side to null (unless already changed)
             if ($multimediaPerformer->getUser() === $this) {
                 $multimediaPerformer->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaShare>
+     */
+    public function getMultimediaSharedByMe(): Collection
+    {
+        return $this->multimediaSharedByMe;
+    }
+
+    /**
+     * @param MultimediaShare $sharedWithMe
+     *
+     * @return $this
+     */
+    public function removeMultimediaSharedByMe(MultimediaShare $sharedByMe): self
+    {
+        if ($this->multimediaSharedByMe->removeElement($sharedByMe)) {
+            // set the owning side to null (unless already changed)
+            if ($sharedByMe->getToUser() === $this) {
+                $sharedByMe->setToUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaShare>
+     */
+    public function getMultimediaSharedWithMe(): Collection
+    {
+        return $this->multimediaSharedWithMe;
+    }
+
+    /**
+     * @param MultimediaShare $sharedWithMe
+     *
+     * @return $this
+     */
+    public function removeSharedWithMe(MultimediaShare $sharedWithMe): self
+    {
+        if ($this->multimediaSharedWithMe->removeElement($sharedWithMe)) {
+            // set the owning side to null (unless already changed)
+            if ($sharedWithMe->getToUser() === $this) {
+                $sharedWithMe->setToUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaAudition>
+     */
+    public function getMultimediaAuditions(): Collection
+    {
+        return $this->multimediaAuditions;
+    }
+
+    /**
+     * @param MultimediaAudition $multimediaAudition
+     *
+     * @return $this
+     */
+    public function addMultimediaAudition(MultimediaAudition $multimediaAudition): self
+    {
+        if (!$this->multimediaAuditions->contains($multimediaAudition)) {
+            $this->multimediaAuditions[] = $multimediaAudition;
+            $multimediaAudition->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MultimediaAudition $multimediaAudition
+     *
+     * @return $this
+     */
+    public function removeMultimediaAudition(MultimediaAudition $multimediaAudition): self
+    {
+        if ($this->multimediaAuditions->removeElement($multimediaAudition)) {
+            // set the owning side to null (unless already changed)
+            if ($multimediaAudition->getUser() === $this) {
+                $multimediaAudition->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaRating>
+     */
+    public function getMultimediaRatings(): Collection
+    {
+        return $this->multimediaRatings;
+    }
+
+    /**
+     * @param MultimediaRating $multimediaRating
+     *
+     * @return $this
+     */
+    public function addMultimediaRating(MultimediaRating $multimediaRating): self
+    {
+        if (!$this->multimediaRatings->contains($multimediaRating)) {
+            $this->multimediaRatings[] = $multimediaRating;
+            $multimediaRating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MultimediaRating $multimediaRating
+     *
+     * @return $this
+     */
+    public function removeMultimediaRating(MultimediaRating $multimediaRating): self
+    {
+        if ($this->multimediaRatings->removeElement($multimediaRating)) {
+            // set the owning side to null (unless already changed)
+            if ($multimediaRating->getUser() === $this) {
+                $multimediaRating->setUser(null);
             }
         }
 

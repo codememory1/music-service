@@ -101,10 +101,22 @@ class Multimedia implements EntityInterface
     #[ORM\OneToOne(mappedBy: 'multimedia', targetEntity: MultimediaQueue::class, cascade: ['persist', 'remove'])]
     private ?MultimediaQueue $queue = null;
 
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaShare::class, cascade: ['persist', 'remove'])]
+    private ?Collection $shares;
+
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaAudition::class)]
+    private Collection $auditions;
+
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaRating::class)]
+    private Collection $ratings;
+
     #[Pure]
     public function __construct()
     {
         $this->performers = new ArrayCollection();
+        $this->shares = new ArrayCollection();
+        $this->auditions = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     /**
@@ -469,6 +481,94 @@ class Multimedia implements EntityInterface
         }
 
         $this->queue = $queue;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<MultimediaShare>
+     */
+    public function getShares(): Collection
+    {
+        return $this->shares;
+    }
+
+    /**
+     * @return Collection<int, MultimediaAudition>
+     */
+    public function getAuditions(): Collection
+    {
+        return $this->auditions;
+    }
+
+    /**
+     * @param MultimediaAudition $audition
+     *
+     * @return $this
+     */
+    public function addAudition(MultimediaAudition $audition): self
+    {
+        if (!$this->auditions->contains($audition)) {
+            $this->auditions[] = $audition;
+            $audition->setMultimedia($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MultimediaAudition $audition
+     *
+     * @return $this
+     */
+    public function removeAudition(MultimediaAudition $audition): self
+    {
+        if ($this->auditions->removeElement($audition)) {
+            // set the owning side to null (unless already changed)
+            if ($audition->getMultimedia() === $this) {
+                $audition->setMultimedia(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaRating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    /**
+     * @param MultimediaRating $rating
+     *
+     * @return $this
+     */
+    public function addRating(MultimediaRating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setMultimedia($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param MultimediaRating $rating
+     *
+     * @return $this
+     */
+    public function removeRating(MultimediaRating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getMultimedia() === $this) {
+                $rating->setMultimedia(null);
+            }
+        }
 
         return $this;
     }
