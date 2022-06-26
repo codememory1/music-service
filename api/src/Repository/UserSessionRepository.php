@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
-use App\Security\AuthorizedUser;
+use App\Security\Auth\AuthorizedUser;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -22,11 +22,6 @@ class UserSessionRepository extends AbstractRepository
      * @inheritDoc
      */
     protected ?string $entity = UserSession::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected ?string $alias = 'us';
 
     #[Required]
     public ?AuthorizedUser $authorizedUser = null;

@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Entity\Language;
 use App\Entity\Translation;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class TranslationRepository.
@@ -11,7 +11,7 @@ use App\Entity\Translation;
  * @package App\Repository
  * @template-extends AbstractRepository<Translation>
  *
- * @author  Codememory
+ * @author  codememory
  */
 class TranslationRepository extends AbstractRepository
 {
@@ -23,39 +23,24 @@ class TranslationRepository extends AbstractRepository
     /**
      * @inheritDoc
      */
-    protected ?string $alias = 't';
-
-    /**
-     * @inheritDoc
-     */
-    protected function findByCriteria(array $criteria, array $orderBy = []): array
+    public function findByCriteria(array $criteria, array $orderBy = [], ?callable $callback = null): array
     {
-        $qb = $this->getQueryBuilder();
+        $filterService = $this->filterService;
 
-        $qb->leftJoin('t.translationKey', 'tk');
+        $callback = static function(QueryBuilder $qb, string $tableName) use ($filterService): void {
+            $qb->leftJoin("${tableName}.translationKey", 'tk');
 
-        if (false !== $filterByGroup = $this->filterService->get('group')) {
-            $qb->andWhere($qb->expr()->like('tk.key', ':key'));
-            $qb->setParameter('key', "${filterByGroup}@%");
-        }
+            if (false !== $filterByGroup = $filterService->get('group')) {
+                $qb->andWhere($qb->expr()->like('tk.key', ':key'));
+                $qb->setParameter('key', "${filterByGroup}@%");
+            }
 
-        if (false !== $filterByKey = $this->filterService->get('key')) {
-            $qb->andWhere('tk.key = :key');
-            $qb->setParameter('key', $filterByKey);
-        }
+            if (false !== $filterByKey = $filterService->get('key')) {
+                $qb->andWhere('tk.key = :key');
+                $qb->setParameter('key', $filterByKey);
+            }
+        };
 
-        return parent::findByCriteria($criteria, []);
-    }
-
-    /**
-     * @param Language $language
-     *
-     * @return array
-     */
-    public function findAllByLanguage(Language $language): array
-    {
-        return $this->findByCriteria([
-            't.language' => $language
-        ]);
+        return parent::findByCriteria($criteria, [], $callback);
     }
 }

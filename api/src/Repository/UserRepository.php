@@ -20,11 +20,6 @@ class UserRepository extends AbstractRepository
     protected ?string $entity = User::class;
 
     /**
-     * @inheritDoc
-     */
-    protected ?string $alias = 'u';
-
-    /**
      * @param null|string $email
      *
      * @return null|User

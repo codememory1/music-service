@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Album;
-use App\Entity\User;
 
 /**
  * Class AlbumRepository.
@@ -19,21 +18,4 @@ class AlbumRepository extends AbstractRepository
      * @inheritDoc
      */
     protected ?string $entity = Album::class;
-
-    /**
-     * @inheritDoc
-     */
-    protected ?string $alias = 'a';
-
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
-    public function findAllByUser(User $user): array
-    {
-        return $this->findByCriteria([
-            'a.user' => $user
-        ]);
-    }
 }

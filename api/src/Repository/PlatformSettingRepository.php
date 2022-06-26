@@ -20,11 +20,6 @@ class PlatformSettingRepository extends AbstractRepository
     protected ?string $entity = PlatformSetting::class;
 
     /**
-     * @inheritDoc
-     */
-    protected ?string $alias = 'ps';
-
-    /**
      * @param string $key
      *
      * @return null|PlatformSetting

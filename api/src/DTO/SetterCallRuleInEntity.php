@@ -5,7 +5,7 @@ namespace App\DTO;
 use App\Enum\RoleEnum;
 use App\Enum\RolePermissionEnum;
 use App\Enum\SubscriptionPermissionEnum;
-use App\Security\AuthorizedUser;
+use App\Security\Auth\AuthorizedUser;
 
 /**
  * Class SetterCallRuleInEntity.

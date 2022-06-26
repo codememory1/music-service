@@ -197,7 +197,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'albumType@minion', 'Мини-альбом'),
             new TranslationFactory('ru', 'albumType@compilation', 'Сборник'),
             new TranslationFactory('ru', 'albumType@bestCompilation', 'Сборник лучших хитов'),
-            new TranslationFactory('ru', 'albumType@single', 'Сингл'),
+            new TranslationFactory('ru', 'albumType@single', 'Синг'),
 
             new TranslationFactory('ru', 'album@titleIsRequired', 'Имя альбома обязательно к заполнению'),
             new TranslationFactory('ru', 'album@maxTitleLength', 'Название альбома не должно превышать 50 символов'),
@@ -256,7 +256,6 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimedia@badUnpublish', 'Невозможно снять с публикации мультимедию'),
             new TranslationFactory('ru', 'multimedia@successPublish', 'Мультимедиа успешно опубликована'),
             new TranslationFactory('ru', 'multimedia@successUnpublish', 'Мультимедиа успешно снята с публикации'),
-            new TranslationFactory('ru', 'multimedia@badAddMultimediaToUserInvalidSubscription', 'Невозможно добавить мультимедиа у пользователя не существует корректной подписки'),
 
             new TranslationFactory('ru', 'status@draft', 'Черновик'),
             new TranslationFactory('ru', 'status@moderation', 'Модерация'),

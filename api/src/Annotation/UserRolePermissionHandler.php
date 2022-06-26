@@ -5,7 +5,7 @@ namespace App\Annotation;
 use App\Annotation\Interfaces\MethodAnnotationHandlerInterface;
 use App\Annotation\Interfaces\MethodAnnotationInterface;
 use App\Rest\Http\Exceptions\AccessDeniedException;
-use App\Security\AuthorizedUser;
+use App\Security\Auth\AuthorizedUser;
 
 /**
  * Class UserRolePermissionHandler.
@@ -36,7 +36,7 @@ class UserRolePermissionHandler implements MethodAnnotationHandlerInterface
      */
     public function handle(MethodAnnotationInterface $annotation): void
     {
-        if (false === $this->authorizedUser->isRolePermission($annotation->rolePermission)) {
+        if (false === $this->authorizedUser->hasRolePermission($annotation->rolePermission)) {
             throw AccessDeniedException::notEnoughPermissions();
         }
     }
