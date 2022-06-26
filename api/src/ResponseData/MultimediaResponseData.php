@@ -112,7 +112,7 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
 
         $albumResponseData->setEntities($album);
 
-        return $albumResponseData->collect()->getResponse();
+        return $albumResponseData->collect()->getResponse(true);
     }
 
     /**
@@ -126,7 +126,7 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
 
         $multimediaCategoryResponseData->setEntities($multimediaCategory);
 
-        return $multimediaCategoryResponseData->collect()->getResponse();
+        return $multimediaCategoryResponseData->collect()->getResponse(true);
     }
 
     /**
@@ -154,7 +154,7 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
 
         $multimediaMetadataResponseData->setEntities($multimediaMetadata);
 
-        return $multimediaMetadataResponseData->collect()->getResponse();
+        return $multimediaMetadataResponseData->collect()->getResponse(true);
     }
 
     /**
