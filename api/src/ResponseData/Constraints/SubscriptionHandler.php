@@ -4,7 +4,7 @@ namespace App\ResponseData\Constraints;
 
 use App\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\ResponseData\Interfaces\ConstraintInterface;
-use App\Security\Auth\AuthorizedUser;
+use App\Security\AuthorizedUser;
 
 /**
  * Class SubscriptionHandler.
@@ -35,8 +35,6 @@ class SubscriptionHandler implements ConstraintHandlerInterface
      */
     public function handle(ConstraintInterface $constraint): bool
     {
-        $user = $this->authorizedUser->getUser();
-
-        return !($user?->getSubscription()->getKey() !== $constraint->subscription->name);
+        return $this->authorizedUser->isSubscription($constraint->subscription);
     }
 }

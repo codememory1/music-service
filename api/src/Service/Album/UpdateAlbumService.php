@@ -3,9 +3,7 @@
 namespace App\Service\Album;
 
 use App\DTO\AlbumDTO;
-use App\Entity\Album;
 use App\Entity\User;
-use App\Rest\S3\Uploader\ImageUploader;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -20,7 +18,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 class UpdateAlbumService extends AbstractService
 {
     #[Required]
-    public ?ImageUploader $imageUploader = null;
+    public ?SaveAlbumService $saveAlbumService = null;
 
     /**
      * @param AlbumDTO $albumDTO
@@ -37,25 +35,9 @@ class UpdateAlbumService extends AbstractService
         $albumEntity = $albumDTO->getEntity();
 
         $albumEntity->setUser($toUser);
-        $albumEntity->setImage($this->updateImageToStorage($albumDTO, $albumEntity, $toUser));
 
-        $this->em->flush();
+        $this->saveAlbumService->make($albumDTO, $albumEntity);
 
         return $this->responseCollection->successUpdate('album@successUpdate');
-    }
-
-    /**
-     * @param AlbumDTO $albumDTO
-     * @param Album    $album
-     * @param User     $toUser
-     *
-     * @return null|string
-     */
-    private function updateImageToStorage(AlbumDTO $albumDTO, Album $album, User $toUser): ?string
-    {
-        $this->imageUploader->delete($album->getImage());
-        $this->imageUploader->upload($albumDTO->image, [$toUser->getId()]);
-
-        return $this->imageUploader->getUploadedFile()->last();
     }
 }

@@ -85,7 +85,7 @@ class MultimediaException extends ApiResponseException
     final public static function badUpdateInStatus(string $status, array $data = [], array $headers = []): self
     {
         return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badUpdateInStatus', [
-            'status' => MultimediaStatusEnum::getValueByName($status)
+            '@status' => MultimediaStatusEnum::getValueByName($status)
         ], data: $data, headers: $headers);
     }
 
@@ -99,7 +99,7 @@ class MultimediaException extends ApiResponseException
     final public static function badSendOnAppeal(string $status, array $data = [], array $headers = []): self
     {
         return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badSendOnAppeal', [
-            'status' => MultimediaStatusEnum::getValueByName($status)
+            '@status' => MultimediaStatusEnum::getValueByName($status)
         ], data: $data, headers: $headers);
     }
 
@@ -113,5 +113,14 @@ class MultimediaException extends ApiResponseException
     final public static function badAppealCanceled(array $data = [], array $headers = []): self
     {
         return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badAppealCanceled', data: $data, headers: $headers);
+    }
+
+    /**
+     * @return static
+     */
+    #[Pure]
+    final public static function badAddMultimediaToUserInvalid(): self
+    {
+        return new self(400, ResponseTypeEnum::CHECK_CORRECTNESS, 'multimedia@badAddMultimediaToUserInvalidSubscription');
     }
 }

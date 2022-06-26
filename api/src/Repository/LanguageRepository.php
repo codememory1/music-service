@@ -22,14 +22,19 @@ class LanguageRepository extends AbstractRepository
     /**
      * @inheritDoc
      */
-    public function findByCriteria(array $criteria, array $orderBy = [], ?callable $callback = null): array
+    protected ?string $alias = 'l';
+
+    /**
+     * @inheritDoc
+     */
+    public function findByCriteria(array $criteria, array $orderBy = []): array
     {
         if (false !== $sortByCode = $this->sortService->get('code')) {
-            $orderBy['code'] = $this->getOrderType($sortByCode);
+            $orderBy['l.code'] = $this->getOrderType($sortByCode);
         }
 
         if (false !== $sortByTitle = $this->sortService->get('title')) {
-            $orderBy['originalTitle'] = $this->getOrderType($sortByTitle);
+            $orderBy['l.originalTitle'] = $this->getOrderType($sortByTitle);
         }
 
         return parent::findByCriteria([], $orderBy);

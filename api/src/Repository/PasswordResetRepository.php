@@ -18,4 +18,9 @@ class PasswordResetRepository extends AbstractRepository
      * @inheritDoc
      */
     protected ?string $entity = PasswordReset::class;
+
+    /**
+     * @inheritDoc
+     */
+    protected ?string $alias = 'pr';
 }

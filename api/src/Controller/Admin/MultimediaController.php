@@ -9,12 +9,15 @@ use App\DTO\MultimediaDTO;
 use App\Entity\Multimedia;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
+use App\Enum\SubscriptionPermissionEnum;
 use App\Repository\MultimediaRepository;
 use App\ResponseData\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Rest\Http\Exceptions\MultimediaException;
 use App\Service\Multimedia\AddMultimediaService;
 use App\Service\Multimedia\AppealCanceledService;
+use App\Service\Multimedia\DeleteMultimediaService;
 use App\Service\Multimedia\PublishMultimediaService;
 use App\Service\Multimedia\SendOnModerationService;
 use App\Service\Multimedia\UnpublishMultimediaService;
@@ -83,6 +86,12 @@ class MultimediaController extends AbstractRestController
         MultimediaDTO $multimediaDTO,
         AddMultimediaService $addMultimediaService
     ): JsonResponse {
+        $this->authorizedUser->setUser($user);
+
+        if (false === $this->authorizedUser->isSubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)) {
+            throw MultimediaException::badAddMultimediaToUserInvalid();
+        }
+
         return $addMultimediaService->make($multimediaDTO->collect(), $user);
     }
 
@@ -104,6 +113,22 @@ class MultimediaController extends AbstractRestController
         $multimediaDTO->setEntity($multimedia);
 
         return $updateMultimediaService->make($multimediaDTO->collect());
+    }
+
+    /**
+     * @param Multimedia              $multimedia
+     * @param DeleteMultimediaService $deleteMultimediaService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_TO_USER)]
+    public function delete(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        DeleteMultimediaService $deleteMultimediaService
+    ): JsonResponse {
+        return $deleteMultimediaService->make($multimedia);
     }
 
     /**
