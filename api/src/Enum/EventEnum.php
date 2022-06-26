@@ -21,4 +21,5 @@ enum EventEnum: string
     case AFTER_SAVE_MULTIMEDIA = 'app.multimedia.after-save';
     case MULTIMEDIA_STATUS_CHANGE = 'app.multimedia.status-change';
     case SAVE_ALBUM = 'app.album.save';
+    case SET_RATING_MULTIMEDIA = 'app.multimedia.set-rating';
 }

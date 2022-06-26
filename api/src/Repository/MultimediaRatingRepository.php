@@ -2,65 +2,41 @@
 
 namespace App\Repository;
 
+use App\Entity\Multimedia;
 use App\Entity\MultimediaRating;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
 
 /**
- * @extends ServiceEntityRepository<MultimediaRating>
+ * Class MultimediaRatingRepository.
  *
- * @method null|MultimediaRating find($id, $lockMode = null, $lockVersion = null)
- * @method null|MultimediaRating findOneBy(array $criteria, array $orderBy = null)
- * @method MultimediaRating[]    findAll()
- * @method MultimediaRating[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @package App\Repository
+ * @template-extends AbstractRepository<MultimediaRating>
+ *
+ * @author  Codememory
  */
-class MultimediaRatingRepository extends ServiceEntityRepository
+class MultimediaRatingRepository extends AbstractRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @inheritDoc
+     */
+    protected ?string $entity = MultimediaRating::class;
+
+    /**
+     * @inheritDoc
+     */
+    protected ?string $alias = 'mr';
+
+    /**
+     * @param Multimedia $multimedia
+     * @param User       $fromUser
+     *
+     * @return null|MultimediaRating
+     */
+    public function getRating(Multimedia $multimedia, User $fromUser): ?MultimediaRating
     {
-        parent::__construct($registry, MultimediaRating::class);
+        return $this->findOneBy([
+            'multimedia' => $multimedia,
+            'user' => $fromUser
+        ]);
     }
-
-    public function add(MultimediaRating $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-    public function remove(MultimediaRating $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-//    /**
-//     * @return MultimediaRating[] Returns an array of MultimediaRating objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?MultimediaRating
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

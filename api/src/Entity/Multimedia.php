@@ -107,7 +107,7 @@ class Multimedia implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaAudition::class)]
     private Collection $auditions;
 
-    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaRating::class)]
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaRating::class, cascade: ['persist', 'remove'])]
     private Collection $ratings;
 
     #[Pure]

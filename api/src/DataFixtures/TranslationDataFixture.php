@@ -257,6 +257,10 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimedia@successPublish', 'Мультимедиа успешно опубликована'),
             new TranslationFactory('ru', 'multimedia@successUnpublish', 'Мультимедиа успешно снята с публикации'),
             new TranslationFactory('ru', 'multimedia@badAddMultimediaToUserInvalidSubscription', 'Невозможно добавить мультимедиа у пользователя не существует корректной подписки'),
+            new TranslationFactory('ru', 'multimedia@successSetLike', 'Лайк успешно установлен'),
+            new TranslationFactory('ru', 'multimedia@successSetDislike', 'Дизлайк успешно установлен'),
+            new TranslationFactory('ru', 'multimedia@successDeleteLike', 'Лайк успешно снят'),
+            new TranslationFactory('ru', 'multimedia@successDeleteDislike', 'Дизлайк успешно снят'),
 
             new TranslationFactory('ru', 'status@draft', 'Черновик'),
             new TranslationFactory('ru', 'status@moderation', 'Модерация'),
