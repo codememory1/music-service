@@ -6,7 +6,6 @@ use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\Entity\User;
-use App\Enum\SubscriptionEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
@@ -38,11 +37,14 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
         SubscribeOnArtistService $subscribeOnArtistService
     ): JsonResponse {
-        if ($artist->getSubscription()?->getKey() !== SubscriptionEnum::ARTIST->name) {
+        $subscriber = $this->authorizedUser->getUser();
+        $artistUserHelper = $this->authorizedUser->setUser($artist);
+
+        if (false === $artistUserHelper->isSubscriptionPermission(SubscriptionPermissionEnum::ACCEPTING_SUBSCRIBERS)) {
             throw EntityNotFoundException::user();
         }
 
-        return $subscribeOnArtistService->make($artist, $this->authorizedUser->getUser());
+        return $subscribeOnArtistService->make($artist, $subscriber);
     }
 
     /**
@@ -58,10 +60,13 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
         UnsubscribeOnArtistService $unsubscribeOnArtistService
     ): JsonResponse {
-        if ($artist->getSubscription()?->getKey() !== SubscriptionEnum::ARTIST->name) {
+        $subscriber = $this->authorizedUser->getUser();
+        $artistUserHelper = $this->authorizedUser->setUser($artist);
+
+        if (false === $artistUserHelper->isSubscriptionPermission(SubscriptionPermissionEnum::ACCEPTING_SUBSCRIBERS)) {
             throw EntityNotFoundException::user();
         }
 
-        return $unsubscribeOnArtistService->make($artist, $this->authorizedUser->getUser());
+        return $unsubscribeOnArtistService->make($artist, $subscriber);
     }
 }
