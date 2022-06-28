@@ -178,6 +178,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@addMultimedia', 'Добавление мультимедий'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@listeningToMultimedia', 'Прослушивание мультимедии артистов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@controlSubscriptionOnArtist', 'Подписаться или отписаться от артиста'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@acceptingSubscribers', 'Возможность подписываться на артиста'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
