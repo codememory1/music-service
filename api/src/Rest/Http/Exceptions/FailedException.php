@@ -31,4 +31,22 @@ class FailedException extends ApiResponseException
     {
         return new self(400, ResponseTypeEnum::FAILED, 'common@failedToUpdateAccessToken');
     }
+
+    /**
+     * @return static
+     */
+    #[Pure]
+    public static function failedSubscribeOnArtist(): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'artist@failedSubscribeOnArtist');
+    }
+
+    /**
+     * @return static
+     */
+    #[Pure]
+    public static function failedUnsubscribeOnArtist(): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'artist@failedUnsubscribeOnArtist');
+    }
 }
