@@ -31,10 +31,13 @@ final class SubscriptionPermissionDataFixture extends AbstractDataFixture implem
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::UPDATE_MULTIMEDIA),
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::DELETE_MULTIMEDIA),
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA),
+            new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST),
 
             new SubscriptionPermissionFactory(SubscriptionEnum::PREMIUM, SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA),
+            new SubscriptionPermissionFactory(SubscriptionEnum::PREMIUM, SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST),
 
             new SubscriptionPermissionFactory(SubscriptionEnum::FAMILY, SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA),
+            new SubscriptionPermissionFactory(SubscriptionEnum::FAMILY, SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST),
         ]);
     }
 

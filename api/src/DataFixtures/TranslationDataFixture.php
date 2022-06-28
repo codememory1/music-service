@@ -177,6 +177,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteAlbum', 'Удаление альбомов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@addMultimedia', 'Добавление мультимедий'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@listeningToMultimedia', 'Прослушивание мультимедии артистов'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@controlSubscriptionOnArtist', 'Подписаться или отписаться от артиста'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
@@ -268,6 +269,11 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'status@unpublished', 'Снят с публикации'),
             new TranslationFactory('ru', 'status@appeal', 'Апелляция'),
             new TranslationFactory('ru', 'status@appealCanceld', 'Отменена апелляция'),
+
+            new TranslationFactory('ru', 'artist@successSubscribe', 'Вы успешно подписались на артиста'),
+            new TranslationFactory('ru', 'artist@failedSubscribeOnArtist', 'Вы уже подписаны на данного артиста'),
+            new TranslationFactory('ru', 'artist@successUnsubscribe', 'Вы успешно отписались от данного артиста'),
+            new TranslationFactory('ru', 'artist@failedUnsubscribeOnArtist', 'Вы не подписаны на данного артиста'),
         ]);
     }
 

@@ -20,4 +20,5 @@ enum SubscriptionPermissionEnum
     case UPDATE_MULTIMEDIA;
     case DELETE_MULTIMEDIA;
     case LISTENING_TO_MULTIMEDIA;
+    case CONTROL_SUBSCRIPTION_ON_ARTIST;
 }

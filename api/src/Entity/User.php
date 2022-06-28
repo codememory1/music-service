@@ -98,8 +98,14 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaAudition::class)]
     private Collection $multimediaAuditions;
 
-    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: MultimediaRating::class)]
-    private $multimediaRatings;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaRating::class)]
+    private Collection $multimediaRatings;
+
+    #[ORM\OneToMany(mappedBy: 'artist', targetEntity: ArtistSubscriber::class, cascade: ['persist', 'remove'])]
+    private Collection $subscribers;
+
+    #[ORM\OneToMany(mappedBy: 'subscriber', targetEntity: ArtistSubscriber::class, cascade: ['persist', 'remove'])]
+    private Collection $subscriptions;
 
     #[Pure]
     public function __construct()
@@ -115,6 +121,8 @@ class User implements EntityInterface
         $this->multimediaSharedWithMe = new ArrayCollection();
         $this->multimediaAuditions = new ArrayCollection();
         $this->multimediaRatings = new ArrayCollection();
+        $this->subscribers = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
     }
 
     /**
@@ -658,6 +666,86 @@ class User implements EntityInterface
             // set the owning side to null (unless already changed)
             if ($multimediaRating->getUser() === $this) {
                 $multimediaRating->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArtistSubscriber>
+     */
+    public function getSubscribers(): Collection
+    {
+        return $this->subscribers;
+    }
+
+    /**
+     * @param ArtistSubscriber $subscriber
+     *
+     * @return $this
+     */
+    public function addSubscriber(ArtistSubscriber $subscriber): self
+    {
+        if (!$this->subscribers->contains($subscriber)) {
+            $this->subscribers[] = $subscriber;
+            $subscriber->setArtist($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ArtistSubscriber $subscriber
+     *
+     * @return $this
+     */
+    public function removeSubscriber(ArtistSubscriber $subscriber): self
+    {
+        if ($this->subscribers->removeElement($subscriber)) {
+            // set the owning side to null (unless already changed)
+            if ($subscriber->getArtist() === $this) {
+                $subscriber->setArtist(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArtistSubscriber>
+     */
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    /**
+     * @param ArtistSubscriber $subscription
+     *
+     * @return $this
+     */
+    public function addSubscription(ArtistSubscriber $subscription): self
+    {
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions[] = $subscription;
+            $subscription->setSubscriber($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ArtistSubscriber $subscription
+     *
+     * @return $this
+     */
+    public function removeSubscription(ArtistSubscriber $subscription): self
+    {
+        if ($this->subscriptions->removeElement($subscription)) {
+            // set the owning side to null (unless already changed)
+            if ($subscription->getSubscriber() === $this) {
+                $subscription->setSubscriber(null);
             }
         }
 
