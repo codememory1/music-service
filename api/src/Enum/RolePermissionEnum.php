@@ -50,4 +50,5 @@ enum RolePermissionEnum
     case ADD_MULTIMEDIA_TO_USER;
     case UPDATE_MULTIMEDIA_TO_USER;
     case DELETE_MULTIMEDIA_TO_USER;
+    case ALBUM_STATUS_CONTROL_TO_USER;
 }

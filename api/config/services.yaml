@@ -100,6 +100,11 @@ services:
       tags:
         - { name: kernel.event_listener, event: app.album.save, method: onSaveAlbum, priority: 1 }
 
+    # Album status change
+    App\EventListener\AlbumStatusChange\SendNotificationAboutNewReleaseListener:
+      tags:
+        - { name: kernel.event_listener, event: app.album.status-change, method: onAlbumStatusChange, priority: 1 }
+
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
       public: true

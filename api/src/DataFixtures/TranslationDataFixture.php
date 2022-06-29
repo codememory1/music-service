@@ -128,6 +128,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@addMultimediaToUser', 'Добавление мультимедии к пользователю'),
             new TranslationFactory('ru', 'rolePermission@updateMultimediaToUser', 'Обновление мультимедий пользователя'),
             new TranslationFactory('ru', 'rolePermission@deleteMultimediaToUser', 'Просмотр мультимедий пользователей'),
+            new TranslationFactory('ru', 'rolePermission@albumStatusControlToUser', 'Управление статусами альбома пользователей'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -212,6 +213,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'album@successUpdate', 'Альбом успешно обновлен'),
             new TranslationFactory('ru', 'album@successDelete', 'Альбом успешно удален'),
             new TranslationFactory('ru', 'album@badAddMultimediaToSingleAlbum', 'Сингл альбом не может содержать более 1-й мультимедии'),
+            new TranslationFactory('ru', 'album@badPublicationToAlreadyPublication', 'Данный альбом уже опубликован'),
+            new TranslationFactory('ru', 'album@successPublication', 'Альбом успешно опубликован'),
+            new TranslationFactory('ru', 'album@badPublicationWithoutPublishedMultimedia', 'Невозможно публиковать альбом! Альбом должен содержать хотя бы одну опубликованную мультимедиа'),
 
             new TranslationFactory('ru', 'userSession@successDelete', 'Сеанс успешно удален'),
             new TranslationFactory('ru', 'userSession@successDeleteMultiple', 'Сеансы успешно удалены'),
@@ -224,6 +228,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'notification@maxLengthMessage', 'Сообщение уведомления не должно превышать 500 символов'),
             new TranslationFactory('ru', 'notification@invalidAction', 'Некорректное действие уведомления'),
             new TranslationFactory('ru', 'notification@successCreate', 'Уведомление успешно создано'),
+
+            new TranslationFactory('ru', 'userNotification@titleNewRelease', 'Новый релиз'),
+            new TranslationFactory('ru', 'userNotification@newReleaseToArtist', 'У артиста %artist_pseudonym% вышел новый релиз'),
 
             new TranslationFactory('ru', 'serviceAuth@authorizationCodeIsRequired', 'Код авторизации обязателен к заполнению'),
 

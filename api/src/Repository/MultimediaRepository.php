@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Album;
 use App\Entity\Multimedia;
 use App\Entity\User;
+use App\Enum\AlbumStatusEnum;
+use App\Enum\MultimediaStatusEnum;
 
 /**
  * Class MultimediaRepository.
@@ -44,6 +46,22 @@ class MultimediaRepository extends AbstractRepository
         }
 
         return parent::findByCriteria($criteria, $orderBy);
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
+    public function findAnother(User $user): array
+    {
+        $this->qb->leftJoin('m.album', 'a');
+
+        return $this->findByCriteria([
+            'm.user' => $user,
+            'm.status' => MultimediaStatusEnum::PUBLISHED->name,
+            'a.status' => AlbumStatusEnum::PUBLISHED->name
+        ]);
     }
 
     /**

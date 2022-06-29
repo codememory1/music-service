@@ -22,4 +22,5 @@ enum EventEnum: string
     case MULTIMEDIA_STATUS_CHANGE = 'app.multimedia.status-change';
     case SAVE_ALBUM = 'app.album.save';
     case SET_RATING_MULTIMEDIA = 'app.multimedia.set-rating';
+    case ALBUM_STATUS_CHANGE = 'app.album.status-change';
 }

@@ -8,7 +8,6 @@ use App\Annotation\SubscriptionPermission;
 use App\DTO\MultimediaDTO;
 use App\Entity\Multimedia;
 use App\Entity\User;
-use App\Enum\MultimediaStatusEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Repository\MultimediaRepository;
 use App\ResponseData\MultimediaResponseData;
@@ -66,10 +65,7 @@ class MultimediaController extends AbstractRestController
         MultimediaResponseData $multimediaResponseData,
         MultimediaRepository $multimediaRepository
     ): JsonResponse {
-        $multimediaResponseData->setEntities($multimediaRepository->findBy([
-            'user' => $user,
-            'status' => MultimediaStatusEnum::PUBLISHED->name
-        ]));
+        $multimediaResponseData->setEntities($multimediaRepository->findAnother($user));
         $multimediaResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());

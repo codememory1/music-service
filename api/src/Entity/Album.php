@@ -61,7 +61,8 @@ class Album implements EntityInterface
 
     public function __construct()
     {
-        $this->setStatus(AlbumStatusEnum::SHOW);
+        $this->setStatus(AlbumStatusEnum::UNPUBLISHED);
+
         $this->multimedia = new ArrayCollection();
     }
 
