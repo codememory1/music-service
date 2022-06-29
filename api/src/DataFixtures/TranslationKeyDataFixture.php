@@ -128,6 +128,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@addMultimediaToUser'),
             new TranslationKeyFactory('rolePermission@updateMultimediaToUser'),
             new TranslationKeyFactory('rolePermission@deleteMultimediaToUser'),
+            new TranslationKeyFactory('rolePermission@albumStatusControlToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -216,6 +217,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('album@successUpdate'),
             new TranslationKeyFactory('album@successDelete'),
             new TranslationKeyFactory('album@badAddMultimediaToSingleAlbum'),
+            new TranslationKeyFactory('album@badPublicationToAlreadyPublication'),
+            new TranslationKeyFactory('album@successPublication'),
+            new TranslationKeyFactory('album@badPublicationWithoutPublishedMultimedia'),
 
             new TranslationKeyFactory('userSession@successDelete'),
             new TranslationKeyFactory('userSession@successDeleteMultiple'),
@@ -228,6 +232,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('notification@maxLengthMessage'),
             new TranslationKeyFactory('notification@invalidAction'),
             new TranslationKeyFactory('notification@successCreate'),
+
+            new TranslationKeyFactory('userNotification@titleNewRelease'),
+            new TranslationKeyFactory('userNotification@newReleaseToArtist'),
 
             new TranslationKeyFactory('serviceAuth@authorizationCodeIsRequired'),
 

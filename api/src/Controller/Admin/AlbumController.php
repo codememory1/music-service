@@ -15,6 +15,7 @@ use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Album\CreateAlbumService;
 use App\Service\Album\DeleteAlbumService;
+use App\Service\Album\PublishAlbumService;
 use App\Service\Album\UpdateAlbumService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -102,5 +103,21 @@ class AlbumController extends AbstractRestController
         DeleteAlbumService $deleteAlbumService
     ): JsonResponse {
         return $deleteAlbumService->make($album);
+    }
+
+    /**
+     * @param Album               $album
+     * @param PublishAlbumService $publishAlbumService
+     *
+     * @return JsonResponse
+     */
+    #[Route('/album/{album_id<\d+>}/publish', methods: 'PATCH')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::ALBUM_STATUS_CONTROL_TO_USER)]
+    public function publication(
+        #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
+        PublishAlbumService $publishAlbumService
+    ): JsonResponse {
+        return $publishAlbumService->make($album);
     }
 }

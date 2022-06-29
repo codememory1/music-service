@@ -2,9 +2,13 @@
 
 namespace App\Service\Notification;
 
+use App\Entity\Album;
 use App\Entity\Notification;
 use App\Entity\User;
+use App\Enum\FrontendRouteEnum;
+use App\Enum\NotificationStatusEnum;
 use App\Enum\NotificationTypeEnum;
+use App\Service\Notification\Action\RedirectNotificationAction;
 use App\Service\TranslationService;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -60,6 +64,34 @@ class NotificationCollection
     }
 
     /**
+     * @param Album $album
+     * @param User  $subscriber
+     *
+     * @return $this
+     */
+    public function newRelease(Album $album, User $subscriber): self
+    {
+        $redirectNotificationAction = new RedirectNotificationAction();
+
+        $redirectNotificationAction->toLink(FrontendRouteEnum::getRoute(FrontendRouteEnum::ARTIST_ALBUM, [
+            'artist_id' => $album->getUser()->getId(),
+            'album_id' => $album->getId()
+        ]));
+
+        return $this->init(
+            $album->getUser(),
+            $subscriber,
+            'userNotification@titleNewRelease',
+            'userNotification@newReleaseToArtist',
+            [
+                'artist_pseudonym' => $album->getUser()->getProfile()->getPseudonym()
+            ],
+            NotificationTypeEnum::REFERENTIAL,
+            $redirectNotificationAction->getAction()
+        );
+    }
+
+    /**
      * @param User                 $from
      * @param User                 $to
      * @param string               $titleTranslationKey
@@ -70,8 +102,15 @@ class NotificationCollection
      *
      * @return $this
      */
-    private function init(User $from, User $to, string $titleTranslationKey, string $messageTranslationKey, array $messageParameters = [], NotificationTypeEnum $type = NotificationTypeEnum::INFORMATIONAL, array ...$actions): self
-    {
+    private function init(
+        User $from,
+        User $to,
+        string $titleTranslationKey,
+        string $messageTranslationKey,
+        array $messageParameters = [],
+        NotificationTypeEnum $type = NotificationTypeEnum::INFORMATIONAL,
+        array ...$actions
+    ): self {
         $notificationEntity = new Notification();
 
         $notificationEntity->setFrom($from);
@@ -79,11 +118,10 @@ class NotificationCollection
         $notificationEntity->setMessage($this->translationService->get($messageTranslationKey, $messageParameters));
         $notificationEntity->setType($type);
         $notificationEntity->setAction(...$actions);
+        $notificationEntity->setToUser($to->getEmail());
+        $notificationEntity->setStatus(NotificationStatusEnum::EXPECTS);
 
         $this->em->persist($notificationEntity);
-
-        $to->addNotification($notificationEntity);
-
         $this->em->flush();
 
         return $this;
