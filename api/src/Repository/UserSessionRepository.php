@@ -40,9 +40,9 @@ class UserSessionRepository extends AbstractRepository
             return [];
         }
 
-        return $this->findBy([
-            'user' => $this->authorizedUser->getUser(),
-            'type' => UserSessionTypeEnum::TEMP->name
+        return $this->findByCriteria([
+            'us.user' => $this->authorizedUser->getUser(),
+            'us.type' => UserSessionTypeEnum::TEMP->name
         ]);
     }
 
@@ -53,6 +53,35 @@ class UserSessionRepository extends AbstractRepository
      */
     public function allByUser(User $user): array
     {
-        return $this->findBy(['user' => $user]);
+        return $this->findByCriteria(['us.user' => $user]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function findByCriteria(array $criteria, array $orderBy = []): array
+    {
+        if (false !== $sortByCreatedAt = $this->sortService->get('createdAt')) {
+            $orderBy['us.createdAt'] = $this->getOrderType($sortByCreatedAt);
+        }
+
+        if (false !== $sortByLastActivity = $this->sortService->get('lastActivity')) {
+            $orderBy['us.lastActivity'] = $this->getOrderType($sortByLastActivity);
+        }
+
+        if (false !== $sortByCountry = $this->sortService->get('country')) {
+            $orderBy['us.country'] = $this->getOrderType($sortByCountry);
+        }
+
+        if (false !== $sortByCity = $this->sortService->get('city')) {
+            $orderBy['us.city'] = $this->getOrderType($sortByCity);
+        }
+
+        if (false !== $filterByIsActive = $this->filterService->get('isActive')) {
+            $this->qb->andWhere('us.isActive = :isActive');
+            $this->qb->setParameter('isActive', $filterByIsActive);
+        }
+
+        return parent::findByCriteria($criteria, $orderBy);
     }
 }
