@@ -32,34 +32,9 @@ class UserSessionRepository extends AbstractRepository
     public ?AuthorizedUser $authorizedUser = null;
 
     /**
-     * @return array
-     */
-    public function authorizedUserSessions(): array
-    {
-        if (null === $this->authorizedUser->getUser()) {
-            return [];
-        }
-
-        return $this->findByCriteria([
-            'us.user' => $this->authorizedUser->getUser(),
-            'us.type' => UserSessionTypeEnum::TEMP->name
-        ]);
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
-    public function allByUser(User $user): array
-    {
-        return $this->findByCriteria(['us.user' => $user]);
-    }
-
-    /**
      * @inheritDoc
      */
-    public function findByCriteria(array $criteria, array $orderBy = []): array
+    protected function findByCriteria(array $criteria, array $orderBy = []): array
     {
         if (false !== $sortByCreatedAt = $this->sortService->get('createdAt')) {
             $orderBy['us.createdAt'] = $this->getOrderType($sortByCreatedAt);
@@ -83,5 +58,30 @@ class UserSessionRepository extends AbstractRepository
         }
 
         return parent::findByCriteria($criteria, $orderBy);
+    }
+
+    /**
+     * @return array
+     */
+    public function authorizedUserSessions(): array
+    {
+        if (null === $this->authorizedUser->getUser()) {
+            return [];
+        }
+
+        return $this->findByCriteria([
+            'us.user' => $this->authorizedUser->getUser(),
+            'us.type' => UserSessionTypeEnum::TEMP->name
+        ]);
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
+    public function allByUser(User $user): array
+    {
+        return $this->findByCriteria(['us.user' => $user]);
     }
 }
