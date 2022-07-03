@@ -15,11 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class UpdateLanguageService extends AbstractService
 {
-    /**
-     * @param LanguageDTO $languageDTO
-     *
-     * @return JsonResponse
-     */
     public function make(LanguageDTO $languageDTO): JsonResponse
     {
         if (true !== $response = $this->validateFullDTO($languageDTO)) {

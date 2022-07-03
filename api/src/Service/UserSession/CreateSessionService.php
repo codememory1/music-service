@@ -21,13 +21,6 @@ class CreateSessionService extends AbstractService
     #[Required]
     public ?CollectorSessionService $collectorSessionService = null;
 
-    /**
-     * @param UserDTO             $userDTO
-     * @param User                $user
-     * @param UserSessionTypeEnum $type
-     *
-     * @return UserSession
-     */
     public function make(UserDTO $userDTO, User $user, UserSessionTypeEnum $type): UserSession
     {
         $collectedUserSessionEntity = $this->collectorSessionService->collect($userDTO, $user, $type);

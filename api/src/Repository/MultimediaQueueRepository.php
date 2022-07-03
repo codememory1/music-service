@@ -14,13 +14,6 @@ use App\Entity\MultimediaQueue;
  */
 class MultimediaQueueRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = MultimediaQueue::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'mq';
 }

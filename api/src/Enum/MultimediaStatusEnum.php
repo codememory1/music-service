@@ -18,11 +18,6 @@ enum MultimediaStatusEnum: string
     case APPEAL = 'status@appeal';
     case APPEAL_CANCELED = 'status@appealCanceled';
 
-    /**
-     * @param string $value
-     *
-     * @return null|string
-     */
     public static function getValueByName(string $value): ?string
     {
         foreach (self::cases() as $case) {

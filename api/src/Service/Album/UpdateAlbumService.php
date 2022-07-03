@@ -20,12 +20,6 @@ class UpdateAlbumService extends AbstractService
     #[Required]
     public ?SaveAlbumService $saveAlbumService = null;
 
-    /**
-     * @param AlbumDTO $albumDTO
-     * @param User     $toUser
-     *
-     * @return JsonResponse
-     */
     public function make(AlbumDTO $albumDTO, User $toUser): JsonResponse
     {
         if (false === $this->validate($albumDTO)) {

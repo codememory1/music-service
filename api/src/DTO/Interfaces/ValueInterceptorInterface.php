@@ -11,11 +11,5 @@ namespace App\DTO\Interfaces;
  */
 interface ValueInterceptorInterface
 {
-    /**
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return mixed
-     */
     public function handle(string $key, mixed $value): mixed;
 }

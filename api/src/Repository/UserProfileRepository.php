@@ -14,13 +14,6 @@ use App\Entity\UserProfile;
  */
 class UserProfileRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = UserProfile::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'up';
 }

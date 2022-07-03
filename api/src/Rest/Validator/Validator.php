@@ -21,31 +21,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class Validator
 {
-    /**
-     * @var ValidatorInterface
-     */
     private ValidatorInterface $validator;
-
-    /**
-     * @var null|ConstraintViolationListInterface
-     */
     private ?ConstraintViolationListInterface $constraintViolation = null;
-
-    /**
-     * @var ResponseSchema
-     */
     private ResponseSchema $responseSchema;
-
-    /**
-     * @var Response
-     */
     private Response $response;
 
-    /**
-     * @param ValidatorInterface $validator
-     * @param ResponseSchema     $responseSchema
-     * @param Response           $response
-     */
     public function __construct(
         ValidatorInterface $validator,
         ResponseSchema $responseSchema,
@@ -56,12 +36,6 @@ class Validator
         $this->response = $response;
     }
 
-    /**
-     * @param DTOInterface|EntityInterface $object
-     * @param array                        $groups
-     *
-     * @return bool
-     */
     public function validate(DTOInterface|EntityInterface $object, array $groups = []): bool
     {
         $this->constraintViolation = $this->validator->validate($object, groups: $groups);
@@ -69,9 +43,6 @@ class Validator
         return count($this->constraintViolation) <= 0;
     }
 
-    /**
-     * @return JsonResponse
-     */
     public function getResponse(): JsonResponse
     {
         $messages = [];

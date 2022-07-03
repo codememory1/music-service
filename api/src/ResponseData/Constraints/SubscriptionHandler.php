@@ -15,23 +15,15 @@ use App\Security\AuthorizedUser;
  */
 class SubscriptionHandler implements ConstraintHandlerInterface
 {
-    /**
-     * @var AuthorizedUser
-     */
     private AuthorizedUser $authorizedUser;
 
-    /**
-     * @param AuthorizedUser $authorizedUser
-     */
     public function __construct(AuthorizedUser $authorizedUser)
     {
         $this->authorizedUser = $authorizedUser;
     }
 
     /**
-     * @inheritDoc
-     *
-     * @param Subscription $constraint
+     * @param ConstraintInterface|Subscription $constraint
      */
     public function handle(ConstraintInterface $constraint): bool
     {

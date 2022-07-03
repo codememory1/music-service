@@ -14,13 +14,6 @@ use App\Entity\SubscriptionPermissionKey;
  */
 class SubscriptionPermissionKeyRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = SubscriptionPermissionKey::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'spk';
 }

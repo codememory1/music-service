@@ -16,14 +16,8 @@ use App\Security\AuthorizedUser;
  */
 class UserRoleHandler implements MethodAnnotationHandlerInterface
 {
-    /**
-     * @var AuthorizedUser
-     */
     private AuthorizedUser $authorizedUser;
 
-    /**
-     * @param AuthorizedUser $authorizedUser
-     */
     public function __construct(AuthorizedUser $authorizedUser)
     {
         $this->authorizedUser = $authorizedUser;

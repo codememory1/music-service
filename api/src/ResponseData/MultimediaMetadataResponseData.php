@@ -16,10 +16,6 @@ use App\ResponseData\Traits\DateTimeHandlerTrait;
 class MultimediaMetadataResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
-
-    /**
-     * @inheritDoc
-     */
     protected array $methodPrefixesForProperties = [
         'isLossless' => ''
     ];

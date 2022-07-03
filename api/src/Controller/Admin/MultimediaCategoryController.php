@@ -28,12 +28,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/multimedia/category')]
 class MultimediaCategoryController extends AbstractRestController
 {
-    /**
-     * @param MultimediaCategoryResponseData $multimediaCategoryResponseData
-     * @param MultimediaCategoryRepository   $multimediaCategoryRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/all', methods: 'GET')]
     #[Authorization]
     public function all(MultimediaCategoryResponseData $multimediaCategoryResponseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
@@ -44,12 +38,6 @@ class MultimediaCategoryController extends AbstractRestController
         return $this->responseCollection->dataOutput($multimediaCategoryResponseData->getResponse());
     }
 
-    /**
-     * @param MultimediaCategoryDTO           $multimediaCategoryDTO
-     * @param CreateMultimediaCategoryService $createMultimediaCategoryService
-     *
-     * @return JsonResponse
-     */
     #[Route('/create', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_MULTIMEDIA_CATEGORY)]
@@ -58,13 +46,6 @@ class MultimediaCategoryController extends AbstractRestController
         return $createMultimediaCategoryService->make($multimediaCategoryDTO->collect());
     }
 
-    /**
-     * @param MultimediaCategory              $multimediaCategory
-     * @param MultimediaCategoryDTO           $multimediaCategoryDTO
-     * @param UpdateMultimediaCategoryService $updateMultimediaCategoryService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{multimediaCategory_id<\d+>}/edit', methods: 'PUT')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_CATEGORY)]
@@ -78,12 +59,6 @@ class MultimediaCategoryController extends AbstractRestController
         return $updateMultimediaCategoryService->make($multimediaCategoryDTO->collect());
     }
 
-    /**
-     * @param MultimediaCategory              $multimediaCategory
-     * @param DeleteMultimediaCategoryService $deleteMultimediaCategoryService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{multimediaCategory_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_CATEGORY)]

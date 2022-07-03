@@ -18,24 +18,13 @@ use App\Service\PlatformSettingService;
  */
 class MailDomainCheckListener
 {
-    /**
-     * @var PlatformSettingService
-     */
     private PlatformSettingService $platformSettingService;
 
-    /**
-     * @param PlatformSettingService $platformSettingService
-     */
     public function __construct(PlatformSettingService $platformSettingService)
     {
         $this->platformSettingService = $platformSettingService;
     }
 
-    /**
-     * @param UserRegistrationEvent $event
-     *
-     * @return void
-     */
     public function onUserRegistration(UserRegistrationEvent $event): void
     {
         $allowedEmails = $this->platformSettingService->get(PlatformSettingEnum::ALLOWED_REGISTRATION_DOMAINS) ?: [];
@@ -59,11 +48,6 @@ class MailDomainCheckListener
         }
     }
 
-    /**
-     * @param User $user
-     *
-     * @return null|string
-     */
     private function getMailDomain(User $user): ?string
     {
         $email = $user->getEmail();

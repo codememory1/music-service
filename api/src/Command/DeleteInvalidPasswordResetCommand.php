@@ -25,15 +25,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class DeleteInvalidPasswordResetCommand extends Command
 {
     use DeleteByInvalidTtlTrait;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->em = $manager;
@@ -42,10 +35,7 @@ class DeleteInvalidPasswordResetCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

@@ -21,56 +21,16 @@ use function is_string;
  */
 abstract class AbstractDTO implements DTOInterface
 {
-    /**
-     * @var null|EntityInterface|string
-     */
     protected EntityInterface|string|null $entity = null;
-
-    /**
-     * @var array
-     */
     protected array $expectKeys = [];
-
-    /**
-     * @var Request
-     */
     protected Request $request;
-
-    /**
-     * @var null|mixed|string
-     */
     protected ?string $requestType;
-
-    /**
-     * @var AuthorizedUser
-     */
     protected readonly AuthorizedUser $authorizedUser;
-
-    /**
-     * @var array
-     */
     private array $forbiddenKeysForSetters = [];
-
-    /**
-     * @var SetterCallRuleInEntity
-     */
     private SetterCallRuleInEntity $setterCallRuleInEntity;
-
-    /**
-     * @var array
-     */
     private array $setterCallRulesInEntity = [];
-
-    /**
-     * @var array<ValueInterceptorInterface>
-     */
     private array $valueInterceptors = [];
 
-    /**
-     * @param Request                $request
-     * @param SetterCallRuleInEntity $setterCallRuleInEntity
-     * @param AuthorizedUser         $authorizedUser
-     */
     public function __construct(Request $request, SetterCallRuleInEntity $setterCallRuleInEntity, AuthorizedUser $authorizedUser)
     {
         $this->request = $request;
@@ -79,17 +39,8 @@ abstract class AbstractDTO implements DTOInterface
         $this->authorizedUser = $authorizedUser;
     }
 
-    /**
-     * @return void
-     */
     abstract protected function wrapper(): void;
 
-    /**
-     * @param string      $fieldName
-     * @param null|string $as
-     *
-     * @return $this
-     */
     final protected function addExpectKey(string $fieldName, ?string $as = null): self
     {
         $this->expectKeys[] = [
@@ -100,12 +51,6 @@ abstract class AbstractDTO implements DTOInterface
         return $this;
     }
 
-    /**
-     * @param string $requestTypePattern
-     * @param string $propertyName
-     *
-     * @return SetterCallRuleInEntity
-     */
     final protected function callSetterToEntityWhenRequest(string $requestTypePattern, string $propertyName): SetterCallRuleInEntity
     {
         $setterCallRuleInEntity = clone $this->setterCallRuleInEntity;
@@ -118,12 +63,6 @@ abstract class AbstractDTO implements DTOInterface
         return $setterCallRuleInEntity;
     }
 
-    /**
-     * @param string                             $propertyName
-     * @param callable|ValueInterceptorInterface $interceptor
-     *
-     * @return $this
-     */
     final protected function addInterceptor(string $propertyName, ValueInterceptorInterface|callable $interceptor): self
     {
         $this->valueInterceptors[$propertyName] = $interceptor;
@@ -131,9 +70,6 @@ abstract class AbstractDTO implements DTOInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setRequestType(string $type): self
     {
         $this->requestType = $type;
@@ -141,9 +77,6 @@ abstract class AbstractDTO implements DTOInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function preventSetterCallForKeys(array $propertyNames): self
     {
         $this->forbiddenKeysForSetters = $propertyNames;
@@ -151,9 +84,6 @@ abstract class AbstractDTO implements DTOInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function collect(): self
     {
         $this->wrapper();
@@ -163,9 +93,6 @@ abstract class AbstractDTO implements DTOInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setEntity(EntityInterface $entity): self
     {
         $this->entity = $entity;
@@ -174,8 +101,6 @@ abstract class AbstractDTO implements DTOInterface
     }
 
     /**
-     * @inheritDoc
-     *
      * @return Entity
      */
     public function getEntity(): ?EntityInterface
@@ -183,9 +108,6 @@ abstract class AbstractDTO implements DTOInterface
         return $this->entity;
     }
 
-    /**
-     * @return void
-     */
     private function createEntityObject(): void
     {
         if (is_string($this->entity)) {
@@ -193,9 +115,6 @@ abstract class AbstractDTO implements DTOInterface
         }
     }
 
-    /**
-     * @return void
-     */
     private function expectedKeyHandler(): void
     {
         foreach ($this->expectKeys as $expectKey) {
@@ -219,11 +138,6 @@ abstract class AbstractDTO implements DTOInterface
         }
     }
 
-    /**
-     * @param string $propertyName
-     *
-     * @return void
-     */
     private function setterCallInEntityHandler(string $propertyName): void
     {
         $setterName = $this->generateSetterName($propertyName);
@@ -241,11 +155,6 @@ abstract class AbstractDTO implements DTOInterface
         }
     }
 
-    /**
-     * @param string $key
-     *
-     * @return string
-     */
     private function generateSetterName(string $key): string
     {
         return sprintf('set%s', ucfirst($key));

@@ -19,9 +19,6 @@ class AuthorizationDTO extends AbstractDTO
     #[Assert\NotBlank(message: 'common@passwordIsRequired')]
     public ?string $password = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('email');

@@ -23,11 +23,6 @@ class Identification extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param AuthorizationDTO $authorizationDTO
-     *
-     * @return null|User
-     */
     public function identify(AuthorizationDTO $authorizationDTO): ?User
     {
         $identifiedUser = $this->em->getRepository(User::class)->findOneBy([

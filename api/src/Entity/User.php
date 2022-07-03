@@ -128,19 +128,11 @@ class User implements EntityInterface
         $this->subscriptions = new ArrayCollection();
     }
 
-    /**
-     * @return null|string
-     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param null|string $email
-     *
-     * @return $this
-     */
     public function setEmail(?string $email): self
     {
         $this->email = $email;
@@ -148,19 +140,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     *
-     * @return $this
-     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -168,19 +152,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|Role
-     */
     public function getRole(): ?Role
     {
         return $this->role;
     }
 
-    /**
-     * @param null|Role $role
-     *
-     * @return $this
-     */
     public function setRole(?Role $role): self
     {
         $this->role = $role;
@@ -188,29 +164,16 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param UserStatusEnum $userStatusEnum
-     *
-     * @return bool
-     */
     public function isStatus(UserStatusEnum $userStatusEnum): bool
     {
         return $this->getStatus() === $userStatusEnum->name;
     }
 
-    /**
-     * @return null|string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|UserStatusEnum $status
-     *
-     * @return $this
-     */
     public function setStatus(?UserStatusEnum $status): self
     {
         $this->status = $status?->name;
@@ -218,19 +181,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|UserProfile
-     */
     public function getProfile(): ?UserProfile
     {
         return $this->profile;
     }
 
-    /**
-     * @param UserProfile $profile
-     *
-     * @return $this
-     */
     public function setProfile(UserProfile $profile): self
     {
         // set the owning side of the relation if necessary
@@ -251,11 +206,6 @@ class User implements EntityInterface
         return $this->sessions;
     }
 
-    /**
-     * @param UserSession $session
-     *
-     * @return $this
-     */
     public function addSession(UserSession $session): self
     {
         if (!$this->sessions->contains($session)) {
@@ -266,11 +216,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param UserSession $session
-     *
-     * @return $this
-     */
     public function removeSession(UserSession $session): self
     {
         if ($this->sessions->removeElement($session)) {
@@ -284,18 +229,13 @@ class User implements EntityInterface
     }
 
     /**
-     * @return Collection<AccountActivationCode>
+     * @return Collection<int, AccountActivationCode>
      */
     public function getAccountActivationCode(): Collection
     {
         return $this->accountActivationCodes;
     }
 
-    /**
-     * @param AccountActivationCode $accountActivationCode
-     *
-     * @return $this
-     */
     public function setAccountActivationCode(AccountActivationCode $accountActivationCode): self
     {
         if (!$this->accountActivationCodes->contains($accountActivationCode)) {
@@ -307,18 +247,13 @@ class User implements EntityInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection<int, PasswordReset>
      */
     public function getPasswordResets(): Collection
     {
         return $this->passwordResets;
     }
 
-    /**
-     * @param PasswordReset $passwordReset
-     *
-     * @return $this
-     */
     public function setPasswordReset(PasswordReset $passwordReset): self
     {
         if (!$this->passwordResets->contains($passwordReset)) {
@@ -329,19 +264,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|Subscription
-     */
     public function getSubscription(): ?Subscription
     {
         return $this->subscription;
     }
 
-    /**
-     * @param null|Subscription $subscription
-     *
-     * @return $this
-     */
     public function setSubscription(?Subscription $subscription): self
     {
         $this->subscription = $subscription;
@@ -349,11 +276,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Album $album
-     *
-     * @return $this
-     */
     public function addAlbum(Album $album): self
     {
         if (!$this->albums->contains($album)) {
@@ -364,11 +286,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Album $album
-     *
-     * @return $this
-     */
     public function removeAlbum(Album $album): self
     {
         if ($this->albums->removeElement($album)) {
@@ -389,11 +306,6 @@ class User implements EntityInterface
         return $this->notifications;
     }
 
-    /**
-     * @param Notification $notification
-     *
-     * @return $this
-     */
     public function addNotification(Notification $notification): self
     {
         $userNotification = new UserNotification();
@@ -408,11 +320,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param UserNotification $notification
-     *
-     * @return $this
-     */
     public function removeNotification(UserNotification $notification): self
     {
         if ($this->notifications->removeElement($notification)) {
@@ -425,19 +332,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getIdInAuthService(): ?string
     {
         return $this->idInAuthService;
     }
 
-    /**
-     * @param null|string $idInAuthService
-     *
-     * @return $this
-     */
     public function setIdInAuthService(?string $idInAuthService): self
     {
         $this->idInAuthService = $idInAuthService;
@@ -445,19 +344,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getAuthServiceType(): ?string
     {
         return $this->authServiceType;
     }
 
-    /**
-     * @param null|string $authServiceType
-     *
-     * @return $this
-     */
     public function setAuthServiceType(?string $authServiceType): self
     {
         $this->authServiceType = $authServiceType;
@@ -473,11 +364,6 @@ class User implements EntityInterface
         return $this->multimedia;
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function addMultimedia(Multimedia $multimedia): self
     {
         if (!$this->multimedia->contains($multimedia)) {
@@ -488,11 +374,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function removeMultimedia(Multimedia $multimedia): self
     {
         if ($this->multimedia->removeElement($multimedia)) {
@@ -513,11 +394,6 @@ class User implements EntityInterface
         return $this->multimediaPerformers;
     }
 
-    /**
-     * @param MultimediaPerformer $multimediaPerformer
-     *
-     * @return $this
-     */
     public function addMultimediaPerformer(MultimediaPerformer $multimediaPerformer): self
     {
         if (!$this->multimediaPerformers->contains($multimediaPerformer)) {
@@ -528,11 +404,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param MultimediaPerformer $multimediaPerformer
-     *
-     * @return $this
-     */
     public function removeMultimediaPerformer(MultimediaPerformer $multimediaPerformer): self
     {
         if ($this->multimediaPerformers->removeElement($multimediaPerformer)) {
@@ -553,11 +424,6 @@ class User implements EntityInterface
         return $this->multimediaSharedByMe;
     }
 
-    /**
-     * @param MultimediaShare $sharedWithMe
-     *
-     * @return $this
-     */
     public function removeMultimediaSharedByMe(MultimediaShare $sharedByMe): self
     {
         if ($this->multimediaSharedByMe->removeElement($sharedByMe)) {
@@ -578,11 +444,6 @@ class User implements EntityInterface
         return $this->multimediaSharedWithMe;
     }
 
-    /**
-     * @param MultimediaShare $sharedWithMe
-     *
-     * @return $this
-     */
     public function removeSharedWithMe(MultimediaShare $sharedWithMe): self
     {
         if ($this->multimediaSharedWithMe->removeElement($sharedWithMe)) {
@@ -603,11 +464,6 @@ class User implements EntityInterface
         return $this->multimediaAuditions;
     }
 
-    /**
-     * @param MultimediaAudition $multimediaAudition
-     *
-     * @return $this
-     */
     public function addMultimediaAudition(MultimediaAudition $multimediaAudition): self
     {
         if (!$this->multimediaAuditions->contains($multimediaAudition)) {
@@ -618,11 +474,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param MultimediaAudition $multimediaAudition
-     *
-     * @return $this
-     */
     public function removeMultimediaAudition(MultimediaAudition $multimediaAudition): self
     {
         if ($this->multimediaAuditions->removeElement($multimediaAudition)) {
@@ -643,11 +494,6 @@ class User implements EntityInterface
         return $this->multimediaRatings;
     }
 
-    /**
-     * @param MultimediaRating $multimediaRating
-     *
-     * @return $this
-     */
     public function addMultimediaRating(MultimediaRating $multimediaRating): self
     {
         if (!$this->multimediaRatings->contains($multimediaRating)) {
@@ -658,11 +504,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param MultimediaRating $multimediaRating
-     *
-     * @return $this
-     */
     public function removeMultimediaRating(MultimediaRating $multimediaRating): self
     {
         if ($this->multimediaRatings->removeElement($multimediaRating)) {
@@ -683,11 +524,6 @@ class User implements EntityInterface
         return $this->subscribers;
     }
 
-    /**
-     * @param ArtistSubscriber $subscriber
-     *
-     * @return $this
-     */
     public function addSubscriber(ArtistSubscriber $subscriber): self
     {
         if (!$this->subscribers->contains($subscriber)) {
@@ -698,11 +534,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param ArtistSubscriber $subscriber
-     *
-     * @return $this
-     */
     public function removeSubscriber(ArtistSubscriber $subscriber): self
     {
         if ($this->subscribers->removeElement($subscriber)) {
@@ -723,11 +554,6 @@ class User implements EntityInterface
         return $this->subscriptions;
     }
 
-    /**
-     * @param ArtistSubscriber $subscription
-     *
-     * @return $this
-     */
     public function addSubscription(ArtistSubscriber $subscription): self
     {
         if (!$this->subscriptions->contains($subscription)) {
@@ -738,11 +564,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param ArtistSubscriber $subscription
-     *
-     * @return $this
-     */
     public function removeSubscription(ArtistSubscriber $subscription): self
     {
         if ($this->subscriptions->removeElement($subscription)) {
@@ -755,19 +576,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|MediaLibrary
-     */
     public function getMediaLibrary(): ?MediaLibrary
     {
         return $this->mediaLibrary;
     }
 
-    /**
-     * @param MediaLibrary $mediaLibrary
-     *
-     * @return $this
-     */
     public function setMediaLibrary(MediaLibrary $mediaLibrary): self
     {
         // set the owning side of the relation if necessary

@@ -13,14 +13,8 @@ use App\Entity\MediaLibrary;
  */
 class CreateMediaLibraryEvent
 {
-    /**
-     * @var MediaLibrary
-     */
     public readonly MediaLibrary $mediaLibrary;
 
-    /**
-     * @param MediaLibrary $mediaLibrary
-     */
     public function __construct(MediaLibrary $mediaLibrary)
     {
         $this->mediaLibrary = $mediaLibrary;

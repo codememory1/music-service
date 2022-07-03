@@ -16,22 +16,13 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 final class TranslationKeyFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
     private string $key;
 
-    /**
-     * @param string $key
-     */
     public function __construct(string $key)
     {
         $this->key = $key;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
         $translationKeyEntity = new TranslationKey();
@@ -41,9 +32,6 @@ final class TranslationKeyFactory implements DataFixtureFactoryInterface
         return $translationKeyEntity;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;

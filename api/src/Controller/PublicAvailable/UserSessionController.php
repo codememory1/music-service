@@ -23,12 +23,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user/session')]
 class UserSessionController extends AbstractRestController
 {
-    /**
-     * @param UserSessionResponseData $userSessionResponseData
-     * @param UserSessionRepository   $userSessionRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/all', methods: 'GET')]
     #[Authorization]
     public function all(UserSessionResponseData $userSessionResponseData, UserSessionRepository $userSessionRepository): JsonResponse
@@ -39,12 +33,6 @@ class UserSessionController extends AbstractRestController
         return $this->responseCollection->dataOutput($userSessionResponseData->getResponse());
     }
 
-    /**
-     * @param UserSession              $userSession
-     * @param DeleteUserSessionService $deleteUserSessionService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{userSession_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     public function delete(
@@ -58,11 +46,6 @@ class UserSessionController extends AbstractRestController
         return $deleteUserSessionService->make($userSession);
     }
 
-    /**
-     * @param DeleteUserSessionService $deleteUserSessionService
-     *
-     * @return JsonResponse
-     */
     #[Route('/all/delete', methods: 'DELETE')]
     #[Authorization]
     public function deleteAll(DeleteUserSessionService $deleteUserSessionService): JsonResponse

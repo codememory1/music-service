@@ -15,12 +15,6 @@ use DateTimeImmutable;
  */
 trait DeleteByInvalidTtlTrait
 {
-    /**
-     * @param AbstractRepository $repository
-     * @param null|callable      $deleteCallback
-     *
-     * @return void
-     */
     private function delete(AbstractRepository $repository, ?callable $deleteCallback = null): void
     {
         foreach ($repository->findAll() as $entity) {

@@ -31,12 +31,6 @@ class TranslationService
     #[Required]
     public ?Request $request = null;
 
-    /**
-     * @param string $key
-     * @param array  $parameters
-     *
-     * @return null|string
-     */
     public function get(string $key, array $parameters = []): ?string
     {
         $translation = $this->getTranslation($key);
@@ -46,9 +40,6 @@ class TranslationService
         return $translation;
     }
 
-    /**
-     * @return array
-     */
     public function all(): array
     {
         return $this->translationRepository->findBy([
@@ -56,9 +47,6 @@ class TranslationService
         ]);
     }
 
-    /**
-     * @return null|Language
-     */
     public function getLanguage(): ?Language
     {
         return $this->languageRepository->findOneBy([
@@ -66,11 +54,6 @@ class TranslationService
         ]);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return null|TranslationKey
-     */
     public function getTranslationKey(string $key): ?TranslationKey
     {
         return $this->translationKeyRepository->findOneBy([
@@ -78,11 +61,6 @@ class TranslationService
         ]);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return null|string
-     */
     public function getTranslation(string $key): ?string
     {
         return $this->translationRepository->findOneBy([
@@ -91,12 +69,6 @@ class TranslationService
         ])?->getTranslation();
     }
 
-    /**
-     * @param null|string $translation
-     * @param array       $parameters
-     *
-     * @return void
-     */
     private function replaceParameters(?string &$translation, array $parameters): void
     {
         if (null !== $translation) {
@@ -113,11 +85,6 @@ class TranslationService
         }
     }
 
-    /**
-     * @param string $parameter
-     *
-     * @return string
-     */
     private function convertParametersToTemplate(string $parameter): string
     {
         return "%${parameter}%";

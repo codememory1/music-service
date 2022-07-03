@@ -23,31 +23,15 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class MultimediaMetadataMessageHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
-
-    /**
-     * @var UploadedObject
-     */
     private UploadedObject $uploadedObject;
 
-    /**
-     * @param EntityManagerInterface $manager
-     * @param UploadedObject         $uploadedObject
-     */
     public function __construct(EntityManagerInterface $manager, UploadedObject $uploadedObject)
     {
         $this->em = $manager;
         $this->uploadedObject = $uploadedObject;
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return MultimediaMetadata
-     */
     private function getMultimediaMetadata(Multimedia $multimedia): ?MultimediaMetadata
     {
         if (null !== $multimedia->getMetadata()) {
@@ -57,12 +41,6 @@ class MultimediaMetadataMessageHandler
         return new MultimediaMetadata();
     }
 
-    /**
-     * @param Multimedia $multimedia
-     * @param Stream     $stream
-     *
-     * @return void
-     */
     private function trackHandler(Multimedia $multimedia, Stream $stream): void
     {
         $multimediaMetadataEntity = $this->getMultimediaMetadata($multimedia);
@@ -73,12 +51,6 @@ class MultimediaMetadataMessageHandler
         $multimedia->setMetadata($multimediaMetadataEntity);
     }
 
-    /**
-     * @param Multimedia $multimedia
-     * @param Stream     $stream
-     *
-     * @return void
-     */
     private function clipHandler(Multimedia $multimedia, Stream $stream): void
     {
         $multimediaMetadataEntity = $this->getMultimediaMetadata($multimedia);
@@ -90,12 +62,6 @@ class MultimediaMetadataMessageHandler
         $multimedia->setMetadata($multimediaMetadataEntity);
     }
 
-    /**
-     * @param Multimedia       $multimedia
-     * @param StreamCollection $streamCollection
-     *
-     * @return void
-     */
     private function handlerTypes(Multimedia $multimedia, StreamCollection $streamCollection): void
     {
         switch ($multimedia->getType()) {
@@ -108,11 +74,6 @@ class MultimediaMetadataMessageHandler
         }
     }
 
-    /**
-     * @param MultimediaMetadataMessage $message
-     *
-     * @return void
-     */
     public function __invoke(MultimediaMetadataMessage $message): void
     {
         $multimediaRepository = $this->em->getRepository(Multimedia::class);

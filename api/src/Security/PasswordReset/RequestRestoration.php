@@ -23,11 +23,6 @@ class RequestRestoration extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param RequestRestorationPasswordDTO $requestRestorationPasswordDTO
-     *
-     * @return JsonResponse
-     */
     public function send(RequestRestorationPasswordDTO $requestRestorationPasswordDTO): JsonResponse
     {
         if (false === $this->validate($requestRestorationPasswordDTO)) {

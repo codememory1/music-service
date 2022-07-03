@@ -32,19 +32,11 @@ class MultimediaPerformer implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Multimedia $multimedia = null;
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -52,19 +44,11 @@ class MultimediaPerformer implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|Multimedia
-     */
     public function getMultimedia(): ?Multimedia
     {
         return $this->multimedia;
     }
 
-    /**
-     * @param null|Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function setMultimedia(?Multimedia $multimedia): self
     {
         $this->multimedia = $multimedia;

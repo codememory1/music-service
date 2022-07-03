@@ -25,9 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SubscriptionDTO extends AbstractDTO
 {
-    /**
-     * @inheritDoc
-     */
     protected EntityInterface|string|null $entity = Subscription::class;
 
     #[Assert\NotBlank(message: 'subscription@keyIsRequired')]
@@ -57,23 +54,12 @@ class SubscriptionDTO extends AbstractDTO
     #[Assert\NotBlank(message: 'subscription@priceIsRequired')]
     #[Assert\Type('float', message: 'common@invalidPrice')]
     public ?float $price = null;
-
-    /**
-     * @var null|bool
-     */
     public ?bool $isRecommend = null;
-
-    /**
-     * @var null|array
-     */
     public ?array $permissions = null;
 
     #[Assert\NotBlank(message: 'subscription@statusIsRequired')]
     public ?SubscriptionStatusEnum $status = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('key');

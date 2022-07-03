@@ -24,24 +24,10 @@ use function Symfony\Component\String\u;
  */
 final class EntityFromRouteParameterResolver implements ArgumentValueResolverInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
-
-    /**
-     * @var array
-     */
     private array $routeParameters = [];
-
-    /**
-     * @var null|ReflectionClass
-     */
     private ?ReflectionClass $reflection = null;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->em = $manager;
@@ -92,11 +78,6 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
         yield $finedEntity;
     }
 
-    /**
-     * @param string $entityNameInCamel
-     *
-     * @return null|array
-     */
     #[ArrayShape(['property_name' => 'string', 'value' => 'mixed'])]
     private function finedRouteParameter(string $entityNameInCamel): ?array
     {
@@ -117,8 +98,7 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
     /**
      * @template T
      *
-     * @param ArgumentMetadata $argument
-     * @param class-string<T>  $class
+     * @param class-string<T> $class
      *
      * @return null|T
      */

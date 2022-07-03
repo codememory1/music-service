@@ -11,13 +11,7 @@ namespace App\Rest\Http\Interfaces;
  */
 interface ResponseSchemaInterface
 {
-    /**
-     * @return int
-     */
     public function getStatusCode(): int;
 
-    /**
-     * @return array
-     */
     public function getSchema(): array;
 }

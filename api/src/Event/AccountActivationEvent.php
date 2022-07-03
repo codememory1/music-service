@@ -13,14 +13,8 @@ use App\Entity\AccountActivationCode;
  */
 class AccountActivationEvent
 {
-    /**
-     * @var AccountActivationCode
-     */
     public readonly AccountActivationCode $accountActivationCode;
 
-    /**
-     * @param AccountActivationCode $accountActivationCode
-     */
     public function __construct(AccountActivationCode $accountActivationCode)
     {
         $this->accountActivationCode = $accountActivationCode;

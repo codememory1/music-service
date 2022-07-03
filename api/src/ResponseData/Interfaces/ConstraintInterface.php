@@ -11,8 +11,5 @@ namespace App\ResponseData\Interfaces;
  */
 interface ConstraintInterface
 {
-    /**
-     * @return string
-     */
     public function getHandler(): string;
 }

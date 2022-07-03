@@ -29,11 +29,6 @@ class Registration extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param RegistrationDTO $registrationDTO
-     *
-     * @return JsonResponse
-     */
     public function handle(RegistrationDTO $registrationDTO): JsonResponse
     {
         if (false === $this->validate($registrationDTO)) {
@@ -53,12 +48,6 @@ class Registration extends AbstractService
         return $this->responseCollection->successRegistration();
     }
 
-    /**
-     * @param RegistrationDTO $registrationDTO
-     * @param null|User       $userByEmail
-     *
-     * @return void
-     */
     public function register(RegistrationDTO $registrationDTO, ?User $userByEmail): void
     {
         $registeredUser = $this->registrar->make($registrationDTO, $userByEmail);

@@ -28,10 +28,6 @@ class AvailableDomainGeneratorCommand extends Command
 {
     private const DOMAIN_CHECKING_SERVICE = 'http://ip-api.com/json/%s';
     private const WORD_GENERATOR_SERVICE = 'https://story-shack-cdn-v2.glitch.me/generators/company-name-generator?count=100';
-
-    /**
-     * @var null|SymfonyStyle
-     */
     private ?SymfonyStyle $io = null;
     private ?InputInterface $input = null;
     private ?OutputInterface $output = null;
@@ -48,10 +44,7 @@ class AvailableDomainGeneratorCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -82,12 +75,6 @@ class AvailableDomainGeneratorCommand extends Command
         }
     }
 
-    /**
-     * @param string $saveToDir
-     * @param string $domain
-     *
-     * @return array
-     */
     private function generator(string $saveToDir, string $domain): array
     {
         $words = file_get_contents(self::WORD_GENERATOR_SERVICE);
@@ -119,11 +106,6 @@ class AvailableDomainGeneratorCommand extends Command
         return $availableDomains;
     }
 
-    /**
-     * @param string $host
-     *
-     * @return bool
-     */
     private function checkAvailableHost(string $host): bool
     {
         try {
@@ -141,12 +123,6 @@ class AvailableDomainGeneratorCommand extends Command
         return 'fail' === $status;
     }
 
-    /**
-     * @param string $word
-     * @param string $domain
-     *
-     * @return string
-     */
     private function generatorHost(string $word, string $domain): string
     {
         return ucfirst($word) . $domain;

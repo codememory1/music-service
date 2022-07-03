@@ -15,11 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class UpdateTranslationService extends AbstractService
 {
-    /**
-     * @param TranslationDTO $translationDTO
-     *
-     * @return JsonResponse
-     */
     public function make(TranslationDTO $translationDTO): JsonResponse
     {
         if (false === $this->validate($translationDTO)) {

@@ -24,20 +24,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class DeleteInvalidUserSessionsCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
-
-    /**
-     * @var JwtTokenGenerator
-     */
     private JwtTokenGenerator $jwtTokenGenerator;
 
-    /**
-     * @param EntityManagerInterface $manager
-     * @param JwtTokenGenerator      $jwtTokenGenerator
-     */
     public function __construct(EntityManagerInterface $manager, JwtTokenGenerator $jwtTokenGenerator)
     {
         $this->em = $manager;
@@ -47,10 +36,7 @@ class DeleteInvalidUserSessionsCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

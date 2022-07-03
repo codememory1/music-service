@@ -14,30 +14,21 @@ use JetBrains\PhpStorm\Pure;
  */
 class AccessDeniedException extends ApiResponseException
 {
-    /**
-     * @return static
-     */
     #[Pure]
-    final public static function notEnoughPermissions(): self
+    final public static function notEnoughPermissions(array $data = [], array $headers = []): self
     {
-        return new self(403, ResponseTypeEnum::CHECK_ACCESS, 'accessDenied@notEnoughPermissions');
+        return new self(403, ResponseTypeEnum::CHECK_ACCESS, 'accessDenied@notEnoughPermissions', data: $data, headers: $headers);
     }
 
-    /**
-     * @return static
-     */
     #[Pure]
-    final public static function notSubscription(): self
+    final public static function notSubscription(array $data = [], array $headers = []): self
     {
-        return new self(403, ResponseTypeEnum::CHECK_ACCESS, 'accessDenied@notSubscription');
+        return new self(403, ResponseTypeEnum::CHECK_ACCESS, 'accessDenied@notSubscription', data: $data, headers: $headers);
     }
 
-    /**
-     * @return static
-     */
     #[Pure]
-    final public static function notEnoughSubscriptionPermissions(): self
+    final public static function notEnoughSubscriptionPermissions(array $data = [], array $headers = []): self
     {
-        return new self(403, ResponseTypeEnum::CHECK_ACCESS, 'accessDenied@notSubscriptionPermissions');
+        return new self(403, ResponseTypeEnum::CHECK_ACCESS, 'accessDenied@notSubscriptionPermissions', data: $data, headers: $headers);
     }
 }

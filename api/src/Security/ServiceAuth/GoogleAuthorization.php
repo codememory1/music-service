@@ -15,14 +15,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class GoogleAuthorization extends AbstractServiceAuthorization
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $serviceType = 'google';
 
-    /**
-     * @inheritDoc
-     */
     public function make(ClientInterface $client, ServiceAuthorizationDTOInterface $serviceAuthorizationDTO): JsonResponse
     {
         return $this->authorizationHandler($client, $serviceAuthorizationDTO);

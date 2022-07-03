@@ -21,11 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user/google')]
 class GoogleAuthController extends AbstractRestController
 {
-    /**
-     * @param GoogleClient $client
-     *
-     * @return JsonResponse
-     */
     #[Route('/authorization-url', methods: 'GET')]
     #[Authorization(false)]
     public function authorizationUrl(GoogleClient $client): JsonResponse
@@ -35,13 +30,6 @@ class GoogleAuthController extends AbstractRestController
         ]);
     }
 
-    /**
-     * @param GoogleClient        $client
-     * @param GoogleAuthDTO       $googleAuthDTO
-     * @param GoogleAuthorization $googleAuthorization
-     *
-     * @return JsonResponse
-     */
     #[Route('/auth', methods: 'POST')]
     #[Authorization(false)]
     public function auth(Client $client, GoogleAuthDTO $googleAuthDTO, GoogleAuthorization $googleAuthorization): JsonResponse

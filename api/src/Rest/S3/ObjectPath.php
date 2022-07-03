@@ -11,16 +11,8 @@ namespace App\Rest\S3;
  */
 class ObjectPath
 {
-    /**
-     * @var null|string
-     */
     private ?string $path = null;
 
-    /**
-     * @param string $path
-     *
-     * @return $this
-     */
     public function setPath(string $path): self
     {
         $this->path = $path;
@@ -28,9 +20,6 @@ class ObjectPath
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getBucket(): ?string
     {
         if (null !== $this->path) {
@@ -40,9 +29,6 @@ class ObjectPath
         return null;
     }
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         if (null !== $this->path) {

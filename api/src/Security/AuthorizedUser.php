@@ -24,35 +24,12 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class AuthorizedUser
 {
-    /**
-     * @var UserRepository
-     */
     private UserRepository $userRepository;
-
-    /**
-     * @var UserSessionRepository
-     */
     private UserSessionRepository $userSessionRepository;
-
-    /**
-     * @var BearerToken
-     */
     private BearerToken $bearerToken;
-
-    /**
-     * @var null|string
-     */
     private ?string $accessToken;
-
-    /**
-     * @var null|User
-     */
     private ?User $user = null;
 
-    /**
-     * @param EntityManagerInterface $manager
-     * @param BearerToken            $bearerToken
-     */
     public function __construct(EntityManagerInterface $manager, BearerToken $bearerToken)
     {
         $this->userRepository = $manager->getRepository(User::class);
@@ -62,11 +39,6 @@ class AuthorizedUser
         $this->accessToken = $this->bearerToken->getToken();
     }
 
-    /**
-     * @param string $token
-     *
-     * @return $this
-     */
     public function setAccessToken(string $token): self
     {
         $this->accessToken = $token;
@@ -76,11 +48,6 @@ class AuthorizedUser
         return $this;
     }
 
-    /**
-     * @param User $user
-     *
-     * @return $this
-     */
     public function setUser(User $user): self
     {
         $this->user = $user;
@@ -88,9 +55,6 @@ class AuthorizedUser
         return $this;
     }
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         if (null !== $this->user) {
@@ -110,11 +74,6 @@ class AuthorizedUser
         return $this->user;
     }
 
-    /**
-     * @param RoleEnum $roleEnum
-     *
-     * @return bool
-     */
     public function isRole(RoleEnum $roleEnum): bool
     {
         if (null !== $this->getUser()) {
@@ -124,11 +83,6 @@ class AuthorizedUser
         return false;
     }
 
-    /**
-     * @param RolePermissionEnum $rolePermissionEnum
-     *
-     * @return bool
-     */
     public function isRolePermission(RolePermissionEnum $rolePermissionEnum): bool
     {
         if (null !== $this->getUser()) {
@@ -140,11 +94,6 @@ class AuthorizedUser
         return false;
     }
 
-    /**
-     * @param SubscriptionEnum $subscriptionEnum
-     *
-     * @return bool
-     */
     public function isSubscription(SubscriptionEnum $subscriptionEnum): bool
     {
         if (null !== $this->getUser()) {
@@ -160,11 +109,6 @@ class AuthorizedUser
         return false;
     }
 
-    /**
-     * @param SubscriptionPermissionEnum $subscriptionPermissionEnum
-     *
-     * @return bool
-     */
     public function isSubscriptionPermission(SubscriptionPermissionEnum $subscriptionPermissionEnum): bool
     {
         if (null !== $this->getUser()) {

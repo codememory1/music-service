@@ -18,14 +18,6 @@ use Jenssegers\Agent\Agent;
  */
 class CollectorSessionService
 {
-    /**
-     * @param UserDTO             $userDTO
-     * @param User                $user
-     * @param UserSessionTypeEnum $type
-     * @param null|UserSession    $userSession
-     *
-     * @return UserSession
-     */
     public function collect(UserDTO $userDTO, User $user, UserSessionTypeEnum $type, ?UserSession $userSessionEntity = null): UserSession
     {
         $geo = new Geolocation();

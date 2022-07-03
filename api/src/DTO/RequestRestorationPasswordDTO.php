@@ -21,9 +21,6 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class RequestRestorationPasswordDTO extends AbstractDTO
 {
-    /**
-     * @inheritDoc
-     */
     protected EntityInterface|string|null $entity = PasswordReset::class;
 
     #[Assert\NotBlank(message: 'user@failedToIdentify')]
@@ -32,9 +29,6 @@ class RequestRestorationPasswordDTO extends AbstractDTO
     #[Required]
     public ?EntityManagerInterface $em = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('email', 'user');

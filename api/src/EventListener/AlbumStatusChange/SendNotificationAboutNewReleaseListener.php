@@ -15,24 +15,13 @@ use App\Service\Notification\NotificationCollection;
  */
 class SendNotificationAboutNewReleaseListener
 {
-    /**
-     * @var NotificationCollection
-     */
     private NotificationCollection $notificationCollection;
 
-    /**
-     * @param NotificationCollection $notificationCollection
-     */
     public function __construct(NotificationCollection $notificationCollection)
     {
         $this->notificationCollection = $notificationCollection;
     }
 
-    /**
-     * @param AlbumStatusChangeEvent $event
-     *
-     * @return void
-     */
     public function onAlbumStatusChange(AlbumStatusChangeEvent $event): void
     {
         if (AlbumStatusEnum::PUBLISHED === $event->onStatus) {

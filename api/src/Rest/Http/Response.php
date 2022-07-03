@@ -14,12 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class Response
 {
-    /**
-     * @param ResponseSchemaInterface $responseSchema
-     * @param array                   $headers
-     *
-     * @return JsonResponse
-     */
     public function getResponse(ResponseSchemaInterface $responseSchema, array $headers = []): JsonResponse
     {
         return new JsonResponse($responseSchema->getSchema(), $responseSchema->getStatusCode(), $headers);

@@ -21,10 +21,6 @@ class UserSessionResponseData extends AbstractResponseData implements ResponseDa
     protected array $methodPrefixesForProperties = [
         'isActive' => ''
     ];
-
-    /**
-     * @var null|int
-     */
     public ?int $id = null;
 
     #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
@@ -35,10 +31,6 @@ class UserSessionResponseData extends AbstractResponseData implements ResponseDa
 
     #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_USER_SESSION_TOKEN_TO_USER)]
     public ?string $refreshToken = null;
-
-    /**
-     * @var bool
-     */
     public bool $isActive = false;
 
     #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]

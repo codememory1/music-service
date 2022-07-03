@@ -18,11 +18,6 @@ class PlatformSettingService
     #[Required]
     public ?PlatformSettingRepository $platformSettingRepository = null;
 
-    /**
-     * @param PlatformSettingEnum $platformSettingEnum
-     *
-     * @return mixed
-     */
     public function get(PlatformSettingEnum $platformSettingEnum): mixed
     {
         return $this->platformSettingRepository->getSetting($platformSettingEnum->name)?->getValue();

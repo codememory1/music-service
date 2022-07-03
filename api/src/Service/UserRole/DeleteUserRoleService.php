@@ -15,11 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteUserRoleService extends AbstractService
 {
-    /**
-     * @param Role $role
-     *
-     * @return JsonResponse
-     */
     public function make(Role $role): JsonResponse
     {
         $this->em->remove($role);

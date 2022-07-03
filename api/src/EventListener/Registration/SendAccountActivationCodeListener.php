@@ -20,35 +20,20 @@ use Twig\Error\SyntaxError;
  */
 class SendAccountActivationCodeListener
 {
-    /**
-     * @var MailMessagingService
-     */
+    private EntityManagerInterface $em;
     private MailMessagingService $mailMessagingService;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
-
-    /**
-     * @param MailMessagingService   $mailMessagingService
-     * @param EntityManagerInterface $manager
-     */
-    public function __construct(MailMessagingService $mailMessagingService, EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager, MailMessagingService $mailMessagingService)
     {
-        $this->mailMessagingService = $mailMessagingService;
         $this->em = $manager;
+        $this->mailMessagingService = $mailMessagingService;
     }
 
     /**
-     * @param UserRegistrationEvent $event
-     *
      * @throws TransportExceptionInterface
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
-     *
-     * @return void
      */
     public function onUserRegistration(UserRegistrationEvent $event): void
     {

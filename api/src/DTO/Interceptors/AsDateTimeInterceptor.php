@@ -15,14 +15,8 @@ use Exception;
  */
 final class AsDateTimeInterceptor implements ValueInterceptorInterface
 {
-    /**
-     * @var bool
-     */
     private bool $nullableAsNow;
 
-    /**
-     * @param bool $nullableAsNow
-     */
     public function __construct(bool $nullableAsNow = false)
     {
         $this->nullableAsNow = $nullableAsNow;

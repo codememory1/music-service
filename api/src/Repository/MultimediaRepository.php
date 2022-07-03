@@ -19,19 +19,9 @@ use Doctrine\ORM\Query\Expr\Join;
  */
 class MultimediaRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = Multimedia::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'm';
 
-    /**
-     * @inheritDoc
-     */
     protected function findByCriteria(array $criteria, array $orderBy = []): array
     {
         $this->qb->leftJoin('m.metadata', 'md');
@@ -68,11 +58,6 @@ class MultimediaRepository extends AbstractRepository
         return parent::findByCriteria($criteria, $orderBy);
     }
 
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
     public function findAnother(User $user): array
     {
         $this->qb->leftJoin('m.album', 'a');
@@ -84,11 +69,6 @@ class MultimediaRepository extends AbstractRepository
         ]);
     }
 
-    /**
-     * @param null|Album $album
-     *
-     * @return null|Multimedia
-     */
     public function getByAlbum(?Album $album): ?Multimedia
     {
         return $this->findOneBy([
@@ -96,11 +76,6 @@ class MultimediaRepository extends AbstractRepository
         ]);
     }
 
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
     public function findAllByUser(User $user): array
     {
         return $this->findByCriteria([

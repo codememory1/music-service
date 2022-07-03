@@ -14,15 +14,7 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 interface DataFixtureFactoryInterface
 {
-    /**
-     * @return EntityInterface
-     */
     public function factoryMethod(): EntityInterface;
 
-    /**
-     * @param ReferenceRepository $referenceRepository
-     *
-     * @return $this
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): self;
 }

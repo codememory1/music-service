@@ -24,11 +24,6 @@ class PublishMultimediaService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return JsonResponse
-     */
     public function make(Multimedia $multimedia): JsonResponse
     {
         if (MultimediaStatusEnum::PUBLISHED->name === $multimedia->getStatus()) {

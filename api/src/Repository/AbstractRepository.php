@@ -21,37 +21,12 @@ abstract class AbstractRepository extends ServiceEntityRepository
     public const ORDER_TYPES = [
         'ASC', 'DESC'
     ];
-
-    /**
-     * @var null|string
-     */
     protected ?string $entity = null;
-
-    /**
-     * @var null|string
-     */
     protected ?string $alias = null;
-
-    /**
-     * @var QueryBuilder
-     */
     protected readonly QueryBuilder $qb;
-
-    /**
-     * @var FilterService
-     */
     protected readonly FilterService $filterService;
-
-    /**
-     * @var SortService
-     */
     protected readonly SortService $sortService;
 
-    /**
-     * @param ManagerRegistry $registry
-     * @param FilterService   $filterService
-     * @param SortService     $sortService
-     */
     public function __construct(ManagerRegistry $registry, FilterService $filterService, SortService $sortService)
     {
         parent::__construct($registry, $this->entity);
@@ -62,30 +37,17 @@ abstract class AbstractRepository extends ServiceEntityRepository
         $this->qb = $this->createQueryBuilder($this->alias);
     }
 
-    /**
-     * @param string      $type
-     * @param null|string $default
-     *
-     * @return null|string
-     */
     protected function getOrderType(string $type, ?string $default = null): ?string
     {
         return false === in_array($type, self::ORDER_TYPES, true) ? $default : $type;
     }
 
-    /**
-     * @return QueryBuilder
-     */
     protected function getQueryBuilder(): QueryBuilder
     {
         return $this->qb;
     }
 
     /**
-     * @param array             $criteria
-     * @param array             $orderBy
-     * @param null|QueryBuilder $qb
-     *
      * @return array<Entity>
      */
     protected function findByCriteria(array $criteria, array $orderBy = []): array
@@ -115,10 +77,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param mixed    $id
-     * @param null|int $lockMode
-     * @param null|int $lockVersion
-     *
      * @return null|Entity
      */
     public function find(mixed $id, mixed $lockMode = null, mixed $lockVersion = null): mixed
@@ -127,9 +85,6 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param array      $criteria
-     * @param null|array $orderBy
-     *
      * @return null|Entity
      */
     public function findOneBy(array $criteria, ?array $orderBy = null): ?object

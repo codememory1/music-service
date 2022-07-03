@@ -40,11 +40,6 @@ class ArtistSubscriber implements EntityInterface
         return $this->artist;
     }
 
-    /**
-     * @param null|User $artist
-     *
-     * @return $this
-     */
     public function setArtist(?User $artist): self
     {
         $this->artist = $artist;
@@ -52,19 +47,11 @@ class ArtistSubscriber implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|User
-     */
     public function getSubscriber(): ?User
     {
         return $this->subscriber;
     }
 
-    /**
-     * @param null|User $subscriber
-     *
-     * @return $this
-     */
     public function setSubscriber(?User $subscriber): self
     {
         $this->subscriber = $subscriber;

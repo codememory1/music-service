@@ -35,19 +35,11 @@ class MediaLibrary implements EntityInterface
     ])]
     private ?string $status = null;
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param User $user
-     *
-     * @return $this
-     */
     public function setUser(User $user): self
     {
         $this->user = $user;
@@ -55,19 +47,11 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|MediaLibraryStatusEnum $status
-     *
-     * @return $this
-     */
     public function setStatus(?MediaLibraryStatusEnum $status): self
     {
         $this->status = $status?->name;

@@ -20,12 +20,6 @@ class SetPerformersToMultimediaService
     #[Required]
     public ?UserRepository $userRepository = null;
 
-    /**
-     * @param array      $performers
-     * @param Multimedia $multimedia
-     *
-     * @return void
-     */
     public function set(array $performersEmail, Multimedia $multimedia): void
     {
         $performers = [];

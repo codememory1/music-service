@@ -26,11 +26,6 @@ class PublishAlbumService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param Album $album
-     *
-     * @return JsonResponse
-     */
     public function make(Album $album): JsonResponse
     {
         if ($album->getStatus() === AlbumStatusEnum::PUBLISHED->name) {

@@ -11,10 +11,5 @@ namespace App\ResponseData\Interfaces;
  */
 interface ConstraintHandlerInterface
 {
-    /**
-     * @param ConstraintInterface $constraint
-     *
-     * @return bool
-     */
     public function handle(ConstraintInterface $constraint): bool;
 }

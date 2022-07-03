@@ -25,12 +25,6 @@ class Authentication
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param AuthorizationDTO $authorizationDTO
-     * @param User             $identifiedUser
-     *
-     * @return User
-     */
     public function authenticate(AuthorizationDTO $authorizationDTO, User $identifiedUser): User
     {
         $realPassword = $authorizationDTO->password;

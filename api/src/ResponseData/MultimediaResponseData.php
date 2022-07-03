@@ -25,40 +25,16 @@ use JetBrains\PhpStorm\ArrayShape;
 class MultimediaResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
-
-    /**
-     * @inheritDoc
-     */
     protected array $methodPrefixesForProperties = [
         'isObsceneWords' => ''
     ];
-
-    /**
-     * @var null|int
-     */
     public ?int $id = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $type = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $title = null;
 
     #[ResponseDataConstraints\SubscriptionPermission(SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA)]
     public ?string $multimedia = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $description = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $image = null;
 
     #[ResponseDataConstraints\Callback('handleAlbum')]
@@ -72,18 +48,10 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
 
     #[ResponseDataConstraints\SubscriptionPermission(SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA)]
     public ?string $subtitles = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $producer = null;
 
     #[ResponseDataConstraints\Callback('handlePerformers')]
     public array $performers = [];
-
-    /**
-     * @var bool
-     */
     public bool $isObsceneWords = false;
 
     #[ResponseDataConstraints\SubscriptionPermission(SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA)]
@@ -101,10 +69,6 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
 
     #[ResponseDataConstraints\Callback('handleRatings')]
     public int $ratings = 0;
-
-    /**
-     * @var null|string
-     */
     public ?string $status = null;
 
     #[ResponseDataConstraints\Callback('handleDateTime')]
@@ -113,11 +77,6 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
 
-    /**
-     * @param Album $album
-     *
-     * @return array
-     */
     public function handleAlbum(Album $album): array
     {
         $albumResponseData = new AlbumResponseData($this->container);
@@ -128,11 +87,6 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
         return $albumResponseData->collect()->getResponse(true);
     }
 
-    /**
-     * @param MultimediaCategory $multimediaCategory
-     *
-     * @return array
-     */
     public function handleCategory(MultimediaCategory $multimediaCategory): array
     {
         $multimediaCategoryResponseData = new MultimediaCategoryResponseData($this->container);
@@ -142,11 +96,6 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
         return $multimediaCategoryResponseData->collect()->getResponse(true);
     }
 
-    /**
-     * @param Collection $performers
-     *
-     * @return array
-     */
     public function handlePerformers(Collection $performers): array
     {
         $multimediaPerformerResponseData = new MultimediaPerformerResponseData($this->container);
@@ -156,11 +105,6 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
         return $multimediaPerformerResponseData->collect()->getResponse();
     }
 
-    /**
-     * @param null|MultimediaMetadata $multimediaMetadata
-     *
-     * @return array
-     */
     public function handleMetadata(?MultimediaMetadata $multimediaMetadata): array
     {
         $multimediaMetadataResponseData = new MultimediaMetadataResponseData($this->container);
@@ -170,11 +114,6 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
         return $multimediaMetadataResponseData->collect()->getResponse(true);
     }
 
-    /**
-     * @param null|MultimediaQueue $multimediaQueue
-     *
-     * @return array
-     */
     public function handleQueue(?MultimediaQueue $multimediaQueue): array
     {
         $multimediaQueueResponseData = new MultimediaQueueResponseData($this->container);
@@ -184,31 +123,16 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
         return $multimediaQueueResponseData->collect()->getResponse(true);
     }
 
-    /**
-     * @param Collection $shares
-     *
-     * @return int
-     */
     public function handleShares(Collection $shares): int
     {
         return $shares->count();
     }
 
-    /**
-     * @param Collection $auditions
-     *
-     * @return int
-     */
     public function handleAuditions(Collection $auditions): int
     {
         return $auditions->count();
     }
 
-    /**
-     * @param Collection $ratings
-     *
-     * @return array
-     */
     #[ArrayShape(['like' => 'int', 'dislike' => 'int'])]
     public function handleRatings(Collection $ratings): array
     {

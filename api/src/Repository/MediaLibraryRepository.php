@@ -14,13 +14,6 @@ use App\Entity\MediaLibrary;
  */
 class MediaLibraryRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = MediaLibrary::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'ml';
 }

@@ -54,11 +54,6 @@ class UserProfile implements EntityInterface
     ])]
     private ?string $status = null;
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -66,27 +61,16 @@ class UserProfile implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @return null|string
-     */
     public function getPseudonym(): ?string
     {
         return $this->pseudonym;
     }
 
-    /**
-     * @param null|string $pseudonym
-     *
-     * @return $this
-     */
     public function setPseudonym(?string $pseudonym): self
     {
         $this->pseudonym = $pseudonym;
@@ -94,19 +78,11 @@ class UserProfile implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|DateTimeInterface
-     */
     public function getDateBirth(): ?DateTimeInterface
     {
         return $this->dateBirth;
     }
 
-    /**
-     * @param null|DateTimeInterface $dateBirth
-     *
-     * @return $this
-     */
     public function setDateBirth(?DateTimeInterface $dateBirth): self
     {
         $this->dateBirth = $dateBirth;
@@ -114,19 +90,11 @@ class UserProfile implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getPhoto(): ?string
     {
         return $this->photo;
     }
 
-    /**
-     * @param null|string $photo
-     *
-     * @return $this
-     */
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
@@ -134,19 +102,11 @@ class UserProfile implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|UserProfileStatusEnum $status
-     *
-     * @return $this
-     */
     public function setStatus(?UserProfileStatusEnum $status): self
     {
         $this->status = $status?->name;

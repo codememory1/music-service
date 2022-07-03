@@ -15,14 +15,8 @@ use App\Tests\AbstractApiTestCase;
  */
 final class UpdateLanguageTest extends AbstractApiTestCase
 {
-    /**
-     * @var null|int
-     */
     private ?int $languageId = null;
 
-    /**
-     * @return void
-     */
     public function setUp(): void
     {
         $languageRepository = $this->em->getRepository(Language::class);
@@ -30,9 +24,6 @@ final class UpdateLanguageTest extends AbstractApiTestCase
         $this->laguageId = $languageRepository->findOneBy(['code' => 'ru'])?->getId();
     }
 
-    /**
-     * @return void
-     */
     public function testNotExist(): void
     {
         $this->createRequest('/api/ru/admin/language/0/edit', 'PUT');
@@ -43,9 +34,6 @@ final class UpdateLanguageTest extends AbstractApiTestCase
         $this->assertApiMessage('Язык не найден');
     }
 
-//    /**
-//     * @return void
-//     */
 //    public function testValidation(): void
 //    {
 //        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
@@ -62,9 +50,6 @@ final class UpdateLanguageTest extends AbstractApiTestCase
 //        ]);
 //    }
 //
-//    /**
-//     * @return void
-//     */
 //    public function testMaxCodeLength(): void
 //    {
 //        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
@@ -80,9 +65,6 @@ final class UpdateLanguageTest extends AbstractApiTestCase
 //        ]);
 //    }
 //
-//    /**
-//     * @return void
-//     */
 //    public function testExistCode(): void
 //    {
 //        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [
@@ -98,9 +80,6 @@ final class UpdateLanguageTest extends AbstractApiTestCase
 //        ]);
 //    }
 //
-//    /**
-//     * @return void
-//     */
 //    public function testSuccessUpdate(): void
 //    {
 //        $this->createRequest("/api/ru/admin/language/{$this->languageId}/edit", 'PUT', [

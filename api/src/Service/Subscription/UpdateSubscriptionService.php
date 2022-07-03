@@ -20,12 +20,6 @@ class UpdateSubscriptionService extends AbstractService
     #[Required]
     public ?SetPermissionsToSubscriptionService $setPermissionsToSubscriptionService = null;
 
-    /**
-     * @param SubscriptionDTO $subscriptionDTO
-     * @param Subscription    $subscription
-     *
-     * @return JsonResponse
-     */
     public function make(SubscriptionDTO $subscriptionDTO, Subscription $subscription): JsonResponse
     {
         if (true !== $response = $this->validateFullDTO($subscriptionDTO)) {

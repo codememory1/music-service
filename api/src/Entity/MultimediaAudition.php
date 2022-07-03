@@ -38,19 +38,11 @@ class MultimediaAudition implements EntityInterface
     ])]
     private bool $isFull = false;
 
-    /**
-     * @return null|Multimedia
-     */
     public function getMultimedia(): ?Multimedia
     {
         return $this->multimedia;
     }
 
-    /**
-     * @param null|Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function setMultimedia(?Multimedia $multimedia): self
     {
         $this->multimedia = $multimedia;
@@ -58,19 +50,11 @@ class MultimediaAudition implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -78,19 +62,11 @@ class MultimediaAudition implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|bool
-     */
     public function isIsFull(): ?bool
     {
         return $this->isFull;
     }
 
-    /**
-     * @param bool $isFull
-     *
-     * @return $this
-     */
     public function setIsFull(bool $isFull): self
     {
         $this->isFull = $isFull;

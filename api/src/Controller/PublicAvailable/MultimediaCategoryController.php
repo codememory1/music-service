@@ -19,12 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/multimedia/category')]
 class MultimediaCategoryController extends AbstractRestController
 {
-    /**
-     * @param MultimediaCategoryResponseData $multimediaCategoryResponseData
-     * @param MultimediaCategoryRepository   $multimediaCategoryRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/all', methods: 'GET')]
     #[Authorization]
     public function all(MultimediaCategoryResponseData $multimediaCategoryResponseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse

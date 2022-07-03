@@ -20,12 +20,6 @@ class UpdateUserRoleService extends AbstractService
     #[Required]
     public ?SetPermissionsToRoleService $setPermissionsToRoleService = null;
 
-    /**
-     * @param UserRoleDTO $userRoleDTO
-     * @param Role        $role
-     *
-     * @return JsonResponse
-     */
     public function make(UserRoleDTO $userRoleDTO, Role $role): JsonResponse
     {
         if (true !== $response = $this->validateFullDTO($userRoleDTO)) {

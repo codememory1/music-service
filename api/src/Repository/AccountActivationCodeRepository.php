@@ -14,13 +14,6 @@ use App\Entity\AccountActivationCode;
  */
 class AccountActivationCodeRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = AccountActivationCode::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'aac';
 }

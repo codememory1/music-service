@@ -23,11 +23,6 @@ class UpdateAccessTokenService extends AbstractService
     #[Required]
     public ?AuthorizationToken $authorizationToken = null;
 
-    /**
-     * @param RefreshTokenDTO $refreshTokenDTO
-     *
-     * @return JsonResponse
-     */
     public function make(RefreshTokenDTO $refreshTokenDTO): JsonResponse
     {
         if (false === $this->validate($refreshTokenDTO)) {
@@ -51,11 +46,6 @@ class UpdateAccessTokenService extends AbstractService
         ]);
     }
 
-    /**
-     * @param UserSession $userSession
-     *
-     * @return void
-     */
     private function updateToken(UserSession $userSession): void
     {
         $this->authorizationToken->generateAccessToken($userSession->getUser());

@@ -14,31 +14,14 @@ use Aws\S3\S3Client as AwsS3Client;
  */
 class Bucket
 {
-    /**
-     * @var AwsS3Client
-     */
     private AwsS3Client $awsS3Client;
-
-    /**
-     * @var null|Result
-     */
     private ?Result $listBuckets = null;
 
-    /**
-     * @param AwsS3Client $awsS3Client
-     */
     public function __construct(AwsS3Client $awsS3Client)
     {
         $this->awsS3Client = $awsS3Client;
     }
 
-    /**
-     * @param string $name
-     * @param string $acl
-     * @param array  $args
-     *
-     * @return bool|Result
-     */
     public function create(string $name, string $acl = 'private-read-write', array $args = []): Result|bool
     {
         if (!$this->exist($name)) {
@@ -52,12 +35,6 @@ class Bucket
         return false;
     }
 
-    /**
-     * @param string $name
-     * @param array  $args
-     *
-     * @return bool|Result
-     */
     public function remove(string $name, array $args = []): Result|bool
     {
         if ($this->exist($name)) {
@@ -72,11 +49,6 @@ class Bucket
         return false;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
     public function clear(string $name): static
     {
         $objects = $this->awsS3Client->listObjects([
@@ -93,11 +65,6 @@ class Bucket
         return $this;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
     public function exist(string $name): bool
     {
         foreach ($this->all() as $bucket) {
@@ -109,11 +76,6 @@ class Bucket
         return false;
     }
 
-    /**
-     * @param array $args
-     *
-     * @return array
-     */
     public function all(array $args = []): array
     {
         if (null === $this->listBuckets) {

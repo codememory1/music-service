@@ -22,12 +22,6 @@ class SaveMediaLibraryService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param MediaLibrary $mediaLibrary
-     * @param User         $forUser
-     *
-     * @return void
-     */
     public function make(MediaLibrary $mediaLibrary, User $forUser): void
     {
         $forUser->setMediaLibrary($mediaLibrary);

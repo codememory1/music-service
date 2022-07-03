@@ -28,12 +28,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user/role')]
 class UserRoleController extends AbstractRestController
 {
-    /**
-     * @param UserRoleResponseData $userRoleResponseData
-     * @param RoleRepository       $roleRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/all', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_ROLES)]
@@ -45,12 +39,6 @@ class UserRoleController extends AbstractRestController
         return $this->responseCollection->dataOutput($userRoleResponseData->getResponse());
     }
 
-    /**
-     * @param Role                 $role
-     * @param UserRoleResponseData $userRoleResponseData
-     *
-     * @return JsonResponse
-     */
     #[Route('/{role_id<\d+>}/read', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_ROLES)]
@@ -64,12 +52,6 @@ class UserRoleController extends AbstractRestController
         return $this->responseCollection->dataOutput($userRoleResponseData->getResponse());
     }
 
-    /**
-     * @param UserRoleDTO           $userRoleDTO
-     * @param CreateUserRoleService $createUserRoleService
-     *
-     * @return JsonResponse
-     */
     #[Route('/create', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_USER_ROLE)]
@@ -78,13 +60,6 @@ class UserRoleController extends AbstractRestController
         return $createUserRoleService->make($userRoleDTO->collect());
     }
 
-    /**
-     * @param Role                  $role
-     * @param UserRoleDTO           $userRoleDTO
-     * @param UpdateUserRoleService $updateUserRoleService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{role_id<\d+>}/edit', methods: 'PUT')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_USER_ROLE)]
@@ -98,12 +73,6 @@ class UserRoleController extends AbstractRestController
         return $updateUserRoleService->make($userRoleDTO->collect(), $role);
     }
 
-    /**
-     * @param Role                  $role
-     * @param DeleteUserRoleService $deleteUserRoleService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{role_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_USER_ROLE)]

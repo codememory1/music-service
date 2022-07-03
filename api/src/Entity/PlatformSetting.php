@@ -35,19 +35,11 @@ class PlatformSetting implements EntityInterface
     ])]
     private array $value = [];
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @param null|string $key
-     *
-     * @return $this
-     */
     public function setKey(?string $key): self
     {
         $this->key = $key;
@@ -55,19 +47,11 @@ class PlatformSetting implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getValue(): mixed
     {
         return $this->value['value'] ?? null;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return $this
-     */
     public function setValue(mixed $value): self
     {
         $this->value = ['value' => $value];

@@ -21,12 +21,6 @@ class SetDisLikeMultimediaService extends AbstractService
     #[Required]
     public ?SaveMultimediaRatingService $saveMultimediaRatingService = null;
 
-    /**
-     * @param Multimedia $multimedia
-     * @param User       $fromUser
-     *
-     * @return JsonResponse
-     */
     public function make(Multimedia $multimedia, User $fromUser): JsonResponse
     {
         $responseCollection = $this->responseCollection;

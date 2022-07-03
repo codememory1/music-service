@@ -26,9 +26,6 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class MultimediaDTO extends AbstractDTO
 {
-    /**
-     * @inheritDoc
-     */
     protected EntityInterface|string|null $entity = Multimedia::class;
 
     #[Assert\NotBlank(message: 'multimedia@typeIsRequired')]
@@ -49,10 +46,6 @@ class MultimediaDTO extends AbstractDTO
 
     #[Assert\NotBlank(message: 'multimedia@categoryIsRequired')]
     public ?MultimediaCategory $category = null;
-
-    /**
-     * @var null|array
-     */
     public ?array $text = null;
 
     #[Assert\File(
@@ -72,18 +65,11 @@ class MultimediaDTO extends AbstractDTO
         mimeTypesMessage: 'multimedia@uploadFileIsNotPreview'
     )]
     public ?UploadedFile $image = null;
-
-    /**
-     * @var array
-     */
     public array $performers = [];
 
     #[Required]
     public ?EntityManagerInterface $em = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('type');

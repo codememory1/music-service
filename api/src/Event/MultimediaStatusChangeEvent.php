@@ -14,20 +14,9 @@ use App\Enum\MultimediaStatusEnum;
  */
 class MultimediaStatusChangeEvent
 {
-    /**
-     * @var Multimedia
-     */
     public readonly Multimedia $multimedia;
-
-    /**
-     * @var MultimediaStatusEnum
-     */
     public readonly MultimediaStatusEnum $onStatus;
 
-    /**
-     * @param Multimedia           $multimedia
-     * @param MultimediaStatusEnum $onStatus
-     */
     public function __construct(Multimedia $multimedia, MultimediaStatusEnum $onStatus)
     {
         $this->multimedia = $multimedia;

@@ -20,34 +20,16 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 final class SubscriptionPermissionFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
     private string $subscription;
-
-    /**
-     * @var string
-     */
     private string $subscriptionPermission;
-
-    /**
-     * @var ReferenceRepository
-     */
     private ReferenceRepository $referenceRepository;
 
-    /**
-     * @param SubscriptionEnum           $subscriptionEnum
-     * @param SubscriptionPermissionEnum $subscriptionPermissionEnum
-     */
     public function __construct(SubscriptionEnum $subscriptionEnum, SubscriptionPermissionEnum $subscriptionPermissionEnum)
     {
         $this->subscription = $subscriptionEnum->name;
         $this->subscriptionPermission = $subscriptionPermissionEnum->name;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
         $subscriptionPermissionEntity = new SubscriptionPermission();
@@ -64,9 +46,6 @@ final class SubscriptionPermissionFactory implements DataFixtureFactoryInterface
         return $subscriptionPermissionEntity;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         $this->referenceRepository = $referenceRepository;

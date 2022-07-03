@@ -14,20 +14,9 @@ use App\Enum\AlbumStatusEnum;
  */
 class AlbumStatusChangeEvent
 {
-    /**
-     * @var Album
-     */
     public readonly Album $album;
-
-    /**
-     * @var AlbumStatusEnum
-     */
     public readonly AlbumStatusEnum $onStatus;
 
-    /**
-     * @param Album           $album
-     * @param AlbumStatusEnum $onStatus
-     */
     public function __construct(Album $album, AlbumStatusEnum $onStatus)
     {
         $this->album = $album;

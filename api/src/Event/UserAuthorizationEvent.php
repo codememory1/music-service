@@ -14,20 +14,9 @@ use App\Security\Auth\AuthorizationToken;
  */
 class UserAuthorizationEvent
 {
-    /**
-     * @var User
-     */
     public readonly User $authorizedUser;
-
-    /**
-     * @var AuthorizationToken
-     */
     public readonly AuthorizationToken $authorizationToken;
 
-    /**
-     * @param User               $authorizedUser
-     * @param AuthorizationToken $authorizationToken
-     */
     public function __construct(User $authorizedUser, AuthorizationToken $authorizationToken)
     {
         $this->authorizedUser = $authorizedUser;

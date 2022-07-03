@@ -39,19 +39,11 @@ class MultimediaRating implements EntityInterface
     ])]
     private ?string $type = null;
 
-    /**
-     * @return null|Multimedia
-     */
     public function getMultimedia(): ?Multimedia
     {
         return $this->multimedia;
     }
 
-    /**
-     * @param null|Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function setMultimedia(?Multimedia $multimedia): self
     {
         $this->multimedia = $multimedia;
@@ -59,19 +51,11 @@ class MultimediaRating implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -79,19 +63,11 @@ class MultimediaRating implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param null|MultimediaRatingTypeEnum $type
-     *
-     * @return $this
-     */
     public function setType(?MultimediaRatingTypeEnum $type): self
     {
         $this->type = $type?->name;

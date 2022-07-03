@@ -17,9 +17,6 @@ class GoogleAuthDTO extends AbstractDTO implements ServiceAuthorizationDTOInterf
     #[Assert\NotBlank(message: 'serviceAuth@authorizationCodeIsRequired')]
     public ?string $code = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('code');

@@ -18,17 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/subscription')]
 class SubscriptionController extends AbstractRestController
 {
-    /**
-     * @param SubscriptionResponseData $subscriptionResponseData
-     * @param SubscriptionRepository   $subscriptionRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/all', methods: 'GET')]
-    public function all(
-        SubscriptionResponseData $subscriptionResponseData,
-        SubscriptionRepository $subscriptionRepository
-    ): JsonResponse {
+    public function all(SubscriptionResponseData $subscriptionResponseData, SubscriptionRepository $subscriptionRepository): JsonResponse
+    {
         $subscriptionResponseData->setEntities($subscriptionRepository->findAll());
         $subscriptionResponseData->collect();
 

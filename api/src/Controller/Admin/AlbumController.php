@@ -30,13 +30,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class AlbumController extends AbstractRestController
 {
-    /**
-     * @param User              $user
-     * @param AlbumResponseData $albumResponseData
-     * @param AlbumRepository   $albumRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/{user_id<\d+>}/album/all', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUMS)]
@@ -51,13 +44,6 @@ class AlbumController extends AbstractRestController
         return $this->responseCollection->dataOutput($albumResponseData->getResponse());
     }
 
-    /**
-     * @param User               $user
-     * @param AlbumDTO           $albumDTO
-     * @param CreateAlbumService $createAlbumService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{user_id<\d+>}/album/create', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_ALBUM_TO_USER)]
@@ -69,13 +55,6 @@ class AlbumController extends AbstractRestController
         return $createAlbumService->make($albumDTO->collect(), $user);
     }
 
-    /**
-     * @param Album              $album
-     * @param AlbumDTO           $albumDTO
-     * @param UpdateAlbumService $updateAlbumService
-     *
-     * @return JsonResponse
-     */
     #[Route('/album/{album_id<\d+>}/edit', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_ALBUM_TO_USER)]
@@ -89,12 +68,6 @@ class AlbumController extends AbstractRestController
         return $updateAlbumService->make($albumDTO->collect(), $album->getUser());
     }
 
-    /**
-     * @param Album              $album
-     * @param DeleteAlbumService $deleteAlbumService
-     *
-     * @return JsonResponse
-     */
     #[Route('/album/{album_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_ALBUM_TO_USER)]
@@ -105,12 +78,6 @@ class AlbumController extends AbstractRestController
         return $deleteAlbumService->make($album);
     }
 
-    /**
-     * @param Album               $album
-     * @param PublishAlbumService $publishAlbumService
-     *
-     * @return JsonResponse
-     */
     #[Route('/album/{album_id<\d+>}/publish', methods: 'PATCH')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::ALBUM_STATUS_CONTROL_TO_USER)]

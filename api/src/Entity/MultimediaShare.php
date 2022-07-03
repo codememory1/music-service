@@ -36,19 +36,11 @@ class MultimediaShare implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?User $toUser = null;
 
-    /**
-     * @return null|Multimedia
-     */
     public function getMultimedia(): ?Multimedia
     {
         return $this->multimedia;
     }
 
-    /**
-     * @param null|Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function setMultimedia(?Multimedia $multimedia): self
     {
         $this->multimedia = $multimedia;
@@ -56,19 +48,11 @@ class MultimediaShare implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|User
-     */
     public function getFromUser(): ?User
     {
         return $this->fromUser;
     }
 
-    /**
-     * @param null|User $fromUser
-     *
-     * @return $this
-     */
     public function setFromUser(?User $fromUser): self
     {
         $this->fromUser = $fromUser;
@@ -76,19 +60,11 @@ class MultimediaShare implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|User
-     */
     public function getToUser(): ?User
     {
         return $this->toUser;
     }
 
-    /**
-     * @param null|User $toUser
-     *
-     * @return $this
-     */
     public function setToUser(?User $toUser): self
     {
         $this->toUser = $toUser;

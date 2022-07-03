@@ -13,34 +13,13 @@ use App\Entity\Interfaces\EntityInterface;
  */
 interface DTOInterface
 {
-    /**
-     * @param string $type
-     *
-     * @return $this
-     */
     public function setRequestType(string $type): self;
 
-    /**
-     * @param array $propertyNames
-     *
-     * @return $this
-     */
     public function preventSetterCallForKeys(array $propertyNames): self;
 
-    /**
-     * @return $this
-     */
     public function collect(): self;
 
-    /**
-     * @param EntityInterface $entity
-     *
-     * @return $this
-     */
     public function setEntity(EntityInterface $entity): self;
 
-    /**
-     * @return null|EntityInterface
-     */
     public function getEntity(): ?EntityInterface;
 }

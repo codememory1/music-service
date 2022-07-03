@@ -13,20 +13,9 @@ use Aws\S3\S3Client as AwsS3Client;
  */
 class Client
 {
-    /**
-     * @var AwsS3Client
-     */
     public readonly AwsS3Client $awsS3Client;
-
-    /**
-     * @var Bucket
-     */
     public readonly Bucket $bucket;
 
-    /**
-     * @param AwsS3Client $awsS3Client
-     * @param Bucket      $bucket
-     */
     public function __construct(AwsS3Client $awsS3Client, Bucket $bucket)
     {
         $this->awsS3Client = $awsS3Client;

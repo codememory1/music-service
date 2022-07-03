@@ -17,31 +17,15 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class UploadImageListener
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
-
-    /**
-     * @var ImageUploader
-     */
     private ImageUploader $imageUploader;
 
-    /**
-     * @param EntityManagerInterface $manager
-     * @param ImageUploader          $imageUploader
-     */
     public function __construct(EntityManagerInterface $manager, ImageUploader $imageUploader)
     {
         $this->em = $manager;
         $this->imageUploader = $imageUploader;
     }
 
-    /**
-     * @param SaveAlbumEvent $event
-     *
-     * @return void
-     */
     public function onSaveAlbum(SaveAlbumEvent $event): void
     {
         $this->imageUploader->setEntity($event->album);
@@ -52,12 +36,6 @@ class UploadImageListener
         $this->em->flush();
     }
 
-    /**
-     * @param AlbumDTO $albumDTO
-     * @param Album    $album
-     *
-     * @return string
-     */
     private function uploadImage(AlbumDTO $albumDTO, Album $album): string
     {
         $this->imageUploader->save($album->getImage(), $albumDTO->image->getRealPath(), $albumDTO->image->getMimeType());

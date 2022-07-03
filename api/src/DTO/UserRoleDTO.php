@@ -20,9 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class UserRoleDTO extends AbstractDTO
 {
-    /**
-     * @inheritDoc
-     */
     protected EntityInterface|string|null $entity = Role::class;
 
     #[Assert\NotBlank(message: 'role@keyIsRequired')]
@@ -46,9 +43,6 @@ class UserRoleDTO extends AbstractDTO
     public ?string $shortDescription = null;
     public array $permissions = [];
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('key');

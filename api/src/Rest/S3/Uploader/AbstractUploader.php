@@ -22,41 +22,13 @@ use LogicException;
  */
 abstract class AbstractUploader implements S3UploaderInterface
 {
-    /**
-     * @var Client
-     */
     protected Client $client;
-
-    /**
-     * @var MimeTypeConverter
-     */
     protected MimeTypeConverter $mimeTypeConverter;
-
-    /**
-     * @var null|User
-     */
     protected ?User $user = null;
-
-    /**
-     * @var null|EntityInterface
-     */
     protected ?EntityInterface $entity = null;
-
-    /**
-     * @var array
-     */
     private array $uploadedPaths = [];
-
-    /**
-     * @var ObjectPath
-     */
     private ObjectPath $objectPath;
 
-    /**
-     * @param Client            $client
-     * @param MimeTypeConverter $mimeTypeConverter
-     * @param ObjectPath        $objectPath
-     */
     public function __construct(Client $client, MimeTypeConverter $mimeTypeConverter, ObjectPath $objectPath)
     {
         $this->client = $client;
@@ -66,13 +38,6 @@ abstract class AbstractUploader implements S3UploaderInterface
         $this->client->bucket->create($this->getBucketName());
     }
 
-    /**
-     * @param string $pathInSystem
-     * @param string $mimeType
-     * @param bool   $asPathInStorage
-     *
-     * @return string
-     */
     protected function generateKey(string $pathInSystem, string $mimeType, bool $asPathInStorage = false): string
     {
         if (null === $this->user) {
@@ -98,11 +63,6 @@ abstract class AbstractUploader implements S3UploaderInterface
         return $generatedKey;
     }
 
-    /**
-     * @param string $path
-     *
-     * @return null|string
-     */
     protected function getContent(string $path): ?string
     {
         if (file_exists($path)) {
@@ -112,9 +72,6 @@ abstract class AbstractUploader implements S3UploaderInterface
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setUser(User $user): S3UploaderInterface
     {
         $this->user = $user;
@@ -122,9 +79,6 @@ abstract class AbstractUploader implements S3UploaderInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setEntity(EntityInterface $entity): S3UploaderInterface
     {
         $this->entity = $entity;
@@ -132,9 +86,6 @@ abstract class AbstractUploader implements S3UploaderInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function upload(string $pathInSystem, string $mimeType, array $args = []): Result
     {
         return $this->client->awsS3Client->putObject([
@@ -146,9 +97,6 @@ abstract class AbstractUploader implements S3UploaderInterface
         ]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function save(?string $oldFilePathInStorage, string $newFilePathInSystem, string $mimeType, array $args = []): ?Result
     {
         if (null === $oldFilePathInStorage) {
@@ -162,9 +110,6 @@ abstract class AbstractUploader implements S3UploaderInterface
         return null;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function delete(string $pathInStorage, array $argc = []): Result
     {
         $this->objectPath->setPath($pathInStorage);
@@ -176,9 +121,6 @@ abstract class AbstractUploader implements S3UploaderInterface
         ]);
     }
 
-    /**
-     * @inheritDoc
-     */
     #[Pure]
     public function getUploadedFile(): S3UploadedFile
     {

@@ -17,12 +17,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class UnsubscribeOnArtistService extends AbstractService
 {
-    /**
-     * @param User $artist
-     * @param User $subscriber
-     *
-     * @return JsonResponse
-     */
     public function make(User $artist, User $subscriber): JsonResponse
     {
         $artistSubscriberRepository = $this->em->getRepository(ArtistSubscriber::class);

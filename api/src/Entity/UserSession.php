@@ -97,19 +97,11 @@ class UserSession implements EntityInterface
         $this->type = UserSessionTypeEnum::TEMP->name;
     }
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -117,19 +109,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param null|UserSessionTypeEnum $type
-     *
-     * @return $this
-     */
     public function setType(?UserSessionTypeEnum $type): self
     {
         $this->type = $type->name;
@@ -137,19 +121,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }
 
-    /**
-     * @param null|string $accessToken
-     *
-     * @return $this
-     */
     public function setAccessToken(?string $accessToken): self
     {
         $this->accessToken = $accessToken;
@@ -157,19 +133,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getRefreshToken(): ?string
     {
         return $this->refreshToken;
     }
 
-    /**
-     * @param null|string $refreshToken
-     *
-     * @return $this
-     */
     public function setRefreshToken(?string $refreshToken): self
     {
         $this->refreshToken = $refreshToken;
@@ -177,19 +145,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|bool
-     */
     public function isActive(): ?bool
     {
         return $this->isActive;
     }
 
-    /**
-     * @param bool $isActive
-     *
-     * @return $this
-     */
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
@@ -197,19 +157,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getIp(): ?string
     {
         return $this->ip;
     }
 
-    /**
-     * @param null|string $ip
-     *
-     * @return $this
-     */
     public function setIp(?string $ip): self
     {
         $this->ip = $ip;
@@ -217,19 +169,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getBrowser(): ?string
     {
         return $this->browser;
     }
 
-    /**
-     * @param null|string $browser
-     *
-     * @return $this
-     */
     public function setBrowser(?string $browser): self
     {
         $this->browser = $browser;
@@ -237,19 +181,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getDevice(): ?string
     {
         return $this->device;
     }
 
-    /**
-     * @param null|string $device
-     *
-     * @return $this
-     */
     public function setDevice(?string $device): self
     {
         $this->device = $device;
@@ -257,19 +193,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getOperatingSystem(): ?string
     {
         return $this->operatingSystem;
     }
 
-    /**
-     * @param null|string $operatingSystem
-     *
-     * @return $this
-     */
     public function setOperatingSystem(?string $operatingSystem): self
     {
         $this->operatingSystem = $operatingSystem;
@@ -277,19 +205,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
-    /**
-     * @param null|string $city
-     *
-     * @return $this
-     */
     public function setCity(?string $city): self
     {
         $this->city = $city;
@@ -297,19 +217,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    /**
-     * @param null|string $country
-     *
-     * @return $this
-     */
     public function setCountry(?string $country): self
     {
         $this->country = $country;
@@ -317,19 +229,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|array
-     */
     public function getCoordinates(): ?array
     {
         return $this->coordinates;
     }
 
-    /**
-     * @param array $coordinates
-     *
-     * @return $this
-     */
     public function setCoordinates(array $coordinates): self
     {
         $this->coordinates = $coordinates;
@@ -337,19 +241,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|DateTimeInterface
-     */
     public function getLastActivity(): ?DateTimeInterface
     {
         return $this->lastActivity;
     }
 
-    /**
-     * @param null|DateTimeInterface $lastActivity
-     *
-     * @return $this
-     */
     public function setLastActivity(?DateTimeInterface $lastActivity): self
     {
         $this->lastActivity = $lastActivity;

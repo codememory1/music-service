@@ -21,13 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/translation')]
 class TranslationController extends AbstractRestController
 {
-    /**
-     * @param Language                $language
-     * @param TranslationResponseData $translationResponseData
-     * @param TranslationRepository   $translationRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/{language_code<[a-z]{2,5}>}/all')]
     public function allByLanguageCode(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,

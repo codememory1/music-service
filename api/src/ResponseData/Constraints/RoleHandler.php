@@ -15,22 +15,14 @@ use App\Security\AuthorizedUser;
  */
 class RoleHandler implements ConstraintHandlerInterface
 {
-    /**
-     * @var AuthorizedUser
-     */
     private AuthorizedUser $authorizedUser;
 
-    /**
-     * @param AuthorizedUser $authorizedUser
-     */
     public function __construct(AuthorizedUser $authorizedUser)
     {
         $this->authorizedUser = $authorizedUser;
     }
 
     /**
-     * @inheritDoc
-     *
      * @param ConstraintInterface|Role $constraint
      */
     public function handle(ConstraintInterface $constraint): bool

@@ -19,12 +19,6 @@ class SetPermissionsToRoleService
     #[Required]
     public ?RolePermissionKeyRepository $rolePermissionKeyRepository = null;
 
-    /**
-     * @param Role  $role
-     * @param array $permissionKeys
-     *
-     * @return void
-     */
     public function set(Role $role, array $permissionKeys): void
     {
         $rolePermissionKeys = [];

@@ -14,14 +14,8 @@ use App\Entity\User;
  */
 class UserDTO extends AbstractDTO
 {
-    /**
-     * @var null|string
-     */
     public ?string $ip = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->ip = $this->request->request?->getClientIp();

@@ -51,19 +51,11 @@ class AlbumType implements EntityInterface
         $this->albums = new ArrayCollection();
     }
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @param null|AlbumTypeEnum $key
-     *
-     * @return $this
-     */
     public function setKey(?AlbumTypeEnum $key): self
     {
         $this->key = $key?->name;
@@ -71,19 +63,11 @@ class AlbumType implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->titleTranslationKey;
     }
 
-    /**
-     * @param null|string $titleTranslationKey
-     *
-     * @return $this
-     */
     public function setTitle(?string $titleTranslationKey): self
     {
         $this->titleTranslationKey = $titleTranslationKey;
@@ -99,11 +83,6 @@ class AlbumType implements EntityInterface
         return $this->albums;
     }
 
-    /**
-     * @param Album $album
-     *
-     * @return $this
-     */
     public function addAlbum(Album $album): self
     {
         if (!$this->albums->contains($album)) {
@@ -114,11 +93,6 @@ class AlbumType implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Album $album
-     *
-     * @return $this
-     */
     public function removeAlbum(Album $album): self
     {
         if ($this->albums->removeElement($album)) {

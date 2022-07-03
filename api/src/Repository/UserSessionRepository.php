@@ -18,14 +18,7 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class UserSessionRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = UserSession::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'us';
 
     #[Required]
@@ -60,9 +53,6 @@ class UserSessionRepository extends AbstractRepository
         return parent::findByCriteria($criteria, $orderBy);
     }
 
-    /**
-     * @return array
-     */
     public function authorizedUserSessions(): array
     {
         if (null === $this->authorizedUser->getUser()) {
@@ -75,11 +65,6 @@ class UserSessionRepository extends AbstractRepository
         ]);
     }
 
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
     public function allByUser(User $user): array
     {
         return $this->findByCriteria(['us.user' => $user]);

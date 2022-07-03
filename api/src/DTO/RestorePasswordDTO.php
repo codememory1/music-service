@@ -30,9 +30,6 @@ class RestorePasswordDTO extends AbstractDTO
     #[Required]
     public ?EntityManagerInterface $em = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('email', 'user');

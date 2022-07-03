@@ -21,11 +21,6 @@ class AlbumTypeCheckListener
     #[Required]
     public ?MultimediaRepository $multimediaRepository = null;
 
-    /**
-     * @param SaveMultimediaEvent $event
-     *
-     * @return void
-     */
     public function onBeforeSaveMultimedia(SaveMultimediaEvent $event): void
     {
         $albumType = $event->multimediaDTO->album->getType();
@@ -35,11 +30,6 @@ class AlbumTypeCheckListener
         }
     }
 
-    /**
-     * @param SaveMultimediaEvent $event
-     *
-     * @return null|Multimedia
-     */
     private function getMultimedia(SaveMultimediaEvent $event): ?Multimedia
     {
         if (null !== $event->multimedia->getId()) {

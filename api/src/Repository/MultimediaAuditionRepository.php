@@ -14,13 +14,6 @@ use App\Entity\MultimediaAudition;
  */
 class MultimediaAuditionRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = MultimediaAudition::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'ma';
 }

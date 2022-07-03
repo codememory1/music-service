@@ -17,10 +17,6 @@ use App\ResponseData\Traits\DateTimeHandlerTrait;
 class UserRolePermissionResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
-
-    /**
-     * @var null|int
-     */
     public ?int $id = null;
 
     #[ResponseDataConstraints\Callback('handlePermissionKey')]
@@ -32,11 +28,6 @@ class UserRolePermissionResponseData extends AbstractResponseData implements Res
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
 
-    /**
-     * @param null|RolePermissionKey $rolePermissionKey
-     *
-     * @return null|string
-     */
     public function handlePermissionKey(?RolePermissionKey $rolePermissionKey): ?string
     {
         return $rolePermissionKey?->getKey();

@@ -28,19 +28,11 @@ class MultimediaQueue implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Multimedia $multimedia = null;
 
-    /**
-     * @return null|Multimedia
-     */
     public function getMultimedia(): ?Multimedia
     {
         return $this->multimedia;
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function setMultimedia(Multimedia $multimedia): self
     {
         $this->multimedia = $multimedia;

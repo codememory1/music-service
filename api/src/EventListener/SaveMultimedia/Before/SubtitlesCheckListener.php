@@ -16,11 +16,6 @@ use Exception;
  */
 class SubtitlesCheckListener
 {
-    /**
-     * @param SaveMultimediaEvent $event
-     *
-     * @return void
-     */
     public function onBeforeSaveMultimedia(SaveMultimediaEvent $event): void
     {
         $subtitlesFile = $event->multimediaDTO->subtitles;

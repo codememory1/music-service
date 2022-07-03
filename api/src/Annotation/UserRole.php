@@ -16,14 +16,8 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 class UserRole implements MethodAnnotationInterface
 {
-    /**
-     * @var RoleEnum
-     */
     public readonly RoleEnum $role;
 
-    /**
-     * @param RoleEnum $rolePermissionEnum
-     */
     public function __construct(RoleEnum $roleEnum)
     {
         $this->role = $roleEnum;

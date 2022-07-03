@@ -26,15 +26,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 )]
 class GenerateJwtKeysCommand extends Command
 {
-    /**
-     * @var ParameterBagInterface
-     */
     private ParameterBagInterface $params;
 
-    /**
-     * @param ParameterBagInterface $params
-     * @param null|string           $name
-     */
     public function __construct(ParameterBagInterface $params, ?string $name = null)
     {
         parent::__construct($name);
@@ -50,10 +43,7 @@ class GenerateJwtKeysCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -85,32 +75,16 @@ class GenerateJwtKeysCommand extends Command
         return self::SUCCESS;
     }
 
-    /**
-     * @param string $prefix
-     *
-     * @return string
-     */
     private function generatePublicVariableName(string $prefix): string
     {
         return $prefix . '_PUBLIC_KEY';
     }
 
-    /**
-     * @param string $prefix
-     *
-     * @return string
-     */
     private function generatePrivateVariableName(string $prefix): string
     {
         return $prefix . '_PRIVATE_KEY';
     }
 
-    /**
-     * @param string $prefix
-     * @param bool   $isPrivate
-     *
-     * @return string
-     */
     private function generateFilename(string $prefix, bool $isPrivate = false): string
     {
         $prefix = Str::toLowercase($prefix);

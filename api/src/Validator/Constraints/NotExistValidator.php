@@ -17,14 +17,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 final class NotExistValidator extends ConstraintValidator
 {
-    /**
-     * @var ObjectManager
-     */
     private ObjectManager $em;
 
-    /**
-     * @param ManagerRegistry $managerRegistry
-     */
     public function __construct(ManagerRegistry $managerRegistry)
     {
         $this->em = $managerRegistry->getManager();

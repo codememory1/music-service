@@ -18,11 +18,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteUserSessionService extends AbstractService
 {
-    /**
-     * @param UserSession $userSession
-     *
-     * @return JsonResponse
-     */
     public function make(UserSession $userSession): JsonResponse
     {
         if ($userSession->getType() !== UserSessionTypeEnum::TEMP->name) {
@@ -35,11 +30,6 @@ class DeleteUserSessionService extends AbstractService
         return $this->responseCollection->successDelete('userSession@successDelete');
     }
 
-    /**
-     * @param User $toUser
-     *
-     * @return JsonResponse
-     */
     public function deleteAll(User $toUser): JsonResponse
     {
         $userSessionRepository = $this->em->getRepository(UserSession::class);

@@ -30,19 +30,11 @@ class MultimediaCategory implements EntityInterface
     ])]
     private ?string $titleTranslationKey = null;
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->titleTranslationKey;
     }
 
-    /**
-     * @param string $titleTranslationKey
-     *
-     * @return $this
-     */
     public function setTitle(string $titleTranslationKey): self
     {
         $this->titleTranslationKey = $titleTranslationKey;

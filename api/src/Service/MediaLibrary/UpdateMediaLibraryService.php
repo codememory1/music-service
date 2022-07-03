@@ -15,11 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class UpdateMediaLibraryService extends AbstractService
 {
-    /**
-     * @param MediaLibraryDTO $mediaLibraryDTO
-     *
-     * @return JsonResponse
-     */
     public function make(MediaLibraryDTO $mediaLibraryDTO): JsonResponse
     {
         if (false === $this->validate($mediaLibraryDTO)) {

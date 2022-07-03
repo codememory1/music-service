@@ -18,51 +18,14 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 final class SubscriptionFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
     private string $key;
-
-    /**
-     * @var string
-     */
     private string $title;
-
-    /**
-     * @var string
-     */
     private string $description;
-
-    /**
-     * @var int
-     */
     private int $price;
-
-    /**
-     * @var SubscriptionStatusEnum
-     */
     private SubscriptionStatusEnum $status;
-
-    /**
-     * @var null|int
-     */
     private ?int $oldPrice;
-
-    /**
-     * @var bool
-     */
     private bool $isRecommend;
 
-    /**
-     * @param SubscriptionEnum       $subscriptionEnum
-     * @param string                 $title
-     * @param string                 $description
-     * @param int                    $price
-     * @param null|int               $oldPrice
-     * @param SubscriptionStatusEnum $subscriptionStatusEnum
-     * @param bool                   $isRecommend
-     * @param array                  $permissionKeys
-     */
     public function __construct(
         SubscriptionEnum $subscriptionEnum,
         string $title,
@@ -81,9 +44,6 @@ final class SubscriptionFactory implements DataFixtureFactoryInterface
         $this->isRecommend = $isRecommend;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
         $subscriptionEntity = new Subscription();
@@ -99,9 +59,6 @@ final class SubscriptionFactory implements DataFixtureFactoryInterface
         return $subscriptionEntity;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;

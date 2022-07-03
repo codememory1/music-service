@@ -15,21 +15,9 @@ use App\Entity\User;
  */
 class AlbumRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = Album::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'a';
 
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
     public function findAllByUser(User $user): array
     {
         return $this->findByCriteria([

@@ -20,31 +20,11 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 abstract class AbstractApiTestCase extends WebTestCase
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected readonly EntityManagerInterface $em;
-
-    /**
-     * @var KernelBrowser
-     */
     private KernelBrowser $client;
-
-    /**
-     * @var SchemaValidator
-     */
     private SchemaValidator $jsonSchemaValidator;
-
-    /**
-     * @var array<Json>
-     */
     private array $schemes;
 
-    /**
-     * @param null|string $name
-     * @param array       $data
-     * @param string      $dataName
-     */
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
@@ -58,31 +38,16 @@ abstract class AbstractApiTestCase extends WebTestCase
         $this->em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
     }
 
-    /**
-     * @param string $url
-     * @param string $method
-     * @param array  $data
-     *
-     * @return Crawler
-     */
     protected function createRequest(string $url, string $method, array $data = []): Crawler
     {
         return $this->client->request($method, $url, $data);
     }
 
-    /**
-     * @return void
-     */
     protected function clearBase(): void
     {
         shell_exec('bin/console doctrine:fixtures:load --env=test');
     }
 
-    /**
-     * @param null|string $message
-     *
-     * @return void
-     */
     protected function assertApiResponse(?string $message = null): void
     {
         $jsonSchemaValidator = (clone $this->jsonSchemaValidator)->validate(
@@ -98,53 +63,26 @@ abstract class AbstractApiTestCase extends WebTestCase
         );
     }
 
-    /**
-     * @param int         $expect
-     * @param null|string $message
-     *
-     * @return void
-     */
     protected function assertApiStatusCode(int $expect, ?string $message = null): void
     {
         $this->assertEquals($expect, $this->getApiResponse()['status_code'], $message ?? '');
     }
 
-    /**
-     * @param string      $expect
-     * @param null|string $message
-     *
-     * @return void
-     */
     protected function assertApiType(string $expect, ?string $message = null): void
     {
         $this->assertEquals($expect, $this->getApiResponse()['type'], $message ?? '');
     }
 
-    /**
-     * @param array|string $expect
-     * @param null|string  $message
-     *
-     * @return void
-     */
     protected function assertApiMessage(string|array $expect, ?string $message = null): void
     {
         $this->assertEquals($expect, $this->getApiResponse()['message'], $message ?? '');
     }
 
-    /**
-     * @param array       $expect
-     * @param null|string $message
-     *
-     * @return void
-     */
     protected function assertApiData(array $expect, ?string $message = null): void
     {
         $this->assertEquals($expect, $this->getApiResponse()['data'], $message ?? '');
     }
 
-    /**
-     * @return null|array
-     */
     protected function getApiResponse(): ?array
     {
         $this->saveRequestResponse();
@@ -158,11 +96,6 @@ abstract class AbstractApiTestCase extends WebTestCase
         return null;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return null|Json
-     */
     protected function readSchema(string $name): ?Json
     {
         $fullPath = sprintf('%s/../config/scheme/%s', __DIR__, $name);
@@ -174,19 +107,11 @@ abstract class AbstractApiTestCase extends WebTestCase
         return null;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return null|Json
-     */
     protected function getSchema(string $name): ?Json
     {
         return $this->schemes[$name] ?? null;
     }
 
-    /**
-     * @return void
-     */
     private function saveRequestResponse(): void
     {
         file_put_contents(

@@ -16,14 +16,8 @@ use App\Security\AuthorizedUser;
  */
 class SubscriptionHandler implements MethodAnnotationHandlerInterface
 {
-    /**
-     * @var AuthorizedUser
-     */
     private AuthorizedUser $authorizedUser;
 
-    /**
-     * @param AuthorizedUser $authorizedUser
-     */
     public function __construct(AuthorizedUser $authorizedUser)
     {
         $this->authorizedUser = $authorizedUser;

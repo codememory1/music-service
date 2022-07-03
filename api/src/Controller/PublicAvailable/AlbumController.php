@@ -29,12 +29,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/album')]
 class AlbumController extends AbstractRestController
 {
-    /**
-     * @param AlbumResponseData $albumResponseData
-     * @param AlbumRepository   $albumRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/all', methods: 'GET')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_ALBUMS)]
@@ -46,12 +40,6 @@ class AlbumController extends AbstractRestController
         return $this->responseCollection->dataOutput($albumResponseData->getResponse());
     }
 
-    /**
-     * @param AlbumDTO           $albumDTO
-     * @param CreateAlbumService $createAlbumService
-     *
-     * @return JsonResponse
-     */
     #[Route('/create', methods: 'POST')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_ALBUM)]
@@ -60,13 +48,6 @@ class AlbumController extends AbstractRestController
         return $createAlbumService->make($albumDTO->collect(), $this->authorizedUser->getUser());
     }
 
-    /**
-     * @param Album              $album
-     * @param AlbumDTO           $albumDTO
-     * @param UpdateAlbumService $updateAlbumService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{album_id<\d+>}/edit', methods: 'POST')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_ALBUM)]
@@ -84,12 +65,6 @@ class AlbumController extends AbstractRestController
         return $updateAlbumService->make($albumDTO->collect(), $this->authorizedUser->getUser());
     }
 
-    /**
-     * @param Album              $album
-     * @param DeleteAlbumService $deleteAlbumService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{album_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_ALBUM)]
@@ -104,12 +79,6 @@ class AlbumController extends AbstractRestController
         return $deleteAlbumService->make($album);
     }
 
-    /**
-     * @param Album               $album
-     * @param PublishAlbumService $publishAlbumService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{album_id<\d+>}/publish', methods: 'PATCH')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_ALBUM)]

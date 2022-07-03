@@ -14,39 +14,27 @@ use JetBrains\PhpStorm\Pure;
  */
 class FailedException extends ApiResponseException
 {
-    /**
-     * @return static
-     */
     #[Pure]
-    public static function failedToLogout(): self
+    public static function failedToLogout(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'logout@failedToLogout');
+        return new self(400, ResponseTypeEnum::FAILED, 'logout@failedToLogout', data: $data, headers: $headers);
     }
 
-    /**
-     * @return static
-     */
     #[Pure]
-    public static function failedToUpdateAccessToken(): self
+    public static function failedToUpdateAccessToken(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'common@failedToUpdateAccessToken');
+        return new self(400, ResponseTypeEnum::FAILED, 'common@failedToUpdateAccessToken', data: $data, headers: $headers);
     }
 
-    /**
-     * @return static
-     */
     #[Pure]
-    public static function failedSubscribeOnArtist(): self
+    public static function failedSubscribeOnArtist(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'artist@failedSubscribeOnArtist');
+        return new self(400, ResponseTypeEnum::FAILED, 'artist@failedSubscribeOnArtist', data: $data, headers: $headers);
     }
 
-    /**
-     * @return static
-     */
     #[Pure]
-    public static function failedUnsubscribeOnArtist(): self
+    public static function failedUnsubscribeOnArtist(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'artist@failedUnsubscribeOnArtist');
+        return new self(400, ResponseTypeEnum::FAILED, 'artist@failedUnsubscribeOnArtist', data: $data, headers: $headers);
     }
 }

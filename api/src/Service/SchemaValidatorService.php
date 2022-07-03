@@ -17,25 +17,13 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class SchemaValidatorService
 {
-    /**
-     * @var ParameterBagInterface
-     */
     private ParameterBagInterface $parameterBag;
 
-    /**
-     * @param ParameterBagInterface $parameterBag
-     */
     public function __construct(ParameterBagInterface $parameterBag)
     {
         $this->parameterBag = $parameterBag;
     }
 
-    /**
-     * @param string       $schemaName
-     * @param array|string $data
-     *
-     * @return bool
-     */
     public function validate(string $schemaName, array|string $data): bool
     {
         $validator = new SchemaValidator();
@@ -45,11 +33,6 @@ class SchemaValidatorService
         return false !== $schema && $validator->validate($settings, $schema, JsonPointer::document())->isValid();
     }
 
-    /**
-     * @param string $name
-     *
-     * @return bool|Json
-     */
     private function getSchema(string $name): Json|bool
     {
         $path = sprintf(

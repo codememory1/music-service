@@ -15,48 +15,30 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  */
 class ConstraintInfo
 {
-    /**
-     * @var ConstraintViolationInterface
-     */
     private ConstraintViolationInterface $constraintViolation;
 
-    /**
-     * @param ConstraintViolationInterface $constraintViolation
-     */
     public function __construct(ConstraintViolationInterface $constraintViolation)
     {
         $this->constraintViolation = $constraintViolation;
     }
 
-    /**
-     * @return null|string
-     */
     public function getMessage(): ?string
     {
         return $this->constraintViolation->getMessage();
     }
 
-    /**
-     * @return array
-     */
     #[Pure]
     public function getPayload(): array
     {
         return $this->constraintViolation->getConstraint()->payload ?: [];
     }
 
-    /**
-     * @return null|ResponseTypeEnum
-     */
     #[Pure]
     public function getType(): ?ResponseTypeEnum
     {
         return $this->getPayload()[0] ?? null;
     }
 
-    /**
-     * @return null|int
-     */
     #[Pure]
     public function getStatusCode(): ?int
     {

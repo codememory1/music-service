@@ -29,11 +29,6 @@ abstract class AbstractDataFixture extends Fixture
         $this->factories = $factories;
     }
 
-    /**
-     * @param ObjectManager $manager
-     *
-     * @return void
-     */
     abstract public function load(ObjectManager $manager): void;
 
     /**

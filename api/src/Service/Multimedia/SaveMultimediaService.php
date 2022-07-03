@@ -22,12 +22,6 @@ class SaveMultimediaService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param MultimediaDTO $multimediaDTO
-     * @param Multimedia    $multimedia
-     *
-     * @return void
-     */
     public function make(MultimediaDTO $multimediaDTO, Multimedia $multimedia): void
     {
         $this->eventDispatcher->dispatch(

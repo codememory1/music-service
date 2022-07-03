@@ -21,34 +21,15 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class NotificationCollection
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
-
-    /**
-     * @var TranslationService
-     */
     private TranslationService $translationService;
 
-    /**
-     * @param EntityManagerInterface $manager
-     * @param TranslationService     $translationService
-     */
     public function __construct(EntityManagerInterface $manager, TranslationService $translationService)
     {
         $this->em = $manager;
         $this->translationService = $translationService;
     }
 
-    /**
-     * @param User        $from
-     * @param User        $to
-     * @param null|string $device
-     * @param null|string $ip
-     *
-     * @return $this
-     */
     final public function authFromUnknownDevice(User $from, User $to, ?string $device, ?string $ip): self
     {
         return $this->init(
@@ -63,12 +44,6 @@ class NotificationCollection
         );
     }
 
-    /**
-     * @param Album $album
-     * @param User  $subscriber
-     *
-     * @return $this
-     */
     public function newRelease(Album $album, User $subscriber): self
     {
         $redirectNotificationAction = new RedirectNotificationAction();
@@ -91,17 +66,6 @@ class NotificationCollection
         );
     }
 
-    /**
-     * @param User                 $from
-     * @param User                 $to
-     * @param string               $titleTranslationKey
-     * @param string               $messageTranslationKey
-     * @param array                $messageParameters
-     * @param NotificationTypeEnum $type
-     * @param array                ...$actions
-     *
-     * @return $this
-     */
     private function init(
         User $from,
         User $to,

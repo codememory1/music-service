@@ -16,12 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteTranslationService extends AbstractService
 {
-    /**
-     * @param DeleteTranslationDTO $deleteTranslationDTO
-     * @param Translation          $translation
-     *
-     * @return JsonResponse
-     */
     public function make(DeleteTranslationDTO $deleteTranslationDTO, Translation $translation): JsonResponse
     {
         $this->em->remove($translation);

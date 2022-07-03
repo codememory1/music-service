@@ -21,14 +21,6 @@ class UpdateSessionService extends AbstractService
     #[Required]
     public ?CollectorSessionService $collectorSessionService = null;
 
-    /**
-     * @param UserDTO             $userDTO
-     * @param User                $user
-     * @param null|UserSession    $userSession
-     * @param UserSessionTypeEnum $type
-     *
-     * @return UserSession
-     */
     public function make(UserDTO $userDTO, User $user, ?UserSession $userSession = null, UserSessionTypeEnum $type = UserSessionTypeEnum::TEMP): UserSession
     {
         $collectedUserSessionEntity = $this->collectorSessionService->collect(

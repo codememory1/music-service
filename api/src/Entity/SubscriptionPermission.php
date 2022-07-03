@@ -32,19 +32,11 @@ class SubscriptionPermission implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?SubscriptionPermissionKey $subscriptionPermissionKey = null;
 
-    /**
-     * @return null|Subscription
-     */
     public function getSubscription(): ?Subscription
     {
         return $this->subscription;
     }
 
-    /**
-     * @param null|Subscription $subscription
-     *
-     * @return $this
-     */
     public function setSubscription(?Subscription $subscription): self
     {
         $this->subscription = $subscription;
@@ -52,19 +44,11 @@ class SubscriptionPermission implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|SubscriptionPermissionKey
-     */
     public function getPermissionKey(): ?SubscriptionPermissionKey
     {
         return $this->subscriptionPermissionKey;
     }
 
-    /**
-     * @param null|SubscriptionPermissionKey $subscriptionPermissionKey
-     *
-     * @return $this
-     */
     public function setPermissionKey(?SubscriptionPermissionKey $subscriptionPermissionKey): self
     {
         $this->subscriptionPermissionKey = $subscriptionPermissionKey;

@@ -20,15 +20,7 @@ class UserRoleResponseData extends AbstractResponseData implements ResponseDataI
     use DateTimeHandlerTrait;
 
     use ToTranslationHandlerTrait;
-
-    /**
-     * @var null|int
-     */
     public ?int $id = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $key = null;
 
     #[ResponseDataConstraints\Callback('handleToTranslation')]
@@ -46,11 +38,6 @@ class UserRoleResponseData extends AbstractResponseData implements ResponseDataI
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
 
-    /**
-     * @param Collection $collection
-     *
-     * @return array
-     */
     public function handlePermissions(Collection $collection): array
     {
         $responseData = new UserRolePermissionResponseData($this->container);

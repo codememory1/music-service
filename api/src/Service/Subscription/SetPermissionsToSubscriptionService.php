@@ -19,12 +19,6 @@ class SetPermissionsToSubscriptionService
     #[Required]
     public ?SubscriptionPermissionKeyRepository $subscriptionPermissionKeyRepository = null;
 
-    /**
-     * @param Subscription $subscription
-     * @param array        $permissionKeys
-     *
-     * @return void
-     */
     public function set(Subscription $subscription, array $permissionKeys): void
     {
         $subscriptionPermissionKeys = [];

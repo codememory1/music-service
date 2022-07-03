@@ -194,11 +194,6 @@ class MimeTypeConverter
     ];
     public const DEFAULT_EXTENSION = 'txt';
 
-    /**
-     * @param string $mimeType
-     *
-     * @return bool|string
-     */
     public function convertToExtension(string $mimeType): bool|string
     {
         return array_key_exists($mimeType, self::MIME_TYPES_TO_EXTENSION) ? self::MIME_TYPES_TO_EXTENSION[$mimeType] : self::DEFAULT_EXTENSION;

@@ -20,60 +20,16 @@ class UserSessionResponseData extends AbstractResponseData implements ResponseDa
     protected array $methodPrefixesForProperties = [
         'isActive' => ''
     ];
-
-    /**
-     * @var null|int
-     */
     public ?int $id = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $accessToken = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $refreshToken = null;
-
-    /**
-     * @var bool
-     */
     public bool $isActive = false;
-
-    /**
-     * @var null|string
-     */
     public ?string $ip = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $browser = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $device = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $operatingSystem = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $city = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $country = null;
-
-    /**
-     * @var array
-     */
     public array $coordinates = [];
 
     #[ResponseDataConstraints\Callback('handleDateTime')]
