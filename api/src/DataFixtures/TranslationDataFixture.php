@@ -59,6 +59,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@multimediaCategory', 'Категория мультимедии не найдена'),
             new TranslationFactory('ru', 'entityNotFound@performer', 'Исполнитель %performer% не найден'),
             new TranslationFactory('ru', 'entityNotFound@multimedia', 'Мультимедия не найдена'),
+            new TranslationFactory('ru', 'entityNotFound@mediaLibrary', 'Медиатека не найдена'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -130,7 +131,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@updateMultimediaToUser', 'Обновление мультимедий пользователя'),
             new TranslationFactory('ru', 'rolePermission@deleteMultimediaToUser', 'Просмотр мультимедий пользователей'),
             new TranslationFactory('ru', 'rolePermission@albumStatusControlToUser', 'Управление статусами альбомов пользователей'),
-            new TranslationFactory('ru', 'rolePermission@createMediaLibraryToUser', 'Создание медиатеки для пользователей'),
+            new TranslationFactory('ru', 'rolePermission@createMediaLibraryToUser', 'Создание медиатеки пользователя'),
+            new TranslationFactory('ru', 'rolePermission@updateMediaLibraryToUser', 'Обновление медиатеки пользователя'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
