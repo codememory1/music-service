@@ -64,6 +64,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityExist@subscription'),
             new TranslationKeyFactory('entityExist@translationKey'),
             new TranslationKeyFactory('entityExist@albumType'),
+            new TranslationKeyFactory('entityExist@mediaLibrary'),
 
             new TranslationKeyFactory('auth@successAuthorization'),
             new TranslationKeyFactory('auth@authRequired'),
@@ -129,6 +130,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@updateMultimediaToUser'),
             new TranslationKeyFactory('rolePermission@deleteMultimediaToUser'),
             new TranslationKeyFactory('rolePermission@albumStatusControlToUser'),
+            new TranslationKeyFactory('rolePermission@createMediaLibraryToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -286,6 +288,10 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('artist@failedSubscribeOnArtist'),
             new TranslationKeyFactory('artist@successUnsubscribe'),
             new TranslationKeyFactory('artist@failedUnsubscribeOnArtist'),
+
+            new TranslationKeyFactory('mediaLibrary@successCreate'),
+            new TranslationKeyFactory('mediaLibrary@successUpdate'),
+            new TranslationKeyFactory('mediaLibrary@invalidStatus'),
         ]);
     }
 

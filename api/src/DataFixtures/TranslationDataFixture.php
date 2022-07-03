@@ -65,6 +65,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityExist@subscription', 'Подписка с данным ключем уже существует'),
             new TranslationFactory('ru', 'entityExist@translationKey', 'Данный ключ перевода уже существует'),
             new TranslationFactory('ru', 'entityExist@albumType', 'Данный тип альбома уже существует'),
+            new TranslationFactory('ru', 'entityExist@mediaLibrary', 'У данного пользователя уже создана медиатека'),
 
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
             new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),
@@ -128,7 +129,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@addMultimediaToUser', 'Добавление мультимедии к пользователю'),
             new TranslationFactory('ru', 'rolePermission@updateMultimediaToUser', 'Обновление мультимедий пользователя'),
             new TranslationFactory('ru', 'rolePermission@deleteMultimediaToUser', 'Просмотр мультимедий пользователей'),
-            new TranslationFactory('ru', 'rolePermission@albumStatusControlToUser', 'Управление статусами альбома пользователей'),
+            new TranslationFactory('ru', 'rolePermission@albumStatusControlToUser', 'Управление статусами альбомов пользователей'),
+            new TranslationFactory('ru', 'rolePermission@createMediaLibraryToUser', 'Создание медиатеки для пользователей'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -282,6 +284,10 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'artist@failedSubscribeOnArtist', 'Вы уже подписаны на данного артиста'),
             new TranslationFactory('ru', 'artist@successUnsubscribe', 'Вы успешно отписались от данного артиста'),
             new TranslationFactory('ru', 'artist@failedUnsubscribeOnArtist', 'Вы не подписаны на данного артиста'),
+
+            new TranslationFactory('ru', 'mediaLibrary@successCreate', 'Медиатека успешно создана'),
+            new TranslationFactory('ru', 'mediaLibrary@successUpdate', 'Медиатека успешно обновлена'),
+            new TranslationFactory('ru', 'mediaLibrary@invalidStatus', 'Некорректный статус медиатеки'),
         ]);
     }
 
