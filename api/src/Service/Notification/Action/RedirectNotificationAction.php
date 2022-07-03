@@ -13,18 +13,10 @@ use App\Service\Notification\Interfaces\NotificationActionInterface;
  */
 class RedirectNotificationAction implements NotificationActionInterface
 {
-    /**
-     * @var array
-     */
     private array $action = [
         'redirect' => []
     ];
 
-    /**
-     * @param string $link
-     *
-     * @return $this
-     */
     public function toLink(string $link): self
     {
         $this->action['redirect']['toLink'] = $link;
@@ -32,9 +24,6 @@ class RedirectNotificationAction implements NotificationActionInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getAction(): array
     {
         return $this->action;

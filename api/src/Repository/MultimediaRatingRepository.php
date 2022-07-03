@@ -16,22 +16,9 @@ use App\Entity\User;
  */
 class MultimediaRatingRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = MultimediaRating::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'mr';
 
-    /**
-     * @param Multimedia $multimedia
-     * @param User       $fromUser
-     *
-     * @return null|MultimediaRating
-     */
     public function getRating(Multimedia $multimedia, User $fromUser): ?MultimediaRating
     {
         return $this->findOneBy([

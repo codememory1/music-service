@@ -48,19 +48,11 @@ class AccountActivationCode implements EntityInterface
         $this->generateCode();
     }
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -68,19 +60,11 @@ class AccountActivationCode implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|int
-     */
     public function getCode(): ?int
     {
         return $this->code;
     }
 
-    /**
-     * @param int $code
-     *
-     * @return $this
-     */
     public function setCode(int $code): self
     {
         $this->code = $code;
@@ -88,9 +72,6 @@ class AccountActivationCode implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function generateCode(): self
     {
         $this->code = mt_rand(000000, 999999);
@@ -98,19 +79,11 @@ class AccountActivationCode implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|int
-     */
     public function getTtl(): ?int
     {
         return $this->ttl;
     }
 
-    /**
-     * @param null|string $ttl
-     *
-     * @return $this
-     */
     public function setTtl(?string $ttl): self
     {
         $this->ttl = $ttl;

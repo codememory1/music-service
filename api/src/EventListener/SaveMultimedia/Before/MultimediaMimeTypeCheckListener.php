@@ -16,11 +16,6 @@ use App\Rest\Http\Exceptions\MultimediaException;
  */
 class MultimediaMimeTypeCheckListener
 {
-    /**
-     * @param SaveMultimediaEvent $event
-     *
-     * @return void
-     */
     public function onBeforeSaveMultimedia(SaveMultimediaEvent $event): void
     {
         $multimediaMimeType = $event->multimediaDTO->multimedia->getMimeType();
@@ -35,11 +30,6 @@ class MultimediaMimeTypeCheckListener
         }
     }
 
-    /**
-     * @param string $mimeType
-     *
-     * @return void
-     */
     private function trackType(string $mimeType): void
     {
         if (false === in_array($mimeType, MultimediaMimeTypeEnum::trackMimeTypes(), true)) {
@@ -47,11 +37,6 @@ class MultimediaMimeTypeCheckListener
         }
     }
 
-    /**
-     * @param string $mimeType
-     *
-     * @return void
-     */
     private function clipType(string $mimeType): void
     {
         if (false === in_array($mimeType, MultimediaMimeTypeEnum::clipMimeTypes(), true)) {

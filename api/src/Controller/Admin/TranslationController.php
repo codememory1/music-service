@@ -27,12 +27,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/translation')]
 class TranslationController extends AbstractRestController
 {
-    /**
-     * @param TranslationDTO           $translationDTO
-     * @param CreateTranslationService $createTranslationService
-     *
-     * @return JsonResponse
-     */
     #[Route('/create', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_TRANSLATION)]
@@ -41,13 +35,6 @@ class TranslationController extends AbstractRestController
         return $createTranslationService->make($translationDTO->collect());
     }
 
-    /**
-     * @param Translation              $translation
-     * @param TranslationDTO           $translationDTO
-     * @param UpdateTranslationService $updateTranslationService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{translation_id<\d+>}/edit', methods: 'PUT')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_TRANSLATION)]
@@ -61,13 +48,6 @@ class TranslationController extends AbstractRestController
         return $updateTranslationService->make($translationDTO->collect());
     }
 
-    /**
-     * @param Translation              $translation
-     * @param DeleteTranslationDTO     $translationDTO
-     * @param DeleteTranslationService $deleteTranslationService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{translation_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_TRANSLATION)]

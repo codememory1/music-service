@@ -20,28 +20,10 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
 {
     #[Required]
     public ?AuthorizedUser $authorizedUser = null;
-
-    /**
-     * @var null|ConnectionInterface
-     */
     private ?ConnectionInterface $connection = null;
-
-    /**
-     * @var array
-     */
     private array $messageHeaders = [];
-
-    /**
-     * @var array
-     */
     private array $messageData = [];
 
-    /**
-     * @param WebSocketClientMessageTypeEnum $clientMessageTypeEnum
-     * @param array                          $data
-     *
-     * @return $this
-     */
     protected function sendToClient(WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
     {
         $this->connection?->send(json_encode([
@@ -52,9 +34,6 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
         return $this;
     }
 
-    /**
-     * @return null|AuthorizedUser
-     */
     protected function getAuthorizedUser(): ?AuthorizedUser
     {
         if ([] !== $this->messageHeaders && array_key_exists('access_token', $this->messageHeaders)) {
@@ -64,9 +43,6 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
         return $this->authorizedUser;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setConnection(ConnectionInterface $connection): UserMessageHandlerInterface
     {
         $this->connection = $connection;
@@ -74,17 +50,11 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getConnection(): ?ConnectionInterface
     {
         return $this->connection;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setMessage(array $headers, array $data): UserMessageHandlerInterface
     {
         $this->messageHeaders = $headers;
@@ -93,17 +63,11 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getMessageHeaders(): array
     {
         return $this->messageHeaders;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getMessage(): array
     {
         return $this->messageData['message'] ?? [];

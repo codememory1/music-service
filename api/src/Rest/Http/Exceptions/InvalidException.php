@@ -14,30 +14,21 @@ use JetBrains\PhpStorm\Pure;
  */
 class InvalidException extends ApiResponseException
 {
-    /**
-     * @return static
-     */
     #[Pure]
-    final public static function invalidRefreshToken(): self
+    final public static function invalidRefreshToken(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidRefreshToken');
+        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidRefreshToken', data: $data, headers: $headers);
     }
 
-    /**
-     * @return static
-     */
     #[Pure]
-    final public static function invalidCode(): self
+    final public static function invalidCode(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidCode');
+        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidCode', data: $data, headers: $headers);
     }
 
-    /**
-     * @return static
-     */
     #[Pure]
-    final public static function invalidSubtitles(): self
+    final public static function invalidSubtitles(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidSubtitles');
+        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidSubtitles', data: $data, headers: $headers);
     }
 }

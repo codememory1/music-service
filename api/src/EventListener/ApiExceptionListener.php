@@ -2,11 +2,9 @@
 
 namespace App\EventListener;
 
-use App\Repository\TranslationRepository;
 use App\Rest\Http\Exceptions\ApiResponseException;
 use App\Rest\Http\Response;
 use App\Rest\Http\ResponseSchema;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 /**
@@ -18,31 +16,15 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
  */
 class ApiExceptionListener
 {
-    /**
-     * @var ResponseSchema
-     */
     private ResponseSchema $responseSchema;
-
-    /**
-     * @var Response
-     */
     private Response $response;
 
-    /**
-     * @param RequestStack          $requestStack
-     * @param TranslationRepository $translationRepository
-     */
     public function __construct(ResponseSchema $responseSchema, Response $response)
     {
         $this->responseSchema = $responseSchema;
         $this->response = $response;
     }
 
-    /**
-     * @param ExceptionEvent $event
-     *
-     * @return void
-     */
     public function onKernelException(ExceptionEvent $event): void
     {
         $throwable = $event->getThrowable();

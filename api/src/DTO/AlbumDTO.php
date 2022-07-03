@@ -25,9 +25,6 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class AlbumDTO extends AbstractDTO
 {
-    /**
-     * @inheritDoc
-     */
     protected EntityInterface|string|null $entity = Album::class;
 
     #[Assert\NotBlank(message: 'album@titleIsRequired')]
@@ -54,9 +51,6 @@ class AlbumDTO extends AbstractDTO
     #[Required]
     public ?EntityManagerInterface $em = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('title');
@@ -71,11 +65,6 @@ class AlbumDTO extends AbstractDTO
         $this->callSetterToEntityWhenRequest('^admin$', 'status');
     }
 
-    /**
-     * @param ExecutionContextInterface $context
-     *
-     * @return void
-     */
     #[Assert\Callback]
     public function callbackStatus(ExecutionContextInterface $context): void
     {

@@ -26,44 +26,13 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 class FileUploadListener
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
-
-    /**
-     * @var MessageBusInterface
-     */
     private MessageBusInterface $bus;
-
-    /**
-     * @var TrackUploader
-     */
     private TrackUploader $trackUploader;
-
-    /**
-     * @var ClipUploader
-     */
     private ClipUploader $clipUploader;
-
-    /**
-     * @var SubtitlesUploader
-     */
     private SubtitlesUploader $subtitlesUploader;
-
-    /**
-     * @var ImageUploader
-     */
     private ImageUploader $imageUploader;
 
-    /**
-     * @param EntityManagerInterface $manager
-     * @param MessageBusInterface    $bus
-     * @param TrackUploader          $trackUploader
-     * @param ClipUploader           $clipUploader
-     * @param SubtitlesUploader      $subtitlesUploader
-     * @param ImageUploader          $imageUploader
-     */
     public function __construct(EntityManagerInterface $manager, MessageBusInterface $bus, TrackUploader $trackUploader, ClipUploader $clipUploader, SubtitlesUploader $subtitlesUploader, ImageUploader $imageUploader)
     {
         $this->em = $manager;
@@ -74,11 +43,6 @@ class FileUploadListener
         $this->imageUploader = $imageUploader;
     }
 
-    /**
-     * @param SaveMultimediaEvent $event
-     *
-     * @return void
-     */
     public function onAfterSaveMultimedia(SaveMultimediaEvent $event): void
     {
         $multimedia = $event->multimedia;
@@ -106,12 +70,6 @@ class FileUploadListener
         $this->bus->dispatch(new MultimediaMetadataMessage($multimedia->getId()));
     }
 
-    /**
-     * @param Multimedia        $multimedia
-     * @param null|UploadedFile $uploadedFile
-     *
-     * @return null|string
-     */
     private function uploadMultimediaToStorage(Multimedia $multimedia, ?UploadedFile $uploadedFile): ?string
     {
         if (null !== $uploadedFile) {
@@ -139,12 +97,6 @@ class FileUploadListener
         return null;
     }
 
-    /**
-     * @param Multimedia        $multimedia
-     * @param null|UploadedFile $uploadedFile
-     *
-     * @return null|string
-     */
     private function uploadSubtitlesToStorage(Multimedia $multimedia, ?UploadedFile $uploadedFile): ?string
     {
         if (null !== $multimedia->getSubtitles() && null !== $uploadedFile) {
@@ -160,12 +112,6 @@ class FileUploadListener
         return null;
     }
 
-    /**
-     * @param Multimedia        $multimedia
-     * @param null|UploadedFile $uploadedFile
-     *
-     * @return null|string
-     */
     private function uploadPreviewToStorage(Multimedia $multimedia, ?UploadedFile $uploadedFile): ?string
     {
         if (null !== $uploadedFile) {
@@ -181,13 +127,6 @@ class FileUploadListener
         return null;
     }
 
-    /**
-     * @param S3UploaderInterface $uploader
-     * @param User                $user
-     * @param EntityInterface     $entity
-     *
-     * @return void
-     */
     private function uploaderSetup(S3UploaderInterface $uploader, User $user, EntityInterface $entity): void
     {
         $uploader->setUser($user);

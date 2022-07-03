@@ -19,9 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class MultimediaCategoryDTO extends AbstractDTO
 {
-    /**
-     * @inheritDoc
-     */
     protected EntityInterface|string|null $entity = MultimediaCategory::class;
 
     #[Assert\NotBlank(message: 'multimediaCategory@titleIsRequired')]
@@ -33,9 +30,6 @@ class MultimediaCategoryDTO extends AbstractDTO
     )]
     public ?string $title = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('title');

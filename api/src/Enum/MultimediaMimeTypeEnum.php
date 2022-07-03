@@ -11,9 +11,6 @@ namespace App\Enum;
  */
 enum MultimediaMimeTypeEnum
 {
-    /**
-     * @return string[]
-     */
     public static function trackMimeTypes(): array
     {
         return [
@@ -29,9 +26,6 @@ enum MultimediaMimeTypeEnum
         ];
     }
 
-    /**
-     * @return string[]
-     */
     public static function clipMimeTypes(): array
     {
         return [

@@ -15,19 +15,9 @@ use App\Enum\NotificationStatusEnum;
  */
 class NotificationRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = Notification::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'n';
 
-    /**
-     * @return array
-     */
     public function getPendingNotifications(): array
     {
         $qb = $this->createQueryBuilder('n');

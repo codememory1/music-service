@@ -14,30 +14,21 @@ use JetBrains\PhpStorm\Pure;
  */
 class AlbumException extends ApiResponseException
 {
-    /**
-     * @return static
-     */
     #[Pure]
-    final public static function badAddMultimediaToSingleAlbum(): self
+    final public static function badAddMultimediaToSingleAlbum(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'album@badAddMultimediaToSingleAlbum');
+        return new self(400, ResponseTypeEnum::FAILED, 'album@badAddMultimediaToSingleAlbum', data: $data, headers: $headers);
     }
 
-    /**
-     * @return static
-     */
     #[Pure]
-    final public static function badPublicationToAlreadyPublication(): self
+    final public static function badPublicationToAlreadyPublication(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'album@badPublicationToAlreadyPublication');
+        return new self(400, ResponseTypeEnum::FAILED, 'album@badPublicationToAlreadyPublication', data: $data, headers: $headers);
     }
 
-    /**
-     * @return static
-     */
     #[Pure]
-    final public static function badPublicationWithoutPublishedMultimedia(): self
+    final public static function badPublicationWithoutPublishedMultimedia(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'album@badPublicationWithoutPublishedMultimedia');
+        return new self(400, ResponseTypeEnum::FAILED, 'album@badPublicationWithoutPublishedMultimedia', data: $data, headers: $headers);
     }
 }

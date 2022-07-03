@@ -11,8 +11,5 @@ namespace App\Entity\Interfaces;
  */
 interface EntityInterface
 {
-    /**
-     * @return null|int
-     */
     public function getId(): ?int;
 }

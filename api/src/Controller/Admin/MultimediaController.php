@@ -35,12 +35,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class MultimediaController extends AbstractRestController
 {
-    /**
-     * @param MultimediaResponseData $multimediaResponseData
-     * @param MultimediaRepository   $multimediaRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/all', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_ALL_USER_MULTIMEDIA)]
@@ -52,12 +46,6 @@ class MultimediaController extends AbstractRestController
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
     }
 
-    /**
-     * @param Multimedia             $multimedia
-     * @param MultimediaResponseData $multimediaResponseData
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/read', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_ALL_USER_MULTIMEDIA)]
@@ -71,13 +59,6 @@ class MultimediaController extends AbstractRestController
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse(true));
     }
 
-    /**
-     * @param User                 $user
-     * @param MultimediaDTO        $multimediaDTO
-     * @param AddMultimediaService $addMultimediaService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{user_id<\d+>}/multimedia/add', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_TO_USER)]
@@ -95,13 +76,6 @@ class MultimediaController extends AbstractRestController
         return $addMultimediaService->make($multimediaDTO->collect(), $user);
     }
 
-    /**
-     * @param Multimedia              $multimedia
-     * @param MultimediaDTO           $multimediaDTO
-     * @param UpdateMultimediaService $updateMultimediaService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_TO_USER)]
@@ -115,12 +89,6 @@ class MultimediaController extends AbstractRestController
         return $updateMultimediaService->make($multimediaDTO->collect());
     }
 
-    /**
-     * @param Multimedia              $multimedia
-     * @param DeleteMultimediaService $deleteMultimediaService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_TO_USER)]
@@ -131,12 +99,6 @@ class MultimediaController extends AbstractRestController
         return $deleteMultimediaService->make($multimedia);
     }
 
-    /**
-     * @param Multimedia              $multimedia
-     * @param SendOnModerationService $sendOnModerationService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/send-on-moderation', methods: 'PATCH')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]
@@ -147,12 +109,6 @@ class MultimediaController extends AbstractRestController
         return $sendOnModerationService->make($multimedia);
     }
 
-    /**
-     * @param Multimedia               $multimedia
-     * @param PublishMultimediaService $publishMultimediaService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/publish', methods: 'PATCH')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]
@@ -163,12 +119,6 @@ class MultimediaController extends AbstractRestController
         return $publishMultimediaService->make($multimedia);
     }
 
-    /**
-     * @param Multimedia                 $multimedia
-     * @param UnpublishMultimediaService $unpublishMultimediaService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/unpublish', methods: 'PATCH')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]
@@ -179,12 +129,6 @@ class MultimediaController extends AbstractRestController
         return $unpublishMultimediaService->make($multimedia);
     }
 
-    /**
-     * @param Multimedia            $multimedia
-     * @param AppealCanceledService $appealCanceledService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/appeal-canceled', methods: 'PATCH')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]

@@ -13,11 +13,6 @@ use App\Service\TranslationService;
  */
 trait ToTranslationHandlerTrait
 {
-    /**
-     * @param null|string $translationKey
-     *
-     * @return null|string
-     */
     public function handleToTranslation(?string $translationKey): ?string
     {
         $translationService = $this->container->getService(TranslationService::class);

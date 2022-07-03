@@ -21,12 +21,6 @@ class CreateMediaLibraryService extends AbstractService
     #[Required]
     public ?SaveMediaLibraryService $saveMediaLibraryService = null;
 
-    /**
-     * @param MediaLibraryDTO $mediaLibraryDTO
-     * @param User            $forUser
-     *
-     * @return JsonResponse
-     */
     public function make(MediaLibraryDTO $mediaLibraryDTO, User $forUser): JsonResponse
     {
         if (false === $this->validate($mediaLibraryDTO)) {

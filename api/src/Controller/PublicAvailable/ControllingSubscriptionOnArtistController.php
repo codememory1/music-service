@@ -24,12 +24,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/artist/{user_id<\d+>}')]
 class ControllingSubscriptionOnArtistController extends AbstractRestController
 {
-    /**
-     * @param User                     $artist
-     * @param SubscribeOnArtistService $subscribeOnArtistService
-     *
-     * @return JsonResponse
-     */
     #[Route('/subscribe', methods: 'PATCH')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST)]
@@ -47,12 +41,6 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
         return $subscribeOnArtistService->make($artist, $subscriber);
     }
 
-    /**
-     * @param User                       $artist
-     * @param UnsubscribeOnArtistService $unsubscribeOnArtistService
-     *
-     * @return JsonResponse
-     */
     #[Route('/unsubscribe', methods: 'PATCH')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST)]

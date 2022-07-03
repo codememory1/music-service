@@ -17,11 +17,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class Logout extends AbstractService
 {
-    /**
-     * @param RefreshTokenDTO $refreshTokenDTO
-     *
-     * @return JsonResponse
-     */
     public function logout(RefreshTokenDTO $refreshTokenDTO): JsonResponse
     {
         if (false === $this->validate($refreshTokenDTO)) {

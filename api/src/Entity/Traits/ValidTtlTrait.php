@@ -13,9 +13,6 @@ use DateTimeImmutable;
  */
 trait ValidTtlTrait
 {
-    /**
-     * @return bool
-     */
     public function isValidTtlByCreatedAt(): bool
     {
         $createdAt = $this->getCreatedAt()->getTimestamp();
@@ -24,9 +21,6 @@ trait ValidTtlTrait
         return false === $now > $createdAt + $this->getTtl();
     }
 
-    /**
-     * @return bool
-     */
     public function isValidTtlWithUpdatedAt(): bool
     {
         $createdAt = $this->getCreatedAt()->getTimestamp();

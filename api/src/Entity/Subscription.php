@@ -76,19 +76,11 @@ class Subscription implements EntityInterface
         $this->permissions = new ArrayCollection();
     }
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @param null|string $key
-     *
-     * @return $this
-     */
     public function setKey(?string $key): self
     {
         $this->key = $key;
@@ -96,19 +88,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->titleTranslationKey;
     }
 
-    /**
-     * @param null|string $titleTranslationKey
-     *
-     * @return $this
-     */
     public function setTitle(?string $titleTranslationKey): self
     {
         $this->titleTranslationKey = $titleTranslationKey;
@@ -116,19 +100,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getDescription(): ?string
     {
         return $this->descriptionTranslationKey;
     }
 
-    /**
-     * @param null|string $descriptionTranslationKey
-     *
-     * @return $this
-     */
     public function setDescription(?string $descriptionTranslationKey): self
     {
         $this->descriptionTranslationKey = $descriptionTranslationKey;
@@ -136,19 +112,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|float
-     */
     public function getOldPrice(): ?float
     {
         return $this->oldPrice;
     }
 
-    /**
-     * @param null|float $oldPrice
-     *
-     * @return $this
-     */
     public function setOldPrice(?float $oldPrice): self
     {
         $this->oldPrice = $oldPrice;
@@ -156,19 +124,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|float
-     */
     public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    /**
-     * @param null|float $price
-     *
-     * @return $this
-     */
     public function setPrice(?float $price): self
     {
         $this->price = $price;
@@ -176,19 +136,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|bool
-     */
     public function isRecommend(): ?bool
     {
         return $this->isRecommend;
     }
 
-    /**
-     * @param null|bool $isRecommend
-     *
-     * @return $this
-     */
     public function setIsRecommend(?bool $isRecommend): self
     {
         $this->isRecommend = $isRecommend;
@@ -196,19 +148,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|SubscriptionStatusEnum $statusEnum
-     *
-     * @return $this
-     */
     public function setStatus(?SubscriptionStatusEnum $statusEnum): self
     {
         if (null === $statusEnum) {
@@ -229,9 +173,7 @@ class Subscription implements EntityInterface
     }
 
     /**
-     * @param array<SubscriptionPermissionKey> $permissions
-     *
-     * @return $this
+     * @param array<SubscriptionPermissionKey> $permissionKeys
      */
     public function setPermissions(array $permissionKeys): self
     {
@@ -251,11 +193,6 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param SubscriptionPermission $permission
-     *
-     * @return $this
-     */
     public function addPermission(SubscriptionPermission $permission): self
     {
         if (!$this->permissions->contains($permission)) {
@@ -266,11 +203,6 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param SubscriptionPermission $permission
-     *
-     * @return $this
-     */
     public function removePermission(SubscriptionPermission $permission): self
     {
         if ($this->permissions->removeElement($permission)) {

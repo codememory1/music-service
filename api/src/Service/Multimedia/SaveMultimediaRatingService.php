@@ -25,17 +25,13 @@ class SaveMultimediaRatingService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param Multimedia               $multimedia
-     * @param User                     $fromUser
-     * @param MultimediaRatingTypeEnum $typeEnum
-     * @param MultimediaRatingTypeEnum $oppositeTypeEnum
-     * @param callable                 $callbackRemove
-     *
-     * @return void
-     */
-    public function make(Multimedia $multimedia, User $fromUser, MultimediaRatingTypeEnum $typeEnum, MultimediaRatingTypeEnum $oppositeTypeEnum, callable $callbackRemove): void
-    {
+    public function make(
+        Multimedia $multimedia,
+        User $fromUser,
+        MultimediaRatingTypeEnum $typeEnum,
+        MultimediaRatingTypeEnum $oppositeTypeEnum,
+        callable $callbackRemove
+    ): void {
         $multimediaRatingRepository = $this->em->getRepository(MultimediaRating::class);
         $multimediaRating = $multimediaRatingRepository->getRating($multimedia, $fromUser);
 

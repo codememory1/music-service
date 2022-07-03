@@ -21,12 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user/password-reset')]
 class PasswordResetController extends AbstractRestController
 {
-    /**
-     * @param RequestRestorationPasswordDTO $requestRestorationPasswordDTO
-     * @param RequestRestoration            $requestRestoration
-     *
-     * @return JsonResponse
-     */
     #[Route('/request-restoration', methods: 'POST')]
     #[Authorization(false)]
     public function requestRestoration(RequestRestorationPasswordDTO $requestRestorationPasswordDTO, RequestRestoration $requestRestoration): JsonResponse
@@ -34,12 +28,6 @@ class PasswordResetController extends AbstractRestController
         return $requestRestoration->send($requestRestorationPasswordDTO->collect());
     }
 
-    /**
-     * @param RestorePasswordDTO $restorePasswordDTO
-     * @param RestorePassword    $restorePassword
-     *
-     * @return JsonResponse
-     */
     #[Route('/restore-password', methods: 'POST')]
     #[Authorization(false)]
     public function restorePassword(RestorePasswordDTO $restorePasswordDTO, RestorePassword $restorePassword): JsonResponse

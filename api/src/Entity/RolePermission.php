@@ -31,19 +31,11 @@ class RolePermission implements EntityInterface
     #[ORM\ManyToOne(targetEntity: RolePermissionKey::class, cascade: ['persist'])]
     private ?RolePermissionKey $rolePermissionKey = null;
 
-    /**
-     * @return null|Role
-     */
     public function getRole(): ?Role
     {
         return $this->role;
     }
 
-    /**
-     * @param null|Role $role
-     *
-     * @return $this
-     */
     public function setRole(?Role $role): self
     {
         $this->role = $role;
@@ -51,19 +43,11 @@ class RolePermission implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|RolePermissionKey
-     */
     public function getPermissionKey(): ?RolePermissionKey
     {
         return $this->rolePermissionKey;
     }
 
-    /**
-     * @param null|RolePermissionKey $rolePermissionKey
-     *
-     * @return $this
-     */
     public function setPermissionKey(?RolePermissionKey $rolePermissionKey): self
     {
         $this->rolePermissionKey = $rolePermissionKey;

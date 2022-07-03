@@ -28,12 +28,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/language')]
 class LanguageController extends AbstractRestController
 {
-    /**
-     * @param LanguageResponseData $languageResponseData
-     * @param LanguageRepository   $languageRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/all', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::VIEW_LANGUAGES_WITH_FULL_INFO)]
@@ -45,12 +39,6 @@ class LanguageController extends AbstractRestController
         return $this->responseCollection->dataOutput($languageResponseData->getResponse());
     }
 
-    /**
-     * @param Language             $language
-     * @param LanguageResponseData $languageResponseData
-     *
-     * @return JsonResponse
-     */
     #[Route('/{language_code<[a-z]+>}/read', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::VIEW_LANGUAGES_WITH_FULL_INFO)]
@@ -63,12 +51,6 @@ class LanguageController extends AbstractRestController
         return $this->responseCollection->dataOutput($languageResponseData->collect()->getResponse(true));
     }
 
-    /**
-     * @param LanguageDTO           $languageDTO
-     * @param CreateLanguageService $createLanguageService
-     *
-     * @return JsonResponse
-     */
     #[Route('/create', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_LANGUAGE)]
@@ -77,13 +59,6 @@ class LanguageController extends AbstractRestController
         return $createLanguageService->make($languageDTO->collect());
     }
 
-    /**
-     * @param Language              $language
-     * @param LanguageDTO           $languageDTO
-     * @param UpdateLanguageService $updateLanguageService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{language_id<\d+>}/edit', methods: 'PUT')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_LANGUAGE)]
@@ -97,12 +72,6 @@ class LanguageController extends AbstractRestController
         return $updateLanguageService->make($languageDTO);
     }
 
-    /**
-     * @param Language              $language
-     * @param DeleteLanguageService $deleteLanguageService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{language_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_LANGUAGE)]

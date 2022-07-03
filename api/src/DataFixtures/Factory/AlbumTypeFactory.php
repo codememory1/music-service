@@ -17,29 +17,15 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 final class AlbumTypeFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var AlbumTypeEnum
-     */
     private AlbumTypeEnum $key;
-
-    /**
-     * @var string
-     */
     private string $titleTranslationKey;
 
-    /**
-     * @param AlbumTypeEnum $albumTypeEnum
-     * @param string        $titleTranslationKey
-     */
     public function __construct(AlbumTypeEnum $albumTypeEnum, string $titleTranslationKey)
     {
         $this->key = $albumTypeEnum;
         $this->titleTranslationKey = $titleTranslationKey;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
         $albumTypeEntity = new AlbumType();

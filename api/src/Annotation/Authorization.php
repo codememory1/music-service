@@ -15,14 +15,8 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 class Authorization implements MethodAnnotationInterface
 {
-    /**
-     * @var bool
-     */
     public readonly bool $required;
 
-    /**
-     * @param bool $required
-     */
     public function __construct(bool $required = true)
     {
         $this->required = $required;

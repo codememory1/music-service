@@ -14,19 +14,9 @@ use App\Entity\Language;
  */
 class LanguageRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = Language::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'l';
 
-    /**
-     * @inheritDoc
-     */
     public function findByCriteria(array $criteria, array $orderBy = []): array
     {
         if (false !== $sortByCode = $this->sortService->get('code')) {

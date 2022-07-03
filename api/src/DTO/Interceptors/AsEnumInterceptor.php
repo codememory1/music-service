@@ -16,14 +16,8 @@ use function Symfony\Component\String\u;
  */
 class AsEnumInterceptor implements ValueInterceptorInterface
 {
-    /**
-     * @var string
-     */
     private string $enum;
 
-    /**
-     * @param string $enum
-     */
     public function __construct(string $enum)
     {
         $this->enum = $enum;

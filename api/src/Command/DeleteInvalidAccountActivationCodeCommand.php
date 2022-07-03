@@ -25,15 +25,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class DeleteInvalidAccountActivationCodeCommand extends Command
 {
     use DeleteByInvalidTtlTrait;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->em = $manager;
@@ -42,10 +35,7 @@ class DeleteInvalidAccountActivationCodeCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -61,12 +51,6 @@ class DeleteInvalidAccountActivationCodeCommand extends Command
         }
     }
 
-    /**
-     * @param SymfonyStyle          $io
-     * @param AccountActivationCode $accountActivationCode
-     *
-     * @return void
-     */
     private function deleteMessage(SymfonyStyle $io, AccountActivationCode $accountActivationCode): void
     {
         $io->writeln(sprintf(

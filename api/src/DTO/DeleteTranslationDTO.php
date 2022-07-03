@@ -13,14 +13,8 @@ use App\DTO\Interceptors\AsBooleanInterceptor;
  */
 class DeleteTranslationDTO extends AbstractDTO
 {
-    /**
-     * @var bool
-     */
     public bool $deleteKey = false;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('delete-key', 'deleteKey');

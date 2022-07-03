@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Entity\AccountActivationCode;
 use App\Entity\PasswordReset;
-use App\Entity\User;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -22,26 +21,10 @@ use Twig\Error\SyntaxError;
  */
 class MailMessagingService
 {
-    /**
-     * @var MailerInterface
-     */
     private MailerInterface $mailer;
-
-    /**
-     * @var Environment
-     */
     private Environment $environment;
-
-    /**
-     * @var TranslationService
-     */
     private TranslationService $translationService;
 
-    /**
-     * @param MailerInterface    $mailer
-     * @param Environment        $environment
-     * @param TranslationService $translationService
-     */
     public function __construct(MailerInterface $mailer, Environment $environment, TranslationService $translationService)
     {
         $this->mailer = $mailer;
@@ -50,14 +33,10 @@ class MailMessagingService
     }
 
     /**
-     * @param User $registeredUser
-     *
-     * @throws LoaderError
-     * @throws RuntimeError
      * @throws SyntaxError
      * @throws TransportExceptionInterface
-     *
-     * @return void
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function sendAccountActivationCode(AccountActivationCode $accountActivationCode): void
     {
@@ -72,14 +51,10 @@ class MailMessagingService
     }
 
     /**
-     * @param PasswordReset $passwordReset
-     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      * @throws TransportExceptionInterface
-     *
-     * @return void
      */
     public function sendRequestRestorationPassword(PasswordReset $passwordReset): void
     {
@@ -94,14 +69,9 @@ class MailMessagingService
     }
 
     /**
-     * @param string $name
-     * @param array  $params
-     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
-     *
-     * @return string
      */
     private function getTemplate(string $name, array $params = []): string
     {

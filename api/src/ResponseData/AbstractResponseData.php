@@ -23,44 +23,14 @@ use function Symfony\Component\String\u;
  */
 abstract class AbstractResponseData implements ResponseDataInterface
 {
-    /**
-     * @var array
-     */
     protected array $ignoredProperties = [];
-
-    /**
-     * @var array
-     */
     protected array $methodPrefixesForProperties = [];
-
-    /**
-     * @var array
-     */
     protected array $aliases = [];
-
-    /**
-     * @var ReverseContainer
-     */
     protected ReverseContainer $container;
-
-    /**
-     * @var array<EntityInterface>
-     */
     private array $entities = [];
-
-    /**
-     * @var array
-     */
     private array $allowedProperties = [];
-
-    /**
-     * @var array
-     */
     private array $response = [];
 
-    /**
-     * @param ReverseContainer $container
-     */
     public function __construct(ReverseContainer $container)
     {
         $this->container = $container;
@@ -71,9 +41,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
         $this->ignoredProperties[] = 'aliases';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setIgnoreProperty(string $name): ResponseDataInterface
     {
         $this->ignoredProperties[] = $name;
@@ -91,9 +58,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function collect(): self
     {
         $reflection = new ReflectionClass(static::class);
@@ -116,9 +80,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getResponse(bool $first = false): array
     {
         if (true === $first && [] !== $this->response) {
@@ -130,11 +91,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
         return $this->response;
     }
 
-    /**
-     * @param ReflectionProperty $reflectionProperty
-     *
-     * @return array
-     */
     #[ArrayShape(['isPassed' => 'bool', 'interceptor' => 'array'])]
     private function handleProperty(ReflectionProperty $reflectionProperty): array
     {
@@ -165,12 +121,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
         return $result;
     }
 
-    /**
-     * @param ReflectionProperty $reflectionProperty
-     * @param array              $interceptor
-     *
-     * @return void
-     */
     private function addAllowedProperty(ReflectionProperty $reflectionProperty, array $interceptor = []): void
     {
         $propertyName = $reflectionProperty->getName();
@@ -184,9 +134,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
         ];
     }
 
-    /**
-     * @return void
-     */
     private function collectResponse(): void
     {
         foreach ($this->entities as $entity) {
@@ -211,11 +158,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
         }
     }
 
-    /**
-     * @param ConstraintInterface $constraint
-     *
-     * @return object
-     */
     private function getConstraintHandler(ConstraintInterface $constraint): object
     {
         return $this->container->getService($constraint->getHandler());

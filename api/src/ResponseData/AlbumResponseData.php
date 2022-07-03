@@ -20,28 +20,12 @@ use Doctrine\Common\Collections\Collection;
 class AlbumResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
-
-    /**
-     * @var null|int
-     */
     public ?int $id = null;
 
     #[ResponseDataConstraints\Callback('handleType')]
     public ?string $type = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $title = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $description = null;
-
-    /**
-     * @var null|string
-     */
     public ?string $image = null;
 
     #[ResponseDataConstraints\Callback('handleMultimedia')]
@@ -57,11 +41,6 @@ class AlbumResponseData extends AbstractResponseData implements ResponseDataInte
     #[ResponseDataConstraints\Callback('handleDatetime')]
     public ?string $updatedAt = null;
 
-    /**
-     * @param AlbumType $albumType
-     *
-     * @return array
-     */
     public function handleType(AlbumType $albumType): array
     {
         $albumTypeResponseData = new AlbumTypeResponseData($this->container);
@@ -71,11 +50,6 @@ class AlbumResponseData extends AbstractResponseData implements ResponseDataInte
         return $albumTypeResponseData->collect()->getResponse(true);
     }
 
-    /**
-     * @param Collection $multimedia
-     *
-     * @return array
-     */
     public function handleMultimedia(Collection $multimedia): array
     {
         $multimediaResponseData = new MultimediaResponseData($this->container);

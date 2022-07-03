@@ -24,11 +24,6 @@ class AppealCanceledService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return JsonResponse
-     */
     public function make(Multimedia $multimedia): JsonResponse
     {
         if (MultimediaStatusEnum::APPEAL->name !== $multimedia->getStatus()) {

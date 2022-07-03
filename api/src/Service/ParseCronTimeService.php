@@ -19,10 +19,6 @@ class ParseCronTimeService
     private const WEEK = 'w';
     private const MONTH = 'M';
     private const YEAR = 'y';
-
-    /**
-     * @var array
-     */
     private array $formats = [
         self::SECOND,
         self::MINUTE,
@@ -32,17 +28,8 @@ class ParseCronTimeService
         self::MONTH,
         self::YEAR
     ];
-
-    /**
-     * @var null|string
-     */
     private ?string $time = null;
 
-    /**
-     * @param null|string $time
-     *
-     * @return $this
-     */
     public function setTime(?string $time): self
     {
         $this->time = trim($time);
@@ -50,9 +37,6 @@ class ParseCronTimeService
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function toSecond(): int
     {
         if ($this->isIncorrect()) {
@@ -64,9 +48,6 @@ class ParseCronTimeService
         return 0;
     }
 
-    /**
-     * @return bool
-     */
     public function isIncorrect(): bool
     {
         $resultMatch = preg_match(self::REGEX_TIME, $this->time, $match);
@@ -74,20 +55,11 @@ class ParseCronTimeService
         return false !== $resultMatch && in_array($match['format'] ?? null, $this->getFormats(), true);
     }
 
-    /**
-     * @return array
-     */
     public function getFormats(): array
     {
         return $this->formats;
     }
 
-    /**
-     * @param int    $time
-     * @param string $format
-     *
-     * @return int
-     */
     private function convertToSeconds(int $time, string $format): int
     {
         return (int) match ($format) {

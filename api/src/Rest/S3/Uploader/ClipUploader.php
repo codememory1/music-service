@@ -11,9 +11,6 @@ namespace App\Rest\S3\Uploader;
  */
 class ClipUploader extends AbstractUploader
 {
-    /**
-     * @inheritDoc
-     */
     public function getBucketName(): string
     {
         return 'clip';

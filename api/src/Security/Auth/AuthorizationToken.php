@@ -17,22 +17,9 @@ class AuthorizationToken
 {
     #[Required]
     public ?JwtTokenGenerator $jwtTokenGenerator = null;
-
-    /**
-     * @var null|string
-     */
     private ?string $accessToken = null;
-
-    /**
-     * @var null|string
-     */
     private ?string $refreshToken = null;
 
-    /**
-     * @param User $user
-     *
-     * @return $this
-     */
     public function generateAccessToken(User $user): self
     {
         $this->accessToken = $this->jwtTokenGenerator->encode(
@@ -44,19 +31,11 @@ class AuthorizationToken
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }
 
-    /**
-     * @param User $user
-     *
-     * @return $this
-     */
     public function generateRefreshToken(User $user): self
     {
         $this->refreshToken = $this->jwtTokenGenerator->encode(
@@ -68,9 +47,6 @@ class AuthorizationToken
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getRefreshToken(): ?string
     {
         return $this->refreshToken;

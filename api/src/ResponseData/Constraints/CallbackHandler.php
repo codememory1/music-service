@@ -16,8 +16,6 @@ use App\ResponseData\Interfaces\ValueHandlerInterface;
 class CallbackHandler implements ValueHandlerInterface
 {
     /**
-     * @inheritDoc
-     *
      * @param callable|ConstraintInterface $constraint
      */
     public function handle(ConstraintInterface $constraint, ResponseDataInterface $responseData, mixed $value): mixed

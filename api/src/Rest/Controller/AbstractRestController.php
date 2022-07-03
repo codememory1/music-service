@@ -16,26 +16,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 abstract class AbstractRestController extends AbstractController
 {
-    /**
-     * @var AuthorizedUser
-     */
     protected readonly AuthorizedUser $authorizedUser;
-
-    /**
-     * @var BearerToken
-     */
     protected readonly BearerToken $bearerToken;
-
-    /**
-     * @var ResponseCollection
-     */
     protected readonly ResponseCollection $responseCollection;
 
-    /**
-     * @param AuthorizedUser     $authorizedUser
-     * @param BearerToken        $bearerToken
-     * @param ResponseCollection $responseCollection
-     */
     public function __construct(AuthorizedUser $authorizedUser, BearerToken $bearerToken, ResponseCollection $responseCollection)
     {
         $this->authorizedUser = $authorizedUser;

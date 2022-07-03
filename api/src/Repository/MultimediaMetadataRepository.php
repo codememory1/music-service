@@ -14,13 +14,6 @@ use App\Entity\MultimediaMetadata;
  */
 class MultimediaMetadataRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = MultimediaMetadata::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'mm';
 }

@@ -14,36 +14,16 @@ use App\Service\JwtTokenGenerator;
  */
 class BearerToken
 {
-    /**
-     * @var JwtTokenGenerator
-     */
     private JwtTokenGenerator $jwtTokenGenerator;
-
-    /**
-     * @var Request
-     */
     private Request $request;
-
-    /**
-     * @var null|string
-     */
     private ?string $token = null;
 
-    /**
-     * @param JwtTokenGenerator $jwtTokenGenerator
-     * @param Request           $request
-     */
     public function __construct(JwtTokenGenerator $jwtTokenGenerator, Request $request)
     {
         $this->jwtTokenGenerator = $jwtTokenGenerator;
         $this->request = $request;
     }
 
-    /**
-     * @param string $token
-     *
-     * @return $this
-     */
     public function setToken(string $token): self
     {
         $this->token = $token;
@@ -51,9 +31,6 @@ class BearerToken
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getToken(): ?string
     {
         if (null === $this->token) {
@@ -70,9 +47,6 @@ class BearerToken
         return $this->token;
     }
 
-    /**
-     * @return array|bool
-     */
     public function getData(): bool|array
     {
         if (null !== $token = $this->getToken()) {

@@ -11,8 +11,5 @@ namespace App\Annotation\Interfaces;
  */
 interface MethodAnnotationInterface
 {
-    /**
-     * @return string
-     */
     public function getHandler(): string;
 }

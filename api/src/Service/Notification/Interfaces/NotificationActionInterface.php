@@ -11,8 +11,5 @@ namespace App\Service\Notification\Interfaces;
  */
 interface NotificationActionInterface
 {
-    /**
-     * @return array
-     */
     public function getAction(): array;
 }

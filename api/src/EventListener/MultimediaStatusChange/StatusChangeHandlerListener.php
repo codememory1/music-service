@@ -16,24 +16,13 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class StatusChangeHandlerListener
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->em = $manager;
     }
 
-    /**
-     * @param MultimediaStatusChangeEvent $event
-     *
-     * @return void
-     */
     public function onMultimediaStatusChange(MultimediaStatusChangeEvent $event): void
     {
         switch ($event->onStatus) {
@@ -57,22 +46,12 @@ class StatusChangeHandlerListener
         $this->em->flush();
     }
 
-    /**
-     * @param MultimediaStatusChangeEvent $event
-     *
-     * @return void
-     */
     public function moderationStatusHandler(MultimediaStatusChangeEvent $event): void
     {
         $event->multimedia->setStatus($event->onStatus);
         $event->multimedia->setQueue(new MultimediaQueue());
     }
 
-    /**
-     * @param MultimediaStatusChangeEvent $event
-     *
-     * @return void
-     */
     private function publishStatusHandler(MultimediaStatusChangeEvent $event): void
     {
         $event->multimedia->setStatus($event->onStatus);
@@ -82,11 +61,6 @@ class StatusChangeHandlerListener
         }
     }
 
-    /**
-     * @param MultimediaStatusChangeEvent $event
-     *
-     * @return void
-     */
     private function unpublishStatusHandler(MultimediaStatusChangeEvent $event): void
     {
         $event->multimedia->setStatus($event->onStatus);
@@ -96,11 +70,6 @@ class StatusChangeHandlerListener
         }
     }
 
-    /**
-     * @param MultimediaStatusChangeEvent $event
-     *
-     * @return void
-     */
     private function changeStatus(MultimediaStatusChangeEvent $event): void
     {
         $event->multimedia->setStatus($event->onStatus);

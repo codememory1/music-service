@@ -18,11 +18,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class RestorePassword extends AbstractService
 {
-    /**
-     * @param RestorePasswordDTO $restorePasswordDTO
-     *
-     * @return JsonResponse
-     */
     public function restore(RestorePasswordDTO $restorePasswordDTO): JsonResponse
     {
         if (false === $this->validate($restorePasswordDTO)) {

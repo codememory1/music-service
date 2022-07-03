@@ -16,22 +16,13 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class SubscriptionPermission implements ConstraintInterface
 {
-    /**
-     * @var SubscriptionPermissionEnum
-     */
     public readonly SubscriptionPermissionEnum $permission;
 
-    /**
-     * @param SubscriptionPermissionEnum $subscriptionPermissionEnum
-     */
     public function __construct(SubscriptionPermissionEnum $subscriptionPermissionEnum)
     {
         $this->permission = $subscriptionPermissionEnum;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHandler(): string
     {
         return SubscriptionPermissionHandler::class;

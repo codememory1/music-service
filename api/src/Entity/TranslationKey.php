@@ -30,19 +30,11 @@ class TranslationKey implements EntityInterface
     ])]
     private ?string $key = null;
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @param string $key
-     *
-     * @return $this
-     */
     public function setKey(string $key): self
     {
         $this->key = $key;

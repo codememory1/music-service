@@ -16,22 +16,13 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class Role implements ConstraintInterface
 {
-    /**
-     * @var RoleEnum
-     */
     public readonly RoleEnum $role;
 
-    /**
-     * @param RoleEnum $roleEnum
-     */
     public function __construct(RoleEnum $roleEnum)
     {
         $this->role = $roleEnum;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHandler(): string
     {
         return RoleHandler::class;

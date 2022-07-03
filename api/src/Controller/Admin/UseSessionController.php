@@ -25,13 +25,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UseSessionController extends AbstractRestController
 {
-    /**
-     * @param User                    $user
-     * @param UserSessionResponseData $userSessionResponseData
-     * @param UserSessionRepository   $userSessionRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/user/{user_id<\d+>}/session/all')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
@@ -46,12 +39,6 @@ class UseSessionController extends AbstractRestController
         return $this->responseCollection->dataOutput($userSessionResponseData->getResponse());
     }
 
-    /**
-     * @param UserSession              $userSession
-     * @param DeleteUserSessionService $deleteUserSessionService
-     *
-     * @return JsonResponse
-     */
     #[Route('/user/session/{userSession_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_USER_SESSION_TO_USER)]
@@ -62,12 +49,6 @@ class UseSessionController extends AbstractRestController
         return $deleteUserSessionService->make($userSession);
     }
 
-    /**
-     * @param User                     $user
-     * @param DeleteUserSessionService $deleteUserSessionService
-     *
-     * @return JsonResponse
-     */
     #[Route('/user/{user_id<\d+>}/session/all/delete', methods: 'DELETE')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_USER_SESSION_TO_USER)]

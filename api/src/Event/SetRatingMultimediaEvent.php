@@ -13,14 +13,8 @@ use App\Entity\MultimediaRating;
  */
 class SetRatingMultimediaEvent
 {
-    /**
-     * @var MultimediaRating
-     */
     public readonly MultimediaRating $multimediaRating;
 
-    /**
-     * @param MultimediaRating $multimediaRating
-     */
     public function __construct(MultimediaRating $multimediaRating)
     {
         $this->multimediaRating = $multimediaRating;

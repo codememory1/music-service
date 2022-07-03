@@ -27,14 +27,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class SendNotificationsToUsersCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         parent::__construct();
@@ -43,10 +37,7 @@ class SendNotificationsToUsersCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -79,12 +70,6 @@ class SendNotificationsToUsersCommand extends Command
         }
     }
 
-    /**
-     * @param UserRepository $userRepository
-     * @param Notification   $notification
-     *
-     * @return void
-     */
     private function sendToAllRegisteredUsers(UserRepository $userRepository, Notification $notification): void
     {
         $registeredUsers = $userRepository->findBy([
@@ -98,12 +83,6 @@ class SendNotificationsToUsersCommand extends Command
         }
     }
 
-    /**
-     * @param UserRepository $userRepository
-     * @param Notification   $notification
-     *
-     * @return void
-     */
     private function sendToUser(UserRepository $userRepository, Notification $notification): void
     {
         $user = $userRepository->findOneBy([

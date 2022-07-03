@@ -24,11 +24,6 @@ class SendOnModerationService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return JsonResponse
-     */
     public function make(Multimedia $multimedia): JsonResponse
     {
         if ($multimedia->getStatus() !== MultimediaStatusEnum::DRAFT->name) {

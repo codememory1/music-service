@@ -67,19 +67,11 @@ class Notification implements EntityInterface
     ])]
     private ?DateTimeImmutable $departureDate = null;
 
-    /**
-     * @return null|User
-     */
     public function getFrom(): ?User
     {
         return $this->fromUser;
     }
 
-    /**
-     * @param null|User $fromUser
-     *
-     * @return $this
-     */
     public function setFrom(?User $fromUser): self
     {
         $this->fromUser = $fromUser;
@@ -87,19 +79,11 @@ class Notification implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getToUser(): ?string
     {
         return $this->toUser;
     }
 
-    /**
-     * @param null|string $toUser
-     *
-     * @return $this
-     */
     public function setToUser(?string $toUser): self
     {
         $this->toUser = $toUser;
@@ -107,19 +91,11 @@ class Notification implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param NotificationTypeEnum $type
-     *
-     * @return $this
-     */
     public function setType(NotificationTypeEnum $type): self
     {
         $this->type = $type->name;
@@ -127,19 +103,11 @@ class Notification implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param null|string $title
-     *
-     * @return $this
-     */
     public function setTitle(?string $title): self
     {
         $this->title = $title;
@@ -147,19 +115,11 @@ class Notification implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getMessage(): ?string
     {
         return $this->message;
     }
 
-    /**
-     * @param null|string $message
-     *
-     * @return $this
-     */
     public function setMessage(?string $message): self
     {
         $this->message = $message;
@@ -167,19 +127,11 @@ class Notification implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|array
-     */
     public function getAction(): ?array
     {
         return $this->action;
     }
 
-    /**
-     * @param array ...$actions
-     *
-     * @return $this
-     */
     public function setAction(array ...$actions): self
     {
         foreach ($actions as $action) {
@@ -189,19 +141,11 @@ class Notification implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getStatus(): string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|NotificationStatusEnum $statusEnum
-     *
-     * @return $this
-     */
     public function setStatus(?NotificationStatusEnum $statusEnum): self
     {
         $this->status = $statusEnum->name;
@@ -209,19 +153,11 @@ class Notification implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|DateTimeImmutable
-     */
     public function getDepartureDate(): ?DateTimeImmutable
     {
         return $this->departureDate;
     }
 
-    /**
-     * @param null|DateTimeImmutable $dateTimeImmutable
-     *
-     * @return $this
-     */
     public function setDepartureDate(?DateTimeImmutable $dateTimeImmutable): self
     {
         $this->departureDate = $dateTimeImmutable;

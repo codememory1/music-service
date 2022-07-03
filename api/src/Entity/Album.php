@@ -66,19 +66,11 @@ class Album implements EntityInterface
         $this->multimedia = new ArrayCollection();
     }
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -86,19 +78,11 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|AlbumType
-     */
     public function getType(): ?AlbumType
     {
         return $this->type;
     }
 
-    /**
-     * @param null|AlbumType $type
-     *
-     * @return $this
-     */
     public function setType(?AlbumType $type): self
     {
         $this->type = $type;
@@ -106,19 +90,11 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param null|string $title
-     *
-     * @return $this
-     */
     public function setTitle(?string $title): self
     {
         $this->title = $title;
@@ -126,19 +102,11 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param null|string $description
-     *
-     * @return $this
-     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -146,19 +114,11 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getImage(): ?string
     {
         return $this->image;
     }
 
-    /**
-     * @param null|string $image
-     *
-     * @return $this
-     */
     public function setImage(?string $image): self
     {
         $this->image = $image;
@@ -166,19 +126,11 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Multimedia>
-     */
     public function getMultimedia(): Collection
     {
         return $this->multimedia;
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function addMultimedia(Multimedia $multimedia): self
     {
         if (!$this->multimedia->contains($multimedia)) {
@@ -189,11 +141,6 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function removeMultimedia(Multimedia $multimedia): self
     {
         if ($this->multimedia->removeElement($multimedia)) {
@@ -206,19 +153,11 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|AlbumStatusEnum $status
-     *
-     * @return $this
-     */
     public function setStatus(?AlbumStatusEnum $status): self
     {
         $this->status = $status?->name;

@@ -18,17 +18,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class MediaLibraryDTO extends AbstractDTO
 {
-    /**
-     * @inheritDoc
-     */
     protected EntityInterface|string|null $entity = MediaLibrary::class;
 
     #[Assert\NotBlank(message: 'mediaLibrary@invalidStatus')]
     public ?MediaLibraryStatusEnum $status = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('status');

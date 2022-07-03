@@ -23,9 +23,6 @@ class RegistrationDTO extends AbstractDTO
     #[Assert\Email(message: 'common@incorrectEmail')]
     public ?string $email = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('pseudonym');

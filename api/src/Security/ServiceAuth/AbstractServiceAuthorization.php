@@ -30,9 +30,6 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 abstract class AbstractServiceAuthorization extends AbstractService
 {
-    /**
-     * @var null|string
-     */
     protected ?string $serviceType = null;
 
     #[Required]
@@ -44,20 +41,8 @@ abstract class AbstractServiceAuthorization extends AbstractService
     #[Required]
     public ?Authorization $authorization = null;
 
-    /**
-     * @param ClientInterface                  $client
-     * @param ServiceAuthorizationDTOInterface $serviceAuthorizationDTO
-     *
-     * @return JsonResponse
-     */
     abstract public function make(ClientInterface $client, ServiceAuthorizationDTOInterface $serviceAuthorizationDTO): JsonResponse;
 
-    /**
-     * @param ClientInterface                  $client
-     * @param ServiceAuthorizationDTOInterface $serviceAuthorizationDTO
-     *
-     * @return JsonResponse
-     */
     protected function authorizationHandler(ClientInterface $client, ServiceAuthorizationDTOInterface $serviceAuthorizationDTO): JsonResponse
     {
         if (false === $this->validate($serviceAuthorizationDTO)) {
@@ -80,11 +65,6 @@ abstract class AbstractServiceAuthorization extends AbstractService
         return $this->auth($finedUserByAuthService);
     }
 
-    /**
-     * @param UserDataInterface $userData
-     *
-     * @return JsonResponse
-     */
     protected function register(UserDataInterface $userData): JsonResponse
     {
         if (empty($userData->getUniqueId()) || empty($userData->getEmail()) || empty($userData->getName())) {
@@ -121,11 +101,6 @@ abstract class AbstractServiceAuthorization extends AbstractService
         return $this->responseCollection->successRegistration();
     }
 
-    /**
-     * @param User $authorizedUser
-     *
-     * @return JsonResponse
-     */
     protected function auth(User $authorizedUser): JsonResponse
     {
         return $this->authorization->auth($authorizedUser);

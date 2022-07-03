@@ -19,11 +19,6 @@ class CreateSubscriptionService extends AbstractService
     #[Required]
     public ?SetPermissionsToSubscriptionService $setPermissionsToSubscriptionService = null;
 
-    /**
-     * @param SubscriptionDTO $subscriptionDTO
-     *
-     * @return JsonResponse
-     */
     public function make(SubscriptionDTO $subscriptionDTO): JsonResponse
     {
         if (true !== $response = $this->validateFullDTO($subscriptionDTO)) {

@@ -19,32 +19,11 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class CreateRegistrationSessionListener
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
-
-    /**
-     * @var CreateSessionService
-     */
     private CreateSessionService $createUserSessionService;
-
-    /**
-     * @var UpdateSessionService
-     */
     private UpdateSessionService $updateUserSessionService;
-
-    /**
-     * @var UserDTO
-     */
     private UserDTO $userDTO;
 
-    /**
-     * @param EntityManagerInterface $manager
-     * @param CreateSessionService   $createSessionService
-     * @param UpdateSessionService   $updateSessionService
-     * @param UserDTO                $userDTO
-     */
     public function __construct(
         EntityManagerInterface $manager,
         CreateSessionService $createSessionService,
@@ -57,11 +36,6 @@ class CreateRegistrationSessionListener
         $this->userDTO = $userDTO->collect();
     }
 
-    /**
-     * @param UserRegistrationEvent $event
-     *
-     * @return void
-     */
     public function onUserRegistration(UserRegistrationEvent $event): void
     {
         $userSessionRepository = $this->em->getRepository(UserSession::class);

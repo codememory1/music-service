@@ -15,11 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteLanguageService extends AbstractService
 {
-    /**
-     * @param Language $language
-     *
-     * @return JsonResponse
-     */
     public function make(Language $language): JsonResponse
     {
         $this->em->remove($language);

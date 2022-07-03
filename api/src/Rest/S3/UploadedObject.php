@@ -15,32 +15,15 @@ use GuzzleHttp\Psr7\Stream;
  */
 class UploadedObject
 {
-    /**
-     * @var Client
-     */
     private Client $client;
-
-    /**
-     * @var ObjectPath
-     */
     private ObjectPath $objectPath;
 
-    /**
-     * @param Client     $client
-     * @param ObjectPath $objectPath
-     */
     public function __construct(Client $client, ObjectPath $objectPath)
     {
         $this->client = $client;
         $this->objectPath = $objectPath;
     }
 
-    /**
-     * @param string $path
-     * @param bool   $asStream
-     *
-     * @return null|Result|Stream
-     */
     public function getObject(string $path, bool $asStream = false): null|Result|Stream
     {
         $this->objectPath->setPath($path);
@@ -61,11 +44,6 @@ class UploadedObject
         }
     }
 
-    /**
-     * @param Stream $stream
-     *
-     * @return bool|resource
-     */
     public function createTempFile(Stream $stream): mixed
     {
         $tempFile = tmpfile();

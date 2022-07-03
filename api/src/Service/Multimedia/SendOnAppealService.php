@@ -24,11 +24,6 @@ class SendOnAppealService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return JsonResponse
-     */
     public function make(Multimedia $multimedia): JsonResponse
     {
         if (false === in_array($multimedia->getStatus(), [

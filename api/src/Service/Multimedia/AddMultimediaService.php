@@ -24,12 +24,6 @@ class AddMultimediaService extends AbstractService
     #[Required]
     public ?SaveMultimediaService $saveMultimediaService = null;
 
-    /**
-     * @param MultimediaDTO $multimediaDTO
-     * @param User          $toUser
-     *
-     * @return JsonResponse
-     */
     public function make(MultimediaDTO $multimediaDTO, User $toUser): JsonResponse
     {
         if (false === $this->validate($multimediaDTO)) {

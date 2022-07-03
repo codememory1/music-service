@@ -34,11 +34,6 @@ class TranslationResponseData extends AbstractResponseData implements ResponseDa
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
 
-    /**
-     * @param null|TranslationKey $translationKey
-     *
-     * @return array
-     */
     public function handleTranslationKey(?TranslationKey $translationKey): array
     {
         $translationKeyResponseData = new TranslationKeyResponseData($this->container);

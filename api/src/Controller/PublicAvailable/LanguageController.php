@@ -18,12 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/language')]
 class LanguageController extends AbstractRestController
 {
-    /**
-     * @param LanguageResponseData $languageResponseData
-     * @param LanguageRepository   $languageRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/all', methods: 'GET')]
     public function all(LanguageResponseData $languageResponseData, LanguageRepository $languageRepository): JsonResponse
     {

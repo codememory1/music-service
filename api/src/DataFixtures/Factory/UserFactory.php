@@ -23,43 +23,13 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 final class UserFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
     private string $pseudonym;
-
-    /**
-     * @var string
-     */
     private string $email;
-
-    /**
-     * @var string
-     */
     private string $password;
-
-    /**
-     * @var string
-     */
     private string $role;
-
-    /**
-     * @var null|ReferenceRepository
-     */
     private ?ReferenceRepository $referenceRepository = null;
-
-    /**
-     * @var null|SubscriptionEnum
-     */
     private ?SubscriptionEnum $subscription;
 
-    /**
-     * @param string                $pseudonym
-     * @param string                $email
-     * @param string                $password
-     * @param RoleEnum              $role
-     * @param null|SubscriptionEnum $subscriptionEnum
-     */
     public function __construct(string $pseudonym, string $email, string $password, RoleEnum $role, ?SubscriptionEnum $subscriptionEnum = null)
     {
         $this->pseudonym = $pseudonym;
@@ -69,9 +39,6 @@ final class UserFactory implements DataFixtureFactoryInterface
         $this->subscription = $subscriptionEnum;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
         /** @var Role $role */
@@ -99,9 +66,6 @@ final class UserFactory implements DataFixtureFactoryInterface
         return $userEntity;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         $this->referenceRepository = $referenceRepository;

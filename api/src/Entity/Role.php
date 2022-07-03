@@ -55,19 +55,11 @@ class Role implements EntityInterface
         $this->permissions = new ArrayCollection();
     }
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @param null|string $key
-     *
-     * @return $this
-     */
     public function setKey(?string $key): self
     {
         $this->key = $key;
@@ -75,9 +67,6 @@ class Role implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->titleTranslationKey;
@@ -90,19 +79,11 @@ class Role implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getShortDescription(): ?string
     {
         return $this->shortDescriptionTranslationKey;
     }
 
-    /**
-     * @param null|string $shortDescriptionTranslationKey
-     *
-     * @return $this
-     */
     public function setShortDescription(?string $shortDescriptionTranslationKey): self
     {
         $this->shortDescriptionTranslationKey = $shortDescriptionTranslationKey;
@@ -120,8 +101,6 @@ class Role implements EntityInterface
 
     /**
      * @param array<RolePermissionKey> $permissionKeys
-     *
-     * @return $this
      */
     public function setPermissions(array $permissionKeys): self
     {
@@ -141,11 +120,6 @@ class Role implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param RolePermission $permission
-     *
-     * @return $this
-     */
     public function addPermission(RolePermission $permission): self
     {
         if (!$this->permissions->contains($permission)) {
@@ -156,11 +130,6 @@ class Role implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param RolePermission $permission
-     *
-     * @return $this
-     */
     public function removePermission(RolePermission $permission): self
     {
         if ($this->permissions->removeElement($permission)) {

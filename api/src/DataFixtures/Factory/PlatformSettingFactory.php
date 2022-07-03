@@ -17,29 +17,15 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 class PlatformSettingFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
     private string $key;
-
-    /**
-     * @var array
-     */
     private array $value;
 
-    /**
-     * @param string $key
-     * @param array  $value
-     */
     public function __construct(PlatformSettingEnum $key, array $value = [])
     {
         $this->key = $key->name;
         $this->value = $value;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
         $platformSettingEntity = new PlatformSetting();
@@ -50,9 +36,6 @@ class PlatformSettingFactory implements DataFixtureFactoryInterface
         return $platformSettingEntity;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;

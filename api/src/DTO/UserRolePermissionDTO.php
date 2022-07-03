@@ -13,14 +13,8 @@ use App\DTO\Interceptors\AsArrayInterceptor;
  */
 class UserRolePermissionDTO extends AbstractDTO
 {
-    /**
-     * @var array
-     */
     public array $permissions = [];
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('permissions');

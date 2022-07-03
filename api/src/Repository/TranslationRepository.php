@@ -15,14 +15,7 @@ use App\Entity\Translation;
  */
 class TranslationRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = Translation::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 't';
 
     /**
@@ -47,11 +40,6 @@ class TranslationRepository extends AbstractRepository
         return parent::findByCriteria($criteria, []);
     }
 
-    /**
-     * @param Language $language
-     *
-     * @return array
-     */
     public function findAllByLanguage(Language $language): array
     {
         return $this->findByCriteria([

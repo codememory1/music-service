@@ -50,19 +50,11 @@ class Language implements EntityInterface
         $this->translations = new ArrayCollection();
     }
 
-    /**
-     * @return null|string
-     */
     public function getCode(): ?string
     {
         return $this->code;
     }
 
-    /**
-     * @param null|string $code
-     *
-     * @return $this
-     */
     public function setCode(?string $code): self
     {
         $this->code = $code;
@@ -70,19 +62,11 @@ class Language implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getOriginalTitle(): ?string
     {
         return $this->originalTitle;
     }
 
-    /**
-     * @param null|string $originalTitle
-     *
-     * @return $this
-     */
     public function setOriginalTitle(?string $originalTitle): self
     {
         $this->originalTitle = $originalTitle;
@@ -91,18 +75,13 @@ class Language implements EntityInterface
     }
 
     /**
-     * @return Collection|Translation[]
+     * @return Collection<Translation>
      */
     public function getTranslations(): Collection
     {
         return $this->translations;
     }
 
-    /**
-     * @param Translation $translation
-     *
-     * @return $this
-     */
     public function addTranslation(Translation $translation): self
     {
         if (!$this->translations->contains($translation)) {
@@ -113,11 +92,6 @@ class Language implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Translation $translation
-     *
-     * @return $this
-     */
     public function removeTranslation(Translation $translation): self
     {
         if ($this->translations->removeElement($translation)) {

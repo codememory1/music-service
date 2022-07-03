@@ -19,14 +19,7 @@ use JetBrains\PhpStorm\Pure;
  */
 final class AsTranslationEntityInterceptor implements ValueInterceptorInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
-
-    /**
-     * @var string
-     */
     private string $locale;
 
     #[Pure]

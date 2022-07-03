@@ -16,11 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class CreateTranslationService extends AbstractService
 {
-    /**
-     * @param TranslationDTO $translationDTO
-     *
-     * @return JsonResponse
-     */
     public function make(TranslationDTO $translationDTO): JsonResponse
     {
         if (false === $this->validate($translationDTO)) {
@@ -37,11 +32,6 @@ class CreateTranslationService extends AbstractService
         return $this->responseCollection->successCreate('translation@successCreate');
     }
 
-    /**
-     * @param TranslationDTO $translationDTO
-     *
-     * @return TranslationKey
-     */
     private function createTranslationKey(TranslationDTO $translationDTO): TranslationKey
     {
         $translationKeyEntity = new TranslationKey();

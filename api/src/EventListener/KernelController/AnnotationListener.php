@@ -19,25 +19,15 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
  */
 class AnnotationListener
 {
-    /**
-     * @var ReverseContainer
-     */
     private ReverseContainer $container;
 
-    /**
-     * @param ReverseContainer $container
-     */
     public function __construct(ReverseContainer $container)
     {
         $this->container = $container;
     }
 
     /**
-     * @param ControllerEvent $event
-     *
      * @throws ReflectionException
-     *
-     * @return void
      */
     public function onKernelController(ControllerEvent $event): void
     {
@@ -51,12 +41,7 @@ class AnnotationListener
     }
 
     /**
-     * @param ReflectionClass $reflectionClass
-     * @param string          $methodName
-     *
      * @throws ReflectionException
-     *
-     * @return void
      */
     private function handleMethod(ReflectionClass $reflectionClass, string $methodName): void
     {

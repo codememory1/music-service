@@ -33,12 +33,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class MultimediaController extends AbstractRestController
 {
-    /**
-     * @param MultimediaResponseData $multimediaResponseData
-     * @param MultimediaRepository   $multimediaRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/all', methods: 'GET')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_MULTIMEDIA)]
@@ -51,13 +45,6 @@ class MultimediaController extends AbstractRestController
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
     }
 
-    /**
-     * @param User                   $user
-     * @param MultimediaResponseData $multimediaResponseData
-     * @param MultimediaRepository   $multimediaRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/{user_id<\d+>}/multimedia/all', methods: 'GET')]
     #[Authorization]
     public function userAll(
@@ -71,12 +58,6 @@ class MultimediaController extends AbstractRestController
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
     }
 
-    /**
-     * @param MultimediaDTO        $multimediaDTO
-     * @param AddMultimediaService $addMultimediaService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/add', methods: 'POST')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
@@ -85,13 +66,6 @@ class MultimediaController extends AbstractRestController
         return $addMultimediaService->make($multimediaDTO->collect(), $this->authorizedUser->getUser());
     }
 
-    /**
-     * @param Multimedia              $multimedia
-     * @param MultimediaDTO           $multimediaDTO
-     * @param UpdateMultimediaService $updateMultimediaService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA)]
@@ -105,12 +79,6 @@ class MultimediaController extends AbstractRestController
         return $updateMultimediaService->make($multimediaDTO->collect());
     }
 
-    /**
-     * @param Multimedia              $multimedia
-     * @param DeleteMultimediaService $deleteMultimediaService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_MULTIMEDIA)]
@@ -125,12 +93,6 @@ class MultimediaController extends AbstractRestController
         return $deleteMultimediaService->make($multimedia);
     }
 
-    /**
-     * @param Multimedia              $multimedia
-     * @param SendOnModerationService $sendOnModerationService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/send-on-moderation', methods: 'PATCH')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
@@ -145,12 +107,6 @@ class MultimediaController extends AbstractRestController
         return $sendOnModerationService->make($multimedia);
     }
 
-    /**
-     * @param Multimedia          $multimedia
-     * @param SendOnAppealService $sendOnAppealService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/send-on-appeal', methods: 'PATCH')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
@@ -161,12 +117,6 @@ class MultimediaController extends AbstractRestController
         return $sendOnAppealService->make($multimedia);
     }
 
-    /**
-     * @param Multimedia               $multimedia
-     * @param SetLikeMultimediaService $setLikeMultimediaService
-     *
-     * @return JsonResponse
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/like', methods: 'PATCH')]
     #[Authorization]
     public function like(
@@ -176,12 +126,6 @@ class MultimediaController extends AbstractRestController
         return $setLikeMultimediaService->make($multimedia, $this->authorizedUser->getUser());
     }
 
-    /**
-     * @param Multimedia                  $multimedia
-     * @param SetDisLikeMultimediaService $setDisLikeMultimediaService
-     *
-     * @return JsonResponse §§§§    §§§§§§§§
-     */
     #[Route('/multimedia/{multimedia_id<\d+>}/dislike', methods: 'PATCH')]
     #[Authorization]
     public function dislike(

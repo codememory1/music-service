@@ -22,12 +22,6 @@ class CreateNotificationService extends AbstractService
     #[Required]
     public ?MessageBusInterface $bus = null;
 
-    /**
-     * @param NotificationDTO $notificationDTO
-     * @param null|User       $from
-     *
-     * @return JsonResponse
-     */
     public function make(NotificationDTO $notificationDTO, ?User $from): JsonResponse
     {
         if (false === $this->validate($notificationDTO)) {

@@ -20,11 +20,6 @@ class DeleteAlbumService extends AbstractService
     #[Required]
     public ?ImageUploader $imageUploader = null;
 
-    /**
-     * @param Album $album
-     *
-     * @return JsonResponse
-     */
     public function make(Album $album): JsonResponse
     {
         $this->imageUploader->delete($album->getImage());

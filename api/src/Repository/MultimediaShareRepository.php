@@ -14,13 +14,6 @@ use App\Entity\MultimediaShare;
  */
 class MultimediaShareRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = MultimediaShare::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'ms';
 }

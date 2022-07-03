@@ -15,32 +15,11 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class AsEntityInterceptor implements ValueInterceptorInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
-
-    /**
-     * @var string
-     */
     private string $entity;
-
-    /**
-     * @var string
-     */
     private string $by;
-
-    /**
-     * @var array
-     */
     private array $supplementBy;
 
-    /**
-     * @param EntityManagerInterface $manager
-     * @param string                 $entity
-     * @param string                 $by
-     * @param array                  $supplementBy
-     */
     public function __construct(EntityManagerInterface $manager, string $entity, string $by = 'id', array $supplementBy = [])
     {
         $this->em = $manager;

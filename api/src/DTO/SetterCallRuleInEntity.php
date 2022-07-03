@@ -16,61 +16,35 @@ use App\Security\AuthorizedUser;
  */
 class SetterCallRuleInEntity
 {
-    /**
-     * @var AuthorizedUser
-     */
     private AuthorizedUser $authorizedUser;
-
-    /**
-     * @var bool
-     */
     private bool $passed = true;
 
-    /**
-     * @param AuthorizedUser $authorizedUser
-     */
     public function __construct(AuthorizedUser $authorizedUser)
     {
         $this->authorizedUser = $authorizedUser;
     }
 
-    /**
-     * @param RoleEnum $roleEnum
-     *
-     * @return $this
-     */
     public function orRole(RoleEnum $roleEnum): self
     {
-        $this->passed = $this->authorizedUser->hasRole($roleEnum);
+        $this->passed = $this->authorizedUser->isRole($roleEnum);
 
         return $this;
     }
 
-    /**
-     * @param RolePermissionEnum $rolePermissionEnum
-     *
-     * @return $this
-     */
     public function orRolePermission(RolePermissionEnum $rolePermissionEnum): self
     {
-        $this->passed = $this->authorizedUser->hasRolePermission($rolePermissionEnum);
+        $this->passed = $this->authorizedUser->isRolePermission($rolePermissionEnum);
 
         return $this;
     }
 
-    /**
-     * @param SubscriptionPermissionEnum $subscriptionPermissionEnum
-     *
-     * @return $this
-     */
     public function orSubscriptionPermission(SubscriptionPermissionEnum $subscriptionPermissionEnum): self
     {
+        $this->passed = $this->authorizedUser->isSubscriptionPermission($subscriptionPermissionEnum);
+
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     final public function isPassed(): bool
     {
         return $this->passed;

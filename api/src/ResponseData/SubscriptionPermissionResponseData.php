@@ -37,11 +37,6 @@ class SubscriptionPermissionResponseData extends AbstractResponseData implements
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
 
-    /**
-     * @param null|SubscriptionPermissionKey $subscriptionPermissionKey
-     *
-     * @return null|array
-     */
     public function handlePermissionKey(?SubscriptionPermissionKey $subscriptionPermissionKey): ?array
     {
         $responseData = new SubscriptionPermissionKeyResponseData($this->container);

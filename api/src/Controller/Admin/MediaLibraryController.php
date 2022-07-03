@@ -26,13 +26,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class MediaLibraryController extends AbstractRestController
 {
-    /**
-     * @param User                      $user
-     * @param MediaLibraryDTO           $mediaLibraryDTO
-     * @param CreateMediaLibraryService $createMediaLibraryService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{user_id<\d+>}/media-library/create', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_MEDIA_LIBRARY_TO_USER)]
@@ -44,13 +37,6 @@ class MediaLibraryController extends AbstractRestController
         return $createMediaLibraryService->make($mediaLibraryDTO->collect(), $user);
     }
 
-    /**
-     * @param MediaLibrary              $mediaLibrary
-     * @param MediaLibraryDTO           $mediaLibraryDTO
-     * @param UpdateMediaLibraryService $updateMediaLibraryService
-     *
-     * @return JsonResponse
-     */
     #[Route('/media-library/{mediaLibrary_id<\d+>}/edit', methods: 'PUT')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MEDIA_LIBRARY_TO_USER)]

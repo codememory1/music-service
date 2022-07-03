@@ -15,11 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class CreateMultimediaCategoryService extends AbstractService
 {
-    /**
-     * @param MultimediaCategoryDTO $multimediaCategoryDTO
-     *
-     * @return JsonResponse
-     */
     public function make(MultimediaCategoryDTO $multimediaCategoryDTO): JsonResponse
     {
         if (false === $this->validate($multimediaCategoryDTO)) {

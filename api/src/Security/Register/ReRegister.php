@@ -15,12 +15,6 @@ use App\Service\AbstractService;
  */
 class ReRegister extends AbstractService
 {
-    /**
-     * @param RegistrationDTO $registrationDTO
-     * @param User            $user
-     *
-     * @return void
-     */
     public function make(RegistrationDTO $registrationDTO, User $user): void
     {
         $user->getProfile()->setPseudonym($registrationDTO->pseudonym);

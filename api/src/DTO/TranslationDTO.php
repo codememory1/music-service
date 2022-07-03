@@ -23,9 +23,6 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class TranslationDTO extends AbstractDTO
 {
-    /**
-     * @inheritDoc
-     */
     protected EntityInterface|string|null $entity = Translation::class;
 
     #[Assert\NotBlank(message: 'translation@keyIsRequired')]
@@ -46,9 +43,6 @@ class TranslationDTO extends AbstractDTO
     #[Required]
     public ?EntityManagerInterface $em = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('key', 'translationKey');

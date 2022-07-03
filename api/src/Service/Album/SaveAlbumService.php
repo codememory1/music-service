@@ -22,12 +22,6 @@ class SaveAlbumService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param AlbumDTO $albumDTO
-     * @param Album    $album
-     *
-     * @return void
-     */
     public function make(AlbumDTO $albumDTO, Album $album): void
     {
         if (null === $album->getId()) {

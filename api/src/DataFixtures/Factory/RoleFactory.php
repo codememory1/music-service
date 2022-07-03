@@ -17,26 +17,10 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 final class RoleFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
     private string $key;
-
-    /**
-     * @var string
-     */
     private string $titleTranslationKey;
-
-    /**
-     * @var string
-     */
     private string $shortDescriptionTranslationKey;
 
-    /**
-     * @param RoleEnum $key
-     * @param string   $titleTranslationKey
-     * @param string   $shortDescriptionTranslationKey
-     */
     public function __construct(RoleEnum $key, string $titleTranslationKey, string $shortDescriptionTranslationKey)
     {
         $this->key = $key->name;
@@ -44,9 +28,6 @@ final class RoleFactory implements DataFixtureFactoryInterface
         $this->shortDescriptionTranslationKey = $shortDescriptionTranslationKey;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
         $roleEntity = new Role();
@@ -58,9 +39,6 @@ final class RoleFactory implements DataFixtureFactoryInterface
         return $roleEntity;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;

@@ -19,11 +19,6 @@ class CreateUserRoleService extends AbstractService
     #[Required]
     public ?SetPermissionsToRoleService $setPermissionsToRoleService = null;
 
-    /**
-     * @param UserRoleDTO $userRoleDTO
-     *
-     * @return JsonResponse
-     */
     public function make(UserRoleDTO $userRoleDTO): JsonResponse
     {
         if (true !== $response = $this->validateFullDTO($userRoleDTO)) {

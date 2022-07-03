@@ -25,11 +25,6 @@ class AccountActivation extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param AccountActivationDTO $accountActivationDTO
-     *
-     * @return JsonResponse
-     */
     public function activate(AccountActivationDTO $accountActivationDTO): JsonResponse
     {
         if (false === $this->validate($accountActivationDTO)) {

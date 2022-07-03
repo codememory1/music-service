@@ -16,34 +16,19 @@ use function is_array;
  */
 class ResponseSchema implements ResponseSchemaInterface
 {
-    /**
-     * @var array
-     */
     private array $schema = [
         'status_code' => null,
         'type' => null,
         'message' => [],
         'data' => []
     ];
-
-    /**
-     * @var TranslationService
-     */
     private TranslationService $translationService;
 
-    /**
-     * @param TranslationService $translationService
-     */
     public function __construct(TranslationService $translationService)
     {
         $this->translationService = $translationService;
     }
 
-    /**
-     * @param int $code
-     *
-     * @return $this
-     */
     public function setStatusCode(int $code): self
     {
         $this->schema['status_code'] = $code;
@@ -51,11 +36,6 @@ class ResponseSchema implements ResponseSchemaInterface
         return $this;
     }
 
-    /**
-     * @param ResponseTypeEnum $type
-     *
-     * @return $this
-     */
     public function setType(ResponseTypeEnum $type): self
     {
         $this->schema['type'] = $type->name;
@@ -63,12 +43,6 @@ class ResponseSchema implements ResponseSchemaInterface
         return $this;
     }
 
-    /**
-     * @param array|string $message
-     * @param array        $parameters
-     *
-     * @return $this
-     */
     public function setMessage(string|array $message, array $parameters = []): self
     {
         if (is_array($message)) {
@@ -82,11 +56,6 @@ class ResponseSchema implements ResponseSchemaInterface
         return $this;
     }
 
-    /**
-     * @param array $data
-     *
-     * @return $this
-     */
     public function setData(array $data): self
     {
         $this->schema['data'] = $data;
@@ -94,17 +63,11 @@ class ResponseSchema implements ResponseSchemaInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getSchema(): array
     {
         return $this->schema;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getStatusCode(): int
     {
         $statusCode = $this->schema['status_code'];

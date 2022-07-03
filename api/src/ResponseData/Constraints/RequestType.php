@@ -16,22 +16,13 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class RequestType implements ConstraintInterface
 {
-    /**
-     * @var string
-     */
     public readonly string $requestType;
 
-    /**
-     * @param RequestTypeEnum $requestTypeEnum
-     */
     public function __construct(RequestTypeEnum $requestTypeEnum)
     {
         $this->requestType = $requestTypeEnum->value;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHandler(): string
     {
         return RequestTypeHandler::class;

@@ -15,24 +15,13 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class CreateAccountActivationCodeListener
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->em = $manager;
     }
 
-    /**
-     * @param UserRegistrationEvent $event
-     *
-     * @return void
-     */
     public function onUserRegistration(UserRegistrationEvent $event): void
     {
         $accountActivationCodeEntity = new AccountActivationCode();

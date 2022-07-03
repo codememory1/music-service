@@ -14,9 +14,6 @@ use App\Tests\AbstractApiTestCase;
  */
 final class CreateLanguageTest extends AbstractApiTestCase
 {
-    /**
-     * @return void
-     */
     public function testValidation(): void
     {
         $this->createRequest('/api/ru/admin/language/create', 'POST', [
@@ -33,9 +30,6 @@ final class CreateLanguageTest extends AbstractApiTestCase
         ]);
     }
 
-    /**
-     * @return void
-     */
     public function testMaxCodeLength(): void
     {
         $this->createRequest('/api/ru/admin/language/create', 'POST', [
@@ -51,9 +45,6 @@ final class CreateLanguageTest extends AbstractApiTestCase
         ]);
     }
 
-    /**
-     * @return void
-     */
     public function testExistCode(): void
     {
         $this->createRequest('/api/ru/admin/language/create', 'POST', [
@@ -69,9 +60,6 @@ final class CreateLanguageTest extends AbstractApiTestCase
         ]);
     }
 
-    /**
-     * @return void
-     */
     public function testSuccessCreate(): void
     {
         $this->createRequest('/api/ru/admin/language/create', 'POST', [

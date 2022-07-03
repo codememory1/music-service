@@ -11,12 +11,5 @@ namespace App\ResponseData\Interfaces;
  */
 interface ValueHandlerInterface
 {
-    /**
-     * @param ConstraintInterface   $constraint
-     * @param ResponseDataInterface $responseData
-     * @param mixed                 $value
-     *
-     * @return mixed
-     */
     public function handle(ConstraintInterface $constraint, ResponseDataInterface $responseData, mixed $value): mixed;
 }

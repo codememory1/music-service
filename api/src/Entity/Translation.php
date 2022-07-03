@@ -38,19 +38,11 @@ class Translation implements EntityInterface
     ])]
     private ?string $translation = null;
 
-    /**
-     * @return null|Language
-     */
     public function getLanguage(): ?Language
     {
         return $this->language;
     }
 
-    /**
-     * @param null|Language $language
-     *
-     * @return $this
-     */
     public function setLanguage(?Language $language): self
     {
         $this->language = $language;
@@ -58,19 +50,11 @@ class Translation implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|TranslationKey
-     */
     public function getTranslationKey(): ?TranslationKey
     {
         return $this->translationKey;
     }
 
-    /**
-     * @param null|TranslationKey $translationKey
-     *
-     * @return $this
-     */
     public function setTranslationKey(?TranslationKey $translationKey): self
     {
         $this->translationKey = $translationKey;
@@ -78,19 +62,11 @@ class Translation implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTranslation(): ?string
     {
         return $this->translation;
     }
 
-    /**
-     * @param string $translation
-     *
-     * @return $this
-     */
     public function setTranslation(string $translation): self
     {
         $this->translation = $translation;

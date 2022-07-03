@@ -14,20 +14,9 @@ use App\Entity\User;
  */
 class UserAuthenticationInAuthEvent
 {
-    /**
-     * @var AuthorizationDTO
-     */
     public readonly AuthorizationDTO $authorizationDTO;
-
-    /**
-     * @var User
-     */
     public readonly User $user;
 
-    /**
-     * @param AuthorizationDTO $authorizationDTO
-     * @param User             $user
-     */
     public function __construct(AuthorizationDTO $authorizationDTO, User $user)
     {
         $this->authorizationDTO = $authorizationDTO;

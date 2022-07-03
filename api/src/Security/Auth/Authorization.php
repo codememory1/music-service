@@ -25,11 +25,6 @@ class Authorization extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    /**
-     * @param User $authenticatedUser
-     *
-     * @return JsonResponse
-     */
     public function auth(User $authenticatedUser): JsonResponse
     {
         $accessToken = $this->authorizationToken->generateAccessToken($authenticatedUser)->getAccessToken();

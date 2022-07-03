@@ -14,13 +14,6 @@ use App\Entity\ArtistSubscriber;
  */
 class ArtistSubscriberRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = ArtistSubscriber::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'as';
 }

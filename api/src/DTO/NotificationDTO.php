@@ -25,9 +25,6 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class NotificationDTO extends AbstractDTO
 {
-    /**
-     * @inheritDoc
-     */
     protected EntityInterface|string|null $entity = Notification::class;
 
     #[Assert\NotBlank(message: 'notification@typeIsRequired')]
@@ -51,9 +48,6 @@ class NotificationDTO extends AbstractDTO
     #[Required]
     public ?UserRepository $userRepository = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->addExpectKey('type');

@@ -14,13 +14,6 @@ use App\Entity\UserNotification;
  */
 class UserNotificationRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = UserNotification::class;
-
-    /**
-     * @inheritDoc
-     */
     protected ?string $alias = 'un';
 }

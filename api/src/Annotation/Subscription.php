@@ -16,14 +16,8 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 class Subscription implements MethodAnnotationInterface
 {
-    /**
-     * @var SubscriptionEnum
-     */
     public readonly SubscriptionEnum $subscription;
 
-    /**
-     * @param SubscriptionEnum $subscriptionEnum
-     */
     public function __construct(SubscriptionEnum $subscriptionEnum)
     {
         $this->subscription = $subscriptionEnum;

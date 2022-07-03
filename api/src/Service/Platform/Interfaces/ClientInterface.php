@@ -13,30 +13,13 @@ use App\DTO\GoogleAuthDTO;
  */
 interface ClientInterface
 {
-    /**
-     * @return null|string
-     */
     public function createAuthorizationUrl(): ?string;
 
-    /**
-     * @param GoogleAuthDTO $googleAuthDTO
-     *
-     * @return $this
-     */
     public function authenticate(GoogleAuthDTO $googleAuthDTO): self;
 
-    /**
-     * @return null|string
-     */
     public function getAccessToken(): ?string;
 
-    /**
-     * @return array
-     */
     public function getAuthenticateResponse(): array;
 
-    /**
-     * @return UserDataInterface
-     */
     public function getUserData(): UserDataInterface;
 }

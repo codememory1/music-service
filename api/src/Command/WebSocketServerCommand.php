@@ -31,31 +31,11 @@ use Workerman\Worker;
 )]
 class WebSocketServerCommand extends Command
 {
-    /**
-     * @var ParameterBagInterface
-     */
     private ParameterBagInterface $parameterBag;
-
-    /**
-     * @var ReverseContainer
-     */
     private ReverseContainer $container;
-
-    /**
-     * @var Worker
-     */
     private Worker $worker;
-
-    /**
-     * @var SchemaValidatorService
-     */
     private SchemaValidatorService $schemaValidatorService;
 
-    /**
-     * @param ParameterBagInterface  $parameterBag
-     * @param ReverseContainer       $container
-     * @param SchemaValidatorService $schemaValidatorService
-     */
     public function __construct(ParameterBagInterface $parameterBag, ReverseContainer $container, SchemaValidatorService $schemaValidatorService)
     {
         parent::__construct();
@@ -68,7 +48,7 @@ class WebSocketServerCommand extends Command
     }
 
     /**
-     * @return void
+     * @inheritDoc
      */
     protected function configure(): void
     {
@@ -77,10 +57,7 @@ class WebSocketServerCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -105,12 +82,7 @@ class WebSocketServerCommand extends Command
     }
 
     /**
-     * @param ConnectionInterface $connection
-     * @param string              $message
-     *
      * @throws ReflectionException
-     *
-     * @return void
      */
     private function messageHandler(ConnectionInterface $connection, string $message): void
     {
@@ -123,13 +95,7 @@ class WebSocketServerCommand extends Command
     }
 
     /**
-     * @param ConnectionInterface $connection
-     * @param string              $typeHandlerNamespace
-     * @param array               $message
-     *
      * @throws ReflectionException
-     *
-     * @return void
      */
     private function messageTypeHandler(ConnectionInterface $connection, string $typeHandlerNamespace, array $message): void
     {

@@ -16,22 +16,13 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 final class MultimediaCategoryFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
     private string $titleTranslationKey;
 
-    /**
-     * @param string $titleTranslationKey
-     */
     public function __construct(string $titleTranslationKey)
     {
         $this->titleTranslationKey = $titleTranslationKey;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
         $multimediaCategoryEntity = new MultimediaCategory();
@@ -41,9 +32,6 @@ final class MultimediaCategoryFactory implements DataFixtureFactoryInterface
         return $multimediaCategoryEntity;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;

@@ -28,12 +28,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/subscription')]
 class SubscriptionController extends AbstractRestController
 {
-    /**
-     * @param SubscriptionResponseData $subscriptionResponseData
-     * @param SubscriptionRepository   $subscriptionRepository
-     *
-     * @return JsonResponse
-     */
     #[Route('/all', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
@@ -45,12 +39,6 @@ class SubscriptionController extends AbstractRestController
         return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse());
     }
 
-    /**
-     * @param Subscription             $subscription
-     * @param SubscriptionResponseData $subscriptionResponseData
-     *
-     * @return JsonResponse
-     */
     #[Route('/{subscription_id<\d+>}/read', methods: 'GET')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
@@ -64,12 +52,6 @@ class SubscriptionController extends AbstractRestController
         return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse(true));
     }
 
-    /**
-     * @param SubscriptionDTO           $subscriptionDTO
-     * @param CreateSubscriptionService $createSubscriptionService
-     *
-     * @return JsonResponse
-     */
     #[Route('/create', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_SUBSCRIPTION)]
@@ -78,13 +60,6 @@ class SubscriptionController extends AbstractRestController
         return $createSubscriptionService->make($subscriptionDTO->collect());
     }
 
-    /**
-     * @param Subscription              $subscription
-     * @param SubscriptionDTO           $subscriptionDTO
-     * @param UpdateSubscriptionService $updateSubscriptionService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{subscription_id<\d+>}/edit', methods: 'PUT')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_SUBSCRIPTION)]
@@ -98,12 +73,6 @@ class SubscriptionController extends AbstractRestController
         return $updateSubscriptionService->make($subscriptionDTO->collect(), $subscription);
     }
 
-    /**
-     * @param Subscription              $subscription
-     * @param DeleteSubscriptionService $deleteSubscriptionService
-     *
-     * @return JsonResponse
-     */
     #[Route('/{subscription_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_SUBSCRIPTION)]

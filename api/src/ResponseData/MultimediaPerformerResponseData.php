@@ -29,11 +29,6 @@ class MultimediaPerformerResponseData extends AbstractResponseData implements Re
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
 
-    /**
-     * @param User $user
-     *
-     * @return array
-     */
     #[ArrayShape(['id' => 'int|null'])]
     #[Pure]
     public function handleUser(User $user): array

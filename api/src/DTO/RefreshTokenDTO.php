@@ -16,9 +16,6 @@ class RefreshTokenDTO extends AbstractDTO
     #[Assert\NotBlank(message: 'common@refreshTokenIsRequired')]
     public ?string $refreshToken = null;
 
-    /**
-     * @inheritDoc
-     */
     protected function wrapper(): void
     {
         $this->refreshToken = $this->request->request->cookies->get('refresh_token');

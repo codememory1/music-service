@@ -24,35 +24,23 @@ trait TimestampTrait
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?DateTimeImmutable $updatedAt = null;
 
-    /**
-     * @return void
-     */
     #[ORM\PrePersist]
     public function setCreatedAt(): void
     {
         $this->createdAt = new DateTimeImmutable();
     }
 
-    /**
-     * @return null|DateTimeImmutable
-     */
     public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return void
-     */
     #[ORM\PreUpdate]
     public function setUpdatedAt(): void
     {
         $this->updatedAt = new DateTimeImmutable();
     }
 
-    /**
-     * @return null|DateTimeImmutable
-     */
     public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;

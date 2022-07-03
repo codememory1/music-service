@@ -24,12 +24,6 @@ class Registrar extends AbstractService
     #[Required]
     public ?ReRegister $reRegister = null;
 
-    /**
-     * @param RegistrationDTO $registrationDTO
-     * @param null|User       $userByEmail
-     *
-     * @return User
-     */
     public function make(RegistrationDTO $registrationDTO, ?User $userByEmail): User
     {
         if (true === $userByEmail?->isStatus(UserStatusEnum::NOT_ACTIVE)) {
@@ -46,12 +40,6 @@ class Registrar extends AbstractService
         return $userEntity;
     }
 
-    /**
-     * @param User            $userEntity
-     * @param RegistrationDTO $registrationDTO
-     *
-     * @return User
-     */
     private function collectUserEntity(User $userEntity, RegistrationDTO $registrationDTO): User
     {
         $userEntity->setEmail($registrationDTO->email);
@@ -64,11 +52,6 @@ class Registrar extends AbstractService
         return $userEntity;
     }
 
-    /**
-     * @param RegistrationDTO $registrationDTO
-     *
-     * @return UserProfile
-     */
     private function collectUserProfileEntity(RegistrationDTO $registrationDTO): UserProfile
     {
         $userProfileEntity = new UserProfile();
