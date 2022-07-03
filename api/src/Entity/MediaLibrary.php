@@ -7,8 +7,11 @@ use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\MediaLibraryStatusEnum;
 use App\Repository\MediaLibraryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class MediaLibrary.
@@ -35,6 +38,15 @@ class MediaLibrary implements EntityInterface
     ])]
     private ?string $status = null;
 
+    #[ORM\OneToMany(mappedBy: 'mediaLibrary', targetEntity: MultimediaMediaLibrary::class, cascade: ['persist'])]
+    private Collection $multimedia;
+
+    #[Pure]
+    public function __construct()
+    {
+        $this->multimedia = new ArrayCollection();
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -55,6 +67,36 @@ class MediaLibrary implements EntityInterface
     public function setStatus(?MediaLibraryStatusEnum $status): self
     {
         $this->status = $status?->name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaMediaLibrary>
+     */
+    public function getMultimedia(): Collection
+    {
+        return $this->multimedia;
+    }
+
+    public function addMultimedia(MultimediaMediaLibrary $multimedia): self
+    {
+        if (!$this->multimedia->contains($multimedia)) {
+            $this->multimedia[] = $multimedia;
+            $multimedia->setMediaLibrary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMultimedia(MultimediaMediaLibrary $multimedia): self
+    {
+        if ($this->multimedia->removeElement($multimedia)) {
+            // set the owning side to null (unless already changed)
+            if ($multimedia->getMediaLibrary() === $this) {
+                $multimedia->setMediaLibrary(null);
+            }
+        }
 
         return $this;
     }
