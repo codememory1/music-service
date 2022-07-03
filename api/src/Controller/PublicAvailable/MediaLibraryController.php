@@ -3,8 +3,12 @@
 namespace App\Controller\PublicAvailable;
 
 use App\Annotation\Authorization;
+use App\Annotation\EntityNotFound;
+use App\Entity\MultimediaMediaLibrary;
 use App\ResponseData\MultimediaMediaLibraryResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Service\MediaLibrary\DeleteMultimediaMediaLibraryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,5 +32,18 @@ class MediaLibraryController extends AbstractRestController
         $multimediaMediaLibraryResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaMediaLibraryResponseData->getResponse());
+    }
+
+    #[Route('/multimedia/{multimediaMediaLibrary_id<\d+>}/delete', methods: 'DELETE')]
+    #[Authorization]
+    public function deleteMultimedia(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
+        DeleteMultimediaMediaLibraryService $deleteMultimediaMediaLibraryService
+    ): JsonResponse {
+        if ($multimediaMediaLibrary->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+            throw EntityNotFoundException::mediaLibraryNotCreated();
+        }
+
+        return $deleteMultimediaMediaLibraryService->make($multimediaMediaLibrary);
     }
 }

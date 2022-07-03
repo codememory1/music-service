@@ -7,12 +7,14 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
 use App\DTO\MediaLibraryDTO;
 use App\Entity\MediaLibrary;
+use App\Entity\MultimediaMediaLibrary;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
 use App\ResponseData\MultimediaMediaLibraryResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\MediaLibrary\CreateMediaLibraryService;
+use App\Service\MediaLibrary\DeleteMultimediaMediaLibraryService;
 use App\Service\MediaLibrary\UpdateMediaLibraryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -68,5 +70,15 @@ class MediaLibraryController extends AbstractRestController
         $mediaLibraryDTO->setEntity($mediaLibrary);
 
         return $updateMediaLibraryService->make($mediaLibraryDTO->collect());
+    }
+
+    #[Route('/media-library/multimedia/{multimediaMediaLibrary_id<\d+>}/delete', methods: 'DELETE')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_MEDIA_LIBRARY_TO_USER)]
+    public function deleteMultimedia(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
+        DeleteMultimediaMediaLibraryService $deleteMultimediaMediaLibraryService
+    ): JsonResponse {
+        return $deleteMultimediaMediaLibraryService->make($multimediaMediaLibrary);
     }
 }

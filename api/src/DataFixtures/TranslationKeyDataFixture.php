@@ -134,6 +134,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@createMediaLibraryToUser'),
             new TranslationKeyFactory('rolePermission@updateMediaLibraryToUser'),
             new TranslationKeyFactory('rolePermission@showMediaLibraryToUser'),
+            new TranslationKeyFactory('rolePermission@deleteMultimediaMediaLibraryToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -300,6 +301,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
 
             new TranslationKeyFactory('multimediaMediaLibrary@multimediaAlreadyAdd'),
             new TranslationKeyFactory('multimediaMediaLibrary@successAdd'),
+            new TranslationKeyFactory('multimediaMediaLibrary@successDelete'),
         ]);
     }
 
