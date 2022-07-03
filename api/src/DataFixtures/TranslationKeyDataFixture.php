@@ -58,6 +58,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityNotFound@multimediaCategory'),
             new TranslationKeyFactory('entityNotFound@performer'),
             new TranslationKeyFactory('entityNotFound@multimedia'),
+            new TranslationKeyFactory('entityNotFound@mediaLibrary'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -131,6 +132,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@deleteMultimediaToUser'),
             new TranslationKeyFactory('rolePermission@albumStatusControlToUser'),
             new TranslationKeyFactory('rolePermission@createMediaLibraryToUser'),
+            new TranslationKeyFactory('rolePermission@updateMediaLibraryToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
