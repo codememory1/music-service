@@ -9,6 +9,7 @@ use App\DTO\MediaLibraryDTO;
 use App\Entity\MediaLibrary;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
+use App\ResponseData\MultimediaMediaLibraryResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\MediaLibrary\CreateMediaLibraryService;
@@ -26,6 +27,25 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class MediaLibraryController extends AbstractRestController
 {
+    #[Route('/{user_id<\d+>}/media-library/multimedia/all', methods: 'GET')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::SHOW_MEDIA_LIBRARY_TO_USER)]
+    public function allMultimedia(
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
+        MultimediaMediaLibraryResponseData $multimediaMediaLibraryResponseData
+    ): JsonResponse {
+        $mediaLibrary = $user->getMediaLibrary();
+
+        if (null === $mediaLibrary) {
+            throw EntityNotFoundException::mediaLibraryNotCreated();
+        }
+
+        $multimediaMediaLibraryResponseData->setEntities($mediaLibrary->getMultimedia()->toArray());
+        $multimediaMediaLibraryResponseData->collect();
+
+        return $this->responseCollection->dataOutput($multimediaMediaLibraryResponseData->getResponse());
+    }
+
     #[Route('/{user_id<\d+>}/media-library/create', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_MEDIA_LIBRARY_TO_USER)]

@@ -133,6 +133,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@albumStatusControlToUser'),
             new TranslationKeyFactory('rolePermission@createMediaLibraryToUser'),
             new TranslationKeyFactory('rolePermission@updateMediaLibraryToUser'),
+            new TranslationKeyFactory('rolePermission@showMediaLibraryToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
