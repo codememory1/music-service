@@ -82,7 +82,7 @@ class AlbumController extends AbstractRestController
     #[Route('/{album_id<\d+>}/publish', methods: 'PATCH')]
     #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_ALBUM)]
-    public function publication(
+    public function publish(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         PublishAlbumService $publishAlbumService
     ): JsonResponse {
