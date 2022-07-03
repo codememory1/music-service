@@ -107,6 +107,9 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'subscriber', targetEntity: ArtistSubscriber::class, cascade: ['persist', 'remove'])]
     private Collection $subscriptions;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: MediaLibrary::class, cascade: ['persist', 'remove'])]
+    private ?MediaLibrary $mediaLibrary = null;
+
     #[Pure]
     public function __construct()
     {
@@ -748,6 +751,31 @@ class User implements EntityInterface
                 $subscription->setSubscriber(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return null|MediaLibrary
+     */
+    public function getMediaLibrary(): ?MediaLibrary
+    {
+        return $this->mediaLibrary;
+    }
+
+    /**
+     * @param MediaLibrary $mediaLibrary
+     *
+     * @return $this
+     */
+    public function setMediaLibrary(MediaLibrary $mediaLibrary): self
+    {
+        // set the owning side of the relation if necessary
+        if ($mediaLibrary->getUser() !== $this) {
+            $mediaLibrary->setUser($this);
+        }
+
+        $this->mediaLibrary = $mediaLibrary;
 
         return $this;
     }

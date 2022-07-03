@@ -25,4 +25,16 @@ class EntityExistException extends ApiResponseException
     {
         return new self(409, ResponseTypeEnum::EXIST, 'entityExist@oneOfPermissionExistToRole', data: $data, headers: $headers);
     }
+
+    /**
+     * @param array $data
+     * @param array $headers
+     *
+     * @return static
+     */
+    #[Pure]
+    public static function mediaLibrary(array $data = [], array $headers = []): self
+    {
+        return new self(409, ResponseTypeEnum::EXIST, 'entityExist@mediaLibrary', data: $data, headers: $headers);
+    }
 }
