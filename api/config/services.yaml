@@ -105,6 +105,11 @@ services:
       tags:
         - { name: kernel.event_listener, event: app.album.status-change, method: onAlbumStatusChange, priority: 1 }
 
+    # Update multimedia to media library
+    App\EventListener\UpdateMultimediaMediaLibrary\UploadImageListener:
+      tags:
+        - { name: kernel.event_listener, event: app.media-library.multimedia.update, method: onUpdateMultimediaMediaLibrary, priority: 1 }
+
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
       public: true

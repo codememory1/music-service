@@ -20,6 +20,8 @@ class MultimediaMediaLibraryResponseData extends AbstractResponseData implements
 
     #[ResponseDataConstraints\Callback('handleMultimedia')]
     public array $multimedia = [];
+    public ?string $title = null;
+    public ?string $image = null;
 
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $createdAt = null;

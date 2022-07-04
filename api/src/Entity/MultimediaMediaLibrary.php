@@ -7,6 +7,7 @@ use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\ResponseTypeEnum;
 use App\Repository\MultimediaMediaLibraryRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -35,6 +36,16 @@ class MultimediaMediaLibrary implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Multimedia $multimedia = null;
 
+    #[ORM\Column(type: Types::STRING, length: 50, nullable: true, options: [
+        'comment' => 'The name of the media that will be visible only inside the music library'
+    ])]
+    private ?string $title = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true, options: [
+        'comment' => 'Media image that will only be visible inside the Music Library'
+    ])]
+    private ?string $image = null;
+
     public function getMediaLibrary(): ?MediaLibrary
     {
         return $this->mediaLibrary;
@@ -55,6 +66,30 @@ class MultimediaMediaLibrary implements EntityInterface
     public function setMultimedia(?Multimedia $multimedia): self
     {
         $this->multimedia = $multimedia;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
