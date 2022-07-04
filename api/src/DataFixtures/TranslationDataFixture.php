@@ -135,6 +135,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@updateMediaLibraryToUser', 'Обновление медиатеки пользователя'),
             new TranslationFactory('ru', 'rolePermission@showMediaLibraryToUser', 'Просмотр мультимедии пользователя'),
             new TranslationFactory('ru', 'rolePermission@deleteMultimediaMediaLibraryToUser', 'Удаление мультимедии из медиатеки пользователя'),
+            new TranslationFactory('ru', 'rolePermission@deleteMultimediaFromMediaLibraryToUser', 'Удаление мультимедии из медиатеки пользователя'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -187,6 +188,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@controlSubscriptionOnArtist', 'Подписаться или отписаться от артиста'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@acceptingSubscribers', 'Возможность подписываться на артиста'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@addMultimediaToMediaLibrary', 'Добавление мультимедиа в медиатеку'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@updateMultimediaFromMediaLibrary', 'Обновление мультимедиа из медиатеки'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@deleteMultimediaFromMediaLibrary', 'Удаление мультимедиа из медиатеки'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
