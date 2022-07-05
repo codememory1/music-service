@@ -41,10 +41,14 @@ class MediaLibrary implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'mediaLibrary', targetEntity: MultimediaMediaLibrary::class, cascade: ['persist'])]
     private Collection $multimedia;
 
+    #[ORM\OneToMany(mappedBy: 'mediaLibrary', targetEntity: Playlist::class)]
+    private Collection $playlists;
+
     #[Pure]
     public function __construct()
     {
         $this->multimedia = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
     }
 
     public function getUser(): ?User
@@ -95,6 +99,36 @@ class MediaLibrary implements EntityInterface
             // set the owning side to null (unless already changed)
             if ($multimedia->getMediaLibrary() === $this) {
                 $multimedia->setMediaLibrary(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Playlist>
+     */
+    public function getPlaylists(): Collection
+    {
+        return $this->playlists;
+    }
+
+    public function addPlaylist(Playlist $playlist): self
+    {
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists[] = $playlist;
+            $playlist->setMediaLibrary($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylist(Playlist $playlist): self
+    {
+        if ($this->playlists->removeElement($playlist)) {
+            // set the owning side to null (unless already changed)
+            if ($playlist->getMediaLibrary() === $this) {
+                $playlist->setMediaLibrary(null);
             }
         }
 
