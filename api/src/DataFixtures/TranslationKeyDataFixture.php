@@ -59,6 +59,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityNotFound@performer'),
             new TranslationKeyFactory('entityNotFound@multimedia'),
             new TranslationKeyFactory('entityNotFound@mediaLibrary'),
+            new TranslationKeyFactory('entityNotFound@playlist'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -137,6 +138,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@deleteMultimediaMediaLibraryToUser'),
             new TranslationKeyFactory('rolePermission@updateMultimediaFromMediaLibraryToUser'),
             new TranslationKeyFactory('rolePermission@deleteMultimediaFromMediaLibraryToUser'),
+            new TranslationKeyFactory('rolePermission@createPlaylistToUser'),
+            new TranslationKeyFactory('rolePermission@updatePlaylistToUser'),
+            new TranslationKeyFactory('rolePermission@deletePlaylistToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -195,6 +199,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@addMultimediaToMediaLibrary'),
             new TranslationKeyFactory('subscriptionPermissionKey@updateMultimediaFromMediaLibrary'),
             new TranslationKeyFactory('subscriptionPermissionKey@deleteMultimediaFromMediaLibrary'),
+            new TranslationKeyFactory('subscriptionPermissionKey@createPlaylist'),
+            new TranslationKeyFactory('subscriptionPermissionKey@updatePlaylist'),
+            new TranslationKeyFactory('subscriptionPermissionKey@deletePlaylist'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),
@@ -346,6 +353,15 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('multimediaCategoryTitle@reggae'),
             new TranslationKeyFactory('multimediaCategoryTitle@latinAmerican'),
             new TranslationKeyFactory('multimediaCategoryTitle@arabic'),
+
+            new TranslationKeyFactory('playlist@titleIsRequired'),
+            new TranslationKeyFactory('playlist@titleMaxLength'),
+            new TranslationKeyFactory('playlist@maxSizeImage'),
+            new TranslationKeyFactory('playlist@successCreate'),
+            new TranslationKeyFactory('playlist@successUpdate'),
+            new TranslationKeyFactory('playlist@successDelete'),
+            new TranslationKeyFactory('playlist@successAddMultimedia'),
+            new TranslationKeyFactory('playlist@successDeleteMultimedia'),
         ]);
     }
 

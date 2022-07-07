@@ -23,7 +23,7 @@ class PlaylistController extends AbstractRestController
 {
     #[Route('/playlist/create', methods: 'POST')]
     #[Authorization]
-//    #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_PLAYLIST)]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_PLAYLIST)]
     public function create(PlaylistDTO $playlistDTO, CreatePlaylistService $createPlaylistService): JsonResponse
     {
         return $createPlaylistService->make($playlistDTO->collect(), $this->authorizedUser->getUser());

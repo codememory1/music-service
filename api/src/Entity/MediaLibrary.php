@@ -76,7 +76,7 @@ class MediaLibrary implements EntityInterface
     }
 
     /**
-     * @return Collection<int, MultimediaMediaLibrary>
+     * @return ArrayCollection|Collection<int, MultimediaMediaLibrary>
      */
     public function getMultimedia(): Collection
     {

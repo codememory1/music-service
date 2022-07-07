@@ -110,6 +110,11 @@ services:
       tags:
         - { name: kernel.event_listener, event: app.media-library.multimedia.update, method: onUpdateMultimediaMediaLibrary, priority: 1 }
 
+    # Save playlist
+    App\EventListener\SavePlaylist\UploadImageListener:
+      tags:
+        - { name: kernel.event_listener, event: app.playlist.save, method: onSavePlaylist, priority: 1 }
+
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
       public: true

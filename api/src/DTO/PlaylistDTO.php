@@ -27,13 +27,14 @@ class PlaylistDTO extends AbstractDTO
     #[Assert\Length(max: 50, maxMessage: 'playlist@titleMaxLength')]
     public ?string $title = null;
 
-    #[Assert\NotBlank(message: 'playlist@imageIsRequired')]
-    #[Assert\File(
-        maxSize: '5M',
-        mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
-        maxSizeMessage: 'multimedia@maxSizePreview',
-        mimeTypesMessage: 'multimedia@uploadFileIsNotPreview'
-    )]
+    #[AppAssert\Condition('callbackImage', [
+        new Assert\File(
+            maxSize: '5M',
+            mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+            maxSizeMessage: 'playlist@maxSizeImage',
+            mimeTypesMessage: 'common@uploadFileNotImage'
+        )
+    ])]
     public ?UploadedFile $image = null;
     public array $multimedia = [];
 
@@ -49,10 +50,16 @@ class PlaylistDTO extends AbstractDTO
         $this->addExpectKey('status');
 
         $this->callSetterToEntityWhenRequest('^admin$', 'status');
+        $this->preventSetterCallForKeys(['multimedia']);
 
         $this->image = $this->request?->request->files->get('image');
 
         $this->addInterceptor('multimedia', new AsArrayInterceptor());
+    }
+
+    final public function callbackImage(): bool
+    {
+        return false === empty($this->image);
     }
 
     final public function callbackStatus(): bool

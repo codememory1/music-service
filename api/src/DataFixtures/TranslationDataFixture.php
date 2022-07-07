@@ -136,6 +136,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@showMediaLibraryToUser', 'Просмотр мультимедии пользователя'),
             new TranslationFactory('ru', 'rolePermission@deleteMultimediaMediaLibraryToUser', 'Удаление мультимедии из медиатеки пользователя'),
             new TranslationFactory('ru', 'rolePermission@deleteMultimediaFromMediaLibraryToUser', 'Удаление мультимедии из медиатеки пользователя'),
+            new TranslationFactory('ru', 'rolePermission@createPlaylistToUser', 'Создание плейлистов для пользователя'),
+            new TranslationFactory('ru', 'rolePermission@updatePlaylistToUser', 'Обновление плейлистов у пользователя'),
+            new TranslationFactory('ru', 'rolePermission@deletePlaylistToUser', 'Удаление плейлистов у пользователя'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -190,6 +193,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@addMultimediaToMediaLibrary', 'Добавление мультимедиа в медиатеку'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@updateMultimediaFromMediaLibrary', 'Обновление мультимедиа из медиатеки'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteMultimediaFromMediaLibrary', 'Удаление мультимедиа из медиатеки'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@createPlaylist', 'Создание плейлиста'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@updatePlaylist', 'Обновление плейлиста'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@deletePlaylist', 'Удаление плейлиста'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
@@ -341,6 +347,15 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimediaCategoryTitle@reggae', 'Регги'),
             new TranslationFactory('ru', 'multimediaCategoryTitle@latinAmerican', 'Латиноамериканская'),
             new TranslationFactory('ru', 'multimediaCategoryTitle@arabic', 'Арабская'),
+
+            new TranslationFactory('ru', 'playlist@titleIsRequired', 'Название плейлиста обязательно к заполнению'),
+            new TranslationFactory('ru', 'playlist@titleMaxLength', 'Название плейлиста не должно превышать 50 символов'),
+            new TranslationFactory('ru', 'playlist@maxSizeImage', 'Изображение плейлиста не должно превышать 5МБ'),
+            new TranslationFactory('ru', 'playlist@successCreate', 'Плейлист успешно создан'),
+            new TranslationFactory('ru', 'playlist@successUpdate', 'Плейлист успешно обновлен'),
+            new TranslationFactory('ru', 'playlist@successDelete', 'Плейлист успешно удален'),
+            new TranslationFactory('ru', 'playlist@successAddMultimedia', 'Мультимедиа успешно добавлена в плейлист'),
+            new TranslationFactory('ru', 'playlist@successDeleteMultimedia', 'Мультимедиа успешно удалена из плейлиста'),
         ]);
     }
 

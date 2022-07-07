@@ -37,7 +37,7 @@ class Playlist implements EntityInterface
     ])]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT, options: [
+    #[ORM\Column(type: Types::TEXT, nullable: true, options: [
         'comment' => 'Playlist image path'
     ])]
     private ?string $image = null;
@@ -47,7 +47,7 @@ class Playlist implements EntityInterface
     ])]
     private ?string $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: MultimediaPlaylistFromMediaLibrary::class)]
+    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: MultimediaPlaylistFromMediaLibrary::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $multimedia;
 
     public function __construct()
