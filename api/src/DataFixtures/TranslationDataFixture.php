@@ -60,6 +60,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@performer', 'Исполнитель %performer% не найден'),
             new TranslationFactory('ru', 'entityNotFound@multimedia', 'Мультимедия не найдена'),
             new TranslationFactory('ru', 'entityNotFound@mediaLibrary', 'Медиатека не найдена'),
+            new TranslationFactory('ru', 'entityNotFound@playlist', 'Плейлист не найден'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
