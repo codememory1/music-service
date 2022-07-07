@@ -3,6 +3,7 @@
 namespace App\DTO;
 
 use App\DTO\Interceptors\AsArrayInterceptor;
+use App\DTO\Interceptors\AsEnumInterceptor;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Playlist;
 use App\Enum\PlaylistStatusEnum;
@@ -39,7 +40,7 @@ class PlaylistDTO extends AbstractDTO
     public array $multimedia = [];
 
     #[AppAssert\Condition('callbackStatus', [
-        new AppAssert\Enum(PlaylistStatusEnum::class, message: 'common@invalidStatus')
+        new Assert\NotBlank(message: 'common@invalidStatus')
     ])]
     public ?PlaylistStatusEnum $status = null;
 
@@ -55,6 +56,7 @@ class PlaylistDTO extends AbstractDTO
         $this->image = $this->request?->request->files->get('image');
 
         $this->addInterceptor('multimedia', new AsArrayInterceptor());
+        $this->addInterceptor('status', new AsEnumInterceptor(PlaylistStatusEnum::class));
     }
 
     final public function callbackImage(): bool

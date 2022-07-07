@@ -13,9 +13,6 @@ use App\DTO\Interfaces\ValueInterceptorInterface;
  */
 class AsBooleanInterceptor implements ValueInterceptorInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function handle(string $key, mixed $value): bool
     {
         return !('false' === $value || empty($value));

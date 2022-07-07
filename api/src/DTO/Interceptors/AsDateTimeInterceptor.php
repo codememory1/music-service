@@ -22,11 +22,6 @@ final class AsDateTimeInterceptor implements ValueInterceptorInterface
         $this->nullableAsNow = $nullableAsNow;
     }
 
-    /**
-     * @inheritDoc
-     *
-     * @throws Exception
-     */
     public function handle(string $key, mixed $value): ?DateTimeImmutable
     {
         if (false === $this->nullableAsNow && empty($value)) {
