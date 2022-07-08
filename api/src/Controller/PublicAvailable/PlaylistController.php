@@ -30,6 +30,7 @@ class PlaylistController extends AbstractRestController
 {
     #[Route('/playlist/all', methods: 'GET')]
     #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_PLAYLISTS)]
     public function all(PlaylistResponseData $playlistResponseData, PlaylistRepository $playlistRepository): JsonResponse
     {
         $playlistResponseData->setEntities($playlistRepository->findByUser(
@@ -42,6 +43,7 @@ class PlaylistController extends AbstractRestController
 
     #[Route('/playlist/{playlist_id}/read', methods: 'GET')]
     #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_PLAYLISTS)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         PlaylistResponseData $playlistResponseData
