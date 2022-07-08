@@ -47,7 +47,7 @@ class Playlist implements EntityInterface
     ])]
     private ?string $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: MultimediaPlaylistFromMediaLibrary::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: MultimediaPlaylistFromMediaLibrary::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $multimedia;
 
     public function __construct()
