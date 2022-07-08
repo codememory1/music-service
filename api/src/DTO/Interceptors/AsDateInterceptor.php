@@ -15,11 +15,6 @@ use Exception;
  */
 final class AsDateInterceptor implements ValueInterceptorInterface
 {
-    /**
-     * @inheritDoc
-     *
-     * @throws Exception
-     */
     public function handle(string $key, mixed $value): DateTimeImmutable
     {
         try {

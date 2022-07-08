@@ -13,9 +13,6 @@ use App\DTO\Interfaces\ValueInterceptorInterface;
  */
 class AsFloatInterceptor implements ValueInterceptorInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function handle(string $key, mixed $value): float
     {
         return (float) $value;

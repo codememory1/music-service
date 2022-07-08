@@ -14,9 +14,6 @@ use const JSON_ERROR_NONE;
  */
 final class AsArrayInterceptor implements ValueInterceptorInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function handle(string $key, mixed $value): array
     {
         $valueToArray = json_decode($value, true);

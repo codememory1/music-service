@@ -23,9 +23,6 @@ class AsEnumInterceptor implements ValueInterceptorInterface
         $this->enum = $enum;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function handle(string $key, mixed $value): mixed
     {
         $caseName = u($value)->upper();

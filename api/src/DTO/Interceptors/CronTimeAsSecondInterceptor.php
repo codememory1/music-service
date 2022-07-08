@@ -14,9 +14,6 @@ use App\Service\ParseCronTimeService;
  */
 final class CronTimeAsSecondInterceptor implements ValueInterceptorInterface
 {
-    /**
-     * @inheritDoc
-     */
     public function handle(string $key, mixed $value): int
     {
         $cronTime = new ParseCronTimeService();

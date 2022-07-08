@@ -25,4 +25,5 @@ enum EventEnum: string
     case ALBUM_STATUS_CHANGE = 'app.album.status-change';
     case CREATE_MEDIA_LIBRARY = 'app.media-library.create';
     case UPDATE_MULTIMEDIA_MEDIA_LIBRARY = 'app.media-library.multimedia.update';
+    case SAVE_PLAYLIST = 'app.playlist.save';
 }

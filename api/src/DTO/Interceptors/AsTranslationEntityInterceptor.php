@@ -29,9 +29,6 @@ final class AsTranslationEntityInterceptor implements ValueInterceptorInterface
         $this->locale = $request->request->getLocale();
     }
 
-    /**
-     * @inheritDoc
-     */
     public function handle(string $key, mixed $value): ?Translation
     {
         $languageRepository = $this->em->getRepository(Language::class);

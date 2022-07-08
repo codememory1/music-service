@@ -28,9 +28,6 @@ class AsEntityInterceptor implements ValueInterceptorInterface
         $this->supplementBy = $supplementBy;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function handle(string $key, mixed $value): ?EntityInterface
     {
         $entityRepository = $this->em->getRepository($this->entity);

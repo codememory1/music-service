@@ -123,4 +123,10 @@ class EntityNotFoundException extends ApiResponseException
     {
         return new self('mediaLibrary@notCreated', data: $data, headers: $headers);
     }
+
+    #[Pure]
+    final public static function playlist(array $data = [], array $headers = []): self
+    {
+        return new self('entityNotFound@playlist', data: $data, headers: $headers);
+    }
 }
