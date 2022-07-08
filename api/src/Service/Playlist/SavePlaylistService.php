@@ -4,7 +4,6 @@ namespace App\Service\Playlist;
 
 use App\DTO\PlaylistDTO;
 use App\Entity\Playlist;
-use App\Entity\User;
 use App\Enum\EventEnum;
 use App\Event\SavePlaylistEvent;
 use App\Service\AbstractService;
@@ -26,10 +25,8 @@ class SavePlaylistService extends AbstractService
     #[Required]
     public ?SetMultimediaToPlaylistService $setMultimediaToPlaylistService = null;
 
-    public function make(PlaylistDTO $playlistDTO, Playlist $playlist, User $forUser): void
+    public function make(PlaylistDTO $playlistDTO, Playlist $playlist): void
     {
-        $playlist->setMediaLibrary($forUser->getMediaLibrary());
-
         $this->setMultimediaToPlaylistService->set($playlistDTO->multimedia, $playlist);
 
         if (null === $playlist->getId()) {

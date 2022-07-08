@@ -13,6 +13,7 @@ use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Playlist\CreatePlaylistService;
 use App\Service\Playlist\DeletePlaylistService;
+use App\Service\Playlist\UpdatePlaylistService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -35,6 +36,19 @@ class PlaylistController extends AbstractRestController
         CreatePlaylistService $createPlaylistService
     ): JsonResponse {
         return $createPlaylistService->make($playlistDTO->collect(), $user);
+    }
+
+    #[Route('/media-library/playlist/{playlist_id<\d+>}/edit', methods: 'POST')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::UPDATE_PLAYLIST_TO_USER)]
+    public function update(
+        #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
+        PlaylistDTO $playlistDTO,
+        UpdatePlaylistService $updatePlaylistService
+    ): JsonResponse {
+        $playlistDTO->setEntity($playlist);
+
+        return $updatePlaylistService->make($playlistDTO->collect());
     }
 
     #[Route('/media-library/playlist/{playlist_id<\d+>}/delete', methods: 'DELETE')]
