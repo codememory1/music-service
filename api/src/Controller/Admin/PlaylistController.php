@@ -45,7 +45,7 @@ class PlaylistController extends AbstractRestController
 
     #[Route('/media-library/playlist/{playlist_id}/read', methods: 'GET')]
     #[Authorization]
-    #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_USER_PLAYLISTS)]
+    #[UserRolePermission(RolePermissionEnum::SHOW_USER_PLAYLISTS)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         PlaylistResponseData $playlistResponseData
@@ -58,7 +58,7 @@ class PlaylistController extends AbstractRestController
 
     #[Route('/{user_id<\d+>}/media-library/playlist/create', methods: 'POST')]
     #[Authorization]
-    #[UserRolePermission(RolePermissionEnum::CREATE_PLAYLIST_TO_USER)]
+    #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_USER_PLAYLISTS)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         PlaylistDTO $playlistDTO,
