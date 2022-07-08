@@ -9,6 +9,8 @@ use App\DTO\PlaylistDTO;
 use App\Entity\Playlist;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
+use App\Repository\PlaylistRepository;
+use App\ResponseData\PlaylistResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Playlist\CreatePlaylistService;
@@ -27,6 +29,33 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class PlaylistController extends AbstractRestController
 {
+    #[Route('/{user_id<\d+>}/media-library/playlist/all', methods: 'GET')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::SHOW_USER_PLAYLISTS)]
+    public function all(
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
+        PlaylistResponseData $playlistResponseData,
+        PlaylistRepository $playlistRepository
+    ): JsonResponse {
+        $playlistResponseData->setEntities($playlistRepository->findByUser($user));
+        $playlistResponseData->collect();
+
+        return $this->responseCollection->dataOutput($playlistResponseData->getResponse());
+    }
+
+    #[Route('/media-library/playlist/{playlist_id}/read', methods: 'GET')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_USER_PLAYLISTS)]
+    public function read(
+        #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
+        PlaylistResponseData $playlistResponseData
+    ): JsonResponse {
+        $playlistResponseData->setEntities($playlist);
+        $playlistResponseData->collect();
+
+        return $this->responseCollection->dataOutput($playlistResponseData->getResponse(true));
+    }
+
     #[Route('/{user_id<\d+>}/media-library/playlist/create', methods: 'POST')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_PLAYLIST_TO_USER)]

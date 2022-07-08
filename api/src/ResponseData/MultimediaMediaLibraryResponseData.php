@@ -17,6 +17,7 @@ use App\ResponseData\Traits\DateTimeHandlerTrait;
 class MultimediaMediaLibraryResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
+    public ?int $id = null;
 
     #[ResponseDataConstraints\Callback('handleMultimedia')]
     public array $multimedia = [];

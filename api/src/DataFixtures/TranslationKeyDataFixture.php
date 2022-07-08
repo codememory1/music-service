@@ -141,6 +141,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@createPlaylistToUser'),
             new TranslationKeyFactory('rolePermission@updatePlaylistToUser'),
             new TranslationKeyFactory('rolePermission@deletePlaylistToUser'),
+            new TranslationKeyFactory('rolePermission@showUserPlaylists'),
+            new TranslationKeyFactory('rolePermission@showFullInfoUserPlaylists'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -199,6 +201,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@addMultimediaToMediaLibrary'),
             new TranslationKeyFactory('subscriptionPermissionKey@updateMultimediaFromMediaLibrary'),
             new TranslationKeyFactory('subscriptionPermissionKey@deleteMultimediaFromMediaLibrary'),
+            new TranslationKeyFactory('subscriptionPermissionKey@showMyPlaylists'),
             new TranslationKeyFactory('subscriptionPermissionKey@createPlaylist'),
             new TranslationKeyFactory('subscriptionPermissionKey@updatePlaylist'),
             new TranslationKeyFactory('subscriptionPermissionKey@deletePlaylist'),
