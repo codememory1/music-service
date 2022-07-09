@@ -8,13 +8,13 @@ use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 
 /**
- * Class MultimediaPlaylistFromMediaLibraryResponseData.
+ * Class MultimediaPlaylistResponseData.
  *
  * @package App\ResponseData
  *
  * @author  Codememory
  */
-class MultimediaPlaylistFromMediaLibraryResponseData extends AbstractResponseData implements ResponseDataInterface
+class MultimediaPlaylistResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     public ?int $id = null;

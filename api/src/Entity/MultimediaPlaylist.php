@@ -5,20 +5,20 @@ namespace App\Entity;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
-use App\Repository\MultimediaPlaylistFromMediaLibraryRepository;
+use App\Repository\MultimediaPlaylistRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class MultimediaPlaylistFromMediaLibrary.
+ * Class MultimediaPlaylist.
  *
  * @package App\Entity
  *
  * @author  Codememory
  */
-#[ORM\Entity(repositoryClass: MultimediaPlaylistFromMediaLibraryRepository::class)]
-#[ORM\Table('multimedia_playlist_from_media_library')]
+#[ORM\Entity(repositoryClass: MultimediaPlaylistRepository::class)]
+#[ORM\Table('multimedia_playlist')]
 #[ORM\HasLifecycleCallbacks]
-class MultimediaPlaylistFromMediaLibrary implements EntityInterface
+class MultimediaPlaylist implements EntityInterface
 {
     use IdentifierTrait;
 

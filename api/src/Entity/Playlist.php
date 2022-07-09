@@ -47,14 +47,18 @@ class Playlist implements EntityInterface
     ])]
     private ?string $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: MultimediaPlaylistFromMediaLibrary::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: MultimediaPlaylist::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $multimedia;
+
+    #[ORM\OneToMany(mappedBy: 'playlist', targetEntity: PlaylistDirectory::class)]
+    private Collection $directories;
 
     public function __construct()
     {
-        $this->multimedia = new ArrayCollection();
-
         $this->setStatus(PlaylistStatusEnum::SHOW);
+
+        $this->multimedia = new ArrayCollection();
+        $this->directories = new ArrayCollection();
     }
 
     public function getMediaLibrary(): ?MediaLibrary
@@ -106,7 +110,7 @@ class Playlist implements EntityInterface
     }
 
     /**
-     * @return Collection<int, MultimediaPlaylistFromMediaLibrary>
+     * @return Collection<int, MultimediaPlaylist>
      */
     public function getMultimedia(): Collection
     {
@@ -119,7 +123,7 @@ class Playlist implements EntityInterface
     public function setMultimedia(array $multimedia): self
     {
         foreach ($multimedia as $multimediaEntity) {
-            $multimediaPlayList = new MultimediaPlaylistFromMediaLibrary();
+            $multimediaPlayList = new MultimediaPlaylist();
 
             $multimediaPlayList->setPlaylist($this);
             $multimediaPlayList->setMultimediaMediaLibrary($multimediaEntity);
@@ -130,7 +134,7 @@ class Playlist implements EntityInterface
         return $this;
     }
 
-    public function addMultimedia(MultimediaPlaylistFromMediaLibrary $multimedia): self
+    public function addMultimedia(MultimediaPlaylist $multimedia): self
     {
         if (!$this->multimedia->contains($multimedia)) {
             $this->multimedia[] = $multimedia;
@@ -140,12 +144,42 @@ class Playlist implements EntityInterface
         return $this;
     }
 
-    public function removeMultimedia(MultimediaPlaylistFromMediaLibrary $multimedia): self
+    public function removeMultimedia(MultimediaPlaylist $multimedia): self
     {
         if ($this->multimedia->removeElement($multimedia)) {
             // set the owning side to null (unless already changed)
             if ($multimedia->getPlaylist() === $this) {
                 $multimedia->setPlaylist(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PlaylistDirectory>
+     */
+    public function getDirectories(): Collection
+    {
+        return $this->directories;
+    }
+
+    public function addDirectory(PlaylistDirectory $directory): self
+    {
+        if (!$this->directories->contains($directory)) {
+            $this->directories[] = $directory;
+            $directory->setPlaylist($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDirectory(PlaylistDirectory $directory): self
+    {
+        if ($this->directories->removeElement($directory)) {
+            // set the owning side to null (unless already changed)
+            if ($directory->getPlaylist() === $this) {
+                $directory->setPlaylist(null);
             }
         }
 
