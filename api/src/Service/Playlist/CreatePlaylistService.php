@@ -35,7 +35,7 @@ class CreatePlaylistService extends AbstractService
 
         $playlistEntity->setMediaLibrary($forUser->getMediaLibrary());
 
-        $this->savePlaylistService->make($playlistDTO, $playlistEntity, $forUser);
+        $this->savePlaylistService->make($playlistDTO, $playlistEntity);
 
         return $this->responseCollection->successCreate('playlist@successCreate');
     }

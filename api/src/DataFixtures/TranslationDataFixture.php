@@ -148,6 +148,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@createPlaylistDirectoryToUser', 'Создание директории плейлиста у пользователя'),
             new TranslationFactory('ru', 'rolePermission@updatePlaylistDirectoryToUser', 'Обновление директории плейлиста у пользователя'),
             new TranslationFactory('ru', 'rolePermission@deletePlaylistDirectoryToUser', 'Удаление директории плейлиста у пользователя'),
+            new TranslationFactory('ru', 'rolePermission@addMultimediaToPlaylistDirectory', 'Добавление мультимедиа в директорию плейлиста пользователя'),
+            new TranslationFactory('ru', 'rolePermission@deleteMultimediaToPlaylistDirectory', 'Удаление мультимедиа из директории плейлиста пользователя'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),

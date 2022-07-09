@@ -6,12 +6,16 @@ use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\DTO\PlaylistDirectoryDTO;
+use App\Entity\MultimediaMediaLibrary;
+use App\Entity\MultimediaPlaylistDirectory;
 use App\Entity\Playlist;
 use App\Entity\PlaylistDirectory;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Service\PlaylistDirectory\AddMultimediaToPlaylistDirectoryService;
 use App\Service\PlaylistDirectory\CreatePlaylistDirectoryService;
+use App\Service\PlaylistDirectory\DeleteMultimediaFromPlaylistDirectoryService;
 use App\Service\PlaylistDirectory\DeletePlaylistDirectoryService;
 use App\Service\PlaylistDirectory\UpdatePlaylistDirectoryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -71,5 +75,38 @@ class PlaylistDirectoryController extends AbstractRestController
         }
 
         return $deletePlaylistDirectoryService->make($playlistDirectory);
+    }
+
+    #[Route('/directory/{playlistDirectory_id<\d+>}/multimedia/{multimediaMediaLibrary_id<\d+>}/add', methods: 'POST')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST)]
+    public function addMultimedia(
+        #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
+        #[EntityNotFound(EntityNotFoundException::class, 'multimediaMediaLibrary')] MultimediaMediaLibrary $multimediaMediaLibrary,
+        AddMultimediaToPlaylistDirectoryService $addMultimediaToPlaylistDirectoryService
+    ): JsonResponse {
+        if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+            throw EntityNotFoundException::playlistDirectory();
+        }
+
+        if ($multimediaMediaLibrary->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+            throw EntityNotFoundException::multimedia();
+        }
+
+        return $addMultimediaToPlaylistDirectoryService->make($playlistDirectory, $multimediaMediaLibrary);
+    }
+
+    #[Route('/directory/multimedia/{multimediaPlaylistDirectory_id<\d+>}/delete', methods: 'DELETE')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST)]
+    public function deleteMultimedia(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylistDirectory $multimediaPlaylistDirectory,
+        DeleteMultimediaFromPlaylistDirectoryService $deleteMultimediaFromPlaylistDirectoryService
+    ): JsonResponse {
+        if ($multimediaPlaylistDirectory->getMultimediaMediaLibrary()->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+            throw EntityNotFoundException::multimedia();
+        }
+
+        return $deleteMultimediaFromPlaylistDirectoryService->make($multimediaPlaylistDirectory);
     }
 }

@@ -149,6 +149,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@createPlaylistDirectoryToUser'),
             new TranslationKeyFactory('rolePermission@updatePlaylistDirectoryToUser'),
             new TranslationKeyFactory('rolePermission@deletePlaylistDirectoryToUser'),
+            new TranslationKeyFactory('rolePermission@addMultimediaToPlaylistDirectory'),
+            new TranslationKeyFactory('rolePermission@deleteMultimediaToPlaylistDirectory'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
