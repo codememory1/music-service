@@ -69,6 +69,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityExist@translationKey', 'Данный ключ перевода уже существует'),
             new TranslationFactory('ru', 'entityExist@albumType', 'Данный тип альбома уже существует'),
             new TranslationFactory('ru', 'entityExist@mediaLibrary', 'У данного пользователя уже создана медиатека'),
+            new TranslationFactory('ru', 'entityExist@multimediaPlaylistDirectory', 'Данная мультимедиа уже существует в текущей директории'),
 
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
             new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),

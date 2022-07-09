@@ -25,4 +25,10 @@ class EntityExistException extends ApiResponseException
     {
         return new self(409, ResponseTypeEnum::EXIST, 'entityExist@mediaLibrary', data: $data, headers: $headers);
     }
+
+    #[Pure]
+    public static function multimediaPlaylistDirectory(array $data = [], array $headers = []): self
+    {
+        return new self(409, ResponseTypeEnum::EXIST, 'entityExist@multimediaPlaylistDirectory', data: $data, headers: $headers);
+    }
 }
