@@ -21,7 +21,7 @@ class SetMultimediaToPlaylistService
     {
         $multimediaMediaLibraryCollection = [];
 
-        foreach ($multimediaMediaLibrary as $multimediaMediaLibraryId) {
+        foreach (array_unique($multimediaMediaLibrary) as $multimediaMediaLibraryId) {
             $finedMultimediaMediaLibrary = $this->getMultimediaMediaLibrary($playlist->getMediaLibrary(), $multimediaMediaLibraryId);
 
             if (false === $finedMultimediaMediaLibrary) {
