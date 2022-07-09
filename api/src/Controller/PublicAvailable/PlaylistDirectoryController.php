@@ -13,6 +13,7 @@ use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\PlaylistDirectory\CreatePlaylistDirectoryService;
 use App\Service\PlaylistDirectory\DeletePlaylistDirectoryService;
+use App\Service\PlaylistDirectory\UpdatePlaylistDirectoryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -41,9 +42,26 @@ class PlaylistDirectoryController extends AbstractRestController
         return $createPlaylistDirectoryService->make($playlistDirectoryDTO->collect(), $playlist);
     }
 
+    #[Route('/directory/{playlistDirectory_id<\d+>}/edit', methods: 'PUT')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST)]
+    public function update(
+        #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
+        PlaylistDirectoryDTO $playlistDirectoryDTO,
+        UpdatePlaylistDirectoryService $updatePlaylistDirectoryService
+    ): JsonResponse {
+        if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+            throw EntityNotFoundException::playlistDirectory();
+        }
+
+        $playlistDirectoryDTO->setEntity($playlistDirectory);
+
+        return $updatePlaylistDirectoryService->make($playlistDirectoryDTO);
+    }
+
     #[Route('/directory/{playlistDirectory_id<\d+>}/delete', methods: 'DELETE')]
     #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_DIRECTORY_TO_PLAYLIST)]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_DIRECTORY_TO_PLAYLIST)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
         DeletePlaylistDirectoryService $deletePlaylistDirectoryService
