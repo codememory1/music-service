@@ -75,6 +75,11 @@ final class RolePermissionDataFixture extends AbstractDataFixture implements Dep
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::CREATE_PLAYLIST_TO_USER),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::UPDATE_PLAYLIST_TO_USER),
             new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::DELETE_PLAYLIST_TO_USER),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::SHOW_PLAYLIST_DIRECTORIES_TO_USER),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::SHOW_FULL_INFO_PLAYLIST_DIRECTORIES_TO_USER),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::CREATE_PLAYLIST_DIRECTORY_TO_USER),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::UPDATE_PLAYLIST_DIRECTORY_TO_USER),
+            new RolePermissionFactory(RoleEnum::DEVELOPER, RolePermissionEnum::DELETE_PLAYLIST_DIRECTORY_TO_USER),
         ]);
     }
 

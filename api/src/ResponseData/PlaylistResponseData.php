@@ -27,6 +27,9 @@ class PlaylistResponseData extends AbstractResponseData implements ResponseDataI
     #[ResponseDataConstraints\Callback('handleMultimedia')]
     public array $multimedia = [];
 
+    #[ResponseDataConstraints\Callback('handleDirectories')]
+    public array $directories = [];
+
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
     public ?string $status = null;
 
@@ -36,12 +39,22 @@ class PlaylistResponseData extends AbstractResponseData implements ResponseDataI
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
 
+    public function handleDirectories(Collection $directories): array
+    {
+        $playlistDirectoryResponseData = new PlaylistDirectoryResponseData($this->container);
+
+        $playlistDirectoryResponseData->setEntities($directories->toArray());
+        $playlistDirectoryResponseData->setIgnoreProperty('multimedia');
+
+        return $playlistDirectoryResponseData->collect()->getResponse();
+    }
+
     public function handleMultimedia(Collection $multimedia): array
     {
-        $multimediaPlaylistFromMediaLibraryResponseData = new MultimediaPlaylistFromMediaLibraryResponseData($this->container);
+        $multimediaPlaylistResponseData = new MultimediaPlaylistResponseData($this->container);
 
-        $multimediaPlaylistFromMediaLibraryResponseData->setEntities($multimedia->toArray());
+        $multimediaPlaylistResponseData->setEntities($multimedia->toArray());
 
-        return $multimediaPlaylistFromMediaLibraryResponseData->collect()->getResponse();
+        return $multimediaPlaylistResponseData->collect()->getResponse();
     }
 }

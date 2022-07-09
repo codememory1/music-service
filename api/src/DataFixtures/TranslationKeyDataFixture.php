@@ -60,6 +60,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityNotFound@multimedia'),
             new TranslationKeyFactory('entityNotFound@mediaLibrary'),
             new TranslationKeyFactory('entityNotFound@playlist'),
+            new TranslationKeyFactory('entityNotFound@playlistDirectory'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -143,6 +144,13 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@deletePlaylistToUser'),
             new TranslationKeyFactory('rolePermission@showUserPlaylists'),
             new TranslationKeyFactory('rolePermission@showFullInfoUserPlaylists'),
+            new TranslationKeyFactory('rolePermission@showPlaylistDirectoriesToUser'),
+            new TranslationKeyFactory('rolePermission@showFullInfoPlaylistDirectoriesToUser'),
+            new TranslationKeyFactory('rolePermission@createPlaylistDirectoryToUser'),
+            new TranslationKeyFactory('rolePermission@updatePlaylistDirectoryToUser'),
+            new TranslationKeyFactory('rolePermission@deletePlaylistDirectoryToUser'),
+            new TranslationKeyFactory('rolePermission@addMultimediaToPlaylistDirectory'),
+            new TranslationKeyFactory('rolePermission@deleteMultimediaToPlaylistDirectory'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -205,6 +213,10 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@createPlaylist'),
             new TranslationKeyFactory('subscriptionPermissionKey@updatePlaylist'),
             new TranslationKeyFactory('subscriptionPermissionKey@deletePlaylist'),
+            new TranslationKeyFactory('subscriptionPermissionKey@showMyPlaylistDirectories'),
+            new TranslationKeyFactory('subscriptionPermissionKey@createDirectoryToPlaylist'),
+            new TranslationKeyFactory('subscriptionPermissionKey@updateDirectoryToPlaylist'),
+            new TranslationKeyFactory('subscriptionPermissionKey@deleteDirectoryToPlaylist'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),
@@ -365,6 +377,13 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('playlist@successDelete'),
             new TranslationKeyFactory('playlist@successAddMultimedia'),
             new TranslationKeyFactory('playlist@successDeleteMultimedia'),
+
+            new TranslationKeyFactory('playlistDirectory@titleIsRequired'),
+            new TranslationKeyFactory('playlistDirectory@titleMaxLength'),
+            new TranslationKeyFactory('playlistDirectory@successCreate'),
+            new TranslationKeyFactory('playlistDirectory@successUpdate'),
+            new TranslationKeyFactory('playlistDirectory@successDelete'),
+            new TranslationKeyFactory('playlistDirectory@successAddMultimedia'),
         ]);
     }
 
