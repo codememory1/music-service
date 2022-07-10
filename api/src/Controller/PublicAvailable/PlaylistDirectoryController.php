@@ -82,7 +82,7 @@ class PlaylistDirectoryController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST)]
     public function addMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
-        #[EntityNotFound(EntityNotFoundException::class, 'multimediaMediaLibrary')] MultimediaMediaLibrary $multimediaMediaLibrary,
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         AddMultimediaToPlaylistDirectoryService $addMultimediaToPlaylistDirectoryService
     ): JsonResponse {
         if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {

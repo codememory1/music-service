@@ -5,9 +5,10 @@ namespace App\Service\PlaylistDirectory;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\MultimediaPlaylistDirectory;
 use App\Entity\PlaylistDirectory;
-use App\Repository\MultimediaPlaylistDirectoryRepository;
+use App\Repository\MultimediaPlaylistRepository;
 use App\Rest\Http\Exceptions\EntityExistException;
 use App\Service\AbstractService;
+use App\Service\Playlist\CheckExistMultimediaToPlaylistDirectoriesService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
@@ -21,16 +22,20 @@ use Symfony\Contracts\Service\Attribute\Required;
 class AddMultimediaToPlaylistDirectoryService extends AbstractService
 {
     #[Required]
-    public ?MultimediaPlaylistDirectoryRepository $multimediaPlaylistDirectoryRepository = null;
+    public ?MultimediaPlaylistRepository $multimediaPlaylistRepository = null;
 
     public function make(PlaylistDirectory $playlistDirectory, MultimediaMediaLibrary $multimediaMediaLibrary): JsonResponse
     {
-        $multimediaPlaylistDirectory = $this->multimediaPlaylistDirectoryRepository->findOneBy([
+        $finedMultimediaPlaylist = $this->multimediaPlaylistRepository->findOneBy([
+            'playlist' => $playlistDirectory->getPlaylist(),
             'multimediaMediaLibrary' => $multimediaMediaLibrary
         ]);
+        $checkExistMultimediaToPlaylistDirectories = new CheckExistMultimediaToPlaylistDirectoriesService();
 
-        if (null !== $multimediaPlaylistDirectory) {
-            throw EntityExistException::multimediaPlaylistDirectory();
+        $checkExistMultimediaToPlaylistDirectories->throwIfExist($playlistDirectory->getPlaylist()->getDirectories(), $multimediaMediaLibrary);
+
+        if (null !== $finedMultimediaPlaylist) {
+            throw EntityExistException::multimediaPlaylist();
         }
 
         $multimediaPlaylistDirectory = new MultimediaPlaylistDirectory();
