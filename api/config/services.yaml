@@ -71,6 +71,11 @@ services:
       tags:
         - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
+    # Password Reset
+    App\EventListener\RequestRestorationPassword\TemporaryBlockingListener:
+      tags:
+        - { name: kernel.event_listener, event: app.after-password-reset.request, method: onAfterRequestRestorationPassword, priority: 1 }
+
     App\EventListener\RequestRestorationPassword\SendCodeListener:
       tags:
         - { name: kernel.event_listener, event: app.password-reset.request, method: onRequestRestorationPassword }
