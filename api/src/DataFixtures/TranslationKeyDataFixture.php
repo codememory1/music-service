@@ -176,6 +176,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('passwordReset@successSendRequestRestoration'),
             new TranslationKeyFactory('passwordReset@requestRestoration'),
             new TranslationKeyFactory('passwordReset@successRestorePassword'),
+            new TranslationKeyFactory('passwordReset@blocked'),
 
             new TranslationKeyFactory('accountActivation@successActivate'),
 

@@ -37,4 +37,10 @@ class FailedException extends ApiResponseException
     {
         return new self(400, ResponseTypeEnum::FAILED, 'artist@failedUnsubscribeOnArtist', data: $data, headers: $headers);
     }
+
+    #[Pure]
+    public static function failedSendOnRequestRestorationPassword(array $data = [], array $headers = []): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'passwordReset@blocked', data: $data, headers: $headers);
+    }
 }

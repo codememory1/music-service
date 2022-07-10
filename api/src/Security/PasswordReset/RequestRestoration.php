@@ -34,6 +34,11 @@ class RequestRestoration extends AbstractService
         $passwordResetEntity->setTtl('10m');
         $passwordResetEntity->setStatus(PasswordResetStatusEnum::IN_PROCESS);
 
+        $this->eventDispatcher->dispatch(
+            new RequestRestorationPasswordEvent($passwordResetEntity),
+            EventEnum::AFTER_REQUEST_RESTORATION_PASSWORD->value
+        );
+
         $this->em->persist($passwordResetEntity);
         $this->em->flush();
 
