@@ -303,6 +303,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimedia@successSetDislike', 'Дизлайк успешно установлен'),
             new TranslationFactory('ru', 'multimedia@successDeleteLike', 'Лайк успешно снят'),
             new TranslationFactory('ru', 'multimedia@successDeleteDislike', 'Дизлайк успешно снят'),
+            new TranslationFactory('ru', 'multimediaPlaylist@successMoveToDirectory', 'Мультимедиа успешно перемещена в директорию'),
 
             new TranslationFactory('ru', 'status@draft', 'Черновик'),
             new TranslationFactory('ru', 'status@moderation', 'Модерация'),

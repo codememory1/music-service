@@ -85,11 +85,13 @@ class PlaylistDirectoryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         AddMultimediaToPlaylistDirectoryService $addMultimediaToPlaylistDirectoryService
     ): JsonResponse {
-        if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+        $authorizedUserMediaLibrary = $this->authorizedUser->getUser()->getMediaLibrary();
+
+        if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $authorizedUserMediaLibrary) {
             throw EntityNotFoundException::playlistDirectory();
         }
 
-        if ($multimediaMediaLibrary->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+        if ($multimediaMediaLibrary->getMediaLibrary() !== $authorizedUserMediaLibrary) {
             throw EntityNotFoundException::multimedia();
         }
 

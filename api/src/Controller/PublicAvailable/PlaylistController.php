@@ -6,7 +6,9 @@ use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\DTO\PlaylistDTO;
+use App\Entity\MultimediaPlaylist;
 use App\Entity\Playlist;
+use App\Entity\PlaylistDirectory;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Repository\PlaylistRepository;
 use App\ResponseData\PlaylistResponseData;
@@ -14,6 +16,7 @@ use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Playlist\CreatePlaylistService;
 use App\Service\Playlist\DeletePlaylistService;
+use App\Service\Playlist\MoveMultimediaToDirectoryService;
 use App\Service\Playlist\UpdatePlaylistService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -95,5 +98,26 @@ class PlaylistController extends AbstractRestController
         }
 
         return $deletePlaylistService->make($playlist);
+    }
+
+    #[Route('/playlist/multimedia/{multimediaPlaylist_id<\d+>}/move/directory/{playlistDirectory_id<\d+>}', methods: 'PUT')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST)]
+    public function moveMultimediaToDirectory(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylist $multimediaPlaylist,
+        #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
+        MoveMultimediaToDirectoryService $moveMultimediaToDirectoryService
+    ): JsonResponse {
+        $authorizedUserMediaLibrary = $this->authorizedUser->getUser()->getMediaLibrary();
+
+        if ($multimediaPlaylist->getMultimediaMediaLibrary()->getMediaLibrary() !== $authorizedUserMediaLibrary) {
+            throw EntityNotFoundException::multimedia();
+        }
+
+        if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $authorizedUserMediaLibrary) {
+            throw EntityNotFoundException::playlistDirectory();
+        }
+
+        return $moveMultimediaToDirectoryService->make($multimediaPlaylist, $playlistDirectory);
     }
 }
