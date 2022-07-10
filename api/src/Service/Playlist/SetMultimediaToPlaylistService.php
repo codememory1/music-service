@@ -19,6 +19,7 @@ class SetMultimediaToPlaylistService
 {
     public function set(array $multimediaMediaLibrary, Playlist $playlist): void
     {
+        $checkExistMultimediaToPlaylistDirectoriesService = new CheckExistMultimediaToPlaylistDirectoriesService();
         $multimediaMediaLibraryCollection = [];
 
         foreach (array_unique($multimediaMediaLibrary) as $multimediaMediaLibraryId) {
@@ -27,6 +28,11 @@ class SetMultimediaToPlaylistService
             if (false === $finedMultimediaMediaLibrary) {
                 throw EntityNotFoundException::multimedia();
             }
+
+            $checkExistMultimediaToPlaylistDirectoriesService->throwIfExist(
+                $playlist->getDirectories(),
+                $finedMultimediaMediaLibrary
+            );
 
             $multimediaMediaLibraryCollection[] = $finedMultimediaMediaLibrary;
         }

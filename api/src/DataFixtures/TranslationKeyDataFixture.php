@@ -68,7 +68,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityExist@translationKey'),
             new TranslationKeyFactory('entityExist@albumType'),
             new TranslationKeyFactory('entityExist@mediaLibrary'),
-            new TranslationKeyFactory('entityExist@multimediaPlaylistDirectory'),
+            new TranslationKeyFactory('entityExist@multimediaToPlaylist'),
 
             new TranslationKeyFactory('auth@successAuthorization'),
             new TranslationKeyFactory('auth@authRequired'),
