@@ -93,7 +93,7 @@ class PlaylistController extends AbstractRestController
         return $deletePlaylistService->make($playlist);
     }
 
-    #[Route('/playlist/multimedia/{multimediaPlaylist_id<\d+>}/move/directory/{playlistDirectory_id<\d+>}', methods: 'PUT')]
+    #[Route('/media-library/playlist/multimedia/{multimediaPlaylist_id<\d+>}/move/directory/{playlistDirectory_id<\d+>}', methods: 'PUT')]
     #[Authorization]
     #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_TO_PLAYLIST_DIRECTORY)]
     public function moveMultimediaToDirectory(
