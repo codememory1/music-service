@@ -6,7 +6,9 @@ use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
 use App\DTO\PlaylistDTO;
+use App\Entity\MultimediaPlaylist;
 use App\Entity\Playlist;
+use App\Entity\PlaylistDirectory;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
 use App\Repository\PlaylistRepository;
@@ -15,6 +17,7 @@ use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Playlist\CreatePlaylistService;
 use App\Service\Playlist\DeletePlaylistService;
+use App\Service\Playlist\MoveMultimediaToDirectoryService;
 use App\Service\Playlist\UpdatePlaylistService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -88,5 +91,16 @@ class PlaylistController extends AbstractRestController
         DeletePlaylistService $deletePlaylistService
     ): JsonResponse {
         return $deletePlaylistService->make($playlist);
+    }
+
+    #[Route('/playlist/multimedia/{multimediaPlaylist_id<\d+>}/move/directory/{playlistDirectory_id<\d+>}', methods: 'PUT')]
+    #[Authorization]
+    #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_TO_PLAYLIST_DIRECTORY)]
+    public function moveMultimediaToDirectory(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylist $multimediaPlaylist,
+        #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
+        MoveMultimediaToDirectoryService $moveMultimediaToDirectoryService
+    ): JsonResponse {
+        return $moveMultimediaToDirectoryService->make($multimediaPlaylist, $playlistDirectory);
     }
 }
