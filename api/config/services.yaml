@@ -173,3 +173,25 @@ services:
         $scopes:
           - !php/const App\Enum\GoogleScopeEnum::EMAIL
           - !php/const App\Enum\GoogleScopeEnum::PROFILE
+
+    App\Service\IPGeolocation\IPApi\Client:
+      arguments:
+        $client: '@Symfony\Contracts\HttpClient\HttpClientInterface'
+        $url: 'http://ip-api.com/json/'
+        $fields:
+          - status
+          - continent
+          - continentCode
+          - country
+          - countryCode
+          - region
+          - regionName
+          - city
+          - district
+          - zip
+          - lat
+          - lon
+          - timezone
+          - offset
+          - currency
+          - proxy
