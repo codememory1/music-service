@@ -22,15 +22,22 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class Client implements ClientInterface
 {
     private HttpClientInterface $client;
-    private ?string $urlSchema;
+    private string $url;
+    private array $queryParams;
     private array $body = [];
 
     public function __construct(HttpClientInterface $client, string $url, array $fields, array $queryParams = [])
     {
         $queryParams['fields'] = implode(',', $fields);
 
+        $this->url = $url;
+        $this->queryParams = $queryParams;
         $this->client = $client;
-        $this->urlSchema = rtrim($url, '/') . '/%s?' . http_build_query($queryParams);
+    }
+
+    public function getUrl(string $ip): ?string
+    {
+        return rtrim($this->url, '/') . "/${ip}?" . http_build_query($this->queryParams);
     }
 
     /**
@@ -43,13 +50,13 @@ class Client implements ClientInterface
     public function request(?string $ip): ClientInterface
     {
         try {
-            $response = $this->client->request('GET', sprintf($this->urlSchema, $ip));
+            $response = $this->client->request('GET', $this->getUrl($ip));
             $body = $response->toArray(true);
 
-            if ($body['status'] ?? null !== 'success') {
-                $this->body = [];
-            } else {
+            if (array_key_exists('status', $body) && 'success' === $body['status']) {
                 $this->body = $body;
+            } else {
+                $this->body = [];
             }
         } catch (Exception) {
             $this->body = [];

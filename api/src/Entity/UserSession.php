@@ -72,6 +72,11 @@ class UserSession implements EntityInterface
     ])]
     private ?string $operatingSystem = null;
 
+    #[ORM\Column(type: Types::STRING, length: 100, nullable: true, options: [
+        'comment' => 'Continent'
+    ])]
+    private ?string $continent = null;
+
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true, options: [
         'comment' => 'The city in which the account was logged out or registered'
     ])]
@@ -81,6 +86,31 @@ class UserSession implements EntityInterface
         'comment' => 'The country in which the account was logged out or registered'
     ])]
     private ?string $country = null;
+
+    #[ORM\Column(type: Types::STRING, length: 10, nullable: true, options: [
+        'comment' => 'Code of the country'
+    ])]
+    private ?string $countryCode = null;
+
+    #[ORM\Column(type: Types::STRING, length: 10, nullable: true, options: [
+        'comment' => 'Region code'
+    ])]
+    private ?string $region = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true, options: [
+        'comment' => 'Region name'
+    ])]
+    private ?string $regionName = null;
+
+    #[ORM\Column(type: Types::STRING, length: 100, nullable: true, options: [
+        'comment' => 'Time zone'
+    ])]
+    private ?string $timezone = null;
+
+    #[ORM\Column(type: Types::STRING, length: 10, nullable: true, options: [
+        'comment' => 'Country currency'
+    ])]
+    private ?string $currency = null;
 
     #[ORM\Column(type: Types::ARRAY, options: [
         'comment' => 'The authority in which the account was logged out or registered'
@@ -205,6 +235,18 @@ class UserSession implements EntityInterface
         return $this;
     }
 
+    public function getContinent(): ?string
+    {
+        return $this->continent;
+    }
+
+    public function setContinent(?string $continent): self
+    {
+        $this->continent = $continent;
+
+        return $this;
+    }
+
     public function getCity(): ?string
     {
         return $this->city;
@@ -225,6 +267,66 @@ class UserSession implements EntityInterface
     public function setCountry(?string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getCountryCode(): ?string
+    {
+        return $this->countryCode;
+    }
+
+    public function setCountryCode(?string $countryCode): self
+    {
+        $this->countryCode = $countryCode;
+
+        return $this;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?string $region): self
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    public function getRegionName(): ?string
+    {
+        return $this->regionName;
+    }
+
+    public function setRegionName(?string $regionName): self
+    {
+        $this->regionName = $regionName;
+
+        return $this;
+    }
+
+    public function getTimezone(): ?string
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(?string $timezone): self
+    {
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?string $currency): self
+    {
+        $this->currency = $currency;
 
         return $this;
     }

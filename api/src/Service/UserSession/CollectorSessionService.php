@@ -6,8 +6,13 @@ use App\DTO\UserDTO;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
-use Codememory\Components\GEO\Geolocation;
+use App\Service\IPGeolocation\IPApi\Client;
 use Jenssegers\Agent\Agent;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * Class CollectorSessionService.
@@ -18,13 +23,25 @@ use Jenssegers\Agent\Agent;
  */
 class CollectorSessionService
 {
+    private Client $client;
+
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function collect(UserDTO $userDTO, User $user, UserSessionTypeEnum $type, ?UserSession $userSessionEntity = null): UserSession
     {
-        $geo = new Geolocation();
         $agent = new Agent();
         $userSessionEntity ??= new UserSession();
-
-        $geo->setIp($userDTO->ip);
+        $ipResponse = $this->client->request($userDTO->ip)->response();
 
         $userSessionEntity->setUser($user);
         $userSessionEntity->setType($type);
@@ -33,19 +50,18 @@ class CollectorSessionService
         $userSessionEntity->setDevice($agent->device());
         $userSessionEntity->setOperatingSystem($agent->platform());
 
-        // Set info by IP
-        if ($geo->isSuccess()) {
-            $location = $geo->getLocation();
-            $country = $location->getCountry();
-            $city = $location->getCity();
-
-            $userSessionEntity->setCountry($country->getName());
-            $userSessionEntity->setCity($city->getName());
-            $userSessionEntity->setCoordinates([
-                'latitude' => $country->getLatitude(),
-                'longitude' => $country->getLongitude()
-            ]);
-        }
+        $userSessionEntity->setContinent($ipResponse->getContinent());
+        $userSessionEntity->setCity($ipResponse->getCity());
+        $userSessionEntity->setCountry($ipResponse->getCountry());
+        $userSessionEntity->setCountryCode($ipResponse->getCountryCode());
+        $userSessionEntity->setRegion($ipResponse->getRegion());
+        $userSessionEntity->setRegionName($ipResponse->getRegionName());
+        $userSessionEntity->setTimezone($ipResponse->getTimezone());
+        $userSessionEntity->setCurrency($ipResponse->getCurrency());
+        $userSessionEntity->setCoordinates([
+            'latitude' => $ipResponse->getLat(),
+            'longitude' => $ipResponse->getLon()
+        ]);
 
         return $userSessionEntity;
     }

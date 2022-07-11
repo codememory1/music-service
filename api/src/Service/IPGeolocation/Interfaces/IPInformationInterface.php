@@ -67,7 +67,7 @@ interface IPInformationInterface
 
     public function setCurrency(?string $currency): self;
 
-    public function isProxy(): ?string;
+    public function isProxy(): ?bool;
 
-    public function setProxy(bool $isProxy): self;
+    public function setProxy(?bool $isProxy): self;
 }

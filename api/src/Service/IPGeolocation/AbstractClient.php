@@ -24,10 +24,10 @@ abstract class AbstractClient implements IPInformationInterface
     private ?string $zip = null;
     private ?float $lat = null;
     private ?float $lon = null;
-    private ?float $timezone = null;
+    private ?string $timezone = null;
     private ?int $offset = null;
-    private ?int $currency = null;
-    private ?int $isProxy = null;
+    private ?string $currency = null;
+    private ?bool $isProxy = null;
 
     public function getContinent(): ?string
     {
@@ -197,12 +197,12 @@ abstract class AbstractClient implements IPInformationInterface
         return $this;
     }
 
-    public function isProxy(): ?string
+    public function isProxy(): ?bool
     {
         return $this->isProxy;
     }
 
-    public function setProxy(bool $isProxy): self
+    public function setProxy(?bool $isProxy): self
     {
         $this->isProxy = $isProxy;
 

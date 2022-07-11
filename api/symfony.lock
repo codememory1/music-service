@@ -17,12 +17,6 @@
     "clue/stream-filter": {
         "version": "v1.6.0"
     },
-    "codememory/geo": {
-        "version": "v1.0"
-    },
-    "codememory/support": {
-        "version": "v1.2.1"
-    },
     "composer/pcre": {
         "version": "3.0.0"
     },
