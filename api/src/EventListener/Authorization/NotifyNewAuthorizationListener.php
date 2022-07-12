@@ -34,27 +34,30 @@ class NotifyNewAuthorizationListener
         $userSessionRepository = $this->em->getRepository(UserSession::class);
         $lastTempSession = $userSessionRepository->findLastTemp($userAuthorizationEvent->authorizedUser);
         $registeredSession = $userSessionRepository->findRegistered($userAuthorizationEvent->authorizedUser);
-        $objectComparisonPercentageService = new ObjectComparisonPercentageService($lastTempSession, $registeredSession, [
-            'getIp',
-            'getBrowser',
-            'getDevice',
-            'getOperatingSystem',
-            'getCity',
-            'getCountry',
-            'getCountryCode',
-            'getRegion',
-            'getRegionName',
-        ]);
 
-        if ($objectComparisonPercentageService->compare() < 70) {
-            $this->notificationCollection->authFromUnknownDevice(
-                $userAuthorizationEvent->authorizedUser, // TODO: Изменить на системного юзера
-                $userAuthorizationEvent->authorizedUser,
-                $registeredSession->getDevice(),
-                $registeredSession->getId()
-            );
+        if (null !== $lastTempSession && $registeredSession) {
+            $objectComparisonPercentageService = new ObjectComparisonPercentageService($lastTempSession, $registeredSession, [
+                'getIp',
+                'getBrowser',
+                'getDevice',
+                'getOperatingSystem',
+                'getCity',
+                'getCountry',
+                'getCountryCode',
+                'getRegion',
+                'getRegionName',
+            ]);
 
-            $this->mailMessagingService->sendAuthFromUnknownDevice();
+            if ($objectComparisonPercentageService->compare() < 70) {
+                $this->notificationCollection->authFromUnknownDevice(
+                    $userAuthorizationEvent->authorizedUser, // TODO: Изменить на системного юзера
+                    $userAuthorizationEvent->authorizedUser,
+                    $registeredSession->getDevice(),
+                    $registeredSession->getId()
+                );
+
+                $this->mailMessagingService->sendAuthFromUnknownDevice($userAuthorizationEvent->authorizedUser, $lastTempSession);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\AccountActivationCode;
 use App\Entity\PasswordReset;
 use App\Entity\User;
+use App\Entity\UserSession;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -75,7 +76,7 @@ class MailMessagingService
      * @throws SyntaxError
      * @throws TransportExceptionInterface
      */
-    public function sendAuthFromUnknownDevice(User $user, string $device, string $ip): void
+    public function sendAuthFromUnknownDevice(User $user, UserSession $userSession): void
     {
         $email = new Email();
 
@@ -84,8 +85,7 @@ class MailMessagingService
         $email->subject($this->translationService->get('common@authFromUnknownDevice'));
         $email->html($this->getTemplate('auth-from-unknown-device', [
             'user' => $user,
-            'device' => $device,
-            'ip' => $ip
+            'userSession' => $userSession,
         ]));
 
         $this->mailer->send($email);
