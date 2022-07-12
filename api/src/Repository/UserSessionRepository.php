@@ -69,4 +69,23 @@ class UserSessionRepository extends AbstractRepository
     {
         return $this->findByCriteria(['us.user' => $user]);
     }
+
+    public function findRegistered(User $user): ?UserSession
+    {
+        return $this->findOneBy([
+            'type' => UserSessionTypeEnum::REGISTRATION->name,
+            'user' => $user
+        ]);
+    }
+
+    public function findLastTemp(User $user): ?UserSession
+    {
+        $userSessions = $this->findBy(['user' => $user], ['id' => 'DESC'], 1, 0);
+
+        if ([] !== $userSessions) {
+            return $userSessions[0];
+        }
+
+        return null;
+    }
 }

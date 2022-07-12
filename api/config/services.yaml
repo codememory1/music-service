@@ -63,9 +63,14 @@ services:
       tags:
         - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 2 }
 
+    # Auth
     App\EventListener\Authorization\CreateTempSessionListener:
       tags:
         - { name: kernel.event_listener, event: app.auth, method: onAuth, priority: 1 }
+
+    App\EventListener\Authorization\NotifyNewAuthorizationListener:
+      tags:
+        - { name: kernel.event_listener, event: app.auth, method: onAuth, priority: 0 }
 
     App\EventListener\KernelController\AnnotationListener:
       tags:
@@ -144,6 +149,7 @@ services:
       public: true
       exclude:
         - '../src/Service/DataRepresentation/AbstractDataRepresentation.php'
+        - '../src/Service/ObjectComparisonPercentageService.php'
 
     App\Service\DataRepresentation\:
       resource: '../src/Service/DataRepresentation/'
