@@ -4,6 +4,7 @@ namespace App\EventListener\Authorization;
 
 use App\Entity\UserSession;
 use App\Event\UserAuthorizationEvent;
+use App\Service\MailMessagingService;
 use App\Service\Notification\NotificationCollection;
 use App\Service\ObjectComparisonPercentageService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,11 +20,13 @@ class NotifyNewAuthorizationListener
 {
     private EntityManagerInterface $em;
     private NotificationCollection $notificationCollection;
+    private MailMessagingService $mailMessagingService;
 
-    public function __construct(EntityManagerInterface $manager, NotificationCollection $notificationCollection)
+    public function __construct(EntityManagerInterface $manager, NotificationCollection $notificationCollection, MailMessagingService $mailMessagingService)
     {
         $this->em = $manager;
         $this->notificationCollection = $notificationCollection;
+        $this->mailMessagingService = $mailMessagingService;
     }
 
     public function onAuth(UserAuthorizationEvent $userAuthorizationEvent): void
@@ -43,13 +46,15 @@ class NotifyNewAuthorizationListener
             'getRegionName',
         ]);
 
-        if ($objectComparisonPercentageService->compare() < 60) {
+        if ($objectComparisonPercentageService->compare() < 70) {
             $this->notificationCollection->authFromUnknownDevice(
                 $userAuthorizationEvent->authorizedUser, // TODO: Изменить на системного юзера
                 $userAuthorizationEvent->authorizedUser,
                 $registeredSession->getDevice(),
                 $registeredSession->getId()
             );
+
+            $this->mailMessagingService->sendAuthFromUnknownDevice();
         }
     }
 }
