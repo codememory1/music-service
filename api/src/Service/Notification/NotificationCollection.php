@@ -35,8 +35,8 @@ class NotificationCollection
         return $this->init(
             $from,
             $to,
-            'notification@titleAuthFromUnknowDevice',
-            'notification@authFromUnknowDevice',
+            'common@authFromUnknownDevice',
+            'common@authFromUnknowDeviceMessage',
             [
                 'device' => $device,
                 'ip' => $ip

@@ -26,15 +26,15 @@ class ObjectComparisonPercentageService
     {
         $dataForCompare = $this->buildDataForCompare($this->forCompare, $this->methodsForCompare);
         $dataWithCompare = $this->buildDataForCompare($this->withCompare, $this->methodsForCompare);
-        $percentCompare = 0;
+        $compareCount = 0;
 
         foreach ($dataForCompare as $key => $value) {
             if ($value === $dataWithCompare[$key]) {
-                ++$percentCompare;
+                ++$compareCount;
             }
         }
 
-        return ($percentCompare / count($dataWithCompare)) * 100;
+        return ($compareCount / count($dataWithCompare)) * 100;
     }
 
     private function buildDataForCompare(object $object, array $methodsForCompare): array

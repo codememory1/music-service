@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\AccountActivationCode;
 use App\Entity\PasswordReset;
+use App\Entity\User;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -64,6 +65,28 @@ class MailMessagingService
         $email->to($passwordReset->getUser()->getEmail());
         $email->subject($this->translationService->get('passwordReset@requestRestoration'));
         $email->html($this->getTemplate('request-restoration-password', ['passwordReset' => $passwordReset]));
+
+        $this->mailer->send($email);
+    }
+
+    /**
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws TransportExceptionInterface
+     */
+    public function sendAuthFromUnknownDevice(User $user, string $device, string $ip): void
+    {
+        $email = new Email();
+
+        $email->from('kostynd1@gmail.com');
+        $email->to($user->getEmail());
+        $email->subject($this->translationService->get('common@authFromUnknownDevice'));
+        $email->html($this->getTemplate('auth-from-unknown-device', [
+            'user' => $user,
+            'device' => $device,
+            'ip' => $ip
+        ]));
 
         $this->mailer->send($email);
     }

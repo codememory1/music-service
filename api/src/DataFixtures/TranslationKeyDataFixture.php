@@ -43,6 +43,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('common@invalidSubtitles'),
             new TranslationKeyFactory('common@successAppealCanceled'),
             new TranslationKeyFactory('common@badAppealCanceled'),
+            new TranslationKeyFactory('common@authFromUnknownDevice'),
+            new TranslationKeyFactory('common@authFromUnknownDeviceMessage'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
