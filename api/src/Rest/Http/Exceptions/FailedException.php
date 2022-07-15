@@ -43,4 +43,16 @@ class FailedException extends ApiResponseException
     {
         return new self(400, ResponseTypeEnum::FAILED, 'passwordReset@blocked', data: $data, headers: $headers);
     }
+
+    #[Pure]
+    final public static function failedAddAsFriendNotAccept(array $data = [], array $headers = []): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'friend@notAccept', data: $data, headers: $headers);
+    }
+
+    #[Pure]
+    final public static function failedAddMyselfAsFriend(array $data = [], array $headers = []): self
+    {
+        return new self(400, ResponseTypeEnum::FAILED, 'friend@addMyselfAsFriend', data: $data, headers: $headers);
+    }
 }

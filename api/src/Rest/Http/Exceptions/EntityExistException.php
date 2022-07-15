@@ -37,4 +37,10 @@ class EntityExistException extends ApiResponseException
     {
         return new self(409, ResponseTypeEnum::EXIST, 'entityExist@multimediaToPlaylist', data: $data, headers: $headers);
     }
+
+    #[Pure]
+    final public static function friend(array $data = [], array $headers = []): self
+    {
+        return new self(409, ResponseTypeEnum::EXIST, 'entityExist@friend', data: $data, headers: $headers);
+    }
 }
