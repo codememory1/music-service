@@ -33,4 +33,5 @@ enum SubscriptionPermissionEnum
     case CREATE_DIRECTORY_TO_PLAYLIST;
     case UPDATE_DIRECTORY_TO_PLAYLIST;
     case DELETE_DIRECTORY_TO_PLAYLIST;
+    case UPDATE_PROFILE_DESIGN;
 }

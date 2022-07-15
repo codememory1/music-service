@@ -54,6 +54,9 @@ class UserProfile implements EntityInterface
     ])]
     private ?string $status = null;
 
+    #[ORM\OneToOne(mappedBy: 'userProfile', targetEntity: UserProfileDesign::class, cascade: ['persist', 'remove'])]
+    private $design;
+
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -110,6 +113,23 @@ class UserProfile implements EntityInterface
     public function setStatus(?UserProfileStatusEnum $status): self
     {
         $this->status = $status?->name;
+
+        return $this;
+    }
+
+    public function getDesign(): ?UserProfileDesign
+    {
+        return $this->design;
+    }
+
+    public function setDesign(UserProfileDesign $design): self
+    {
+        // set the owning side of the relation if necessary
+        if ($design->getUserProfile() !== $this) {
+            $design->setUserProfile($this);
+        }
+
+        $this->design = $design;
 
         return $this;
     }

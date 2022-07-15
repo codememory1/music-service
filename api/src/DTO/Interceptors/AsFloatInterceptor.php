@@ -13,8 +13,19 @@ use App\DTO\Interfaces\ValueInterceptorInterface;
  */
 class AsFloatInterceptor implements ValueInterceptorInterface
 {
-    public function handle(string $key, mixed $value): float
+    private bool $isForce;
+
+    public function __construct(bool $isForce = false)
     {
-        return (float) $value;
+        $this->isForce = $isForce;
+    }
+
+    public function handle(string $key, mixed $value): ?float
+    {
+        if (false === empty($value) || true === $this->isForce) {
+            return (float) $value;
+        }
+
+        return null;
     }
 }

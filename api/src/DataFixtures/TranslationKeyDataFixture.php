@@ -63,6 +63,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityNotFound@mediaLibrary'),
             new TranslationKeyFactory('entityNotFound@playlist'),
             new TranslationKeyFactory('entityNotFound@playlistDirectory'),
+            new TranslationKeyFactory('entityNotFound@userProfile'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -154,6 +155,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@deletePlaylistDirectoryToUser'),
             new TranslationKeyFactory('rolePermission@addMultimediaToPlaylistDirectory'),
             new TranslationKeyFactory('rolePermission@deleteMultimediaToPlaylistDirectory'),
+            new TranslationKeyFactory('rolePermission@updateUserProfileDesign'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -221,6 +223,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@createDirectoryToPlaylist'),
             new TranslationKeyFactory('subscriptionPermissionKey@updateDirectoryToPlaylist'),
             new TranslationKeyFactory('subscriptionPermissionKey@deleteDirectoryToPlaylist'),
+            new TranslationKeyFactory('subscriptionPermissionKey@updateProfileDesign'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),
@@ -390,6 +393,12 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('playlistDirectory@successUpdate'),
             new TranslationKeyFactory('playlistDirectory@successDelete'),
             new TranslationKeyFactory('playlistDirectory@successAddMultimedia'),
+
+            new TranslationKeyFactory('userProfileDesign@coverImageIsRequired'),
+            new TranslationKeyFactory('userProfileDesign@maxSizeCoverImage'),
+            new TranslationKeyFactory('userProfileDesign@uploadFileIsNotCoverImage'),
+            new TranslationKeyFactory('userProfileDesign@invalidDesignComponents'),
+            new TranslationKeyFactory('userProfileDesign@successUpdate'),
         ]);
     }
 
