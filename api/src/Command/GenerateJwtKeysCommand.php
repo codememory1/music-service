@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use Codememory\Support\Str;
 use sixlive\DotenvEditor\DotenvEditor;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -12,6 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use function Symfony\Component\String\u;
 
 /**
  * Class GenerateJwtKeysCommand.
@@ -87,7 +87,7 @@ class GenerateJwtKeysCommand extends Command
 
     private function generateFilename(string $prefix, bool $isPrivate = false): string
     {
-        $prefix = Str::toLowercase($prefix);
+        $prefix = u($prefix)->lower()->toString();
         $prefix .= $isPrivate ? '_private.pem' : '_public.pem';
 
         return $this->params->get('jwt.secrets') . $prefix;

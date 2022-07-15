@@ -24,8 +24,6 @@ class SubscriptionHandler implements MethodAnnotationHandlerInterface
     }
 
     /**
-     * @inheritDoc
-     *
      * @param Subscription $annotation
      */
     public function handle(MethodAnnotationInterface $annotation): void

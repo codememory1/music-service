@@ -22,9 +22,6 @@ class Authorization implements MethodAnnotationInterface
         $this->required = $required;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHandler(): string
     {
         return AuthorizationHandler::class;

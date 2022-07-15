@@ -23,9 +23,6 @@ class UserRole implements MethodAnnotationInterface
         $this->role = $roleEnum;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHandler(): string
     {
         return UserRoleHandler::class;

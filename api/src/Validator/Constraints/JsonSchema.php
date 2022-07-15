@@ -18,8 +18,13 @@ class JsonSchema extends Constraint
     public readonly string $schemaName;
     public readonly string $message;
 
-    public function __construct(string $schemaName, ?string $message = null, mixed $options = null, ?array $groups = null, mixed $payload = null)
-    {
+    public function __construct(
+        string $schemaName,
+        ?string $message = null,
+        mixed $options = null,
+        ?array $groups = null,
+        mixed $payload = null
+    ) {
         parent::__construct($options, $groups, $payload);
 
         $this->schemaName = $schemaName;

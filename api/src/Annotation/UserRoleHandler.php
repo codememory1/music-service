@@ -24,8 +24,6 @@ class UserRoleHandler implements MethodAnnotationHandlerInterface
     }
 
     /**
-     * @inheritDoc
-     *
      * @param MethodAnnotationInterface|UserRole $annotation
      */
     public function handle(MethodAnnotationInterface $annotation): void

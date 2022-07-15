@@ -19,8 +19,14 @@ final class Enum extends Constraint
     public readonly bool $allowedNullable;
     public readonly ?string $message;
 
-    public function __construct(string $enum, bool $allowedNullable = false, ?string $message = null, mixed $options = null, ?array $groups = null, mixed $payload = null)
-    {
+    public function __construct(
+        string $enum,
+        bool $allowedNullable = false,
+        ?string $message = null,
+        mixed $options = null,
+        ?array $groups = null,
+        mixed $payload = null
+    ) {
         parent::__construct($options, $groups, $payload);
 
         $this->enum = $enum;
