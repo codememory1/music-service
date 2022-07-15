@@ -65,6 +65,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@playlist', 'Плейлист не найден'),
             new TranslationFactory('ru', 'entityNotFound@playlistDirectory', 'Директория плейлиста не найдена'),
             new TranslationFactory('ru', 'entityNotFound@userProfile', 'Профиль пользователя не найден'),
+            new TranslationFactory('ru', 'entityNotFound@friend', 'Друг не найден'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -73,6 +74,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityExist@albumType', 'Данный тип альбома уже существует'),
             new TranslationFactory('ru', 'entityExist@mediaLibrary', 'У данного пользователя уже создана медиатека'),
             new TranslationFactory('ru', 'entityExist@multimediaToPlaylist', 'Данная мультимедиа уже существует в текущем плейлисте'),
+            new TranslationFactory('ru', 'entityExist@friend', 'Данный пользователь уже был добавлен в список ваших друзей'),
 
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
             new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),
@@ -155,6 +157,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'rolePermission@addMultimediaToPlaylistDirectory', 'Добавление мультимедиа в директорию плейлиста пользователя'),
             new TranslationFactory('ru', 'rolePermission@deleteMultimediaToPlaylistDirectory', 'Удаление мультимедиа из директории плейлиста пользователя'),
             new TranslationFactory('ru', 'rolePermission@updateUserProfileDesign', 'Редактирование дизайна профиля у пользователя'),
+            new TranslationFactory('ru', 'rolePermission@addFriendToUser', 'Добавление друзей пользователю'),
+            new TranslationFactory('ru', 'rolePermission@deleteFriendToUser', 'Удаление друзей у пользователя'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначеная только для тестирования в dev режиме'),
@@ -219,6 +223,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@updateDirectoryToPlaylist', 'Обновление директории плейлиста'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteDirectoryToPlaylist', 'Удаление директорий плейлиста'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@updateProfileDesign', 'Редактирование дизайна профиля'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@addAsFriend', 'Добавление пользователей в друзья'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
@@ -393,6 +398,11 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'userProfileDesign@uploadFileIsNotCoverImage', 'Загруженный файл не является обложкой'),
             new TranslationFactory('ru', 'userProfileDesign@invalidDesignComponents', 'Некорректные дизайн компоненты'),
             new TranslationFactory('ru', 'userProfileDesign@successUpdate', 'Дизайн профиля успешно обновлен'),
+
+            new TranslationFactory('ru', 'friend@successAdd', 'Пользователь успешно добавлен в список ваших друзей'),
+            new TranslationFactory('ru', 'friend@successDelete', 'Пользователь успешно удален из списка друзей'),
+            new TranslationFactory('ru', 'friend@notAccept', 'Невозможно добавить в друзья данного пользователя'),
+            new TranslationFactory('ru', 'friend@addMyselfAsFriend', 'Невозможно добавить в друзья самого себя'),
         ]);
     }
 

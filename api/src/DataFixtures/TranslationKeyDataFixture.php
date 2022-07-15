@@ -64,6 +64,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityNotFound@playlist'),
             new TranslationKeyFactory('entityNotFound@playlistDirectory'),
             new TranslationKeyFactory('entityNotFound@userProfile'),
+            new TranslationKeyFactory('entityNotFound@friend'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -72,6 +73,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityExist@albumType'),
             new TranslationKeyFactory('entityExist@mediaLibrary'),
             new TranslationKeyFactory('entityExist@multimediaToPlaylist'),
+            new TranslationKeyFactory('entityExist@friend'),
 
             new TranslationKeyFactory('auth@successAuthorization'),
             new TranslationKeyFactory('auth@authRequired'),
@@ -156,6 +158,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@addMultimediaToPlaylistDirectory'),
             new TranslationKeyFactory('rolePermission@deleteMultimediaToPlaylistDirectory'),
             new TranslationKeyFactory('rolePermission@updateUserProfileDesign'),
+            new TranslationKeyFactory('rolePermission@addFriendToUser'),
+            new TranslationKeyFactory('rolePermission@deleteFriendToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -224,6 +228,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@updateDirectoryToPlaylist'),
             new TranslationKeyFactory('subscriptionPermissionKey@deleteDirectoryToPlaylist'),
             new TranslationKeyFactory('subscriptionPermissionKey@updateProfileDesign'),
+            new TranslationKeyFactory('subscriptionPermissionKey@addAsFriend'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),
@@ -399,6 +404,11 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('userProfileDesign@uploadFileIsNotCoverImage'),
             new TranslationKeyFactory('userProfileDesign@invalidDesignComponents'),
             new TranslationKeyFactory('userProfileDesign@successUpdate'),
+
+            new TranslationKeyFactory('friend@successAdd'),
+            new TranslationKeyFactory('friend@successDelete'),
+            new TranslationKeyFactory('friend@notAccept'),
+            new TranslationKeyFactory('friend@addMyselfAsFriend'),
         ]);
     }
 

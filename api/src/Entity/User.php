@@ -110,6 +110,9 @@ class User implements EntityInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: MediaLibrary::class, cascade: ['persist', 'remove'])]
     private ?MediaLibrary $mediaLibrary = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Friend::class, cascade: ['persist', 'remove'])]
+    private Collection $friends;
+
     #[Pure]
     public function __construct()
     {
@@ -126,6 +129,7 @@ class User implements EntityInterface
         $this->multimediaRatings = new ArrayCollection();
         $this->subscribers = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
+        $this->friends = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -589,6 +593,36 @@ class User implements EntityInterface
         }
 
         $this->mediaLibrary = $mediaLibrary;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Friend>
+     */
+    public function getFriends(): Collection
+    {
+        return $this->friends;
+    }
+
+    public function addFriend(Friend $friend): self
+    {
+        if (!$this->friends->contains($friend)) {
+            $this->friends[] = $friend;
+            $friend->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFriend(Friend $friend): self
+    {
+        if ($this->friends->removeElement($friend)) {
+            // set the owning side to null (unless already changed)
+            if ($friend->getUser() === $this) {
+                $friend->setUser(null);
+            }
+        }
 
         return $this;
     }
