@@ -23,9 +23,6 @@ class UserRolePermission implements MethodAnnotationInterface
         $this->rolePermission = $rolePermissionEnum;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHandler(): string
     {
         return UserRolePermissionHandler::class;

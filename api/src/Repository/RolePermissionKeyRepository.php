@@ -10,7 +10,7 @@ use App\Entity\RolePermissionKey;
  * @package App\Repository
  * @template-extends AbstractRepository<RolePermissionKey>
  *
- * @author  codememory
+ * @author  Codememory
  */
 class RolePermissionKeyRepository extends AbstractRepository
 {

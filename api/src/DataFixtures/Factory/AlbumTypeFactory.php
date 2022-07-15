@@ -36,9 +36,6 @@ final class AlbumTypeFactory implements DataFixtureFactoryInterface
         return $albumTypeEntity;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;

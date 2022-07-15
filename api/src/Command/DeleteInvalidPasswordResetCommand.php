@@ -51,12 +51,6 @@ class DeleteInvalidPasswordResetCommand extends Command
         }
     }
 
-    /**
-     * @param SymfonyStyle  $io
-     * @param PasswordReset $passwordReset
-     *
-     * @return void
-     */
     private function deleteMessage(SymfonyStyle $io, PasswordReset $passwordReset): void
     {
         $io->writeln(sprintf(

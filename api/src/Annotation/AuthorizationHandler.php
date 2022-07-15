@@ -24,8 +24,6 @@ class AuthorizationHandler implements MethodAnnotationHandlerInterface
     }
 
     /**
-     * @inheritDoc
-     *
      * @param Authorization|MethodAnnotationInterface $annotation
      */
     public function handle(MethodAnnotationInterface $annotation): void

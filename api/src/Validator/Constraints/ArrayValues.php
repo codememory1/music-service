@@ -15,10 +15,10 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class ArrayValues extends Constraint
 {
-    public int $min;
-    public ?int $max;
-    public ?string $minMessage = 'The {{ property }} property must contain at least {{ min }} values';
-    public ?string $maxMessage = 'The {{ property }} property must contain a maximum of {{ max }} values';
+    public readonly int $min;
+    public readonly ?int $max;
+    public readonly ?string $minMessage;
+    public readonly ?string $maxMessage;
 
     public function __construct(
         int $min = 0,
@@ -33,7 +33,7 @@ class ArrayValues extends Constraint
 
         $this->min = $min;
         $this->max = $max;
-        $this->minMessage = $minMessage ?? $this->minMessage;
-        $this->maxMessage = $maxMessage ?? $this->maxMessage;
+        $this->minMessage = $minMessage ?? 'The {{ property }} property must contain at least {{ min }} values';
+        $this->maxMessage = $maxMessage ?? 'The {{ property }} property must contain a maximum of {{ max }} values';
     }
 }

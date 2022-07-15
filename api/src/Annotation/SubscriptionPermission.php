@@ -23,9 +23,6 @@ class SubscriptionPermission implements MethodAnnotationInterface
         $this->permission = $subscriptionPermissionEnum;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHandler(): string
     {
         return SubscriptionPermissionHandler::class;

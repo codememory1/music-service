@@ -15,11 +15,16 @@ use Symfony\Component\Validator\Constraints\Composite;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class Condition extends Composite
 {
-    public string $callbackCondition;
-    public array $constraints;
+    public readonly string $callbackCondition;
+    public readonly array $constraints;
 
-    public function __construct(string $callbackCondition, array $constraints, mixed $options = null, ?array $groups = null, mixed $payload = null)
-    {
+    public function __construct(
+        string $callbackCondition,
+        array $constraints,
+        mixed $options = null,
+        ?array $groups = null,
+        mixed $payload = null
+    ) {
         $this->callbackCondition = $callbackCondition;
         $this->constraints = $constraints;
 

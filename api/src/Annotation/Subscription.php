@@ -23,9 +23,6 @@ class Subscription implements MethodAnnotationInterface
         $this->subscription = $subscriptionEnum;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHandler(): string
     {
         return SubscriptionHandler::class;
