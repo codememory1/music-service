@@ -25,4 +25,15 @@ class FriendRepository extends AbstractRepository
             'friend' => $friend
         ]);
     }
+
+    public function findByUser(User $user): array
+    {
+        $qb = $this->getQueryBuilder();
+
+        $qb->orWhere('f.user = :user');
+        $qb->orWhere('f.friend = :user');
+        $qb->setParameter('user', $user);
+
+        return $this->findByCriteria([]);
+    }
 }
