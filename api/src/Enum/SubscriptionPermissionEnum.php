@@ -34,5 +34,7 @@ enum SubscriptionPermissionEnum
     case UPDATE_DIRECTORY_TO_PLAYLIST;
     case DELETE_DIRECTORY_TO_PLAYLIST;
     case UPDATE_PROFILE_DESIGN;
+    case SHOW_MY_FRIENDS;
     case ADD_AS_FRIEND;
+    case DELETE_FRIEND;
 }
