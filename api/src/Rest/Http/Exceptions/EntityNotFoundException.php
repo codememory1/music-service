@@ -141,4 +141,10 @@ class EntityNotFoundException extends ApiResponseException
     {
         return new self('entityNotFound@userProfile', data: $data, headers: $headers);
     }
+
+    #[Pure]
+    final public static function friend(array $data = [], array $headers = []): self
+    {
+        return new self('entityNotFound@friend', data: $data, headers: $headers);
+    }
 }

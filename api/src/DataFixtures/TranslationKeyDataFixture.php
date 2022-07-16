@@ -409,6 +409,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('friend@successDelete'),
             new TranslationKeyFactory('friend@notAccept'),
             new TranslationKeyFactory('friend@addMyselfAsFriend'),
+            new TranslationKeyFactory('friend@successAccept'),
         ]);
     }
 

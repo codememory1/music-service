@@ -403,6 +403,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'friend@successDelete', 'Пользователь успешно удален из списка друзей'),
             new TranslationFactory('ru', 'friend@notAccept', 'Невозможно добавить в друзья данного пользователя'),
             new TranslationFactory('ru', 'friend@addMyselfAsFriend', 'Невозможно добавить в друзья самого себя'),
+            new TranslationFactory('ru', 'friend@successAccept', 'Вы успешно приняли заявку на дружбу'),
         ]);
     }
 
