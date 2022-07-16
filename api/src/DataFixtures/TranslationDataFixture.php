@@ -224,6 +224,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteDirectoryToPlaylist', 'Удаление директорий плейлиста'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@updateProfileDesign', 'Редактирование дизайна профиля'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@addAsFriend', 'Добавление пользователей в друзья'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@showMyFriends', 'Просмотр моих друзей'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@deleteFriend', 'Удаление пользователя из списка друзей'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),

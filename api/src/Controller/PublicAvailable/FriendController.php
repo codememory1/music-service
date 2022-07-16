@@ -15,6 +15,7 @@ use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Friend\AcceptAsFriendService;
 use App\Service\Friend\AddAsFriendService;
+use App\Service\Friend\DeleteFriendService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,6 +31,7 @@ class FriendController extends AbstractRestController
 {
     #[Route('/friend/all', methods: 'GET')]
     #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_FRIENDS)]
     public function all(FriendResponseData $friendResponseData, FriendRepository $friendRepository): JsonResponse
     {
         $friendResponseData->setEntities($friendRepository->findByUser($this->authorizedUser->getUser()));
@@ -60,5 +62,21 @@ class FriendController extends AbstractRestController
         }
 
         return $acceptAsFriendService->make($friend);
+    }
+
+    #[Route('/friend/{friend_id<\d+>}/delete', methods: 'DELETE')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_FRIEND)]
+    public function deleteFriend(
+        #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friend,
+        DeleteFriendService $deleteFriendService
+    ): JsonResponse {
+        $authorizedUser = $this->authorizedUser->getUser();
+
+        if ($friend->getUser()->getId() !== $authorizedUser->getId() && $friend->getFriend()->getId() !== $authorizedUser->getId()) {
+            throw EntityNotFoundException::friend();
+        }
+
+        return $deleteFriendService->make($friend);
     }
 }
