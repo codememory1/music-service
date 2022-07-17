@@ -33,6 +33,7 @@ services:
       - postgres
       - redis
       - s3
+      - mailhog
 
   postgres:
     container_name: postgres
@@ -89,6 +90,13 @@ services:
       - "15672:15672"
     volumes:
       - "./data/rabbitmq/:/var/lib/rabbitmq/"
+
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
 
   user-session-process:
     container_name: user-session-process
