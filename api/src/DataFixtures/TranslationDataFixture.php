@@ -278,7 +278,9 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'notification@successCreate', 'Уведомление успешно создано'),
 
             new TranslationFactory('ru', 'userNotification@titleNewRelease', 'Новый релиз'),
-            new TranslationFactory('ru', 'userNotification@newReleaseToArtist', 'У артиста %artist_pseudonym% вышел новый релиз'),
+            new TranslationFactory('ru', 'userNotification@messageNewReleaseToArtist', 'У артиста %artist_pseudonym% вышел новый релиз'),
+            new TranslationFactory('ru', 'userNotification@titleSharedMultimedia', 'С вами поделились мультимедией'),
+            new TranslationFactory('ru', 'userNotification@messageSharedMultimedia', 'Ваш друг «%friend_name%» поделился с вами мультимедией «%multimedia_original_title%»'),
 
             new TranslationFactory('ru', 'serviceAuth@authorizationCodeIsRequired', 'Код авторизации обязателен к заполнению'),
 

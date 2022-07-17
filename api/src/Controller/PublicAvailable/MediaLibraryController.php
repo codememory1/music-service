@@ -79,14 +79,16 @@ class MediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
         ShareWithFriendMultimediaMediaLibraryService $shareWithFriendMultimediaMediaLibraryService
     ): JsonResponse {
-        if ($multimediaMediaLibrary->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+        $authorizedUser = $this->authorizedUser->getUser();
+
+        if ($multimediaMediaLibrary->getMediaLibrary() !== $authorizedUser->getMediaLibrary()) {
             throw EntityNotFoundException::multimedia();
         }
 
-        if (false === $friend->isFriend($this->authorizedUser->getUser())) {
+        if (false === $friend->isFriend($authorizedUser)) {
             throw EntityNotFoundException::friend();
         }
 
-        return $shareWithFriendMultimediaMediaLibraryService->make($multimediaMediaLibrary, $friend);
+        return $shareWithFriendMultimediaMediaLibraryService->make($multimediaMediaLibrary, $authorizedUser, $friend);
     }
 }

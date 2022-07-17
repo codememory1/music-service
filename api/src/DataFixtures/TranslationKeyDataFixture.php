@@ -283,7 +283,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('notification@successCreate'),
 
             new TranslationKeyFactory('userNotification@titleNewRelease'),
-            new TranslationKeyFactory('userNotification@newReleaseToArtist'),
+            new TranslationKeyFactory('userNotification@messageNewReleaseToArtist'),
+            new TranslationKeyFactory('userNotification@titleSharedMultimedia'),
+            new TranslationKeyFactory('userNotification@messageSharedMultimedia'),
 
             new TranslationKeyFactory('serviceAuth@authorizationCodeIsRequired'),
 

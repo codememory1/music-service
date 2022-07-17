@@ -3,6 +3,7 @@
 namespace App\Service\Notification;
 
 use App\Entity\Album;
+use App\Entity\MultimediaMediaLibrary;
 use App\Entity\Notification;
 use App\Entity\User;
 use App\Enum\FrontendRouteEnum;
@@ -57,12 +58,27 @@ class NotificationCollection
             $album->getUser(),
             $subscriber,
             'userNotification@titleNewRelease',
-            'userNotification@newReleaseToArtist',
+            'userNotification@messageNewReleaseToArtist',
             [
                 'artist_pseudonym' => $album->getUser()->getProfile()->getPseudonym()
             ],
             NotificationTypeEnum::REFERENTIAL,
             $redirectNotificationAction->getAction()
+        );
+    }
+
+    public function sharedMultimedia(User $from, User $to, MultimediaMediaLibrary $multimediaMediaLibrary): self
+    {
+        return $this->init(
+            $from,
+            $to,
+            'userNotification@titleSharedMultimedia',
+            'userNotification@messageSharedMultimedia',
+            [
+                'friend_name' => $from->getProfile()->getPseudonym(),
+                'multimedia_original_title' => $multimediaMediaLibrary->getMultimedia()->getTitle()
+            ],
+            actions: []
         );
     }
 
