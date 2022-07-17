@@ -7,7 +7,7 @@
                 </mj-text>
 
                 <mj-text>
-                    Здравствуйте, {{ user.getProfile.name }}, на ваш аккаунт был выполнен вход с незнакомого устройства:
+                    Здравствуйте, {{ user.getProfile.getPseudonym }}, на ваш аккаунт был выполнен вход с незнакомого устройства:
                 </mj-text>
                 <mj-text>
                     <p><b>Название устройства:</b> {{ userSession.device }}</p>

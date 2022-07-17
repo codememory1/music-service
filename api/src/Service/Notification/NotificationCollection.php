@@ -37,7 +37,7 @@ class NotificationCollection
             $from,
             $to,
             'common@authFromUnknownDevice',
-            'common@authFromUnknowDeviceMessage',
+            'common@authFromUnknownDeviceMessage',
             [
                 'device' => $device,
                 'ip' => $ip

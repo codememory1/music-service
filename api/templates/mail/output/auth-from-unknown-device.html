@@ -108,14 +108,14 @@
                     </tr>
                     <tr>
                       <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                        <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">Здравствуйте, {{ user.getProfile.name }}, на ваш аккаунт был выполнен вход с незнакомого устройства:</div>
+                        <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">Здравствуйте, {{ user.getProfile.getPseudonym }}, на ваш аккаунт был выполнен вход с незнакомого устройства:</div>
                       </td>
                     </tr>
                     <tr>
                       <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                         <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">
-                          <p><b>Название устройства:</b> {{ device }}</p>
-                          <p><b>IP-адрес:</b> {{ ip }}</p>
+                          <p><b>Название устройства:</b> {{ userSession.device }}</p>
+                          <p><b>IP-адрес:</b> {{ userSession.ip }}</p>
                         </div>
                       </td>
                     </tr>
