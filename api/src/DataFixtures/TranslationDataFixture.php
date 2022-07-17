@@ -75,6 +75,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityExist@mediaLibrary', 'У данного пользователя уже создана медиатека'),
             new TranslationFactory('ru', 'entityExist@multimediaToPlaylist', 'Данная мультимедиа уже существует в текущем плейлисте'),
             new TranslationFactory('ru', 'entityExist@friend', 'Данный пользователь уже был добавлен в список ваших друзей'),
+            new TranslationFactory('ru', 'entityExist@multimediaInMediaLibraryToUser', 'У данного пользователя уже существует данная мультимедиа'),
 
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
             new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),
@@ -226,6 +227,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@addAsFriend', 'Добавление пользователей в друзья'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@showMyFriends', 'Просмотр моих друзей'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteFriend', 'Удаление пользователя из списка друзей'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@shareMultimediaWithFriends', 'Поделится мультимедией с друзьями'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
@@ -338,6 +340,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimediaMediaLibrary@multimediaAlreadyAdd', 'Данная мультимедиа уже добавлена в медиатеку'),
             new TranslationFactory('ru', 'multimediaMediaLibrary@successAdd', 'Мультимедиа успешно добавлена в медиатеку'),
             new TranslationFactory('ru', 'multimediaMediaLibrary@successDelete', 'Мультимедиа успешно удалена'),
+            new TranslationFactory('ru', 'multimediaMediaLibrary@successShare', 'Вы успешно поделились мультимедией'),
 
             new TranslationFactory('ru', 'multimediaCategoryTitle@spatialAudio', 'Пространственное аудио'),
             new TranslationFactory('ru', 'multimediaCategoryTitle@calmness', 'Спокойствие'),

@@ -7,11 +7,13 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\DTO\MultimediaMediaLibraryDTO;
 use App\Entity\MultimediaMediaLibrary;
+use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
 use App\ResponseData\MultimediaMediaLibraryResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\MediaLibrary\DeleteMultimediaMediaLibraryService;
+use App\Service\MediaLibrary\ShareWithFriendMultimediaMediaLibraryService;
 use App\Service\MediaLibrary\UpdateMultimediaMediaLibraryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -67,5 +69,24 @@ class MediaLibraryController extends AbstractRestController
         }
 
         return $deleteMultimediaMediaLibraryService->make($multimediaMediaLibrary);
+    }
+
+    #[Route('/multimedia/{multimediaMediaLibrary_id<\d+>}/share/with-friend/{user_id<\d+>}', methods: 'PATCH')]
+    #[Authorization]
+//    #[SubscriptionPermission(SubscriptionPermissionEnum::SHARE_MULTIMEDIA_WITH_FRIENDS)]
+    public function shareMultimedia(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
+        ShareWithFriendMultimediaMediaLibraryService $shareWithFriendMultimediaMediaLibraryService
+    ): JsonResponse {
+        if ($multimediaMediaLibrary->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+            throw EntityNotFoundException::multimedia();
+        }
+
+        if (false === $friend->isFriend($this->authorizedUser->getUser())) {
+            throw EntityNotFoundException::friend();
+        }
+
+        return $shareWithFriendMultimediaMediaLibraryService->make($multimediaMediaLibrary, $friend);
     }
 }

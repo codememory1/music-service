@@ -93,4 +93,11 @@ class MultimediaMediaLibrary implements EntityInterface
 
         return $this;
     }
+
+    public function __clone(): void
+    {
+        $this->id = null;
+        $this->createdAt = null;
+        $this->updatedAt = null;
+    }
 }

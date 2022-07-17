@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints\Composite;
 final class Condition extends Composite
 {
     public readonly string $callbackCondition;
-    public readonly array $constraints;
+    public array $constraints;
 
     public function __construct(
         string $callbackCondition,

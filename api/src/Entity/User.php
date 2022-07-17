@@ -6,11 +6,13 @@ use App\DBAL\Types\PasswordType;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Enum\FriendStatusEnum;
 use App\Enum\ResponseTypeEnum;
 use App\Enum\UserStatusEnum;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
@@ -111,7 +113,10 @@ class User implements EntityInterface
     private ?MediaLibrary $mediaLibrary = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Friend::class, cascade: ['persist', 'remove'])]
-    private Collection $friends;
+    private Collection $friendRequests;
+
+    #[ORM\OneToMany(mappedBy: 'friend', targetEntity: Friend::class, cascade: ['persist', 'remove'])]
+    private Collection $acceptedFriendRequests;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSetting::class, cascade: ['persist', 'remove'])]
     private ?UserSetting $setting = null;
@@ -132,7 +137,8 @@ class User implements EntityInterface
         $this->multimediaRatings = new ArrayCollection();
         $this->subscribers = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
-        $this->friends = new ArrayCollection();
+        $this->friendRequests = new ArrayCollection();
+        $this->acceptedFriendRequests = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -605,13 +611,16 @@ class User implements EntityInterface
      */
     public function getFriends(): Collection
     {
-        return $this->friends;
+        return new ArrayCollection(array_merge(
+            $this->friendRequests->toArray(),
+            $this->acceptedFriendRequests->toArray()
+        ));
     }
 
     public function addFriend(Friend $friend): self
     {
-        if (!$this->friends->contains($friend)) {
-            $this->friends[] = $friend;
+        if (!$this->friendRequests->contains($friend)) {
+            $this->friendRequests[] = $friend;
             $friend->setUser($this);
         }
 
@@ -620,7 +629,7 @@ class User implements EntityInterface
 
     public function removeFriend(Friend $friend): self
     {
-        if ($this->friends->removeElement($friend)) {
+        if ($this->friendRequests->removeElement($friend)) {
             // set the owning side to null (unless already changed)
             if ($friend->getUser() === $this) {
                 $friend->setUser(null);
@@ -628,6 +637,17 @@ class User implements EntityInterface
         }
 
         return $this;
+    }
+
+    public function isFriend(self $user): bool
+    {
+        $criteria = Criteria::create();
+
+        $criteria->orWhere(Criteria::expr()->eq('user', $user));
+        $criteria->orWhere(Criteria::expr()->eq('friend', $user));
+        $criteria->andWhere(Criteria::expr()->eq('status', FriendStatusEnum::CONFIRMED->name));
+
+        return 1 === $this->getFriends()->matching($criteria)->count();
     }
 
     public function getSetting(): ?UserSetting
