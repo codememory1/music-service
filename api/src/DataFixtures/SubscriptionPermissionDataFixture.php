@@ -48,6 +48,7 @@ final class SubscriptionPermissionDataFixture extends AbstractDataFixture implem
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::SHOW_MY_FRIENDS),
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::ADD_AS_FRIEND),
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::DELETE_FRIEND),
+            new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::SHARE_MULTIMEDIA_WITH_FRIENDS),
 
             new SubscriptionPermissionFactory(SubscriptionEnum::PREMIUM, SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA),
             new SubscriptionPermissionFactory(SubscriptionEnum::PREMIUM, SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST),
@@ -65,6 +66,7 @@ final class SubscriptionPermissionDataFixture extends AbstractDataFixture implem
             new SubscriptionPermissionFactory(SubscriptionEnum::PREMIUM, SubscriptionPermissionEnum::SHOW_MY_FRIENDS),
             new SubscriptionPermissionFactory(SubscriptionEnum::PREMIUM, SubscriptionPermissionEnum::ADD_AS_FRIEND),
             new SubscriptionPermissionFactory(SubscriptionEnum::PREMIUM, SubscriptionPermissionEnum::DELETE_FRIEND),
+            new SubscriptionPermissionFactory(SubscriptionEnum::PREMIUM, SubscriptionPermissionEnum::SHARE_MULTIMEDIA_WITH_FRIENDS),
 
             new SubscriptionPermissionFactory(SubscriptionEnum::FAMILY, SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA),
             new SubscriptionPermissionFactory(SubscriptionEnum::FAMILY, SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST),
@@ -82,6 +84,7 @@ final class SubscriptionPermissionDataFixture extends AbstractDataFixture implem
             new SubscriptionPermissionFactory(SubscriptionEnum::FAMILY, SubscriptionPermissionEnum::SHOW_MY_FRIENDS),
             new SubscriptionPermissionFactory(SubscriptionEnum::FAMILY, SubscriptionPermissionEnum::ADD_AS_FRIEND),
             new SubscriptionPermissionFactory(SubscriptionEnum::FAMILY, SubscriptionPermissionEnum::DELETE_FRIEND),
+            new SubscriptionPermissionFactory(SubscriptionEnum::FAMILY, SubscriptionPermissionEnum::SHARE_MULTIMEDIA_WITH_FRIENDS),
         ]);
     }
 
