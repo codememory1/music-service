@@ -113,6 +113,9 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Friend::class, cascade: ['persist', 'remove'])]
     private Collection $friends;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSetting::class, cascade: ['persist', 'remove'])]
+    private ?UserSetting $setting = null;
+
     #[Pure]
     public function __construct()
     {
@@ -623,6 +626,23 @@ class User implements EntityInterface
                 $friend->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSetting(): ?UserSetting
+    {
+        return $this->setting;
+    }
+
+    public function setSetting(UserSetting $setting): self
+    {
+        // set the owning side of the relation if necessary
+        if ($setting->getUser() !== $this) {
+            $setting->setUser($this);
+        }
+
+        $this->setting = $setting;
 
         return $this;
     }
