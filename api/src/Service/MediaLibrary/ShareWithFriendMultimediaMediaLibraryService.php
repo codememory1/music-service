@@ -6,7 +6,9 @@ use App\Entity\MultimediaMediaLibrary;
 use App\Entity\User;
 use App\Rest\Http\Exceptions\EntityExistException;
 use App\Service\AbstractService;
+use App\Service\Notification\NotificationCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class ShareWithFriendMultimediaMediaLibraryService.
@@ -17,7 +19,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ShareWithFriendMultimediaMediaLibraryService extends AbstractService
 {
-    public function make(MultimediaMediaLibrary $multimediaMediaLibrary, User $friend): JsonResponse
+    #[Required]
+    public ?NotificationCollection $notificationCollection = null;
+
+    public function make(MultimediaMediaLibrary $multimediaMediaLibrary, User $from, User $friend): JsonResponse
     {
         $multimediaMediaLibrary = clone $multimediaMediaLibrary;
         $multimediaMediaLibrary->setMediaLibrary($friend->getMediaLibrary());
@@ -29,6 +34,8 @@ class ShareWithFriendMultimediaMediaLibraryService extends AbstractService
         $friend->getMediaLibrary()->addMultimedia($multimediaMediaLibrary);
 
         $this->em->flush();
+
+        $this->notificationCollection->sharedMultimedia($from, $friend, $multimediaMediaLibrary);
 
         return $this->responseCollection->successUpdate('multimediaMediaLibrary@successShare');
     }
