@@ -74,6 +74,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityExist@mediaLibrary'),
             new TranslationKeyFactory('entityExist@multimediaToPlaylist'),
             new TranslationKeyFactory('entityExist@friend'),
+            new TranslationKeyFactory('entityExist@multimediaInMediaLibraryToUser'),
 
             new TranslationKeyFactory('auth@successAuthorization'),
             new TranslationKeyFactory('auth@authRequired'),
@@ -231,6 +232,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@addAsFriend'),
             new TranslationKeyFactory('subscriptionPermissionKey@showMyFriends'),
             new TranslationKeyFactory('subscriptionPermissionKey@deleteFriend'),
+            new TranslationKeyFactory('subscriptionPermissionKey@shareMultimediaWithFriends'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),
@@ -344,6 +346,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('multimediaMediaLibrary@multimediaAlreadyAdd'),
             new TranslationKeyFactory('multimediaMediaLibrary@successAdd'),
             new TranslationKeyFactory('multimediaMediaLibrary@successDelete'),
+            new TranslationKeyFactory('multimediaMediaLibrary@successShare'),
 
             new TranslationKeyFactory('multimediaCategoryTitle@spatialAudio'),
             new TranslationKeyFactory('multimediaCategoryTitle@calmness'),

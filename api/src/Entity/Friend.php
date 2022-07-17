@@ -26,7 +26,7 @@ class Friend implements EntityInterface
 
     use TimestampTrait;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'friends')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'friendRequests')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
