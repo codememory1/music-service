@@ -41,12 +41,12 @@ class CollectorSessionService
     {
         $agent = new Agent();
         $userSessionEntity ??= new UserSession();
-        $ipResponse = $this->client->request($userDTO->ip)->response();
+        $ipResponse = $this->client->request('172.104.14.65')->response();
 
         $userSessionEntity->setUser($user);
         $userSessionEntity->setType($type);
         $userSessionEntity->setBrowser($agent->browser());
-        $userSessionEntity->setIp($userDTO->ip);
+        $userSessionEntity->setIp('172.104.14.65');
         $userSessionEntity->setDevice($agent->device());
         $userSessionEntity->setOperatingSystem($agent->platform());
 
