@@ -13,6 +13,7 @@ use App\ResponseData\MultimediaMediaLibraryResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\MediaLibrary\DeleteMultimediaMediaLibraryService;
+use App\Service\MediaLibrary\ShareWithFriendMediaLibraryService;
 use App\Service\MediaLibrary\ShareWithFriendMultimediaMediaLibraryService;
 use App\Service\MediaLibrary\UpdateMultimediaMediaLibraryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -90,5 +91,25 @@ class MediaLibraryController extends AbstractRestController
         }
 
         return $shareWithFriendMultimediaMediaLibraryService->make($multimediaMediaLibrary, $authorizedUser, $friend);
+    }
+
+    #[Route('/share/with-friend/{user_id<\d+>}', methods: 'PATCH')]
+    #[Authorization]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::SHARE_MEDIA_LIBRARY_WITH_FRIENDS)]
+    public function shareMediaLibrary(
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
+        ShareWithFriendMediaLibraryService $shareWithFriendMediaLibraryService
+    ): JsonResponse {
+        $authorizedUser = $this->authorizedUser->getUser();
+
+        if (null === $authorizedUser->getMediaLibrary()) {
+            throw EntityNotFoundException::mediaLibraryNotCreated();
+        }
+
+        if (false === $friend->isFriend($authorizedUser)) {
+            throw EntityNotFoundException::friend();
+        }
+
+        return $shareWithFriendMediaLibraryService->make($authorizedUser->getMediaLibrary(), $authorizedUser, $friend);
     }
 }
