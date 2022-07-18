@@ -38,4 +38,5 @@ enum SubscriptionPermissionEnum
     case ADD_AS_FRIEND;
     case DELETE_FRIEND;
     case SHARE_MULTIMEDIA_WITH_FRIENDS;
+    case SHARE_MEDIA_LIBRARY_WITH_FRIENDS;
 }

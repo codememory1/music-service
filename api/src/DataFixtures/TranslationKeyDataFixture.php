@@ -233,6 +233,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@showMyFriends'),
             new TranslationKeyFactory('subscriptionPermissionKey@deleteFriend'),
             new TranslationKeyFactory('subscriptionPermissionKey@shareMultimediaWithFriends'),
+            new TranslationKeyFactory('subscriptionPermissionKey@shareMediaLibraryWithFriends'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),
@@ -344,6 +345,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('mediaLibrary@successUpdate'),
             new TranslationKeyFactory('mediaLibrary@invalidStatus'),
             new TranslationKeyFactory('mediaLibrary@notCreated'),
+            new TranslationKeyFactory('mediaLibrary@successShare'),
 
             new TranslationKeyFactory('multimediaMediaLibrary@multimediaAlreadyAdd'),
             new TranslationKeyFactory('multimediaMediaLibrary@successAdd'),

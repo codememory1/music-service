@@ -228,6 +228,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@showMyFriends', 'Просмотр моих друзей'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteFriend', 'Удаление пользователя из списка друзей'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@shareMultimediaWithFriends', 'Поделится мультимедией с друзьями'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@shareMediaLibraryWithFriends', 'Поделится медиатекой с друзьями'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
@@ -338,6 +339,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'mediaLibrary@successUpdate', 'Медиатека успешно обновлена'),
             new TranslationFactory('ru', 'mediaLibrary@invalidStatus', 'Некорректный статус медиатеки'),
             new TranslationFactory('ru', 'mediaLibrary@notCreated', 'Медиатека не создана'),
+            new TranslationFactory('ru', 'mediaLibrary@successShare', 'Вы успешно поделились медиатекой'),
 
             new TranslationFactory('ru', 'multimediaMediaLibrary@multimediaAlreadyAdd', 'Данная мультимедиа уже добавлена в медиатеку'),
             new TranslationFactory('ru', 'multimediaMediaLibrary@successAdd', 'Мультимедиа успешно добавлена в медиатеку'),
