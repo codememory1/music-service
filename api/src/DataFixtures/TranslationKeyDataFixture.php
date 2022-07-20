@@ -65,6 +65,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityNotFound@playlistDirectory'),
             new TranslationKeyFactory('entityNotFound@userProfile'),
             new TranslationKeyFactory('entityNotFound@friend'),
+            new TranslationKeyFactory('entityNotFound@multimediaEvent'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -75,6 +76,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityExist@multimediaToPlaylist'),
             new TranslationKeyFactory('entityExist@friend'),
             new TranslationKeyFactory('entityExist@multimediaInMediaLibraryToUser'),
+            new TranslationKeyFactory('entityExist@multimediaMediaLibraryEvent'),
 
             new TranslationKeyFactory('auth@successAuthorization'),
             new TranslationKeyFactory('auth@authRequired'),
@@ -234,6 +236,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@deleteFriend'),
             new TranslationKeyFactory('subscriptionPermissionKey@shareMultimediaWithFriends'),
             new TranslationKeyFactory('subscriptionPermissionKey@shareMediaLibraryWithFriends'),
+            new TranslationKeyFactory('subscriptionPermissionKey@controlMultimediaMediaLibraryEvent'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),
@@ -419,6 +422,12 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('friend@notAccept'),
             new TranslationKeyFactory('friend@addMyselfAsFriend'),
             new TranslationKeyFactory('friend@successAccept'),
+
+            new TranslationKeyFactory('event@successAdd'),
+            new TranslationKeyFactory('event@successUpdate'),
+            new TranslationKeyFactory('event@successDelete'),
+            new TranslationKeyFactory('event@keyIsRequired'),
+            new TranslationKeyFactory('event@invalidPayload'),
         ]);
     }
 

@@ -49,6 +49,7 @@ final class SubscriptionPermissionKeyDataFixture extends AbstractDataFixture imp
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_FRIEND, 'subscriptionPermissionKey@deleteFriend'),
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::SHARE_MULTIMEDIA_WITH_FRIENDS, 'subscriptionPermissionKey@shareMultimediaWithFriends'),
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::SHARE_MEDIA_LIBRARY_WITH_FRIENDS, 'subscriptionPermissionKey@shareMediaLibraryWithFriends'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT, 'subscriptionPermissionKey@controlMultimediaMediaLibraryEvent'),
         ]);
     }
 

@@ -36,7 +36,7 @@ class JsonSchemaValidator extends ConstraintValidator
         if (false === $validationResult->isValid()) {
             $this->context
                 ->buildViolation($constraint->message)
-                ->setParameter('{{ property }}', $this->context->getPropertyName())
+                ->setParameter('{{ property }}', $this->context->getPropertyName() ?: $this->context->getPropertyPath())
                 ->addViolation();
         }
     }
