@@ -1,0 +1,10 @@
+{
+    "type": "object",
+    "properties": {
+        "on_time": {
+            "type": "number"
+        }
+    },
+    "required": ["on_time"],
+    "additionalProperties": false
+}

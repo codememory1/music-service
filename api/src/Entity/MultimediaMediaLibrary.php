@@ -7,8 +7,11 @@ use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\ResponseTypeEnum;
 use App\Repository\MultimediaMediaLibraryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -45,6 +48,15 @@ class MultimediaMediaLibrary implements EntityInterface
         'comment' => 'Media image that will only be visible inside the Music Library'
     ])]
     private ?string $image = null;
+
+    #[ORM\OneToMany(mappedBy: 'multimediaMediaLibrary', targetEntity: MultimediaMediaLibraryEvent::class)]
+    private Collection $events;
+
+    #[Pure]
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+    }
 
     public function getMediaLibrary(): ?MediaLibrary
     {
@@ -90,6 +102,36 @@ class MultimediaMediaLibrary implements EntityInterface
     public function setImage(?string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaMediaLibraryEvent>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(MultimediaMediaLibraryEvent $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->setMultimediaMediaLibrary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(MultimediaMediaLibraryEvent $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getMultimediaMediaLibrary() === $this) {
+                $event->setMultimediaMediaLibrary(null);
+            }
+        }
 
         return $this;
     }

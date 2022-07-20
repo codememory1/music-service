@@ -66,6 +66,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@playlistDirectory', 'Директория плейлиста не найдена'),
             new TranslationFactory('ru', 'entityNotFound@userProfile', 'Профиль пользователя не найден'),
             new TranslationFactory('ru', 'entityNotFound@friend', 'Друг не найден'),
+            new TranslationFactory('ru', 'entityNotFound@multimediaEvent', 'События мультимедиа не найдено'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -76,6 +77,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityExist@multimediaToPlaylist', 'Данная мультимедиа уже существует в текущем плейлисте'),
             new TranslationFactory('ru', 'entityExist@friend', 'Данный пользователь уже был добавлен в список ваших друзей'),
             new TranslationFactory('ru', 'entityExist@multimediaInMediaLibraryToUser', 'У данного пользователя уже существует данная мультимедиа'),
+            new TranslationFactory('ru', 'entityExist@multimediaMediaLibraryEvent', 'Данное событие уже добавлено на данное мультимедиа'),
 
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
             new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),
@@ -229,6 +231,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteFriend', 'Удаление пользователя из списка друзей'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@shareMultimediaWithFriends', 'Поделится мультимедией с друзьями'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@shareMediaLibraryWithFriends', 'Поделится медиатекой с друзьями'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@controlMultimediaMediaLibraryEvent', 'Контроль над событиями мультимедиа в медиатеки'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
@@ -413,6 +416,12 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'friend@notAccept', 'Невозможно добавить в друзья данного пользователя'),
             new TranslationFactory('ru', 'friend@addMyselfAsFriend', 'Невозможно добавить в друзья самого себя'),
             new TranslationFactory('ru', 'friend@successAccept', 'Вы успешно приняли заявку на дружбу'),
+
+            new TranslationFactory('ru', 'event@successAdd', 'Событие успешно добавлено'),
+            new TranslationFactory('ru', 'event@successUpdate', 'Событие успешно обновлено'),
+            new TranslationFactory('ru', 'event@successDelete', 'Событие успешно удалено'),
+            new TranslationFactory('ru', 'event@keyIsRequired', 'Ключ события обязательный к заполнению'),
+            new TranslationFactory('ru', 'event@invalidPayload', 'Некорректный входные данные события'),
         ]);
     }
 
