@@ -4,13 +4,10 @@ namespace App\DTO;
 
 use App\DTO\Interceptors\AsArrayInterceptor;
 use App\DTO\Interceptors\AsEnumInterceptor;
+use App\DTO\Traits\EventTrait;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\MultimediaMediaLibraryEvent;
 use App\Enum\MultimediaMediaLibraryEventEnum;
-use App\Service\Event\Interfaces\EventInterface;
-use App\Validator\Constraints as AppAssert;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class MultimediaMediaLibraryEventDTO.
@@ -22,11 +19,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class MultimediaMediaLibraryEventDTO extends AbstractDTO
 {
+    use EventTrait;
     protected EntityInterface|string|null $entity = MultimediaMediaLibraryEvent::class;
-
-    #[Assert\NotBlank(message: 'event@keyIsRequired')]
-    public ?MultimediaMediaLibraryEventEnum $key = null;
-    public ?EventInterface $payload = null;
 
     protected function wrapper(): void
     {
@@ -35,17 +29,5 @@ class MultimediaMediaLibraryEventDTO extends AbstractDTO
 
         $this->addInterceptor('key', new AsEnumInterceptor(MultimediaMediaLibraryEventEnum::class));
         $this->addInterceptor('payload', new AsArrayInterceptor());
-    }
-
-    #[Assert\Callback]
-    public function callbackPayload(ExecutionContextInterface $context): void
-    {
-        if (null !== $this->key) {
-            $context
-                ->getValidator()
-                ->inContext($context)
-                ->atPath('payload')
-                ->validate($this->payload, new AppAssert\JsonSchema($this->key->value, 'event@invalidPayload'));
-        }
     }
 }

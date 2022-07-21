@@ -16,10 +16,10 @@ use App\Service\MultimediaMediaLibraryEvent\DeleteMultimediaMediaLibraryEventSer
  */
 enum MultimediaMediaLibraryEventEnum : string
 {
-    case START_ON_TIME = 'multimedia-media-library/events/start_on_time';
-    case END_ON_TIME = 'multimedia-media-library/events/end_on_time';
-    case NEXT_MULTIMEDIA_AFTER_END = 'multimedia-media-library/events/next_multimedia_after_end';
-    case DELETE_MULTIMEDIA_AFTER_NUMBER_PLAYS = 'multimedia-media-library/events/delete_multimedia_after_number_plays';
+    case START_ON_TIME = 'events/multimedia-media-library/start_on_time';
+    case END_ON_TIME = 'events/multimedia-media-library/end_on_time';
+    case NEXT_MULTIMEDIA_AFTER_END = 'events/multimedia-media-library/next_multimedia_after_end';
+    case DELETE_MULTIMEDIA_AFTER_NUMBER_PLAYS = 'events/multimedia-media-library/delete_multimedia_after_number_plays';
     public const SCHEME = [
         StartOnTimeEventService::class => self::START_ON_TIME,
         EndOnTimeEventService::class => self::END_ON_TIME,

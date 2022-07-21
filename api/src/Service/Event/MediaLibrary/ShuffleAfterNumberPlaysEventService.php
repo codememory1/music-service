@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\MediaLibrary;
+namespace App\Service\Event\MediaLibrary;
 
 use App\Service\Event\Interfaces\EventInterface;
 

@@ -150,6 +150,7 @@ services:
       exclude:
         - '../src/Service/DataRepresentation/AbstractDataRepresentation.php'
         - '../src/Service/ObjectComparisonPercentageService.php'
+        - '../src/Service/Event/'
 
     App\Service\DataRepresentation\:
       resource: '../src/Service/DataRepresentation/'
