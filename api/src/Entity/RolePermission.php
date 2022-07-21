@@ -21,7 +21,6 @@ use Doctrine\ORM\Mapping as ORM;
 class RolePermission implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'permissions')]

@@ -22,7 +22,6 @@ use Doctrine\ORM\Mapping as ORM;
 class PlatformSetting implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [

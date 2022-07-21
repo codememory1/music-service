@@ -71,7 +71,7 @@ return (new PhpCsFixer\Config())
 		],
 		'class_attributes_separation' => [
 			'elements' => [
-				'trait_import' => 'one',
+				'trait_import' => 'none',
 				'case' => 'only_if_meta',
 				'const'  => 'only_if_meta',
 				'property' => 'only_if_meta',

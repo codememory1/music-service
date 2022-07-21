@@ -21,7 +21,6 @@ use Doctrine\ORM\Mapping as ORM;
 class MultimediaPlaylist implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: Playlist::class, inversedBy: 'multimedia')]

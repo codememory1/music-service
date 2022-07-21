@@ -28,7 +28,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class MultimediaMediaLibrary implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'multimedia')]

@@ -30,7 +30,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class MultimediaMediaLibraryEvent implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, options: [

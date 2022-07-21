@@ -25,7 +25,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Album implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'albums')]

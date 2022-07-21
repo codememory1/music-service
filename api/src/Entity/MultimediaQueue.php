@@ -21,7 +21,6 @@ use Doctrine\ORM\Mapping as ORM;
 class MultimediaQueue implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\OneToOne(inversedBy: 'queue', targetEntity: Multimedia::class)]

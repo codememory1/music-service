@@ -18,7 +18,6 @@ use Doctrine\Common\Collections\Collection;
 class UserRoleResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
-
     use ToTranslationHandlerTrait;
     public ?int $id = null;
     public ?string $key = null;

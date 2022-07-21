@@ -20,7 +20,6 @@ use Doctrine\Common\Collections\Collection;
 class SubscriptionResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
-
     use ToTranslationHandlerTrait;
     protected array $methodPrefixesForProperties = [
         'isRecommend' => ''

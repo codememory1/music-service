@@ -23,7 +23,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Friend implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'friendRequests')]

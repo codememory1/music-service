@@ -21,7 +21,6 @@ use Doctrine\ORM\Mapping as ORM;
 class SubscriptionPermission implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: Subscription::class, inversedBy: 'permissions')]

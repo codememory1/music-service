@@ -24,9 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
 class AccountActivationCode implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
-
     use ValidTtlTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'accountActivationCodes')]

@@ -19,7 +19,6 @@ use App\ResponseData\Traits\ToTranslationHandlerTrait;
 class MultimediaCategoryResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
-
     use ToTranslationHandlerTrait;
 
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]

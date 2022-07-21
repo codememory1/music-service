@@ -27,7 +27,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class UserProfile implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\OneToOne(inversedBy: 'profile', targetEntity: User::class)]

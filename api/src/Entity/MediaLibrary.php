@@ -26,7 +26,6 @@ use JetBrains\PhpStorm\Pure;
 class MediaLibrary implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\OneToOne(inversedBy: 'mediaLibrary', targetEntity: User::class)]
