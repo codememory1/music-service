@@ -7,6 +7,7 @@ use App\DTO\Interceptors\AsEnumInterceptor;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\MultimediaMediaLibraryEvent;
 use App\Enum\MultimediaMediaLibraryEventEnum;
+use App\Service\Event\Interfaces\EventInterface;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -25,7 +26,7 @@ class MultimediaMediaLibraryEventDTO extends AbstractDTO
 
     #[Assert\NotBlank(message: 'event@keyIsRequired')]
     public ?MultimediaMediaLibraryEventEnum $key = null;
-    public array $payload = [];
+    public ?EventInterface $payload = null;
 
     protected function wrapper(): void
     {
