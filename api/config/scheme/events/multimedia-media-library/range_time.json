@@ -1,0 +1,19 @@
+{
+    "type": "object",
+    "properties": {
+        "from_time": {
+            "type": "number"
+        },
+        "to_time": {
+            "type": "number"
+        }
+    },
+    "anyOf": [
+        {
+            "required": ["from_time"]
+        },
+        {
+            "required": ["to_time"]
+        }
+    ]
+}

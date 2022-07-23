@@ -108,6 +108,12 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
+    #[Pure]
+    public function isMultimediaBelongsToMediaLibrary(MultimediaMediaLibrary $multimedia): bool
+    {
+        return $multimedia->getMediaLibrary()->getId() === $this->getId();
+    }
+
     /**
      * @return Collection<int, Playlist>
      */

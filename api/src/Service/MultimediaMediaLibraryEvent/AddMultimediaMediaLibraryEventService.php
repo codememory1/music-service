@@ -6,6 +6,7 @@ use App\DTO\MultimediaMediaLibraryEventDTO;
 use App\Entity\MultimediaMediaLibrary;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class AddMultimediaMediaLibraryEventService.
@@ -16,6 +17,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class AddMultimediaMediaLibraryEventService extends AbstractService
 {
+    #[Required]
+    public ?SaveMultimediaMediaLibraryEventService $saveMultimediaMediaLibraryEventService = null;
+
     public function make(MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO, MultimediaMediaLibrary $multimediaMediaLibrary): JsonResponse
     {
         $multimediaMediaLibraryEventEntity = $multimediaMediaLibraryEventDTO->getEntity();
@@ -26,8 +30,7 @@ class AddMultimediaMediaLibraryEventService extends AbstractService
             return $response;
         }
 
-        $this->em->persist($multimediaMediaLibraryEventEntity);
-        $this->em->flush();
+        $this->saveMultimediaMediaLibraryEventService->make($multimediaMediaLibraryEventDTO, $multimediaMediaLibrary);
 
         return $this->responseCollection->successCreate('event@successAdd');
     }

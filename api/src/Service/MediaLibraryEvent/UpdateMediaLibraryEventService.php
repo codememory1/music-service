@@ -3,8 +3,10 @@
 namespace App\Service\MediaLibraryEvent;
 
 use App\DTO\MediaLibraryEventDTO;
+use App\Entity\MediaLibrary;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class UpdateMediaLibraryEventService.
@@ -15,13 +17,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class UpdateMediaLibraryEventService extends AbstractService
 {
-    public function make(MediaLibraryEventDTO $mediaLibraryEventDTO): JsonResponse
+    #[Required]
+    public ?SaveMediaLibraryEventService $saveMediaLibraryEventService = null;
+
+    public function make(MediaLibraryEventDTO $mediaLibraryEventDTO, MediaLibrary $mediaLibrary): JsonResponse
     {
         if (true !== $response = $this->validateFullDTO($mediaLibraryEventDTO)) {
             return $response;
         }
 
-        $this->em->flush();
+        $this->saveMediaLibraryEventService->make($mediaLibraryEventDTO, $mediaLibrary);
 
         return $this->responseCollection->successCreate('event@successUpdate');
     }

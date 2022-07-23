@@ -2,7 +2,8 @@
     "type": "object",
     "properties": {
         "number": {
-            "type": "integer"
+            "type": "integer",
+            "min": 1
         }
     },
     "required": ["number"],
