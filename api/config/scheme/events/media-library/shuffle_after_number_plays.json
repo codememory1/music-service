@@ -1,20 +1,10 @@
 {
     "type": "object",
     "properties": {
-        "if_like": {
-            "type": "boolean"
-        },
-        "if_dislike": {
-            "type": "boolean"
+        "numbers": {
+            "type": "integer",
+            "min": 1
         }
     },
-    "oneOf": [
-        {
-            "required": ["if_like"]
-        },
-        {
-            "required": ["if_dislike"]
-        }
-    ],
     "additionalProperties": false
 }

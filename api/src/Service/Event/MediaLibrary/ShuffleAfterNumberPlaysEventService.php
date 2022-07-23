@@ -20,14 +20,9 @@ class ShuffleAfterNumberPlaysEventService implements EventInterface
         $this->payload = $payload;
     }
 
-    public function isLike(): bool
+    public function numbers(): int
     {
-        return $this->payload['if_like'] ?? false;
-    }
-
-    public function isDislike(): bool
-    {
-        return $this->payload['is_dislike'] ?? false;
+        return $this->payload['numbers'];
     }
 
     public function toArray(): array
