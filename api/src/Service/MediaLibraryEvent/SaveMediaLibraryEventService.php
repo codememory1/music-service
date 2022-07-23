@@ -20,14 +20,10 @@ class SaveMediaLibraryEventService extends AbstractService
     #[Required]
     public ?EventPayloadHandlerService $eventPayloadHandlerService = null;
 
-    public function make(MediaLibraryEventDTO $mediaLibraryEventDTO, MediaLibrary $mediaLibrary, MediaLibraryEvent $mediaLibraryEvent): void
+    public function make(MediaLibraryEventDTO $mediaLibraryEventDTO, MediaLibrary $mediaLibrary, ?MediaLibraryEvent $mediaLibraryEvent = null): void
     {
         $this->eventPayloadHandlerService->handler($mediaLibraryEventDTO, $mediaLibrary);
 
-        if (null === $mediaLibraryEvent->getId()) {
-            $this->em->persist($mediaLibraryEvent);
-        }
-
-        $this->em->flush();
+        $this->flusherService->save($mediaLibraryEvent);
     }
 }

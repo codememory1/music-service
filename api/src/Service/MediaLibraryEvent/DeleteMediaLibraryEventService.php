@@ -17,8 +17,7 @@ class DeleteMediaLibraryEventService extends AbstractService
 {
     public function make(MediaLibraryEvent $mediaLibraryEvent): JsonResponse
     {
-        $this->em->remove($mediaLibraryEvent);
-        $this->em->flush();
+        $this->flusherService->remove($mediaLibraryEvent);
 
         return $this->responseCollection->successCreate('event@successDelete');
     }

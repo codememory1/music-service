@@ -18,13 +18,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 abstract class AbstractService
 {
-    protected EntityManagerInterface $em;
-    protected Validator $validator;
+    protected readonly EntityManagerInterface $em;
+    protected readonly FlusherService $flusherService;
+    protected readonly Validator $validator;
     protected readonly ResponseCollection $responseCollection;
 
-    public function __construct(EntityManagerInterface $manager, Validator $validator, ResponseCollection $responseCollection)
-    {
+    public function __construct(
+        EntityManagerInterface $manager,
+        FlusherService $flusherService,
+        Validator $validator,
+        ResponseCollection $responseCollection
+    ) {
         $this->em = $manager;
+        $this->flusherService = $flusherService;
         $this->validator = $validator;
         $this->responseCollection = $responseCollection;
     }

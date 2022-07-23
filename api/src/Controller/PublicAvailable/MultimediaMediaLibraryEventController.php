@@ -59,7 +59,10 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
 
         $multimediaMediaLibraryEventDTO->setEntity($multimediaMediaLibraryEvent);
 
-        return $updateMultimediaMediaLibraryEventService->make($multimediaMediaLibraryEventDTO->collect());
+        return $updateMultimediaMediaLibraryEventService->make(
+            $multimediaMediaLibraryEventDTO->collect(),
+            $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()
+        );
     }
 
     #[Route('/event/{multimediaMediaLibraryEvent_id}/delete', methods: 'DELETE')]

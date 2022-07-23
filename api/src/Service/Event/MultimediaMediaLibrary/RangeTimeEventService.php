@@ -5,13 +5,13 @@ namespace App\Service\Event\MultimediaMediaLibrary;
 use App\Service\Event\Interfaces\EventInterface;
 
 /**
- * Class StartOnTimeEventService.
+ * Class RangeTimeEventService.
  *
  * @package App\Service\Event\MultimediaMediaLibrary
  *
  * @author  Codememory
  */
-class StartOnTimeEventService implements EventInterface
+class RangeTimeEventService implements EventInterface
 {
     private array $payload;
 
@@ -20,9 +20,14 @@ class StartOnTimeEventService implements EventInterface
         $this->payload = $payload;
     }
 
-    public function getFromTime(): int|float
+    public function getFromTime(): null|int|float
     {
-        return $this->payload['from_time'];
+        return $this->payload['from_time'] ?? null;
+    }
+
+    public function getToTime(): null|int|float
+    {
+        return $this->payload['to_time'] ?? null;
     }
 
     public function toArray(): array
