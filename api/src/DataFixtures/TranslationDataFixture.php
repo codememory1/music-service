@@ -67,6 +67,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityNotFound@userProfile', 'Профиль пользователя не найден'),
             new TranslationFactory('ru', 'entityNotFound@friend', 'Друг не найден'),
             new TranslationFactory('ru', 'entityNotFound@multimediaEvent', 'События мультимедиа не найдено'),
+            new TranslationFactory('ru', 'entityNotFound@mediaLibraryEvent', 'События медиатеки не найдено'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -78,6 +79,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'entityExist@friend', 'Данный пользователь уже был добавлен в список ваших друзей'),
             new TranslationFactory('ru', 'entityExist@multimediaInMediaLibraryToUser', 'У данного пользователя уже существует данная мультимедиа'),
             new TranslationFactory('ru', 'entityExist@multimediaMediaLibraryEvent', 'Данное событие уже добавлено на данное мультимедиа'),
+            new TranslationFactory('ru', 'entityExist@mediaLibraryEvent', 'Данное событие уже добавлено в медиатеку'),
 
             new TranslationFactory('ru', 'auth@successAuthorization', 'Вы успешно вошли в аккаунт'),
             new TranslationFactory('ru', 'auth@authRequired', 'Вы не авторизованы'),
@@ -232,6 +234,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'subscriptionPermissionKey@shareMultimediaWithFriends', 'Поделится мультимедией с друзьями'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@shareMediaLibraryWithFriends', 'Поделится медиатекой с друзьями'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@controlMultimediaMediaLibraryEvent', 'Контроль над событиями мультимедиа в медиатеки'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@controlMediaLibraryEvent', 'Контроль над событиями медиатеки'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),

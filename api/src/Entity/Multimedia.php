@@ -27,7 +27,6 @@ use JetBrains\PhpStorm\Pure;
 class Multimedia implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'multimedia')]

@@ -25,7 +25,6 @@ use JetBrains\PhpStorm\Pure;
 class PlaylistDirectory implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\Column(type: Types::STRING, length: 50, options: [

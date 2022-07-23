@@ -22,7 +22,6 @@ use Doctrine\ORM\Mapping as ORM;
 class MultimediaMetadata implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\OneToOne(inversedBy: 'metadata', targetEntity: Multimedia::class, cascade: ['persist', 'remove'])]

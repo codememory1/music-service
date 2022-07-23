@@ -22,7 +22,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Translation implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: Language::class, cascade: ['persist'], inversedBy: 'translations')]

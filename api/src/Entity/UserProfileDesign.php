@@ -22,7 +22,6 @@ use Doctrine\ORM\Mapping as ORM;
 class UserProfileDesign implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\OneToOne(inversedBy: 'design', targetEntity: UserProfile::class)]

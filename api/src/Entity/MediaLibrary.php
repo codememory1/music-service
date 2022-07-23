@@ -26,7 +26,6 @@ use JetBrains\PhpStorm\Pure;
 class MediaLibrary implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\OneToOne(inversedBy: 'mediaLibrary', targetEntity: User::class)]
@@ -41,14 +40,18 @@ class MediaLibrary implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'mediaLibrary', targetEntity: MultimediaMediaLibrary::class, cascade: ['persist'])]
     private Collection $multimedia;
 
-    #[ORM\OneToMany(mappedBy: 'mediaLibrary', targetEntity: Playlist::class)]
+    #[ORM\OneToMany(mappedBy: 'mediaLibrary', targetEntity: Playlist::class, cascade: ['persist', 'remove'])]
     private Collection $playlists;
+
+    #[ORM\OneToMany(mappedBy: 'mediaLibrary', targetEntity: MediaLibraryEvent::class, cascade: ['persist', 'remove'])]
+    private Collection $events;
 
     #[Pure]
     public function __construct()
     {
         $this->multimedia = new ArrayCollection();
         $this->playlists = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getUser(): ?User
@@ -129,6 +132,36 @@ class MediaLibrary implements EntityInterface
             // set the owning side to null (unless already changed)
             if ($playlist->getMediaLibrary() === $this) {
                 $playlist->setMediaLibrary(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MediaLibraryEvent>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(MediaLibraryEvent $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->setMediaLibrary($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(MediaLibraryEvent $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getMediaLibrary() === $this) {
+                $event->setMediaLibrary(null);
             }
         }
 

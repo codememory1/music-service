@@ -25,9 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 class PasswordReset implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
-
     use ValidTtlTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'passwordResets')]

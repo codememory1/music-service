@@ -30,8 +30,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class MultimediaMediaLibraryEvent implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
+
+    #[ORM\ManyToOne(targetEntity: MultimediaMediaLibrary::class, inversedBy: 'events')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?MultimediaMediaLibrary $multimediaMediaLibrary = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Event key from MultimediaMediaLibraryEventEnum'
@@ -43,9 +46,17 @@ class MultimediaMediaLibraryEvent implements EntityInterface
     ])]
     private array $payload = [];
 
-    #[ORM\ManyToOne(targetEntity: MultimediaMediaLibrary::class, inversedBy: 'events')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?MultimediaMediaLibrary $multimediaMediaLibrary = null;
+    public function getMultimediaMediaLibrary(): ?MultimediaMediaLibrary
+    {
+        return $this->multimediaMediaLibrary;
+    }
+
+    public function setMultimediaMediaLibrary(?MultimediaMediaLibrary $multimediaMediaLibrary): self
+    {
+        $this->multimediaMediaLibrary = $multimediaMediaLibrary;
+
+        return $this;
+    }
 
     public function getKey(): ?string
     {
@@ -66,19 +77,7 @@ class MultimediaMediaLibraryEvent implements EntityInterface
 
     public function setPayload(?array $payload): self
     {
-        $this->payload = $payload;
-
-        return $this;
-    }
-
-    public function getMultimediaMediaLibrary(): ?MultimediaMediaLibrary
-    {
-        return $this->multimediaMediaLibrary;
-    }
-
-    public function setMultimediaMediaLibrary(?MultimediaMediaLibrary $multimediaMediaLibrary): self
-    {
-        $this->multimediaMediaLibrary = $multimediaMediaLibrary;
+        $this->payload = $payload ?: [];
 
         return $this;
     }

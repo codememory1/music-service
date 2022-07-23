@@ -23,7 +23,6 @@ use Doctrine\ORM\Mapping as ORM;
 class MultimediaRating implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: Multimedia::class, inversedBy: 'ratings')]

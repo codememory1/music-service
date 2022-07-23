@@ -32,7 +32,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class User implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [

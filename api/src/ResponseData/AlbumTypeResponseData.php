@@ -18,7 +18,6 @@ use App\ResponseData\Traits\ToTranslationHandlerTrait;
 class AlbumTypeResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
-
     use ToTranslationHandlerTrait;
 
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
