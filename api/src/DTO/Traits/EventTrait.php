@@ -2,8 +2,7 @@
 
 namespace App\DTO\Traits;
 
-use App\Enum\MultimediaMediaLibraryEventEnum;
-use App\Service\Event\Interfaces\EventInterface;
+use App\Enum\Interfaces\EventInterface;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -18,8 +17,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 trait EventTrait
 {
     #[Assert\NotBlank(message: 'event@keyIsRequired')]
-    public ?MultimediaMediaLibraryEventEnum $key = null;
-    public ?EventInterface $payload = null;
+    public ?EventInterface $key = null;
+    public array $payload = [];
 
     #[Assert\Callback]
     public function callbackPayload(ExecutionContextInterface $context): void

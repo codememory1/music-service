@@ -6,9 +6,11 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\MediaLibraryEventEnum;
+use App\Enum\ResponseTypeEnum;
 use App\Repository\MediaLibraryEventRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class MediaLibraryEvent.
@@ -20,6 +22,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MediaLibraryEventRepository::class)]
 #[ORM\Table('media_library_events')]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(
+    ['mediaLibrary', 'key'],
+    'entityExist@mediaLibraryEvent',
+    payload: [ResponseTypeEnum::EXIST, 409]
+)]
 class MediaLibraryEvent implements EntityInterface
 {
     use IdentifierTrait;
