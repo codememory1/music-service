@@ -28,9 +28,9 @@ class MediaLibraryController extends AbstractRestController
     #[Authorization]
     public function allMultimedia(MultimediaMediaLibraryResponseData $multimediaMediaLibraryResponseData): JsonResponse
     {
-        $multimediaToMediaLibrary = $this->authorizedUser->getUser()->getMediaLibrary()->getMultimedia();
-
-        $multimediaMediaLibraryResponseData->setEntities($multimediaToMediaLibrary->toArray());
+        $multimediaMediaLibraryResponseData->setEntities(
+            $this->getAuthorizedUser()->getMediaLibrary()->getMultimedia()
+        );
         $multimediaMediaLibraryResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaMediaLibraryResponseData->getResponse());
@@ -43,16 +43,18 @@ class MediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
         ShareWithFriendMediaLibraryService $shareWithFriendMediaLibraryService
     ): JsonResponse {
-        $authorizedUser = $this->authorizedUser->getUser();
-
-        if (null === $authorizedUser->getMediaLibrary()) {
+        if (null === $this->getAuthorizedUser()->getMediaLibrary()) {
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
 
-        if (false === $friend->isFriend($authorizedUser)) {
+        if (false === $friend->isFriend($this->getAuthorizedUser())) {
             throw EntityNotFoundException::friend();
         }
 
-        return $shareWithFriendMediaLibraryService->make($authorizedUser->getMediaLibrary(), $authorizedUser, $friend);
+        return $shareWithFriendMediaLibraryService->make(
+            $this->getAuthorizedUser()->getMediaLibrary(),
+            $this->getAuthorizedUser(),
+            $friend
+        );
     }
 }

@@ -142,6 +142,32 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
+    public function setTrackType(): self
+    {
+        $this->setType(MultimediaTypeEnum::TRACK);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isTrack(): bool
+    {
+        return $this->getType() === MultimediaTypeEnum::TRACK->name;
+    }
+
+    public function setClipType(): self
+    {
+        $this->setType(MultimediaTypeEnum::CLIP);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isClip(): bool
+    {
+        return $this->getType() === MultimediaTypeEnum::CLIP->name;
+    }
+
     public function getAlbum(): ?Album
     {
         return $this->album;
@@ -333,6 +359,84 @@ class Multimedia implements EntityInterface
         $this->status = $status?->name;
 
         return $this;
+    }
+
+    public function setDraftStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::DRAFT);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isDraft(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::DRAFT->name;
+    }
+
+    public function setModerationStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::MODERATION);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isModeration(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::MODERATION->name;
+    }
+
+    public function setPublishStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::PUBLISHED);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isPublished(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::PUBLISHED->name;
+    }
+
+    public function setUnpublishStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::UNPUBLISHED);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isUnpublished(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::UNPUBLISHED->name;
+    }
+
+    public function setAppealStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::APPEAL);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isAppeal(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::APPEAL->name;
+    }
+
+    public function setAppealCanceledStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::APPEAL_CANCELED);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isAppealCanceled(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::APPEAL_CANCELED->name;
     }
 
     public function getQueue(): ?MultimediaQueue

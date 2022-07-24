@@ -38,7 +38,11 @@ class UploadImageListener
 
     private function uploadImage(AlbumDTO $albumDTO, Album $album): string
     {
-        $this->imageUploader->save($album->getImage(), $albumDTO->image->getRealPath(), $albumDTO->image->getMimeType());
+        $this->imageUploader->save(
+            $album->getImage(),
+            $albumDTO->image->getRealPath(),
+            $albumDTO->image->getMimeType()
+        );
 
         return $this->imageUploader->getUploadedFile()->last();
     }

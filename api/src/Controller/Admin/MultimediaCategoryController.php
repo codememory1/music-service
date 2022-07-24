@@ -55,8 +55,9 @@ class MultimediaCategoryController extends AbstractRestController
         UpdateMultimediaCategoryService $updateMultimediaCategoryService
     ): JsonResponse {
         $multimediaCategoryDTO->setEntity($multimediaCategory);
+        $multimediaCategoryDTO->collect();
 
-        return $updateMultimediaCategoryService->make($multimediaCategoryDTO->collect());
+        return $updateMultimediaCategoryService->make($multimediaCategoryDTO);
     }
 
     #[Route('/{multimediaCategory_id<\d+>}/delete', methods: 'DELETE')]

@@ -31,14 +31,9 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
         SubscribeOnArtistService $subscribeOnArtistService
     ): JsonResponse {
-        $subscriber = $this->authorizedUser->getUser();
-        $artistUserHelper = $this->authorizedUser->setUser($artist);
+        $this->throwIfArtistNotAcceptingSubscribers($artist);
 
-        if (false === $artistUserHelper->isSubscriptionPermission(SubscriptionPermissionEnum::ACCEPTING_SUBSCRIBERS)) {
-            throw EntityNotFoundException::user();
-        }
-
-        return $subscribeOnArtistService->make($artist, $subscriber);
+        return $subscribeOnArtistService->make($artist, $this->getAuthorizedUser());
     }
 
     #[Route('/unsubscribe', methods: 'PATCH')]
@@ -48,13 +43,17 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
         UnsubscribeOnArtistService $unsubscribeOnArtistService
     ): JsonResponse {
-        $subscriber = $this->authorizedUser->getUser();
-        $artistUserHelper = $this->authorizedUser->setUser($artist);
+        $this->throwIfArtistNotAcceptingSubscribers($artist);
+
+        return $unsubscribeOnArtistService->make($artist, $this->getAuthorizedUser());
+    }
+
+    private function throwIfArtistNotAcceptingSubscribers(User $artist): void
+    {
+        $artistUserHelper = $this->getManagerAuthorizedUser()->setUser($artist);
 
         if (false === $artistUserHelper->isSubscriptionPermission(SubscriptionPermissionEnum::ACCEPTING_SUBSCRIBERS)) {
             throw EntityNotFoundException::user();
         }
-
-        return $unsubscribeOnArtistService->make($artist, $subscriber);
     }
 }

@@ -47,8 +47,9 @@ class LanguageController extends AbstractRestController
         LanguageResponseData $languageResponseData
     ): JsonResponse {
         $languageResponseData->setEntities($language);
+        $languageResponseData->collect();
 
-        return $this->responseCollection->dataOutput($languageResponseData->collect()->getResponse(true));
+        return $this->responseCollection->dataOutput($languageResponseData->getResponse(true));
     }
 
     #[Route('/create', methods: 'POST')]
@@ -67,7 +68,8 @@ class LanguageController extends AbstractRestController
         LanguageDTO $languageDTO,
         UpdateLanguageService $updateLanguageService
     ): JsonResponse {
-        $languageDTO->setEntity($language)->collect();
+        $languageDTO->setEntity($language);
+        $languageDTO->collect();
 
         return $updateLanguageService->make($languageDTO);
     }

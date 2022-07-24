@@ -7,6 +7,7 @@ use App\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Interfaces\ValueHandlerInterface;
+use Doctrine\Common\Collections\Collection;
 use function is_array;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionClass;
@@ -51,8 +52,12 @@ abstract class AbstractResponseData implements ResponseDataInterface
     /**
      * @inheritDoc
      */
-    public function setEntities(EntityInterface|array $entities): self
+    public function setEntities(EntityInterface|array|Collection $entities): self
     {
+        if ($entities instanceof Collection) {
+            $entities = $entities->toArray();
+        }
+
         $this->entities = is_array($entities) ? $entities : [$entities];
 
         return $this;

@@ -33,7 +33,8 @@ class UserProfileController extends AbstractRestController
         UpdateUserProfileDesignService $updateUserProfileDesignService
     ): JsonResponse {
         $userProfileDesignDTO->setEntity($userProfile);
+        $userProfileDesignDTO->collect();
 
-        return $updateUserProfileDesignService->make($userProfileDesignDTO->collect(), $userProfile);
+        return $updateUserProfileDesignService->make($userProfileDesignDTO, $userProfile);
     }
 }

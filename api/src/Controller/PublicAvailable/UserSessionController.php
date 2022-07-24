@@ -39,7 +39,7 @@ class UserSessionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
         DeleteUserSessionService $deleteUserSessionService
     ): JsonResponse {
-        if ($userSession->getUser() !== $this->authorizedUser->getUser()) {
+        if (false === $this->getAuthorizedUser()->isInstance($userSession->getUser())) {
             throw EntityNotFoundException::userSession();
         }
 
@@ -50,6 +50,6 @@ class UserSessionController extends AbstractRestController
     #[Authorization]
     public function deleteAll(DeleteUserSessionService $deleteUserSessionService): JsonResponse
     {
-        return $deleteUserSessionService->deleteAll($this->authorizedUser->getUser());
+        return $deleteUserSessionService->deleteAll($this->getAuthorizedUser());
     }
 }

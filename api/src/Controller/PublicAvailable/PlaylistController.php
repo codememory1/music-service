@@ -36,9 +36,7 @@ class PlaylistController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_PLAYLISTS)]
     public function all(PlaylistResponseData $playlistResponseData, PlaylistRepository $playlistRepository): JsonResponse
     {
-        $playlistResponseData->setEntities($playlistRepository->findByUser(
-            $this->authorizedUser->getUser()
-        ));
+        $playlistResponseData->setEntities($playlistRepository->findByUser($this->getAuthorizedUser()));
         $playlistResponseData->collect();
 
         return $this->responseCollection->dataOutput($playlistResponseData->getResponse());
@@ -51,9 +49,7 @@ class PlaylistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         PlaylistResponseData $playlistResponseData
     ): JsonResponse {
-        if ($playlist->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
-            throw EntityNotFoundException::playlist();
-        }
+        $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
         $playlistResponseData->setEntities($playlist);
         $playlistResponseData->collect();
@@ -66,7 +62,7 @@ class PlaylistController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_PLAYLIST)]
     public function create(PlaylistDTO $playlistDTO, CreatePlaylistService $createPlaylistService): JsonResponse
     {
-        return $createPlaylistService->make($playlistDTO->collect(), $this->authorizedUser->getUser());
+        return $createPlaylistService->make($playlistDTO->collect(), $this->getAuthorizedUser());
     }
 
     #[Route('/playlist/{playlist_id<\d+>}/edit', methods: 'POST')]
@@ -77,13 +73,12 @@ class PlaylistController extends AbstractRestController
         PlaylistDTO $playlistDTO,
         UpdatePlaylistService $updatePlaylistService
     ): JsonResponse {
-        if ($playlist->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
-            throw EntityNotFoundException::playlist();
-        }
+        $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
         $playlistDTO->setEntity($playlist);
+        $playlistDTO->collect();
 
-        return $updatePlaylistService->make($playlistDTO->collect());
+        return $updatePlaylistService->make($playlistDTO);
     }
 
     #[Route('/playlist/{playlist_id<\d+>}/delete', methods: 'DELETE')]
@@ -93,9 +88,7 @@ class PlaylistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         DeletePlaylistService $deletePlaylistService
     ): JsonResponse {
-        if ($playlist->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
-            throw EntityNotFoundException::playlist();
-        }
+        $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
         return $deletePlaylistService->make($playlist);
     }
@@ -108,16 +101,21 @@ class PlaylistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
         MoveMultimediaToDirectoryService $moveMultimediaToDirectoryService
     ): JsonResponse {
-        $authorizedUserMediaLibrary = $this->authorizedUser->getUser()->getMediaLibrary();
-
-        if ($multimediaPlaylist->getMultimediaMediaLibrary()->getMediaLibrary() !== $authorizedUserMediaLibrary) {
+        if (false === $this->getAuthorizedUser()->isMultimediaPlaylistBelongs($multimediaPlaylist)) {
             throw EntityNotFoundException::multimedia();
         }
 
-        if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $authorizedUserMediaLibrary) {
+        if (false === $this->getAuthorizedUser()->isPlaylistDirectoryBelongs($playlistDirectory)) {
             throw EntityNotFoundException::playlistDirectory();
         }
 
         return $moveMultimediaToDirectoryService->make($multimediaPlaylist, $playlistDirectory);
+    }
+
+    private function throwIfPlaylistNotBelongsAuthorizedUser(Playlist $playlist): void
+    {
+        if (false === $this->getAuthorizedUser()->isPlaylistBelongs($playlist)) {
+            throw EntityNotFoundException::multimedia();
+        }
     }
 }

@@ -44,8 +44,9 @@ class TranslationController extends AbstractRestController
         UpdateTranslationService $updateTranslationService
     ): JsonResponse {
         $translationDTO->setEntity($translation);
+        $translationDTO->collect();
 
-        return $updateTranslationService->make($translationDTO->collect());
+        return $updateTranslationService->make($translationDTO);
     }
 
     #[Route('/{translation_id<\d+>}/delete', methods: 'DELETE')]

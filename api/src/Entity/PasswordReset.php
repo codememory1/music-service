@@ -11,6 +11,7 @@ use App\Enum\PasswordResetStatusEnum;
 use App\Repository\PasswordResetRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class PasswordReset.
@@ -93,6 +94,32 @@ class PasswordReset implements EntityInterface
         $this->status = $status->name;
 
         return $this;
+    }
+
+    public function setInProcessStatus(): self
+    {
+        $this->setStatus(PasswordResetStatusEnum::IN_PROCESS);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isInProcess(): bool
+    {
+        return $this->getStatus() === PasswordResetStatusEnum::IN_PROCESS->name;
+    }
+
+    public function setCompletedStatus(): self
+    {
+        $this->setStatus(PasswordResetStatusEnum::COMPLETED);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isCompleted(): bool
+    {
+        return $this->getStatus() === PasswordResetStatusEnum::COMPLETED->name;
     }
 
     public function getTtl(): ?int

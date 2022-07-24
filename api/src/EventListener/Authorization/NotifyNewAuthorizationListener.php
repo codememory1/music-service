@@ -8,6 +8,10 @@ use App\Service\MailMessagingService;
 use App\Service\Notification\NotificationCollection;
 use App\Service\ObjectComparisonPercentageService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class NotifyNewAuthorizationListener.
@@ -29,6 +33,12 @@ class NotifyNewAuthorizationListener
         $this->mailMessagingService = $mailMessagingService;
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws TransportExceptionInterface
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function onAuth(UserAuthorizationEvent $userAuthorizationEvent): void
     {
         $userSessionRepository = $this->em->getRepository(UserSession::class);

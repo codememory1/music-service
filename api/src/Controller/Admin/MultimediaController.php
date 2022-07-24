@@ -63,9 +63,9 @@ class MultimediaController extends AbstractRestController
         MultimediaDTO $multimediaDTO,
         AddMultimediaService $addMultimediaService
     ): JsonResponse {
-        $this->authorizedUser->setUser($user);
+        $userHelper = $this->getManagerAuthorizedUser()->setUser($user);
 
-        if (false === $this->authorizedUser->isSubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)) {
+        if (false === $userHelper->isSubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)) {
             throw MultimediaException::badAddMultimediaToUserInvalid();
         }
 
@@ -81,8 +81,9 @@ class MultimediaController extends AbstractRestController
         UpdateMultimediaService $updateMultimediaService
     ): JsonResponse {
         $multimediaDTO->setEntity($multimedia);
+        $multimediaDTO->collect();
 
-        return $updateMultimediaService->make($multimediaDTO->collect());
+        return $updateMultimediaService->make($multimediaDTO);
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]

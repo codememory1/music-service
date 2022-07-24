@@ -38,7 +38,7 @@ class PublishAlbumService extends AbstractService
             throw AlbumException::badPublicationWithoutPublishedMultimedia();
         }
 
-        $album->setStatus(AlbumStatusEnum::PUBLISHED);
+        $album->setPublishStatus();
 
         $this->em->flush();
 

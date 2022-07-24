@@ -39,7 +39,7 @@ class PlaylistDirectoryController extends AbstractRestController
         PlaylistDirectoryDTO $playlistDirectoryDTO,
         CreatePlaylistDirectoryService $createPlaylistDirectoryService
     ): JsonResponse {
-        if ($playlist->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+        if (false === $this->getAuthorizedUser()->isPlaylistBelongs($playlist)) {
             throw EntityNotFoundException::playlist();
         }
 
@@ -54,11 +54,10 @@ class PlaylistDirectoryController extends AbstractRestController
         PlaylistDirectoryDTO $playlistDirectoryDTO,
         UpdatePlaylistDirectoryService $updatePlaylistDirectoryService
     ): JsonResponse {
-        if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
-            throw EntityNotFoundException::playlistDirectory();
-        }
+        $this->throwIfPlaylistDirectoryNotBelongsAuthorizedUser($playlistDirectory);
 
         $playlistDirectoryDTO->setEntity($playlistDirectory);
+        $playlistDirectoryDTO->collect();
 
         return $updatePlaylistDirectoryService->make($playlistDirectoryDTO);
     }
@@ -70,9 +69,7 @@ class PlaylistDirectoryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
         DeletePlaylistDirectoryService $deletePlaylistDirectoryService
     ): JsonResponse {
-        if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
-            throw EntityNotFoundException::playlistDirectory();
-        }
+        $this->throwIfPlaylistDirectoryNotBelongsAuthorizedUser($playlistDirectory);
 
         return $deletePlaylistDirectoryService->make($playlistDirectory);
     }
@@ -85,13 +82,9 @@ class PlaylistDirectoryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         AddMultimediaToPlaylistDirectoryService $addMultimediaToPlaylistDirectoryService
     ): JsonResponse {
-        $authorizedUserMediaLibrary = $this->authorizedUser->getUser()->getMediaLibrary();
+        $this->throwIfPlaylistDirectoryNotBelongsAuthorizedUser($playlistDirectory);
 
-        if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $authorizedUserMediaLibrary) {
-            throw EntityNotFoundException::playlistDirectory();
-        }
-
-        if ($multimediaMediaLibrary->getMediaLibrary() !== $authorizedUserMediaLibrary) {
+        if (false === $this->getAuthorizedUser()->isMultimediaMediaLibraryBelongs($multimediaMediaLibrary)) {
             throw EntityNotFoundException::multimedia();
         }
 
@@ -105,10 +98,17 @@ class PlaylistDirectoryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylistDirectory $multimediaPlaylistDirectory,
         DeleteMultimediaFromPlaylistDirectoryService $deleteMultimediaFromPlaylistDirectoryService
     ): JsonResponse {
-        if ($multimediaPlaylistDirectory->getMultimediaMediaLibrary()->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
+        if (false === $this->getAuthorizedUser()->isMultimediaPlaylistDirectoryBelongs($multimediaPlaylistDirectory)) {
             throw EntityNotFoundException::multimedia();
         }
 
         return $deleteMultimediaFromPlaylistDirectoryService->make($multimediaPlaylistDirectory);
+    }
+
+    private function throwIfPlaylistDirectoryNotBelongsAuthorizedUser(PlaylistDirectory $playlistDirectory): void
+    {
+        if (false === $this->getAuthorizedUser()->isPlaylistDirectoryBelongs($playlistDirectory)) {
+            throw EntityNotFoundException::playlistDirectory();
+        }
     }
 }

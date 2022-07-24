@@ -8,8 +8,6 @@ use App\Entity\User;
 use App\Entity\UserProfile;
 use App\Enum\EventEnum;
 use App\Enum\RoleEnum;
-use App\Enum\UserProfileStatusEnum;
-use App\Enum\UserStatusEnum;
 use App\Event\UserRegistrationEvent;
 use App\Repository\UserRepository;
 use App\Rest\Http\Exceptions\AuthorizationException;
@@ -76,13 +74,13 @@ abstract class AbstractServiceAuthorization extends AbstractService
         $userEntity = new User();
 
         $userProfileEntity->setPseudonym($userData->getName());
-        $userProfileEntity->setStatus(UserProfileStatusEnum::HIDE);
+        $userProfileEntity->setHideStatus();
 
         $userEntity->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->name]));
         $userEntity->setEmail($userData->getEmail());
         $userEntity->setIdInAuthService($userData->getUniqueId());
         $userEntity->setAuthServiceType($this->serviceType);
-        $userEntity->setStatus(UserStatusEnum::NOT_ACTIVE);
+        $userEntity->setNotActiveStatus();
         $userEntity->setProfile($userProfileEntity);
 
         if (false === $this->validate($userEntity)) {

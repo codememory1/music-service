@@ -15,7 +15,7 @@ use JetBrains\PhpStorm\Pure;
 class EntityNotFoundException extends ApiResponseException
 {
     #[Pure]
-    public function __construct(string $translationKey, array $parameters = [], array $data = [], array $headers = [])
+    final public function __construct(string $translationKey, array $parameters = [], array $data = [], array $headers = [])
     {
         parent::__construct(404, ResponseTypeEnum::NOT_EXIST, $translationKey, $parameters, $data, $headers);
     }

@@ -8,6 +8,7 @@ use App\Enum\ResponseTypeEnum;
 use App\Event\UserRegistrationEvent;
 use App\Rest\Http\Exceptions\ApiResponseException;
 use App\Service\PlatformSettingService;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class MailDomainCheckListener.
@@ -48,6 +49,7 @@ class MailDomainCheckListener
         }
     }
 
+    #[Pure]
     private function getMailDomain(User $user): ?string
     {
         $email = $user->getEmail();

@@ -34,8 +34,9 @@ class MultimediaMediaLibraryController extends AbstractRestController
         UpdateMultimediaMediaLibraryService $updateMultimediaMediaLibraryService
     ): JsonResponse {
         $multimediaMediaLibraryDTO->setEntity($multimediaMediaLibrary);
+        $multimediaMediaLibraryDTO->collect();
 
-        return $updateMultimediaMediaLibraryService->make($multimediaMediaLibraryDTO->collect());
+        return $updateMultimediaMediaLibraryService->make($multimediaMediaLibraryDTO);
     }
 
     #[Route('/media-library/multimedia/{multimediaMediaLibrary_id<\d+>}/delete', methods: 'DELETE')]

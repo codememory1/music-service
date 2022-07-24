@@ -68,6 +68,12 @@ class MultimediaException extends ApiResponseException
     #[Pure]
     final public static function badAddMultimediaToUserInvalid(array $data = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::CHECK_CORRECTNESS, 'multimedia@badAddMultimediaToUserInvalidSubscription', data: $data, headers: $headers);
+        return new self(
+            400,
+            ResponseTypeEnum::CHECK_CORRECTNESS,
+            'multimedia@badAddMultimediaToUserInvalidSubscription',
+            data: $data,
+            headers: $headers
+        );
     }
 }

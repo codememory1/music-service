@@ -9,6 +9,7 @@ use App\Enum\FriendStatusEnum;
 use App\Repository\FriendRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class Friend.
@@ -79,8 +80,20 @@ class Friend implements EntityInterface
         return $this->setStatus(FriendStatusEnum::AWAITING_CONFIRMATION);
     }
 
+    #[Pure]
+    public function isAwaitingConfirmation(): bool
+    {
+        return $this->getStatus() === FriendStatusEnum::AWAITING_CONFIRMATION->name;
+    }
+
     public function setConfirmed(): self
     {
         return $this->setStatus(FriendStatusEnum::CONFIRMED);
+    }
+
+    #[Pure]
+    public function isConfirmed(): bool
+    {
+        return $this->getStatus() === FriendStatusEnum::CONFIRMED->name;
     }
 }

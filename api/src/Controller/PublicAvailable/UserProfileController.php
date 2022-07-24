@@ -26,10 +26,11 @@ class UserProfileController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_PROFILE_DESIGN)]
     public function editDesignProfile(UserProfileDesignDTO $userProfileDesignDTO, UpdateUserProfileDesignService $updateUserProfileDesignService): JsonResponse
     {
-        $userProfile = $this->authorizedUser->getUser()->getProfile();
+        $userProfile = $this->getAuthorizedUser()->getProfile();
 
         $userProfileDesignDTO->setEntity($userProfile->getDesign());
+        $userProfileDesignDTO->collect();
 
-        return $updateUserProfileDesignService->make($userProfileDesignDTO->collect(), $userProfile);
+        return $updateUserProfileDesignService->make($userProfileDesignDTO, $userProfile);
     }
 }

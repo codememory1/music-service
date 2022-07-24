@@ -69,8 +69,9 @@ class SubscriptionController extends AbstractRestController
         UpdateSubscriptionService $updateSubscriptionService
     ): JsonResponse {
         $subscriptionDTO->setEntity($subscription);
+        $subscriptionDTO->collect();
 
-        return $updateSubscriptionService->make($subscriptionDTO->collect(), $subscription);
+        return $updateSubscriptionService->make($subscriptionDTO, $subscription);
     }
 
     #[Route('/{subscription_id<\d+>}/delete', methods: 'DELETE')]

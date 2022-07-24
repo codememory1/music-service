@@ -7,8 +7,6 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\UserProfile;
 use App\Enum\RoleEnum;
-use App\Enum\UserProfileStatusEnum;
-use App\Enum\UserStatusEnum;
 use App\Service\AbstractService;
 use App\Service\UserSetting\AddUserDefaultSettingService;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -30,7 +28,7 @@ class Registrar extends AbstractService
 
     public function make(RegistrationDTO $registrationDTO, ?User $userByEmail): User
     {
-        if (true === $userByEmail?->isStatus(UserStatusEnum::NOT_ACTIVE)) {
+        if ($userByEmail?->isNotActive()) {
             $userEntity = $this->collectUserEntity($userByEmail, $registrationDTO);
 
             $this->reRegister->make($registrationDTO, $userEntity);
@@ -53,7 +51,7 @@ class Registrar extends AbstractService
         $userEntity->setRole($this->em->getRepository(Role::class)->findOneBy([
             'key' => RoleEnum::USER->name
         ]));
-        $userEntity->setStatus(UserStatusEnum::NOT_ACTIVE);
+        $userEntity->setNotActiveStatus();
 
         return $userEntity;
     }
@@ -63,7 +61,7 @@ class Registrar extends AbstractService
         $userProfileEntity = new UserProfile();
 
         $userProfileEntity->setPseudonym($registrationDTO->pseudonym);
-        $userProfileEntity->setStatus(UserProfileStatusEnum::HIDE);
+        $userProfileEntity->setHideStatus();
 
         return $userProfileEntity;
     }

@@ -34,13 +34,11 @@ class MediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         MultimediaMediaLibraryResponseData $multimediaMediaLibraryResponseData
     ): JsonResponse {
-        $mediaLibrary = $user->getMediaLibrary();
-
-        if (null === $mediaLibrary) {
+        if (null === $user->getMediaLibrary()) {
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
 
-        $multimediaMediaLibraryResponseData->setEntities($mediaLibrary->getMultimedia()->toArray());
+        $multimediaMediaLibraryResponseData->setEntities($user->getMediaLibrary()->getMultimedia());
         $multimediaMediaLibraryResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaMediaLibraryResponseData->getResponse());
@@ -66,7 +64,8 @@ class MediaLibraryController extends AbstractRestController
         UpdateMediaLibraryService $updateMediaLibraryService
     ): JsonResponse {
         $mediaLibraryDTO->setEntity($mediaLibrary);
+        $mediaLibraryDTO->collect();
 
-        return $updateMediaLibraryService->make($mediaLibraryDTO->collect());
+        return $updateMediaLibraryService->make($mediaLibraryDTO);
     }
 }

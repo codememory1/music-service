@@ -4,13 +4,13 @@ namespace App\MessageHandler;
 
 use App\Entity\Multimedia;
 use App\Entity\MultimediaMetadata;
-use App\Enum\MultimediaTypeEnum;
 use App\Message\MultimediaMetadataMessage;
 use App\Rest\S3\UploadedObject;
 use Doctrine\ORM\EntityManagerInterface;
 use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use FFMpeg\FFProbe\DataMapping\StreamCollection;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
@@ -32,6 +32,7 @@ class MultimediaMetadataMessageHandler
         $this->uploadedObject = $uploadedObject;
     }
 
+    #[Pure]
     private function getMultimediaMetadata(Multimedia $multimedia): ?MultimediaMetadata
     {
         if (null !== $multimedia->getMetadata()) {
@@ -64,13 +65,10 @@ class MultimediaMetadataMessageHandler
 
     private function handlerTypes(Multimedia $multimedia, StreamCollection $streamCollection): void
     {
-        switch ($multimedia->getType()) {
-            case MultimediaTypeEnum::TRACK->name:
-                $this->trackHandler($multimedia, $streamCollection->audios()->first());
-                break;
-            case MultimediaTypeEnum::CLIP->name:
-                $this->clipHandler($multimedia, $streamCollection->videos()->first());
-                break;
+        if ($multimedia->isTrack()) {
+            $this->trackHandler($multimedia, $streamCollection->audios()->first());
+        } elseif ($multimedia->isClip()) {
+            $this->clipHandler($multimedia, $streamCollection->videos()->first());
         }
     }
 

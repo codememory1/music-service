@@ -9,6 +9,7 @@ use App\Enum\MultimediaRatingTypeEnum;
 use App\Repository\MultimediaRatingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class MultimediaRating.
@@ -72,5 +73,31 @@ class MultimediaRating implements EntityInterface
         $this->type = $type?->name;
 
         return $this;
+    }
+
+    public function setLikeType(): self
+    {
+        $this->setType(MultimediaRatingTypeEnum::LIKE);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isLike(): bool
+    {
+        return $this->getType() === MultimediaRatingTypeEnum::LIKE->name;
+    }
+
+    public function setDislikeType(): self
+    {
+        $this->setType(MultimediaRatingTypeEnum::DISLIKE);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isDislike(): bool
+    {
+        return $this->getType() === MultimediaRatingTypeEnum::DISLIKE->name;
     }
 }

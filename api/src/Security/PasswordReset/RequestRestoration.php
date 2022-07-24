@@ -4,7 +4,6 @@ namespace App\Security\PasswordReset;
 
 use App\DTO\RequestRestorationPasswordDTO;
 use App\Enum\EventEnum;
-use App\Enum\PasswordResetStatusEnum;
 use App\Event\RequestRestorationPasswordEvent;
 use App\Service\AbstractService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -32,7 +31,7 @@ class RequestRestoration extends AbstractService
         $passwordResetEntity = $requestRestorationPasswordDTO->getEntity();
 
         $passwordResetEntity->setTtl('10m');
-        $passwordResetEntity->setStatus(PasswordResetStatusEnum::IN_PROCESS);
+        $passwordResetEntity->setInProcessStatus();
 
         $this->eventDispatcher->dispatch(
             new RequestRestorationPasswordEvent($passwordResetEntity),
