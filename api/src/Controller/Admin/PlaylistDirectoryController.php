@@ -51,6 +51,7 @@ class PlaylistDirectoryController extends AbstractRestController
         UpdatePlaylistDirectoryService $updatePlaylistDirectoryService
     ): JsonResponse {
         $playlistDirectoryDTO->setEntity($playlistDirectory);
+        $playlistDirectoryDTO->collect();
 
         return $updatePlaylistDirectoryService->make($playlistDirectoryDTO);
     }

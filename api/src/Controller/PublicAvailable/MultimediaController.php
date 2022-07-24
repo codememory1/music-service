@@ -34,8 +34,7 @@ class MultimediaController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_MULTIMEDIA)]
     public function myAll(MultimediaResponseData $multimediaResponseData, MultimediaRepository $multimediaRepository): JsonResponse
     {
-        $multimediaResponseData->setEntities($multimediaRepository->findAllByUser($this->authorizedUser->getUser()));
-
+        $multimediaResponseData->setEntities($multimediaRepository->findAllByUser($this->getAuthorizedUser()));
         $multimediaResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
@@ -59,7 +58,7 @@ class MultimediaController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
     public function add(MultimediaDTO $multimediaDTO, AddMultimediaService $addMultimediaService): JsonResponse
     {
-        return $addMultimediaService->make($multimediaDTO->collect(), $this->authorizedUser->getUser());
+        return $addMultimediaService->make($multimediaDTO->collect(), $this->getAuthorizedUser());
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
@@ -71,8 +70,9 @@ class MultimediaController extends AbstractRestController
         UpdateMultimediaService $updateMultimediaService
     ): JsonResponse {
         $multimediaDTO->setEntity($multimedia);
+        $multimediaDTO->collect();
 
-        return $updateMultimediaService->make($multimediaDTO->collect());
+        return $updateMultimediaService->make($multimediaDTO);
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]
@@ -82,7 +82,7 @@ class MultimediaController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         DeleteMultimediaService $deleteMultimediaService
     ): JsonResponse {
-        if ($multimedia->getUser() !== $this->authorizedUser->getUser()) {
+        if (false === $this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
             throw EntityNotFoundException::multimedia();
         }
 

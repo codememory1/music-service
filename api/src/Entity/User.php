@@ -686,4 +686,52 @@ class User implements EntityInterface
 
         return $this;
     }
+
+    #[Pure]
+    public function isAlbumBelongs(Album $album): bool
+    {
+        return $album->getUser()->getId() === $this->getId();
+    }
+
+    #[Pure]
+    public function isMultimediaBelongs(Multimedia $multimedia): bool
+    {
+        return $multimedia->getUser()->getId() === $this->getId();
+    }
+
+    #[Pure]
+    public function isMultimediaMediaLibraryBelongs(MultimediaMediaLibrary $multimediaMediaLibrary): bool
+    {
+        return $multimediaMediaLibrary->getMediaLibrary()->getId() === $this->getMediaLibrary()?->getId();
+    }
+
+    #[Pure]
+    public function isMediaLibraryBelongs(MediaLibrary $mediaLibrary): bool
+    {
+        return $mediaLibrary->getId() === $this->getMediaLibrary()?->getId();
+    }
+
+    #[Pure]
+    public function isPlaylistBelongs(Playlist $playlist): bool
+    {
+        return $playlist->getMediaLibrary()->getId() === $this->getMediaLibrary()?->getId();
+    }
+
+    #[Pure]
+    public function isMultimediaPlaylistBelongs(MultimediaPlaylist $multimediaPlaylist): bool
+    {
+        return $multimediaPlaylist->getMultimediaMediaLibrary()->getMediaLibrary()->getId() === $this->getMediaLibrary()->getId();
+    }
+
+    #[Pure]
+    public function isPlaylistDirectoryBelongs(PlaylistDirectory $playlistDirectory): bool
+    {
+        return $playlistDirectory->getPlaylist()->getMediaLibrary()->getId() === $this->getMediaLibrary()->getId();
+    }
+
+    #[Pure]
+    public function isMultimediaPlaylistDirectoryBelongs(MultimediaPlaylistDirectory $multimediaPlaylistDirectory): bool
+    {
+        return $multimediaPlaylistDirectory->getMultimediaMediaLibrary()->getMediaLibrary()->getId() === $this->getMediaLibrary()->getId();
+    }
 }

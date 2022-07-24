@@ -64,8 +64,9 @@ class AlbumController extends AbstractRestController
         UpdateAlbumService $updateAlbumService
     ): JsonResponse {
         $albumDTO->setEntity($album);
+        $albumDTO->collect();
 
-        return $updateAlbumService->make($albumDTO->collect(), $album->getUser());
+        return $updateAlbumService->make($albumDTO, $album->getUser());
     }
 
     #[Route('/album/{album_id<\d+>}/delete', methods: 'DELETE')]

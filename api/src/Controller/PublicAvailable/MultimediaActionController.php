@@ -38,7 +38,7 @@ class MultimediaActionController extends AbstractRestController
             throw EntityNotFoundException::multimedia();
         }
 
-        return $addMultimediaToMediaLibraryService->make($multimedia, $this->authorizedUser->getUser());
+        return $addMultimediaToMediaLibraryService->make($multimedia, $this->getAuthorizedUser());
     }
 
     #[Route('/send-on-moderation', methods: 'PATCH')]
@@ -48,7 +48,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SendOnModerationService $sendOnModerationService
     ): JsonResponse {
-        if ($multimedia->getUser() !== $this->authorizedUser->getUser()) {
+        if (false === $this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
             throw EntityNotFoundException::multimedia();
         }
 
@@ -71,7 +71,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SetLikeMultimediaService $setLikeMultimediaService
     ): JsonResponse {
-        return $setLikeMultimediaService->make($multimedia, $this->authorizedUser->getUser());
+        return $setLikeMultimediaService->make($multimedia, $this->getAuthorizedUser());
     }
 
     #[Route('/dislike', methods: 'PATCH')]
@@ -80,6 +80,6 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SetDisLikeMultimediaService $setDisLikeMultimediaService
     ): JsonResponse {
-        return $setDisLikeMultimediaService->make($multimedia, $this->authorizedUser->getUser());
+        return $setDisLikeMultimediaService->make($multimedia, $this->getAuthorizedUser());
     }
 }

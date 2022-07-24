@@ -79,8 +79,9 @@ class PlaylistController extends AbstractRestController
         UpdatePlaylistService $updatePlaylistService
     ): JsonResponse {
         $playlistDTO->setEntity($playlist);
+        $playlistDTO->collect();
 
-        return $updatePlaylistService->make($playlistDTO->collect());
+        return $updatePlaylistService->make($playlistDTO);
     }
 
     #[Route('/media-library/playlist/{playlist_id<\d+>}/delete', methods: 'DELETE')]

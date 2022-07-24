@@ -6,6 +6,7 @@ use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\DTO\MediaLibraryEventDTO;
+use App\Entity\MediaLibrary;
 use App\Entity\MediaLibraryEvent;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Rest\Controller\AbstractRestController;
@@ -33,7 +34,7 @@ class MediaLibraryEventController extends AbstractRestController
     {
         return $addMediaLibraryEventService->make(
             $mediaLibraryEventDTO->collect(),
-            $this->authorizedUser->getUser()->getMediaLibrary()
+            $this->getAuthorizedUser()->getMediaLibrary()
         );
     }
 
@@ -45,15 +46,12 @@ class MediaLibraryEventController extends AbstractRestController
         MediaLibraryEventDTO $mediaLibraryEventDTO,
         UpdateMediaLibraryEventService $updateMediaLibraryEventService
     ): JsonResponse {
-        $authorizedMediaLibrary = $this->authorizedUser->getUser()->getMediaLibrary();
-
-        if ($mediaLibraryEvent->getMediaLibrary()->getId() !== $authorizedMediaLibrary->getId()) {
-            throw EntityNotFoundException::mediaLibraryEvent();
-        }
+        $this->throwIfEventNotBelongsAuthorizedUser($mediaLibraryEvent->getMediaLibrary());
 
         $mediaLibraryEventDTO->setEntity($mediaLibraryEvent);
+        $mediaLibraryEventDTO->collect();
 
-        return $updateMediaLibraryEventService->make($mediaLibraryEventDTO->collect(), $authorizedMediaLibrary);
+        return $updateMediaLibraryEventService->make($mediaLibraryEventDTO, $this->getAuthorizedUser()->getMediaLibrary());
     }
 
     #[Route('/{mediaLibraryEvent_id<\d+>}/delete', methods: 'DELETE')]
@@ -63,10 +61,15 @@ class MediaLibraryEventController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'mediaLibraryEvent')] MediaLibraryEvent $mediaLibraryEvent,
         DeleteMediaLibraryEventService $deleteMediaLibraryEventService
     ): JsonResponse {
-        if ($mediaLibraryEvent->getMediaLibrary()->getId() !== $this->authorizedUser->getUser()->getMediaLibrary()->getId()) {
-            throw EntityNotFoundException::mediaLibraryEvent();
-        }
+        $this->throwIfEventNotBelongsAuthorizedUser($mediaLibraryEvent->getMediaLibrary());
 
         return $deleteMediaLibraryEventService->make($mediaLibraryEvent);
+    }
+
+    private function throwIfEventNotBelongsAuthorizedUser(MediaLibrary $mediaLibrary): void
+    {
+        if (false === $this->getAuthorizedUser()->isMediaLibraryBelongs($mediaLibrary)) {
+            throw EntityNotFoundException::mediaLibraryEvent();
+        }
     }
 }

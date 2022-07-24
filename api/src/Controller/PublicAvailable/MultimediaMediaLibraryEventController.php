@@ -35,7 +35,7 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
         MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO,
         AddMultimediaMediaLibraryEventService $addMultimediaMediaLibraryEventService
     ): JsonResponse {
-        if ($multimediaMediaLibrary->getMediaLibrary()->getId() !== $this->authorizedUser->getUser()->getMediaLibrary()->getId()) {
+        if (false === $this->getAuthorizedUser()->isMultimediaMediaLibraryBelongs($multimediaMediaLibrary)) {
             throw EntityNotFoundException::multimedia();
         }
 
@@ -50,17 +50,13 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
         MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO,
         UpdateMultimediaMediaLibraryEventService $updateMultimediaMediaLibraryEventService
     ): JsonResponse {
-        $mediaLibraryFromEvent = $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()->getMediaLibrary();
-        $mediaLibraryFromAuthorizedUser = $this->authorizedUser->getUser()->getMediaLibrary();
-
-        if ($mediaLibraryFromEvent->getId() !== $mediaLibraryFromAuthorizedUser->getId()) {
-            throw EntityNotFoundException::multimediaEvent();
-        }
+        $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 
         $multimediaMediaLibraryEventDTO->setEntity($multimediaMediaLibraryEvent);
+        $multimediaMediaLibraryEventDTO->collect();
 
         return $updateMultimediaMediaLibraryEventService->make(
-            $multimediaMediaLibraryEventDTO->collect(),
+            $multimediaMediaLibraryEventDTO,
             $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()
         );
     }
@@ -72,13 +68,17 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaEvent')] MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent,
         DeleteMultimediaMediaLibraryEventService $deleteMultimediaMediaLibraryEventService
     ): JsonResponse {
-        $mediaLibraryFromEvent = $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()->getMediaLibrary();
-        $mediaLibraryFromAuthorizedUser = $this->authorizedUser->getUser()->getMediaLibrary();
-
-        if ($mediaLibraryFromEvent->getId() !== $mediaLibraryFromAuthorizedUser->getId()) {
-            throw EntityNotFoundException::multimediaEvent();
-        }
+        $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 
         return $deleteMultimediaMediaLibraryEventService->make($multimediaMediaLibraryEvent);
+    }
+
+    private function throwIfEventNotBelongsAuthorizedUser(MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent): void
+    {
+        $mediaLibraryFromEvent = $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()->getMediaLibrary();
+
+        if (false === $this->getAuthorizedUser()->isMediaLibraryBelongs($mediaLibraryFromEvent)) {
+            throw EntityNotFoundException::multimediaEvent();
+        }
     }
 }

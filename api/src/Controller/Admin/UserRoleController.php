@@ -69,8 +69,9 @@ class UserRoleController extends AbstractRestController
         UpdateUserRoleService $updateUserRoleService
     ): JsonResponse {
         $userRoleDTO->setEntity($role);
+        $userRoleDTO->collect();
 
-        return $updateUserRoleService->make($userRoleDTO->collect(), $role);
+        return $updateUserRoleService->make($userRoleDTO, $role);
     }
 
     #[Route('/{role_id<\d+>}/delete', methods: 'DELETE')]
