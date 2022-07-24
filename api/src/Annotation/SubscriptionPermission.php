@@ -13,7 +13,7 @@ use Attribute;
  *
  * @author  Codememory
  */
-#[Attribute(Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class SubscriptionPermission implements MethodAnnotationInterface
 {
     public readonly SubscriptionPermissionEnum $permission;

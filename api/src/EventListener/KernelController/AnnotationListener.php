@@ -5,6 +5,7 @@ namespace App\EventListener\KernelController;
 use App\Annotation\Interfaces\MethodAnnotationHandlerInterface;
 use App\Annotation\Interfaces\MethodAnnotationInterface;
 use function is_array;
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\ReverseContainer;
@@ -36,7 +37,15 @@ class AnnotationListener
 
             $reflectionClass = new ReflectionClass($controller);
 
+            $this->handleClass($reflectionClass);
             $this->handleMethod($reflectionClass, $method);
+        }
+    }
+
+    private function handleClass(ReflectionClass $reflectionClass): void
+    {
+        foreach ($reflectionClass->getAttributes() as $attribute) {
+            $this->annotationHandler($attribute);
         }
     }
 
@@ -49,14 +58,19 @@ class AnnotationListener
         $attributes = $reflectionMethod->getAttributes();
 
         foreach ($attributes as $attribute) {
-            $annotation = $attribute->newInstance();
+            $this->annotationHandler($attribute);
+        }
+    }
 
-            if ($annotation instanceof MethodAnnotationInterface) {
-                /** @var MethodAnnotationHandlerInterface $annotationHandler */
-                $annotationHandler = $this->container->getService($annotation->getHandler());
+    private function annotationHandler(ReflectionAttribute $attribute): void
+    {
+        $annotation = $attribute->newInstance();
 
-                $annotationHandler->handle($annotation);
-            }
+        if ($annotation instanceof MethodAnnotationInterface) {
+            /** @var MethodAnnotationHandlerInterface $annotationHandler */
+            $annotationHandler = $this->container->getService($annotation->getHandler());
+
+            $annotationHandler->handle($annotation);
         }
     }
 }

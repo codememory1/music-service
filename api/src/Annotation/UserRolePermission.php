@@ -13,7 +13,7 @@ use Attribute;
  *
  * @author  Codememory
  */
-#[Attribute(Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class UserRolePermission implements MethodAnnotationInterface
 {
     public readonly RolePermissionEnum $rolePermission;

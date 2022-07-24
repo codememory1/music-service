@@ -12,7 +12,7 @@ use Attribute;
  *
  * @author  Codememory
  */
-#[Attribute(Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class Authorization implements MethodAnnotationInterface
 {
     public readonly bool $required;
