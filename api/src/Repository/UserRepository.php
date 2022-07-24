@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Enum\UserStatusEnum;
 
 /**
  * Class UserRepository.
@@ -20,5 +21,13 @@ class UserRepository extends AbstractRepository
     public function getByEmail(?string $email): ?User
     {
         return $this->findOneBy(['email' => $email]);
+    }
+
+    /**
+     * @return array<User>
+     */
+    public function findActive(): array
+    {
+        return $this->findBy(['status' => UserStatusEnum::ACTIVE->name]);
     }
 }

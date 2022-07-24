@@ -45,13 +45,15 @@ class MediaLibraryEventController extends AbstractRestController
         MediaLibraryEventDTO $mediaLibraryEventDTO,
         UpdateMediaLibraryEventService $updateMediaLibraryEventService
     ): JsonResponse {
-        if ($mediaLibraryEvent->getMediaLibrary()->getId() !== $this->authorizedUser->getUser()->getMediaLibrary()->getId()) {
+        $authorizedMediaLibrary = $this->authorizedUser->getUser()->getMediaLibrary();
+
+        if ($mediaLibraryEvent->getMediaLibrary()->getId() !== $authorizedMediaLibrary->getId()) {
             throw EntityNotFoundException::mediaLibraryEvent();
         }
 
         $mediaLibraryEventDTO->setEntity($mediaLibraryEvent);
 
-        return $updateMediaLibraryEventService->make($mediaLibraryEventDTO->collect());
+        return $updateMediaLibraryEventService->make($mediaLibraryEventDTO->collect(), $authorizedMediaLibrary);
     }
 
     #[Route('/{mediaLibraryEvent_id<\d+>}/delete', methods: 'DELETE')]

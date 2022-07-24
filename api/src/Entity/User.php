@@ -176,14 +176,35 @@ class User implements EntityInterface
         return $this;
     }
 
-    public function isStatus(UserStatusEnum $userStatusEnum): bool
-    {
-        return $this->getStatus() === $userStatusEnum->name;
-    }
-
     public function getStatus(): ?string
     {
         return $this->status;
+    }
+
+    public function setActiveStatus(): self
+    {
+        $this->setStatus(UserStatusEnum::ACTIVE);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isActive(): bool
+    {
+        return $this->getStatus() === UserStatusEnum::ACTIVE->name;
+    }
+
+    public function setNotActiveStatus(): self
+    {
+        $this->setStatus(UserStatusEnum::NOT_ACTIVE);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isNotActive(): bool
+    {
+        return $this->getStatus() === UserStatusEnum::NOT_ACTIVE->name;
     }
 
     public function setStatus(?UserStatusEnum $status): self

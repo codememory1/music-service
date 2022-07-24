@@ -18,6 +18,9 @@ class NotificationRepository extends AbstractRepository
     protected ?string $entity = Notification::class;
     protected ?string $alias = 'n';
 
+    /**
+     * @return array<Notification>
+     */
     public function getPendingNotifications(): array
     {
         $qb = $this->createQueryBuilder('n');

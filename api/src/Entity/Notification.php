@@ -11,6 +11,7 @@ use App\Repository\NotificationRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class Notification.
@@ -102,6 +103,18 @@ class Notification implements EntityInterface
         return $this;
     }
 
+    #[Pure]
+    public function isInformation(): bool
+    {
+        return $this->getType() === NotificationTypeEnum::INFORMATIONAL->name;
+    }
+
+    #[Pure]
+    public function isReferential(): bool
+    {
+        return $this->getType() === NotificationTypeEnum::REFERENTIAL->name;
+    }
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -150,6 +163,45 @@ class Notification implements EntityInterface
         $this->status = $statusEnum->name;
 
         return $this;
+    }
+
+    public function setExpectsStatus(): self
+    {
+        $this->setStatus(NotificationStatusEnum::EXPECTS);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isExpects(): bool
+    {
+        return $this->getStatus() === NotificationStatusEnum::EXPECTS->name;
+    }
+
+    public function setInProcessSendingStatus(): self
+    {
+        $this->setStatus(NotificationStatusEnum::IN_PROCESS_SENDING);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isInProcessSending(): bool
+    {
+        return $this->getStatus() === NotificationStatusEnum::IN_PROCESS_SENDING->name;
+    }
+
+    public function setSentOutStatus(): self
+    {
+        $this->setStatus(NotificationStatusEnum::SENT_OUT);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isSentOut(): bool
+    {
+        return $this->getStatus() === NotificationStatusEnum::SENT_OUT->name;
     }
 
     public function getDepartureDate(): ?DateTimeImmutable

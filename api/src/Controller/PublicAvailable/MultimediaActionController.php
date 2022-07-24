@@ -6,7 +6,6 @@ use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\Entity\Multimedia;
-use App\Enum\MultimediaStatusEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
@@ -35,7 +34,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         AddMultimediaToMediaLibraryService $addMultimediaToMediaLibraryService
     ): JsonResponse {
-        if ($multimedia->getStatus() !== MultimediaStatusEnum::PUBLISHED->name) {
+        if (false === $multimedia->isPublished()) {
             throw EntityNotFoundException::multimedia();
         }
 

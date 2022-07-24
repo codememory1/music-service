@@ -78,6 +78,32 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
+    public function setHideStatus(): self
+    {
+        $this->setStatus(MediaLibraryStatusEnum::HIDE);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isHide(): bool
+    {
+        return $this->getStatus() === MediaLibraryStatusEnum::HIDE->name;
+    }
+
+    public function setShowStatus(): self
+    {
+        $this->setStatus(MediaLibraryStatusEnum::SHOW);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isShow(): bool
+    {
+        return $this->getStatus() === MediaLibraryStatusEnum::SHOW->name;
+    }
+
     /**
      * @return ArrayCollection|Collection<int, MultimediaMediaLibrary>
      */

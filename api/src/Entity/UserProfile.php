@@ -11,6 +11,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -114,6 +115,32 @@ class UserProfile implements EntityInterface
         $this->status = $status?->name;
 
         return $this;
+    }
+
+    public function setHideStatus(): self
+    {
+        $this->setStatus(UserProfileStatusEnum::HIDE);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isHide(): bool
+    {
+        return $this->getStatus() === UserProfileStatusEnum::HIDE->name;
+    }
+
+    public function setShowStatus(): self
+    {
+        $this->setStatus(UserProfileStatusEnum::SHOW);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isShow(): bool
+    {
+        return $this->getStatus() === UserProfileStatusEnum::SHOW->name;
     }
 
     public function getDesign(): ?UserProfileDesign

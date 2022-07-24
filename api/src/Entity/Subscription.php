@@ -163,6 +163,32 @@ class Subscription implements EntityInterface
         return $this;
     }
 
+    public function setHideStatus(): self
+    {
+        $this->setStatus(SubscriptionStatusEnum::HIDE);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isHide(): bool
+    {
+        return $this->getStatus() === SubscriptionStatusEnum::HIDE->name;
+    }
+
+    public function setShowStatus(): self
+    {
+        $this->setStatus(SubscriptionStatusEnum::SHOW);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isShow(): bool
+    {
+        return $this->getStatus() === SubscriptionStatusEnum::SHOW->name;
+    }
+
     /**
      * @return Collection<int, SubscriptionPermission>
      */

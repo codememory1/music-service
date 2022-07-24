@@ -5,7 +5,6 @@ namespace App\EventListener\SaveMultimedia\After;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Multimedia;
 use App\Entity\User;
-use App\Enum\MultimediaTypeEnum;
 use App\Event\SaveMultimediaEvent;
 use App\Message\MultimediaMetadataMessage;
 use App\Rest\S3\Interfaces\S3UploaderInterface;
@@ -33,8 +32,14 @@ class FileUploadListener
     private SubtitlesUploader $subtitlesUploader;
     private ImageUploader $imageUploader;
 
-    public function __construct(EntityManagerInterface $manager, MessageBusInterface $bus, TrackUploader $trackUploader, ClipUploader $clipUploader, SubtitlesUploader $subtitlesUploader, ImageUploader $imageUploader)
-    {
+    public function __construct(
+        EntityManagerInterface $manager,
+        MessageBusInterface $bus,
+        TrackUploader $trackUploader,
+        ClipUploader $clipUploader,
+        SubtitlesUploader $subtitlesUploader,
+        ImageUploader $imageUploader
+    ) {
         $this->em = $manager;
         $this->bus = $bus;
         $this->trackUploader = $trackUploader;
@@ -73,7 +78,7 @@ class FileUploadListener
     private function uploadMultimediaToStorage(Multimedia $multimedia, ?UploadedFile $uploadedFile): ?string
     {
         if (null !== $uploadedFile) {
-            if (MultimediaTypeEnum::TRACK->name === $multimedia->getType()) {
+            if ($multimedia->isTrack()) {
                 $this->trackUploader->save(
                     $multimedia->getMultimedia(),
                     $uploadedFile->getRealPath(),
@@ -81,7 +86,7 @@ class FileUploadListener
                 );
 
                 return $this->trackUploader->getUploadedFile()->last();
-            } elseif (MultimediaTypeEnum::CLIP->name === $multimedia->getType()) {
+            } elseif ($multimedia->isClip()) {
                 $this->clipUploader->save(
                     $multimedia->getMultimedia(),
                     $uploadedFile->getRealPath(),

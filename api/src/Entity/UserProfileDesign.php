@@ -38,6 +38,18 @@ class UserProfileDesign implements EntityInterface
     ])]
     private ?array $designComponents = null;
 
+    public function setUserProfile(?UserProfile $userProfile): self
+    {
+        $this->userProfile = $userProfile;
+
+        return $this;
+    }
+
+    public function getUserProfile(): ?UserProfile
+    {
+        return $this->userProfile;
+    }
+
     public function getCoverImage(): ?string
     {
         return $this->coverImage;
