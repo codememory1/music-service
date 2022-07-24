@@ -26,7 +26,7 @@ class SendOnModerationService extends AbstractService
 
     public function make(Multimedia $multimedia): JsonResponse
     {
-        if ($multimedia->getStatus() !== MultimediaStatusEnum::DRAFT->name) {
+        if (false === $multimedia->isDraft()) {
             throw MultimediaException::badSendOnModeration();
         }
 

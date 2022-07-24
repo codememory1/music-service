@@ -5,7 +5,6 @@ namespace App\Security\AccountActivation;
 use App\DTO\AccountActivationDTO;
 use App\Entity\AccountActivationCode;
 use App\Enum\EventEnum;
-use App\Enum\UserStatusEnum;
 use App\Event\AccountActivationEvent;
 use App\Rest\Http\Exceptions\InvalidException;
 use App\Service\AbstractService;
@@ -40,7 +39,7 @@ class AccountActivation extends AbstractService
             throw InvalidException::invalidCode();
         }
 
-        $accountActivationDTO->user->setStatus(UserStatusEnum::ACTIVE);
+        $accountActivationDTO->user->setActiveStatus();
 
         $this->em->remove($finedAccountActivationCode);
         $this->em->flush();

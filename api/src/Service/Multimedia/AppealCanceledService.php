@@ -26,7 +26,7 @@ class AppealCanceledService extends AbstractService
 
     public function make(Multimedia $multimedia): JsonResponse
     {
-        if (MultimediaStatusEnum::APPEAL->name !== $multimedia->getStatus()) {
+        if (false === $multimedia->isAppeal()) {
             throw MultimediaException::badAppealCanceled();
         }
 
