@@ -28,10 +28,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user')]
+#[Authorization]
 class AlbumController extends AbstractRestController
 {
     #[Route('/{user_id<\d+>}/album/all', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUMS)]
     public function all(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
@@ -45,7 +45,6 @@ class AlbumController extends AbstractRestController
     }
 
     #[Route('/{user_id<\d+>}/album/create', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_ALBUM_TO_USER)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
@@ -56,7 +55,6 @@ class AlbumController extends AbstractRestController
     }
 
     #[Route('/album/{album_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_ALBUM_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
@@ -70,7 +68,6 @@ class AlbumController extends AbstractRestController
     }
 
     #[Route('/album/{album_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_ALBUM_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
@@ -80,7 +77,6 @@ class AlbumController extends AbstractRestController
     }
 
     #[Route('/album/{album_id<\d+>}/publish', methods: 'PATCH')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::ALBUM_STATUS_CONTROL_TO_USER)]
     public function publish(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,

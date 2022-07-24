@@ -17,10 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/multimedia/category')]
+#[Authorization]
 class MultimediaCategoryController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    #[Authorization]
     public function all(MultimediaCategoryResponseData $multimediaCategoryResponseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
     {
         $multimediaCategoryResponseData->setEntities($multimediaCategoryRepository->findAll());

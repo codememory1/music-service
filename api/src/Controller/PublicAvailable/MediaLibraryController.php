@@ -22,10 +22,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/media-library')]
+#[Authorization]
 class MediaLibraryController extends AbstractRestController
 {
     #[Route('/multimedia/all', methods: 'GET')]
-    #[Authorization]
     public function allMultimedia(MultimediaMediaLibraryResponseData $multimediaMediaLibraryResponseData): JsonResponse
     {
         $multimediaMediaLibraryResponseData->setEntities(
@@ -37,7 +37,6 @@ class MediaLibraryController extends AbstractRestController
     }
 
     #[Route('/share/with-friend/{user_id<\d+>}', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHARE_MEDIA_LIBRARY_WITH_FRIENDS)]
     public function share(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,

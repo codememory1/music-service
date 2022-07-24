@@ -30,10 +30,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user')]
+#[Authorization]
 class PlaylistController extends AbstractRestController
 {
     #[Route('/{user_id<\d+>}/media-library/playlist/all', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_USER_PLAYLISTS)]
     public function all(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
@@ -47,7 +47,6 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/media-library/playlist/{playlist_id}/read', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_USER_PLAYLISTS)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
@@ -60,7 +59,6 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/{user_id<\d+>}/media-library/playlist/create', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_USER_PLAYLISTS)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
@@ -71,7 +69,6 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/media-library/playlist/{playlist_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_PLAYLIST_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
@@ -85,7 +82,6 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/media-library/playlist/{playlist_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_PLAYLIST_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
@@ -95,7 +91,6 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/media-library/playlist/multimedia/{multimediaPlaylist_id<\d+>}/move/directory/{playlistDirectory_id<\d+>}', methods: 'PUT')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_TO_PLAYLIST_DIRECTORY)]
     public function moveMultimediaToDirectory(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylist $multimediaPlaylist,

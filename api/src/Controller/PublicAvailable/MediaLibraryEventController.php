@@ -25,11 +25,11 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/media-library/event')]
+#[Authorization]
+#[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MEDIA_LIBRARY_EVENT)]
 class MediaLibraryEventController extends AbstractRestController
 {
     #[Route('/add', methods: 'POST')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MEDIA_LIBRARY_EVENT)]
     public function add(MediaLibraryEventDTO $mediaLibraryEventDTO, AddMediaLibraryEventService $addMediaLibraryEventService): JsonResponse
     {
         return $addMediaLibraryEventService->make(
@@ -39,8 +39,6 @@ class MediaLibraryEventController extends AbstractRestController
     }
 
     #[Route('/{mediaLibraryEvent_id<\d+>}/edit', methods: 'PUT')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MEDIA_LIBRARY_EVENT)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'mediaLibraryEvent')] MediaLibraryEvent $mediaLibraryEvent,
         MediaLibraryEventDTO $mediaLibraryEventDTO,
@@ -55,8 +53,6 @@ class MediaLibraryEventController extends AbstractRestController
     }
 
     #[Route('/{mediaLibraryEvent_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MEDIA_LIBRARY_EVENT)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'mediaLibraryEvent')] MediaLibraryEvent $mediaLibraryEvent,
         DeleteMediaLibraryEventService $deleteMediaLibraryEventService

@@ -25,11 +25,11 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/media-library/multimedia')]
+#[Authorization]
+#[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]
 class MultimediaMediaLibraryEventController extends AbstractRestController
 {
     #[Route('/{multimediaMediaLibrary_id<\d+>}/event/add', methods: 'POST')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]
     public function add(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO,
@@ -43,8 +43,6 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
     }
 
     #[Route('/event/{multimediaMediaLibraryEvent_id}/edit', methods: 'PUT')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaEvent')] MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent,
         MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO,
@@ -62,8 +60,6 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
     }
 
     #[Route('/event/{multimediaMediaLibraryEvent_id}/delete', methods: 'DELETE')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaEvent')] MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent,
         DeleteMultimediaMediaLibraryEventService $deleteMultimediaMediaLibraryEventService

@@ -29,10 +29,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/media-library/playlist')]
+#[Authorization]
 class PlaylistDirectoryController extends AbstractRestController
 {
     #[Route('/{playlist_id<\d+>}/directory/create', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_DIRECTORY_TO_PLAYLIST)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
@@ -47,7 +47,6 @@ class PlaylistDirectoryController extends AbstractRestController
     }
 
     #[Route('/directory/{playlistDirectory_id<\d+>}/edit', methods: 'PUT')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
@@ -63,7 +62,6 @@ class PlaylistDirectoryController extends AbstractRestController
     }
 
     #[Route('/directory/{playlistDirectory_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_DIRECTORY_TO_PLAYLIST)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
@@ -75,7 +73,6 @@ class PlaylistDirectoryController extends AbstractRestController
     }
 
     #[Route('/directory/{playlistDirectory_id<\d+>}/multimedia/{multimediaMediaLibrary_id<\d+>}/add', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST)]
     public function addMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
@@ -92,7 +89,6 @@ class PlaylistDirectoryController extends AbstractRestController
     }
 
     #[Route('/directory/multimedia/{multimediaPlaylistDirectory_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST)]
     public function deleteMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylistDirectory $multimediaPlaylistDirectory,

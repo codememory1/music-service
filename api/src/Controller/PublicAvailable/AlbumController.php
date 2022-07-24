@@ -27,10 +27,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/album')]
+#[Authorization]
 class AlbumController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_ALBUMS)]
     public function all(AlbumResponseData $albumResponseData, AlbumRepository $albumRepository): JsonResponse
     {
@@ -41,7 +41,6 @@ class AlbumController extends AbstractRestController
     }
 
     #[Route('/create', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_ALBUM)]
     public function create(AlbumDTO $albumDTO, CreateAlbumService $createAlbumService): JsonResponse
     {
@@ -49,7 +48,6 @@ class AlbumController extends AbstractRestController
     }
 
     #[Route('/{album_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_ALBUM)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
@@ -65,7 +63,6 @@ class AlbumController extends AbstractRestController
     }
 
     #[Route('/{album_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_ALBUM)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
@@ -77,7 +74,6 @@ class AlbumController extends AbstractRestController
     }
 
     #[Route('/{album_id<\d+>}/publish', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_ALBUM)]
     public function publish(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,

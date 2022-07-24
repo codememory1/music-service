@@ -24,10 +24,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user')]
+#[Authorization]
 class FriendController extends AbstractRestController
 {
     #[Route('/{user_id<\d+>}/friend/all', methods: 'GET')]
-    #[Authorization]
     public function all(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         FriendResponseData $friendResponseData,
@@ -39,7 +39,6 @@ class FriendController extends AbstractRestController
     }
 
     #[Route('/friend/{friend_id<\d+>}/terminate-friendship', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_FRIEND_TO_USER)]
     public function terminateFriendship(
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friend,

@@ -29,10 +29,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/media-library')]
+#[Authorization]
 class PlaylistController extends AbstractRestController
 {
     #[Route('/playlist/all', methods: 'GET')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_PLAYLISTS)]
     public function all(PlaylistResponseData $playlistResponseData, PlaylistRepository $playlistRepository): JsonResponse
     {
@@ -43,7 +43,6 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/playlist/{playlist_id}/read', methods: 'GET')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_PLAYLISTS)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
@@ -58,7 +57,6 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/playlist/create', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_PLAYLIST)]
     public function create(PlaylistDTO $playlistDTO, CreatePlaylistService $createPlaylistService): JsonResponse
     {
@@ -66,7 +64,6 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/playlist/{playlist_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_PLAYLIST)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
@@ -82,7 +79,6 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/playlist/{playlist_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_PLAYLIST)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
@@ -94,7 +90,6 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/playlist/multimedia/{multimediaPlaylist_id<\d+>}/move/directory/{playlistDirectory_id<\d+>}', methods: 'PUT')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST)]
     public function moveMultimediaToDirectory(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylist $multimediaPlaylist,

@@ -21,10 +21,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Codememory
  */
 #[Route('/user/session')]
+#[Authorization]
 class UserSessionController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    #[Authorization]
     public function all(UserSessionResponseData $userSessionResponseData, UserSessionRepository $userSessionRepository): JsonResponse
     {
         $userSessionResponseData->setEntities($userSessionRepository->authorizedUserSessions());
@@ -34,7 +34,6 @@ class UserSessionController extends AbstractRestController
     }
 
     #[Route('/{userSession_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
         DeleteUserSessionService $deleteUserSessionService
@@ -47,7 +46,6 @@ class UserSessionController extends AbstractRestController
     }
 
     #[Route('/all/delete', methods: 'DELETE')]
-    #[Authorization]
     public function deleteAll(DeleteUserSessionService $deleteUserSessionService): JsonResponse
     {
         return $deleteUserSessionService->deleteAll($this->getAuthorizedUser());

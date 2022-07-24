@@ -24,11 +24,11 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/multimedia/{multimedia_id<\d+>}')]
+#[Authorization]
+#[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]
 class MultimediaActionController extends AbstractRestController
 {
     #[Route('/send-on-moderation', methods: 'PATCH')]
-    #[Authorization]
-    #[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]
     public function sendOnModeration(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SendOnModerationService $sendOnModerationService
@@ -37,8 +37,6 @@ class MultimediaActionController extends AbstractRestController
     }
 
     #[Route('/publish', methods: 'PATCH')]
-    #[Authorization]
-    #[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]
     public function publish(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         PublishMultimediaService $publishMultimediaService
@@ -47,8 +45,6 @@ class MultimediaActionController extends AbstractRestController
     }
 
     #[Route('/unpublish', methods: 'PATCH')]
-    #[Authorization]
-    #[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]
     public function unpublish(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         UnpublishMultimediaService $unpublishMultimediaService
@@ -57,8 +53,6 @@ class MultimediaActionController extends AbstractRestController
     }
 
     #[Route('/appeal-canceled', methods: 'PATCH')]
-    #[Authorization]
-    #[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]
     public function appealCanceled(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         AppealCanceledService $appealCanceledService

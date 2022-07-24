@@ -22,11 +22,11 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/artist/{user_id<\d+>}')]
+#[Authorization]
+#[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST)]
 class ControllingSubscriptionOnArtistController extends AbstractRestController
 {
     #[Route('/subscribe', methods: 'PATCH')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST)]
     public function subscribe(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
         SubscribeOnArtistService $subscribeOnArtistService
@@ -37,8 +37,6 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
     }
 
     #[Route('/unsubscribe', methods: 'PATCH')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST)]
     public function unsubscribe(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
         UnsubscribeOnArtistService $unsubscribeOnArtistService

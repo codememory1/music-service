@@ -19,10 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/profile')]
+#[Authorization]
 class UserProfileController extends AbstractRestController
 {
     #[Route('/design/edit', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_PROFILE_DESIGN)]
     public function editDesignProfile(UserProfileDesignDTO $userProfileDesignDTO, UpdateUserProfileDesignService $updateUserProfileDesignService): JsonResponse
     {

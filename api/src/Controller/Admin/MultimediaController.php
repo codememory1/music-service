@@ -29,10 +29,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user')]
+#[Authorization]
 class MultimediaController extends AbstractRestController
 {
     #[Route('/multimedia/all', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_ALL_USER_MULTIMEDIA)]
     public function all(MultimediaResponseData $multimediaResponseData, MultimediaRepository $multimediaRepository): JsonResponse
     {
@@ -43,7 +43,6 @@ class MultimediaController extends AbstractRestController
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/read', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_ALL_USER_MULTIMEDIA)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
@@ -56,7 +55,6 @@ class MultimediaController extends AbstractRestController
     }
 
     #[Route('/{user_id<\d+>}/multimedia/add', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_TO_USER)]
     public function add(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
@@ -73,7 +71,6 @@ class MultimediaController extends AbstractRestController
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
@@ -87,7 +84,6 @@ class MultimediaController extends AbstractRestController
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,

@@ -19,10 +19,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/notification')]
+#[Authorization]
 class NotificationController extends AbstractRestController
 {
     #[Route('/create', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_NOTIFICATION)]
     public function create(NotificationDTO $notificationDTO, CreateNotificationService $createNotificationService): JsonResponse
     {

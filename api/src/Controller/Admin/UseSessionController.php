@@ -23,10 +23,11 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author  Codememory
  */
+#[Route('/user')]
+#[Authorization]
 class UseSessionController extends AbstractRestController
 {
-    #[Route('/user/{user_id<\d+>}/session/all')]
-    #[Authorization]
+    #[Route('/{user_id<\d+>}/session/all')]
     #[UserRolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
     public function all(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
@@ -39,8 +40,7 @@ class UseSessionController extends AbstractRestController
         return $this->responseCollection->dataOutput($userSessionResponseData->getResponse());
     }
 
-    #[Route('/user/session/{userSession_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
+    #[Route('/session/{userSession_id<\d+>}/delete', methods: 'DELETE')]
     #[UserRolePermission(RolePermissionEnum::DELETE_USER_SESSION_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
@@ -49,8 +49,7 @@ class UseSessionController extends AbstractRestController
         return $deleteUserSessionService->make($userSession);
     }
 
-    #[Route('/user/{user_id<\d+>}/session/all/delete', methods: 'DELETE')]
-    #[Authorization]
+    #[Route('/{user_id<\d+>}/session/all/delete', methods: 'DELETE')]
     #[UserRolePermission(RolePermissionEnum::DELETE_USER_SESSION_TO_USER)]
     public function deleteAll(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,

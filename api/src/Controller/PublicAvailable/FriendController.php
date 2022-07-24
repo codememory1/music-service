@@ -26,10 +26,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user')]
+#[Authorization]
 class FriendController extends AbstractRestController
 {
     #[Route('/friend/all', methods: 'GET')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_FRIENDS)]
     public function all(FriendResponseData $friendResponseData, FriendRepository $friendRepository): JsonResponse
     {
@@ -39,7 +39,6 @@ class FriendController extends AbstractRestController
     }
 
     #[Route('/{user_id<\d+>}/add-as-friend', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_AS_FRIEND)]
     public function addAsFriend(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
@@ -49,7 +48,6 @@ class FriendController extends AbstractRestController
     }
 
     #[Route('/friend/{friend_id<\d+>}/accept', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_AS_FRIEND)]
     public function acceptAsFriend(
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friend,
@@ -63,7 +61,6 @@ class FriendController extends AbstractRestController
     }
 
     #[Route('/friend/{friend_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_FRIEND)]
     public function deleteFriend(
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friendship,

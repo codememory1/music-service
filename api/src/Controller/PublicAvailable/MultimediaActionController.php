@@ -25,10 +25,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/multimedia/{multimedia_id<\d+>}')]
+#[Authorization]
 class MultimediaActionController extends AbstractRestController
 {
     #[Route('/add-to-media-library', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA_TO_MEDIA_LIBRARY)]
     public function addToMediaLibrary(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
@@ -42,7 +42,6 @@ class MultimediaActionController extends AbstractRestController
     }
 
     #[Route('/send-on-moderation', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
     public function sendOnModeration(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
@@ -56,7 +55,6 @@ class MultimediaActionController extends AbstractRestController
     }
 
     #[Route('/send-on-appeal', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
     public function sendOnAppeal(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
@@ -66,7 +64,6 @@ class MultimediaActionController extends AbstractRestController
     }
 
     #[Route('/like', methods: 'PATCH')]
-    #[Authorization]
     public function like(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SetLikeMultimediaService $setLikeMultimediaService
@@ -75,7 +72,6 @@ class MultimediaActionController extends AbstractRestController
     }
 
     #[Route('/dislike', methods: 'PATCH')]
-    #[Authorization]
     public function dislike(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SetDisLikeMultimediaService $setDisLikeMultimediaService
