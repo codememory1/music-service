@@ -4,7 +4,7 @@ namespace App\EventListener\Registration;
 
 use App\Entity\AccountActivationCode;
 use App\Event\UserRegistrationEvent;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\FlusherService;
 
 /**
  * Class CreateAccountActivationCodeListener.
@@ -15,11 +15,11 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class CreateAccountActivationCodeListener
 {
-    private EntityManagerInterface $em;
+    private FlusherService $flusherService;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(FlusherService $flusherService)
     {
-        $this->em = $manager;
+        $this->flusherService = $flusherService;
     }
 
     public function onUserRegistration(UserRegistrationEvent $event): void
@@ -29,7 +29,6 @@ class CreateAccountActivationCodeListener
         $accountActivationCodeEntity->setUser($event->user);
         $accountActivationCodeEntity->setTtl('1h');
 
-        $this->em->persist($accountActivationCodeEntity);
-        $this->em->flush();
+        $this->flusherService->save($accountActivationCodeEntity);
     }
 }

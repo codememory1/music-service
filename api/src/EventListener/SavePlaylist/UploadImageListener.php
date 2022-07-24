@@ -4,7 +4,7 @@ namespace App\EventListener\SavePlaylist;
 
 use App\Event\SavePlaylistEvent;
 use App\Rest\S3\Uploader\ImageUploader;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\FlusherService;
 
 /**
  * Class UploadImageListener.
@@ -15,12 +15,12 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class UploadImageListener
 {
-    private EntityManagerInterface $em;
+    private FlusherService $flusherService;
     private ImageUploader $imageUploader;
 
-    public function __construct(EntityManagerInterface $manager, ImageUploader $imageUploader)
+    public function __construct(FlusherService $flusherService, ImageUploader $imageUploader)
     {
-        $this->em = $manager;
+        $this->flusherService = $flusherService;
         $this->imageUploader = $imageUploader;
     }
 
@@ -35,7 +35,7 @@ class UploadImageListener
 
             $event->playlist->setImage($this->imageUploader->getUploadedFile()->first());
 
-            $this->em->flush();
+            $this->flusherService->save();
         }
     }
 }

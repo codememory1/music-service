@@ -39,9 +39,7 @@ class CreateRegistrationSessionListener
     public function onUserRegistration(UserRegistrationEvent $event): void
     {
         $userSessionRepository = $this->em->getRepository(UserSession::class);
-        $finedUserSession = $userSessionRepository->findOneBy([
-            'user' => $event->user
-        ]);
+        $finedUserSession = $userSessionRepository->findRegistered($event->user);
 
         if (null !== $finedUserSession) {
             $this->updateUserSessionService->make($this->userDTO, $event->user, $finedUserSession, UserSessionTypeEnum::REGISTRATION);

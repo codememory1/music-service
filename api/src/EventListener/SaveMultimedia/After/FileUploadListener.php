@@ -12,7 +12,7 @@ use App\Rest\S3\Uploader\ClipUploader;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Rest\S3\Uploader\SubtitlesUploader;
 use App\Rest\S3\Uploader\TrackUploader;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -25,7 +25,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 class FileUploadListener
 {
-    private EntityManagerInterface $em;
+    private FlusherService $flusherService;
     private MessageBusInterface $bus;
     private TrackUploader $trackUploader;
     private ClipUploader $clipUploader;
@@ -33,14 +33,14 @@ class FileUploadListener
     private ImageUploader $imageUploader;
 
     public function __construct(
-        EntityManagerInterface $manager,
+        FlusherService $flusherService,
         MessageBusInterface $bus,
         TrackUploader $trackUploader,
         ClipUploader $clipUploader,
         SubtitlesUploader $subtitlesUploader,
         ImageUploader $imageUploader
     ) {
-        $this->em = $manager;
+        $this->flusherService = $flusherService;
         $this->bus = $bus;
         $this->trackUploader = $trackUploader;
         $this->clipUploader = $clipUploader;
@@ -70,7 +70,7 @@ class FileUploadListener
             $event->multimediaDTO->image
         ));
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         $this->bus->dispatch(new MultimediaMetadataMessage($multimedia->getId()));
     }

@@ -39,8 +39,6 @@ class SendAccountActivationCodeListener
     {
         $accountActivationCodeRepository = $this->em->getRepository(AccountActivationCode::class);
 
-        $this->mailMessagingService->sendAccountActivationCode($accountActivationCodeRepository->findOneBy([
-            'user' => $event->user
-        ]));
+        $this->mailMessagingService->sendAccountActivationCode($accountActivationCodeRepository->findByUser($event->user));
     }
 }

@@ -6,6 +6,7 @@ use App\Entity\Multimedia;
 use App\Entity\MultimediaMetadata;
 use App\Message\MultimediaMetadataMessage;
 use App\Rest\S3\UploadedObject;
+use App\Service\FlusherService;
 use Doctrine\ORM\EntityManagerInterface;
 use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
@@ -24,11 +25,13 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 class MultimediaMetadataMessageHandler
 {
     private EntityManagerInterface $em;
+    private FlusherService $flusherService;
     private UploadedObject $uploadedObject;
 
-    public function __construct(EntityManagerInterface $manager, UploadedObject $uploadedObject)
+    public function __construct(EntityManagerInterface $manager, FlusherService $flusherService, UploadedObject $uploadedObject)
     {
         $this->em = $manager;
+        $this->flusherService = $flusherService;
         $this->uploadedObject = $uploadedObject;
     }
 
@@ -89,6 +92,6 @@ class MultimediaMetadataMessageHandler
             $this->handlerTypes($multimedia, $streamCollection);
         }
 
-        $this->em->flush();
+        $this->flusherService->save();
     }
 }
