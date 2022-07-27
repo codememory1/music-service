@@ -15,10 +15,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteFriendService extends AbstractService
 {
-    public function make(Friend $friend): JsonResponse
+    public function make(Friend $friendship): JsonResponse
     {
-        $this->em->remove($friend);
-        $this->em->flush();
+        $this->flusherService->addRemove($friendship)->save();
 
         return $this->responseCollection->successDelete('friend@successDelete');
     }

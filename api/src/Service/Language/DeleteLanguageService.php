@@ -17,8 +17,7 @@ class DeleteLanguageService extends AbstractService
 {
     public function make(Language $language): JsonResponse
     {
-        $this->em->remove($language);
-        $this->em->flush();
+        $this->flusherService->addRemove($language)->save();
 
         return $this->responseCollection->successDelete('language@successDelete');
     }

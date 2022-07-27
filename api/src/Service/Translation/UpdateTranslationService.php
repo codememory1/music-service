@@ -21,11 +21,11 @@ class UpdateTranslationService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $translationEntity = $translationDTO->getEntity();
+        $translation = $translationDTO->getEntity();
 
-        $translationEntity->getTranslationKey()->setKey($translationDTO->translationKey);
+        $translation->getTranslationKey()->setKey($translationDTO->translationKey);
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successCreate('translation@successUpdate');
     }

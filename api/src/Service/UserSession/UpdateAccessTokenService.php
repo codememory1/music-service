@@ -30,9 +30,7 @@ class UpdateAccessTokenService extends AbstractService
         }
 
         $userSessionRepository = $this->em->getRepository(UserSession::class);
-        $finedUserSession = $userSessionRepository->findOneBy([
-            'refreshToken' => $refreshTokenDTO->refreshToken
-        ]);
+        $finedUserSession = $userSessionRepository->findByRefreshToken($refreshTokenDTO->refreshToken);
 
         if (null === $finedUserSession) {
             throw FailedException::failedToUpdateAccessToken();
@@ -55,6 +53,6 @@ class UpdateAccessTokenService extends AbstractService
         $userSession->setRefreshToken($this->authorizationToken->getRefreshToken());
         $userSession->setLastActivity(new DateTimeImmutable());
 
-        $this->em->flush();
+        $this->flusherService->save();
     }
 }

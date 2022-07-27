@@ -20,24 +20,19 @@ class SubscribeOnArtistService extends AbstractService
     public function make(User $artist, User $subscriber): JsonResponse
     {
         $artistSubscriberRepository = $this->em->getRepository(ArtistSubscriber::class);
-        $finedSubscriber = $artistSubscriberRepository->findOneBy([
-            'artist' => $artist,
-            'subscriber' => $subscriber
-        ]);
+        $finedSubscriber = $artistSubscriberRepository->findSubscription($artist, $subscriber);
 
-        if (null === $finedSubscriber) {
-            $artistSubscriber = new ArtistSubscriber();
-
-            $artistSubscriber->setSubscriber($subscriber);
-
-            $artist->addSubscriber($artistSubscriber);
-
-            $this->em->persist($artistSubscriber);
-            $this->em->flush();
-
-            return $this->responseCollection->successCreate('artist@successSubscribe');
+        if (null !== $finedSubscriber) {
+            throw FailedException::failedSubscribeOnArtist();
         }
 
-        throw FailedException::failedSubscribeOnArtist();
+        $artistSubscriber = new ArtistSubscriber();
+
+        $artistSubscriber->setSubscriber($subscriber);
+        $artistSubscriber->setArtist($artist);
+
+        $this->flusherService->save($artistSubscriber);
+
+        return $this->responseCollection->successCreate('artist@successSubscribe');
     }
 }

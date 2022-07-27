@@ -21,8 +21,7 @@ class CreateMultimediaCategoryService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $this->em->persist($multimediaCategoryDTO->getEntity());
-        $this->em->flush();
+        $this->flusherService->save($multimediaCategoryDTO->getEntity());
 
         return $this->responseCollection->successCreate('multimediaCategory@successCreate');
     }

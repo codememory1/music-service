@@ -31,9 +31,7 @@ class CreateMediaLibraryService extends AbstractService
             throw EntityExistException::mediaLibrary();
         }
 
-        $mediaLibrary = $mediaLibraryDTO->getEntity();
-
-        $this->saveMediaLibraryService->make($mediaLibrary, $forUser);
+        $this->saveMediaLibraryService->make($mediaLibraryDTO->getEntity(), $forUser);
 
         return $this->responseCollection->successCreate('mediaLibrary@successCreate');
     }

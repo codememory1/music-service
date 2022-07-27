@@ -28,7 +28,7 @@ class UpdateUserRoleService extends AbstractService
 
         $this->setPermissionsToRoleService->set($role, $userRoleDTO->permissions);
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successCreate('role@successUpdate');
     }

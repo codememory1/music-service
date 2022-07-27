@@ -32,7 +32,10 @@ class AddMultimediaToPlaylistDirectoryService extends AbstractService
         ]);
         $checkExistMultimediaToPlaylistDirectories = new CheckExistMultimediaToPlaylistDirectoriesService();
 
-        $checkExistMultimediaToPlaylistDirectories->throwIfExist($playlistDirectory->getPlaylist()->getDirectories(), $multimediaMediaLibrary);
+        $checkExistMultimediaToPlaylistDirectories->throwIfExist(
+            $playlistDirectory->getPlaylist()->getDirectories(),
+            $multimediaMediaLibrary
+        );
 
         if (null !== $finedMultimediaPlaylist) {
             throw EntityExistException::multimediaPlaylist();
@@ -44,7 +47,7 @@ class AddMultimediaToPlaylistDirectoryService extends AbstractService
 
         $playlistDirectory->addMultimedia($multimediaPlaylistDirectory);
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successUpdate('playlistDirectory@successAddMultimedia');
     }

@@ -17,8 +17,7 @@ class DeleteMultimediaFromPlaylistDirectoryService extends AbstractService
 {
     public function make(MultimediaPlaylistDirectory $multimediaPlaylistDirectory): JsonResponse
     {
-        $this->em->remove($multimediaPlaylistDirectory);
-        $this->em->flush();
+        $this->flusherService->save($multimediaPlaylistDirectory);
 
         return $this->responseCollection->successDelete('multimedia@successDelete');
     }

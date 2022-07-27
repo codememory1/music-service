@@ -28,7 +28,7 @@ class UpdateMultimediaMediaLibraryService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         $this->eventDispatcher->dispatch(
             new UpdateMultimediaMediaLibraryEvent($multimediaMediaLibraryDTO->getEntity(), $multimediaMediaLibraryDTO),

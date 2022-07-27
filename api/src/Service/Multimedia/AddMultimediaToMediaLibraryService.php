@@ -41,7 +41,7 @@ class AddMultimediaToMediaLibraryService extends AbstractService
 
         $toUser->getMediaLibrary()->addMultimedia($multimediaMediaLibrary);
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successCreate('multimediaMediaLibrary@successAdd');
     }

@@ -20,18 +20,14 @@ class UnsubscribeOnArtistService extends AbstractService
     public function make(User $artist, User $subscriber): JsonResponse
     {
         $artistSubscriberRepository = $this->em->getRepository(ArtistSubscriber::class);
-        $finedSubscriber = $artistSubscriberRepository->findOneBy([
-            'artist' => $artist,
-            'subscriber' => $subscriber
-        ]);
+        $finedSubscriber = $artistSubscriberRepository->findSubscription($artist, $subscriber);
 
-        if (null !== $finedSubscriber) {
-            $this->em->remove($finedSubscriber);
-            $this->em->flush();
-
-            return $this->responseCollection->successDelete('artist@successUnsubscribe');
+        if (null === $finedSubscriber) {
+            throw FailedException::failedUnsubscribeOnArtist();
         }
 
-        throw FailedException::failedUnsubscribeOnArtist();
+        $this->flusherService->addRemove($finedSubscriber)->save();
+
+        return $this->responseCollection->successDelete('artist@successUnsubscribe');
     }
 }

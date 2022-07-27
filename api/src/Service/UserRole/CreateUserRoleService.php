@@ -25,12 +25,11 @@ class CreateUserRoleService extends AbstractService
             return $response;
         }
 
-        $roleEntity = $userRoleDTO->getEntity();
+        $role = $userRoleDTO->getEntity();
 
-        $this->setPermissionsToRoleService->set($roleEntity, $userRoleDTO->permissions);
+        $this->setPermissionsToRoleService->set($role, $userRoleDTO->permissions);
 
-        $this->em->persist($roleEntity);
-        $this->em->flush();
+        $this->flusherService->save($role);
 
         return $this->responseCollection->successCreate('role@successCreate');
     }

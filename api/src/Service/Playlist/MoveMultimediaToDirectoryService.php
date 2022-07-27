@@ -25,8 +25,7 @@ class MoveMultimediaToDirectoryService extends AbstractService
 
         $toDirectory->addMultimedia($multimediaPlaylistDirectory);
 
-        $this->em->remove($multimediaPlaylist);
-        $this->em->flush();
+        $this->flusherService->save($multimediaPlaylist);
 
         return $this->responseCollection->successUpdate('multimediaPlaylist@successMoveToDirectory');
     }

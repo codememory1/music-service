@@ -17,8 +17,7 @@ class DeletePlaylistDirectoryService extends AbstractService
 {
     public function make(PlaylistDirectory $playlistDirectory): JsonResponse
     {
-        $this->em->remove($playlistDirectory);
-        $this->em->flush();
+        $this->flusherService->addRemove($playlistDirectory)->save();
 
         return $this->responseCollection->successDelete('playlistDirectory@successDelete');
     }

@@ -29,15 +29,15 @@ class UpdateMultimediaService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $multimediaEntity = $multimediaDTO->getEntity();
+        $multimedia = $multimediaDTO->getEntity();
 
-        if ($multimediaEntity->isPublished() || $multimediaEntity->isModeration() || $multimediaEntity->isAppeal()) {
-            throw MultimediaException::badUpdateInStatus($multimediaEntity->getStatus());
+        if ($multimedia->isPublished() || $multimedia->isModeration() || $multimedia->isAppeal()) {
+            throw MultimediaException::badUpdateInStatus($multimedia->getStatus());
         }
 
-        $this->setPerformersToMultimediaService->set($multimediaDTO->performers, $multimediaEntity);
+        $this->setPerformersToMultimediaService->set($multimediaDTO->performers, $multimedia);
 
-        $this->saveMultimediaService->make($multimediaDTO, $multimediaEntity);
+        $this->saveMultimediaService->make($multimediaDTO, $multimedia);
 
         return $this->responseCollection->successUpdate('multimedia@successUpdate');
     }

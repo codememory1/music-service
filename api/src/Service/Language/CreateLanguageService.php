@@ -21,10 +21,7 @@ class CreateLanguageService extends AbstractService
             return $response;
         }
 
-        $languageEntity = $languageDTO->getEntity();
-
-        $this->em->persist($languageEntity);
-        $this->em->flush();
+        $this->flusherService->save($languageDTO->getEntity());
 
         return $this->responseCollection->successCreate('language@successCreate');
     }

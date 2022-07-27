@@ -19,7 +19,7 @@ class AcceptAsFriendService extends AbstractService
     {
         $friend->setConfirmed();
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successUpdate('friend@successAccept');
     }

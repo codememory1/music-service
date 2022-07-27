@@ -53,7 +53,7 @@ class SaveMultimediaRatingService extends AbstractService
             }
         }
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         $this->eventDispatcher->dispatch(
             new SetRatingMultimediaEvent($multimediaRating),

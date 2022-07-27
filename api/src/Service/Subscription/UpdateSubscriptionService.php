@@ -28,7 +28,7 @@ class UpdateSubscriptionService extends AbstractService
 
         $this->setPermissionsToSubscriptionService->set($subscription, $subscriptionDTO->permissions);
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successUpdate('subscription@successUpdate');
     }

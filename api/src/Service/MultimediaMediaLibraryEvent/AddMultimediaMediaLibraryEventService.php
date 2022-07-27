@@ -22,9 +22,9 @@ class AddMultimediaMediaLibraryEventService extends AbstractService
 
     public function make(MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO, MultimediaMediaLibrary $multimediaMediaLibrary): JsonResponse
     {
-        $multimediaMediaLibraryEventEntity = $multimediaMediaLibraryEventDTO->getEntity();
+        $multimediaMediaLibraryEvent = $multimediaMediaLibraryEventDTO->getEntity();
 
-        $multimediaMediaLibraryEventEntity->setMultimediaMediaLibrary($multimediaMediaLibrary);
+        $multimediaMediaLibraryEvent->setMultimediaMediaLibrary($multimediaMediaLibrary);
 
         if (true !== $response = $this->validateFullDTO($multimediaMediaLibraryEventDTO)) {
             return $response;

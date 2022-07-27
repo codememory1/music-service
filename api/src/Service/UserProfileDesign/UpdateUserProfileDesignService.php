@@ -27,12 +27,12 @@ class UpdateUserProfileDesignService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $userProfileDesignEntity = $userProfileDesignDTO->getEntity();
+        $userProfileDesign = $userProfileDesignDTO->getEntity();
 
-        $userProfileDesignEntity->setCoverImage($this->uploadImage($userProfileDesignDTO, $userProfile));
-        $userProfileDesignEntity->setDesignComponents($userProfileDesignDTO->designComponents);
+        $userProfileDesign->setCoverImage($this->uploadImage($userProfileDesignDTO, $userProfile));
+        $userProfileDesign->setDesignComponents($userProfileDesignDTO->designComponents);
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successUpdate('userProfileDesign@successUpdate');
     }

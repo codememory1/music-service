@@ -29,14 +29,14 @@ class AddMultimediaService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $multimediaEntity = $multimediaDTO->getEntity();
+        $multimedia = $multimediaDTO->getEntity();
 
-        $multimediaEntity->setUser($toUser);
-        $multimediaEntity->setDraftStatus();
+        $multimedia->setUser($toUser);
+        $multimedia->setDraftStatus();
 
-        $this->setPerformersToMultimediaService->set($multimediaDTO->performers, $multimediaEntity);
+        $this->setPerformersToMultimediaService->set($multimediaDTO->performers, $multimedia);
 
-        $this->saveMultimediaService->make($multimediaDTO, $multimediaEntity);
+        $this->saveMultimediaService->make($multimediaDTO, $multimedia);
 
         return $this->responseCollection->successCreate('multimedia@successAdd');
     }

@@ -26,7 +26,7 @@ class SaveMediaLibraryService extends AbstractService
     {
         $forUser->setMediaLibrary($mediaLibrary);
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         $this->eventDispatcher->dispatch(
             new CreateMediaLibraryEvent($forUser->getMediaLibrary()),

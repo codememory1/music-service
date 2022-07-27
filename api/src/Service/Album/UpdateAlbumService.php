@@ -26,11 +26,11 @@ class UpdateAlbumService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $albumEntity = $albumDTO->getEntity();
+        $album = $albumDTO->getEntity();
 
-        $albumEntity->setUser($toUser);
+        $album->setUser($toUser);
 
-        $this->saveAlbumService->make($albumDTO, $albumEntity);
+        $this->saveAlbumService->make($albumDTO, $album);
 
         return $this->responseCollection->successUpdate('album@successUpdate');
     }

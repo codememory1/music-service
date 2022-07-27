@@ -88,4 +88,19 @@ class UserSessionRepository extends AbstractRepository
 
         return null;
     }
+
+    public function findAllTemp(User $user): array
+    {
+        return $this->findBy([
+            'user' => $user,
+            'type' => UserSessionTypeEnum::TEMP->name
+        ]);
+    }
+
+    public function findByRefreshToken(string $refreshToken): ?UserSession
+    {
+        return $this->findOneBy([
+            'refreshToken' => $refreshToken
+        ]);
+    }
 }

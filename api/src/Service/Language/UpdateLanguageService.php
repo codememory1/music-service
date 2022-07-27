@@ -21,7 +21,7 @@ class UpdateLanguageService extends AbstractService
             return $response;
         }
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successUpdate('language@successUpdate');
     }
