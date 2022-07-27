@@ -25,57 +25,55 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/media-library')]
+#[Authorization]
 class MultimediaMediaLibraryController extends AbstractRestController
 {
     #[Route('/multimedia/{multimediaMediaLibrary_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA_TO_MEDIA_LIBRARY)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         MultimediaMediaLibraryDTO $multimediaMediaLibraryDTO,
         UpdateMultimediaMediaLibraryService $updateMultimediaMediaLibraryService
     ): JsonResponse {
-        if ($multimediaMediaLibrary->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
-            throw EntityNotFoundException::multimedia();
-        }
+        $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
         $multimediaMediaLibraryDTO->setEntity($multimediaMediaLibrary);
+        $multimediaMediaLibraryDTO->collect();
 
-        return $updateMultimediaMediaLibraryService->make($multimediaMediaLibraryDTO->collect());
+        return $updateMultimediaMediaLibraryService->make($multimediaMediaLibraryDTO);
     }
 
     #[Route('/multimedia/{multimediaMediaLibrary_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_MULTIMEDIA_TO_MEDIA_LIBRARY)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         DeleteMultimediaMediaLibraryService $deleteMultimediaMediaLibraryService
     ): JsonResponse {
-        if ($multimediaMediaLibrary->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
-            throw EntityNotFoundException::multimedia();
-        }
+        $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
         return $deleteMultimediaMediaLibraryService->make($multimediaMediaLibrary);
     }
 
     #[Route('/multimedia/{multimediaMediaLibrary_id<\d+>}/share/with-friend/{user_id<\d+>}', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHARE_MULTIMEDIA_WITH_FRIENDS)]
     public function share(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
         ShareWithFriendMultimediaMediaLibraryService $shareWithFriendMultimediaMediaLibraryService
     ): JsonResponse {
-        $authorizedUser = $this->authorizedUser->getUser();
+        $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
-        if ($multimediaMediaLibrary->getMediaLibrary() !== $authorizedUser->getMediaLibrary()) {
-            throw EntityNotFoundException::multimedia();
-        }
-
-        if (false === $friend->isFriend($authorizedUser)) {
+        if (false === $friend->isFriend($this->getAuthorizedUser())) {
             throw EntityNotFoundException::friend();
         }
 
-        return $shareWithFriendMultimediaMediaLibraryService->make($multimediaMediaLibrary, $authorizedUser, $friend);
+        return $shareWithFriendMultimediaMediaLibraryService->make($multimediaMediaLibrary, $this->getAuthorizedUser(), $friend);
+    }
+
+    private function throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser(MultimediaMediaLibrary $multimediaMediaLibrary): void
+    {
+        if (false === $this->getAuthorizedUser()->isMultimediaMediaLibraryBelongs($multimediaMediaLibrary)) {
+            throw EntityNotFoundException::multimedia();
+        }
     }
 }

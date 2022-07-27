@@ -26,10 +26,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/role')]
+#[Authorization]
 class UserRoleController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_ROLES)]
     public function all(UserRoleResponseData $userRoleResponseData, RoleRepository $roleRepository): JsonResponse
     {
@@ -40,7 +40,6 @@ class UserRoleController extends AbstractRestController
     }
 
     #[Route('/{role_id<\d+>}/read', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_ROLES)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'role')] Role $role,
@@ -53,7 +52,6 @@ class UserRoleController extends AbstractRestController
     }
 
     #[Route('/create', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_USER_ROLE)]
     public function create(UserRoleDTO $userRoleDTO, CreateUserRoleService $createUserRoleService): JsonResponse
     {
@@ -61,7 +59,6 @@ class UserRoleController extends AbstractRestController
     }
 
     #[Route('/{role_id<\d+>}/edit', methods: 'PUT')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_USER_ROLE)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'role')] Role $role,
@@ -69,12 +66,12 @@ class UserRoleController extends AbstractRestController
         UpdateUserRoleService $updateUserRoleService
     ): JsonResponse {
         $userRoleDTO->setEntity($role);
+        $userRoleDTO->collect();
 
-        return $updateUserRoleService->make($userRoleDTO->collect(), $role);
+        return $updateUserRoleService->make($userRoleDTO, $role);
     }
 
     #[Route('/{role_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_USER_ROLE)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'role')] Role $role,

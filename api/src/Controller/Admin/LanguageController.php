@@ -26,10 +26,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/language')]
+#[Authorization]
 class LanguageController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::VIEW_LANGUAGES_WITH_FULL_INFO)]
     public function all(LanguageResponseData $languageResponseData, LanguageRepository $languageRepository): JsonResponse
     {
@@ -40,19 +40,18 @@ class LanguageController extends AbstractRestController
     }
 
     #[Route('/{language_code<[a-z]+>}/read', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::VIEW_LANGUAGES_WITH_FULL_INFO)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
         LanguageResponseData $languageResponseData
     ): JsonResponse {
         $languageResponseData->setEntities($language);
+        $languageResponseData->collect();
 
-        return $this->responseCollection->dataOutput($languageResponseData->collect()->getResponse(true));
+        return $this->responseCollection->dataOutput($languageResponseData->getResponse(true));
     }
 
     #[Route('/create', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_LANGUAGE)]
     public function create(LanguageDTO $languageDTO, CreateLanguageService $createLanguageService): JsonResponse
     {
@@ -60,20 +59,19 @@ class LanguageController extends AbstractRestController
     }
 
     #[Route('/{language_id<\d+>}/edit', methods: 'PUT')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_LANGUAGE)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
         LanguageDTO $languageDTO,
         UpdateLanguageService $updateLanguageService
     ): JsonResponse {
-        $languageDTO->setEntity($language)->collect();
+        $languageDTO->setEntity($language);
+        $languageDTO->collect();
 
         return $updateLanguageService->make($languageDTO);
     }
 
     #[Route('/{language_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_LANGUAGE)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,

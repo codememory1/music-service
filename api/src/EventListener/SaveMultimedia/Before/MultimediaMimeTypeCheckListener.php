@@ -3,7 +3,6 @@
 namespace App\EventListener\SaveMultimedia\Before;
 
 use App\Enum\MultimediaMimeTypeEnum;
-use App\Enum\MultimediaTypeEnum;
 use App\Event\SaveMultimediaEvent;
 use App\Rest\Http\Exceptions\MultimediaException;
 
@@ -20,13 +19,10 @@ class MultimediaMimeTypeCheckListener
     {
         $multimediaMimeType = $event->multimediaDTO->multimedia->getMimeType();
 
-        switch ($event->multimedia->getType()) {
-            case MultimediaTypeEnum::TRACK->name:
-                $this->trackType($multimediaMimeType);
-                break;
-            case MultimediaTypeEnum::CLIP->name:
-                $this->clipType($multimediaMimeType);
-                break;
+        if ($event->multimedia->isTrack()) {
+            $this->trackType($multimediaMimeType);
+        } elseif ($event->multimedia->isClip()) {
+            $this->clipType($multimediaMimeType);
         }
     }
 

@@ -22,37 +22,38 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/media-library')]
+#[Authorization]
 class MediaLibraryController extends AbstractRestController
 {
     #[Route('/multimedia/all', methods: 'GET')]
-    #[Authorization]
     public function allMultimedia(MultimediaMediaLibraryResponseData $multimediaMediaLibraryResponseData): JsonResponse
     {
-        $multimediaToMediaLibrary = $this->authorizedUser->getUser()->getMediaLibrary()->getMultimedia();
-
-        $multimediaMediaLibraryResponseData->setEntities($multimediaToMediaLibrary->toArray());
+        $multimediaMediaLibraryResponseData->setEntities(
+            $this->getAuthorizedUser()->getMediaLibrary()->getMultimedia()
+        );
         $multimediaMediaLibraryResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaMediaLibraryResponseData->getResponse());
     }
 
     #[Route('/share/with-friend/{user_id<\d+>}', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHARE_MEDIA_LIBRARY_WITH_FRIENDS)]
     public function share(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
         ShareWithFriendMediaLibraryService $shareWithFriendMediaLibraryService
     ): JsonResponse {
-        $authorizedUser = $this->authorizedUser->getUser();
-
-        if (null === $authorizedUser->getMediaLibrary()) {
+        if (null === $this->getAuthorizedUser()->getMediaLibrary()) {
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
 
-        if (false === $friend->isFriend($authorizedUser)) {
+        if (false === $friend->isFriend($this->getAuthorizedUser())) {
             throw EntityNotFoundException::friend();
         }
 
-        return $shareWithFriendMediaLibraryService->make($authorizedUser->getMediaLibrary(), $authorizedUser, $friend);
+        return $shareWithFriendMediaLibraryService->make(
+            $this->getAuthorizedUser()->getMediaLibrary(),
+            $this->getAuthorizedUser(),
+            $friend
+        );
     }
 }

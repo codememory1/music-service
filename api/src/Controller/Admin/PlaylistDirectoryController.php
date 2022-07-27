@@ -29,10 +29,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/media-library/playlist')]
+#[Authorization]
 class PlaylistDirectoryController extends AbstractRestController
 {
     #[Route('/{playlist_id<\d+>}/directory/create', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_PLAYLIST_DIRECTORY_TO_USER)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
@@ -43,7 +43,6 @@ class PlaylistDirectoryController extends AbstractRestController
     }
 
     #[Route('/directory/{playlistDirectory_id<\d+>}/edit', methods: 'PUT')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_PLAYLIST_DIRECTORY_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
@@ -51,12 +50,12 @@ class PlaylistDirectoryController extends AbstractRestController
         UpdatePlaylistDirectoryService $updatePlaylistDirectoryService
     ): JsonResponse {
         $playlistDirectoryDTO->setEntity($playlistDirectory);
+        $playlistDirectoryDTO->collect();
 
         return $updatePlaylistDirectoryService->make($playlistDirectoryDTO);
     }
 
     #[Route('/directory/{playlistDirectory_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_PLAYLIST_DIRECTORY_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
@@ -66,7 +65,6 @@ class PlaylistDirectoryController extends AbstractRestController
     }
 
     #[Route('/directory/{playlistDirectory_id<\d+>}/multimedia/{multimediaMediaLibrary_id<\d+>}/add', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_TO_PLAYLIST_DIRECTORY)]
     public function addMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
@@ -77,7 +75,6 @@ class PlaylistDirectoryController extends AbstractRestController
     }
 
     #[Route('/directory/multimedia/{multimediaPlaylistDirectory_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_TO_PLAYLIST_DIRECTORY)]
     public function deleteMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylistDirectory $multimediaPlaylistDirectory,

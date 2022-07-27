@@ -2,6 +2,7 @@
 
 namespace App\Entity\Traits;
 
+use App\Entity\Interfaces\EntityInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,5 +23,10 @@ trait IdentifierTrait
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function isInstance(EntityInterface $entity): bool
+    {
+        return $this->getId() === $entity->getId();
     }
 }

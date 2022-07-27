@@ -23,10 +23,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user')]
+#[Authorization]
 class MultimediaMediaLibraryController extends AbstractRestController
 {
     #[Route('/media-library/multimedia/{multimediaMediaLibrary_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_MEDIA_LIBRARY_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
@@ -34,12 +34,12 @@ class MultimediaMediaLibraryController extends AbstractRestController
         UpdateMultimediaMediaLibraryService $updateMultimediaMediaLibraryService
     ): JsonResponse {
         $multimediaMediaLibraryDTO->setEntity($multimediaMediaLibrary);
+        $multimediaMediaLibraryDTO->collect();
 
-        return $updateMultimediaMediaLibraryService->make($multimediaMediaLibraryDTO->collect());
+        return $updateMultimediaMediaLibraryService->make($multimediaMediaLibraryDTO);
     }
 
     #[Route('/media-library/multimedia/{multimediaMediaLibrary_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_MEDIA_LIBRARY_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,

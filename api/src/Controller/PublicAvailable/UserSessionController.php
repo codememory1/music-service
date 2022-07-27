@@ -21,10 +21,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Codememory
  */
 #[Route('/user/session')]
+#[Authorization]
 class UserSessionController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    #[Authorization]
     public function all(UserSessionResponseData $userSessionResponseData, UserSessionRepository $userSessionRepository): JsonResponse
     {
         $userSessionResponseData->setEntities($userSessionRepository->authorizedUserSessions());
@@ -34,12 +34,11 @@ class UserSessionController extends AbstractRestController
     }
 
     #[Route('/{userSession_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
         DeleteUserSessionService $deleteUserSessionService
     ): JsonResponse {
-        if ($userSession->getUser() !== $this->authorizedUser->getUser()) {
+        if (false === $this->getAuthorizedUser()->isInstance($userSession->getUser())) {
             throw EntityNotFoundException::userSession();
         }
 
@@ -47,9 +46,8 @@ class UserSessionController extends AbstractRestController
     }
 
     #[Route('/all/delete', methods: 'DELETE')]
-    #[Authorization]
     public function deleteAll(DeleteUserSessionService $deleteUserSessionService): JsonResponse
     {
-        return $deleteUserSessionService->deleteAll($this->authorizedUser->getUser());
+        return $deleteUserSessionService->deleteAll($this->getAuthorizedUser());
     }
 }

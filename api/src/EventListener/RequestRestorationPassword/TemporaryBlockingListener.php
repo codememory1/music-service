@@ -16,9 +16,7 @@ class TemporaryBlockingListener
 {
     public function onAfterRequestRestorationPassword(RequestRestorationPasswordEvent $event): void
     {
-        $user = $event->passwordReset->getUser();
-
-        if ($user->getPasswordResets()->count() >= 10) {
+        if ($event->passwordReset->getUser()->getPasswordResets()->count() >= 10) {
             throw FailedException::failedSendOnRequestRestorationPassword();
         }
     }

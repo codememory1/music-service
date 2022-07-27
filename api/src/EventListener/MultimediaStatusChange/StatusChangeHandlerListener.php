@@ -5,7 +5,7 @@ namespace App\EventListener\MultimediaStatusChange;
 use App\Entity\MultimediaQueue;
 use App\Enum\MultimediaStatusEnum;
 use App\Event\MultimediaStatusChangeEvent;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\FlusherService;
 
 /**
  * Class StatusChangeHandlerListener.
@@ -16,34 +16,24 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class StatusChangeHandlerListener
 {
-    private EntityManagerInterface $em;
+    private FlusherService $flusherService;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(FlusherService $flusherService)
     {
-        $this->em = $manager;
+        $this->flusherService = $flusherService;
     }
 
     public function onMultimediaStatusChange(MultimediaStatusChangeEvent $event): void
     {
-        switch ($event->onStatus) {
-            case MultimediaStatusEnum::PUBLISHED:
-                $this->publishStatusHandler($event);
-                break;
-            case MultimediaStatusEnum::UNPUBLISHED:
-                $this->unpublishStatusHandler($event);
-                break;
-            case MultimediaStatusEnum::MODERATION:
-                $this->moderationStatusHandler($event);
-                break;
-            case MultimediaStatusEnum::APPEAL:
-            case MultimediaStatusEnum::APPEAL_CANCELED:
-                $this->changeStatus($event);
-                break;
-            default:
-                break;
-        }
+        match ($event->onStatus) {
+            MultimediaStatusEnum::PUBLISHED => $this->publishStatusHandler($event),
+            MultimediaStatusEnum::UNPUBLISHED => $this->unpublishStatusHandler($event),
+            MultimediaStatusEnum::MODERATION => $this->moderationStatusHandler($event),
+            MultimediaStatusEnum::APPEAL,
+            MultimediaStatusEnum::APPEAL_CANCELED => $this->changeStatus($event),
+        };
 
-        $this->em->flush();
+        $this->flusherService->save();
     }
 
     public function moderationStatusHandler(MultimediaStatusChangeEvent $event): void
@@ -57,7 +47,7 @@ class StatusChangeHandlerListener
         $event->multimedia->setStatus($event->onStatus);
 
         if (null !== $event->multimedia->getQueue()) {
-            $this->em->remove($event->multimedia->getQueue());
+            $this->flusherService->addRemove($event->multimedia->getQueue());
         }
     }
 
@@ -66,7 +56,7 @@ class StatusChangeHandlerListener
         $event->multimedia->setStatus($event->onStatus);
 
         if (null !== $event->multimedia->getQueue()) {
-            $this->em->remove($event->multimedia->getQueue());
+            $this->flusherService->addRemove($event->multimedia->getQueue());
         }
     }
 

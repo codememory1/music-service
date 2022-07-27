@@ -26,10 +26,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/multimedia/category')]
+#[Authorization]
 class MultimediaCategoryController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    #[Authorization]
     public function all(MultimediaCategoryResponseData $multimediaCategoryResponseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
     {
         $multimediaCategoryResponseData->setEntities($multimediaCategoryRepository->findAll());
@@ -39,7 +39,6 @@ class MultimediaCategoryController extends AbstractRestController
     }
 
     #[Route('/create', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_MULTIMEDIA_CATEGORY)]
     public function create(MultimediaCategoryDTO $multimediaCategoryDTO, CreateMultimediaCategoryService $createMultimediaCategoryService): JsonResponse
     {
@@ -47,7 +46,6 @@ class MultimediaCategoryController extends AbstractRestController
     }
 
     #[Route('/{multimediaCategory_id<\d+>}/edit', methods: 'PUT')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_CATEGORY)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaCategory')] MultimediaCategory $multimediaCategory,
@@ -55,12 +53,12 @@ class MultimediaCategoryController extends AbstractRestController
         UpdateMultimediaCategoryService $updateMultimediaCategoryService
     ): JsonResponse {
         $multimediaCategoryDTO->setEntity($multimediaCategory);
+        $multimediaCategoryDTO->collect();
 
-        return $updateMultimediaCategoryService->make($multimediaCategoryDTO->collect());
+        return $updateMultimediaCategoryService->make($multimediaCategoryDTO);
     }
 
     #[Route('/{multimediaCategory_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_CATEGORY)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaCategory')] MultimediaCategory $multimediaCategory,

@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class Album.
@@ -60,7 +61,7 @@ class Album implements EntityInterface
 
     public function __construct()
     {
-        $this->setStatus(AlbumStatusEnum::UNPUBLISHED);
+        $this->setUnpublishStatus();
 
         $this->multimedia = new ArrayCollection();
     }
@@ -162,5 +163,31 @@ class Album implements EntityInterface
         $this->status = $status?->name;
 
         return $this;
+    }
+
+    public function setPublishStatus(): self
+    {
+        $this->setStatus(AlbumStatusEnum::PUBLISHED);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isPublished(): bool
+    {
+        return $this->getStatus() === AlbumStatusEnum::PUBLISHED->name;
+    }
+
+    public function setUnpublishStatus(): self
+    {
+        $this->setStatus(AlbumStatusEnum::UNPUBLISHED);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isUnpublished(): bool
+    {
+        return $this->getStatus() === AlbumStatusEnum::UNPUBLISHED->name;
     }
 }

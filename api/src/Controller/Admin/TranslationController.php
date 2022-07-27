@@ -25,10 +25,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/translation')]
+#[Authorization]
 class TranslationController extends AbstractRestController
 {
     #[Route('/create', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_TRANSLATION)]
     public function create(TranslationDTO $translationDTO, CreateTranslationService $createTranslationService): JsonResponse
     {
@@ -36,7 +36,6 @@ class TranslationController extends AbstractRestController
     }
 
     #[Route('/{translation_id<\d+>}/edit', methods: 'PUT')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_TRANSLATION)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'translation')] Translation $translation,
@@ -44,12 +43,12 @@ class TranslationController extends AbstractRestController
         UpdateTranslationService $updateTranslationService
     ): JsonResponse {
         $translationDTO->setEntity($translation);
+        $translationDTO->collect();
 
-        return $updateTranslationService->make($translationDTO->collect());
+        return $updateTranslationService->make($translationDTO);
     }
 
     #[Route('/{translation_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_TRANSLATION)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'translation')] Translation $translation,

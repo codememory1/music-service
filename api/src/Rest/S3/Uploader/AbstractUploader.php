@@ -38,6 +38,32 @@ abstract class AbstractUploader implements S3UploaderInterface
         $this->client->bucket->create($this->getBucketName());
     }
 
+    protected function getExtensionFromMimeType(string $mimeType): string
+    {
+        return $this->mimeTypeConverter->convertToExtension($mimeType);
+    }
+
+    #[Pure]
+    protected function generateContentHash(string $pathInSystem): string
+    {
+        return sha1($this->getContent($pathInSystem));
+    }
+
+    protected function generateUniqueHash(EntityInterface $entity): string
+    {
+        return hash('sha3-512', "{$this->user->getId()}_{$entity->getId()}");
+    }
+
+    protected function generateFileName(string $pathInSystem, string $mimeType, EntityInterface $entity): string
+    {
+        return sprintf(
+            '%s_%s.%s',
+            $this->generateContentHash($pathInSystem),
+            $this->generateUniqueHash($entity),
+            $this->getExtensionFromMimeType($mimeType)
+        );
+    }
+
     protected function generateKey(string $pathInSystem, string $mimeType, bool $asPathInStorage = false): string
     {
         if (null === $this->user) {
@@ -48,10 +74,7 @@ abstract class AbstractUploader implements S3UploaderInterface
             throw new LogicException('To create a hash of a file, you need to specify the entity to which this file will belong');
         }
 
-        $contentHash = sha1($this->getContent($pathInSystem));
-        $uniqueHash = hash('sha3-512', "{$this->user->getId()}_{$this->entity->getId()}");
-        $fileExtensionFromMimeType = $this->mimeTypeConverter->convertToExtension($mimeType);
-        $generatedKey = "${contentHash}_${uniqueHash}.${fileExtensionFromMimeType}";
+        $generatedKey = $this->generateFileName($pathInSystem, $mimeType, $this->entity);
         $generatedKeyWithBucket = sprintf('%s/%s', $this->getBucketName(), $generatedKey);
 
         $this->uploadedPaths[] = $generatedKeyWithBucket;

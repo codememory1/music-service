@@ -4,13 +4,14 @@ namespace App\MessageHandler;
 
 use App\Entity\Multimedia;
 use App\Entity\MultimediaMetadata;
-use App\Enum\MultimediaTypeEnum;
 use App\Message\MultimediaMetadataMessage;
 use App\Rest\S3\UploadedObject;
+use App\Service\FlusherService;
 use Doctrine\ORM\EntityManagerInterface;
 use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use FFMpeg\FFProbe\DataMapping\StreamCollection;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
@@ -24,14 +25,17 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 class MultimediaMetadataMessageHandler
 {
     private EntityManagerInterface $em;
+    private FlusherService $flusherService;
     private UploadedObject $uploadedObject;
 
-    public function __construct(EntityManagerInterface $manager, UploadedObject $uploadedObject)
+    public function __construct(EntityManagerInterface $manager, FlusherService $flusherService, UploadedObject $uploadedObject)
     {
         $this->em = $manager;
+        $this->flusherService = $flusherService;
         $this->uploadedObject = $uploadedObject;
     }
 
+    #[Pure]
     private function getMultimediaMetadata(Multimedia $multimedia): ?MultimediaMetadata
     {
         if (null !== $multimedia->getMetadata()) {
@@ -64,13 +68,10 @@ class MultimediaMetadataMessageHandler
 
     private function handlerTypes(Multimedia $multimedia, StreamCollection $streamCollection): void
     {
-        switch ($multimedia->getType()) {
-            case MultimediaTypeEnum::TRACK->name:
-                $this->trackHandler($multimedia, $streamCollection->audios()->first());
-                break;
-            case MultimediaTypeEnum::CLIP->name:
-                $this->clipHandler($multimedia, $streamCollection->videos()->first());
-                break;
+        if ($multimedia->isTrack()) {
+            $this->trackHandler($multimedia, $streamCollection->audios()->first());
+        } elseif ($multimedia->isClip()) {
+            $this->clipHandler($multimedia, $streamCollection->videos()->first());
         }
     }
 
@@ -91,6 +92,6 @@ class MultimediaMetadataMessageHandler
             $this->handlerTypes($multimedia, $streamCollection);
         }
 
-        $this->em->flush();
+        $this->flusherService->save();
     }
 }

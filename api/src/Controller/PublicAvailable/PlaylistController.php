@@ -29,31 +29,26 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/media-library')]
+#[Authorization]
 class PlaylistController extends AbstractRestController
 {
     #[Route('/playlist/all', methods: 'GET')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_PLAYLISTS)]
     public function all(PlaylistResponseData $playlistResponseData, PlaylistRepository $playlistRepository): JsonResponse
     {
-        $playlistResponseData->setEntities($playlistRepository->findByUser(
-            $this->authorizedUser->getUser()
-        ));
+        $playlistResponseData->setEntities($playlistRepository->findByUser($this->getAuthorizedUser()));
         $playlistResponseData->collect();
 
         return $this->responseCollection->dataOutput($playlistResponseData->getResponse());
     }
 
     #[Route('/playlist/{playlist_id}/read', methods: 'GET')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_PLAYLISTS)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         PlaylistResponseData $playlistResponseData
     ): JsonResponse {
-        if ($playlist->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
-            throw EntityNotFoundException::playlist();
-        }
+        $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
         $playlistResponseData->setEntities($playlist);
         $playlistResponseData->collect();
@@ -62,62 +57,60 @@ class PlaylistController extends AbstractRestController
     }
 
     #[Route('/playlist/create', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_PLAYLIST)]
     public function create(PlaylistDTO $playlistDTO, CreatePlaylistService $createPlaylistService): JsonResponse
     {
-        return $createPlaylistService->make($playlistDTO->collect(), $this->authorizedUser->getUser());
+        return $createPlaylistService->make($playlistDTO->collect(), $this->getAuthorizedUser());
     }
 
     #[Route('/playlist/{playlist_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_PLAYLIST)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         PlaylistDTO $playlistDTO,
         UpdatePlaylistService $updatePlaylistService
     ): JsonResponse {
-        if ($playlist->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
-            throw EntityNotFoundException::playlist();
-        }
+        $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
         $playlistDTO->setEntity($playlist);
+        $playlistDTO->collect();
 
-        return $updatePlaylistService->make($playlistDTO->collect());
+        return $updatePlaylistService->make($playlistDTO);
     }
 
     #[Route('/playlist/{playlist_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_PLAYLIST)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         DeletePlaylistService $deletePlaylistService
     ): JsonResponse {
-        if ($playlist->getMediaLibrary() !== $this->authorizedUser->getUser()->getMediaLibrary()) {
-            throw EntityNotFoundException::playlist();
-        }
+        $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
         return $deletePlaylistService->make($playlist);
     }
 
     #[Route('/playlist/multimedia/{multimediaPlaylist_id<\d+>}/move/directory/{playlistDirectory_id<\d+>}', methods: 'PUT')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST)]
     public function moveMultimediaToDirectory(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylist $multimediaPlaylist,
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
         MoveMultimediaToDirectoryService $moveMultimediaToDirectoryService
     ): JsonResponse {
-        $authorizedUserMediaLibrary = $this->authorizedUser->getUser()->getMediaLibrary();
-
-        if ($multimediaPlaylist->getMultimediaMediaLibrary()->getMediaLibrary() !== $authorizedUserMediaLibrary) {
+        if (false === $this->getAuthorizedUser()->isMultimediaPlaylistBelongs($multimediaPlaylist)) {
             throw EntityNotFoundException::multimedia();
         }
 
-        if ($playlistDirectory->getPlaylist()->getMediaLibrary() !== $authorizedUserMediaLibrary) {
+        if (false === $this->getAuthorizedUser()->isPlaylistDirectoryBelongs($playlistDirectory)) {
             throw EntityNotFoundException::playlistDirectory();
         }
 
         return $moveMultimediaToDirectoryService->make($multimediaPlaylist, $playlistDirectory);
+    }
+
+    private function throwIfPlaylistNotBelongsAuthorizedUser(Playlist $playlist): void
+    {
+        if (false === $this->getAuthorizedUser()->isPlaylistBelongs($playlist)) {
+            throw EntityNotFoundException::multimedia();
+        }
     }
 }

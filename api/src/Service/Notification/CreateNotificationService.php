@@ -4,7 +4,6 @@ namespace App\Service\Notification;
 
 use App\DTO\NotificationDTO;
 use App\Entity\User;
-use App\Enum\NotificationStatusEnum;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -30,7 +29,7 @@ class CreateNotificationService extends AbstractService
 
         $notificationEntity = $notificationDTO->getEntity();
 
-        $notificationEntity->setStatus(NotificationStatusEnum::EXPECTS);
+        $notificationEntity->setExpectsStatus();
         $notificationEntity->setFrom($from);
 
         $this->em->persist($notificationEntity);

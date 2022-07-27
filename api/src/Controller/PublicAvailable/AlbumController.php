@@ -27,69 +27,67 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/album')]
+#[Authorization]
 class AlbumController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_ALBUMS)]
     public function all(AlbumResponseData $albumResponseData, AlbumRepository $albumRepository): JsonResponse
     {
-        $albumResponseData->setEntities($albumRepository->findAllByUser($this->authorizedUser->getUser()));
+        $albumResponseData->setEntities($albumRepository->findAllByUser($this->getAuthorizedUser()));
         $albumResponseData->collect();
 
         return $this->responseCollection->dataOutput($albumResponseData->getResponse());
     }
 
     #[Route('/create', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_ALBUM)]
     public function create(AlbumDTO $albumDTO, CreateAlbumService $createAlbumService): JsonResponse
     {
-        return $createAlbumService->make($albumDTO->collect(), $this->authorizedUser->getUser());
+        return $createAlbumService->make($albumDTO->collect(), $this->getAuthorizedUser());
     }
 
     #[Route('/{album_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_ALBUM)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         AlbumDTO $albumDTO,
         UpdateAlbumService $updateAlbumService
     ): JsonResponse {
-        if ($album->getUser() !== $this->authorizedUser->getUser()) {
-            throw EntityNotFoundException::album();
-        }
+        $this->throwIfAlbumNotBelongsAuthorizedUser($album);
 
         $albumDTO->setEntity($album);
+        $albumDTO->collect();
 
-        return $updateAlbumService->make($albumDTO->collect(), $this->authorizedUser->getUser());
+        return $updateAlbumService->make($albumDTO, $this->getAuthorizedUser());
     }
 
     #[Route('/{album_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_ALBUM)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         DeleteAlbumService $deleteAlbumService
     ): JsonResponse {
-        if ($album->getUser() !== $this->authorizedUser->getUser()) {
-            throw EntityNotFoundException::album();
-        }
+        $this->throwIfAlbumNotBelongsAuthorizedUser($album);
 
         return $deleteAlbumService->make($album);
     }
 
     #[Route('/{album_id<\d+>}/publish', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_ALBUM)]
     public function publish(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         PublishAlbumService $publishAlbumService
     ): JsonResponse {
-        if ($album->getUser() !== $this->authorizedUser->getUser()) {
-            throw EntityNotFoundException::album();
-        }
+        $this->throwIfAlbumNotBelongsAuthorizedUser($album);
 
         return $publishAlbumService->make($album);
+    }
+
+    private function throwIfAlbumNotBelongsAuthorizedUser(Album $album): void
+    {
+        if (false === $this->getAuthorizedUser()->isAlbumBelongs($album)) {
+            throw EntityNotFoundException::album();
+        }
     }
 }

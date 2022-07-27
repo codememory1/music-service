@@ -2,6 +2,7 @@
 
 namespace App\Rest\Controller;
 
+use App\Entity\User;
 use App\Rest\Http\ResponseCollection;
 use App\Security\AuthorizedUser;
 use App\Security\Http\BearerToken;
@@ -25,5 +26,15 @@ abstract class AbstractRestController extends AbstractController
         $this->authorizedUser = $authorizedUser;
         $this->bearerToken = $bearerToken;
         $this->responseCollection = $responseCollection;
+    }
+
+    final protected function getManagerAuthorizedUser(): AuthorizedUser
+    {
+        return clone $this->authorizedUser;
+    }
+
+    final protected function getAuthorizedUser(): ?User
+    {
+        return $this->authorizedUser->getUser();
     }
 }

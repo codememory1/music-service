@@ -26,10 +26,7 @@ class SendOnAppealService extends AbstractService
 
     public function make(Multimedia $multimedia): JsonResponse
     {
-        if (false === in_array($multimedia->getStatus(), [
-            MultimediaStatusEnum::UNPUBLISHED->name,
-            MultimediaStatusEnum::APPEAL_CANCELED->name
-        ], true)) {
+        if (false === $multimedia->isUnpublished() && false === $multimedia->isAppealCanceled()) {
             throw MultimediaException::badSendOnAppeal($multimedia->getStatus());
         }
 

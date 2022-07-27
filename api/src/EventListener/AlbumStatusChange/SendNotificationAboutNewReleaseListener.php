@@ -24,12 +24,17 @@ class SendNotificationAboutNewReleaseListener
 
     public function onAlbumStatusChange(AlbumStatusChangeEvent $event): void
     {
-        if (AlbumStatusEnum::PUBLISHED === $event->onStatus) {
-            $subscribers = $event->album->getUser()->getSubscribers();
+        match ($event->onStatus) {
+            AlbumStatusEnum::PUBLISHED => $this->publish($event)
+        };
+    }
 
-            foreach ($subscribers as $subscriber) {
-                $this->notificationCollection->newRelease($event->album, $subscriber->getSubscriber());
-            }
+    private function publish(AlbumStatusChangeEvent $event): void
+    {
+        $subscribers = $event->album->getUser()->getSubscribers();
+
+        foreach ($subscribers as $subscriber) {
+            $this->notificationCollection->newRelease($event->album, $subscriber->getSubscriber());
         }
     }
 }

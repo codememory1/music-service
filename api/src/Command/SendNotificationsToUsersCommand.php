@@ -4,8 +4,6 @@ namespace App\Command;
 
 use App\Entity\Notification;
 use App\Entity\User;
-use App\Enum\NotificationStatusEnum;
-use App\Enum\UserStatusEnum;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -49,7 +47,7 @@ class SendNotificationsToUsersCommand extends Command
             sleep(1);
 
             foreach ($notificationRepository->getPendingNotifications() as $pendingNotification) {
-                $pendingNotification->setStatus(NotificationStatusEnum::IN_PROCESS_SENDING);
+                $pendingNotification->setInProcessSendingStatus();
 
                 $this->em->flush();
 
@@ -61,7 +59,7 @@ class SendNotificationsToUsersCommand extends Command
                         $this->sendToUser($userRepository, $pendingNotification);
                 }
 
-                $pendingNotification->setStatus(NotificationStatusEnum::SENT_OUT);
+                $pendingNotification->setSentOutStatus();
 
                 $this->em->flush();
 
@@ -72,11 +70,7 @@ class SendNotificationsToUsersCommand extends Command
 
     private function sendToAllRegisteredUsers(UserRepository $userRepository, Notification $notification): void
     {
-        $registeredUsers = $userRepository->findBy([
-            'status' => UserStatusEnum::ACTIVE->name
-        ]);
-
-        foreach ($registeredUsers as $registeredUser) {
+        foreach ($userRepository->findActive() as $registeredUser) {
             $registeredUser->addNotification($notification);
 
             sleep(1);

@@ -22,10 +22,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/profile')]
+#[Authorization]
 class UserProfileController extends AbstractRestController
 {
     #[Route('/{userProfile_id<\d+>}/design/edit', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_USER_PROFILE_DESIGN)]
     public function editDesignProfile(
         #[EntityNotFound(EntityNotFoundException::class, 'userProfile')] UserProfile $userProfile,
@@ -33,7 +33,8 @@ class UserProfileController extends AbstractRestController
         UpdateUserProfileDesignService $updateUserProfileDesignService
     ): JsonResponse {
         $userProfileDesignDTO->setEntity($userProfile);
+        $userProfileDesignDTO->collect();
 
-        return $updateUserProfileDesignService->make($userProfileDesignDTO->collect(), $userProfile);
+        return $updateUserProfileDesignService->make($userProfileDesignDTO, $userProfile);
     }
 }

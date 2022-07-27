@@ -22,39 +22,36 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/artist/{user_id<\d+>}')]
+#[Authorization]
+#[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST)]
 class ControllingSubscriptionOnArtistController extends AbstractRestController
 {
     #[Route('/subscribe', methods: 'PATCH')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST)]
     public function subscribe(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
         SubscribeOnArtistService $subscribeOnArtistService
     ): JsonResponse {
-        $subscriber = $this->authorizedUser->getUser();
-        $artistUserHelper = $this->authorizedUser->setUser($artist);
+        $this->throwIfArtistNotAcceptingSubscribers($artist);
 
-        if (false === $artistUserHelper->isSubscriptionPermission(SubscriptionPermissionEnum::ACCEPTING_SUBSCRIBERS)) {
-            throw EntityNotFoundException::user();
-        }
-
-        return $subscribeOnArtistService->make($artist, $subscriber);
+        return $subscribeOnArtistService->make($artist, $this->getAuthorizedUser());
     }
 
     #[Route('/unsubscribe', methods: 'PATCH')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST)]
     public function unsubscribe(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
         UnsubscribeOnArtistService $unsubscribeOnArtistService
     ): JsonResponse {
-        $subscriber = $this->authorizedUser->getUser();
-        $artistUserHelper = $this->authorizedUser->setUser($artist);
+        $this->throwIfArtistNotAcceptingSubscribers($artist);
+
+        return $unsubscribeOnArtistService->make($artist, $this->getAuthorizedUser());
+    }
+
+    private function throwIfArtistNotAcceptingSubscribers(User $artist): void
+    {
+        $artistUserHelper = $this->getManagerAuthorizedUser()->setUser($artist);
 
         if (false === $artistUserHelper->isSubscriptionPermission(SubscriptionPermissionEnum::ACCEPTING_SUBSCRIBERS)) {
             throw EntityNotFoundException::user();
         }
-
-        return $unsubscribeOnArtistService->make($artist, $subscriber);
     }
 }

@@ -25,29 +25,26 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user')]
+#[Authorization]
 class MediaLibraryController extends AbstractRestController
 {
     #[Route('/{user_id<\d+>}/media-library/multimedia/all', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_MEDIA_LIBRARY_TO_USER)]
     public function allMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         MultimediaMediaLibraryResponseData $multimediaMediaLibraryResponseData
     ): JsonResponse {
-        $mediaLibrary = $user->getMediaLibrary();
-
-        if (null === $mediaLibrary) {
+        if (null === $user->getMediaLibrary()) {
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
 
-        $multimediaMediaLibraryResponseData->setEntities($mediaLibrary->getMultimedia()->toArray());
+        $multimediaMediaLibraryResponseData->setEntities($user->getMediaLibrary()->getMultimedia());
         $multimediaMediaLibraryResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaMediaLibraryResponseData->getResponse());
     }
 
     #[Route('/{user_id<\d+>}/media-library/create', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_MEDIA_LIBRARY_TO_USER)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
@@ -58,7 +55,6 @@ class MediaLibraryController extends AbstractRestController
     }
 
     #[Route('/media-library/{mediaLibrary_id<\d+>}/edit', methods: 'PUT')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MEDIA_LIBRARY_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'mediaLibrary')] MediaLibrary $mediaLibrary,
@@ -66,7 +62,8 @@ class MediaLibraryController extends AbstractRestController
         UpdateMediaLibraryService $updateMediaLibraryService
     ): JsonResponse {
         $mediaLibraryDTO->setEntity($mediaLibrary);
+        $mediaLibraryDTO->collect();
 
-        return $updateMediaLibraryService->make($mediaLibraryDTO->collect());
+        return $updateMediaLibraryService->make($mediaLibraryDTO);
     }
 }

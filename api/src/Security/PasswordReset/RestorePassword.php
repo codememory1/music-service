@@ -35,7 +35,7 @@ class RestorePassword extends AbstractService
         }
 
         $restorePasswordDTO->user->setPassword($restorePasswordDTO->password);
-        $finedPasswordReset->setStatus(PasswordResetStatusEnum::COMPLETED);
+        $finedPasswordReset->setCompletedStatus();
 
         $this->em->flush();
 

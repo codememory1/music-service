@@ -26,10 +26,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/subscription')]
+#[Authorization]
 class SubscriptionController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
     public function all(SubscriptionResponseData $subscriptionResponseData, SubscriptionRepository $subscriptionRepository): JsonResponse
     {
@@ -40,7 +40,6 @@ class SubscriptionController extends AbstractRestController
     }
 
     #[Route('/{subscription_id<\d+>}/read', methods: 'GET')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,
@@ -53,7 +52,6 @@ class SubscriptionController extends AbstractRestController
     }
 
     #[Route('/create', methods: 'POST')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::CREATE_SUBSCRIPTION)]
     public function create(SubscriptionDTO $subscriptionDTO, CreateSubscriptionService $createSubscriptionService): JsonResponse
     {
@@ -61,7 +59,6 @@ class SubscriptionController extends AbstractRestController
     }
 
     #[Route('/{subscription_id<\d+>}/edit', methods: 'PUT')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::UPDATE_SUBSCRIPTION)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,
@@ -69,12 +66,12 @@ class SubscriptionController extends AbstractRestController
         UpdateSubscriptionService $updateSubscriptionService
     ): JsonResponse {
         $subscriptionDTO->setEntity($subscription);
+        $subscriptionDTO->collect();
 
-        return $updateSubscriptionService->make($subscriptionDTO->collect(), $subscription);
+        return $updateSubscriptionService->make($subscriptionDTO, $subscription);
     }
 
     #[Route('/{subscription_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[UserRolePermission(RolePermissionEnum::DELETE_SUBSCRIPTION)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,

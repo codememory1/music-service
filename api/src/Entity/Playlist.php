@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class Playlist.
@@ -106,6 +107,32 @@ class Playlist implements EntityInterface
         $this->status = $status?->name;
 
         return $this;
+    }
+
+    public function setHideStatus(): self
+    {
+        $this->setStatus(PlaylistStatusEnum::HIDE);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isHide(): bool
+    {
+        return $this->getStatus() === PlaylistStatusEnum::HIDE->name;
+    }
+
+    public function setShowStatus(): self
+    {
+        $this->setStatus(PlaylistStatusEnum::SHOW);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isShow(): bool
+    {
+        return $this->getStatus() === PlaylistStatusEnum::SHOW->name;
     }
 
     /**

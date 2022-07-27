@@ -25,17 +25,17 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user/media-library/multimedia')]
+#[Authorization]
+#[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]
 class MultimediaMediaLibraryEventController extends AbstractRestController
 {
     #[Route('/{multimediaMediaLibrary_id<\d+>}/event/add', methods: 'POST')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]
     public function add(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO,
         AddMultimediaMediaLibraryEventService $addMultimediaMediaLibraryEventService
     ): JsonResponse {
-        if ($multimediaMediaLibrary->getMediaLibrary()->getId() !== $this->authorizedUser->getUser()->getMediaLibrary()->getId()) {
+        if (false === $this->getAuthorizedUser()->isMultimediaMediaLibraryBelongs($multimediaMediaLibrary)) {
             throw EntityNotFoundException::multimedia();
         }
 
@@ -43,42 +43,38 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
     }
 
     #[Route('/event/{multimediaMediaLibraryEvent_id}/edit', methods: 'PUT')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaEvent')] MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent,
         MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO,
         UpdateMultimediaMediaLibraryEventService $updateMultimediaMediaLibraryEventService
     ): JsonResponse {
-        $mediaLibraryFromEvent = $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()->getMediaLibrary();
-        $mediaLibraryFromAuthorizedUser = $this->authorizedUser->getUser()->getMediaLibrary();
-
-        if ($mediaLibraryFromEvent->getId() !== $mediaLibraryFromAuthorizedUser->getId()) {
-            throw EntityNotFoundException::multimediaEvent();
-        }
+        $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 
         $multimediaMediaLibraryEventDTO->setEntity($multimediaMediaLibraryEvent);
+        $multimediaMediaLibraryEventDTO->collect();
 
         return $updateMultimediaMediaLibraryEventService->make(
-            $multimediaMediaLibraryEventDTO->collect(),
+            $multimediaMediaLibraryEventDTO,
             $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()
         );
     }
 
     #[Route('/event/{multimediaMediaLibraryEvent_id}/delete', methods: 'DELETE')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaEvent')] MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent,
         DeleteMultimediaMediaLibraryEventService $deleteMultimediaMediaLibraryEventService
     ): JsonResponse {
-        $mediaLibraryFromEvent = $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()->getMediaLibrary();
-        $mediaLibraryFromAuthorizedUser = $this->authorizedUser->getUser()->getMediaLibrary();
-
-        if ($mediaLibraryFromEvent->getId() !== $mediaLibraryFromAuthorizedUser->getId()) {
-            throw EntityNotFoundException::multimediaEvent();
-        }
+        $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 
         return $deleteMultimediaMediaLibraryEventService->make($multimediaMediaLibraryEvent);
+    }
+
+    private function throwIfEventNotBelongsAuthorizedUser(MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent): void
+    {
+        $mediaLibraryFromEvent = $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()->getMediaLibrary();
+
+        if (false === $this->getAuthorizedUser()->isMediaLibraryBelongs($mediaLibraryFromEvent)) {
+            throw EntityNotFoundException::multimediaEvent();
+        }
     }
 }

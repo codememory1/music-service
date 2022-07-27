@@ -7,7 +7,6 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\Entity\Friend;
 use App\Entity\User;
-use App\Enum\FriendStatusEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Repository\FriendRepository;
 use App\ResponseData\FriendResponseData;
@@ -27,37 +26,34 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user')]
+#[Authorization]
 class FriendController extends AbstractRestController
 {
     #[Route('/friend/all', methods: 'GET')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_FRIENDS)]
     public function all(FriendResponseData $friendResponseData, FriendRepository $friendRepository): JsonResponse
     {
-        $friendResponseData->setEntities($friendRepository->findByUser($this->authorizedUser->getUser()));
+        $friendResponseData->setEntities($friendRepository->findByUser($this->getAuthorizedUser()));
 
         return $this->responseCollection->dataOutput($friendResponseData->collect()->getResponse());
     }
 
     #[Route('/{user_id<\d+>}/add-as-friend', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_AS_FRIEND)]
     public function addAsFriend(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
         AddAsFriendService $addAsFriendService
     ): JsonResponse {
-        return $addAsFriendService->make($this->authorizedUser->getUser(), $friend);
+        return $addAsFriendService->make($this->getAuthorizedUser(), $friend);
     }
 
     #[Route('/friend/{friend_id<\d+>}/accept', methods: 'PATCH')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_AS_FRIEND)]
     public function acceptAsFriend(
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friend,
         AcceptAsFriendService $acceptAsFriendService
     ): JsonResponse {
-        if ($friend->getFriend()->getId() !== $this->authorizedUser->getUser()->getId()
-            || $friend->getStatus() !== FriendStatusEnum::AWAITING_CONFIRMATION->name) {
+        if (false === $this->getAuthorizedUser()->isInstance($friend->getFriend()) || false === $friend->isAwaitingConfirmation()) {
             throw EntityNotFoundException::friend();
         }
 
@@ -65,18 +61,17 @@ class FriendController extends AbstractRestController
     }
 
     #[Route('/friend/{friend_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_FRIEND)]
     public function deleteFriend(
-        #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friend,
+        #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friendship,
         DeleteFriendService $deleteFriendService
     ): JsonResponse {
-        $authorizedUser = $this->authorizedUser->getUser();
+        $authorizedUser = $this->getAuthorizedUser();
 
-        if ($friend->getUser()->getId() !== $authorizedUser->getId() && $friend->getFriend()->getId() !== $authorizedUser->getId()) {
+        if (false === $friendship->isInstance($authorizedUser) && false === $friendship->getFriend()->isInstance($authorizedUser)) {
             throw EntityNotFoundException::friend();
         }
 
-        return $deleteFriendService->make($friend);
+        return $deleteFriendService->make($friendship);
     }
 }

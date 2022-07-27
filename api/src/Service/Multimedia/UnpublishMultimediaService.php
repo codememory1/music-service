@@ -26,7 +26,7 @@ class UnpublishMultimediaService extends AbstractService
 
     public function make(Multimedia $multimedia): JsonResponse
     {
-        if (MultimediaStatusEnum::PUBLISHED->name !== $multimedia->getStatus()) {
+        if (false === $multimedia->isPublished()) {
             throw MultimediaException::badUnpublish();
         }
 

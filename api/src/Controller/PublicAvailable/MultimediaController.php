@@ -27,22 +27,20 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author  Codememory
  */
 #[Route('/user')]
+#[Authorization]
 class MultimediaController extends AbstractRestController
 {
     #[Route('/multimedia/all', methods: 'GET')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_MULTIMEDIA)]
     public function myAll(MultimediaResponseData $multimediaResponseData, MultimediaRepository $multimediaRepository): JsonResponse
     {
-        $multimediaResponseData->setEntities($multimediaRepository->findAllByUser($this->authorizedUser->getUser()));
-
+        $multimediaResponseData->setEntities($multimediaRepository->findAllByUser($this->getAuthorizedUser()));
         $multimediaResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
     }
 
     #[Route('/{user_id<\d+>}/multimedia/all', methods: 'GET')]
-    #[Authorization]
     public function userAll(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         MultimediaResponseData $multimediaResponseData,
@@ -55,15 +53,13 @@ class MultimediaController extends AbstractRestController
     }
 
     #[Route('/multimedia/add', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
     public function add(MultimediaDTO $multimediaDTO, AddMultimediaService $addMultimediaService): JsonResponse
     {
-        return $addMultimediaService->make($multimediaDTO->collect(), $this->authorizedUser->getUser());
+        return $addMultimediaService->make($multimediaDTO->collect(), $this->getAuthorizedUser());
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
@@ -71,18 +67,18 @@ class MultimediaController extends AbstractRestController
         UpdateMultimediaService $updateMultimediaService
     ): JsonResponse {
         $multimediaDTO->setEntity($multimedia);
+        $multimediaDTO->collect();
 
-        return $updateMultimediaService->make($multimediaDTO->collect());
+        return $updateMultimediaService->make($multimediaDTO);
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_MULTIMEDIA)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         DeleteMultimediaService $deleteMultimediaService
     ): JsonResponse {
-        if ($multimedia->getUser() !== $this->authorizedUser->getUser()) {
+        if (false === $this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
             throw EntityNotFoundException::multimedia();
         }
 

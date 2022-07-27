@@ -4,7 +4,6 @@ namespace App\Service\Multimedia;
 
 use App\DTO\MultimediaDTO;
 use App\Entity\User;
-use App\Enum\MultimediaStatusEnum;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -33,7 +32,7 @@ class AddMultimediaService extends AbstractService
         $multimediaEntity = $multimediaDTO->getEntity();
 
         $multimediaEntity->setUser($toUser);
-        $multimediaEntity->setStatus(MultimediaStatusEnum::DRAFT);
+        $multimediaEntity->setDraftStatus();
 
         $this->setPerformersToMultimediaService->set($multimediaDTO->performers, $multimediaEntity);
 

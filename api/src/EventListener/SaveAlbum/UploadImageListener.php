@@ -6,7 +6,7 @@ use App\DTO\AlbumDTO;
 use App\Entity\Album;
 use App\Event\SaveAlbumEvent;
 use App\Rest\S3\Uploader\ImageUploader;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\FlusherService;
 
 /**
  * Class UploadImageListener.
@@ -17,12 +17,12 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class UploadImageListener
 {
-    private EntityManagerInterface $em;
+    private FlusherService $flusherService;
     private ImageUploader $imageUploader;
 
-    public function __construct(EntityManagerInterface $manager, ImageUploader $imageUploader)
+    public function __construct(FlusherService $flusherService, ImageUploader $imageUploader)
     {
-        $this->em = $manager;
+        $this->flusherService = $flusherService;
         $this->imageUploader = $imageUploader;
     }
 
@@ -33,12 +33,16 @@ class UploadImageListener
 
         $event->album->setImage($this->uploadImage($event->albumDTO, $event->album));
 
-        $this->em->flush();
+        $this->flusherService->save();
     }
 
     private function uploadImage(AlbumDTO $albumDTO, Album $album): string
     {
-        $this->imageUploader->save($album->getImage(), $albumDTO->image->getRealPath(), $albumDTO->image->getMimeType());
+        $this->imageUploader->save(
+            $album->getImage(),
+            $albumDTO->image->getRealPath(),
+            $albumDTO->image->getMimeType()
+        );
 
         return $this->imageUploader->getUploadedFile()->last();
     }
