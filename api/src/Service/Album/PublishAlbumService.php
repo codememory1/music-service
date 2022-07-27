@@ -40,7 +40,7 @@ class PublishAlbumService extends AbstractService
 
         $album->setPublishStatus();
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         $this->eventDispatcher->dispatch(
             new AlbumStatusChangeEvent($album, AlbumStatusEnum::PUBLISHED),

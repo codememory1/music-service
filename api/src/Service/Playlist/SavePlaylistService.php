@@ -29,11 +29,7 @@ class SavePlaylistService extends AbstractService
     {
         $this->setMultimediaToPlaylistService->set($playlistDTO->multimedia, $playlist);
 
-        if (null === $playlist->getId()) {
-            $this->em->persist($playlist);
-        }
-
-        $this->em->flush();
+        $this->flusherService->save();
 
         $this->eventDispatcher->dispatch(
             new SavePlaylistEvent($playlist, $playlistDTO),

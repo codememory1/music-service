@@ -31,11 +31,11 @@ class CreatePlaylistService extends AbstractService
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
 
-        $playlistEntity = $playlistDTO->getEntity();
+        $playlist = $playlistDTO->getEntity();
 
-        $playlistEntity->setMediaLibrary($forUser->getMediaLibrary());
+        $playlist->setMediaLibrary($forUser->getMediaLibrary());
 
-        $this->savePlaylistService->make($playlistDTO, $playlistEntity);
+        $this->savePlaylistService->make($playlistDTO, $playlist);
 
         return $this->responseCollection->successCreate('playlist@successCreate');
     }

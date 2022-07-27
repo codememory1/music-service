@@ -26,23 +26,22 @@ class AddAsFriendService extends AbstractService
 
     public function make(User $user, User $friend): JsonResponse
     {
+        $friendRepository = $this->em->getRepository(Friend::class);
+
         $this->thrownAddMyselfAsFriend($user, $friend);
         $this->throwIfImpossibleAdd($friend);
-
-        $friendRepository = $this->em->getRepository(Friend::class);
 
         if (null !== $friendRepository->getFriend($user, $friend)) {
             throw EntityExistException::friend();
         }
 
-        $friendEntity = new Friend();
+        $friendship = new Friend();
 
-        $friendEntity->setFriend($friend);
-        $friendEntity->setAwaitingConfirmation();
+        $friendship->setFriend($friend);
+        $friendship->setAwaitingConfirmation();
+        $friendship->setUser($user);
 
-        $user->addFriend($friendEntity);
-
-        $this->em->flush();
+        $this->flusherService->save($friendship);
 
         return $this->responseCollection->successUpdate('friend@successAdd');
     }

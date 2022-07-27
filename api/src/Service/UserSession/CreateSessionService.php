@@ -7,6 +7,11 @@ use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
 use App\Service\AbstractService;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -21,13 +26,19 @@ class CreateSessionService extends AbstractService
     #[Required]
     public ?CollectorSessionService $collectorSessionService = null;
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function make(UserDTO $userDTO, User $user, UserSessionTypeEnum $type): UserSession
     {
-        $collectedUserSessionEntity = $this->collectorSessionService->collect($userDTO, $user, $type);
+        $collectedUserSession = $this->collectorSessionService->collect($userDTO, $user, $type);
 
-        $this->em->persist($collectedUserSessionEntity);
-        $this->em->flush();
+        $this->flusherService->save($collectedUserSession);
 
-        return $collectedUserSessionEntity;
+        return $collectedUserSession;
     }
 }

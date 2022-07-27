@@ -24,8 +24,7 @@ class DeleteAlbumService extends AbstractService
     {
         $this->imageUploader->delete($album->getImage());
 
-        $this->em->remove($album);
-        $this->em->flush();
+        $this->flusherService->addRemove($album)->save();
 
         return $this->responseCollection->successDelete('album@successDelete');
     }

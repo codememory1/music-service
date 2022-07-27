@@ -25,12 +25,11 @@ class CreateSubscriptionService extends AbstractService
             return $response;
         }
 
-        $subscriptionEntity = $subscriptionDTO->getEntity();
+        $subscription = $subscriptionDTO->getEntity();
 
-        $this->setPermissionsToSubscriptionService->set($subscriptionEntity, $subscriptionDTO->permissions);
+        $this->setPermissionsToSubscriptionService->set($subscription, $subscriptionDTO->permissions);
 
-        $this->em->persist($subscriptionEntity);
-        $this->em->flush();
+        $this->flusherService->save($subscription);
 
         return $this->responseCollection->successCreate('subscription@successCreate');
     }

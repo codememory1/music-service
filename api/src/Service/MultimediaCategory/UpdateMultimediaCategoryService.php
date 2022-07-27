@@ -21,7 +21,7 @@ class UpdateMultimediaCategoryService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successUpdate('multimediaCategory@successUpdate');
     }

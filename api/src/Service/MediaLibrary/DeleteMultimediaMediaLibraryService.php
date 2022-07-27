@@ -17,8 +17,7 @@ class DeleteMultimediaMediaLibraryService extends AbstractService
 {
     public function make(MultimediaMediaLibrary $multimediaMediaLibrary): JsonResponse
     {
-        $this->em->remove($multimediaMediaLibrary);
-        $this->em->flush();
+        $this->flusherService->save($multimediaMediaLibrary);
 
         return $this->responseCollection->successDelete('multimediaMediaLibrary@successDelete');
     }

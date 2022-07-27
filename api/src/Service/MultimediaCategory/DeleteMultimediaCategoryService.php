@@ -17,8 +17,7 @@ class DeleteMultimediaCategoryService extends AbstractService
 {
     public function make(MultimediaCategory $multimediaCategory): JsonResponse
     {
-        $this->em->remove($multimediaCategory);
-        $this->em->flush();
+        $this->flusherService->save($multimediaCategory);
 
         return $this->responseCollection->successUpdate('multimediaCategory@successDelete');
     }

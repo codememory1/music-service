@@ -22,12 +22,11 @@ class CreatePlaylistDirectoryService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $playlistDirectoryEntity = $playlistDirectoryDTO->getEntity();
+        $playlistDirectory = $playlistDirectoryDTO->getEntity();
 
-        $playlistDirectoryEntity->setPlaylist($toPlaylist);
+        $playlistDirectory->setPlaylist($toPlaylist);
 
-        $this->em->persist($playlistDirectoryEntity);
-        $this->em->flush();
+        $this->flusherService->save($playlistDirectory);
 
         return $this->responseCollection->successCreate('playlistDirectory@successCreate');
     }

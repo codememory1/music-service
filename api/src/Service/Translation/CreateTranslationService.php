@@ -22,22 +22,21 @@ class CreateTranslationService extends AbstractService
             return $this->validator->getResponse();
         }
 
-        $translationEntity = $translationDTO->getEntity();
+        $translation = $translationDTO->getEntity();
 
-        $translationEntity->setTranslationKey($this->createTranslationKey($translationDTO));
+        $translation->setTranslationKey($this->createTranslationKey($translationDTO));
 
-        $this->em->persist($translationEntity);
-        $this->em->flush();
+        $this->flusherService->save($translation);
 
         return $this->responseCollection->successCreate('translation@successCreate');
     }
 
     private function createTranslationKey(TranslationDTO $translationDTO): TranslationKey
     {
-        $translationKeyEntity = new TranslationKey();
+        $translationKey = new TranslationKey();
 
-        $translationKeyEntity->setKey($translationDTO->translationKey);
+        $translationKey->setKey($translationDTO->translationKey);
 
-        return $translationKeyEntity;
+        return $translationKey;
     }
 }

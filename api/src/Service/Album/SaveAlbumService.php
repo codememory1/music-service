@@ -24,11 +24,7 @@ class SaveAlbumService extends AbstractService
 
     public function make(AlbumDTO $albumDTO, Album $album): void
     {
-        if (null === $album->getId()) {
-            $this->em->persist($album);
-        }
-
-        $this->em->flush();
+        $this->flusherService->save($album);
 
         $this->eventDispatcher->dispatch(
             new SaveAlbumEvent($albumDTO, $album),

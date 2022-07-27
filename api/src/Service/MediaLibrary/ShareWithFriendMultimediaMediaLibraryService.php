@@ -33,7 +33,7 @@ class ShareWithFriendMultimediaMediaLibraryService extends AbstractService
 
         $friend->getMediaLibrary()->addMultimedia($multimediaMediaLibrary);
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         $this->notificationCollection->sharedMultimedia($from, $friend, $multimediaMediaLibrary);
 

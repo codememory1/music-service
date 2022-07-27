@@ -33,7 +33,7 @@ class SaveMultimediaService extends AbstractService
             $this->em->persist($multimedia);
         }
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         $this->eventDispatcher->dispatch(
             new SaveMultimediaEvent($multimediaDTO, $multimedia),

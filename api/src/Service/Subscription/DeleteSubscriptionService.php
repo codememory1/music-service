@@ -17,8 +17,7 @@ class DeleteSubscriptionService extends AbstractService
 {
     public function make(Subscription $subscription): JsonResponse
     {
-        $this->em->remove($subscription);
-        $this->em->flush();
+        $this->flusherService->save($subscription);
 
         return $this->responseCollection->successDelete('subscription@successDelete');
     }

@@ -17,8 +17,7 @@ class DeleteUserRoleService extends AbstractService
 {
     public function make(Role $role): JsonResponse
     {
-        $this->em->remove($role);
-        $this->em->flush();
+        $this->flusherService->addRemove($role)->save();
 
         return $this->responseCollection->successDelete('role@successDelete');
     }

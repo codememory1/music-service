@@ -24,8 +24,7 @@ class DeleteUserSessionService extends AbstractService
             throw EntityNotFoundException::userSession();
         }
 
-        $this->em->remove($userSession);
-        $this->em->flush();
+        $this->flusherService->addRemove($userSession)->save();
 
         return $this->responseCollection->successDelete('userSession@successDelete');
     }
@@ -33,16 +32,13 @@ class DeleteUserSessionService extends AbstractService
     public function deleteAll(User $toUser): JsonResponse
     {
         $userSessionRepository = $this->em->getRepository(UserSession::class);
-        $userSessions = $userSessionRepository->findBy([
-            'user' => $toUser,
-            'type' => UserSessionTypeEnum::TEMP->name
-        ]);
+        $userSessions = $userSessionRepository->findAllTemp($toUser);
 
         foreach ($userSessions as $userSession) {
-            $this->em->remove($userSession);
+            $this->flusherService->addRemove($userSession);
         }
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successDelete('userSession@successDeleteMultiple');
     }

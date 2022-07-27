@@ -7,6 +7,11 @@ use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
 use App\Service\AbstractService;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -21,21 +26,23 @@ class UpdateSessionService extends AbstractService
     #[Required]
     public ?CollectorSessionService $collectorSessionService = null;
 
-    public function make(UserDTO $userDTO, User $user, ?UserSession $userSession = null, UserSessionTypeEnum $type = UserSessionTypeEnum::TEMP): UserSession
-    {
-        $collectedUserSessionEntity = $this->collectorSessionService->collect(
-            $userDTO,
-            $user,
-            $type,
-            $userSession
-        );
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function make(
+        UserDTO $userDTO,
+        User $user,
+        ?UserSession $userSession = null,
+        UserSessionTypeEnum $type = UserSessionTypeEnum::TEMP
+    ): UserSession {
+        $collectedUserSession = $this->collectorSessionService->collect($userDTO, $user, $type, $userSession);
 
-        if (null === $collectedUserSessionEntity->getId()) {
-            $this->em->persist($collectedUserSessionEntity);
-        }
+        $this->flusherService->save($collectedUserSession);
 
-        $this->em->flush();
-
-        return $collectedUserSessionEntity;
+        return $collectedUserSession;
     }
 }

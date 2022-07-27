@@ -17,8 +17,7 @@ class DeletePlaylistService extends AbstractService
 {
     public function make(Playlist $playlist): JsonResponse
     {
-        $this->em->remove($playlist);
-        $this->em->flush();
+        $this->flusherService->save($playlist);
 
         return $this->responseCollection->successDelete('playlist@successDelete');
     }

@@ -18,13 +18,13 @@ class DeleteTranslationService extends AbstractService
 {
     public function make(DeleteTranslationDTO $deleteTranslationDTO, Translation $translation): JsonResponse
     {
-        $this->em->remove($translation);
+        $this->flusherService->addRemove($translation);
 
         if ($deleteTranslationDTO->deleteKey) {
-            $this->em->remove($translation->getTranslationKey());
+            $this->flusherService->addRemove($translation->getTranslationKey());
         }
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successDelete('translation@successDelete');
     }
