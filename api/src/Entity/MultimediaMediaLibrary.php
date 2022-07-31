@@ -3,15 +3,16 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\UuidIdentifierInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UuidIdentifierTrait;
 use App\Enum\ResponseTypeEnum;
 use App\Repository\MultimediaMediaLibraryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -24,10 +25,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: MultimediaMediaLibraryRepository::class)]
 #[ORM\Table('multimedia_media_library')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity(['mediaLibrary', 'multimedia'], message: 'multimediaMediaLibrary@multimediaAlreadyAdd', payload: [ResponseTypeEnum::EXIST, 409])]
-class MultimediaMediaLibrary implements EntityInterface
+#[UniqueEntity(
+    ['mediaLibrary', 'multimedia'],
+    message: 'multimediaMediaLibrary@multimediaAlreadyAdd',
+    payload: [ResponseTypeEnum::EXIST, 409]
+)]
+class MultimediaMediaLibrary implements EntityInterface, UuidIdentifierInterface
 {
     use IdentifierTrait;
+    use UuidIdentifierTrait;
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'multimedia')]
@@ -51,9 +57,10 @@ class MultimediaMediaLibrary implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'multimediaMediaLibrary', targetEntity: MultimediaMediaLibraryEvent::class)]
     private Collection $events;
 
-    #[Pure]
     public function __construct()
     {
+        $this->generateUuid();
+
         $this->events = new ArrayCollection();
     }
 

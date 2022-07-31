@@ -5,7 +5,7 @@ namespace App\Controller\PublicAvailable;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
-use App\DTO\PlaylistDTO;
+use App\Dto\Transformer\PlaylistTransformer;
 use App\Entity\MultimediaPlaylist;
 use App\Entity\Playlist;
 use App\Entity\PlaylistDirectory;
@@ -58,24 +58,21 @@ class PlaylistController extends AbstractRestController
 
     #[Route('/playlist/create', methods: 'POST')]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_PLAYLIST)]
-    public function create(PlaylistDTO $playlistDTO, CreatePlaylistService $createPlaylistService): JsonResponse
+    public function create(PlaylistTransformer $playlistTransformer, CreatePlaylistService $createPlaylistService): JsonResponse
     {
-        return $createPlaylistService->make($playlistDTO->collect(), $this->getAuthorizedUser());
+        return $createPlaylistService->request($playlistTransformer->transformFromRequest(), $this->getAuthorizedUser());
     }
 
     #[Route('/playlist/{playlist_id<\d+>}/edit', methods: 'POST')]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_PLAYLIST)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
-        PlaylistDTO $playlistDTO,
+        PlaylistTransformer $playlistTransformer,
         UpdatePlaylistService $updatePlaylistService
     ): JsonResponse {
         $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
-        $playlistDTO->setEntity($playlist);
-        $playlistDTO->collect();
-
-        return $updatePlaylistService->make($playlistDTO);
+        return $updatePlaylistService->request($playlistTransformer->transformFromRequest($playlist));
     }
 
     #[Route('/playlist/{playlist_id<\d+>}/delete', methods: 'DELETE')]
@@ -86,7 +83,7 @@ class PlaylistController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
-        return $deletePlaylistService->make($playlist);
+        return $deletePlaylistService->request($playlist);
     }
 
     #[Route('/playlist/multimedia/{multimediaPlaylist_id<\d+>}/move/directory/{playlistDirectory_id<\d+>}', methods: 'PUT')]

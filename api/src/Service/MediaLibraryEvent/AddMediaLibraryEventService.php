@@ -2,8 +2,9 @@
 
 namespace App\Service\MediaLibraryEvent;
 
-use App\DTO\MediaLibraryEventDTO;
+use App\Dto\Transfer\MediaLibraryEventDto;
 use App\Entity\MediaLibrary;
+use App\Entity\MediaLibraryEvent;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -20,17 +21,24 @@ class AddMediaLibraryEventService extends AbstractService
     #[Required]
     public ?SaveMediaLibraryEventService $saveMediaLibraryEventService = null;
 
-    public function make(MediaLibraryEventDTO $mediaLibraryEventDTO, MediaLibrary $mediaLibrary): JsonResponse
+    public function add(MediaLibraryEventDto $mediaLibraryEventDto, MediaLibrary $mediaLibrary): MediaLibraryEvent
     {
-        $mediaLibraryEvent = $mediaLibraryEventDTO->getEntity();
+        $this->validate($mediaLibraryEventDto);
 
-        $mediaLibrary->addEvent($mediaLibraryEvent);
+        $mediaLibraryEvent = $mediaLibraryEventDto->getEntity();
 
-        if (true !== $response = $this->validateFullDTO($mediaLibraryEventDTO)) {
-            return $response;
-        }
+        $mediaLibraryEvent->setMediaLibrary($mediaLibrary);
 
-        $this->saveMediaLibraryEventService->make($mediaLibraryEventDTO, $mediaLibrary, $mediaLibraryEvent);
+        $this->validate($mediaLibraryEvent);
+
+        $this->saveMediaLibraryEventService->make($mediaLibraryEventDto, $mediaLibrary, $mediaLibraryEvent);
+
+        return $mediaLibraryEvent;
+    }
+
+    public function request(MediaLibraryEventDto $mediaLibraryEventDto, MediaLibrary $mediaLibrary): JsonResponse
+    {
+        $this->add($mediaLibraryEventDto, $mediaLibrary);
 
         return $this->responseCollection->successCreate('event@successAdd');
     }

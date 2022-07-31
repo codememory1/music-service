@@ -13,7 +13,7 @@ use App\ResponseData\FriendResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Friend\AcceptAsFriendService;
-use App\Service\Friend\AddAsFriendService;
+use App\Service\Friend\ApplyInFriendService;
 use App\Service\Friend\DeleteFriendService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,9 +42,9 @@ class FriendController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_AS_FRIEND)]
     public function addAsFriend(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
-        AddAsFriendService $addAsFriendService
+        ApplyInFriendService $addAsFriendService
     ): JsonResponse {
-        return $addAsFriendService->make($this->getAuthorizedUser(), $friend);
+        return $addAsFriendService->request($this->getAuthorizedUser(), $friend);
     }
 
     #[Route('/friend/{friend_id<\d+>}/accept', methods: 'PATCH')]
@@ -57,7 +57,7 @@ class FriendController extends AbstractRestController
             throw EntityNotFoundException::friend();
         }
 
-        return $acceptAsFriendService->make($friend);
+        return $acceptAsFriendService->request($friend);
     }
 
     #[Route('/friend/{friend_id<\d+>}/delete', methods: 'DELETE')]
@@ -72,6 +72,6 @@ class FriendController extends AbstractRestController
             throw EntityNotFoundException::friend();
         }
 
-        return $deleteFriendService->make($friendship);
+        return $deleteFriendService->request($friendship);
     }
 }

@@ -2,7 +2,8 @@
 
 namespace App\Service\Notification;
 
-use App\DTO\NotificationDTO;
+use App\Dto\Transfer\NotificationDto;
+use App\Entity\Notification;
 use App\Entity\User;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,19 +22,23 @@ class CreateNotificationService extends AbstractService
     #[Required]
     public ?MessageBusInterface $bus = null;
 
-    public function make(NotificationDTO $notificationDTO, ?User $from): JsonResponse
+    public function create(NotificationDto $notificationDto, ?User $fromUser): Notification
     {
-        if (false === $this->validate($notificationDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($notificationDto);
 
-        $notificationEntity = $notificationDTO->getEntity();
+        $notification = $notificationDto->getEntity();
 
-        $notificationEntity->setExpectsStatus();
-        $notificationEntity->setFrom($from);
+        $notification->setExpectsStatus();
+        $notification->setFrom($fromUser);
 
-        $this->em->persist($notificationEntity);
-        $this->em->flush();
+        $this->flusherService->save($notification);
+
+        return $notification;
+    }
+
+    public function request(NotificationDto $notificationDto, ?User $fromUser): JsonResponse
+    {
+        $this->create($notificationDto, $fromUser);
 
         return $this->responseCollection->successCreate('notification@successCreate');
     }

@@ -2,7 +2,7 @@
 
 namespace App\Service\UserSession;
 
-use App\DTO\UserDTO;
+use App\Dto\Transfer\UserDto;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
@@ -37,32 +37,39 @@ class CollectorSessionService
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function collect(UserDTO $userDTO, User $user, UserSessionTypeEnum $type, ?UserSession $userSessionEntity = null): UserSession
+    public function collect(UserDto $userDto, User $user, UserSessionTypeEnum $type, ?UserSession $userSession = null): UserSession
     {
-        $agent = new Agent();
-        $userSessionEntity ??= new UserSession();
-        $ipResponse = $this->client->request($userDTO->ip)->response();
+        $userSession ??= new UserSession();
+        $ipResponse = $this->client->request($userDto->ip)->response();
 
-        $userSessionEntity->setUser($user);
-        $userSessionEntity->setType($type);
-        $userSessionEntity->setBrowser($agent->browser());
-        $userSessionEntity->setIp($userDTO->ip);
-        $userSessionEntity->setDevice($agent->device());
-        $userSessionEntity->setOperatingSystem($agent->platform());
+        $this->setAgent($userSession);
 
-        $userSessionEntity->setContinent($ipResponse->getContinent());
-        $userSessionEntity->setCity($ipResponse->getCity());
-        $userSessionEntity->setCountry($ipResponse->getCountry());
-        $userSessionEntity->setCountryCode($ipResponse->getCountryCode());
-        $userSessionEntity->setRegion($ipResponse->getRegion());
-        $userSessionEntity->setRegionName($ipResponse->getRegionName());
-        $userSessionEntity->setTimezone($ipResponse->getTimezone());
-        $userSessionEntity->setCurrency($ipResponse->getCurrency());
-        $userSessionEntity->setCoordinates([
+        $userSession->setUser($user);
+        $userSession->setType($type);
+        $userSession->setIp($userDto->ip);
+
+        $userSession->setContinent($ipResponse->getContinent());
+        $userSession->setCity($ipResponse->getCity());
+        $userSession->setCountry($ipResponse->getCountry());
+        $userSession->setCountryCode($ipResponse->getCountryCode());
+        $userSession->setRegion($ipResponse->getRegion());
+        $userSession->setRegionName($ipResponse->getRegionName());
+        $userSession->setTimezone($ipResponse->getTimezone());
+        $userSession->setCurrency($ipResponse->getCurrency());
+        $userSession->setCoordinates([
             'latitude' => $ipResponse->getLat(),
             'longitude' => $ipResponse->getLon()
         ]);
 
-        return $userSessionEntity;
+        return $userSession;
+    }
+
+    private function setAgent(UserSession $userSession): void
+    {
+        $agent = new Agent();
+
+        $userSession->setBrowser($agent->browser());
+        $userSession->setDevice($agent->device());
+        $userSession->setOperatingSystem($agent->platform());
     }
 }

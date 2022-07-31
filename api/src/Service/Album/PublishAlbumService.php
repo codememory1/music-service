@@ -6,7 +6,6 @@ use App\Entity\Album;
 use App\Entity\Multimedia;
 use App\Enum\AlbumStatusEnum;
 use App\Enum\EventEnum;
-use App\Enum\MultimediaStatusEnum;
 use App\Event\AlbumStatusChangeEvent;
 use App\Rest\Http\Exceptions\AlbumException;
 use App\Service\AbstractService;
@@ -26,13 +25,15 @@ class PublishAlbumService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function make(Album $album): JsonResponse
+    public function publish(Album $album): Album
     {
-        if ($album->getStatus() === AlbumStatusEnum::PUBLISHED->name) {
+        if ($album->isPublished()) {
             throw AlbumException::badPublicationToAlreadyPublication();
         }
 
-        $publishedMultimediaToAlbum = $album->getMultimedia()->filter(static fn(Multimedia $multimedia) => $multimedia->getStatus() === MultimediaStatusEnum::PUBLISHED->name);
+        $publishedMultimediaToAlbum = $album
+            ->getMultimedia()
+            ->filter(static fn(Multimedia $multimedia) => $multimedia->isPublished());
 
         if (0 === $publishedMultimediaToAlbum->count()) {
             throw AlbumException::badPublicationWithoutPublishedMultimedia();
@@ -46,6 +47,13 @@ class PublishAlbumService extends AbstractService
             new AlbumStatusChangeEvent($album, AlbumStatusEnum::PUBLISHED),
             EventEnum::ALBUM_STATUS_CHANGE->value
         );
+
+        return $album;
+    }
+
+    public function request(Album $album): JsonResponse
+    {
+        $this->publish($album);
 
         return $this->responseCollection->successUpdate('album@successPublication');
     }

@@ -2,11 +2,17 @@
 
 namespace App\EventListener\Authorization;
 
-use App\DTO\UserDTO;
+use App\Dto\Transfer\UserDto;
+use App\Dto\Transformer\UserTransformer;
 use App\Entity\UserSession;
 use App\Event\UserAuthorizationEvent;
 use App\Service\UserSession\UpdateSessionService;
 use DateTimeImmutable;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * Class CreateTempSessionListener.
@@ -18,16 +24,23 @@ use DateTimeImmutable;
 class CreateTempSessionListener
 {
     private UpdateSessionService $updateUserSessionService;
-    private UserDTO $userDTO;
+    private UserDto $userDto;
 
     public function __construct(
         UpdateSessionService $updateSessionService,
-        UserDTO $userDTO
+        UserTransformer $userTransformer
     ) {
         $this->updateUserSessionService = $updateSessionService;
-        $this->userDTO = $userDTO->collect();
+        $this->userDto = $userTransformer->transformFromRequest();
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function onAuth(UserAuthorizationEvent $event): void
     {
         $userSessionEntity = new UserSession();
@@ -37,6 +50,6 @@ class CreateTempSessionListener
         $userSessionEntity->setLastActivity(new DateTimeImmutable());
         $userSessionEntity->setIsActive(true);
 
-        $this->updateUserSessionService->make($this->userDTO, $event->authorizedUser, $userSessionEntity);
+        $this->updateUserSessionService->make($this->userDto, $event->authorizedUser, $userSessionEntity);
     }
 }

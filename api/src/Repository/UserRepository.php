@@ -18,7 +18,7 @@ class UserRepository extends AbstractRepository
     protected ?string $entity = User::class;
     protected ?string $alias = 'u';
 
-    public function getByEmail(?string $email): ?User
+    public function findByEmail(?string $email): ?User
     {
         return $this->findOneBy(['email' => $email]);
     }
@@ -29,5 +29,13 @@ class UserRepository extends AbstractRepository
     public function findActive(): array
     {
         return $this->findBy(['status' => UserStatusEnum::ACTIVE->name]);
+    }
+
+    public function findActiveByEmail(string $email): ?User
+    {
+        return $this->findOneBy([
+            'email' => $email,
+            'status' => UserStatusEnum::ACTIVE->name
+        ]);
     }
 }

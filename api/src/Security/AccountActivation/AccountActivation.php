@@ -2,7 +2,7 @@
 
 namespace App\Security\AccountActivation;
 
-use App\DTO\AccountActivationDTO;
+use App\Dto\Transfer\AccountActivationDto;
 use App\Entity\AccountActivationCode;
 use App\Enum\EventEnum;
 use App\Event\AccountActivationEvent;
@@ -24,25 +24,22 @@ class AccountActivation extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function activate(AccountActivationDTO $accountActivationDTO): JsonResponse
+    public function activate(AccountActivationDto $accountActivationDto): JsonResponse
     {
-        if (false === $this->validate($accountActivationDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($accountActivationDto);
 
         $finedAccountActivationCode = $this->em->getRepository(AccountActivationCode::class)->findOneBy([
-            'user' => $accountActivationDTO->user,
-            'code' => $accountActivationDTO->code
+            'user' => $accountActivationDto->user,
+            'code' => $accountActivationDto->code
         ]);
 
         if (null === $finedAccountActivationCode || false === $finedAccountActivationCode->isValidTtlByCreatedAt()) {
             throw InvalidException::invalidCode();
         }
 
-        $accountActivationDTO->user->setActiveStatus();
+        $accountActivationDto->user->setActiveStatus();
 
-        $this->em->remove($finedAccountActivationCode);
-        $this->em->flush();
+        $this->flusherService->addRemove($finedAccountActivationCode)->save();
 
         $this->eventDispatcher->dispatch(
             new AccountActivationEvent($finedAccountActivationCode),

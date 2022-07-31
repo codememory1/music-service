@@ -15,9 +15,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteMultimediaService extends AbstractService
 {
-    public function make(Multimedia $multimedia): JsonResponse
+    public function delete(Multimedia $multimedia): Multimedia
     {
-        $this->flusherService->addRemove($multimedia)->save();
+        $this->flusherService->remove($multimedia);
+
+        return $multimedia;
+    }
+
+    public function request(Multimedia $multimedia): JsonResponse
+    {
+        $this->delete($multimedia);
 
         return $this->responseCollection->successDelete('multimedia@successDelete');
     }

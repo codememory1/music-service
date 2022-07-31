@@ -2,10 +2,10 @@
 
 namespace App\Service\Subscription;
 
-use App\DTO\SubscriptionDTO;
+use App\Dto\Transfer\SubscriptionDto;
+use App\Entity\Subscription;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class CreateSubscriptionService.
@@ -16,20 +16,20 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class CreateSubscriptionService extends AbstractService
 {
-    #[Required]
-    public ?SetPermissionsToSubscriptionService $setPermissionsToSubscriptionService = null;
-
-    public function make(SubscriptionDTO $subscriptionDTO): JsonResponse
+    public function create(SubscriptionDto $subscriptionDto): Subscription
     {
-        if (true !== $response = $this->validateFullDTO($subscriptionDTO)) {
-            return $response;
-        }
+        $this->validate($subscriptionDto);
 
-        $subscription = $subscriptionDTO->getEntity();
-
-        $this->setPermissionsToSubscriptionService->set($subscription, $subscriptionDTO->permissions);
+        $subscription = $subscriptionDto->getEntity();
 
         $this->flusherService->save($subscription);
+
+        return $subscription;
+    }
+
+    public function request(SubscriptionDto $subscriptionDto): JsonResponse
+    {
+        $this->create($subscriptionDto);
 
         return $this->responseCollection->successCreate('subscription@successCreate');
     }

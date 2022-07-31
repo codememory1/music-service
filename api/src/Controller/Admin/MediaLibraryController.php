@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
-use App\DTO\MediaLibraryDTO;
+use App\Dto\Transformer\MediaLibraryTransformer;
 use App\Entity\MediaLibrary;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
@@ -48,22 +48,19 @@ class MediaLibraryController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::CREATE_MEDIA_LIBRARY_TO_USER)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        MediaLibraryDTO $mediaLibraryDTO,
+        MediaLibraryTransformer $mediaLibraryTransformer,
         CreateMediaLibraryService $createMediaLibraryService
     ): JsonResponse {
-        return $createMediaLibraryService->make($mediaLibraryDTO->collect(), $user);
+        return $createMediaLibraryService->request($mediaLibraryTransformer->transformFromRequest(), $user);
     }
 
     #[Route('/media-library/{mediaLibrary_id<\d+>}/edit', methods: 'PUT')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MEDIA_LIBRARY_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'mediaLibrary')] MediaLibrary $mediaLibrary,
-        MediaLibraryDTO $mediaLibraryDTO,
+        MediaLibraryTransformer $mediaLibraryTransformer,
         UpdateMediaLibraryService $updateMediaLibraryService
     ): JsonResponse {
-        $mediaLibraryDTO->setEntity($mediaLibrary);
-        $mediaLibraryDTO->collect();
-
-        return $updateMediaLibraryService->make($mediaLibraryDTO);
+        return $updateMediaLibraryService->request($mediaLibraryTransformer->transformFromRequest($mediaLibrary));
     }
 }

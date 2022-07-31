@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
-use App\DTO\PlaylistDTO;
+use App\Dto\Transformer\PlaylistTransformer;
 use App\Entity\MultimediaPlaylist;
 use App\Entity\Playlist;
 use App\Entity\PlaylistDirectory;
@@ -62,23 +62,20 @@ class PlaylistController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_USER_PLAYLISTS)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        PlaylistDTO $playlistDTO,
+        PlaylistTransformer $playlistTransformer,
         CreatePlaylistService $createPlaylistService
     ): JsonResponse {
-        return $createPlaylistService->make($playlistDTO->collect(), $user);
+        return $createPlaylistService->request($playlistTransformer->transformFromRequest(), $user);
     }
 
     #[Route('/media-library/playlist/{playlist_id<\d+>}/edit', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_PLAYLIST_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
-        PlaylistDTO $playlistDTO,
+        PlaylistTransformer $playlistTransformer,
         UpdatePlaylistService $updatePlaylistService
     ): JsonResponse {
-        $playlistDTO->setEntity($playlist);
-        $playlistDTO->collect();
-
-        return $updatePlaylistService->make($playlistDTO);
+        return $updatePlaylistService->request($playlistTransformer->transformFromRequest($playlist));
     }
 
     #[Route('/media-library/playlist/{playlist_id<\d+>}/delete', methods: 'DELETE')]
@@ -87,7 +84,7 @@ class PlaylistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         DeletePlaylistService $deletePlaylistService
     ): JsonResponse {
-        return $deletePlaylistService->make($playlist);
+        return $deletePlaylistService->request($playlist);
     }
 
     #[Route('/media-library/playlist/multimedia/{multimediaPlaylist_id<\d+>}/move/directory/{playlistDirectory_id<\d+>}', methods: 'PUT')]

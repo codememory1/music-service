@@ -15,9 +15,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteMultimediaCategoryService extends AbstractService
 {
-    public function make(MultimediaCategory $multimediaCategory): JsonResponse
+    public function delete(MultimediaCategory $multimediaCategory): MultimediaCategory
     {
-        $this->flusherService->save($multimediaCategory);
+        $this->flusherService->remove($multimediaCategory);
+
+        return $multimediaCategory;
+    }
+
+    public function request(MultimediaCategory $multimediaCategory): JsonResponse
+    {
+        $this->delete($multimediaCategory);
 
         return $this->responseCollection->successUpdate('multimediaCategory@successDelete');
     }

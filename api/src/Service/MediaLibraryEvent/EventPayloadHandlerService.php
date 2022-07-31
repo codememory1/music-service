@@ -2,7 +2,7 @@
 
 namespace App\Service\MediaLibraryEvent;
 
-use App\DTO\MediaLibraryEventDTO;
+use App\Dto\Transfer\MediaLibraryEventDto;
 use App\Entity\MediaLibrary;
 use App\Entity\User;
 use App\Enum\MediaLibraryEventEnum;
@@ -21,13 +21,13 @@ class EventPayloadHandlerService extends AbstractService
 {
     private MediaLibrary $mediaLibrary;
 
-    public function handler(MediaLibraryEventDTO $mediaLibraryEventDTO, MediaLibrary $mediaLibrary): void
+    public function handler(MediaLibraryEventDto $mediaLibraryEventDto, MediaLibrary $mediaLibrary): void
     {
         $this->mediaLibrary = $mediaLibrary;
 
-        $schema = new ($mediaLibraryEventDTO->key->getNamespaceSchema())($mediaLibraryEventDTO->payload);
+        $schema = new ($mediaLibraryEventDto->key->getNamespaceSchema())($mediaLibraryEventDto->payload);
 
-        match ($mediaLibraryEventDTO->key) {
+        match ($mediaLibraryEventDto->key) {
             MediaLibraryEventEnum::SHARE_WITH_FRIENDS_AFTER_ADD => $this->shareWithFriendsAfterAdd($schema)
         };
     }

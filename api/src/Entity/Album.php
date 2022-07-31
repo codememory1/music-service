@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\UuidIdentifierInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UuidIdentifierTrait;
 use App\Enum\AlbumStatusEnum;
 use App\Repository\AlbumRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,9 +25,10 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
 #[ORM\Table('albums')]
 #[ORM\HasLifecycleCallbacks]
-class Album implements EntityInterface
+class Album implements EntityInterface, UuidIdentifierInterface
 {
     use IdentifierTrait;
+    use UuidIdentifierTrait;
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'albums')]
@@ -61,6 +64,7 @@ class Album implements EntityInterface
 
     public function __construct()
     {
+        $this->generateUuid();
         $this->setUnpublishStatus();
 
         $this->multimedia = new ArrayCollection();

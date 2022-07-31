@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Annotation\Authorization;
 use App\Annotation\UserRolePermission;
-use App\DTO\NotificationDTO;
+use App\Dto\Transformer\NotificationTransformer;
 use App\Enum\RolePermissionEnum;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\Notification\CreateNotificationService;
@@ -24,8 +24,8 @@ class NotificationController extends AbstractRestController
 {
     #[Route('/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_NOTIFICATION)]
-    public function create(NotificationDTO $notificationDTO, CreateNotificationService $createNotificationService): JsonResponse
+    public function create(NotificationTransformer $notificationTransformer, CreateNotificationService $createNotificationService): JsonResponse
     {
-        return $createNotificationService->make($notificationDTO->collect(), $this->getAuthorizedUser());
+        return $createNotificationService->request($notificationTransformer->transformFromRequest(), $this->getAuthorizedUser());
     }
 }

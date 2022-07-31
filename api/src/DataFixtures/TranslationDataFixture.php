@@ -424,7 +424,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'event@successUpdate', 'Событие успешно обновлено'),
             new TranslationFactory('ru', 'event@successDelete', 'Событие успешно удалено'),
             new TranslationFactory('ru', 'event@keyIsRequired', 'Ключ события обязательный к заполнению'),
-            new TranslationFactory('ru', 'event@invalidPayload', 'Некорректный входные данные события'),
+            new TranslationFactory('ru', 'event@invalidPayload', 'Некорректные входные данные события'),
             new TranslationFactory('ru', 'event@invalidRangeFromTime', 'Время старта не может превышать время окончания'),
         ]);
     }

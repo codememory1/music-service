@@ -2,7 +2,7 @@
 
 namespace App\Security\Register;
 
-use App\DTO\RegistrationDTO;
+use App\Dto\Transfer\RegistrationDto;
 use App\Entity\User;
 use App\Service\AbstractService;
 
@@ -15,8 +15,8 @@ use App\Service\AbstractService;
  */
 class ReRegister extends AbstractService
 {
-    public function make(RegistrationDTO $registrationDTO, User $user): void
+    public function make(RegistrationDto $registrationDto, User $user): void
     {
-        $user->getProfile()->setPseudonym($registrationDTO->pseudonym);
+        $user->getProfile()->setPseudonym($registrationDto->pseudonym);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Security\Logout;
 
-use App\DTO\RefreshTokenDTO;
+use App\Dto\Transfer\RefreshTokenDto;
 use App\Entity\UserSession;
 use App\Rest\Http\Exceptions\FailedException;
 use App\Service\AbstractService;
@@ -17,23 +17,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class Logout extends AbstractService
 {
-    public function logout(RefreshTokenDTO $refreshTokenDTO): JsonResponse
+    public function logout(RefreshTokenDto $refreshTokenDto): JsonResponse
     {
-        if (false === $this->validate($refreshTokenDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($refreshTokenDto);
 
         $userSessionRepository = $this->em->getRepository(UserSession::class);
-        $finedUserSession = $userSessionRepository->findOneBy([
-            'refreshToken' => $refreshTokenDTO->refreshToken
-        ]);
+        $finedUserSession = $userSessionRepository->findByRefreshToken($refreshTokenDto->refreshToken);
 
         if (null === $finedUserSession) {
             throw FailedException::failedToLogout();
         }
 
-        $this->em->remove($finedUserSession);
-        $this->em->flush();
+        $this->flusherService->remove($finedUserSession);
 
         return $this->responseCollection->successLogout();
     }

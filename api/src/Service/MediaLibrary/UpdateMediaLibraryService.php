@@ -2,7 +2,8 @@
 
 namespace App\Service\MediaLibrary;
 
-use App\DTO\MediaLibraryDTO;
+use App\Dto\Transfer\MediaLibraryDto;
+use App\Entity\MediaLibrary;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -15,13 +16,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class UpdateMediaLibraryService extends AbstractService
 {
-    public function make(MediaLibraryDTO $mediaLibraryDTO): JsonResponse
+    public function update(MediaLibraryDto $mediaLibraryDto): MediaLibrary
     {
-        if (false === $this->validate($mediaLibraryDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($mediaLibraryDto);
 
         $this->flusherService->save();
+
+        return $mediaLibraryDto->getEntity();
+    }
+
+    public function request(MediaLibraryDto $mediaLibraryDto): JsonResponse
+    {
+        $this->update($mediaLibraryDto);
 
         return $this->responseCollection->successUpdate('mediaLibrary@successUpdate');
     }

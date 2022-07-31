@@ -5,7 +5,7 @@ namespace App\Controller\PublicAvailable;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
-use App\DTO\AlbumDTO;
+use App\Dto\Transformer\AlbumTransformer;
 use App\Entity\Album;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Repository\AlbumRepository;
@@ -42,24 +42,21 @@ class AlbumController extends AbstractRestController
 
     #[Route('/create', methods: 'POST')]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_ALBUM)]
-    public function create(AlbumDTO $albumDTO, CreateAlbumService $createAlbumService): JsonResponse
+    public function create(AlbumTransformer $albumTransformer, CreateAlbumService $createAlbumService): JsonResponse
     {
-        return $createAlbumService->make($albumDTO->collect(), $this->getAuthorizedUser());
+        return $createAlbumService->request($albumTransformer->transformFromRequest(), $this->getAuthorizedUser());
     }
 
     #[Route('/{album_id<\d+>}/edit', methods: 'POST')]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_ALBUM)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
-        AlbumDTO $albumDTO,
+        AlbumTransformer $albumTransformer,
         UpdateAlbumService $updateAlbumService
     ): JsonResponse {
         $this->throwIfAlbumNotBelongsAuthorizedUser($album);
 
-        $albumDTO->setEntity($album);
-        $albumDTO->collect();
-
-        return $updateAlbumService->make($albumDTO, $this->getAuthorizedUser());
+        return $updateAlbumService->request($albumTransformer->transformFromRequest($album), $this->getAuthorizedUser());
     }
 
     #[Route('/{album_id<\d+>}/delete', methods: 'DELETE')]
@@ -70,7 +67,7 @@ class AlbumController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfAlbumNotBelongsAuthorizedUser($album);
 
-        return $deleteAlbumService->make($album);
+        return $deleteAlbumService->request($album);
     }
 
     #[Route('/{album_id<\d+>}/publish', methods: 'PATCH')]
@@ -81,7 +78,7 @@ class AlbumController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfAlbumNotBelongsAuthorizedUser($album);
 
-        return $publishAlbumService->make($album);
+        return $publishAlbumService->request($album);
     }
 
     private function throwIfAlbumNotBelongsAuthorizedUser(Album $album): void

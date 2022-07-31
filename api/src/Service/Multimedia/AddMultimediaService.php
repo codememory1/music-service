@@ -2,7 +2,8 @@
 
 namespace App\Service\Multimedia;
 
-use App\DTO\MultimediaDTO;
+use App\Dto\Transfer\MultimediaDto;
+use App\Entity\Multimedia;
 use App\Entity\User;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,25 +19,25 @@ use Symfony\Contracts\Service\Attribute\Required;
 class AddMultimediaService extends AbstractService
 {
     #[Required]
-    public ?SetPerformersToMultimediaService $setPerformersToMultimediaService = null;
-
-    #[Required]
     public ?SaveMultimediaService $saveMultimediaService = null;
 
-    public function make(MultimediaDTO $multimediaDTO, User $toUser): JsonResponse
+    public function add(MultimediaDto $multimediaDto, User $toUser): Multimedia
     {
-        if (false === $this->validate($multimediaDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($multimediaDto);
 
-        $multimedia = $multimediaDTO->getEntity();
+        $multimedia = $multimediaDto->getEntity();
 
         $multimedia->setUser($toUser);
         $multimedia->setDraftStatus();
 
-        $this->setPerformersToMultimediaService->set($multimediaDTO->performers, $multimedia);
+        $this->saveMultimediaService->make($multimediaDto, $multimedia);
 
-        $this->saveMultimediaService->make($multimediaDTO, $multimedia);
+        return $multimedia;
+    }
+
+    public function request(MultimediaDto $multimediaDto, User $toUser): JsonResponse
+    {
+        $this->add($multimediaDto, $toUser);
 
         return $this->responseCollection->successCreate('multimedia@successAdd');
     }

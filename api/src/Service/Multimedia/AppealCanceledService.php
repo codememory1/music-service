@@ -24,7 +24,7 @@ class AppealCanceledService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function make(Multimedia $multimedia): JsonResponse
+    public function appeal(Multimedia $multimedia): Multimedia
     {
         if (false === $multimedia->isAppeal()) {
             throw MultimediaException::badAppealCanceled();
@@ -34,6 +34,13 @@ class AppealCanceledService extends AbstractService
             new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::APPEAL_CANCELED),
             EventEnum::MULTIMEDIA_STATUS_CHANGE->value
         );
+
+        return $multimedia;
+    }
+
+    public function request(Multimedia $multimedia): JsonResponse
+    {
+        $this->appeal($multimedia);
 
         return $this->responseCollection->successUpdate('multimedia@successAppealCanceled');
     }

@@ -24,7 +24,7 @@ class AddMultimediaToPlaylistDirectoryService extends AbstractService
     #[Required]
     public ?MultimediaPlaylistRepository $multimediaPlaylistRepository = null;
 
-    public function make(PlaylistDirectory $playlistDirectory, MultimediaMediaLibrary $multimediaMediaLibrary): JsonResponse
+    public function add(PlaylistDirectory $playlistDirectory, MultimediaMediaLibrary $multimediaMediaLibrary): MultimediaPlaylistDirectory
     {
         $finedMultimediaPlaylist = $this->multimediaPlaylistRepository->findOneBy([
             'playlist' => $playlistDirectory->getPlaylist(),
@@ -44,10 +44,16 @@ class AddMultimediaToPlaylistDirectoryService extends AbstractService
         $multimediaPlaylistDirectory = new MultimediaPlaylistDirectory();
 
         $multimediaPlaylistDirectory->setMultimediaMediaLibrary($multimediaMediaLibrary);
+        $multimediaPlaylistDirectory->setPlaylistDirectory($playlistDirectory);
 
-        $playlistDirectory->addMultimedia($multimediaPlaylistDirectory);
+        $this->flusherService->save($multimediaPlaylistDirectory);
 
-        $this->flusherService->save();
+        return $multimediaPlaylistDirectory;
+    }
+
+    public function request(PlaylistDirectory $playlistDirectory, MultimediaMediaLibrary $multimediaMediaLibrary): JsonResponse
+    {
+        $this->add($playlistDirectory, $multimediaMediaLibrary);
 
         return $this->responseCollection->successUpdate('playlistDirectory@successAddMultimedia');
     }

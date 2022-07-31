@@ -2,7 +2,8 @@
 
 namespace App\Service\Translation;
 
-use App\DTO\TranslationDTO;
+use App\Dto\Transfer\TranslationDto;
+use App\Entity\Translation;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -15,17 +16,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class UpdateTranslationService extends AbstractService
 {
-    public function make(TranslationDTO $translationDTO): JsonResponse
+    public function update(TranslationDto $translationDto): Translation
     {
-        if (false === $this->validate($translationDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($translationDto);
 
-        $translation = $translationDTO->getEntity();
+        $translation = $translationDto->getEntity();
 
-        $translation->getTranslationKey()->setKey($translationDTO->translationKey);
+        $translation->getTranslationKey()->setKey($translationDto->translationKey);
 
         $this->flusherService->save();
+
+        return $translation;
+    }
+
+    public function request(TranslationDto $translationDto): JsonResponse
+    {
+        $this->update($translationDto);
 
         return $this->responseCollection->successCreate('translation@successUpdate');
     }

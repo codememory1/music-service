@@ -18,30 +18,27 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class AddMultimediaToMediaLibraryService extends AbstractService
 {
-    /**
-     * @param Multimedia $multimedia
-     * @param User       $toUser
-     *
-     * @return JsonResponse
-     */
-    public function make(Multimedia $multimedia, User $toUser): JsonResponse
+    public function add(Multimedia $multimedia, User $toUser): Multimedia
     {
-        $multimediaMediaLibrary = new MultimediaMediaLibrary();
-
         if (null === $toUser->getMediaLibrary()) {
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
 
+        $multimediaMediaLibrary = new MultimediaMediaLibrary();
+
         $multimediaMediaLibrary->setMediaLibrary($toUser->getMediaLibrary());
         $multimediaMediaLibrary->setMultimedia($multimedia);
 
-        if (false === $this->validate($multimediaMediaLibrary)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($multimediaMediaLibrary);
 
-        $toUser->getMediaLibrary()->addMultimedia($multimediaMediaLibrary);
+        $this->flusherService->save($multimediaMediaLibrary);
 
-        $this->flusherService->save();
+        return $multimedia;
+    }
+
+    public function request(Multimedia $multimedia, User $toUser): JsonResponse
+    {
+        $this->add($multimedia, $toUser);
 
         return $this->responseCollection->successCreate('multimediaMediaLibrary@successAdd');
     }

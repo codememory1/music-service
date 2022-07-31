@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\UuidIdentifierInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UuidIdentifierTrait;
 use App\Repository\UserProfileDesignRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,9 +21,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: UserProfileDesignRepository::class)]
 #[ORM\Table('user_profile_designs')]
 #[ORM\HasLifecycleCallbacks]
-class UserProfileDesign implements EntityInterface
+class UserProfileDesign implements EntityInterface, UuidIdentifierInterface
 {
     use IdentifierTrait;
+    use UuidIdentifierTrait;
     use TimestampTrait;
 
     #[ORM\OneToOne(inversedBy: 'design', targetEntity: UserProfile::class)]
@@ -37,6 +40,11 @@ class UserProfileDesign implements EntityInterface
         'comment' => 'Design components according to the user_profile_design.json schema'
     ])]
     private ?array $designComponents = null;
+
+    public function __construct()
+    {
+        $this->generateUuid();
+    }
 
     public function setUserProfile(?UserProfile $userProfile): self
     {

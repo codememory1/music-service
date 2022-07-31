@@ -48,4 +48,9 @@ class Request
 
         return array_merge($requestData, $queryData);
     }
+
+    public function getRequestType(): ?string
+    {
+        return $this->request?->attributes->get('request_type');
+    }
 }

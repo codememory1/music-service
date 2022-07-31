@@ -2,7 +2,7 @@
 
 namespace App\Service\MultimediaMediaLibraryEvent;
 
-use App\DTO\MultimediaMediaLibraryEventDTO;
+use App\Dto\Transfer\MultimediaMediaLibraryEventDto;
 use App\Entity\MediaLibrary;
 use App\Entity\MultimediaMediaLibrary;
 use App\Enum\MultimediaMediaLibraryEventEnum;
@@ -23,13 +23,13 @@ class EventPayloadHandlerService extends AbstractService
 {
     private ?MediaLibrary $mediaLibrary;
 
-    public function handler(MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO, MultimediaMediaLibrary $multimediaMediaLibrary): void
+    public function handler(MultimediaMediaLibraryEventDto $multimediaMediaLibraryEventDto, MultimediaMediaLibrary $multimediaMediaLibrary): void
     {
         $this->mediaLibrary = $multimediaMediaLibrary->getMediaLibrary();
 
-        $schema = new ($multimediaMediaLibraryEventDTO->key->getNamespaceSchema())($multimediaMediaLibraryEventDTO->payload);
+        $schema = new ($multimediaMediaLibraryEventDto->key->getNamespaceSchema())($multimediaMediaLibraryEventDto->payload);
 
-        match ($multimediaMediaLibraryEventDTO->key) {
+        match ($multimediaMediaLibraryEventDto->key) {
             MultimediaMediaLibraryEventEnum::RANGE_TIME => $this->rangeTime($schema),
             MultimediaMediaLibraryEventEnum::NEXT_MULTIMEDIA_AFTER_END => $this->nextMultimediaAfterEnd($schema),
         };

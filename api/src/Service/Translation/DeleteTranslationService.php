@@ -2,7 +2,7 @@
 
 namespace App\Service\Translation;
 
-use App\DTO\DeleteTranslationDTO;
+use App\Dto\Transfer\DeleteTranslationDto;
 use App\Entity\Translation;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,15 +16,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteTranslationService extends AbstractService
 {
-    public function make(DeleteTranslationDTO $deleteTranslationDTO, Translation $translation): JsonResponse
+    public function delete(DeleteTranslationDto $deleteTranslationDto, Translation $translation): Translation
     {
         $this->flusherService->addRemove($translation);
 
-        if ($deleteTranslationDTO->deleteKey) {
+        if ($deleteTranslationDto->deleteKey) {
             $this->flusherService->addRemove($translation->getTranslationKey());
         }
 
         $this->flusherService->save();
+
+        return $translation;
+    }
+
+    public function request(DeleteTranslationDto $deleteTranslationDto, Translation $translation): JsonResponse
+    {
+        $this->delete($deleteTranslationDto, $translation);
 
         return $this->responseCollection->successDelete('translation@successDelete');
     }

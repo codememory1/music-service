@@ -5,13 +5,13 @@ namespace App\Controller\Admin;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
-use App\DTO\MultimediaMediaLibraryDTO;
+use App\Dto\Transformer\MultimediaMediaLibraryTransformer;
 use App\Entity\MultimediaMediaLibrary;
 use App\Enum\RolePermissionEnum;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\MediaLibrary\DeleteMultimediaMediaLibraryService;
-use App\Service\MediaLibrary\UpdateMultimediaMediaLibraryService;
+use App\Service\MultimediaMediaLibrary\UpdateMultimediaMediaLibraryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,13 +30,12 @@ class MultimediaMediaLibraryController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_MEDIA_LIBRARY_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
-        MultimediaMediaLibraryDTO $multimediaMediaLibraryDTO,
+        MultimediaMediaLibraryTransformer $multimediaMediaLibraryTransformer,
         UpdateMultimediaMediaLibraryService $updateMultimediaMediaLibraryService
     ): JsonResponse {
-        $multimediaMediaLibraryDTO->setEntity($multimediaMediaLibrary);
-        $multimediaMediaLibraryDTO->collect();
-
-        return $updateMultimediaMediaLibraryService->make($multimediaMediaLibraryDTO);
+        return $updateMultimediaMediaLibraryService->request(
+            $multimediaMediaLibraryTransformer->transformFromRequest($multimediaMediaLibrary)
+        );
     }
 
     #[Route('/media-library/multimedia/{multimediaMediaLibrary_id<\d+>}/delete', methods: 'DELETE')]
@@ -45,6 +44,6 @@ class MultimediaMediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         DeleteMultimediaMediaLibraryService $deleteMultimediaMediaLibraryService
     ): JsonResponse {
-        return $deleteMultimediaMediaLibraryService->make($multimediaMediaLibrary);
+        return $deleteMultimediaMediaLibraryService->request($multimediaMediaLibrary);
     }
 }

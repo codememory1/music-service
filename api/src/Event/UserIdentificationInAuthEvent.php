@@ -2,7 +2,7 @@
 
 namespace App\Event;
 
-use App\DTO\AuthorizationDTO;
+use App\Dto\Transfer\AuthorizationDto;
 use App\Entity\User;
 
 /**
@@ -14,12 +14,12 @@ use App\Entity\User;
  */
 class UserIdentificationInAuthEvent
 {
-    public readonly AuthorizationDTO $authorizationDTO;
+    public readonly AuthorizationDto $authorizationDto;
     public readonly User $user;
 
-    public function __construct(AuthorizationDTO $authorizationDTO, User $user)
+    public function __construct(AuthorizationDto $authorizationDto, User $user)
     {
-        $this->authorizationDTO = $authorizationDTO;
+        $this->authorizationDto = $authorizationDto;
         $this->user = $user;
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Controller\PublicAvailable;
 
 use App\Annotation\Authorization;
-use App\DTO\GoogleAuthDTO;
+use App\Dto\Transformer\GoogleAuthTransformer;
 use App\Rest\Controller\AbstractRestController;
 use App\Security\ServiceAuth\GoogleAuthorization;
 use App\Service\Platform\Google\Client;
@@ -31,8 +31,8 @@ class GoogleAuthController extends AbstractRestController
     }
 
     #[Route('/auth', methods: 'POST')]
-    public function auth(Client $client, GoogleAuthDTO $googleAuthDTO, GoogleAuthorization $googleAuthorization): JsonResponse
+    public function auth(Client $client, GoogleAuthTransformer $googleAuthTransformer, GoogleAuthorization $googleAuthorization): JsonResponse
     {
-        return $googleAuthorization->make($client, $googleAuthDTO->collect());
+        return $googleAuthorization->make($client, $googleAuthTransformer->transformFromRequest());
     }
 }

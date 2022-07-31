@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class SubscribeOnArtistService extends AbstractService
 {
-    public function make(User $artist, User $subscriber): JsonResponse
+    public function subscribe(User $artist, User $subscriber): ArtistSubscriber
     {
         $artistSubscriberRepository = $this->em->getRepository(ArtistSubscriber::class);
         $finedSubscriber = $artistSubscriberRepository->findSubscription($artist, $subscriber);
@@ -32,6 +32,13 @@ class SubscribeOnArtistService extends AbstractService
         $artistSubscriber->setArtist($artist);
 
         $this->flusherService->save($artistSubscriber);
+
+        return $artistSubscriber;
+    }
+
+    public function request(User $artist, User $subscriber): JsonResponse
+    {
+        $this->subscribe($artist, $subscriber);
 
         return $this->responseCollection->successCreate('artist@successSubscribe');
     }

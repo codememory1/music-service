@@ -36,21 +36,9 @@ class SaveMultimediaRatingService extends AbstractService
         $multimediaRating = $multimediaRatingRepository->getRating($multimedia, $fromUser);
 
         if (null === $multimediaRating) {
-            $multimediaRating = new MultimediaRating();
-
-            $multimediaRating->setMultimedia($multimedia);
-            $multimediaRating->setUser($fromUser);
-            $multimediaRating->setType($typeEnum);
-
-            $multimedia->addRating($multimediaRating);
+            $this->addRating($multimedia, $fromUser, $typeEnum);
         } else {
-            if ($multimediaRating->getType() === $oppositeTypeEnum->name) {
-                $multimediaRating->setType($typeEnum);
-            } else {
-                $this->em->remove($multimediaRating);
-
-                call_user_func($callbackRemove, $multimediaRating);
-            }
+            $this->updateRating($multimediaRating, $typeEnum, $oppositeTypeEnum, $callbackRemove);
         }
 
         $this->flusherService->save();
@@ -59,5 +47,31 @@ class SaveMultimediaRatingService extends AbstractService
             new SetRatingMultimediaEvent($multimediaRating),
             EventEnum::SET_RATING_MULTIMEDIA->value
         );
+    }
+
+    private function addRating(Multimedia $multimedia, User $fromUser, MultimediaRatingTypeEnum $typeEnum): void
+    {
+        $multimediaRating = new MultimediaRating();
+
+        $multimediaRating->setMultimedia($multimedia);
+        $multimediaRating->setUser($fromUser);
+        $multimediaRating->setType($typeEnum);
+
+        $multimedia->addRating($multimediaRating);
+    }
+
+    private function updateRating(
+        MultimediaRating $multimediaRating,
+        MultimediaRatingTypeEnum $typeEnum,
+        MultimediaRatingTypeEnum $oppositeTypeEnum,
+        callable $callbackRemove
+    ): void {
+        if ($multimediaRating->getType() === $oppositeTypeEnum->name) {
+            $multimediaRating->setType($typeEnum);
+        } else {
+            $this->em->remove($multimediaRating);
+
+            call_user_func($callbackRemove, $multimediaRating);
+        }
     }
 }

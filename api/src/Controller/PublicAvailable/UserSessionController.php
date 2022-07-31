@@ -42,12 +42,12 @@ class UserSessionController extends AbstractRestController
             throw EntityNotFoundException::userSession();
         }
 
-        return $deleteUserSessionService->make($userSession);
+        return $deleteUserSessionService->request($userSession);
     }
 
     #[Route('/all/delete', methods: 'DELETE')]
     public function deleteAll(DeleteUserSessionService $deleteUserSessionService): JsonResponse
     {
-        return $deleteUserSessionService->deleteAll($this->getAuthorizedUser());
+        return $deleteUserSessionService->requestDeleteAll($this->getAuthorizedUser());
     }
 }

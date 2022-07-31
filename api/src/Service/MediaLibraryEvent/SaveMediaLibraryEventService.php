@@ -2,7 +2,7 @@
 
 namespace App\Service\MediaLibraryEvent;
 
-use App\DTO\MediaLibraryEventDTO;
+use App\Dto\Transfer\MediaLibraryEventDto;
 use App\Entity\MediaLibrary;
 use App\Entity\MediaLibraryEvent;
 use App\Service\AbstractService;
@@ -20,9 +20,9 @@ class SaveMediaLibraryEventService extends AbstractService
     #[Required]
     public ?EventPayloadHandlerService $eventPayloadHandlerService = null;
 
-    public function make(MediaLibraryEventDTO $mediaLibraryEventDTO, MediaLibrary $mediaLibrary, ?MediaLibraryEvent $mediaLibraryEvent = null): void
+    public function make(MediaLibraryEventDto $mediaLibraryEventDto, MediaLibrary $mediaLibrary, ?MediaLibraryEvent $mediaLibraryEvent = null): void
     {
-        $this->eventPayloadHandlerService->handler($mediaLibraryEventDTO, $mediaLibrary);
+        $this->eventPayloadHandlerService->handler($mediaLibraryEventDto, $mediaLibrary);
 
         $this->flusherService->save($mediaLibraryEvent);
     }

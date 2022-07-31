@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
-use App\DTO\AlbumDTO;
+use App\Dto\Transformer\AlbumTransformer;
 use App\Entity\Album;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
@@ -48,23 +48,20 @@ class AlbumController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::CREATE_ALBUM_TO_USER)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        AlbumDTO $albumDTO,
+        AlbumTransformer $albumTransformer,
         CreateAlbumService $createAlbumService
     ): JsonResponse {
-        return $createAlbumService->make($albumDTO->collect(), $user);
+        return $createAlbumService->request($albumTransformer->transformFromRequest(), $user);
     }
 
     #[Route('/album/{album_id<\d+>}/edit', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_ALBUM_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
-        AlbumDTO $albumDTO,
+        AlbumTransformer $albumTransformer,
         UpdateAlbumService $updateAlbumService
     ): JsonResponse {
-        $albumDTO->setEntity($album);
-        $albumDTO->collect();
-
-        return $updateAlbumService->make($albumDTO, $album->getUser());
+        return $updateAlbumService->request($albumTransformer->transformFromRequest($album), $album->getUser());
     }
 
     #[Route('/album/{album_id<\d+>}/delete', methods: 'DELETE')]
@@ -73,7 +70,7 @@ class AlbumController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         DeleteAlbumService $deleteAlbumService
     ): JsonResponse {
-        return $deleteAlbumService->make($album);
+        return $deleteAlbumService->request($album);
     }
 
     #[Route('/album/{album_id<\d+>}/publish', methods: 'PATCH')]
@@ -82,6 +79,6 @@ class AlbumController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         PublishAlbumService $publishAlbumService
     ): JsonResponse {
-        return $publishAlbumService->make($album);
+        return $publishAlbumService->request($album);
     }
 }

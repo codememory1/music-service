@@ -32,7 +32,7 @@ class ObjectPath
     public function getKey(): ?string
     {
         if (null !== $this->path) {
-            return mb_substr($this->path, mb_strpos($this->path, '/'));
+            return mb_substr($this->path, mb_strpos($this->path, '/') + 1);
         }
 
         return null;

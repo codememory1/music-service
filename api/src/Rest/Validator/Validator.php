@@ -2,12 +2,11 @@
 
 namespace App\Rest\Validator;
 
-use App\DTO\Interfaces\DTOInterface;
+use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Enum\ResponseTypeEnum;
-use App\Rest\Http\Response;
-use App\Rest\Http\ResponseSchema;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Rest\Http\Exceptions\ApiResponseException;
+use function call_user_func;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,47 +22,34 @@ class Validator
 {
     private ValidatorInterface $validator;
     private ?ConstraintViolationListInterface $constraintViolation = null;
-    private ResponseSchema $responseSchema;
-    private Response $response;
 
-    public function __construct(
-        ValidatorInterface $validator,
-        ResponseSchema $responseSchema,
-        Response $response,
-    ) {
+    public function __construct(ValidatorInterface $validator)
+    {
         $this->validator = $validator;
-        $this->responseSchema = $responseSchema;
-        $this->response = $response;
     }
 
-    public function validate(DTOInterface|EntityInterface $object, array $groups = []): bool
+    public function validate(DataTransferInterface|EntityInterface $object, ?callable $customResponse = null, array $groups = []): void
     {
         $this->constraintViolation = $this->validator->validate($object, groups: $groups);
 
-        return count($this->constraintViolation) <= 0;
+        $this->getResponse($customResponse);
     }
 
-    public function getResponse(): JsonResponse
+    private function getResponse(?callable $customResponse = null): void
     {
-        $messages = [];
-        $this->responseSchema
-            ->setType(ResponseTypeEnum::INPUT_VALIDATION)
-            ->setStatusCode(422);
-
         /** @var ConstraintViolationInterface $value */
         foreach ($this->constraintViolation as $value) {
             $constraintInto = new ConstraintInfo($value);
 
-            $messages[$value->getPropertyPath()] = $constraintInto->getMessage();
+            if (null !== $customResponse) {
+                call_user_func($customResponse);
+            } else {
+                if ([] !== $constraintInto->getPayload()) {
+                    throw new ApiResponseException($constraintInto->getStatusCode(), $constraintInto->getType(), $constraintInto->getMessage());
+                }
 
-            if ([] !== $constraintInto->getPayload()) {
-                $this->responseSchema->setType($constraintInto->getType());
-                $this->responseSchema->setStatusCode($constraintInto->getStatusCode());
+                throw new ApiResponseException(422, ResponseTypeEnum::INPUT_VALIDATION, $constraintInto->getMessage());
             }
         }
-
-        $this->responseSchema->setMessage($messages);
-
-        return $this->response->getResponse($this->responseSchema);
     }
 }

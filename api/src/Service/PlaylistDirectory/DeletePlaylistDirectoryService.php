@@ -15,9 +15,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeletePlaylistDirectoryService extends AbstractService
 {
-    public function make(PlaylistDirectory $playlistDirectory): JsonResponse
+    public function delete(PlaylistDirectory $playlistDirectory): PlaylistDirectory
     {
-        $this->flusherService->addRemove($playlistDirectory)->save();
+        $this->flusherService->remove($playlistDirectory);
+
+        return $playlistDirectory;
+    }
+
+    public function request(PlaylistDirectory $playlistDirectory): JsonResponse
+    {
+        $this->delete($playlistDirectory);
 
         return $this->responseCollection->successDelete('playlistDirectory@successDelete');
     }

@@ -2,7 +2,8 @@
 
 namespace App\Service\Language;
 
-use App\DTO\LanguageDTO;
+use App\Dto\Transfer\LanguageDto;
+use App\Entity\Language;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -15,13 +16,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class UpdateLanguageService extends AbstractService
 {
-    public function make(LanguageDTO $languageDTO): JsonResponse
+    public function update(LanguageDto $languageDto): Language
     {
-        if (true !== $response = $this->validateFullDTO($languageDTO)) {
-            return $response;
-        }
+        $this->validateWithEntity($languageDto);
 
         $this->flusherService->save();
+
+        return $languageDto->getEntity();
+    }
+
+    public function request(LanguageDto $languageDto): JsonResponse
+    {
+        $this->update($languageDto);
 
         return $this->responseCollection->successUpdate('language@successUpdate');
     }

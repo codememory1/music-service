@@ -2,7 +2,7 @@
 
 namespace App\Security\Auth;
 
-use App\DTO\AuthorizationDTO;
+use App\Dto\Transfer\AuthorizationDto;
 use App\Entity\User;
 use App\Enum\EventEnum;
 use App\Event\UserIdentificationInAuthEvent;
@@ -23,10 +23,10 @@ class Identification extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function identify(AuthorizationDTO $authorizationDTO): ?User
+    public function identify(AuthorizationDto $authorizationDto): ?User
     {
         $identifiedUser = $this->em->getRepository(User::class)->findOneBy([
-            'email' => $authorizationDTO->email
+            'email' => $authorizationDto->email
         ]);
 
         if (null === $identifiedUser) {
@@ -34,7 +34,7 @@ class Identification extends AbstractService
         }
 
         $this->eventDispatcher->dispatch(new UserIdentificationInAuthEvent(
-            $authorizationDTO,
+            $authorizationDto,
             $identifiedUser
         ), EventEnum::IDENTIFICATION_IN_AUTH->value);
 

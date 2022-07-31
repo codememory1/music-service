@@ -21,20 +21,27 @@ class SetLikeMultimediaService extends AbstractService
     #[Required]
     public ?SaveMultimediaRatingService $saveMultimediaRatingService = null;
 
-    public function make(Multimedia $multimedia, User $fromUser): JsonResponse
+    public function setOrRemoveLike(Multimedia $multimedia, User $fromUser, ?callable $callbackRemove = null): Multimedia
     {
-        $responseCollection = $this->responseCollection;
-        $successResponse = $responseCollection->successCreate('multimedia@successSetLike');
-
         $this->saveMultimediaRatingService->make(
             $multimedia,
             $fromUser,
             MultimediaRatingTypeEnum::LIKE,
             MultimediaRatingTypeEnum::DISLIKE,
-            static function() use (&$successResponse, $responseCollection): void {
-                $successResponse = $responseCollection->successDelete('multimedia@successDeleteLike');
-            }
+            $callbackRemove
         );
+
+        return $multimedia;
+    }
+
+    public function request(Multimedia $multimedia, User $fromUser): JsonResponse
+    {
+        $responseCollection = $this->responseCollection;
+        $successResponse = $responseCollection->successCreate('multimedia@successSetLike');
+
+        $this->setOrRemoveLike($multimedia, $fromUser, static function() use ($responseCollection, &$successResponse): void {
+            $successResponse = $responseCollection->successDelete('multimedia@successDeleteLike');
+        });
 
         return $successResponse;
     }

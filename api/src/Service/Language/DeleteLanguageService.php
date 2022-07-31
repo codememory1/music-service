@@ -15,9 +15,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteLanguageService extends AbstractService
 {
-    public function make(Language $language): JsonResponse
+    public function delete(Language $language): Language
     {
-        $this->flusherService->addRemove($language)->save();
+        $this->flusherService->remove($language);
+
+        return $language;
+    }
+
+    public function request(Language $language): JsonResponse
+    {
+        $this->delete($language);
 
         return $this->responseCollection->successDelete('language@successDelete');
     }

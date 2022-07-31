@@ -2,7 +2,8 @@
 
 namespace App\Service\Multimedia;
 
-use App\DTO\MultimediaDTO;
+use App\Dto\Transfer\MultimediaDto;
+use App\Entity\Multimedia;
 use App\Rest\Http\Exceptions\MultimediaException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,26 +19,26 @@ use Symfony\Contracts\Service\Attribute\Required;
 class UpdateMultimediaService extends AbstractService
 {
     #[Required]
-    public ?SetPerformersToMultimediaService $setPerformersToMultimediaService = null;
-
-    #[Required]
     public ?SaveMultimediaService $saveMultimediaService = null;
 
-    public function make(MultimediaDTO $multimediaDTO): JsonResponse
+    public function update(MultimediaDto $multimediaDto): Multimedia
     {
-        if (false === $this->validate($multimediaDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($multimediaDto);
 
-        $multimedia = $multimediaDTO->getEntity();
+        $multimedia = $multimediaDto->getEntity();
 
         if ($multimedia->isPublished() || $multimedia->isModeration() || $multimedia->isAppeal()) {
             throw MultimediaException::badUpdateInStatus($multimedia->getStatus());
         }
 
-        $this->setPerformersToMultimediaService->set($multimediaDTO->performers, $multimedia);
+        $this->saveMultimediaService->make($multimediaDto, $multimedia);
 
-        $this->saveMultimediaService->make($multimediaDTO, $multimedia);
+        return $multimedia;
+    }
+
+    public function request(MultimediaDto $multimediaDto): JsonResponse
+    {
+        $this->update($multimediaDto);
 
         return $this->responseCollection->successUpdate('multimedia@successUpdate');
     }

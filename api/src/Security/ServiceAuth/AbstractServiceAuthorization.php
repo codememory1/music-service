@@ -2,7 +2,7 @@
 
 namespace App\Security\ServiceAuth;
 
-use App\DTO\Interfaces\ServiceAuthorizationDTOInterface;
+use App\Dto\Interfaces\ServiceAuthorizationDtoInterface;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\UserProfile;
@@ -39,15 +39,13 @@ abstract class AbstractServiceAuthorization extends AbstractService
     #[Required]
     public ?Authorization $authorization = null;
 
-    abstract public function make(ClientInterface $client, ServiceAuthorizationDTOInterface $serviceAuthorizationDTO): JsonResponse;
+    abstract public function make(ClientInterface $client, ServiceAuthorizationDtoInterface $serviceAuthorizationDto): JsonResponse;
 
-    protected function authorizationHandler(ClientInterface $client, ServiceAuthorizationDTOInterface $serviceAuthorizationDTO): JsonResponse
+    protected function authorizationHandler(ClientInterface $client, ServiceAuthorizationDtoInterface $serviceAuthorizationDto): JsonResponse
     {
-        if (false === $this->validate($serviceAuthorizationDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($serviceAuthorizationDto);
 
-        $client->authenticate($serviceAuthorizationDTO);
+        $client->authenticate($serviceAuthorizationDto);
 
         $userData = $client->getUserData();
 
@@ -70,27 +68,25 @@ abstract class AbstractServiceAuthorization extends AbstractService
         }
 
         $roleRepository = $this->em->getRepository(Role::class);
-        $userProfileEntity = new UserProfile();
-        $userEntity = new User();
+        $userProfile = new UserProfile();
+        $user = new User();
 
-        $userProfileEntity->setPseudonym($userData->getName());
-        $userProfileEntity->setHideStatus();
+        $userProfile->setPseudonym($userData->getName());
+        $userProfile->setHideStatus();
 
-        $userEntity->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->name]));
-        $userEntity->setEmail($userData->getEmail());
-        $userEntity->setIdInAuthService($userData->getUniqueId());
-        $userEntity->setAuthServiceType($this->serviceType);
-        $userEntity->setNotActiveStatus();
-        $userEntity->setProfile($userProfileEntity);
+        $user->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->name]));
+        $user->setEmail($userData->getEmail());
+        $user->setIdInAuthService($userData->getUniqueId());
+        $user->setAuthServiceType($this->serviceType);
+        $user->setNotActiveStatus();
+        $user->setProfile($userProfile);
 
-        if (false === $this->validate($userEntity)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($user);
 
-        $this->em->persist($userEntity);
+        $this->flusherService->addPersist($user);
 
         $this->eventDispatcher->dispatch(
-            new UserRegistrationEvent($userEntity),
+            new UserRegistrationEvent($user),
             EventEnum::REGISTER->value
         );
 
