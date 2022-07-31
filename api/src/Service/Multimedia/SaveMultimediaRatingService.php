@@ -36,7 +36,7 @@ class SaveMultimediaRatingService extends AbstractService
         $multimediaRating = $multimediaRatingRepository->getRating($multimedia, $fromUser);
 
         if (null === $multimediaRating) {
-            $this->addRating($multimedia, $fromUser, $typeEnum);
+            $multimediaRating = $this->addRating($multimedia, $fromUser, $typeEnum);
         } else {
             $this->updateRating($multimediaRating, $typeEnum, $oppositeTypeEnum, $callbackRemove);
         }
@@ -49,7 +49,7 @@ class SaveMultimediaRatingService extends AbstractService
         );
     }
 
-    private function addRating(Multimedia $multimedia, User $fromUser, MultimediaRatingTypeEnum $typeEnum): void
+    private function addRating(Multimedia $multimedia, User $fromUser, MultimediaRatingTypeEnum $typeEnum): MultimediaRating
     {
         $multimediaRating = new MultimediaRating();
 
@@ -58,6 +58,8 @@ class SaveMultimediaRatingService extends AbstractService
         $multimediaRating->setType($typeEnum);
 
         $multimedia->addRating($multimediaRating);
+
+        return $multimediaRating;
     }
 
     private function updateRating(

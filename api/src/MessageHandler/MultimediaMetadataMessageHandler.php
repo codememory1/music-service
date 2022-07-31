@@ -11,7 +11,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use FFMpeg\FFProbe\DataMapping\StreamCollection;
-use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
@@ -35,7 +34,6 @@ class MultimediaMetadataMessageHandler
         $this->uploadedObject = $uploadedObject;
     }
 
-    #[Pure]
     private function getMultimediaMetadata(Multimedia $multimedia): ?MultimediaMetadata
     {
         if (null !== $multimedia->getMetadata()) {

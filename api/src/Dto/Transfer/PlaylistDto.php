@@ -6,7 +6,9 @@ use App\Dto\Constraints as DtoConstraints;
 use App\Entity\Playlist;
 use App\Enum\PlaylistStatusEnum;
 use App\Enum\RequestTypeEnum;
+use App\Rest\Http\Request;
 use App\Validator\Constraints as AppAssert;
+use Symfony\Component\DependencyInjection\ReverseContainer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -46,9 +48,22 @@ final class PlaylistDto extends AbstractDataTransfer
     #[DtoConstraints\ToEnumConstraint(PlaylistStatusEnum::class)]
     #[DtoConstraints\AllowedCallSetterByRequestTypeConstraint(RequestTypeEnum::ADMIN)]
     public ?PlaylistStatusEnum $status = null;
+    private Request $request;
+
+    public function __construct(ReverseContainer $container, Request $request)
+    {
+        parent::__construct($container);
+
+        $this->request = $request;
+    }
 
     public function callbackImage(): bool
     {
         return false === empty($this->image);
+    }
+
+    public function callbackStatus(): bool
+    {
+        return $this->request->getRequestType() === RequestTypeEnum::ADMIN->value;
     }
 }

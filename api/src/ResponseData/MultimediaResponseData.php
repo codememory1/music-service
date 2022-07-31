@@ -109,7 +109,7 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
     {
         $multimediaMetadataResponseData = new MultimediaMetadataResponseData($this->container);
 
-        $multimediaMetadataResponseData->setEntities($multimediaMetadata);
+        $multimediaMetadataResponseData->setEntities($multimediaMetadata ?: []);
 
         return $multimediaMetadataResponseData->collect()->getResponse(true);
     }

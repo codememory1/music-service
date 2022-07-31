@@ -8,6 +8,7 @@ use App\Enum\AlbumTypeEnum;
 use App\Enum\EventEnum;
 use App\Enum\MultimediaMimeTypeEnum;
 use App\Event\SaveMultimediaEvent;
+use App\Message\MultimediaMetadataMessage;
 use App\Rest\Http\Exceptions\AlbumException;
 use App\Rest\Http\Exceptions\InvalidException;
 use App\Rest\Http\Exceptions\MultimediaException;
@@ -20,6 +21,7 @@ use Captioning\Format\SubripFile;
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -46,6 +48,9 @@ class SaveMultimediaService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
+    #[Required]
+    public ?MessageBusInterface $bus = null;
+
     public function make(MultimediaDto $multimediaDto, Multimedia $multimedia): void
     {
         $this->checkAlbumType($multimedia);
@@ -58,6 +63,7 @@ class SaveMultimediaService extends AbstractService
 
         $this->flusherService->save($multimedia);
 
+        $this->bus->dispatch(new MultimediaMetadataMessage($multimedia->getId()));
         $this->eventDispatcher->dispatch(
             new SaveMultimediaEvent($multimedia),
             EventEnum::AFTER_SAVE_MULTIMEDIA->value

@@ -29,7 +29,7 @@ class MediaLibraryController extends AbstractRestController
     public function allMultimedia(MultimediaMediaLibraryResponseData $multimediaMediaLibraryResponseData): JsonResponse
     {
         $multimediaMediaLibraryResponseData->setEntities(
-            $this->getAuthorizedUser()->getMediaLibrary()->getMultimedia()
+            $this->getAuthorizedUser()->getMediaLibrary()?->getMultimedia() ?: []
         );
         $multimediaMediaLibraryResponseData->collect();
 
