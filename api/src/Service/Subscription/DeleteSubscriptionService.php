@@ -15,9 +15,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteSubscriptionService extends AbstractService
 {
-    public function make(Subscription $subscription): JsonResponse
+    public function delete(Subscription $subscription): Subscription
     {
-        $this->flusherService->save($subscription);
+        $this->flusherService->remove($subscription);
+
+        return $subscription;
+    }
+
+    public function request(Subscription $subscription): JsonResponse
+    {
+        $this->delete($subscription);
 
         return $this->responseCollection->successDelete('subscription@successDelete');
     }

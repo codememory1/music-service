@@ -2,7 +2,7 @@
 
 namespace App\Security\PasswordReset;
 
-use App\DTO\RestorePasswordDTO;
+use App\Dto\Transfer\RestorePasswordDto;
 use App\Entity\PasswordReset;
 use App\Enum\PasswordResetStatusEnum;
 use App\Rest\Http\Exceptions\InvalidException;
@@ -18,15 +18,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class RestorePassword extends AbstractService
 {
-    public function restore(RestorePasswordDTO $restorePasswordDTO): JsonResponse
+    public function restore(RestorePasswordDto $restorePasswordDto): JsonResponse
     {
-        if (false === $this->validate($restorePasswordDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($restorePasswordDto);
 
         $finedPasswordReset = $this->em->getRepository(PasswordReset::class)->findOneBy([
-            'user' => $restorePasswordDTO->user,
-            'code' => $restorePasswordDTO->code,
+            'user' => $restorePasswordDto->user,
+            'code' => $restorePasswordDto->code,
             'status' => PasswordResetStatusEnum::IN_PROCESS->name
         ]);
 
@@ -34,10 +32,11 @@ class RestorePassword extends AbstractService
             throw InvalidException::invalidCode();
         }
 
-        $restorePasswordDTO->user->setPassword($restorePasswordDTO->password);
+        $restorePasswordDto->user->setPassword($restorePasswordDto->password);
+
         $finedPasswordReset->setCompletedStatus();
 
-        $this->em->flush();
+        $this->flusherService->save();
 
         return $this->responseCollection->successUpdate('passwordReset@successRestorePassword');
     }

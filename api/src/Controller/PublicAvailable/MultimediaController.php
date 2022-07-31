@@ -5,7 +5,7 @@ namespace App\Controller\PublicAvailable;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
-use App\DTO\MultimediaDTO;
+use App\Dto\Transformer\MultimediaTransformer;
 use App\Entity\Multimedia;
 use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
@@ -54,22 +54,19 @@ class MultimediaController extends AbstractRestController
 
     #[Route('/multimedia/add', methods: 'POST')]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
-    public function add(MultimediaDTO $multimediaDTO, AddMultimediaService $addMultimediaService): JsonResponse
+    public function add(MultimediaTransformer $multimediaTransformer, AddMultimediaService $addMultimediaService): JsonResponse
     {
-        return $addMultimediaService->make($multimediaDTO->collect(), $this->getAuthorizedUser());
+        return $addMultimediaService->request($multimediaTransformer->transformFromRequest(), $this->getAuthorizedUser());
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        MultimediaDTO $multimediaDTO,
+        MultimediaTransformer $multimediaTransformer,
         UpdateMultimediaService $updateMultimediaService
     ): JsonResponse {
-        $multimediaDTO->setEntity($multimedia);
-        $multimediaDTO->collect();
-
-        return $updateMultimediaService->make($multimediaDTO);
+        return $updateMultimediaService->request($multimediaTransformer->transformFromRequest($multimedia));
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]
@@ -82,6 +79,6 @@ class MultimediaController extends AbstractRestController
             throw EntityNotFoundException::multimedia();
         }
 
-        return $deleteMultimediaService->make($multimedia);
+        return $deleteMultimediaService->request($multimedia);
     }
 }

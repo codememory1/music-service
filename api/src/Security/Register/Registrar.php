@@ -2,7 +2,7 @@
 
 namespace App\Security\Register;
 
-use App\DTO\RegistrationDTO;
+use App\Dto\Transfer\RegistrationDto;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\UserProfile;
@@ -26,25 +26,25 @@ class Registrar extends AbstractService
     #[Required]
     public ?AddUserDefaultSettingService $addUserDefaultSettingService = null;
 
-    public function make(RegistrationDTO $registrationDTO, ?User $userByEmail): User
+    public function make(RegistrationDto $registrationDto, ?User $userByEmail): User
     {
         if ($userByEmail?->isNotActive()) {
-            $userEntity = $this->collectUserEntity($userByEmail, $registrationDTO);
+            $user = $this->collectUserEntity($userByEmail, $registrationDto);
 
-            $this->reRegister->make($registrationDTO, $userEntity);
+            $this->reRegister->make($registrationDto, $user);
         } else {
-            $userEntity = $this->collectUserEntity(new User(), $registrationDTO);
-            $userEntity->setProfile($this->collectUserProfileEntity($registrationDTO));
+            $user = $this->collectUserEntity(new User(), $registrationDto);
+            $user->setProfile($this->collectUserProfileEntity($registrationDto));
 
-            $this->addUserDefaultSettingService->make($userEntity);
+            $this->addUserDefaultSettingService->add($user);
 
-            $this->em->persist($userEntity);
+            $this->flusherService->addPersist($user);
         }
 
-        return $userEntity;
+        return $user;
     }
 
-    private function collectUserEntity(User $userEntity, RegistrationDTO $registrationDTO): User
+    private function collectUserEntity(User $userEntity, RegistrationDto $registrationDTO): User
     {
         $userEntity->setEmail($registrationDTO->email);
         $userEntity->setPassword($registrationDTO->password);
@@ -56,7 +56,7 @@ class Registrar extends AbstractService
         return $userEntity;
     }
 
-    private function collectUserProfileEntity(RegistrationDTO $registrationDTO): UserProfile
+    private function collectUserProfileEntity(RegistrationDto $registrationDTO): UserProfile
     {
         $userProfileEntity = new UserProfile();
 

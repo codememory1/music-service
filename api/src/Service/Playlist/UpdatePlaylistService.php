@@ -2,7 +2,8 @@
 
 namespace App\Service\Playlist;
 
-use App\DTO\PlaylistDTO;
+use App\Dto\Transfer\PlaylistDto;
+use App\Entity\Playlist;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -19,13 +20,20 @@ class UpdatePlaylistService extends AbstractService
     #[Required]
     public ?SavePlaylistService $savePlaylistService = null;
 
-    public function make(PlaylistDTO $playlistDTO): JsonResponse
+    public function update(PlaylistDto $playlistDto): Playlist
     {
-        if (false === $this->validate($playlistDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($playlistDto);
 
-        $this->savePlaylistService->make($playlistDTO, $playlistDTO->getEntity());
+        $playlist = $playlistDto->getEntity();
+
+        $this->savePlaylistService->make($playlistDto, $playlist);
+
+        return $playlist;
+    }
+
+    public function request(PlaylistDto $playlistDto): JsonResponse
+    {
+        $this->update($playlistDto);
 
         return $this->responseCollection->successUpdate('playlist@successUpdate');
     }

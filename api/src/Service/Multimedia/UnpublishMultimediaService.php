@@ -24,7 +24,7 @@ class UnpublishMultimediaService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function make(Multimedia $multimedia): JsonResponse
+    public function unpublish(Multimedia $multimedia): Multimedia
     {
         if (false === $multimedia->isPublished()) {
             throw MultimediaException::badUnpublish();
@@ -34,6 +34,13 @@ class UnpublishMultimediaService extends AbstractService
             new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::UNPUBLISHED),
             EventEnum::MULTIMEDIA_STATUS_CHANGE->value
         );
+
+        return $multimedia;
+    }
+
+    public function request(Multimedia $multimedia): JsonResponse
+    {
+        $this->unpublish($multimedia);
 
         return $this->responseCollection->successUpdate('multimedia@successUnpublish');
     }

@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\UuidIdentifierInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UuidIdentifierTrait;
 use App\Enum\PlaylistStatusEnum;
 use App\Repository\PlaylistRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,9 +25,10 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
 #[ORM\Table('playlists')]
 #[ORM\HasLifecycleCallbacks]
-class Playlist implements EntityInterface
+class Playlist implements EntityInterface, UuidIdentifierInterface
 {
     use IdentifierTrait;
+    use UuidIdentifierTrait;
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'playlists')]
@@ -55,6 +58,7 @@ class Playlist implements EntityInterface
 
     public function __construct()
     {
+        $this->generateUuid();
         $this->setStatus(PlaylistStatusEnum::SHOW);
 
         $this->multimedia = new ArrayCollection();

@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
-use App\DTO\PlaylistDirectoryDTO;
+use App\Dto\Transformer\PlaylistDirectoryTransformer;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\MultimediaPlaylistDirectory;
 use App\Entity\Playlist;
@@ -36,23 +36,20 @@ class PlaylistDirectoryController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::CREATE_PLAYLIST_DIRECTORY_TO_USER)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
-        PlaylistDirectoryDTO $playlistDirectoryDTO,
+        PlaylistDirectoryTransformer $playlistDirectoryTransformer,
         CreatePlaylistDirectoryService $createPlaylistDirectoryService
     ): JsonResponse {
-        return $createPlaylistDirectoryService->make($playlistDirectoryDTO->collect(), $playlist);
+        return $createPlaylistDirectoryService->request($playlistDirectoryTransformer->transformFromRequest(), $playlist);
     }
 
     #[Route('/directory/{playlistDirectory_id<\d+>}/edit', methods: 'PUT')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_PLAYLIST_DIRECTORY_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
-        PlaylistDirectoryDTO $playlistDirectoryDTO,
+        PlaylistDirectoryTransformer $playlistDirectoryTransformer,
         UpdatePlaylistDirectoryService $updatePlaylistDirectoryService
     ): JsonResponse {
-        $playlistDirectoryDTO->setEntity($playlistDirectory);
-        $playlistDirectoryDTO->collect();
-
-        return $updatePlaylistDirectoryService->make($playlistDirectoryDTO);
+        return $updatePlaylistDirectoryService->request($playlistDirectoryTransformer->transformFromRequest($playlistDirectory));
     }
 
     #[Route('/directory/{playlistDirectory_id<\d+>}/delete', methods: 'DELETE')]
@@ -61,7 +58,7 @@ class PlaylistDirectoryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
         DeletePlaylistDirectoryService $deletePlaylistDirectoryService
     ): JsonResponse {
-        return $deletePlaylistDirectoryService->make($playlistDirectory);
+        return $deletePlaylistDirectoryService->request($playlistDirectory);
     }
 
     #[Route('/directory/{playlistDirectory_id<\d+>}/multimedia/{multimediaMediaLibrary_id<\d+>}/add', methods: 'POST')]
@@ -71,7 +68,7 @@ class PlaylistDirectoryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         AddMultimediaToPlaylistDirectoryService $addMultimediaToPlaylistDirectoryService
     ): JsonResponse {
-        return $addMultimediaToPlaylistDirectoryService->make($playlistDirectory, $multimediaMediaLibrary);
+        return $addMultimediaToPlaylistDirectoryService->request($playlistDirectory, $multimediaMediaLibrary);
     }
 
     #[Route('/directory/multimedia/{multimediaPlaylistDirectory_id<\d+>}/delete', methods: 'DELETE')]
@@ -80,6 +77,6 @@ class PlaylistDirectoryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylistDirectory $multimediaPlaylistDirectory,
         DeleteMultimediaFromPlaylistDirectoryService $deleteMultimediaFromPlaylistDirectoryService
     ): JsonResponse {
-        return $deleteMultimediaFromPlaylistDirectoryService->make($multimediaPlaylistDirectory);
+        return $deleteMultimediaFromPlaylistDirectoryService->request($multimediaPlaylistDirectory);
     }
 }

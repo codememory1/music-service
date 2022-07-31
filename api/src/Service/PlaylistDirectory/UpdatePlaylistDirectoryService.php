@@ -2,7 +2,8 @@
 
 namespace App\Service\PlaylistDirectory;
 
-use App\DTO\PlaylistDirectoryDTO;
+use App\Dto\Transfer\PlaylistDirectoryDto;
+use App\Entity\PlaylistDirectory;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -15,13 +16,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class UpdatePlaylistDirectoryService extends AbstractService
 {
-    public function make(PlaylistDirectoryDTO $playlistDirectoryDTO): JsonResponse
+    public function update(PlaylistDirectoryDto $playlistDirectoryDto): PlaylistDirectory
     {
-        if (false === $this->validate($playlistDirectoryDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($playlistDirectoryDto);
 
         $this->flusherService->save();
+
+        return $playlistDirectoryDto->getEntity();
+    }
+
+    public function request(PlaylistDirectoryDto $playlistDirectoryDto): JsonResponse
+    {
+        $this->update($playlistDirectoryDto);
 
         return $this->responseCollection->successUpdate('playlistDirectory@successUpdate');
     }

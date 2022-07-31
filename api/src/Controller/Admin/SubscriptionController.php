@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
-use App\DTO\SubscriptionDTO;
+use App\Dto\Transformer\SubscriptionTransformer;
 use App\Entity\Subscription;
 use App\Enum\RolePermissionEnum;
 use App\Repository\SubscriptionRepository;
@@ -53,22 +53,19 @@ class SubscriptionController extends AbstractRestController
 
     #[Route('/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_SUBSCRIPTION)]
-    public function create(SubscriptionDTO $subscriptionDTO, CreateSubscriptionService $createSubscriptionService): JsonResponse
+    public function create(SubscriptionTransformer $subscriptionTransformer, CreateSubscriptionService $createSubscriptionService): JsonResponse
     {
-        return $createSubscriptionService->make($subscriptionDTO->collect());
+        return $createSubscriptionService->request($subscriptionTransformer->transformFromRequest());
     }
 
     #[Route('/{subscription_id<\d+>}/edit', methods: 'PUT')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_SUBSCRIPTION)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,
-        SubscriptionDTO $subscriptionDTO,
+        SubscriptionTransformer $subscriptionTransformer,
         UpdateSubscriptionService $updateSubscriptionService
     ): JsonResponse {
-        $subscriptionDTO->setEntity($subscription);
-        $subscriptionDTO->collect();
-
-        return $updateSubscriptionService->make($subscriptionDTO, $subscription);
+        return $updateSubscriptionService->request($subscriptionTransformer->transformFromRequest($subscription), $subscription);
     }
 
     #[Route('/{subscription_id<\d+>}/delete', methods: 'DELETE')]
@@ -77,6 +74,6 @@ class SubscriptionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,
         DeleteSubscriptionService $deleteSubscriptionService
     ): JsonResponse {
-        return $deleteSubscriptionService->make($subscription);
+        return $deleteSubscriptionService->request($subscription);
     }
 }

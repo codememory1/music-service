@@ -2,7 +2,7 @@
 
 namespace App\Security\ServiceAuth;
 
-use App\DTO\Interfaces\ServiceAuthorizationDTOInterface;
+use App\Dto\Interfaces\ServiceAuthorizationDtoInterface;
 use App\Service\Platform\Interfaces\ClientInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -17,8 +17,8 @@ class GoogleAuthorization extends AbstractServiceAuthorization
 {
     protected ?string $serviceType = 'google';
 
-    public function make(ClientInterface $client, ServiceAuthorizationDTOInterface $serviceAuthorizationDTO): JsonResponse
+    public function make(ClientInterface $client, ServiceAuthorizationDtoInterface $serviceAuthorizationDto): JsonResponse
     {
-        return $this->authorizationHandler($client, $serviceAuthorizationDTO);
+        return $this->authorizationHandler($client, $serviceAuthorizationDto);
     }
 }

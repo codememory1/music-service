@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
-use App\DTO\MultimediaDTO;
+use App\Dto\Transformer\MultimediaTransformer;
 use App\Entity\Multimedia;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
@@ -58,7 +58,7 @@ class MultimediaController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_TO_USER)]
     public function add(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        MultimediaDTO $multimediaDTO,
+        MultimediaTransformer $multimediaTransformer,
         AddMultimediaService $addMultimediaService
     ): JsonResponse {
         $userHelper = $this->getManagerAuthorizedUser()->setUser($user);
@@ -67,20 +67,17 @@ class MultimediaController extends AbstractRestController
             throw MultimediaException::badAddMultimediaToUserInvalid();
         }
 
-        return $addMultimediaService->make($multimediaDTO->collect(), $user);
+        return $addMultimediaService->request($multimediaTransformer->transformFromRequest(), $user);
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        MultimediaDTO $multimediaDTO,
+        MultimediaTransformer $multimediaTransformer,
         UpdateMultimediaService $updateMultimediaService
     ): JsonResponse {
-        $multimediaDTO->setEntity($multimedia);
-        $multimediaDTO->collect();
-
-        return $updateMultimediaService->make($multimediaDTO);
+        return $updateMultimediaService->request($multimediaTransformer->transformFromRequest($multimedia));
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]
@@ -89,6 +86,6 @@ class MultimediaController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         DeleteMultimediaService $deleteMultimediaService
     ): JsonResponse {
-        return $deleteMultimediaService->make($multimedia);
+        return $deleteMultimediaService->request($multimedia);
     }
 }

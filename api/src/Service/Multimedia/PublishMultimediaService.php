@@ -24,7 +24,7 @@ class PublishMultimediaService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function make(Multimedia $multimedia): JsonResponse
+    public function publish(Multimedia $multimedia): Multimedia
     {
         if ($multimedia->isPublished()) {
             throw MultimediaException::badPublish();
@@ -34,6 +34,13 @@ class PublishMultimediaService extends AbstractService
             new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::PUBLISHED),
             EventEnum::MULTIMEDIA_STATUS_CHANGE->value
         );
+
+        return $multimedia;
+    }
+
+    public function request(Multimedia $multimedia): JsonResponse
+    {
+        $this->publish($multimedia);
 
         return $this->responseCollection->successUpdate('multimedia@successPublish');
     }

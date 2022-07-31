@@ -15,11 +15,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class AcceptAsFriendService extends AbstractService
 {
-    public function make(Friend $friend): JsonResponse
+    public function accept(Friend $friend): Friend
     {
         $friend->setConfirmed();
 
         $this->flusherService->save();
+
+        return $friend;
+    }
+
+    public function request(Friend $friend): JsonResponse
+    {
+        $this->accept($friend);
 
         return $this->responseCollection->successUpdate('friend@successAccept');
     }

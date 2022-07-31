@@ -2,7 +2,7 @@
 
 namespace App\Security\Auth;
 
-use App\DTO\AuthorizationDTO;
+use App\Dto\Transfer\AuthorizationDto;
 use App\Entity\User;
 use App\Event\UserAuthenticationInAuthEvent;
 use App\Rest\Http\Exceptions\AuthorizationException;
@@ -25,9 +25,9 @@ class Authentication
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function authenticate(AuthorizationDTO $authorizationDTO, User $identifiedUser): User
+    public function authenticate(AuthorizationDto $authorizationDto, User $identifiedUser): User
     {
-        $realPassword = $authorizationDTO->password;
+        $realPassword = $authorizationDto->password;
         $hashPassword = $identifiedUser->getPassword();
 
         if (false === $this->hashingService->compare($realPassword, $hashPassword)) {
@@ -35,7 +35,7 @@ class Authentication
         }
 
         $this->eventDispatcher->dispatch(new UserAuthenticationInAuthEvent(
-            $authorizationDTO,
+            $authorizationDto,
             $identifiedUser
         ));
 

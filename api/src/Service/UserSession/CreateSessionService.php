@@ -2,7 +2,7 @@
 
 namespace App\Service\UserSession;
 
-use App\DTO\UserDTO;
+use App\Dto\Transfer\UserDto;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
@@ -33,9 +33,9 @@ class CreateSessionService extends AbstractService
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function make(UserDTO $userDTO, User $user, UserSessionTypeEnum $type): UserSession
+    public function make(UserDto $userDto, User $user, UserSessionTypeEnum $type): UserSession
     {
-        $collectedUserSession = $this->collectorSessionService->collect($userDTO, $user, $type);
+        $collectedUserSession = $this->collectorSessionService->collect($userDto, $user, $type);
 
         $this->flusherService->save($collectedUserSession);
 

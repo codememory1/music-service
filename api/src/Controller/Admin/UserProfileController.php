@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
-use App\DTO\UserProfileDesignDTO;
+use App\Dto\Transformer\UserProfileDesignTransformer;
 use App\Entity\UserProfile;
 use App\Enum\RolePermissionEnum;
 use App\Rest\Controller\AbstractRestController;
@@ -29,12 +29,11 @@ class UserProfileController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::UPDATE_USER_PROFILE_DESIGN)]
     public function editDesignProfile(
         #[EntityNotFound(EntityNotFoundException::class, 'userProfile')] UserProfile $userProfile,
-        UserProfileDesignDTO $userProfileDesignDTO,
+        UserProfileDesignTransformer $userProfileDesignTransformer,
         UpdateUserProfileDesignService $updateUserProfileDesignService
     ): JsonResponse {
-        $userProfileDesignDTO->setEntity($userProfile);
-        $userProfileDesignDTO->collect();
-
-        return $updateUserProfileDesignService->make($userProfileDesignDTO, $userProfile);
+        return $updateUserProfileDesignService->request(
+            $userProfileDesignTransformer->transformFromRequest($userProfile->getDesign())
+        );
     }
 }

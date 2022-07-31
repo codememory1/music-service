@@ -24,7 +24,7 @@ class SendOnAppealService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function make(Multimedia $multimedia): JsonResponse
+    public function sendOnAppeal(Multimedia $multimedia): Multimedia
     {
         if (false === $multimedia->isUnpublished() && false === $multimedia->isAppealCanceled()) {
             throw MultimediaException::badSendOnAppeal($multimedia->getStatus());
@@ -34,6 +34,13 @@ class SendOnAppealService extends AbstractService
             new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::APPEAL),
             EventEnum::MULTIMEDIA_STATUS_CHANGE->value
         );
+
+        return $multimedia;
+    }
+
+    public function request(Multimedia $multimedia): JsonResponse
+    {
+        $this->sendOnAppeal($multimedia);
 
         return $this->responseCollection->successUpdate('multimedia@successSendOnAppeal');
     }

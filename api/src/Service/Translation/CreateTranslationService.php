@@ -2,10 +2,14 @@
 
 namespace App\Service\Translation;
 
-use App\DTO\TranslationDTO;
+use App\Dto\Transfer\TranslationDto;
+use App\Dto\Transformer\TranslationKeyTransformer;
+use App\Entity\Translation;
 use App\Entity\TranslationKey;
 use App\Service\AbstractService;
+use App\Service\TranslationKey\CreateTranslationKeyService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class CreateTranslationService.
@@ -16,27 +20,38 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class CreateTranslationService extends AbstractService
 {
-    public function make(TranslationDTO $translationDTO): JsonResponse
+    #[Required]
+    public ?TranslationKeyTransformer $translationKeyTransformer = null;
+
+    #[Required]
+    public ?CreateTranslationKeyService $createTranslationKeyService = null;
+
+    public function create(TranslationDto $translationDto): Translation
     {
-        if (false === $this->validate($translationDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($translationDto);
 
-        $translation = $translationDTO->getEntity();
+        $translation = $translationDto->getEntity();
 
-        $translation->setTranslationKey($this->createTranslationKey($translationDTO));
+        $translation->setTranslationKey($this->createTranslationKey($translationDto));
 
         $this->flusherService->save($translation);
+
+        return $translation;
+    }
+
+    public function request(TranslationDto $translationDto): JsonResponse
+    {
+        $this->create($translationDto);
 
         return $this->responseCollection->successCreate('translation@successCreate');
     }
 
-    private function createTranslationKey(TranslationDTO $translationDTO): TranslationKey
+    private function createTranslationKey(TranslationDto $translationDto): TranslationKey
     {
-        $translationKey = new TranslationKey();
+        $translationKeyDto = $this->translationKeyTransformer->transformFromArray([
+            'key' => $translationDto->translationKey
+        ]);
 
-        $translationKey->setKey($translationDTO->translationKey);
-
-        return $translationKey;
+        return $this->createTranslationKeyService->create($translationKeyDto);
     }
 }

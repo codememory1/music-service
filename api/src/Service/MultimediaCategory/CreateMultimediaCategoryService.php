@@ -2,7 +2,8 @@
 
 namespace App\Service\MultimediaCategory;
 
-use App\DTO\MultimediaCategoryDTO;
+use App\Dto\Transfer\MultimediaCategoryDto;
+use App\Entity\MultimediaCategory;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -15,13 +16,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class CreateMultimediaCategoryService extends AbstractService
 {
-    public function make(MultimediaCategoryDTO $multimediaCategoryDTO): JsonResponse
+    public function create(MultimediaCategoryDto $multimediaCategoryDto): MultimediaCategory
     {
-        if (false === $this->validate($multimediaCategoryDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($multimediaCategoryDto);
 
-        $this->flusherService->save($multimediaCategoryDTO->getEntity());
+        $multimediaCategory = $multimediaCategoryDto->getEntity();
+
+        $this->flusherService->save($multimediaCategory);
+
+        return $multimediaCategory;
+    }
+
+    public function request(MultimediaCategoryDto $multimediaCategoryDto): JsonResponse
+    {
+        $this->create($multimediaCategoryDto);
 
         return $this->responseCollection->successCreate('multimediaCategory@successCreate');
     }

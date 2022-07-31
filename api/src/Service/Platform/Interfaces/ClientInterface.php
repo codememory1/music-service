@@ -2,7 +2,7 @@
 
 namespace App\Service\Platform\Interfaces;
 
-use App\DTO\GoogleAuthDTO;
+use App\Dto\Transfer\GoogleAuthDto;
 
 /**
  * Interface ClientInterface.
@@ -15,7 +15,7 @@ interface ClientInterface
 {
     public function createAuthorizationUrl(): ?string;
 
-    public function authenticate(GoogleAuthDTO $googleAuthDTO): self;
+    public function authenticate(GoogleAuthDto $googleAuthDto): self;
 
     public function getAccessToken(): ?string;
 

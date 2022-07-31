@@ -11,6 +11,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class UserSession.
@@ -141,6 +142,18 @@ class UserSession implements EntityInterface
     public function getType(): ?string
     {
         return $this->type;
+    }
+
+    #[Pure]
+    public function isTemp(): bool
+    {
+        return $this->getType() === UserSessionTypeEnum::TEMP->name;
+    }
+
+    #[Pure]
+    public function isRegistered(): bool
+    {
+        return $this->getType() === UserSessionTypeEnum::REGISTRATION->name;
     }
 
     public function setType(?UserSessionTypeEnum $type): self

@@ -2,12 +2,14 @@
 
 namespace App\Service;
 
-use App\DTO\Interfaces\DTOInterface;
+use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\UuidIdentifierInterface;
 use App\Rest\Http\ResponseCollection;
+use App\Rest\S3\Interfaces\S3UploaderInterface;
 use App\Rest\Validator\Validator;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class AbstractService.
@@ -35,23 +37,26 @@ abstract class AbstractService
         $this->responseCollection = $responseCollection;
     }
 
-    protected function validate(DTOInterface|EntityInterface $object): bool
+    protected function validate(EntityInterface|DataTransferInterface $object, ?callable $customResponse = null): void
     {
-        return $this->validator->validate($object);
+        $this->validator->validate($object, $customResponse);
     }
 
-    protected function validateFullDTO(DTOInterface $DTO): bool|JsonResponse
+    protected function validateWithEntity(DataTransferInterface $dataTransfer): void
     {
-        if (false === $this->validate($DTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($dataTransfer);
+        $this->validate($dataTransfer->getEntity());
+    }
 
-        $entity = $DTO->getEntity();
+    protected function simpleFileUpload(S3UploaderInterface $s3Uploader, ?string $oldPath, UploadedFile $uploadedFile, UuidIdentifierInterface $uuidIdentifier): ?string
+    {
+        $s3Uploader->save(
+            $oldPath,
+            $uploadedFile->getRealPath(),
+            $uploadedFile->getMimeType(),
+            $uuidIdentifier->getUuid()
+        );
 
-        if (false === $this->validate($entity)) {
-            return $this->validator->getResponse();
-        }
-
-        return true;
+        return $s3Uploader->getUploadedFile()->first();
     }
 }

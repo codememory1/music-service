@@ -2,12 +2,11 @@
 
 namespace App\Service\Playlist;
 
-use App\DTO\PlaylistDTO;
+use App\Dto\Transfer\PlaylistDto;
 use App\Entity\Playlist;
-use App\Enum\EventEnum;
-use App\Event\SavePlaylistEvent;
+use App\Rest\S3\Uploader\ImageUploader;
 use App\Service\AbstractService;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
@@ -20,20 +19,22 @@ use Symfony\Contracts\Service\Attribute\Required;
 class SavePlaylistService extends AbstractService
 {
     #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
-
-    #[Required]
     public ?SetMultimediaToPlaylistService $setMultimediaToPlaylistService = null;
 
-    public function make(PlaylistDTO $playlistDTO, Playlist $playlist): void
+    #[Required]
+    public ?ImageUploader $imageUploader = null;
+
+    public function make(PlaylistDto $playlistDto, Playlist $playlist): void
     {
-        $this->setMultimediaToPlaylistService->set($playlistDTO->multimedia, $playlist);
+        $this->setMultimediaToPlaylistService->set($playlistDto->multimedia, $playlist);
 
-        $this->flusherService->save();
+        $playlist->setImage($this->uploadImage($playlistDto->image, $playlist));
 
-        $this->eventDispatcher->dispatch(
-            new SavePlaylistEvent($playlist, $playlistDTO),
-            EventEnum::SAVE_PLAYLIST->value
-        );
+        $this->flusherService->save($playlist);
+    }
+
+    private function uploadImage(UploadedFile $image, Playlist $playlist): ?string
+    {
+        return $this->simpleFileUpload($this->imageUploader, $playlist->getImage(), $image, $playlist);
     }
 }

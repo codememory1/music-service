@@ -2,10 +2,14 @@
 
 namespace App\Service\MediaLibrary;
 
-use App\DTO\MediaLibraryDTO;
+use App\Dto\Transfer\MediaLibraryDto;
+use App\Entity\MediaLibrary;
 use App\Entity\User;
+use App\Enum\EventEnum;
+use App\Event\CreateMediaLibraryEvent;
 use App\Rest\Http\Exceptions\EntityExistException;
 use App\Service\AbstractService;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
@@ -19,19 +23,31 @@ use Symfony\Contracts\Service\Attribute\Required;
 class CreateMediaLibraryService extends AbstractService
 {
     #[Required]
-    public ?SaveMediaLibraryService $saveMediaLibraryService = null;
+    public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function make(MediaLibraryDTO $mediaLibraryDTO, User $forUser): JsonResponse
+    public function create(MediaLibraryDto $mediaLibraryDto, User $forUser): MediaLibrary
     {
-        if (false === $this->validate($mediaLibraryDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($mediaLibraryDto);
+
+        $mediaLibrary = $mediaLibraryDto->getEntity();
 
         if (null !== $forUser->getMediaLibrary()) {
             throw EntityExistException::mediaLibrary();
         }
 
-        $this->saveMediaLibraryService->make($mediaLibraryDTO->getEntity(), $forUser);
+        $forUser->setMediaLibrary($mediaLibrary);
+
+        $this->eventDispatcher->dispatch(
+            new CreateMediaLibraryEvent($forUser->getMediaLibrary()),
+            EventEnum::CREATE_MEDIA_LIBRARY->value
+        );
+
+        return $mediaLibrary;
+    }
+
+    public function request(MediaLibraryDto $mediaLibraryDto, User $forUser): JsonResponse
+    {
+        $this->create($mediaLibraryDto, $forUser);
 
         return $this->responseCollection->successCreate('mediaLibrary@successCreate');
     }

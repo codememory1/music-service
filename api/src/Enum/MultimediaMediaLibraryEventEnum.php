@@ -5,7 +5,6 @@ namespace App\Enum;
 use App\Enum\Interfaces\EventInterface;
 use App\Service\Event\MultimediaMediaLibrary\NextMultimediaAfterEndEventService;
 use App\Service\Event\MultimediaMediaLibrary\RangeTimeEventService;
-use App\Service\Event\MultimediaMediaLibrary\RangeTimeEventService;
 use App\Service\MultimediaMediaLibraryEvent\DeleteMultimediaMediaLibraryEventService;
 
 /**

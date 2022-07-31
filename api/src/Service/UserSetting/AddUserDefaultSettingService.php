@@ -14,14 +14,14 @@ use App\Entity\UserSetting;
  */
 class AddUserDefaultSettingService
 {
-    public function make(User $forUser): UserSetting
+    public function add(User $forUser): UserSetting
     {
-        $userSettingEntity = new UserSetting();
+        $userSetting = new UserSetting();
 
-        $userSettingEntity->setAcceptMultimediaFromFriends(false);
+        $userSetting->setAcceptMultimediaFromFriends(false);
 
-        $forUser->setSetting($userSettingEntity);
+        $forUser->setSetting($userSetting);
 
-        return $userSettingEntity;
+        return $userSetting;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Security\PasswordReset;
 
-use App\DTO\RequestRestorationPasswordDTO;
+use App\Dto\Transfer\RequestRestorationPasswordDto;
 use App\Enum\EventEnum;
 use App\Event\RequestRestorationPasswordEvent;
 use App\Service\AbstractService;
@@ -22,27 +22,24 @@ class RequestRestoration extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function send(RequestRestorationPasswordDTO $requestRestorationPasswordDTO): JsonResponse
+    public function send(RequestRestorationPasswordDto $requestRestorationPasswordDto): JsonResponse
     {
-        if (false === $this->validate($requestRestorationPasswordDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($requestRestorationPasswordDto);
 
-        $passwordResetEntity = $requestRestorationPasswordDTO->getEntity();
+        $passwordReset = $requestRestorationPasswordDto->getEntity();
 
-        $passwordResetEntity->setTtl('10m');
-        $passwordResetEntity->setInProcessStatus();
+        $passwordReset->setTtl('10m');
+        $passwordReset->setInProcessStatus();
 
         $this->eventDispatcher->dispatch(
-            new RequestRestorationPasswordEvent($passwordResetEntity),
+            new RequestRestorationPasswordEvent($passwordReset),
             EventEnum::AFTER_REQUEST_RESTORATION_PASSWORD->value
         );
 
-        $this->em->persist($passwordResetEntity);
-        $this->em->flush();
+        $this->flusherService->save($passwordReset);
 
         $this->eventDispatcher->dispatch(
-            new RequestRestorationPasswordEvent($passwordResetEntity),
+            new RequestRestorationPasswordEvent($passwordReset),
             EventEnum::REQUEST_RESTORATION_PASSWORD->value
         );
 

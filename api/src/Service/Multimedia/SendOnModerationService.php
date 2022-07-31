@@ -24,7 +24,7 @@ class SendOnModerationService extends AbstractService
     #[Required]
     public ?EventDispatcherInterface $eventDispatcher = null;
 
-    public function make(Multimedia $multimedia): JsonResponse
+    public function sendOnModeration(Multimedia $multimedia): Multimedia
     {
         if (false === $multimedia->isDraft()) {
             throw MultimediaException::badSendOnModeration();
@@ -34,6 +34,13 @@ class SendOnModerationService extends AbstractService
             new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::MODERATION),
             EventEnum::MULTIMEDIA_STATUS_CHANGE->value
         );
+
+        return $multimedia;
+    }
+
+    public function make(Multimedia $multimedia): JsonResponse
+    {
+        $this->sendOnModeration($multimedia);
 
         return $this->responseCollection->successUpdate('multimedia@successSendOnModeration');
     }

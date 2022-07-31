@@ -17,16 +17,23 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class UnsubscribeOnArtistService extends AbstractService
 {
-    public function make(User $artist, User $subscriber): JsonResponse
+    public function unsubscribe(User $artist, User $subscriber): ArtistSubscriber
     {
         $artistSubscriberRepository = $this->em->getRepository(ArtistSubscriber::class);
-        $finedSubscriber = $artistSubscriberRepository->findSubscription($artist, $subscriber);
+        $finedArtistSubscriber = $artistSubscriberRepository->findSubscription($artist, $subscriber);
 
-        if (null === $finedSubscriber) {
+        if (null === $finedArtistSubscriber) {
             throw FailedException::failedUnsubscribeOnArtist();
         }
 
-        $this->flusherService->addRemove($finedSubscriber)->save();
+        $this->flusherService->remove($finedArtistSubscriber);
+
+        return $finedArtistSubscriber;
+    }
+
+    public function request(User $artist, User $subscriber): JsonResponse
+    {
+        $this->unsubscribe($artist, $subscriber);
 
         return $this->responseCollection->successDelete('artist@successUnsubscribe');
     }

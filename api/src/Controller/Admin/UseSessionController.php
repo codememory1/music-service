@@ -46,7 +46,7 @@ class UseSessionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
         DeleteUserSessionService $deleteUserSessionService
     ): JsonResponse {
-        return $deleteUserSessionService->make($userSession);
+        return $deleteUserSessionService->request($userSession);
     }
 
     #[Route('/{user_id<\d+>}/session/all/delete', methods: 'DELETE')]
@@ -55,6 +55,6 @@ class UseSessionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         DeleteUserSessionService $deleteUserSessionService
     ): JsonResponse {
-        return $deleteUserSessionService->deleteAll($user);
+        return $deleteUserSessionService->requestDeleteAll($user);
     }
 }

@@ -5,8 +5,8 @@ namespace App\Controller\Admin;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
-use App\DTO\DeleteTranslationDTO;
-use App\DTO\TranslationDTO;
+use App\Dto\Transformer\DeleteTranslationTransformer;
+use App\Dto\Transformer\TranslationTransformer;
 use App\Entity\Translation;
 use App\Enum\RolePermissionEnum;
 use App\Rest\Controller\AbstractRestController;
@@ -30,31 +30,28 @@ class TranslationController extends AbstractRestController
 {
     #[Route('/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_TRANSLATION)]
-    public function create(TranslationDTO $translationDTO, CreateTranslationService $createTranslationService): JsonResponse
+    public function create(TranslationTransformer $translationTransformer, CreateTranslationService $createTranslationService): JsonResponse
     {
-        return $createTranslationService->make($translationDTO->collect());
+        return $createTranslationService->request($translationTransformer->transformFromRequest());
     }
 
     #[Route('/{translation_id<\d+>}/edit', methods: 'PUT')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_TRANSLATION)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'translation')] Translation $translation,
-        TranslationDTO $translationDTO,
+        TranslationTransformer $translationTransformer,
         UpdateTranslationService $updateTranslationService
     ): JsonResponse {
-        $translationDTO->setEntity($translation);
-        $translationDTO->collect();
-
-        return $updateTranslationService->make($translationDTO);
+        return $updateTranslationService->request($translationTransformer->transformFromRequest($translation));
     }
 
     #[Route('/{translation_id<\d+>}/delete', methods: 'DELETE')]
     #[UserRolePermission(RolePermissionEnum::DELETE_TRANSLATION)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'translation')] Translation $translation,
-        DeleteTranslationDTO $translationDTO,
+        DeleteTranslationTransformer $deleteTranslationTransformer,
         DeleteTranslationService $deleteTranslationService
     ): JsonResponse {
-        return $deleteTranslationService->make($translationDTO->collect(), $translation);
+        return $deleteTranslationService->request($deleteTranslationTransformer->transformFromRequest(), $translation);
     }
 }

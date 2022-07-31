@@ -85,45 +85,14 @@ services:
       tags:
         - { name: kernel.event_listener, event: app.password-reset.request, method: onRequestRestorationPassword }
 
-    # Add Multimedia
-    App\EventListener\SaveMultimedia\Before\AlbumTypeCheckListener:
-      tags:
-        - { name: kernel.event_listener, event: app.multimedia.before-save, method: onBeforeSaveMultimedia, priority: 1 }
-
-    App\EventListener\SaveMultimedia\Before\MultimediaMimeTypeCheckListener:
-      tags:
-        - { name: kernel.event_listener, event: app.multimedia.before-save, method: onBeforeSaveMultimedia, priority: 0 }
-
-    App\EventListener\SaveMultimedia\Before\SubtitlesCheckListener:
-      tags:
-        - { name: kernel.event_listener, event: app.multimedia.before-save, method: onBeforeSaveMultimedia, priority: -1 }
-
-    App\EventListener\SaveMultimedia\After\FileUploadListener:
-      tags:
-        - { name: kernel.event_listener, event: app.multimedia.after-save, method: onAfterSaveMultimedia, priority: 1 }
-
     App\EventListener\MultimediaStatusChange\StatusChangeHandlerListener:
       tags:
         - { name: kernel.event_listener, event: app.multimedia.status-change, method: onMultimediaStatusChange }
-
-    App\EventListener\SaveAlbum\UploadImageListener:
-      tags:
-        - { name: kernel.event_listener, event: app.album.save, method: onSaveAlbum, priority: 1 }
 
     # Album status change
     App\EventListener\AlbumStatusChange\SendNotificationAboutNewReleaseListener:
       tags:
         - { name: kernel.event_listener, event: app.album.status-change, method: onAlbumStatusChange, priority: 1 }
-
-    # Update multimedia to media library
-    App\EventListener\UpdateMultimediaMediaLibrary\UploadImageListener:
-      tags:
-        - { name: kernel.event_listener, event: app.media-library.multimedia.update, method: onUpdateMultimediaMediaLibrary, priority: 1 }
-
-    # Save playlist
-    App\EventListener\SavePlaylist\UploadImageListener:
-      tags:
-        - { name: kernel.event_listener, event: app.playlist.save, method: onSavePlaylist, priority: 1 }
 
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
@@ -158,11 +127,18 @@ services:
       exclude:
         - '../src/Service/DataRepresentation/AbstractDataRepresentation.php'
 
-    App\DTO\:
-      resource: '../src/DTO/*DTO.php'
+    # DTO
+    App\Dto\Constraints\:
+      resource: '../src/Dto/Constraints/*ConstraintHandler.php'
       public: true
-      exclude:
-        - '../src/DTO/{Interfaces,Interceptors,AbstractDTO.php}'
+
+    App\Dto\Transfer\:
+      resource: '../src/Dto/Transfer/*Dto.php'
+      public: true
+
+    App\Dto\Transformer\:
+      resource: '../src/Dto/Transformer/*Transformer.php'
+      public: true
 
     App\ResponseData\Constraints\:
       resource: '../src/ResponseData/Constraints/*Handler.php'

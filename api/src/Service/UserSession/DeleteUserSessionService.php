@@ -4,7 +4,6 @@ namespace App\Service\UserSession;
 
 use App\Entity\User;
 use App\Entity\UserSession;
-use App\Enum\UserSessionTypeEnum;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,18 +17,25 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteUserSessionService extends AbstractService
 {
-    public function make(UserSession $userSession): JsonResponse
+    public function delete(UserSession $userSession): UserSession
     {
-        if ($userSession->getType() !== UserSessionTypeEnum::TEMP->name) {
+        if (false === $userSession->isTemp()) {
             throw EntityNotFoundException::userSession();
         }
 
-        $this->flusherService->addRemove($userSession)->save();
+        $this->flusherService->remove($userSession);
+
+        return $userSession;
+    }
+
+    public function request(UserSession $userSession): JsonResponse
+    {
+        $this->delete($userSession);
 
         return $this->responseCollection->successDelete('userSession@successDelete');
     }
 
-    public function deleteAll(User $toUser): JsonResponse
+    public function requestDeleteAll(User $toUser): JsonResponse
     {
         $userSessionRepository = $this->em->getRepository(UserSession::class);
         $userSessions = $userSessionRepository->findAllTemp($toUser);

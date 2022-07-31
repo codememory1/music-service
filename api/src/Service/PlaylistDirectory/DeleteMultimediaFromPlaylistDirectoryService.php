@@ -15,9 +15,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class DeleteMultimediaFromPlaylistDirectoryService extends AbstractService
 {
-    public function make(MultimediaPlaylistDirectory $multimediaPlaylistDirectory): JsonResponse
+    public function delete(MultimediaPlaylistDirectory $multimediaPlaylistDirectory): MultimediaPlaylistDirectory
     {
-        $this->flusherService->save($multimediaPlaylistDirectory);
+        $this->flusherService->remove($multimediaPlaylistDirectory);
+
+        return $multimediaPlaylistDirectory;
+    }
+
+    public function request(MultimediaPlaylistDirectory $multimediaPlaylistDirectory): JsonResponse
+    {
+        $this->delete($multimediaPlaylistDirectory);
 
         return $this->responseCollection->successDelete('multimedia@successDelete');
     }

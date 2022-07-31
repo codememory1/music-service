@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\UuidIdentifierInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UuidIdentifierTrait;
 use App\Enum\MultimediaStatusEnum;
 use App\Enum\MultimediaTypeEnum;
 use App\Repository\MultimediaRepository;
@@ -24,9 +26,10 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: MultimediaRepository::class)]
 #[ORM\Table('multimedia')]
 #[ORM\HasLifecycleCallbacks]
-class Multimedia implements EntityInterface
+class Multimedia implements EntityInterface, UuidIdentifierInterface
 {
     use IdentifierTrait;
+    use UuidIdentifierTrait;
     use TimestampTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'multimedia')]
@@ -109,9 +112,10 @@ class Multimedia implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaRating::class, cascade: ['persist', 'remove'])]
     private Collection $ratings;
 
-    #[Pure]
     public function __construct()
     {
+        $this->generateUuid();
+
         $this->performers = new ArrayCollection();
         $this->shares = new ArrayCollection();
         $this->auditions = new ArrayCollection();

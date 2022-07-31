@@ -2,8 +2,6 @@
 
 namespace App\Rest\S3\Uploader;
 
-use App\Entity\Interfaces\EntityInterface;
-use App\Entity\User;
 use App\Rest\S3\Client;
 use App\Rest\S3\Interfaces\S3UploaderInterface;
 use App\Rest\S3\ObjectPath;
@@ -11,7 +9,6 @@ use App\Rest\S3\Uploader\UploadedFile as S3UploadedFile;
 use App\Service\MimeTypeConverter;
 use Aws\Result;
 use JetBrains\PhpStorm\Pure;
-use LogicException;
 
 /**
  * Class AbstractUploader.
@@ -24,8 +21,6 @@ abstract class AbstractUploader implements S3UploaderInterface
 {
     protected Client $client;
     protected MimeTypeConverter $mimeTypeConverter;
-    protected ?User $user = null;
-    protected ?EntityInterface $entity = null;
     private array $uploadedPaths = [];
     private ObjectPath $objectPath;
 
@@ -49,32 +44,24 @@ abstract class AbstractUploader implements S3UploaderInterface
         return sha1($this->getContent($pathInSystem));
     }
 
-    protected function generateUniqueHash(EntityInterface $entity): string
+    protected function generateUniqueHash(string $uuid): string
     {
-        return hash('sha3-512', "{$this->user->getId()}_{$entity->getId()}");
+        return hash('sha3-512', $uuid);
     }
 
-    protected function generateFileName(string $pathInSystem, string $mimeType, EntityInterface $entity): string
+    protected function generateFileName(string $pathInSystem, string $mimeType, string $uuid): string
     {
         return sprintf(
             '%s_%s.%s',
             $this->generateContentHash($pathInSystem),
-            $this->generateUniqueHash($entity),
+            $this->generateUniqueHash($uuid),
             $this->getExtensionFromMimeType($mimeType)
         );
     }
 
-    protected function generateKey(string $pathInSystem, string $mimeType, bool $asPathInStorage = false): string
+    protected function generateKey(string $pathInSystem, string $mimeType, string $uuid, bool $asPathInStorage = false): string
     {
-        if (null === $this->user) {
-            throw new LogicException('To create a hash of a file, you need to specify a user');
-        }
-
-        if (null === $this->entity) {
-            throw new LogicException('To create a hash of a file, you need to specify the entity to which this file will belong');
-        }
-
-        $generatedKey = $this->generateFileName($pathInSystem, $mimeType, $this->entity);
+        $generatedKey = $this->generateFileName($pathInSystem, $mimeType, $uuid);
         $generatedKeyWithBucket = sprintf('%s/%s', $this->getBucketName(), $generatedKey);
 
         $this->uploadedPaths[] = $generatedKeyWithBucket;
@@ -95,39 +82,25 @@ abstract class AbstractUploader implements S3UploaderInterface
         return null;
     }
 
-    public function setUser(User $user): S3UploaderInterface
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function setEntity(EntityInterface $entity): S3UploaderInterface
-    {
-        $this->entity = $entity;
-
-        return $this;
-    }
-
-    public function upload(string $pathInSystem, string $mimeType, array $args = []): Result
+    public function upload(string $pathInSystem, string $mimeType, string $uuid, array $args = []): Result
     {
         return $this->client->awsS3Client->putObject([
             'Bucket' => $this->getBucketName(),
-            'Key' => $this->generateKey($pathInSystem, $mimeType),
+            'Key' => $this->generateKey($pathInSystem, $mimeType, $uuid),
             'Body' => $this->getContent($pathInSystem),
             'ContentType' => $mimeType,
             ...$args
         ]);
     }
 
-    public function save(?string $oldFilePathInStorage, string $newFilePathInSystem, string $mimeType, array $args = []): ?Result
+    public function save(?string $oldFilePathInStorage, string $newFilePathInSystem, string $mimeType, string $uuid, array $args = []): ?Result
     {
         if (null === $oldFilePathInStorage) {
-            return $this->upload($newFilePathInSystem, $mimeType);
-        } elseif ($oldFilePathInStorage !== $this->generateKey($newFilePathInSystem, $mimeType, true)) {
+            return $this->upload($newFilePathInSystem, $mimeType, $uuid);
+        } elseif ($oldFilePathInStorage !== $this->generateKey($newFilePathInSystem, $mimeType, $uuid, true)) {
             $this->delete($oldFilePathInStorage);
 
-            return $this->upload($newFilePathInSystem, $mimeType);
+            return $this->upload($newFilePathInSystem, $mimeType, $uuid);
         }
 
         return null;

@@ -33,7 +33,7 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfArtistNotAcceptingSubscribers($artist);
 
-        return $subscribeOnArtistService->make($artist, $this->getAuthorizedUser());
+        return $subscribeOnArtistService->request($artist, $this->getAuthorizedUser());
     }
 
     #[Route('/unsubscribe', methods: 'PATCH')]
@@ -43,7 +43,7 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfArtistNotAcceptingSubscribers($artist);
 
-        return $unsubscribeOnArtistService->make($artist, $this->getAuthorizedUser());
+        return $unsubscribeOnArtistService->request($artist, $this->getAuthorizedUser());
     }
 
     private function throwIfArtistNotAcceptingSubscribers(User $artist): void

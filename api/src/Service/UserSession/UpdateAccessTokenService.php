@@ -2,12 +2,13 @@
 
 namespace App\Service\UserSession;
 
-use App\DTO\RefreshTokenDTO;
+use App\Dto\Transfer\RefreshTokenDto;
 use App\Entity\UserSession;
 use App\Rest\Http\Exceptions\FailedException;
 use App\Security\Auth\AuthorizationToken;
 use App\Service\AbstractService;
 use DateTimeImmutable;
+use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
@@ -23,14 +24,16 @@ class UpdateAccessTokenService extends AbstractService
     #[Required]
     public ?AuthorizationToken $authorizationToken = null;
 
-    public function make(RefreshTokenDTO $refreshTokenDTO): JsonResponse
+    #[ArrayShape([
+        'access_token' => 'null|string',
+        'refresh_token' => 'null|string'
+    ])]
+    public function update(RefreshTokenDto $refreshTokenDto): array
     {
-        if (false === $this->validate($refreshTokenDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($refreshTokenDto);
 
         $userSessionRepository = $this->em->getRepository(UserSession::class);
-        $finedUserSession = $userSessionRepository->findByRefreshToken($refreshTokenDTO->refreshToken);
+        $finedUserSession = $userSessionRepository->findByRefreshToken($refreshTokenDto->refreshToken);
 
         if (null === $finedUserSession) {
             throw FailedException::failedToUpdateAccessToken();
@@ -38,10 +41,17 @@ class UpdateAccessTokenService extends AbstractService
 
         $this->updateToken($finedUserSession);
 
-        return $this->responseCollection->successUpdate('token@successUpdate', [
+        return [
             'access_token' => $this->authorizationToken->getAccessToken(),
             'refresh_token' => $this->authorizationToken->getRefreshToken(),
-        ]);
+        ];
+    }
+
+    public function request(RefreshTokenDto $refreshTokenDto): JsonResponse
+    {
+        $tokens = $this->update($refreshTokenDto);
+
+        return $this->responseCollection->successUpdate('token@successUpdate', $tokens);
     }
 
     private function updateToken(UserSession $userSession): void

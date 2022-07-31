@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\UuidIdentifierInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UuidIdentifierTrait;
 use App\Enum\UserProfileStatusEnum;
 use App\Repository\UserProfileRepository;
 use DateTimeImmutable;
@@ -25,9 +27,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('user_profiles')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('user', message: 'userProfile@existByUser')]
-class UserProfile implements EntityInterface
+class UserProfile implements EntityInterface, UuidIdentifierInterface
 {
     use IdentifierTrait;
+    use UuidIdentifierTrait;
     use TimestampTrait;
 
     #[ORM\OneToOne(inversedBy: 'profile', targetEntity: User::class)]
@@ -55,7 +58,12 @@ class UserProfile implements EntityInterface
     private ?string $status = null;
 
     #[ORM\OneToOne(mappedBy: 'userProfile', targetEntity: UserProfileDesign::class, cascade: ['persist', 'remove'])]
-    private $design;
+    private ?UserProfileDesign $design = null;
+
+    public function __construct()
+    {
+        $this->generateUuid();
+    }
 
     public function setUser(?User $user): self
     {

@@ -41,7 +41,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         PublishMultimediaService $publishMultimediaService
     ): JsonResponse {
-        return $publishMultimediaService->make($multimedia);
+        return $publishMultimediaService->request($multimedia);
     }
 
     #[Route('/unpublish', methods: 'PATCH')]
@@ -49,7 +49,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         UnpublishMultimediaService $unpublishMultimediaService
     ): JsonResponse {
-        return $unpublishMultimediaService->make($multimedia);
+        return $unpublishMultimediaService->request($multimedia);
     }
 
     #[Route('/appeal-canceled', methods: 'PATCH')]
@@ -57,6 +57,6 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         AppealCanceledService $appealCanceledService
     ): JsonResponse {
-        return $appealCanceledService->make($multimedia);
+        return $appealCanceledService->request($multimedia);
     }
 }

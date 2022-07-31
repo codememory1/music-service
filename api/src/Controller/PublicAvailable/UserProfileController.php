@@ -4,7 +4,7 @@ namespace App\Controller\PublicAvailable;
 
 use App\Annotation\Authorization;
 use App\Annotation\SubscriptionPermission;
-use App\DTO\UserProfileDesignDTO;
+use App\Dto\Transformer\UserProfileDesignTransformer;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\UserProfileDesign\UpdateUserProfileDesignService;
@@ -24,13 +24,10 @@ class UserProfileController extends AbstractRestController
 {
     #[Route('/design/edit', methods: 'POST')]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_PROFILE_DESIGN)]
-    public function editDesignProfile(UserProfileDesignDTO $userProfileDesignDTO, UpdateUserProfileDesignService $updateUserProfileDesignService): JsonResponse
+    public function editDesignProfile(UserProfileDesignTransformer $userProfileDesignTransformer, UpdateUserProfileDesignService $updateUserProfileDesignService): JsonResponse
     {
         $userProfile = $this->getAuthorizedUser()->getProfile();
 
-        $userProfileDesignDTO->setEntity($userProfile->getDesign());
-        $userProfileDesignDTO->collect();
-
-        return $updateUserProfileDesignService->make($userProfileDesignDTO, $userProfile);
+        return $updateUserProfileDesignService->request($userProfileDesignTransformer->transformFromRequest($userProfile->getDesign()));
     }
 }

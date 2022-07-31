@@ -2,7 +2,7 @@
 
 namespace App\Service\Platform\Google;
 
-use App\DTO\GoogleAuthDTO;
+use App\Dto\Transfer\GoogleAuthDto;
 use App\Enum\GoogleScopeEnum;
 use App\Rest\Http\Exceptions\AuthorizationException;
 use App\Service\Platform\Interfaces\ClientInterface;
@@ -48,9 +48,9 @@ class Client implements ClientInterface
         return $this->googleClient->createAuthUrl();
     }
 
-    public function authenticate(GoogleAuthDTO $googleAuthDTO): self
+    public function authenticate(GoogleAuthDto $googleAuthDto): self
     {
-        $response = $this->googleClient->fetchAccessTokenWithAuthCode(urldecode($googleAuthDTO->code));
+        $response = $this->googleClient->fetchAccessTokenWithAuthCode(urldecode($googleAuthDto->code));
 
         if (array_key_exists('error', $response)) {
             throw AuthorizationException::authorizationError();

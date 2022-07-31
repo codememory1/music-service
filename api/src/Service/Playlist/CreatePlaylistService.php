@@ -2,7 +2,8 @@
 
 namespace App\Service\Playlist;
 
-use App\DTO\PlaylistDTO;
+use App\Dto\Transfer\PlaylistDto;
+use App\Entity\Playlist;
 use App\Entity\User;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\AbstractService;
@@ -21,21 +22,26 @@ class CreatePlaylistService extends AbstractService
     #[Required]
     public ?SavePlaylistService $savePlaylistService = null;
 
-    public function make(PlaylistDTO $playlistDTO, User $forUser): JsonResponse
+    public function create(PlaylistDto $playlistDto, User $forUser): Playlist
     {
-        if (false === $this->validate($playlistDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validate($playlistDto);
 
         if (null === $forUser->getMediaLibrary()) {
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
 
-        $playlist = $playlistDTO->getEntity();
+        $playlist = $playlistDto->getEntity();
 
-        $playlist->setMediaLibrary($forUser->getMediaLibrary());
+        $forUser->getMediaLibrary()->addPlaylist($playlist);
 
-        $this->savePlaylistService->make($playlistDTO, $playlist);
+        $this->savePlaylistService->make($playlistDto, $playlist);
+
+        return $playlist;
+    }
+
+    public function request(PlaylistDto $playlistDto, User $forUser): JsonResponse
+    {
+        $this->create($playlistDto, $forUser);
 
         return $this->responseCollection->successCreate('playlist@successCreate');
     }

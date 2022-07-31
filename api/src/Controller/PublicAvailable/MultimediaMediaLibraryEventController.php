@@ -5,7 +5,7 @@ namespace App\Controller\PublicAvailable;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
-use App\DTO\MultimediaMediaLibraryEventDTO;
+use App\Dto\Transformer\MultimediaMediaLibraryEventTransformer;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\MultimediaMediaLibraryEvent;
 use App\Enum\SubscriptionPermissionEnum;
@@ -32,29 +32,29 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
     #[Route('/{multimediaMediaLibrary_id<\d+>}/event/add', methods: 'POST')]
     public function add(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
-        MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO,
+        MultimediaMediaLibraryEventTransformer $multimediaMediaLibraryEventTransformer,
         AddMultimediaMediaLibraryEventService $addMultimediaMediaLibraryEventService
     ): JsonResponse {
         if (false === $this->getAuthorizedUser()->isMultimediaMediaLibraryBelongs($multimediaMediaLibrary)) {
             throw EntityNotFoundException::multimedia();
         }
 
-        return $addMultimediaMediaLibraryEventService->make($multimediaMediaLibraryEventDTO->collect(), $multimediaMediaLibrary);
+        return $addMultimediaMediaLibraryEventService->request(
+            $multimediaMediaLibraryEventTransformer->transformFromRequest(),
+            $multimediaMediaLibrary
+        );
     }
 
     #[Route('/event/{multimediaMediaLibraryEvent_id}/edit', methods: 'PUT')]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaEvent')] MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent,
-        MultimediaMediaLibraryEventDTO $multimediaMediaLibraryEventDTO,
+        MultimediaMediaLibraryEventTransformer $multimediaMediaLibraryEventTransformer,
         UpdateMultimediaMediaLibraryEventService $updateMultimediaMediaLibraryEventService
     ): JsonResponse {
         $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 
-        $multimediaMediaLibraryEventDTO->setEntity($multimediaMediaLibraryEvent);
-        $multimediaMediaLibraryEventDTO->collect();
-
-        return $updateMultimediaMediaLibraryEventService->make(
-            $multimediaMediaLibraryEventDTO,
+        return $updateMultimediaMediaLibraryEventService->request(
+            $multimediaMediaLibraryEventTransformer->transformFromRequest($multimediaMediaLibraryEvent),
             $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()
         );
     }
@@ -66,7 +66,7 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 
-        return $deleteMultimediaMediaLibraryEventService->make($multimediaMediaLibraryEvent);
+        return $deleteMultimediaMediaLibraryEventService->request($multimediaMediaLibraryEvent);
     }
 
     private function throwIfEventNotBelongsAuthorizedUser(MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent): void

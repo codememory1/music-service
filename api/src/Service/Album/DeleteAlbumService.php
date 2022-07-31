@@ -20,11 +20,18 @@ class DeleteAlbumService extends AbstractService
     #[Required]
     public ?ImageUploader $imageUploader = null;
 
-    public function make(Album $album): JsonResponse
+    public function delete(Album $album): Album
     {
         $this->imageUploader->delete($album->getImage());
 
-        $this->flusherService->addRemove($album)->save();
+        $this->flusherService->remove($album);
+
+        return $album;
+    }
+
+    public function request(Album $album): JsonResponse
+    {
+        $this->delete($album);
 
         return $this->responseCollection->successDelete('album@successDelete');
     }

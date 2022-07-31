@@ -44,6 +44,6 @@ class FriendController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friend,
         DeleteFriendService $deleteFriendService
     ): JsonResponse {
-        return $deleteFriendService->make($friend);
+        return $deleteFriendService->request($friend);
     }
 }

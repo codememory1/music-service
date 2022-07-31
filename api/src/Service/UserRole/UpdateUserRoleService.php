@@ -2,11 +2,10 @@
 
 namespace App\Service\UserRole;
 
-use App\DTO\UserRoleDTO;
+use App\Dto\Transfer\UserRoleDto;
 use App\Entity\Role;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
 /**
  * Class UpdateUserRoleService.
@@ -17,18 +16,18 @@ use Symfony\Contracts\Service\Attribute\Required;
  */
 class UpdateUserRoleService extends AbstractService
 {
-    #[Required]
-    public ?SetPermissionsToRoleService $setPermissionsToRoleService = null;
-
-    public function make(UserRoleDTO $userRoleDTO, Role $role): JsonResponse
+    public function update(UserRoleDto $userRoleDto): Role
     {
-        if (true !== $response = $this->validateFullDTO($userRoleDTO)) {
-            return $response;
-        }
-
-        $this->setPermissionsToRoleService->set($role, $userRoleDTO->permissions);
+        $this->validateWithEntity($userRoleDto);
 
         $this->flusherService->save();
+
+        return $userRoleDto->getEntity();
+    }
+
+    public function request(UserRoleDto $userRoleDto): JsonResponse
+    {
+        $this->update($userRoleDto);
 
         return $this->responseCollection->successCreate('role@successUpdate');
     }
