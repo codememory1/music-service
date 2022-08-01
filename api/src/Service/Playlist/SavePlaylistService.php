@@ -35,6 +35,6 @@ class SavePlaylistService extends AbstractService
 
     private function uploadImage(UploadedFile $image, Playlist $playlist): ?string
     {
-        return $this->simpleFileUpload($this->imageUploader, $playlist->getImage(), $image, $playlist);
+        return $this->simpleFileUpload($this->imageUploader, $playlist->getImage(), $image, 'image', $playlist);
     }
 }

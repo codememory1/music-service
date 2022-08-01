@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Entity\Interfaces\UuidIdentifierInterface;
+use App\Entity\Interfaces\EntityS3SettingInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
+use App\Enum\EntityS3SettingEnum;
 use App\Enum\ResponseTypeEnum;
 use App\Repository\MultimediaMediaLibraryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -30,7 +31,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     message: 'multimediaMediaLibrary@multimediaAlreadyAdd',
     payload: [ResponseTypeEnum::EXIST, 409]
 )]
-class MultimediaMediaLibrary implements EntityInterface, UuidIdentifierInterface
+class MultimediaMediaLibrary implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;
@@ -62,6 +63,11 @@ class MultimediaMediaLibrary implements EntityInterface, UuidIdentifierInterface
         $this->generateUuid();
 
         $this->events = new ArrayCollection();
+    }
+
+    public function getFolderName(): EntityS3SettingEnum
+    {
+        return EntityS3SettingEnum::MULTIMEDIA_MEDIA_LIBRARY;
     }
 
     public function getMediaLibrary(): ?MediaLibrary

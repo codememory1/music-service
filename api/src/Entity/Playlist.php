@@ -3,17 +3,17 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Entity\Interfaces\UuidIdentifierInterface;
+use App\Entity\Interfaces\EntityS3SettingInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
+use App\Enum\EntityS3SettingEnum;
 use App\Enum\PlaylistStatusEnum;
 use App\Repository\PlaylistRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * Class Playlist.
@@ -25,7 +25,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
 #[ORM\Table('playlists')]
 #[ORM\HasLifecycleCallbacks]
-class Playlist implements EntityInterface, UuidIdentifierInterface
+class Playlist implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;
@@ -63,6 +63,11 @@ class Playlist implements EntityInterface, UuidIdentifierInterface
 
         $this->multimedia = new ArrayCollection();
         $this->directories = new ArrayCollection();
+    }
+
+    public function getFolderName(): EntityS3SettingEnum
+    {
+        return EntityS3SettingEnum::PLAYLIST;
     }
 
     public function getMediaLibrary(): ?MediaLibrary
@@ -120,7 +125,6 @@ class Playlist implements EntityInterface, UuidIdentifierInterface
         return $this;
     }
 
-    #[Pure]
     public function isHide(): bool
     {
         return $this->getStatus() === PlaylistStatusEnum::HIDE->name;
@@ -133,7 +137,6 @@ class Playlist implements EntityInterface, UuidIdentifierInterface
         return $this;
     }
 
-    #[Pure]
     public function isShow(): bool
     {
         return $this->getStatus() === PlaylistStatusEnum::SHOW->name;
