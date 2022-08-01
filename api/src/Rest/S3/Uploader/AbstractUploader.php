@@ -2,6 +2,7 @@
 
 namespace App\Rest\S3\Uploader;
 
+use App\Entity\Interfaces\EntityS3SettingInterface;
 use App\Rest\S3\Client;
 use App\Rest\S3\Interfaces\S3UploaderInterface;
 use App\Rest\S3\ObjectPath;
@@ -9,6 +10,7 @@ use App\Rest\S3\Uploader\UploadedFile as S3UploadedFile;
 use App\Service\MimeTypeConverter;
 use Aws\Result;
 use JetBrains\PhpStorm\Pure;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class AbstractUploader.
@@ -49,28 +51,24 @@ abstract class AbstractUploader implements S3UploaderInterface
         return hash('sha3-512', $uuid);
     }
 
-    protected function generateFileName(string $pathInSystem, string $mimeType, string $uuid): string
+    protected function generateKey(UploadedFile $file, string $propertyName, EntityS3SettingInterface $entityS3Setting): string
     {
         return sprintf(
-            '%s_%s.%s',
-            $this->generateContentHash($pathInSystem),
-            $this->generateUniqueHash($uuid),
-            $this->getExtensionFromMimeType($mimeType)
+            '%s/%s_%s.%s',
+            $entityS3Setting->getFolderName()->value,
+            $this->generateContentHash($file->getRealPath()),
+            $this->generateUniqueHash($propertyName . $entityS3Setting->getUuid()),
+            $this->getExtensionFromMimeType($file->getMimeType())
         );
     }
 
-    protected function generateKey(string $pathInSystem, string $mimeType, string $uuid, bool $asPathInStorage = false): string
+    protected function generateKeyWithBucket(string $generatedKey): string
     {
-        $generatedKey = $this->generateFileName($pathInSystem, $mimeType, $uuid);
         $generatedKeyWithBucket = sprintf('%s/%s', $this->getBucketName(), $generatedKey);
 
         $this->uploadedPaths[] = $generatedKeyWithBucket;
 
-        if ($asPathInStorage) {
-            return $generatedKeyWithBucket;
-        }
-
-        return $generatedKey;
+        return $generatedKeyWithBucket;
     }
 
     protected function getContent(string $path): ?string
@@ -82,25 +80,42 @@ abstract class AbstractUploader implements S3UploaderInterface
         return null;
     }
 
-    public function upload(string $pathInSystem, string $mimeType, string $uuid, array $args = []): Result
-    {
+    public function upload(
+        UploadedFile $file,
+        string $propertyName,
+        EntityS3SettingInterface $entityS3Setting,
+        array $args = []
+    ): Result {
+        $this->generateKeyWithBucket($this->generateKey($file, $propertyName, $entityS3Setting));
+
         return $this->client->awsS3Client->putObject([
             'Bucket' => $this->getBucketName(),
-            'Key' => $this->generateKey($pathInSystem, $mimeType, $uuid),
-            'Body' => $this->getContent($pathInSystem),
-            'ContentType' => $mimeType,
+            'Key' => $this->generateKey($file, $propertyName, $entityS3Setting),
+            'Body' => $this->getContent($file->getRealPath()),
+            'ContentType' => $file->getMimeType(),
             ...$args
         ]);
     }
 
-    public function save(?string $oldFilePathInStorage, string $newFilePathInSystem, string $mimeType, string $uuid, array $args = []): ?Result
-    {
+    public function save(
+        ?string $oldFilePathInStorage,
+        UploadedFile $file,
+        string $propertyName,
+        EntityS3SettingInterface $entityS3Setting,
+        array $args = []
+    ): ?Result {
         if (null === $oldFilePathInStorage) {
-            return $this->upload($newFilePathInSystem, $mimeType, $uuid);
-        } elseif ($oldFilePathInStorage !== $this->generateKey($newFilePathInSystem, $mimeType, $uuid, true)) {
-            $this->delete($oldFilePathInStorage);
+            return $this->upload($file, $propertyName, $entityS3Setting, $args);
+        }
 
-            return $this->upload($newFilePathInSystem, $mimeType, $uuid);
+        $generatedKeyWithBucket = $this->generateKeyWithBucket(
+            $this->generateKey($file, $propertyName, $entityS3Setting)
+        );
+
+        if ($oldFilePathInStorage !== $generatedKeyWithBucket) {
+            $this->delete($oldFilePathInStorage, $args);
+
+            return $this->upload($file, $propertyName, $entityS3Setting, $args);
         }
 
         return null;
@@ -120,6 +135,6 @@ abstract class AbstractUploader implements S3UploaderInterface
     #[Pure]
     public function getUploadedFile(): S3UploadedFile
     {
-        return new UploadedFile($this->uploadedPaths);
+        return new S3UploadedFile($this->uploadedPaths);
     }
 }

@@ -45,6 +45,12 @@ class UpdateUserProfileDesignService extends AbstractService
 
     private function uploadImage(UploadedFile $image, UserProfileDesign $userProfileDesign): ?string
     {
-        return $this->simpleFileUpload($this->imageUploader, $userProfileDesign->getCoverImage(), $image, $userProfileDesign);
+        return $this->simpleFileUpload(
+            $this->imageUploader,
+            $userProfileDesign->getCoverImage(),
+            $image,
+            'cover_image',
+            $userProfileDesign
+        );
     }
 }

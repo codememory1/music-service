@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Entity\Interfaces\UuidIdentifierInterface;
+use App\Entity\Interfaces\EntityS3SettingInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
+use App\Enum\EntityS3SettingEnum;
 use App\Repository\UserProfileDesignRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: UserProfileDesignRepository::class)]
 #[ORM\Table('user_profile_designs')]
 #[ORM\HasLifecycleCallbacks]
-class UserProfileDesign implements EntityInterface, UuidIdentifierInterface
+class UserProfileDesign implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;
@@ -44,6 +45,11 @@ class UserProfileDesign implements EntityInterface, UuidIdentifierInterface
     public function __construct()
     {
         $this->generateUuid();
+    }
+
+    public function getFolderName(): EntityS3SettingEnum
+    {
+        return EntityS3SettingEnum::USER_PROFILE_DESIGN;
     }
 
     public function setUserProfile(?UserProfile $userProfile): self

@@ -44,6 +44,12 @@ class UpdateMultimediaMediaLibraryService extends AbstractService
 
     private function uploadImage(UploadedFile $image, MultimediaMediaLibrary $multimediaMediaLibrary): ?string
     {
-        return $this->simpleFileUpload($this->imageUploader, $multimediaMediaLibrary->getImage(), $image, $multimediaMediaLibrary);
+        return $this->simpleFileUpload(
+            $this->imageUploader,
+            $multimediaMediaLibrary->getImage(),
+            $image,
+            'image',
+            $multimediaMediaLibrary
+        );
     }
 }

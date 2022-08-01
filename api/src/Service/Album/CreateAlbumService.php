@@ -5,7 +5,6 @@ namespace App\Service\Album;
 use App\Dto\Transfer\AlbumDto;
 use App\Entity\Album;
 use App\Entity\User;
-use App\Rest\S3\Uploader\ImageUploader;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -20,7 +19,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 class CreateAlbumService extends AbstractService
 {
     #[Required]
-    public ?ImageUploader $imageUploader = null;
+    public ?SaveAlbumService $saveAlbumService = null;
 
     public function create(AlbumDto $albumDto, User $toUser): Album
     {
@@ -29,9 +28,8 @@ class CreateAlbumService extends AbstractService
         $album = $albumDto->getEntity();
 
         $album->setUser($toUser);
-        $album->setImage($this->simpleFileUpload($this->imageUploader, $album->getImage(), $albumDto->image, $album));
 
-        $this->flusherService->save($album);
+        $this->saveAlbumService->make($albumDto, $album);
 
         return $album;
     }

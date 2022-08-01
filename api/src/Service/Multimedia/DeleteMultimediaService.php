@@ -34,17 +34,7 @@ class DeleteMultimediaService extends AbstractService
 
     public function delete(Multimedia $multimedia): Multimedia
     {
-        $this->imageUploader->delete($multimedia->getImage());
-
-        if ($multimedia->isTrack()) {
-            $this->trackUploader->delete($multimedia->getMultimedia());
-        } else {
-            if ($multimedia->isClip()) {
-                $this->clipUploader->delete($multimedia->getMultimedia());
-            }
-        }
-
-        $this->subtitlesUploader->delete($multimedia->getSubtitles());
+        $this->deleteFiles($multimedia);
 
         $this->flusherService->remove($multimedia);
 
@@ -56,5 +46,20 @@ class DeleteMultimediaService extends AbstractService
         $this->delete($multimedia);
 
         return $this->responseCollection->successDelete('multimedia@successDelete');
+    }
+
+    private function deleteFiles(Multimedia $multimedia): void
+    {
+        $this->imageUploader->delete($multimedia->getImage());
+
+        if ($multimedia->isTrack()) {
+            $this->trackUploader->delete($multimedia->getMultimedia());
+        } elseif ($multimedia->isClip()) {
+            $this->clipUploader->delete($multimedia->getMultimedia());
+        }
+
+        if (null !== $multimedia->getSubtitles()) {
+            $this->subtitlesUploader->delete($multimedia->getSubtitles());
+        }
     }
 }

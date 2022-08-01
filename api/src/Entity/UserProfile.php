@@ -3,17 +3,17 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Entity\Interfaces\UuidIdentifierInterface;
+use App\Entity\Interfaces\EntityS3SettingInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
+use App\Enum\EntityS3SettingEnum;
 use App\Enum\UserProfileStatusEnum;
 use App\Repository\UserProfileRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -27,7 +27,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('user_profiles')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('user', message: 'userProfile@existByUser')]
-class UserProfile implements EntityInterface, UuidIdentifierInterface
+class UserProfile implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;
@@ -63,6 +63,11 @@ class UserProfile implements EntityInterface, UuidIdentifierInterface
     public function __construct()
     {
         $this->generateUuid();
+    }
+
+    public function getFolderName(): EntityS3SettingEnum
+    {
+        return EntityS3SettingEnum::USER_PROFILE;
     }
 
     public function setUser(?User $user): self
@@ -132,7 +137,6 @@ class UserProfile implements EntityInterface, UuidIdentifierInterface
         return $this;
     }
 
-    #[Pure]
     public function isHide(): bool
     {
         return $this->getStatus() === UserProfileStatusEnum::HIDE->name;
@@ -145,7 +149,6 @@ class UserProfile implements EntityInterface, UuidIdentifierInterface
         return $this;
     }
 
-    #[Pure]
     public function isShow(): bool
     {
         return $this->getStatus() === UserProfileStatusEnum::SHOW->name;

@@ -118,17 +118,29 @@ class SaveMultimediaService extends AbstractService
 
     private function uploadImage(UploadedFile $image, Multimedia $multimedia): ?string
     {
-        return $this->simpleFileUpload($this->imageUploader, $multimedia->getImage(), $image, $multimedia);
+        return $this->simpleFileUpload($this->imageUploader, $multimedia->getImage(), $image, 'image', $multimedia);
     }
 
     private function uploadMultimedia(UploadedFile $multimediaFile, Multimedia $multimedia): ?string
     {
         if ($multimedia->isTrack()) {
-            return $this->simpleFileUpload($this->trackUploader, $multimedia->getMultimedia(), $multimediaFile, $multimedia);
+            return $this->simpleFileUpload(
+                $this->trackUploader,
+                $multimedia->getMultimedia(),
+                $multimediaFile,
+                'multimedia',
+                $multimedia
+            );
         }
 
         if ($multimedia->isClip()) {
-            return $this->simpleFileUpload($this->clipUploader, $multimedia->getMultimedia(), $multimediaFile, $multimedia);
+            return $this->simpleFileUpload(
+                $this->clipUploader,
+                $multimedia->getMultimedia(),
+                $multimediaFile,
+                'multimedia',
+                $multimedia
+            );
         }
 
         return null;
@@ -140,6 +152,12 @@ class SaveMultimediaService extends AbstractService
             return null;
         }
 
-        return $this->simpleFileUpload($this->subtitlesUploader, $multimedia->getSubtitles(), $subtitles, $multimedia);
+        return $this->simpleFileUpload(
+            $this->subtitlesUploader,
+            $multimedia->getSubtitles(),
+            $subtitles,
+            'subtitles',
+            $multimedia
+        );
     }
 }

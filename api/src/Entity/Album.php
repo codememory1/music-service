@@ -3,17 +3,17 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Entity\Interfaces\UuidIdentifierInterface;
+use App\Entity\Interfaces\EntityS3SettingInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
 use App\Enum\AlbumStatusEnum;
+use App\Enum\EntityS3SettingEnum;
 use App\Repository\AlbumRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * Class Album.
@@ -25,7 +25,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
 #[ORM\Table('albums')]
 #[ORM\HasLifecycleCallbacks]
-class Album implements EntityInterface, UuidIdentifierInterface
+class Album implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;
@@ -68,6 +68,11 @@ class Album implements EntityInterface, UuidIdentifierInterface
         $this->setUnpublishStatus();
 
         $this->multimedia = new ArrayCollection();
+    }
+
+    public function getFolderName(): EntityS3SettingEnum
+    {
+        return EntityS3SettingEnum::ALBUM;
     }
 
     public function getUser(): ?User
@@ -176,7 +181,6 @@ class Album implements EntityInterface, UuidIdentifierInterface
         return $this;
     }
 
-    #[Pure]
     public function isPublished(): bool
     {
         return $this->getStatus() === AlbumStatusEnum::PUBLISHED->name;
@@ -189,7 +193,6 @@ class Album implements EntityInterface, UuidIdentifierInterface
         return $this;
     }
 
-    #[Pure]
     public function isUnpublished(): bool
     {
         return $this->getStatus() === AlbumStatusEnum::UNPUBLISHED->name;
