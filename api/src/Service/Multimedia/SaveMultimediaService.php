@@ -34,6 +34,9 @@ use Symfony\Contracts\Service\Attribute\Required;
 class SaveMultimediaService extends AbstractService
 {
     #[Required]
+    public ?MultimediaMetadataValidationService $multimediaMetadataValidationService = null;
+
+    #[Required]
     public ?ImageUploader $imageUploader = null;
 
     #[Required]
@@ -53,9 +56,7 @@ class SaveMultimediaService extends AbstractService
 
     public function make(MultimediaDto $multimediaDto, Multimedia $multimedia): void
     {
-        $this->checkAlbumType($multimedia);
-        $this->checkMultimediaMimeType($multimediaDto, $multimedia);
-        $this->checkSubtitles($multimediaDto);
+        $this->fileValidationWrapper($multimediaDto, $multimedia);
 
         $multimedia->setImage($this->uploadImage($multimediaDto->image, $multimedia));
         $multimedia->setMultimedia($this->uploadMultimedia($multimediaDto->multimedia, $multimedia));
@@ -68,6 +69,16 @@ class SaveMultimediaService extends AbstractService
             new SaveMultimediaEvent($multimedia),
             EventEnum::AFTER_SAVE_MULTIMEDIA->value
         );
+    }
+
+    private function fileValidationWrapper(MultimediaDto $multimediaDto, Multimedia $multimedia): void
+    {
+        $this->checkAlbumType($multimedia);
+        $this->checkMultimediaMimeType($multimediaDto, $multimedia);
+        $this->checkSubtitles($multimediaDto);
+
+        $this->multimediaMetadataValidationService->initMultimedia($multimediaDto->multimedia, $multimedia);
+        $this->multimediaMetadataValidationService->validateDuration();
     }
 
     private function getMultimedia(Multimedia $multimedia): ?Multimedia

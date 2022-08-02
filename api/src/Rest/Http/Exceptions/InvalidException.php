@@ -31,4 +31,10 @@ class InvalidException extends ApiResponseException
     {
         return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidSubtitles', data: $data, headers: $headers);
     }
+
+    #[Pure]
+    final public static function invalidMultimedia(array $data = [], array $headers = []): self
+    {
+        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidMultimediaFile', data: $data, headers: $headers);
+    }
 }

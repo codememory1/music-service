@@ -46,6 +46,7 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'common@badAppealCanceled', 'Невозможно отменить апелляцию'),
             new TranslationFactory('ru', 'common@authFromUnknownDevice', 'Авторизация с незнакомого устройства'),
             new TranslationFactory('ru', 'common@authFromUnknownDeviceMessage', 'На ваш аккаунт был выполнен вход с незнакомого устройтсва. Название устройства: "%device%", IP-адрес: "%ip%"'),
+            new TranslationFactory('ru', 'common@invalidMultimediaFile', 'Произошла ошибка при попытке прочитать файл'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -327,6 +328,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimedia@successSetDislike', 'Дизлайк успешно установлен'),
             new TranslationFactory('ru', 'multimedia@successDeleteLike', 'Лайк успешно снят'),
             new TranslationFactory('ru', 'multimedia@successDeleteDislike', 'Дизлайк успешно снят'),
+            new TranslationFactory('ru', 'multimedia@badDuration', 'Продолжительность мультимедиа не должно превышать %allowed_duration% секунд'),
+
             new TranslationFactory('ru', 'multimediaPlaylist@successMoveToDirectory', 'Мультимедиа успешно перемещена в директорию'),
 
             new TranslationFactory('ru', 'status@draft', 'Черновик'),
