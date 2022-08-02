@@ -45,6 +45,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('common@badAppealCanceled'),
             new TranslationKeyFactory('common@authFromUnknownDevice'),
             new TranslationKeyFactory('common@authFromUnknownDeviceMessage'),
+            new TranslationKeyFactory('common@invalidMultimediaFile'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),
@@ -332,6 +333,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('multimedia@successSetDislike'),
             new TranslationKeyFactory('multimedia@successDeleteLike'),
             new TranslationKeyFactory('multimedia@successDeleteDislike'),
+            new TranslationKeyFactory('multimedia@badDuration'),
 
             new TranslationKeyFactory('multimediaPlaylist@successMoveToDirectory'),
 

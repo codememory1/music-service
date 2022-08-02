@@ -76,4 +76,17 @@ class MultimediaException extends ApiResponseException
             headers: $headers
         );
     }
+
+    #[Pure]
+    final public static function badDuration(int $allowedDuration, array $data = [], array $headers = []): self
+    {
+        return new self(
+            400,
+            ResponseTypeEnum::FAILED,
+            'multimedia@badDuration',
+            ['allowed_duration' => $allowedDuration],
+            $data,
+            $headers
+        );
+    }
 }
