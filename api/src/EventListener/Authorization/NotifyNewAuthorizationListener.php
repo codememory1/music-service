@@ -2,7 +2,9 @@
 
 namespace App\EventListener\Authorization;
 
+use App\Entity\User;
 use App\Entity\UserSession;
+use App\Enum\SystemUserEnum;
 use App\Event\UserAuthorizationEvent;
 use App\Service\MailMessagingService;
 use App\Service\Notification\NotificationCollection;
@@ -42,6 +44,7 @@ class NotifyNewAuthorizationListener
     public function onAuth(UserAuthorizationEvent $userAuthorizationEvent): void
     {
         $userSessionRepository = $this->em->getRepository(UserSession::class);
+        $userRepository = $this->em->getRepository(User::class);
         $lastTempSession = $userSessionRepository->findLastTemp($userAuthorizationEvent->authorizedUser);
         $registeredSession = $userSessionRepository->findRegistered($userAuthorizationEvent->authorizedUser);
 
@@ -60,7 +63,7 @@ class NotifyNewAuthorizationListener
 
             if ($objectComparisonPercentageService->compare() < 70) {
                 $this->notificationCollection->authFromUnknownDevice(
-                    $userAuthorizationEvent->authorizedUser, // TODO: Изменить на системного юзера
+                    $userRepository->findByEmail(SystemUserEnum::BOT->value),
                     $userAuthorizationEvent->authorizedUser,
                     $registeredSession->getDevice(),
                     $registeredSession->getId()
