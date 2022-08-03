@@ -6,6 +6,7 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\MediaLibraryStatusEnum;
+use App\Enum\MultimediaTypeEnum;
 use App\Repository\MediaLibraryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -85,7 +86,6 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isHide(): bool
     {
         return $this->getStatus() === MediaLibraryStatusEnum::HIDE->name;
@@ -98,7 +98,6 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isShow(): bool
     {
         return $this->getStatus() === MediaLibraryStatusEnum::SHOW->name;
@@ -134,7 +133,6 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isMultimediaBelongsToMediaLibrary(MultimediaMediaLibrary $multimedia): bool
     {
         return $multimedia->getMediaLibrary()->getId() === $this->getId();
@@ -198,5 +196,47 @@ class MediaLibrary implements EntityInterface
         }
 
         return $this;
+    }
+
+    public function getCountTracks(): int
+    {
+        return $this->getCountMultimedia(MultimediaTypeEnum::TRACK);
+    }
+
+    public function getCountClips(): int
+    {
+        return $this->getCountMultimedia(MultimediaTypeEnum::CLIP);
+    }
+
+    public function getCountPlaylists(): int
+    {
+        return $this->getPlaylists()->count();
+    }
+
+    private function getCountMultimedia(MultimediaTypeEnum $type): int
+    {
+        $count = $this
+            ->getMultimedia()
+            ->filter(static fn(MultimediaMediaLibrary $multimediaMediaLibrary) => $multimediaMediaLibrary->getMultimedia()->getType() === $type->name)->count();
+
+        $this
+            ->getPlaylists()
+            ->map(static function(Playlist $playlist) use (&$count, $type) {
+                $count += $playlist
+                    ->getMultimedia()
+                    ->filter(static fn(Multimedia $multimedia) => $multimedia->getType() === $type->name)->count();
+
+                $playlist
+                    ->getDirectories()
+                    ->map(static function(PlaylistDirectory $playlistDirectory) use (&$count, $type): void {
+                        $count += $playlistDirectory
+                            ->getMultimedia()
+                            ->filter(static fn(Multimedia $multimedia) => $multimedia->getType() === $type->name)->count();
+                    });
+
+                return $playlist;
+            });
+
+        return $count;
     }
 }
