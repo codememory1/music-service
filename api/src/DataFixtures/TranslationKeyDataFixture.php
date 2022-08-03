@@ -175,6 +175,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('role@successCreate'),
             new TranslationKeyFactory('role@successUpdate'),
             new TranslationKeyFactory('role@successDelete'),
+            new TranslationKeyFactory('role@systemUser'),
+            new TranslationKeyFactory('role@systemUserDescription'),
 
             new TranslationKeyFactory('user@failedToIdentify'),
 
