@@ -17,4 +17,5 @@ enum RoleEnum
     case SUPPORT;
     case MUSIC_MANAGER;
     case USER;
+    case SYSTEM_USER;
 }

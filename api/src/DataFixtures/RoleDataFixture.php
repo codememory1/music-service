@@ -30,6 +30,7 @@ final class RoleDataFixture extends AbstractDataFixture implements DependentFixt
             new RoleFactory(RoleEnum::SUPPORT, 'role@support', 'role@supportDescription'),
             new RoleFactory(RoleEnum::MUSIC_MANAGER, 'role@musicManager', 'role@musicManagerDescription'),
             new RoleFactory(RoleEnum::USER, 'role@user', 'role@userDescription'),
+            new RoleFactory(RoleEnum::SYSTEM_USER, 'role@systemUser', 'role@systemUserDescription'),
         ]);
     }
 
