@@ -11,7 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * Class MediaLibrary.
@@ -46,12 +45,16 @@ class MediaLibrary implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'mediaLibrary', targetEntity: MediaLibraryEvent::class, cascade: ['persist', 'remove'])]
     private Collection $events;
 
-    #[Pure]
+    #[ORM\OneToOne(mappedBy: 'mediaLibrary', targetEntity: MediaLibraryStatistic::class, cascade: ['persist', 'remove'])]
+    private ?MediaLibraryStatistic $statistic = null;
+
     public function __construct()
     {
         $this->multimedia = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->events = new ArrayCollection();
+
+        $this->initStatistic();
     }
 
     public function getUser(): ?User
@@ -85,7 +88,6 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isHide(): bool
     {
         return $this->getStatus() === MediaLibraryStatusEnum::HIDE->name;
@@ -98,7 +100,6 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isShow(): bool
     {
         return $this->getStatus() === MediaLibraryStatusEnum::SHOW->name;
@@ -134,7 +135,6 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isMultimediaBelongsToMediaLibrary(MultimediaMediaLibrary $multimedia): bool
     {
         return $multimedia->getMediaLibrary()->getId() === $this->getId();
@@ -198,5 +198,29 @@ class MediaLibrary implements EntityInterface
         }
 
         return $this;
+    }
+
+    public function getStatistic(): ?MediaLibraryStatistic
+    {
+        return $this->statistic;
+    }
+
+    public function setStatistic(MediaLibraryStatistic $statistic): self
+    {
+        // set the owning side of the relation if necessary
+        if ($statistic->getMediaLibrary() !== $this) {
+            $statistic->setMediaLibrary($this);
+        }
+
+        $this->statistic = $statistic;
+
+        return $this;
+    }
+
+    private function initStatistic(): void
+    {
+        if (null === $this->getStatistic()) {
+            $this->setStatistic(new MediaLibraryStatistic());
+        }
     }
 }

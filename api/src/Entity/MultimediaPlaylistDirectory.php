@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UpdateNumberMultimediaMediaLibraryStatisticTrait;
 use App\Repository\MultimediaPlaylistDirectoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,6 +23,7 @@ class MultimediaPlaylistDirectory implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use UpdateNumberMultimediaMediaLibraryStatisticTrait;
 
     #[ORM\ManyToOne(targetEntity: PlaylistDirectory::class, inversedBy: 'multimedia')]
     #[ORM\JoinColumn(nullable: false)]
@@ -53,5 +55,15 @@ class MultimediaPlaylistDirectory implements EntityInterface
         $this->multimediaMediaLibrary = $multimediaMediaLibrary;
 
         return $this;
+    }
+
+    public function getMultimedia(): ?Multimedia
+    {
+        return $this->getMultimediaMediaLibrary()->getMultimedia();
+    }
+
+    public function getMediaLibrary(): ?MediaLibrary
+    {
+        return $this->getMultimediaMediaLibrary()->getMediaLibrary();
     }
 }

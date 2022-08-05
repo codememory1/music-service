@@ -7,6 +7,7 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
+use App\ResponseData\MediaLibraryStatisticResponseData;
 use App\ResponseData\MultimediaMediaLibraryResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
@@ -55,5 +56,16 @@ class MediaLibraryController extends AbstractRestController
             $this->getAuthorizedUser(),
             $friend
         );
+    }
+
+    #[Route('/statistic', methods: 'GET')]
+    public function statistic(MediaLibraryStatisticResponseData $mediaLibraryStatisticResponseData): JsonResponse
+    {
+        $mediaLibrary = $this->getAuthorizedUser()->getMediaLibrary();
+
+        $mediaLibraryStatisticResponseData->setEntities($mediaLibrary?->getStatistic() ?: []);
+        $mediaLibraryStatisticResponseData->collect();
+
+        return $this->responseCollection->dataOutput($mediaLibraryStatisticResponseData->getResponse(true));
     }
 }

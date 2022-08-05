@@ -35,10 +35,12 @@ class CreateMediaLibraryService extends AbstractService
             throw EntityExistException::mediaLibrary();
         }
 
-        $forUser->setMediaLibrary($mediaLibrary);
+        $mediaLibrary->setUser($forUser);
+
+        $this->flusherService->save($mediaLibrary);
 
         $this->eventDispatcher->dispatch(
-            new CreateMediaLibraryEvent($forUser->getMediaLibrary()),
+            new CreateMediaLibraryEvent($mediaLibrary),
             EventEnum::CREATE_MEDIA_LIBRARY->value
         );
 
