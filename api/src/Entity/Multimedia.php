@@ -112,6 +112,9 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
     #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaRating::class, cascade: ['persist', 'remove'])]
     private Collection $ratings;
 
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: RunningMultimedia::class, cascade: ['persist', 'remove'])]
+    private Collection $runningMultimedia;
+
     public function __construct()
     {
         $this->generateUuid();
@@ -120,6 +123,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         $this->shares = new ArrayCollection();
         $this->auditions = new ArrayCollection();
         $this->ratings = new ArrayCollection();
+        $this->runningMultimedia = new ArrayCollection();
     }
 
     public function getFolderName(): EntityS3SettingEnum
@@ -519,6 +523,36 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
             // set the owning side to null (unless already changed)
             if ($rating->getMultimedia() === $this) {
                 $rating->setMultimedia(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RunningMultimedia>
+     */
+    public function getRunningMultimedia(): Collection
+    {
+        return $this->runningMultimedia;
+    }
+
+    public function addRunningMultimedia(RunningMultimedia $runningMultimedia): self
+    {
+        if (!$this->runningMultimedia->contains($runningMultimedia)) {
+            $this->runningMultimedia[] = $runningMultimedia;
+            $runningMultimedia->setMultimedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRunningMultimedia(RunningMultimedia $runningMultimedia): self
+    {
+        if ($this->runningMultimedia->removeElement($runningMultimedia)) {
+            // set the owning side to null (unless already changed)
+            if ($runningMultimedia->getMultimedia() === $this) {
+                $runningMultimedia->setMultimedia(null);
             }
         }
 

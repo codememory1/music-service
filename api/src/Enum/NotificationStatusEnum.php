@@ -11,7 +11,7 @@ namespace App\Enum;
  */
 enum NotificationStatusEnum
 {
-    case EXPECTS;
+    case PENDING;
     case IN_PROCESS_SENDING;
     case SENT_OUT;
 }

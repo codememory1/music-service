@@ -122,6 +122,15 @@ class UserSession implements EntityInterface
     ])]
     private ?DateTimeImmutable $lastActivity = null;
 
+    #[ORM\OneToOne(mappedBy: 'userSession', targetEntity: RunningMultimedia::class, cascade: ['persist', 'remove'])]
+    private ?RunningMultimedia $runningMultimedia = null;
+
+    #[ORM\OneToOne(mappedBy: 'fromUserSession', targetEntity: StreamRunningMultimedia::class, cascade: ['persist', 'remove'])]
+    private ?StreamRunningMultimedia $streamRunningMultimediaFromMe = null;
+
+    #[ORM\OneToOne(mappedBy: 'toUserSession', targetEntity: StreamRunningMultimedia::class, cascade: ['persist', 'remove'])]
+    private ?StreamRunningMultimedia $streamRunningMultimediaForMe = null;
+
     public function __construct()
     {
         $this->type = UserSessionTypeEnum::TEMP->name;
@@ -363,6 +372,57 @@ class UserSession implements EntityInterface
     public function setLastActivity(?DateTimeInterface $lastActivity): self
     {
         $this->lastActivity = $lastActivity;
+
+        return $this;
+    }
+
+    public function getRunningMultimedia(): ?RunningMultimedia
+    {
+        return $this->runningMultimedia;
+    }
+
+    public function setRunningMultimedia(RunningMultimedia $runningMultimedia): self
+    {
+        // set the owning side of the relation if necessary
+        if ($runningMultimedia->getUserSession() !== $this) {
+            $runningMultimedia->setUserSession($this);
+        }
+
+        $this->runningMultimedia = $runningMultimedia;
+
+        return $this;
+    }
+
+    public function getStreamRunningMultimediaFromMe(): ?StreamRunningMultimedia
+    {
+        return $this->streamRunningMultimediaFromMe;
+    }
+
+    public function setStreamRunningMultimediaFromMe(StreamRunningMultimedia $streamingRunningMultimedia): self
+    {
+        // set the owning side of the relation if necessary
+        if ($streamingRunningMultimedia->getFromUserSession() !== $this) {
+            $streamingRunningMultimedia->setFromUserSession($this);
+        }
+
+        $this->streamRunningMultimediaFromMe = $streamingRunningMultimedia;
+
+        return $this;
+    }
+
+    public function getStreamRunningMultimediaForMe(): ?StreamRunningMultimedia
+    {
+        return $this->streamRunningMultimediaFromMe;
+    }
+
+    public function setStreamRunningMultimediaForMe(StreamRunningMultimedia $streamRunningMultimedia): self
+    {
+        // set the owning side of the relation if necessary
+        if ($streamRunningMultimedia->getToUserSession() !== $this) {
+            $streamRunningMultimedia->setToUserSession($this);
+        }
+
+        $this->streamRunningMultimediaFromMe = $streamRunningMultimedia;
 
         return $this;
     }

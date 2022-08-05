@@ -167,7 +167,7 @@ class Notification implements EntityInterface
 
     public function setExpectsStatus(): self
     {
-        $this->setStatus(NotificationStatusEnum::EXPECTS);
+        $this->setStatus(NotificationStatusEnum::PENDING);
 
         return $this;
     }
@@ -175,7 +175,7 @@ class Notification implements EntityInterface
     #[Pure]
     public function isExpects(): bool
     {
-        return $this->getStatus() === NotificationStatusEnum::EXPECTS->name;
+        return $this->getStatus() === NotificationStatusEnum::PENDING->name;
     }
 
     public function setInProcessSendingStatus(): self
