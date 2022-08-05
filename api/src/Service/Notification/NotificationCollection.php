@@ -99,7 +99,7 @@ class NotificationCollection
         $notificationEntity->setType($type);
         $notificationEntity->setAction(...$actions);
         $notificationEntity->setToUser($to->getEmail());
-        $notificationEntity->setStatus(NotificationStatusEnum::EXPECTS);
+        $notificationEntity->setStatus(NotificationStatusEnum::PENDING);
 
         $this->em->persist($notificationEntity);
         $this->em->flush();

@@ -37,7 +37,7 @@ class NotificationRepository extends AbstractRepository
                 )
             )
         );
-        $qb->setParameter('status', NotificationStatusEnum::EXPECTS->name);
+        $qb->setParameter('status', NotificationStatusEnum::PENDING->name);
 
         return $qb->getQuery()->getResult();
     }
