@@ -6,13 +6,11 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\MediaLibraryStatusEnum;
-use App\Enum\MultimediaTypeEnum;
 use App\Repository\MediaLibraryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * Class MediaLibrary.
@@ -47,12 +45,16 @@ class MediaLibrary implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'mediaLibrary', targetEntity: MediaLibraryEvent::class, cascade: ['persist', 'remove'])]
     private Collection $events;
 
-    #[Pure]
+    #[ORM\OneToOne(mappedBy: 'mediaLibrary', targetEntity: MediaLibraryStatistic::class, cascade: ['persist', 'remove'])]
+    private ?MediaLibraryStatistic $statistic = null;
+
     public function __construct()
     {
         $this->multimedia = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->events = new ArrayCollection();
+
+        $this->initStatistic();
     }
 
     public function getUser(): ?User
@@ -198,45 +200,27 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
-    public function getCountTracks(): int
+    public function getStatistic(): ?MediaLibraryStatistic
     {
-        return $this->getCountMultimedia(MultimediaTypeEnum::TRACK);
+        return $this->statistic;
     }
 
-    public function getCountClips(): int
+    public function setStatistic(MediaLibraryStatistic $statistic): self
     {
-        return $this->getCountMultimedia(MultimediaTypeEnum::CLIP);
+        // set the owning side of the relation if necessary
+        if ($statistic->getMediaLibrary() !== $this) {
+            $statistic->setMediaLibrary($this);
+        }
+
+        $this->statistic = $statistic;
+
+        return $this;
     }
 
-    public function getCountPlaylists(): int
+    private function initStatistic(): void
     {
-        return $this->getPlaylists()->count();
-    }
-
-    private function getCountMultimedia(MultimediaTypeEnum $type): int
-    {
-        $count = $this
-            ->getMultimedia()
-            ->filter(static fn(MultimediaMediaLibrary $multimediaMediaLibrary) => $multimediaMediaLibrary->getMultimedia()->getType() === $type->name)->count();
-
-        $this
-            ->getPlaylists()
-            ->map(static function(Playlist $playlist) use (&$count, $type) {
-                $count += $playlist
-                    ->getMultimedia()
-                    ->filter(static fn(Multimedia $multimedia) => $multimedia->getType() === $type->name)->count();
-
-                $playlist
-                    ->getDirectories()
-                    ->map(static function(PlaylistDirectory $playlistDirectory) use (&$count, $type): void {
-                        $count += $playlistDirectory
-                            ->getMultimedia()
-                            ->filter(static fn(Multimedia $multimedia) => $multimedia->getType() === $type->name)->count();
-                    });
-
-                return $playlist;
-            });
-
-        return $count;
+        if (null === $this->getStatistic()) {
+            $this->setStatistic(new MediaLibraryStatistic());
+        }
     }
 }

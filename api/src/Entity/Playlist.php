@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class Playlist.
@@ -137,6 +138,7 @@ class Playlist implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isShow(): bool
     {
         return $this->getStatus() === PlaylistStatusEnum::SHOW->name;
@@ -217,5 +219,21 @@ class Playlist implements EntityInterface, EntityS3SettingInterface
         }
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function addNumberPlaylistToMediaLibraryStatistic(): void
+    {
+        $statistic = $this->getMediaLibrary()->getStatistic();
+
+        $statistic->setNumberOfPlaylists($statistic->getNumberOfPlaylists() + 1);
+    }
+
+    #[ORM\PreRemove]
+    public function removeNumberPlaylistToMediaLibraryStatistic(): void
+    {
+        $statistic = $this->getMediaLibrary()->getStatistic();
+
+        $statistic->setNumberOfPlaylists($statistic->getNumberOfPlaylists() - 1);
     }
 }

@@ -61,7 +61,9 @@ class MediaLibraryController extends AbstractRestController
     #[Route('/statistic', methods: 'GET')]
     public function statistic(MediaLibraryStatisticResponseData $mediaLibraryStatisticResponseData): JsonResponse
     {
-        $mediaLibraryStatisticResponseData->setEntities($this->getAuthorizedUser()->getMediaLibrary() ?: []);
+        $mediaLibrary = $this->getAuthorizedUser()->getMediaLibrary();
+
+        $mediaLibraryStatisticResponseData->setEntities($mediaLibrary?->getStatistic() ?: []);
         $mediaLibraryStatisticResponseData->collect();
 
         return $this->responseCollection->dataOutput($mediaLibraryStatisticResponseData->getResponse(true));

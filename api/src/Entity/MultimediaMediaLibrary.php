@@ -6,6 +6,7 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Interfaces\EntityS3SettingInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UpdateNumberMultimediaMediaLibraryStatisticTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
 use App\Enum\EntityS3SettingEnum;
 use App\Enum\ResponseTypeEnum;
@@ -36,6 +37,7 @@ class MultimediaMediaLibrary implements EntityInterface, EntityS3SettingInterfac
     use IdentifierTrait;
     use UuidIdentifierTrait;
     use TimestampTrait;
+    use UpdateNumberMultimediaMediaLibraryStatisticTrait;
 
     #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'multimedia')]
     #[ORM\JoinColumn(nullable: false)]
@@ -148,10 +150,12 @@ class MultimediaMediaLibrary implements EntityInterface, EntityS3SettingInterfac
         return $this;
     }
 
-    public function __clone(): void
+    public function __clone()
     {
         $this->id = null;
         $this->createdAt = null;
         $this->updatedAt = null;
+
+        return $this;
     }
 }
