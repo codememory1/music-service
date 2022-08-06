@@ -398,14 +398,14 @@ class UserSession implements EntityInterface
         return $this->streamRunningMultimediaFromMe;
     }
 
-    public function setStreamRunningMultimediaFromMe(StreamRunningMultimedia $streamingRunningMultimedia): self
+    public function setStreamRunningMultimediaFromMe(StreamRunningMultimedia $streamRunningMultimedia): self
     {
         // set the owning side of the relation if necessary
-        if ($streamingRunningMultimedia->getFromUserSession() !== $this) {
-            $streamingRunningMultimedia->setFromUserSession($this);
+        if ($streamRunningMultimedia->getFromUserSession() !== $this) {
+            $streamRunningMultimedia->setFromUserSession($this);
         }
 
-        $this->streamRunningMultimediaFromMe = $streamingRunningMultimedia;
+        $this->streamRunningMultimediaFromMe = $streamRunningMultimedia;
 
         return $this;
     }

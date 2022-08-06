@@ -331,6 +331,8 @@ class TranslationDataFixture extends AbstractDataFixture implements DependentFix
             new TranslationFactory('ru', 'multimedia@successDeleteLike', 'Лайк успешно снят'),
             new TranslationFactory('ru', 'multimedia@successDeleteDislike', 'Дизлайк успешно снят'),
             new TranslationFactory('ru', 'multimedia@badDuration', 'Продолжительность мультимедиа не должно превышать %allowed_duration% секунд'),
+            new TranslationFactory('ru', 'multimedia@successPlay', 'Мультимедиа успешно воспроизведено'),
+            new TranslationFactory('ru', 'multimedia@successPause', 'Воспроизведение мультимедиа успешно остановлено'),
 
             new TranslationFactory('ru', 'multimediaPlaylist@successMoveToDirectory', 'Мультимедиа успешно перемещена в директорию'),
 

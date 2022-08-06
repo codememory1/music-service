@@ -29,6 +29,7 @@ class AuthorizedUser
     private BearerToken $bearerToken;
     private ?string $accessToken;
     private ?User $user = null;
+    private ?UserSession $userSession = null;
 
     public function __construct(EntityManagerInterface $manager, BearerToken $bearerToken)
     {
@@ -55,21 +56,30 @@ class AuthorizedUser
         return $this;
     }
 
+    public function getUserSession(): ?UserSession
+    {
+        if (null !== $this->userSession) {
+            return $this->userSession;
+        }
+
+        if (false !== $tokenData = $this->bearerToken->getData()) {
+            $finedUser = $this->userRepository->findOneBy(['id' => $tokenData['id']]);
+            $this->userSession = $this->userSessionRepository->findOneBy([
+                'user' => $finedUser,
+                'accessToken' => $this->bearerToken->getToken()
+            ]);
+        }
+
+        return $this->userSession;
+    }
+
     public function getUser(): ?User
     {
         if (null !== $this->user) {
             return $this->user;
         }
 
-        if (false !== $tokenData = $this->bearerToken->getData()) {
-            $finedUser = $this->userRepository->findOneBy(['id' => $tokenData['id']]);
-            $finedUserSession = $this->userSessionRepository->findOneBy([
-                'user' => $finedUser,
-                'accessToken' => $this->bearerToken->getToken()
-            ]);
-
-            $this->user = null !== $finedUser && null !== $finedUserSession ? $finedUser : null;
-        }
+        $this->user = $this->getUserSession()?->getUser();
 
         return $this->user;
     }

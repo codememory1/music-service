@@ -30,7 +30,7 @@ class Friend implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'acceptedFriendRequests')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $friend = null;
 

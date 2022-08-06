@@ -336,6 +336,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('multimedia@successDeleteLike'),
             new TranslationKeyFactory('multimedia@successDeleteDislike'),
             new TranslationKeyFactory('multimedia@badDuration'),
+            new TranslationKeyFactory('multimedia@successPlay'),
+            new TranslationKeyFactory('multimedia@successPause'),
 
             new TranslationKeyFactory('multimediaPlaylist@successMoveToDirectory'),
 

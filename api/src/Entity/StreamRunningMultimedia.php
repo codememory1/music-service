@@ -25,7 +25,7 @@ class StreamRunningMultimedia implements EntityInterface
     use IdentifierTrait;
     use TimestampTrait;
 
-    #[ORM\OneToOne(inversedBy: 'streaming', targetEntity: RunningMultimedia::class)]
+    #[ORM\OneToOne(inversedBy: 'streamRunningMultimedia', targetEntity: RunningMultimedia::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?RunningMultimedia $runningMultimedia = null;
 

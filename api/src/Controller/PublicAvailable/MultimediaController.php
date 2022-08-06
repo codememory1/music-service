@@ -15,6 +15,7 @@ use App\Rest\Controller\AbstractRestController;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Multimedia\AddMultimediaService;
 use App\Service\Multimedia\DeleteMultimediaService;
+use App\Service\Multimedia\PlayPauseMultimediaService;
 use App\Service\Multimedia\UpdateMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -80,5 +81,13 @@ class MultimediaController extends AbstractRestController
         }
 
         return $deleteMultimediaService->request($multimedia);
+    }
+
+    #[Route('/multimedia/{multimedia_id<\d+>}/play-pause', methods: 'PATCH')]
+    public function playPause(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        PlayPauseMultimediaService $playPauseMultimediaService
+    ): JsonResponse {
+        return $playPauseMultimediaService->request($multimedia, $this->authorizedUser->getUserSession());
     }
 }

@@ -23,15 +23,15 @@ class MultimediaShare implements EntityInterface
     use IdentifierTrait;
     use TimestampTrait;
 
-    #[ORM\ManyToOne(targetEntity: Multimedia::class)]
+    #[ORM\ManyToOne(targetEntity: Multimedia::class, inversedBy: 'shares')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Multimedia $multimedia = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'multimediaSharedByMe')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $fromUser = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sharedWithMe')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'multimediaSharedWithMe')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $toUser = null;
 
