@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Multimedia;
 use App\Entity\RunningMultimedia;
 
 /**
@@ -16,4 +17,11 @@ class RunningMultimediaRepository extends AbstractRepository
 {
     protected ?string $entity = RunningMultimedia::class;
     protected ?string $alias = 'rm';
+
+    public function findByMultimedia(?Multimedia $multimedia): ?RunningMultimedia
+    {
+        return $this->findOneBy([
+            'multimedia' => $multimedia
+        ]);
+    }
 }

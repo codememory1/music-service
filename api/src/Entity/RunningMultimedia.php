@@ -8,6 +8,7 @@ use App\Entity\Traits\TimestampTrait;
 use App\Repository\RunningMultimediaRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * Class RunningMultimedia.
@@ -32,7 +33,7 @@ class RunningMultimedia implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Multimedia $multimedia = null;
 
-    #[ORM\Column(type: Types::FLOAT, options: [
+    #[ORM\Column('`current_time`', Types::FLOAT, options: [
         'comment' => 'Time at which multimedia plays'
     ])]
     private ?float $currentTime = null;
@@ -81,7 +82,7 @@ class RunningMultimedia implements EntityInterface
         return $this;
     }
 
-    public function isIsPlaying(): ?bool
+    public function isPlaying(): ?bool
     {
         return $this->isPlaying;
     }
@@ -89,6 +90,29 @@ class RunningMultimedia implements EntityInterface
     public function setIsPlaying(bool $isPlaying): self
     {
         $this->isPlaying = $isPlaying;
+
+        return $this;
+    }
+
+    public function play(): self
+    {
+        return $this->setIsPlaying(true);
+    }
+
+    #[Pure]
+    public function isPause(): bool
+    {
+        return false === $this->isPlaying();
+    }
+
+    public function pause(): self
+    {
+        return $this->setIsPlaying(false);
+    }
+
+    public function switchIsPlaying(): self
+    {
+        $this->isPlaying() ? $this->pause() : $this->play();
 
         return $this;
     }
