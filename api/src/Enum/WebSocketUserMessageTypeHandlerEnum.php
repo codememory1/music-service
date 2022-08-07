@@ -11,7 +11,7 @@ namespace App\Enum;
  */
 enum WebSocketUserMessageTypeHandlerEnum: string
 {
-    // example -> case TEST_HANDLER = 'App\Service\WebSocket\TestUserMessageHandlerService';
+    case STREAM_MULTIMEDIA_BETWEEN_CURRENT_ACCOUNT = 'App\Service\WebSocket\StreamMultimediaBetweenCurrentAccountHandlerService';
 
     public static function get(string $name): ?string
     {

@@ -2,9 +2,13 @@
 
 namespace App\Service\WebSocket;
 
+use App\Entity\Interfaces\EntityInterface;
+use App\Entity\User;
+use App\Entity\UserSession;
 use App\Enum\WebSocketClientMessageTypeEnum;
 use App\Security\AuthorizedUser;
 use App\Service\AbstractService;
+use App\Service\TranslationService;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 use Workerman\Connection\ConnectionInterface;
@@ -18,18 +22,64 @@ use Workerman\Connection\ConnectionInterface;
  */
 abstract class AbstractUserMessageHandlerService extends AbstractService implements UserMessageHandlerInterface
 {
+    protected ?WebSocketClientMessageTypeEnum $clientMessageType = null;
+
     #[Required]
     public ?AuthorizedUser $authorizedUser = null;
+
+    #[Required]
+    public ?TranslationService $translationService = null;
     private ?ConnectionInterface $connection = null;
+
+    /**
+     * @var array<int, array{ConnectionInterface}>
+     */
+    private array $connectionsWithUserId = [];
+
+    /**
+     * @var array<string, ConnectionInterface>
+     */
+    private array $connectionsWithAccessTokens = [];
     private array $messageHeaders = [];
     private array $messageData = [];
 
-    protected function sendToClient(WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
+    protected function sendToConnection(ConnectionInterface $connection, WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
     {
-        $this->connection?->send(json_encode([
+        $connection->send(json_encode([
             'type' => $clientMessageTypeEnum->name,
             'data' => $data
         ]));
+
+        return $this;
+    }
+
+    protected function sendToClient(WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
+    {
+        if (null !== $this->connection) {
+            $this->sendToConnection($this->connection, $clientMessageTypeEnum, $data);
+        }
+
+        return $this;
+    }
+
+    protected function sendToUser(User $user, WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
+    {
+        $userConnections = $this->connectionsWithUserId[$user->getId()] ?? [];
+
+        foreach ($userConnections as $userConnection) {
+            $this->sendToConnection($userConnection, $clientMessageTypeEnum, $data);
+        }
+
+        return $this;
+    }
+
+    protected function sendToUserSession(UserSession $userSession, WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
+    {
+        $userSessionConnection = $this->connectionsWithAccessTokens[$userSession->getAccessToken()] ?? null;
+
+        if (null !== $userSessionConnection) {
+            $this->sendToConnection($userSessionConnection, $clientMessageTypeEnum, $data);
+        }
 
         return $this;
     }
@@ -43,9 +93,46 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
         return $this->authorizedUser;
     }
 
+    /**
+     * @template Entity
+     * @psalm-param Entity $entityNamespace
+     *
+     * @return null|Entity
+     */
+    protected function getEntityIfExist(string $messageKey, string $entityNamespace): ?EntityInterface
+    {
+        $entityRepository = $this->em->getRepository($entityNamespace);
+        $valueFromMessageKey = $this->getMessage()[$messageKey] ?? null;
+        $finedEntity = $entityRepository->find($valueFromMessageKey);
+
+        if (null === $valueFromMessageKey || null === $finedEntity) {
+            $this->sendToClient($this->clientMessageType, [
+                $messageKey => 'Not Found'
+            ]);
+
+            return null;
+        }
+
+        return $finedEntity;
+    }
+
     public function setConnection(ConnectionInterface $connection): UserMessageHandlerInterface
     {
         $this->connection = $connection;
+
+        return $this;
+    }
+
+    public function setConnectionsWithUserId(array $connections): UserMessageHandlerInterface
+    {
+        $this->connectionsWithUserId = $connections;
+
+        return $this;
+    }
+
+    public function setConnectionsWithAccessTokens(array $connections): UserMessageHandlerInterface
+    {
+        $this->connectionsWithAccessTokens = $connections;
 
         return $this;
     }

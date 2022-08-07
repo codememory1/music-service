@@ -97,6 +97,13 @@ class UserSessionRepository extends AbstractRepository
         ]);
     }
 
+    public function findByAccessToken(string $accessToken): ?UserSession
+    {
+        return $this->findOneBy([
+            'accessToken' => $accessToken
+        ]);
+    }
+
     public function findByRefreshToken(string $refreshToken): ?UserSession
     {
         return $this->findOneBy([
