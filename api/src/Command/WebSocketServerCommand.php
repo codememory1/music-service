@@ -2,13 +2,10 @@
 
 namespace App\Command;
 
-use App\Collection\WebSocketUserConnectionCollection;
-use App\Collection\WebSocketUserSessionConnectionCollection;
-use App\Entity\UserSession;
 use App\Enum\WebSocketUserMessageTypeHandlerEnum;
-use App\Repository\UserSessionRepository;
 use App\Service\SchemaValidatorService;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
+use App\Service\WebSocket\Worker;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -19,9 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\ReverseContainer;
-use Symfony\Component\HttpFoundation\Request;
 use Workerman\Connection\ConnectionInterface;
-use Workerman\Worker;
 
 /**
  * Class WebSocketServerCommand.
@@ -40,22 +35,19 @@ class WebSocketServerCommand extends Command
     private ReverseContainer $container;
     private Worker $worker;
     private SchemaValidatorService $schemaValidatorService;
-    private UserSessionRepository $userSessionRepository;
 
     public function __construct(
+        Worker $worker,
         ParameterBagInterface $parameterBag,
         ReverseContainer $container,
-        SchemaValidatorService $schemaValidatorService,
-        UserSessionRepository $userSessionRepository
+        SchemaValidatorService $schemaValidatorService
     ) {
         parent::__construct();
 
+        $this->worker = $worker;
         $this->parameterBag = $parameterBag;
         $this->container = $container;
         $this->schemaValidatorService = $schemaValidatorService;
-        $this->userSessionRepository = $userSessionRepository;
-
-        $this->worker = new Worker($this->parameterBag->get('ws.url'));
     }
 
     /**
@@ -72,28 +64,19 @@ class WebSocketServerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $context = $this;
         $this->worker->count = $this->parameterBag->get('ws.count_process');
         $this->worker->reloadable = true;
-        $this->worker->usersWithConnections = [];
-        $this->worker->userSessionsWithConnections = [];
 
-        $this->worker->onConnect = function(ConnectionInterface $connection): void {
-            $connection->onWebSocketConnect = function(ConnectionInterface $connection): void {
-                $userSession = $this->getUserSession(Request::createFromGlobals());
-                $user = $userSession?->getUser();
-
-                if (null !== $userSession) {
-                    $this->worker->usersWithConnections[$user->getId()][] = new WebSocketUserConnectionCollection($user, $connection);
-                    $this->worker->userSessionsWithConnections[$userSession->getId()] = new WebSocketUserSessionConnectionCollection($userSession, $connection);
-                }
-            };
-        };
-
-        $this->worker->onMessage = function(ConnectionInterface $connection, string $message): void {
-            if ($this->schemaValidatorService->validate('ws_client_message', $message)) {
-                $this->messageHandler($connection, $message);
+        $this->worker->onConnect(static function(): void {
+        });
+        $this->worker->onMessage(static function(ConnectionInterface $connection, string $message) use ($context): void {
+            if ($context->schemaValidatorService->validate('ws_client_message', $message)) {
+                $context->messageHandler($connection, $message);
             }
-        };
+        });
+        $this->worker->onCloseConnect(static function(): void {
+        });
 
         global $argv;
 
@@ -107,23 +90,6 @@ class WebSocketServerCommand extends Command
         Worker::runAll();
 
         return self::SUCCESS;
-    }
-
-    private function getUserSession(Request $request): ?UserSession
-    {
-        $bearerToken = $request->headers->get('Authorization');
-
-        if (false === empty($bearerToken)) {
-            $bearerTokenData = explode(' ', $bearerToken, 2);
-
-            if (count($bearerTokenData) < 2 || 'Bearer' !== $bearerTokenData[0]) {
-                return null;
-            }
-
-            return $this->userSessionRepository->findByAccessToken($bearerTokenData[1]);
-        }
-
-        return null;
     }
 
     /**
@@ -150,6 +116,7 @@ class WebSocketServerCommand extends Command
             /** @var UserMessageHandlerInterface $handler */
             $handler = $this->container->getService($typeHandlerNamespace);
 
+            $handler->setWorker($this->worker);
             $handler->setConnection($connection);
             $handler->setMessage($message['headers'], $message['data']);
             $handler->handler();

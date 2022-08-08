@@ -35,30 +35,34 @@ class Worker extends WorkermanWorker
      */
     private array $userSessionsWithConnection = [];
 
-    public function __construct(UserSessionRepository $userSessionRepository)
+    public function __construct(UserSessionRepository $userSessionRepository, string $url)
     {
-        parent::__construct();
+        parent::__construct($url);
 
         $this->userSessionRepository = $userSessionRepository;
     }
 
     protected function onWebSocketConnect(ConnectionInterface $connection): void
     {
-        $connection->onWebSocketConnect = static function(ConnectionInterface $connection): void {
+        $worker = $this;
+
+        $connection->onWebSocketConnect = static function(ConnectionInterface $connection) use ($worker): void {
             $request = Request::createFromGlobals();
 
-            $this->addUserWithConnection($request, $connection);
-            $this->addUserSessionWithConnection($request, $connection);
+            $worker->addUserWithConnection($request, $connection);
+            $worker->addUserSessionWithConnection($request, $connection);
         };
     }
 
     protected function onWebSocketClose(ConnectionInterface $connection): void
     {
-        $connection->onWebSocketClose = static function(): void {
+        $worker = $this;
+
+        $connection->onWebSocketClose = static function() use ($worker): void {
             $request = Request::createFromGlobals();
 
-            $this->removeUserWithConnection($request);
-            $this->removeUserSessionWithConnection($request);
+            $worker->removeUserWithConnection($request);
+            $worker->removeUserSessionWithConnection($request);
         };
     }
 
@@ -148,7 +152,7 @@ class Worker extends WorkermanWorker
         $context = $this->context;
         $worker = $this;
 
-        return static function(...$argv) use ($callback, $context, $worker, $privateCallback): callable {
+        return static function(...$argv) use ($callback, $context, $worker, $privateCallback): void {
             $argv[] = $worker;
             $argv[] = $context;
 
@@ -156,7 +160,7 @@ class Worker extends WorkermanWorker
                 call_user_func($privateCallback, ...$argv);
             }
 
-            return call_user_func($callback, ...$argv);
+            call_user_func($callback, ...$argv);
         };
     }
 

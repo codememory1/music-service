@@ -157,6 +157,13 @@ services:
           - !php/const App\Enum\GoogleScopeEnum::EMAIL
           - !php/const App\Enum\GoogleScopeEnum::PROFILE
 
+    # WebSocket
+    App\Service\WebSocket\Worker:
+      public: true
+      arguments:
+        $userSessionRepository: '@App\Repository\UserSessionRepository'
+        $url: '%ws.url%'
+
     App\Service\IPGeolocation\IPApi\Client:
       arguments:
         $client: '@Symfony\Contracts\HttpClient\HttpClientInterface'
