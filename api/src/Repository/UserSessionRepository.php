@@ -110,4 +110,11 @@ class UserSessionRepository extends AbstractRepository
             'refreshToken' => $refreshToken
         ]);
     }
+
+    public function findByAccessToken(string $accessToken): ?UserSession
+    {
+        return $this->findOneBy([
+            'accessToken' => $accessToken
+        ]);
+    }
 }
