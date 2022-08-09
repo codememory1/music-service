@@ -32,9 +32,10 @@ final class StreamMultimediaBetweenCurrentAccountHandlerService extends Abstract
                         'to_user_session' => 'Session is not active'
                     ]);
                 } else {
-//                    $this->worker->sendToUser($toUserSession->getUser(), WebSocketClientMessageTypeEnum::MULTIMEDIA_BROADCAST_REQUEST, [
-//                        'to_user_session' => 'Session is not active'
-//                    ]);
+                    dd(count($this->worker->getUserSessionsWithConnection()));
+                    $this->worker->sendToUser($toUserSession->getUser(), WebSocketClientMessageTypeEnum::MULTIMEDIA_BROADCAST_REQUEST, [
+                        'to_user_session' => 'Session is not active'
+                    ]);
                     $streamRunningMultimedia = new StreamRunningMultimedia();
 
                     $streamRunningMultimedia->setFromUserSession($this->authorizedUser->getUserSession());

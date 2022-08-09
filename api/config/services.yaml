@@ -11,7 +11,7 @@ parameters:
     jwt.refresh_ttl: '%env(JWT_REFRESH_TTL)%'
 
     ws.count_process: '%env(int:WS_PROCESS_COUNT)%'
-    ws.url: '%env(WS_URL)%'
+    ws.host: '%env(WS_HOST)%'
 
 services:
     _defaults:
@@ -159,10 +159,9 @@ services:
 
     # WebSocket
     App\Service\WebSocket\Worker:
-      public: true
+      class: App\Service\WebSocket\Worker
       arguments:
-        $userSessionRepository: '@App\Repository\UserSessionRepository'
-        $url: '%ws.url%'
+        $url: '%ws.host%'
 
     App\Service\IPGeolocation\IPApi\Client:
       arguments:

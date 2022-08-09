@@ -40,7 +40,7 @@ class WebSocketServerCommand extends Command
         Worker $worker,
         ParameterBagInterface $parameterBag,
         ReverseContainer $container,
-        SchemaValidatorService $schemaValidatorService
+        SchemaValidatorService $schemaValidatorService,
     ) {
         parent::__construct();
 
@@ -65,6 +65,7 @@ class WebSocketServerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $context = $this;
+
         $this->worker->count = $this->parameterBag->get('ws.count_process');
         $this->worker->reloadable = true;
 
@@ -78,6 +79,15 @@ class WebSocketServerCommand extends Command
         $this->worker->onCloseConnect(static function(): void {
         });
 
+        $this->demon($input);
+
+        Worker::runAll();
+
+        return self::SUCCESS;
+    }
+
+    private function demon(InputInterface $input): void
+    {
         global $argv;
 
         $argv[0] = 'app:ws-server';
@@ -86,10 +96,6 @@ class WebSocketServerCommand extends Command
         if (false !== $input->getOption('demon')) {
             $argv[2] = $input->getOption('demon');
         }
-
-        Worker::runAll();
-
-        return self::SUCCESS;
     }
 
     /**
