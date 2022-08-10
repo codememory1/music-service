@@ -35,7 +35,7 @@ class WorkerConnectionManager
         return $this;
     }
 
-    public function getUserSessionConnectionId(int $userSessionId): ?string
+    public function getConnectionIdByUserSession(int $userSessionId): ?string
     {
         $connectionUserSessionKey = $this->generateConnectionUserSessionKey('*', $userSessionId);
         $keys = $this->redisClient->keys($connectionUserSessionKey);
@@ -89,7 +89,7 @@ class WorkerConnectionManager
         return $this;
     }
 
-    public function deleteUserSessionConnection(int $userSessionId): self
+    public function deleteConnectionByUserSession(int $userSessionId): self
     {
         $keys = $this->redisClient->keys($this->generateConnectionUserSessionKey('*', $userSessionId));
 

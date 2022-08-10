@@ -95,7 +95,7 @@ class Worker
 
     public function sendToSession(UserSession $userSession, WebSocketClientMessageTypeEnum $clientMessageType, array $data): self
     {
-        $connectionId = $this->workerConnectionManager->getUserSessionConnectionId($userSession->getId());
+        $connectionId = $this->workerConnectionManager->getConnectionIdByUserSession($userSession->getId());
 
         if (null !== $connectionId) {
             $this->sendToConnection($connectionId, $clientMessageType, $data);
