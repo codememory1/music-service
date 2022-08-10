@@ -3,7 +3,6 @@
 namespace App\Collection;
 
 use App\Entity\User;
-use Workerman\Connection\ConnectionInterface;
 
 /**
  * Class WebSocketUserConnectionCollection.
@@ -15,11 +14,11 @@ use Workerman\Connection\ConnectionInterface;
 final class WebSocketUserConnectionCollection
 {
     public readonly User $user;
-    public readonly ConnectionInterface $connection;
+    public readonly int $connectionId;
 
-    public function __construct(User $user, ConnectionInterface $connection)
+    public function __construct(User $user, int $connectionId)
     {
         $this->user = $user;
-        $this->connection = $connection;
+        $this->connectionId = $connectionId;
     }
 }

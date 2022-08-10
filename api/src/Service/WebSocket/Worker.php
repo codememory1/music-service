@@ -9,9 +9,8 @@ use App\Entity\UserSession;
 use App\Enum\WebSocketClientMessageTypeEnum;
 use App\Repository\UserSessionRepository;
 use function call_user_func;
-use Symfony\Component\HttpFoundation\Request;
-use Workerman\Connection\ConnectionInterface;
-use Workerman\Worker as WorkermanWorker;
+use Swoole\Http\Request;
+use Swoole\WebSocket\Server;
 
 /**
  * Class Worker.
@@ -20,10 +19,10 @@ use Workerman\Worker as WorkermanWorker;
  *
  * @author  Codememory
  */
-class Worker extends WorkermanWorker
+class Worker
 {
     private UserSessionRepository $userSessionRepository;
-    private ?object $context = null;
+    private Server $server;
 
     /**
      * @var array<int, array<int, WebSocketUserConnectionCollection>>
@@ -35,98 +34,70 @@ class Worker extends WorkermanWorker
      */
     private array $userSessionsWithConnection = [];
 
-    public function __construct(UserSessionRepository $userSessionRepository)
+    public function __construct(UserSessionRepository $userSessionRepository, string $host, int $port)
     {
-        parent::__construct();
-
         $this->userSessionRepository = $userSessionRepository;
+
+        $this->server = new Server($host, $port);
     }
 
-    protected function onWebSocketConnect(ConnectionInterface $connection): void
+    public function onStart(?callable $callback = null): self
     {
-        $connection->onWebSocketConnect = static function(ConnectionInterface $connection): void {
-            $request = Request::createFromGlobals();
-
-            $this->addUserWithConnection($request, $connection);
-            $this->addUserSessionWithConnection($request, $connection);
-        };
-    }
-
-    protected function onWebSocketClose(ConnectionInterface $connection): void
-    {
-        $connection->onWebSocketClose = static function(): void {
-            $request = Request::createFromGlobals();
-
-            $this->removeUserWithConnection($request);
-            $this->removeUserSessionWithConnection($request);
-        };
-    }
-
-    public function setContext(object $context): self
-    {
-        $this->context = $context;
+        $this->server->on('Start', $this->closure($callback));
 
         return $this;
     }
 
-    public function onConnect(callable $callback): self
+    public function onMessage(?callable $callback = null): self
     {
-        $worker = $this;
-
-        $this->onConnect = $this->closure($callback, static function(ConnectionInterface $connection) use ($worker): void {
-            $worker->onWebSocketConnect($connection);
-        });
+        $this->server->on('Message', $this->closure($callback));
 
         return $this;
     }
 
-    public function onMessage(callable $callback): self
+    public function onConnect(?callable $callback = null): self
     {
-        $this->onMessage = $this->closure($callback);
+        $context = $this;
+
+        $this->server->on('Open', $this->closure($callback, static function(Server $server, Request $request) use ($context): void {
+            $context->addUserWithConnection($request);
+            $context->addUserSessionWithConnection($request);
+        }));
 
         return $this;
     }
 
-    public function onCloseConnect(callable $callback): self
+    public function onCloseConnect(?callable $callback = null): self
     {
-        $worker = $this;
+        $context = $this;
 
-        $this->onClose = $this->closure($callback, static function(ConnectionInterface $connection) use ($worker): void {
-            $worker->onWebSocketClose($connection);
-        });
+        $this->server->on('Close', $this->closure($callback, static function(Server $server, int $connectionId) use ($context): void {
+            $context->removeUserWithConnection($connectionId);
+            $context->removeUserSessionWithConnection($connectionId);
+        }));
 
         return $this;
     }
 
-    public function onError(callable $callback): self
+    public function startServer(): bool
     {
-        $this->onError = $this->closure($callback);
-
-        return $this;
+        return $this->server->start();
     }
 
-    public function getUsersWithConnections(): array
+    public function sendToConnection(string $connectionId, WebSocketClientMessageTypeEnum $clientMessageType, array $data): void
     {
-        return $this->usersWithConnections;
-    }
-
-    public function getUserSessionsWithConnection(): array
-    {
-        return $this->userSessionsWithConnection;
-    }
-
-    public function sendToConnection(ConnectionInterface $connection, WebSocketClientMessageTypeEnum $clientMessageType, array $data): void
-    {
-        $connection->send(json_encode([
-            'type' => $clientMessageType->name,
-            'data' => $data
-        ]));
+        if ($this->server->exist($connectionId)) {
+            $this->server->push($connectionId, json_encode([
+                'type' => $clientMessageType->name,
+                'data' => $data
+            ]));
+        }
     }
 
     public function sendToUser(User $user, WebSocketClientMessageTypeEnum $clientMessageType, array $data): self
     {
         foreach ($this->usersWithConnections[$user->getId()] ?? [] as $collection) {
-            $this->sendToConnection($collection->connection, $clientMessageType, $data);
+            $this->sendToConnection($collection->connectionId, $clientMessageType, $data);
         }
 
         return $this;
@@ -137,32 +108,75 @@ class Worker extends WorkermanWorker
         $collection = $this->userSessionsWithConnection[$userSession->getId()] ?? null;
 
         if (null !== $collection) {
-            $this->sendToConnection($collection->connection, $clientMessageType, $data);
+            $this->sendToConnection($collection->connectionId, $clientMessageType, $data);
         }
 
         return $this;
     }
 
-    private function closure(callable $callback, ?callable $privateCallback = null): callable
+    private function closure(?callable $callback = null, ?callable $privateCallback = null): callable
     {
-        $context = $this->context;
-        $worker = $this;
-
-        return static function(...$argv) use ($callback, $context, $worker, $privateCallback): callable {
-            $argv[] = $worker;
-            $argv[] = $context;
+        return static function(...$argv) use ($callback, $privateCallback): void {
+            if (null !== $callback) {
+                call_user_func($callback, ...$argv);
+            }
 
             if (null !== $privateCallback) {
                 call_user_func($privateCallback, ...$argv);
             }
-
-            return call_user_func($callback, ...$argv);
         };
+    }
+
+    private function addUserWithConnection(Request $request): void
+    {
+        $user = $this->getUserSession($request)?->getUser();
+
+        if (null !== $user) {
+            $this->usersWithConnections[$user->getId()][$request->fd] = new WebSocketUserConnectionCollection($user, $request->fd);
+        }
+    }
+
+    private function addUserSessionWithConnection(Request $request): void
+    {
+        $userSession = $this->getUserSession($request);
+
+        if (null !== $userSession) {
+            $this->userSessionsWithConnection[$userSession->getId()] = new WebSocketUserSessionConnectionCollection($userSession, $request->fd);
+        }
+    }
+
+    private function getUserSession(Request $request): ?UserSession
+    {
+        $accessToken = $this->getAccessToken($request);
+
+        return null === $accessToken ? null : $this->userSessionRepository->findByAccessToken($accessToken);
+    }
+
+    private function removeUserWithConnection(int $connectionId): void
+    {
+        foreach ($this->usersWithConnections as $userId => $collections) {
+            if (array_key_exists($connectionId, $collections)) {
+                unset($this->usersWithConnections[$userId][$connectionId]);
+
+                break;
+            }
+        }
+    }
+
+    private function removeUserSessionWithConnection(int $connectionId): void
+    {
+        foreach ($this->userSessionsWithConnection as $userSessionId => $collection) {
+            if ($collection->connectionId === $connectionId) {
+                unset($this->userSessionsWithConnection[$userSessionId]);
+
+                break;
+            }
+        }
     }
 
     private function getAccessToken(Request $request): ?string
     {
-        $bearerToken = $request->headers->get('Authorization');
+        $bearerToken = $request->header['Authorization'] ?? null;
 
         if (false === empty($bearerToken)) {
             $bearerTokenData = explode(' ', $bearerToken, 2);
@@ -175,48 +189,5 @@ class Worker extends WorkermanWorker
         }
 
         return null;
-    }
-
-    private function getUserSession(Request $request): ?UserSession
-    {
-        $accessToken = $this->getAccessToken($request);
-
-        return null === $accessToken ? null : $this->userSessionRepository->findByAccessToken($accessToken);
-    }
-
-    private function addUserWithConnection(Request $request, ConnectionInterface $connection): void
-    {
-        $user = $this->getUserSession($request)?->getUser();
-
-        if (null !== $user) {
-            $this->usersWithConnections[$user->getId()][] = new WebSocketUserConnectionCollection($user, $connection);
-        }
-    }
-
-    private function addUserSessionWithConnection(Request $request, ConnectionInterface $connection): void
-    {
-        $userSession = $this->getUserSession($request);
-
-        if (null !== $userSession) {
-            $this->userSessionsWithConnection[$userSession->getId()] = new WebSocketUserSessionConnectionCollection($userSession, $connection);
-        }
-    }
-
-    private function removeUserWithConnection(Request $request): void
-    {
-        $user = $this->getUserSession($request)?->getUser();
-
-        if (null !== $user && array_key_exists($user->getId(), $this->usersWithConnections)) {
-            unset($this->usersWithConnections[$user->getId()]);
-        }
-    }
-
-    private function removeUserSessionWithConnection(Request $request): void
-    {
-        $userSession = $this->getUserSession($request);
-
-        if (null !== $userSession && array_key_exists($userSession->getId(), $this->userSessionsWithConnection)) {
-            unset($this->userSessionsWithConnection[$userSession->getId()]);
-        }
     }
 }

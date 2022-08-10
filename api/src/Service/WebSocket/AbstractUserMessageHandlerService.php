@@ -7,7 +7,6 @@ use App\Security\AuthorizedUser;
 use App\Service\AbstractService;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
-use Workerman\Connection\ConnectionInterface;
 
 /**
  * Class AbstractUserMessageHandlerService.
@@ -20,16 +19,14 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
 {
     #[Required]
     public ?AuthorizedUser $authorizedUser = null;
-    private ?ConnectionInterface $connection = null;
+    private ?int $connectionId = null;
     private array $messageHeaders = [];
     private array $messageData = [];
+    private ?Worker $worker = null;
 
     protected function sendToClient(WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
     {
-        $this->connection?->send(json_encode([
-            'type' => $clientMessageTypeEnum->name,
-            'data' => $data
-        ]));
+        $this->worker->sendToConnection($this->connectionId, $clientMessageTypeEnum, $data);
 
         return $this;
     }
@@ -43,16 +40,16 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
         return $this->authorizedUser;
     }
 
-    public function setConnection(ConnectionInterface $connection): UserMessageHandlerInterface
+    public function setConnection(int $connectionId): UserMessageHandlerInterface
     {
-        $this->connection = $connection;
+        $this->connectionId = $connectionId;
 
         return $this;
     }
 
-    public function getConnection(): ?ConnectionInterface
+    public function getConnectionId(): ?int
     {
-        return $this->connection;
+        return $this->connectionId;
     }
 
     public function setMessage(array $headers, array $data): UserMessageHandlerInterface
@@ -71,5 +68,12 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
     public function getMessage(): array
     {
         return $this->messageData['message'] ?? [];
+    }
+
+    public function setWorker(Worker $worker): self
+    {
+        $this->worker = $worker;
+
+        return $this;
     }
 }

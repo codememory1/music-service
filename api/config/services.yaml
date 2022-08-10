@@ -11,7 +11,8 @@ parameters:
     jwt.refresh_ttl: '%env(JWT_REFRESH_TTL)%'
 
     ws.count_process: '%env(int:WS_PROCESS_COUNT)%'
-    ws.url: '%env(WS_URL)%'
+    ws.host: '%env(WS_HOST)%'
+    ws.port: '%env(WS_PORT)%'
 
 services:
     _defaults:
@@ -156,6 +157,12 @@ services:
         $scopes:
           - !php/const App\Enum\GoogleScopeEnum::EMAIL
           - !php/const App\Enum\GoogleScopeEnum::PROFILE
+
+    # WebSocket
+    App\Service\WebSocket\Worker:
+      arguments:
+        $host: '%ws.host%'
+        $port: '%ws.port%'
 
     App\Service\IPGeolocation\IPApi\Client:
       arguments:

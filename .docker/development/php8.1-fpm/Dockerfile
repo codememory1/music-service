@@ -43,6 +43,17 @@ RUN docker-php-ext-install zip xml intl mbstring curl
 RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
     install-php-extensions amqp
 
+# Swoole
+RUN cd /tmp && git clone https://github.com/openswoole/swoole-src.git && \
+    cd swoole-src && \
+    git checkout v4.11.0 && \
+    phpize  && \
+    ./configure --enable-openssl --enable-swoole-curl --enable-http2 --enable-mysqlnd && \
+    make && make install
+
+RUN touch /usr/local/etc/php/conf.d/openswoole.ini && \
+    echo 'extension=openswoole.so' > /usr/local/etc/php/conf.d/zzz_openswoole.ini
+
 # Insatll PHP Manager - Composer
 RUN wget https://getcomposer.org/installer -O - -q | php -- --install-dir=/bin --filename=composer --quite
 RUN composer global require bamarni/symfony-console-autocomplete

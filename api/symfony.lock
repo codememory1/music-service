@@ -130,6 +130,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
+    "eaglewu/swoole-ide-helper": {
+        "version": "dev-master"
+    },
     "egulias/email-validator": {
         "version": "3.1.2"
     },
@@ -782,8 +785,5 @@
     },
     "webmozart/assert": {
         "version": "1.10.0"
-    },
-    "workerman/workerman": {
-        "version": "v4.0.38"
     }
 }
