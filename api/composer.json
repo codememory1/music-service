@@ -43,8 +43,7 @@
         "symfony/sendgrid-mailer": "6.0.*",
         "symfony/twig-bundle": "6.0.*",
         "symfony/validator": "6.0.*",
-        "symfony/yaml": "6.0.*",
-        "workerman/workerman": "^4.0"
+        "symfony/yaml": "6.0.*"
     },
     "config": {
         "allow-plugins": {
@@ -100,6 +99,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "eaglewu/swoole-ide-helper": "dev-master",
         "friendsofphp/php-cs-fixer": "^3.8",
         "hautelook/alice-bundle": "^2.10",
         "phpunit/phpunit": "^9.5",

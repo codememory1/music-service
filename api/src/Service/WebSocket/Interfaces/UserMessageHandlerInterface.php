@@ -2,7 +2,7 @@
 
 namespace App\Service\WebSocket\Interfaces;
 
-use Workerman\Connection\ConnectionInterface;
+use App\Service\WebSocket\Worker;
 
 /**
  * Interface UserMessageHandlerInterface.
@@ -13,15 +13,17 @@ use Workerman\Connection\ConnectionInterface;
  */
 interface UserMessageHandlerInterface
 {
-    public function setConnection(ConnectionInterface $connection): self;
+    public function setConnection(int $connectionId): self;
 
-    public function getConnection(): ?ConnectionInterface;
+    public function getConnectionId(): ?int;
 
     public function setMessage(array $headers, array $data): self;
 
     public function getMessageHeaders(): array;
 
     public function getMessage(): array;
+
+    public function setWorker(Worker $worker): self;
 
     public function handler(): void;
 }
