@@ -130,6 +130,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
+    "eaglewu/swoole-ide-helper": {
+        "version": "dev-master"
+    },
     "egulias/email-validator": {
         "version": "3.1.2"
     },
@@ -330,6 +333,9 @@
             "tests/bootstrap.php"
         ]
     },
+    "predis/predis": {
+        "version": "v1.1.10"
+    },
     "psr/cache": {
         "version": "3.0.0"
     },
@@ -425,6 +431,18 @@
     },
     "sixlive/dotenv-editor": {
         "version": "v2.0.0"
+    },
+    "snc/redis-bundle": {
+        "version": "4.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "36b3d9ab65be62de4e085a25e6ca899efa96b1f3"
+        },
+        "files": [
+            "config/packages/snc_redis.yaml"
+        ]
     },
     "spatie/temporary-directory": {
         "version": "2.1.0"
@@ -782,8 +800,5 @@
     },
     "webmozart/assert": {
         "version": "1.10.0"
-    },
-    "workerman/workerman": {
-        "version": "v4.0.38"
     }
 }

@@ -12,6 +12,7 @@ parameters:
 
     ws.count_process: '%env(int:WS_PROCESS_COUNT)%'
     ws.host: '%env(WS_HOST)%'
+    ws.port: '%env(WS_PORT)%'
 
 services:
     _defaults:
@@ -30,6 +31,7 @@ services:
             - '../src/Rest/'
             - '../src/DataFixtures/{Factory,Interfaces,AbstractDataFixture.php}'
 
+    Predis\Client: '@snc_redis.default'
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
     Aws\S3\S3Client:
@@ -158,10 +160,16 @@ services:
           - !php/const App\Enum\GoogleScopeEnum::PROFILE
 
     # WebSocket
+    App\Service\WebSocket\WorkerConnectionManager:
+      public: false
+
     App\Service\WebSocket\Worker:
-      class: App\Service\WebSocket\Worker
       arguments:
-        $url: '%ws.host%'
+        $host: '%ws.host%'
+        $port: '%ws.port%'
+
+    App\Service\WebSocket\StreamMultimediaBetweenCurrentAccountHandlerService:
+      public: true
 
     App\Service\IPGeolocation\IPApi\Client:
       arguments:

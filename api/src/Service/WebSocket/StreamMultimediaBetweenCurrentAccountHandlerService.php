@@ -22,17 +22,22 @@ final class StreamMultimediaBetweenCurrentAccountHandlerService extends Abstract
     public function handler(): void
     {
         $runningMultimedia = $this->getEntityIfExist('running_multimedia_id', RunningMultimedia::class);
+        $toUserSession = $this->getEntityIfExist('to_session_id', UserSession::class);
+
+        $this->worker->sendToSession($toUserSession, WebSocketClientMessageTypeEnum::MULTIMEDIA_BROADCAST_REQUEST, [
+            'to_user_session' => 'Session is not active'
+        ]);
 
         if (null !== $runningMultimedia) {
             $toUserSession = $this->getEntityIfExist('to_session_id', UserSession::class);
 
             if (null !== $toUserSession) {
                 if (false === $toUserSession->isActive()) {
-                    $this->worker->sendToConnection($this->getConnection(), WebSocketClientMessageTypeEnum::MULTIMEDIA_BROADCAST_REQUEST, [
-                        'to_user_session' => 'Session is not active'
-                    ]);
+//                    $this->worker->sendToConnection($this->getConnection(), WebSocketClientMessageTypeEnum::MULTIMEDIA_BROADCAST_REQUEST, [
+//                        'to_user_session' => 'Session is not active'
+//                    ]);
                 } else {
-                    dd(count($this->worker->getUserSessionsWithConnection()));
+                    echo $toUserSession . "\n";
                     $this->worker->sendToUser($toUserSession->getUser(), WebSocketClientMessageTypeEnum::MULTIMEDIA_BROADCAST_REQUEST, [
                         'to_user_session' => 'Session is not active'
                     ]);

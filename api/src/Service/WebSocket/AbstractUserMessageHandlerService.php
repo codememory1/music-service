@@ -6,10 +6,8 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Enum\WebSocketClientMessageTypeEnum;
 use App\Security\AuthorizedUser;
 use App\Service\AbstractService;
-use App\Service\TranslationService;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
-use Workerman\Connection\ConnectionInterface;
 
 /**
  * Class AbstractUserMessageHandlerService.
@@ -21,16 +19,19 @@ use Workerman\Connection\ConnectionInterface;
 abstract class AbstractUserMessageHandlerService extends AbstractService implements UserMessageHandlerInterface
 {
     protected ?Worker $worker = null;
-    protected ?WebSocketClientMessageTypeEnum $clientMessageType = null;
 
     #[Required]
     public ?AuthorizedUser $authorizedUser = null;
-
-    #[Required]
-    public ?TranslationService $translationService = null;
-    private ?ConnectionInterface $connection = null;
+    private ?int $connectionId = null;
     private array $messageHeaders = [];
     private array $messageData = [];
+
+    protected function sendToClient(WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
+    {
+        $this->worker->sendToConnection($this->connectionId, $clientMessageTypeEnum, $data);
+
+        return $this;
+    }
 
     protected function getAuthorizedUser(): ?AuthorizedUser
     {
@@ -54,33 +55,22 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
         $finedEntity = $entityRepository->find($valueFromMessageKey);
 
         if (null === $valueFromMessageKey || null === $finedEntity) {
-            $this->worker->sendToConnection($this->getConnection(), $this->clientMessageType, [
-                $messageKey => 'Not Found'
-            ]);
-
             return null;
         }
 
         return $finedEntity;
     }
 
-    public function setWorker(Worker $worker): self
+    public function setConnection(int $connectionId): UserMessageHandlerInterface
     {
-        $this->worker = $worker;
+        $this->connectionId = $connectionId;
 
         return $this;
     }
 
-    public function setConnection(ConnectionInterface $connection): UserMessageHandlerInterface
+    public function getConnectionId(): ?int
     {
-        $this->connection = $connection;
-
-        return $this;
-    }
-
-    public function getConnection(): ?ConnectionInterface
-    {
-        return $this->connection;
+        return $this->connectionId;
     }
 
     public function setMessage(array $headers, array $data): UserMessageHandlerInterface
@@ -99,5 +89,12 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
     public function getMessage(): array
     {
         return $this->messageData['message'] ?? [];
+    }
+
+    public function setWorker(Worker $worker): self
+    {
+        $this->worker = $worker;
+
+        return $this;
     }
 }
