@@ -133,7 +133,7 @@ final class UserProfile implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure] 
+    #[Pure]
     public function isHide(): bool
     {
         return $this->getStatus() === UserProfileStatusEnum::HIDE->name;

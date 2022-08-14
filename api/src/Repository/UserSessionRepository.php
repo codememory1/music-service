@@ -105,7 +105,7 @@ final class UserSessionRepository extends AbstractRepository
             'accessToken' => $accessToken
         ]);
     }
-    
+
     public function findByAccessTokenWithUser(User $user, string $accessToken): ?UserSession
     {
         return $this->findOneBy([

@@ -25,7 +25,7 @@ final class MultimediaMediaLibraryResponseData extends AbstractResponseData impl
         $multimediaResponseData = new MultimediaResponseData($this->container);
 
         $multimediaResponseData->setIgnoreProperty('album');
-        
+
         return $multimediaResponseData->setEntities($multimedia)->getResponse();
     }
 }

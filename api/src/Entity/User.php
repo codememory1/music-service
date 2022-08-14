@@ -697,9 +697,7 @@ final class User implements EntityInterface
         return $this
             ->getRole()
             ->getPermissions()
-            ->exists(static function (int $key, RolePermission $rolePermission) use ($expectedRolePermission): bool {
-                return $rolePermission->getPermissionKey()->getKey() === $expectedRolePermission->name;
-            });
+            ->exists(static fn(int $key, RolePermission $rolePermission): bool => $rolePermission->getPermissionKey()->getKey() === $expectedRolePermission->name);
     }
 
     public function isSubscriptionPermission(SubscriptionPermissionEnum $expectedSubscriptionPermission): bool
@@ -708,12 +706,10 @@ final class User implements EntityInterface
             return false;
         }
 
-        return $subscriptionPermissions->exists(static function (int $key, SubscriptionPermission $subscriptionPermission) use ($expectedSubscriptionPermission): bool {
-            return $subscriptionPermission->getPermissionKey()->getKey() === $expectedSubscriptionPermission->name;
-        });
+        return $subscriptionPermissions->exists(static fn(int $key, SubscriptionPermission $subscriptionPermission): bool => $subscriptionPermission->getPermissionKey()->getKey() === $expectedSubscriptionPermission->name);
     }
 
-    #[Pure] 
+    #[Pure]
     public function isSubscription(SubscriptionEnum $expectedSubscription): bool
     {
         if (null === $subscription = $this->getSubscription()) {

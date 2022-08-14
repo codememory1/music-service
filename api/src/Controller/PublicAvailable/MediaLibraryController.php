@@ -18,8 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class MediaLibraryController.
  *
- * @package App\Controller\PublicAvailable
- *
  * @author  Codememory
  */
 #[Route('/user/media-library')]

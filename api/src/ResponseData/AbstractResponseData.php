@@ -59,7 +59,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
     public function getResponse(bool $first = false): array
     {
         $this->collect();
-        
+
         if (true === $first && [] !== $this->response) {
             $key = array_key_first($this->response);
 
@@ -87,7 +87,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
         }
 
         $this->collectResponse();
-
     }
 
     #[ArrayShape(['isPassed' => 'bool', 'interceptor' => 'array'])]

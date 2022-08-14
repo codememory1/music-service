@@ -4,8 +4,6 @@ namespace App\Rest\Http;
 
 use App\Enum\ResponseTypeEnum;
 use App\Rest\Http\Interfaces\ResponseSchemaInterface;
-use App\Service\TranslationService;
-use function is_array;
 
 class ResponseSchema implements ResponseSchemaInterface
 {

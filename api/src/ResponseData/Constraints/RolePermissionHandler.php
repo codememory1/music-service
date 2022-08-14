@@ -22,11 +22,11 @@ final class RolePermissionHandler implements ConstraintHandlerInterface
     public function handle(ConstraintInterface $constraint): bool
     {
         $user = $this->authorizedUser->getUser();
-        
+
         if (null === $user) {
             return false;
         }
-        
+
         if (is_array($constraint->permissions)) {
             foreach ($constraint->permissions as $permission) {
                 if ($user->isRolePermission($permission)) {

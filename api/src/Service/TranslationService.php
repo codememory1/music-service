@@ -42,7 +42,7 @@ class TranslationService
         if (null === $language = $this->getLanguage()) {
             return [];
         }
-        
+
         return $this->translationRepository->findAllByLanguage($language);
     }
 
@@ -60,11 +60,11 @@ class TranslationService
     {
         $language = $this->getLanguage();
         $translationKey = $this->getTranslationKey($key);
-        
+
         if (null === $language || null === $translationKey) {
             return null;
         }
-        
+
         return $this->translationRepository->findTranslation($language, $translationKey)->getTranslation();
     }
 

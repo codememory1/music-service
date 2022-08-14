@@ -17,7 +17,7 @@ final class UserNotification implements EntityInterface
     use IdentifierTrait;
     use TimestampTrait;
     use ComparisonTrait;
-        
+
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'notifications')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $toUser = null;

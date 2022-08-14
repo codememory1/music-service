@@ -40,7 +40,7 @@ final class MediaLibraryEvent implements EntityInterface
     #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
     private ?MediaLibrary $mediaLibrary = null;
-    
+
     public function getKey(): ?string
     {
         return $this->key;

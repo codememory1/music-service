@@ -9,7 +9,7 @@ use App\ResponseData\Interfaces\ValueHandlerInterface;
 final class CallbackHandler implements ValueHandlerInterface
 {
     /**
-     * @param Callback $constraint
+     * @param callable $constraint
      */
     public function handle(ConstraintInterface $constraint, ResponseDataInterface $responseData, mixed $value): mixed
     {

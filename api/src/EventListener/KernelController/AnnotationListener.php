@@ -4,12 +4,12 @@ namespace App\EventListener\KernelController;
 
 use App\Annotation\Interfaces\MethodAnnotationHandlerInterface;
 use App\Annotation\Interfaces\MethodAnnotationInterface;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use function is_array;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\ReverseContainer;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
 #[AsEventListener('kernel.controller')]

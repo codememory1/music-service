@@ -42,7 +42,7 @@ final class TranslationRepository extends AbstractRepository
             't.language' => $language
         ]);
     }
-    
+
     public function findTranslation(Language $language, TranslationKey $translationKey): ?Translation
     {
         return $this->findOneBy([

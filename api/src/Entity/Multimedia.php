@@ -158,7 +158,7 @@ final class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure] 
+    #[Pure]
     public function isTrack(): bool
     {
         return $this->getType() === MultimediaTypeEnum::TRACK->name;
@@ -171,7 +171,7 @@ final class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure] 
+    #[Pure]
     public function isClip(): bool
     {
         return $this->getType() === MultimediaTypeEnum::CLIP->name;
@@ -377,7 +377,7 @@ final class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure] 
+    #[Pure]
     public function isDraft(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::DRAFT->name;
@@ -390,7 +390,7 @@ final class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure] 
+    #[Pure]
     public function isModeration(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::MODERATION->name;
@@ -403,7 +403,7 @@ final class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure] 
+    #[Pure]
     public function isPublished(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::PUBLISHED->name;
@@ -429,7 +429,7 @@ final class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure] 
+    #[Pure]
     public function isAppeal(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::APPEAL->name;
@@ -442,7 +442,7 @@ final class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure] 
+    #[Pure]
     public function isAppealCanceled(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::APPEAL_CANCELED->name;

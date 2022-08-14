@@ -28,7 +28,7 @@ final class MultimediaMetadataMessageHandler
         $this->uploadedObject = $uploadedObject;
     }
 
-    #[Pure] 
+    #[Pure]
     private function getMultimediaMetadata(Multimedia $multimedia): ?MultimediaMetadata
     {
         if (null !== $multimedia->getMetadata()) {

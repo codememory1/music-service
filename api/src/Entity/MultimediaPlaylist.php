@@ -53,13 +53,13 @@ final class MultimediaPlaylist implements EntityInterface
         return $this;
     }
 
-    #[Pure] 
+    #[Pure]
     public function getMultimedia(): ?Multimedia
     {
         return $this->getMultimediaMediaLibrary()->getMultimedia();
     }
 
-    #[Pure] 
+    #[Pure]
     public function getMediaLibrary(): ?MediaLibrary
     {
         return $this->getMultimediaMediaLibrary()->getMediaLibrary();

@@ -11,7 +11,7 @@ final class TranslationKeyRepository extends AbstractRepository
 {
     protected ?string $entity = TranslationKey::class;
     protected ?string $alias = 'tk';
-    
+
     public function findByKey(string $key): ?TranslationKey
     {
         return $this->findOneBy(['key' => $key]);

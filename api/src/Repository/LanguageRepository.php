@@ -24,7 +24,7 @@ final class LanguageRepository extends AbstractRepository
 
         return parent::findByCriteria([], $orderBy);
     }
-    
+
     public function findByLang(string $lang): ?Language
     {
         return $this->findOneBy(['key' => $lang]);

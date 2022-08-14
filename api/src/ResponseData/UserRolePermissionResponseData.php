@@ -22,7 +22,7 @@ final class UserRolePermissionResponseData extends AbstractResponseData implemen
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
 
-    #[Pure] 
+    #[Pure]
     public function handlePermissionKey(?RolePermissionKey $rolePermissionKey): ?string
     {
         return $rolePermissionKey?->getKey();

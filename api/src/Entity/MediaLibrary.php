@@ -97,7 +97,7 @@ final class MediaLibrary implements EntityInterface
         return $this;
     }
 
-    #[Pure] 
+    #[Pure]
     public function isShow(): bool
     {
         return $this->getStatus() === MediaLibraryStatusEnum::SHOW->name;
@@ -132,7 +132,7 @@ final class MediaLibrary implements EntityInterface
 
         return $this;
     }
-    
+
     public function isMultimediaBelongsToMediaLibrary(MultimediaMediaLibrary $multimedia): bool
     {
         return $multimedia->getMediaLibrary()->isCompare($this);

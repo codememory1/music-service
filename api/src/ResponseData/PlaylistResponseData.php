@@ -37,7 +37,7 @@ final class PlaylistResponseData extends AbstractResponseData implements Respons
         $playlistDirectoryResponseData = new PlaylistDirectoryResponseData($this->container);
 
         $playlistDirectoryResponseData->setIgnoreProperty('multimedia');
-        
+
         return $playlistDirectoryResponseData->setEntities($directories)->getResponse();
     }
 

@@ -19,7 +19,16 @@ abstract class AbstractDataTransformer implements DataTransformerInterface
     {
         $this->request = $request;
     }
-    
+
+    protected function baseTransformFromRequest(DataTransferInterface $dataTransfer, ?EntityInterface $entity = null): DataTransferInterface
+    {
+        if (null !== $entity) {
+            $dataTransfer->setEntity($entity);
+        }
+
+        return $dataTransfer->collect($this->request->all());
+    }
+
     /**
      * @return Dto
      */
@@ -34,14 +43,5 @@ abstract class AbstractDataTransformer implements DataTransformerInterface
     public function transformFromArray(array $data, ?EntityInterface $entity = null): DataTransferInterface
     {
         throw new LogicException(sprintf('The %s method is not overridden in the %s transformer', __METHOD__, static::class));
-    }
-    
-    protected function baseTransformFromRequest(DataTransferInterface $dataTransfer, ?EntityInterface $entity = null): DataTransferInterface
-    {
-        if (null !== $entity) {
-            $dataTransfer->setEntity($entity);
-        }
-        
-        return $dataTransfer->collect($this->request->all());
     }
 }

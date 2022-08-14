@@ -46,7 +46,7 @@ final class AlbumResponseData extends AbstractResponseData implements ResponseDa
         $multimediaResponseData = new MultimediaResponseData($this->container);
 
         $multimediaResponseData->setIgnoreProperty('album');
-        
+
         return $multimediaResponseData->setEntities($multimedia->toArray())->getResponse();
     }
 }

@@ -9,7 +9,7 @@ trait CloningTrait
         $this->id = null;
         $this->createdAt = null;
         $this->updatedAt = null;
-        
+
         return $this;
     }
 }

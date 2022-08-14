@@ -8,8 +8,6 @@ use App\Tests\AbstractApiTestCase;
 /**
  * Class CreateLanguageTest.
  *
- * @package App\Tests\Application\Admin\Language
- *
  * @author  Codememory
  */
 final class CreateLanguageTest extends AbstractApiTestCase
