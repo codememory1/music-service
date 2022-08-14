@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class UserRoleTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<UserRoleDto>
- *
- * @author  Codememory
  */
 final class UserRoleTransformer extends AbstractDataTransformer
 {
@@ -31,8 +26,6 @@ final class UserRoleTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->userRoleDto
-            ->setEntity($entity ?: new Role())
-            ->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->userRoleDto, $entity ?: new Role());
     }
 }

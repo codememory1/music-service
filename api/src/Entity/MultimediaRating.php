@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\MultimediaRatingTypeEnum;
@@ -11,20 +12,14 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class MultimediaRating.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: MultimediaRatingRepository::class)]
 #[ORM\Table('multimedia_ratings')]
 #[ORM\HasLifecycleCallbacks]
-class MultimediaRating implements EntityInterface
+final class MultimediaRating implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: Multimedia::class, inversedBy: 'ratings')]
     #[ORM\JoinColumn(nullable: false)]

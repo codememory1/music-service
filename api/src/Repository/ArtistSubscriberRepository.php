@@ -6,14 +6,9 @@ use App\Entity\ArtistSubscriber;
 use App\Entity\User;
 
 /**
- * Class ArtistSubscriberRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<ArtistSubscriber>
- *
- * @author  Codememory
  */
-class ArtistSubscriberRepository extends AbstractRepository
+final class ArtistSubscriberRepository extends AbstractRepository
 {
     protected ?string $entity = ArtistSubscriber::class;
     protected ?string $alias = 'as';

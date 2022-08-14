@@ -5,14 +5,7 @@ namespace App\ResponseData;
 use App\Entity\MultimediaMediaLibrary;
 use App\ResponseData\Constraints as ResponseDataConstraints;
 
-/**
- * Class MediaLibraryStatisticResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class MediaLibraryStatisticResponseData extends AbstractResponseData
+final class MediaLibraryStatisticResponseData extends AbstractResponseData
 {
     public int $numberOfTracks = 0;
     public int $numberOfClips = 0;
@@ -29,9 +22,6 @@ class MediaLibraryStatisticResponseData extends AbstractResponseData
             return [];
         }
 
-        $multimediaMediaLibraryResponseData->setEntities($multimediaMediaLibrary);
-        $multimediaMediaLibraryResponseData->collect();
-
-        return $multimediaMediaLibraryResponseData->getResponse(true);
+        return $multimediaMediaLibraryResponseData->setEntities($multimediaMediaLibrary)->getResponse(true);
     }
 }

@@ -10,13 +10,6 @@ use App\Service\HashingService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class Authentication.
- *
- * @package App\Security\Auth
- *
- * @author  Codememory
- */
 class Authentication
 {
     #[Required]

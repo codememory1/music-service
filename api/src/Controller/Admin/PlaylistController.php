@@ -22,13 +22,6 @@ use App\Service\Playlist\UpdatePlaylistService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class PlaylistController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user')]
 #[Authorization]
 class PlaylistController extends AbstractRestController
@@ -41,7 +34,6 @@ class PlaylistController extends AbstractRestController
         PlaylistRepository $playlistRepository
     ): JsonResponse {
         $playlistResponseData->setEntities($playlistRepository->findByUser($user));
-        $playlistResponseData->collect();
 
         return $this->responseCollection->dataOutput($playlistResponseData->getResponse());
     }
@@ -53,7 +45,6 @@ class PlaylistController extends AbstractRestController
         PlaylistResponseData $playlistResponseData
     ): JsonResponse {
         $playlistResponseData->setEntities($playlist);
-        $playlistResponseData->collect();
 
         return $this->responseCollection->dataOutput($playlistResponseData->getResponse(true));
     }

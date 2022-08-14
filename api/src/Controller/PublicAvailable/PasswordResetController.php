@@ -11,13 +11,6 @@ use App\Security\PasswordReset\RestorePassword;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class PasswordResetController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user/password-reset')]
 #[Authorization(false)]
 class PasswordResetController extends AbstractRestController

@@ -8,13 +8,6 @@ use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class UpdatePlaylistService.
- *
- * @package App\Service\Playlist
- *
- * @author  Codememory
- */
 class UpdatePlaylistService extends AbstractService
 {
     #[Required]

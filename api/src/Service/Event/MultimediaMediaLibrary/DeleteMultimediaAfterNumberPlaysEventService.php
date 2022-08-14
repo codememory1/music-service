@@ -4,13 +4,6 @@ namespace App\Service\Event\MultimediaMediaLibrary;
 
 use App\Service\Event\Interfaces\EventInterface;
 
-/**
- * Class DeleteMultimediaAfterNumberPlaysEventService.
- *
- * @package App\Service\Event\MultimediaMediaLibrary
- *
- * @author  Codememory
- */
 class DeleteMultimediaAfterNumberPlaysEventService implements EventInterface
 {
     private array $payload;

@@ -6,14 +6,7 @@ use App\Service\HashingService;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\TextType;
 
-/**
- * Class PasswordType.
- *
- * @package App\DBAL\Types
- *
- * @author  Codememory
- */
-class PasswordType extends TextType
+final class PasswordType extends TextType
 {
     public const NAME = 'password';
 

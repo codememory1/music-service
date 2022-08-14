@@ -7,14 +7,7 @@ use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 use Doctrine\Common\Collections\Collection;
 
-/**
- * Class PlaylistDirectoryResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class PlaylistDirectoryResponseData extends AbstractResponseData implements ResponseDataInterface
+final class PlaylistDirectoryResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     protected array $aliases = [
@@ -36,8 +29,6 @@ class PlaylistDirectoryResponseData extends AbstractResponseData implements Resp
     {
         $multimediaPlaylistDirectoryResponseData = new MultimediaPlaylistDirectoryResponseData($this->container);
 
-        $multimediaPlaylistDirectoryResponseData->setEntities($multimedia->toArray());
-
-        return $multimediaPlaylistDirectoryResponseData->collect()->getResponse();
+        return $multimediaPlaylistDirectoryResponseData->setEntities($multimedia)->getResponse();
     }
 }

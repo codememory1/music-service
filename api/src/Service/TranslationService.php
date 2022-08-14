@@ -7,16 +7,8 @@ use App\Entity\TranslationKey;
 use App\Repository\LanguageRepository;
 use App\Repository\TranslationKeyRepository;
 use App\Repository\TranslationRepository;
-use App\Rest\Http\Request;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class TranslationService.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 class TranslationService
 {
     #[Required]
@@ -27,9 +19,14 @@ class TranslationService
 
     #[Required]
     public ?TranslationRepository $translationRepository = null;
+    private ?string $locale = null;
 
-    #[Required]
-    public ?Request $request = null;
+    public function setLocale(string $locale): self
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
 
     public function get(string $key, array $parameters = []): ?string
     {
@@ -42,31 +39,33 @@ class TranslationService
 
     public function all(): array
     {
-        return $this->translationRepository->findBy([
-            'language' => $this->getLanguage()
-        ]);
+        if (null === $language = $this->getLanguage()) {
+            return [];
+        }
+        
+        return $this->translationRepository->findAllByLanguage($language);
     }
 
     public function getLanguage(): ?Language
     {
-        return $this->languageRepository->findOneBy([
-            'code' => $this->request->request->getLocale()
-        ]);
+        return $this->languageRepository->findByLang($this->locale);
     }
 
     public function getTranslationKey(string $key): ?TranslationKey
     {
-        return $this->translationKeyRepository->findOneBy([
-            'key' => $key
-        ]);
+        return $this->translationKeyRepository->findByKey($key);
     }
 
     public function getTranslation(string $key): ?string
     {
-        return $this->translationRepository->findOneBy([
-            'language' => $this->getLanguage(),
-            'translationKey' => $this->getTranslationKey($key)
-        ])?->getTranslation();
+        $language = $this->getLanguage();
+        $translationKey = $this->getTranslationKey($key);
+        
+        if (null === $language || null === $translationKey) {
+            return null;
+        }
+        
+        return $this->translationRepository->findTranslation($language, $translationKey)->getTranslation();
     }
 
     private function replaceParameters(?string &$translation, array $parameters): void

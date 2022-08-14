@@ -4,13 +4,6 @@ namespace App\Service\WebSocket\Interfaces;
 
 use App\Service\WebSocket\Worker;
 
-/**
- * Interface UserMessageHandlerInterface.
- *
- * @package  App\Service\WebSocket\Interfaces
- *
- * @author   Codememory
- */
 interface UserMessageHandlerInterface
 {
     public function setConnection(int $connectionId): self;

@@ -9,13 +9,6 @@ use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class UpdateAlbumService.
- *
- * @package App\Service\Album
- *
- * @author  Codememory
- */
 class UpdateAlbumService extends AbstractService
 {
     #[Required]

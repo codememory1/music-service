@@ -19,13 +19,6 @@ use App\Service\Album\UpdateAlbumService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class AlbumController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/album')]
 #[Authorization]
 class AlbumController extends AbstractRestController
@@ -35,7 +28,6 @@ class AlbumController extends AbstractRestController
     public function all(AlbumResponseData $albumResponseData, AlbumRepository $albumRepository): JsonResponse
     {
         $albumResponseData->setEntities($albumRepository->findAllByUser($this->getAuthorizedUser()));
-        $albumResponseData->collect();
 
         return $this->responseCollection->dataOutput($albumResponseData->getResponse());
     }

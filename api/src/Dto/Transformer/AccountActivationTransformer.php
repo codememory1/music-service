@@ -9,12 +9,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class AccountActivationTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<AccountActivationDto>
- *
- * @author  Codememory
  */
 final class AccountActivationTransformer extends AbstractDataTransformer
 {
@@ -30,6 +25,6 @@ final class AccountActivationTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->accountActivationDto->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->accountActivationDto, $entity);
     }
 }

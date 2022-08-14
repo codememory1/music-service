@@ -9,14 +9,7 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 
-/**
- * Class SubscriptionPermissionResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class SubscriptionPermissionResponseData extends AbstractResponseData implements ResponseDataInterface
+final class SubscriptionPermissionResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
 
@@ -41,8 +34,6 @@ class SubscriptionPermissionResponseData extends AbstractResponseData implements
     {
         $responseData = new SubscriptionPermissionKeyResponseData($this->container);
 
-        $responseData->setEntities($subscriptionPermissionKey);
-
-        return $responseData->collect()->getResponse(true);
+        return $responseData->setEntities($subscriptionPermissionKey)->getResponse(true);
     }
 }

@@ -4,13 +4,6 @@ namespace App\Entity\Traits;
 
 use DateTimeImmutable;
 
-/**
- * Trait ValidTtlTrait.
- *
- * @package App\Entity\Traits
- *
- * @author  Codememory
- */
 trait ValidTtlTrait
 {
     public function isValidTtlByCreatedAt(): bool

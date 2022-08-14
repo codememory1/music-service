@@ -9,14 +9,9 @@ use App\Entity\TranslationKey;
 use Doctrine\ORM\Query\Expr\Join;
 
 /**
- * Class AlbumTypeRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<AlbumType>
- *
- * @author  Codememory
  */
-class AlbumTypeRepository extends AbstractRepository
+final class AlbumTypeRepository extends AbstractRepository
 {
     protected ?string $entity = AlbumType::class;
     protected ?string $alias = 'at';

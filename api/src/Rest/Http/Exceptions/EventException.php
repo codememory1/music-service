@@ -5,13 +5,6 @@ namespace App\Rest\Http\Exceptions;
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class EventException.
- *
- * @package App\Rest\Http\Exceptions
- *
- * @author  Codememory
- */
 class EventException extends ApiResponseException
 {
     #[Pure]

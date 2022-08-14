@@ -17,13 +17,6 @@ use App\Service\Multimedia\SetLikeMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaActionController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user/multimedia/{multimedia_id<\d+>}')]
 #[Authorization]
 class MultimediaActionController extends AbstractRestController

@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class TranslationKeyTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<TranslationKeyDto>
- *
- * @author  Codememory
  */
 final class TranslationKeyTransformer extends AbstractDataTransformer
 {

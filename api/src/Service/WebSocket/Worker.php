@@ -12,13 +12,6 @@ use function call_user_func;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Server;
 
-/**
- * Class Worker.
- *
- * @package App\Service\WebSocket
- *
- * @author  Codememory
- */
 class Worker
 {
     private UserSessionRepository $userSessionRepository;

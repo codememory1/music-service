@@ -6,15 +6,8 @@ use App\Enum\SubscriptionEnum;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use Attribute;
 
-/**
- * Class Subscription.
- *
- * @package App\ResponseData\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class Subscription implements ConstraintInterface
+final class Subscription implements ConstraintInterface
 {
     public readonly SubscriptionEnum $subscription;
 

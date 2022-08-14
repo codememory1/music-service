@@ -7,13 +7,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * Trait TimestampTrait.
- *
- * @package App\Entity\Traits
- *
- * @author  Codememory
- */
 trait TimestampTrait
 {
     #[Gedmo\Timestampable(on: 'create')]

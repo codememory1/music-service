@@ -12,12 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class NotificationDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<Notification>
- *
- * @author  Codememory
  */
 final class NotificationDto extends AbstractDataTransfer
 {

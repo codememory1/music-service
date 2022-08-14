@@ -8,13 +8,6 @@ use function constant;
 use function defined;
 use function Symfony\Component\String\u;
 
-/**
- * Class ToEnumConstraintHandler.
- *
- * @package App\Dto\Constraints
- *
- * @author  Codememory
- */
 final class ToEnumConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferValueInterceptorConstraintHandlerInterface
 {
     /**

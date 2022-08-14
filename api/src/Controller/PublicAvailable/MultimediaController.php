@@ -20,13 +20,6 @@ use App\Service\Multimedia\UpdateMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user')]
 #[Authorization]
 class MultimediaController extends AbstractRestController
@@ -36,7 +29,6 @@ class MultimediaController extends AbstractRestController
     public function myAll(MultimediaResponseData $multimediaResponseData, MultimediaRepository $multimediaRepository): JsonResponse
     {
         $multimediaResponseData->setEntities($multimediaRepository->findAllByUser($this->getAuthorizedUser()));
-        $multimediaResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
     }
@@ -48,7 +40,6 @@ class MultimediaController extends AbstractRestController
         MultimediaRepository $multimediaRepository
     ): JsonResponse {
         $multimediaResponseData->setEntities($multimediaRepository->findAnother($user));
-        $multimediaResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
     }

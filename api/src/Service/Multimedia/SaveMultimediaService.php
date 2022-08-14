@@ -24,13 +24,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class SaveMultimediaService.
- *
- * @package App\Service\Multimedia
- *
- * @author  Codememory
- */
 class SaveMultimediaService extends AbstractService
 {
     #[Required]

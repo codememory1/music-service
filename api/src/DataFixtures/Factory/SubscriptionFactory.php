@@ -9,13 +9,6 @@ use App\Enum\SubscriptionEnum;
 use App\Enum\SubscriptionStatusEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class SubscriptionFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class SubscriptionFactory implements DataFixtureFactoryInterface
 {
     private string $key;
@@ -31,7 +24,7 @@ final class SubscriptionFactory implements DataFixtureFactoryInterface
         string $title,
         string $description,
         int $price,
-        SubscriptionStatusEnum $subscriptionStatusEnum,
+        SubscriptionStatusEnum $status,
         ?int $oldPrice = null,
         bool $isRecommend = false
     ) {
@@ -39,24 +32,24 @@ final class SubscriptionFactory implements DataFixtureFactoryInterface
         $this->title = $title;
         $this->description = $description;
         $this->price = $price;
-        $this->status = $subscriptionStatusEnum;
+        $this->status = $status;
         $this->oldPrice = $oldPrice;
         $this->isRecommend = $isRecommend;
     }
 
     public function factoryMethod(): EntityInterface
     {
-        $subscriptionEntity = new Subscription();
+        $subscription = new Subscription();
 
-        $subscriptionEntity->setKey($this->key);
-        $subscriptionEntity->setTitle($this->title);
-        $subscriptionEntity->setDescription($this->description);
-        $subscriptionEntity->setOldPrice($this->oldPrice);
-        $subscriptionEntity->setPrice($this->price);
-        $subscriptionEntity->setIsRecommend($this->isRecommend);
-        $subscriptionEntity->setStatus($this->status);
+        $subscription->setKey($this->key);
+        $subscription->setTitle($this->title);
+        $subscription->setDescription($this->description);
+        $subscription->setOldPrice($this->oldPrice);
+        $subscription->setPrice($this->price);
+        $subscription->setIsRecommend($this->isRecommend);
+        $subscription->setStatus($this->status);
 
-        return $subscriptionEntity;
+        return $subscription;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

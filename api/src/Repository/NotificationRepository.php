@@ -6,14 +6,9 @@ use App\Entity\Notification;
 use App\Enum\NotificationStatusEnum;
 
 /**
- * Class NotificationRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<Notification>
- *
- * @author  Codememory
  */
-class NotificationRepository extends AbstractRepository
+final class NotificationRepository extends AbstractRepository
 {
     protected ?string $entity = Notification::class;
     protected ?string $alias = 'n';

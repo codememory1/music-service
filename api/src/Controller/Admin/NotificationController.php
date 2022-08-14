@@ -11,13 +11,6 @@ use App\Service\Notification\CreateNotificationService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class NotificationController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/notification')]
 #[Authorization]
 class NotificationController extends AbstractRestController

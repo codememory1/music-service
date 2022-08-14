@@ -4,13 +4,6 @@ namespace App\Service\IPGeolocation;
 
 use App\Service\IPGeolocation\Interfaces\IPInformationInterface;
 
-/**
- * Class AbstractClient.
- *
- * @package App\Service\IPGeolocation
- *
- * @author  Codememory
- */
 abstract class AbstractClient implements IPInformationInterface
 {
     private ?string $continent = null;

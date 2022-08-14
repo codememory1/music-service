@@ -18,13 +18,6 @@ use App\Service\Friend\DeleteFriendService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class FriendController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user')]
 #[Authorization]
 class FriendController extends AbstractRestController
@@ -35,7 +28,7 @@ class FriendController extends AbstractRestController
     {
         $friendResponseData->setEntities($friendRepository->findByUser($this->getAuthorizedUser()));
 
-        return $this->responseCollection->dataOutput($friendResponseData->collect()->getResponse());
+        return $this->responseCollection->dataOutput($friendResponseData->getResponse());
     }
 
     #[Route('/{user_id<\d+>}/add-as-friend', methods: 'PATCH')]
@@ -53,7 +46,7 @@ class FriendController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friend,
         AcceptAsFriendService $acceptAsFriendService
     ): JsonResponse {
-        if (false === $this->getAuthorizedUser()->isInstance($friend->getFriend()) || false === $friend->isAwaitingConfirmation()) {
+        if (false === $this->getAuthorizedUser()->isCompare($friend->getFriend()) || false === $friend->isAwaitingConfirmation()) {
             throw EntityNotFoundException::friend();
         }
 
@@ -68,7 +61,7 @@ class FriendController extends AbstractRestController
     ): JsonResponse {
         $authorizedUser = $this->getAuthorizedUser();
 
-        if (false === $friendship->isInstance($authorizedUser) && false === $friendship->getFriend()->isInstance($authorizedUser)) {
+        if (false === $friendship->isCompare($authorizedUser) && false === $friendship->getFriend()->isCompare($authorizedUser)) {
             throw EntityNotFoundException::friend();
         }
 

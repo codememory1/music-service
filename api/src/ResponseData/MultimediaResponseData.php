@@ -15,14 +15,7 @@ use App\ResponseData\Traits\DateTimeHandlerTrait;
 use Doctrine\Common\Collections\Collection;
 use JetBrains\PhpStorm\ArrayShape;
 
-/**
- * Class MultimediaResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class MultimediaResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     protected array $methodPrefixesForProperties = [
@@ -82,45 +75,36 @@ class MultimediaResponseData extends AbstractResponseData implements ResponseDat
         $albumResponseData = new AlbumResponseData($this->container);
 
         $albumResponseData->setIgnoreProperty('multimedia');
-        $albumResponseData->setEntities($album);
-
-        return $albumResponseData->collect()->getResponse(true);
+        
+        return $albumResponseData->setEntities($album)->getResponse(true);
     }
 
     public function handleCategory(MultimediaCategory $multimediaCategory): array
     {
         $multimediaCategoryResponseData = new MultimediaCategoryResponseData($this->container);
 
-        $multimediaCategoryResponseData->setEntities($multimediaCategory);
-
-        return $multimediaCategoryResponseData->collect()->getResponse(true);
+        return $multimediaCategoryResponseData->setEntities($multimediaCategory)->getResponse(true);
     }
 
     public function handlePerformers(Collection $performers): array
     {
         $multimediaPerformerResponseData = new MultimediaPerformerResponseData($this->container);
 
-        $multimediaPerformerResponseData->setEntities($performers->toArray());
-
-        return $multimediaPerformerResponseData->collect()->getResponse();
+        return $multimediaPerformerResponseData->setEntities($performers)->getResponse();
     }
 
     public function handleMetadata(?MultimediaMetadata $multimediaMetadata): array
     {
         $multimediaMetadataResponseData = new MultimediaMetadataResponseData($this->container);
 
-        $multimediaMetadataResponseData->setEntities($multimediaMetadata ?: []);
-
-        return $multimediaMetadataResponseData->collect()->getResponse(true);
+        return $multimediaMetadataResponseData->setEntities($multimediaMetadata ?: [])->getResponse(true);
     }
 
     public function handleQueue(?MultimediaQueue $multimediaQueue): array
     {
         $multimediaQueueResponseData = new MultimediaQueueResponseData($this->container);
 
-        $multimediaQueueResponseData->setEntities($multimediaQueue ?? []);
-
-        return $multimediaQueueResponseData->collect()->getResponse(true);
+        return $multimediaQueueResponseData->setEntities($multimediaQueue ?? [])->getResponse(true);
     }
 
     public function handleShares(Collection $shares): int

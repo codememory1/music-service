@@ -13,26 +13,19 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use function Symfony\Component\String\u;
 
-/**
- * Class GenerateJwtKeysCommand.
- *
- * @package App\Command
- *
- * @author  Codememory
- */
 #[AsCommand(
     'app:jwt-generate-keys',
     'Generate public and private key for jwt'
 )]
 class GenerateJwtKeysCommand extends Command
 {
-    private ParameterBagInterface $params;
+    private ParameterBagInterface $parameterBag;
 
-    public function __construct(ParameterBagInterface $params, ?string $name = null)
+    public function __construct(ParameterBagInterface $parameterBag, ?string $name = null)
     {
         parent::__construct($name);
 
-        $this->params = $params;
+        $this->parameterBag = $parameterBag;
     }
 
     protected function configure(): void
@@ -56,8 +49,8 @@ class GenerateJwtKeysCommand extends Command
         $publicPath = $this->generateFilename($variablePrefix);
         $privatePath = $this->generateFilename($variablePrefix, true);
 
-        if (!is_dir($this->params->get('jwt.secrets'))) {
-            mkdir($this->params->get('jwt.secrets'), 0777, true);
+        if (!is_dir($this->parameterBag->get('jwt.secrets'))) {
+            mkdir($this->parameterBag->get('jwt.secrets'), 0777, true);
         }
 
         shell_exec("openssl genrsa -out ${privatePath} 2048");
@@ -90,6 +83,6 @@ class GenerateJwtKeysCommand extends Command
         $prefix = u($prefix)->lower()->toString();
         $prefix .= $isPrivate ? '_private.pem' : '_public.pem';
 
-        return $this->params->get('jwt.secrets') . $prefix;
+        return $this->parameterBag->get('jwt.secrets') . $prefix;
     }
 }

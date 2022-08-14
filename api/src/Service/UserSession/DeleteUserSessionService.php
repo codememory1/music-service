@@ -8,13 +8,6 @@ use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class DeleteUserSessionService.
- *
- * @package App\Service\UserSession
- *
- * @author  Codememory
- */
 class DeleteUserSessionService extends AbstractService
 {
     public function delete(UserSession $userSession): UserSession

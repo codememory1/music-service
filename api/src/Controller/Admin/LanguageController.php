@@ -18,13 +18,6 @@ use App\Service\Language\UpdateLanguageService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class LanguageController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/language')]
 #[Authorization]
 class LanguageController extends AbstractRestController
@@ -34,7 +27,6 @@ class LanguageController extends AbstractRestController
     public function all(LanguageResponseData $languageResponseData, LanguageRepository $languageRepository): JsonResponse
     {
         $languageResponseData->setEntities($languageRepository->findAll());
-        $languageResponseData->collect();
 
         return $this->responseCollection->dataOutput($languageResponseData->getResponse());
     }
@@ -46,7 +38,6 @@ class LanguageController extends AbstractRestController
         LanguageResponseData $languageResponseData
     ): JsonResponse {
         $languageResponseData->setEntities($language);
-        $languageResponseData->collect();
 
         return $this->responseCollection->dataOutput($languageResponseData->getResponse(true));
     }

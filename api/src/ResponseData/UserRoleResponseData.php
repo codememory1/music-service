@@ -8,14 +8,7 @@ use App\ResponseData\Traits\DateTimeHandlerTrait;
 use App\ResponseData\Traits\ToTranslationHandlerTrait;
 use Doctrine\Common\Collections\Collection;
 
-/**
- * Class UserRoleResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class UserRoleResponseData extends AbstractResponseData implements ResponseDataInterface
+final class UserRoleResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     use ToTranslationHandlerTrait;
@@ -41,8 +34,6 @@ class UserRoleResponseData extends AbstractResponseData implements ResponseDataI
     {
         $responseData = new UserRolePermissionResponseData($this->container);
 
-        $responseData->setEntities($collection->toArray());
-
-        return $responseData->collect()->getResponse();
+        return $responseData->setEntities($collection)->getResponse();
     }
 }

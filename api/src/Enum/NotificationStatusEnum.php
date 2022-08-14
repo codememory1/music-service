@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum NotificationStatusEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum NotificationStatusEnum
 {
     case PENDING;

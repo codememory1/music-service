@@ -8,13 +8,6 @@ use App\Entity\UserSession;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class PlayPauseMultimediaService.
- *
- * @package App\Service\Multimedia
- *
- * @author  Сodememory
- */
 class PlayPauseMultimediaService extends AbstractService
 {
     public function playPause(Multimedia $multimedia, UserSession $userSession): RunningMultimedia

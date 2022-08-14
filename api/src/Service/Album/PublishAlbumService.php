@@ -13,13 +13,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class PublishAlbumService.
- *
- * @package App\Service\Album
- *
- * @author  Codememory
- */
 class PublishAlbumService extends AbstractService
 {
     #[Required]

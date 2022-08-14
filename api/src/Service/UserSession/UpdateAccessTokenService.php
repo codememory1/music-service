@@ -12,13 +12,6 @@ use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class UpdateAccessTokenService.
- *
- * @package App\Service\UserSession
- *
- * @author  Codememory
- */
 class UpdateAccessTokenService extends AbstractService
 {
     #[Required]

@@ -11,13 +11,6 @@ use App\Service\AbstractService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class Identification.
- *
- * @package App\Security\Auth
- *
- * @author  Codememory
- */
 class Identification extends AbstractService
 {
     #[Required]

@@ -3,26 +3,21 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\UserNotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class Notification.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: UserNotificationRepository::class)]
 #[ORM\Table('user_notifications')]
 #[ORM\HasLifecycleCallbacks]
-class UserNotification implements EntityInterface
+final class UserNotification implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
-
+    use ComparisonTrait;
+        
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'notifications')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $toUser = null;

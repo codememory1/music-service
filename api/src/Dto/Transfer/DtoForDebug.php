@@ -7,14 +7,7 @@ use App\Entity\AlbumType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class DtoForDebug.
- *
- * @package App\Dto\Transfer
- *
- * @author  Codememory
- */
-class DtoForDebug extends AbstractDataTransfer
+final class DtoForDebug extends AbstractDataTransfer
 {
     #[Assert\NotBlank(message: 'album@titleIsRequired')]
     #[Assert\Length(max: 50, maxMessage: 'album@maxTitleLength')]

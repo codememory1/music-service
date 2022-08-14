@@ -12,13 +12,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AppealCanceledService.
- *
- * @package App\Service\Multimedia
- *
- * @author  Codememory
- */
 class AppealCanceledService extends AbstractService
 {
     #[Required]

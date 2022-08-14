@@ -10,14 +10,7 @@ use App\ResponseData\Traits\DateTimeHandlerTrait;
 use App\ResponseData\Traits\ToTranslationHandlerTrait;
 use Doctrine\Common\Collections\Collection;
 
-/**
- * Class SubscriptionResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class SubscriptionResponseData extends AbstractResponseData implements ResponseDataInterface
+final class SubscriptionResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     use ToTranslationHandlerTrait;
@@ -57,8 +50,6 @@ class SubscriptionResponseData extends AbstractResponseData implements ResponseD
     {
         $responseData = new SubscriptionPermissionResponseData($this->container);
 
-        $responseData->setEntities($collection->toArray());
-
-        return $responseData->collect()->getResponse();
+        return $responseData->setEntities($collection)->getResponse();
     }
 }

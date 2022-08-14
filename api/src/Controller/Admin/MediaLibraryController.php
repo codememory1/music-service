@@ -17,13 +17,6 @@ use App\Service\MediaLibrary\UpdateMediaLibraryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MediaLibraryController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user')]
 #[Authorization]
 class MediaLibraryController extends AbstractRestController
@@ -39,7 +32,6 @@ class MediaLibraryController extends AbstractRestController
         }
 
         $multimediaMediaLibraryResponseData->setEntities($user->getMediaLibrary()->getMultimedia());
-        $multimediaMediaLibraryResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaMediaLibraryResponseData->getResponse());
     }

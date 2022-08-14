@@ -5,15 +5,8 @@ namespace App\ResponseData\Constraints;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use Attribute;
 
-/**
- * Class Callback.
- *
- * @package App\ResponseData\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class Callback implements ConstraintInterface
+final class Callback implements ConstraintInterface
 {
     public readonly string $methodName;
     public readonly ?string $class;

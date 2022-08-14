@@ -9,13 +9,6 @@ use App\Rest\Http\Exceptions\InvalidException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class RestorePassword.
- *
- * @package App\Security\PasswordReset
- *
- * @author  Codememory
- */
 class RestorePassword extends AbstractService
 {
     public function restore(RestorePasswordDto $restorePasswordDto): JsonResponse

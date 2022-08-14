@@ -3,26 +3,22 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Enum\PlatformSettingEnum;
 use App\Repository\PlatformSettingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class PlatformSetting.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: PlatformSettingRepository::class)]
 #[ORM\Table('platform_settings')]
 #[ORM\HasLifecycleCallbacks]
-class PlatformSetting implements EntityInterface
+final class PlatformSetting implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
         'comment' => 'Unique setting key to receive'
@@ -39,9 +35,9 @@ class PlatformSetting implements EntityInterface
         return $this->key;
     }
 
-    public function setKey(?string $key): self
+    public function setKey(?PlatformSettingEnum $platformSetting): self
     {
-        $this->key = $key;
+        $this->key = $platformSetting?->name;
 
         return $this;
     }

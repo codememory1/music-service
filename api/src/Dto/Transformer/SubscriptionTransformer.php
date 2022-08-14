@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class SubscriptionTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<SubscriptionDto>
- *
- * @author  Codememory
  */
 final class SubscriptionTransformer extends AbstractDataTransformer
 {
@@ -31,8 +26,6 @@ final class SubscriptionTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->subscriptionDto
-            ->setEntity($entity ?: new Subscription())
-            ->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->subscriptionDto, $entity ?: new Subscription());
     }
 }

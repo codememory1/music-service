@@ -10,14 +10,7 @@ use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 use Doctrine\Common\Collections\Collection;
 
-/**
- * Class AlbumResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class AlbumResponseData extends AbstractResponseData implements ResponseDataInterface
+final class AlbumResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     public ?int $id = null;
@@ -45,9 +38,7 @@ class AlbumResponseData extends AbstractResponseData implements ResponseDataInte
     {
         $albumTypeResponseData = new AlbumTypeResponseData($this->container);
 
-        $albumTypeResponseData->setEntities($albumType);
-
-        return $albumTypeResponseData->collect()->getResponse(true);
+        return $albumTypeResponseData->setEntities($albumType)->getResponse(true);
     }
 
     public function handleMultimedia(Collection $multimedia): array
@@ -55,8 +46,7 @@ class AlbumResponseData extends AbstractResponseData implements ResponseDataInte
         $multimediaResponseData = new MultimediaResponseData($this->container);
 
         $multimediaResponseData->setIgnoreProperty('album');
-        $multimediaResponseData->setEntities($multimedia->toArray());
-
-        return $multimediaResponseData->collect()->getResponse();
+        
+        return $multimediaResponseData->setEntities($multimedia->toArray())->getResponse();
     }
 }

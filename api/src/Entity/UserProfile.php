@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Interfaces\EntityS3SettingInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
@@ -14,24 +15,19 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class UserProfile.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: UserProfileRepository::class)]
 #[ORM\Table('user_profiles')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('user', message: 'userProfile@existByUser')]
-class UserProfile implements EntityInterface, EntityS3SettingInterface
+final class UserProfile implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\OneToOne(inversedBy: 'profile', targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -137,6 +133,7 @@ class UserProfile implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure] 
     public function isHide(): bool
     {
         return $this->getStatus() === UserProfileStatusEnum::HIDE->name;
@@ -149,6 +146,7 @@ class UserProfile implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isShow(): bool
     {
         return $this->getStatus() === UserProfileStatusEnum::SHOW->name;

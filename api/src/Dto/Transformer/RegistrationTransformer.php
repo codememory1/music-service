@@ -9,12 +9,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class PlaylistTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<RegistrationDto>
- *
- * @author  Codememory
  */
 final class RegistrationTransformer extends AbstractDataTransformer
 {
@@ -30,6 +25,6 @@ final class RegistrationTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->registrationDto->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->registrationDto, $entity);
     }
 }

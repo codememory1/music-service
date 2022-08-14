@@ -2,15 +2,12 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Multimedia;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class MultimediaDataFixture.
- *
- * @package App\DataFixtures
- *
- * @author  Codememory
+ * @template-extends AbstractDataFixture<Multimedia>
  */
 final class MultimediaDataFixture extends AbstractDataFixture
 {

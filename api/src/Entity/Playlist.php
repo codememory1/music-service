@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Interfaces\EntityS3SettingInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
@@ -16,21 +17,15 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class Playlist.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
 #[ORM\Table('playlists')]
 #[ORM\HasLifecycleCallbacks]
-class Playlist implements EntityInterface, EntityS3SettingInterface
+final class Playlist implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'playlists')]
     #[ORM\JoinColumn(nullable: false)]
@@ -126,6 +121,7 @@ class Playlist implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isHide(): bool
     {
         return $this->getStatus() === PlaylistStatusEnum::HIDE->name;

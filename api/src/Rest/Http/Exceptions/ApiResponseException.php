@@ -6,13 +6,6 @@ use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 use RuntimeException;
 
-/**
- * Class ApiResponseException.
- *
- * @package App\Rest\Http\Exceptions
- *
- * @author  Codememory
- */
 class ApiResponseException extends RuntimeException
 {
     public readonly string $translationKey;

@@ -11,17 +11,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use FFMpeg\FFProbe\DataMapping\StreamCollection;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-/**
- * Class MultimediaMetadataMessageHandler.
- *
- * @package App\MessageHandler
- *
- * @author  Codememory
- */
 #[AsMessageHandler]
-class MultimediaMetadataMessageHandler
+final class MultimediaMetadataMessageHandler
 {
     private EntityManagerInterface $em;
     private FlusherService $flusherService;
@@ -34,6 +28,7 @@ class MultimediaMetadataMessageHandler
         $this->uploadedObject = $uploadedObject;
     }
 
+    #[Pure] 
     private function getMultimediaMetadata(Multimedia $multimedia): ?MultimediaMetadata
     {
         if (null !== $multimedia->getMetadata()) {

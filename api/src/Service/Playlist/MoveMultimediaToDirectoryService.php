@@ -8,13 +8,6 @@ use App\Entity\PlaylistDirectory;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class MoveMultimediaToDirectoryService.
- *
- * @package App\Service\Playlist
- *
- * @author  Codememory
- */
 class MoveMultimediaToDirectoryService extends AbstractService
 {
     public function move(MultimediaPlaylist $multimediaPlaylist, PlaylistDirectory $toDirectory): MultimediaPlaylist

@@ -8,13 +8,6 @@ use App\Rest\Http\Exceptions\FailedException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class Logout.
- *
- * @package App\Security\Logout
- *
- * @author  Codememory
- */
 class Logout extends AbstractService
 {
     public function logout(RefreshTokenDto $refreshTokenDto): JsonResponse

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\MediaLibraryStatusEnum;
@@ -11,21 +12,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * Class MediaLibrary.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: MediaLibraryRepository::class)]
 #[ORM\Table('media_libraries')]
 #[ORM\HasLifecycleCallbacks]
-class MediaLibrary implements EntityInterface
+final class MediaLibrary implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\OneToOne(inversedBy: 'mediaLibrary', targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -88,6 +84,7 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
+    #[Pure]
     public function isHide(): bool
     {
         return $this->getStatus() === MediaLibraryStatusEnum::HIDE->name;
@@ -100,6 +97,7 @@ class MediaLibrary implements EntityInterface
         return $this;
     }
 
+    #[Pure] 
     public function isShow(): bool
     {
         return $this->getStatus() === MediaLibraryStatusEnum::SHOW->name;
@@ -134,10 +132,10 @@ class MediaLibrary implements EntityInterface
 
         return $this;
     }
-
+    
     public function isMultimediaBelongsToMediaLibrary(MultimediaMediaLibrary $multimedia): bool
     {
-        return $multimedia->getMediaLibrary()->getId() === $this->getId();
+        return $multimedia->getMediaLibrary()->isCompare($this);
     }
 
     /**

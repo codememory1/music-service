@@ -19,13 +19,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AbstractServiceAuthorization.
- *
- * @package App\Security\ServiceAuth
- *
- * @author  Codememory
- */
 abstract class AbstractServiceAuthorization extends AbstractService
 {
     protected ?string $serviceType = null;

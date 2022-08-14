@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum WebSocketUserMessageTypeHandlerEnum.
- *
- * @package App\Enum
- *
- * @author  Сodememory
- */
 enum WebSocketUserMessageTypeHandlerEnum: string
 {
     // example -> case TEST_HANDLER = 'App\Service\WebSocket\TestUserMessageHandlerService';

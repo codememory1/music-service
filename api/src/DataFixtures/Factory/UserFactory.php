@@ -14,13 +14,6 @@ use App\Enum\UserProfileStatusEnum;
 use App\Enum\UserStatusEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class UserFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class UserFactory implements DataFixtureFactoryInterface
 {
     private string $pseudonym;
@@ -30,13 +23,13 @@ final class UserFactory implements DataFixtureFactoryInterface
     private ?ReferenceRepository $referenceRepository = null;
     private ?SubscriptionEnum $subscription;
 
-    public function __construct(string $pseudonym, string $email, string $password, RoleEnum $role, ?SubscriptionEnum $subscriptionEnum = null)
+    public function __construct(string $pseudonym, string $email, string $password, RoleEnum $role, ?SubscriptionEnum $subscription = null)
     {
         $this->pseudonym = $pseudonym;
         $this->email = $email;
         $this->password = $password;
         $this->role = $role->name;
-        $this->subscription = $subscriptionEnum;
+        $this->subscription = $subscription;
     }
 
     public function factoryMethod(): EntityInterface
@@ -50,20 +43,20 @@ final class UserFactory implements DataFixtureFactoryInterface
             $subscription = $this->referenceRepository->getReference("s-{$this->subscription->name}");
         }
 
-        $userEntity = new User();
-        $userProfileEntity = new UserProfile();
+        $user = new User();
+        $userProfile = new UserProfile();
 
-        $userProfileEntity->setPseudonym($this->pseudonym);
-        $userProfileEntity->setStatus(UserProfileStatusEnum::HIDE);
+        $userProfile->setPseudonym($this->pseudonym);
+        $userProfile->setStatus(UserProfileStatusEnum::HIDE);
 
-        $userEntity->setEmail($this->email);
-        $userEntity->setPassword($this->password);
-        $userEntity->setRole($role);
-        $userEntity->setStatus(UserStatusEnum::ACTIVE);
-        $userEntity->setProfile($userProfileEntity);
-        $userEntity->setSubscription($subscription);
+        $user->setEmail($this->email);
+        $user->setPassword($this->password);
+        $user->setRole($role);
+        $user->setStatus(UserStatusEnum::ACTIVE);
+        $user->setProfile($userProfile);
+        $user->setSubscription($subscription);
 
-        return $userEntity;
+        return $user;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

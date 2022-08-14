@@ -9,12 +9,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UserProfileDesignDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<UserProfileDesign>
- *
- * @author  Codememory
  */
 final class UserProfileDesignDto extends AbstractDataTransfer
 {

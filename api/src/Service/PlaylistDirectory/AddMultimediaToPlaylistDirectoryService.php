@@ -12,13 +12,6 @@ use App\Service\Playlist\CheckExistMultimediaToPlaylistDirectoriesService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AddMultimediaToPlaylistDirectoryService.
- *
- * @package App\Service\PlaylistDirectory
- *
- * @author  Codememory
- */
 class AddMultimediaToPlaylistDirectoryService extends AbstractService
 {
     #[Required]

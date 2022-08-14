@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\MediaLibraryEventEnum;
@@ -12,13 +13,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class MediaLibraryEvent.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: MediaLibraryEventRepository::class)]
 #[ORM\Table('media_library_events')]
 #[ORM\HasLifecycleCallbacks]
@@ -27,10 +21,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     'entityExist@mediaLibraryEvent',
     payload: [ResponseTypeEnum::EXIST, 409]
 )]
-class MediaLibraryEvent implements EntityInterface
+final class MediaLibraryEvent implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Event key from MediaLibraryEventEnum'
@@ -45,12 +40,7 @@ class MediaLibraryEvent implements EntityInterface
     #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
     private ?MediaLibrary $mediaLibrary = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
+    
     public function getKey(): ?string
     {
         return $this->key;

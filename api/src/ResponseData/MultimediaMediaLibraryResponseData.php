@@ -7,14 +7,7 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 
-/**
- * Class MultimediaMediaLibraryResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class MultimediaMediaLibraryResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaMediaLibraryResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     public ?int $id = null;
@@ -31,9 +24,8 @@ class MultimediaMediaLibraryResponseData extends AbstractResponseData implements
     {
         $multimediaResponseData = new MultimediaResponseData($this->container);
 
-        $multimediaResponseData->setEntities($multimedia);
         $multimediaResponseData->setIgnoreProperty('album');
-
-        return $multimediaResponseData->collect()->getResponse(true);
+        
+        return $multimediaResponseData->setEntities($multimedia)->getResponse();
     }
 }

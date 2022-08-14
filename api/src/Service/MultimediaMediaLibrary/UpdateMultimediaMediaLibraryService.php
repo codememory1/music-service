@@ -10,13 +10,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class UpdateMultimediaMediaLibraryService.
- *
- * @package App\Service\MediaLibrary
- *
- * @author  Codememory
- */
 class UpdateMultimediaMediaLibraryService extends AbstractService
 {
     #[Required]

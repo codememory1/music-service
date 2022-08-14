@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class UserProfileDesignTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<UserProfileDesignDto>
- *
- * @author  Codememory
  */
 final class UserProfileDesignTransformer extends AbstractDataTransformer
 {
@@ -35,7 +30,7 @@ final class UserProfileDesignTransformer extends AbstractDataTransformer
             ->setEntity($entity ?: new UserProfileDesign())
             ->collect([
                 ...$this->request->all(),
-                'cover_image' => $this->request?->request->files->get('cover_image')
+                'cover_image' => $this->request->getRequest()->files->get('cover_image')
             ]);
     }
 }

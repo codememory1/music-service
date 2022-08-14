@@ -16,13 +16,6 @@ use App\Service\Friend\DeleteFriendService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class FriendController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user')]
 #[Authorization]
 class FriendController extends AbstractRestController
@@ -35,7 +28,7 @@ class FriendController extends AbstractRestController
     ): JsonResponse {
         $friendResponseData->setEntities($friendRepository->findByUser($user));
 
-        return $this->responseCollection->dataOutput($friendResponseData->collect()->getResponse());
+        return $this->responseCollection->dataOutput($friendResponseData->getResponse());
     }
 
     #[Route('/friend/{friend_id<\d+>}/terminate-friendship', methods: 'DELETE')]

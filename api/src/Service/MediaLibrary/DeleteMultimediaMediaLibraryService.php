@@ -6,13 +6,6 @@ use App\Entity\MultimediaMediaLibrary;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class DeleteMultimediaMediaLibraryService.
- *
- * @package App\Service\MediaLibrary
- *
- * @author  Codememory
- */
 class DeleteMultimediaMediaLibraryService extends AbstractService
 {
     public function delete(MultimediaMediaLibrary $multimediaMediaLibrary): MultimediaMediaLibrary

@@ -6,13 +6,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class BetweenValidator.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
 final class BetweenValidator extends ConstraintValidator
 {
     /**

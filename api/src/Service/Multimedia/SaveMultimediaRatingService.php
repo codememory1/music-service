@@ -13,13 +13,6 @@ use function call_user_func;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class SaveMultimediaRatingService.
- *
- * @package App\Service\Multimedia
- *
- * @author  Codememory
- */
 class SaveMultimediaRatingService extends AbstractService
 {
     #[Required]

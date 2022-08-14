@@ -8,14 +8,7 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 
-/**
- * Class TranslationResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class TranslationResponseData extends AbstractResponseData implements ResponseDataInterface
+final class TranslationResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
 
@@ -38,8 +31,6 @@ class TranslationResponseData extends AbstractResponseData implements ResponseDa
     {
         $translationKeyResponseData = new TranslationKeyResponseData($this->container);
 
-        $translationKeyResponseData->setEntities($translationKey);
-
-        return $translationKeyResponseData->collect()->getResponse(true);
+        return $translationKeyResponseData->setEntities($translationKey)->getResponse(true);
     }
 }

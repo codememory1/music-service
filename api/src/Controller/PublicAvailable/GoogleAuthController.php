@@ -11,13 +11,6 @@ use App\Service\Platform\Google\Client as GoogleClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class GoogleAuthController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user/google')]
 #[Authorization(false)]
 class GoogleAuthController extends AbstractRestController

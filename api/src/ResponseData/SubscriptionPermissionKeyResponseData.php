@@ -9,14 +9,7 @@ use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 use App\ResponseData\Traits\ToTranslationHandlerTrait;
 
-/**
- * Class SubscriptionPermissionKeyResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class SubscriptionPermissionKeyResponseData extends AbstractResponseData implements ResponseDataInterface
+final class SubscriptionPermissionKeyResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     use ToTranslationHandlerTrait;

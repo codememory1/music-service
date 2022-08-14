@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Interfaces\EntityS3SettingInterface;
+use App\Entity\Traits\CloningTrait;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UpdateNumberMultimediaMediaLibraryStatisticTrait;
@@ -17,13 +19,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class MultimediaMediaLibrary.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: MultimediaMediaLibraryRepository::class)]
 #[ORM\Table('multimedia_media_library')]
 #[ORM\HasLifecycleCallbacks]
@@ -32,12 +27,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     message: 'multimediaMediaLibrary@multimediaAlreadyAdd',
     payload: [ResponseTypeEnum::EXIST, 409]
 )]
-class MultimediaMediaLibrary implements EntityInterface, EntityS3SettingInterface
+final class MultimediaMediaLibrary implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;
     use TimestampTrait;
     use UpdateNumberMultimediaMediaLibraryStatisticTrait;
+    use CloningTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: MediaLibrary::class, inversedBy: 'multimedia')]
     #[ORM\JoinColumn(nullable: false)]
@@ -146,15 +143,6 @@ class MultimediaMediaLibrary implements EntityInterface, EntityS3SettingInterfac
                 $event->setMultimediaMediaLibrary(null);
             }
         }
-
-        return $this;
-    }
-
-    public function __clone()
-    {
-        $this->id = null;
-        $this->createdAt = null;
-        $this->updatedAt = null;
 
         return $this;
     }

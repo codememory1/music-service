@@ -5,13 +5,6 @@ namespace App\Rest\Http;
 use App\Enum\ResponseTypeEnum;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class ResponseCollection.
- *
- * @package App\Rest\Http
- *
- * @author  Codememory
- */
 class ResponseCollection
 {
     private ResponseSchema $responseSchema;

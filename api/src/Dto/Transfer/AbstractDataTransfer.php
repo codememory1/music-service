@@ -17,12 +17,7 @@ use Symfony\Component\DependencyInjection\ReverseContainer;
 use function Symfony\Component\String\u;
 
 /**
- * Class AbstractDataTransfer.
- *
- * @package App\Dto\Transfer
  * @template Entity as mixed
- *
- * @author  Codememory
  */
 abstract class AbstractDataTransfer implements DataTransferInterface
 {

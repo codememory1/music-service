@@ -9,13 +9,6 @@ use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class AddMultimediaToMediaLibraryService.
- *
- * @package App\Service\Multimedia
- *
- * @author  Codememory
- */
 class AddMultimediaToMediaLibraryService extends AbstractService
 {
     public function add(Multimedia $multimedia, User $toUser): Multimedia

@@ -6,14 +6,7 @@ use App\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use App\Security\AuthorizedUser;
 
-/**
- * Class SubscriptionPermissionHandler.
- *
- * @package App\ResponseData\Constraints
- *
- * @author  Codememory
- */
-class SubscriptionPermissionHandler implements ConstraintHandlerInterface
+final class SubscriptionPermissionHandler implements ConstraintHandlerInterface
 {
     private AuthorizedUser $authorizedUser;
 
@@ -27,6 +20,12 @@ class SubscriptionPermissionHandler implements ConstraintHandlerInterface
      */
     public function handle(ConstraintInterface $constraint): bool
     {
-        return $this->authorizedUser->isSubscriptionPermission($constraint->permission);
+        $user = $this->authorizedUser->getUser();
+        
+        if (null === $user) {
+            return false;
+        }
+        
+        return $user->isSubscriptionPermission($constraint->permission);
     }
 }

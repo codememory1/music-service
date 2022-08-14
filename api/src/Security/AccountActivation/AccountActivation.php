@@ -12,13 +12,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AccountActivation.
- *
- * @package App\Security\AccountActivation
- *
- * @author  Codememory
- */
 class AccountActivation extends AbstractService
 {
     #[Required]

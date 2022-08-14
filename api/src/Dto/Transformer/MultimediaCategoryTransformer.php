@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class MultimediaCategoryTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<MultimediaCategoryDto>
- *
- * @author  Codememory
  */
 final class MultimediaCategoryTransformer extends AbstractDataTransformer
 {
@@ -31,8 +26,6 @@ final class MultimediaCategoryTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->multimediaCategoryDto
-            ->setEntity($entity ?: new MultimediaCategory())
-            ->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->multimediaCategoryDto, $entity ?: new MultimediaCategory());
     }
 }

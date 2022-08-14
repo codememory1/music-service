@@ -17,13 +17,6 @@ use App\Service\Translation\UpdateTranslationService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class TranslationController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/translation')]
 #[Authorization]
 class TranslationController extends AbstractRestController

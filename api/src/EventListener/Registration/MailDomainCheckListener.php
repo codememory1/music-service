@@ -8,16 +8,10 @@ use App\Enum\ResponseTypeEnum;
 use App\Event\UserRegistrationEvent;
 use App\Rest\Http\Exceptions\ApiResponseException;
 use App\Service\PlatformSettingService;
-use JetBrains\PhpStorm\Pure;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 
-/**
- * Class MailDomainCheckListener.
- *
- * @package App\EventListener\Registration
- *
- * @author  Codememory
- */
-class MailDomainCheckListener
+#[AsEntityListener('app.registration', 'onUserRegistration', 2)]
+final class MailDomainCheckListener
 {
     private PlatformSettingService $platformSettingService;
 
@@ -49,7 +43,6 @@ class MailDomainCheckListener
         }
     }
 
-    #[Pure]
     private function getMailDomain(User $user): ?string
     {
         $email = $user->getEmail();

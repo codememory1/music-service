@@ -15,13 +15,6 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use function Symfony\Component\String\u;
 
-/**
- * Class EntityFromRouteParameterResolver.
- *
- * @package App\Resolver
- *
- * @author  Codememory
- */
 final class EntityFromRouteParameterResolver implements ArgumentValueResolverInterface
 {
     private EntityManagerInterface $em;

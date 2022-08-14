@@ -7,13 +7,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class CronTimeValidator.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
 final class CronTimeValidator extends ConstraintValidator
 {
     /**

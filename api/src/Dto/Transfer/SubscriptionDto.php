@@ -14,12 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class SubscriptionDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<Subscription>
- *
- * @author  Codememory
  */
 final class SubscriptionDto extends AbstractDataTransfer
 {

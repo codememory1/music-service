@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum AlbumTypeEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum AlbumTypeEnum
 {
     case REMIX;

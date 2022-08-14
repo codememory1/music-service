@@ -12,19 +12,10 @@ use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ReverseContainer;
 
-/**
- * Class WebSocketServerCommand.
- *
- * @package App\Command
- *
- * @author  Codememory
- */
 #[AsCommand(
     'app:ws-server',
     'Starting the Web Socket Server'
@@ -42,15 +33,6 @@ class WebSocketServerCommand extends Command
         $this->container = $container;
         $this->schemaValidatorService = $schemaValidatorService;
         $this->worker = $worker;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function configure(): void
-    {
-        $this->addArgument('worker-command', InputArgument::OPTIONAL, 'Worker command');
-        $this->addOption('demon', 'd', InputOption::VALUE_NONE, 'Run the worker in daemon mode');
     }
 
     /**

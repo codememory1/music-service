@@ -6,13 +6,6 @@ use App\Enum\MultimediaStatusEnum;
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class MultimediaException.
- *
- * @package App\Rest\Http\Exceptions
- *
- * @author  Codememory
- */
 class MultimediaException extends ApiResponseException
 {
     #[Pure]

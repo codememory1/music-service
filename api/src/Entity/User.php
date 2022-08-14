@@ -4,10 +4,15 @@ namespace App\Entity;
 
 use App\DBAL\Types\PasswordType;
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\FriendStatusEnum;
 use App\Enum\ResponseTypeEnum;
+use App\Enum\RoleEnum;
+use App\Enum\RolePermissionEnum;
+use App\Enum\SubscriptionEnum;
+use App\Enum\SubscriptionPermissionEnum;
 use App\Enum\UserStatusEnum;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,21 +23,15 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class User.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('email', message: 'user@existByEmail', payload: [ResponseTypeEnum::EXIST, 409])]
-class User implements EntityInterface
+final class User implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
         'comment' => 'Email to login'
@@ -688,50 +687,88 @@ class User implements EntityInterface
     }
 
     #[Pure]
+    public function isRole(RoleEnum $role): bool
+    {
+        return $this->getRole()->getKey() === $role->name;
+    }
+
+    public function isRolePermission(RolePermissionEnum $expectedRolePermission): bool
+    {
+        return $this
+            ->getRole()
+            ->getPermissions()
+            ->exists(static function (int $key, RolePermission $rolePermission) use ($expectedRolePermission): bool {
+                return $rolePermission->getPermissionKey()->getKey() === $expectedRolePermission->name;
+            });
+    }
+
+    public function isSubscriptionPermission(SubscriptionPermissionEnum $expectedSubscriptionPermission): bool
+    {
+        if (null === $subscriptionPermissions = $this->getSubscription()?->getPermissions()) {
+            return false;
+        }
+
+        return $subscriptionPermissions->exists(static function (int $key, SubscriptionPermission $subscriptionPermission) use ($expectedSubscriptionPermission): bool {
+            return $subscriptionPermission->getPermissionKey()->getKey() === $expectedSubscriptionPermission->name;
+        });
+    }
+
+    #[Pure] 
+    public function isSubscription(SubscriptionEnum $expectedSubscription): bool
+    {
+        if (null === $subscription = $this->getSubscription()) {
+            return false;
+        }
+
+        return $subscription->getKey() === $expectedSubscription->name;
+    }
+
     public function isAlbumBelongs(Album $album): bool
     {
-        return $album->getUser()->getId() === $this->getId();
+        return $album->getUser()->isCompare($this);
     }
 
-    #[Pure]
     public function isMultimediaBelongs(Multimedia $multimedia): bool
     {
-        return $multimedia->getUser()->getId() === $this->getId();
+        return $multimedia->getUser()->isCompare($this);
     }
 
-    #[Pure]
     public function isMultimediaMediaLibraryBelongs(MultimediaMediaLibrary $multimediaMediaLibrary): bool
     {
-        return $multimediaMediaLibrary->getMediaLibrary()->getId() === $this->getMediaLibrary()?->getId();
+        return $multimediaMediaLibrary->getMediaLibrary()->isCompare($this->getMediaLibrary());
     }
 
-    #[Pure]
     public function isMediaLibraryBelongs(MediaLibrary $mediaLibrary): bool
     {
-        return $mediaLibrary->getId() === $this->getMediaLibrary()?->getId();
+        return $mediaLibrary->isCompare($this->getMediaLibrary());
     }
 
-    #[Pure]
     public function isPlaylistBelongs(Playlist $playlist): bool
     {
-        return $playlist->getMediaLibrary()->getId() === $this->getMediaLibrary()?->getId();
+        return $playlist->getMediaLibrary()->isCompare($this->getMediaLibrary());
     }
 
-    #[Pure]
     public function isMultimediaPlaylistBelongs(MultimediaPlaylist $multimediaPlaylist): bool
     {
-        return $multimediaPlaylist->getMultimediaMediaLibrary()->getMediaLibrary()->getId() === $this->getMediaLibrary()->getId();
+        return $multimediaPlaylist
+            ->getMultimediaMediaLibrary()
+            ->getMediaLibrary()
+            ->isCompare($this->getMediaLibrary());
     }
 
-    #[Pure]
     public function isPlaylistDirectoryBelongs(PlaylistDirectory $playlistDirectory): bool
     {
-        return $playlistDirectory->getPlaylist()->getMediaLibrary()->getId() === $this->getMediaLibrary()->getId();
+        return $playlistDirectory
+            ->getPlaylist()
+            ->getMediaLibrary()
+            ->isCompare($this->getMediaLibrary());
     }
 
-    #[Pure]
     public function isMultimediaPlaylistDirectoryBelongs(MultimediaPlaylistDirectory $multimediaPlaylistDirectory): bool
     {
-        return $multimediaPlaylistDirectory->getMultimediaMediaLibrary()->getMediaLibrary()->getId() === $this->getMediaLibrary()->getId();
+        return $multimediaPlaylistDirectory
+            ->getMultimediaMediaLibrary()
+            ->getMediaLibrary()
+            ->isCompare($this->getMediaLibrary());
     }
 }

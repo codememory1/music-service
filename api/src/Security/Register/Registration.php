@@ -13,13 +13,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class Registration.
- *
- * @package App\Security\Registration
- *
- * @author  Codememory
- */
 class Registration extends AbstractService
 {
     #[Required]

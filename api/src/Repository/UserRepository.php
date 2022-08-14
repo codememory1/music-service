@@ -6,14 +6,9 @@ use App\Entity\User;
 use App\Enum\UserStatusEnum;
 
 /**
- * Class UserRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<User>
- *
- * @author  Codememory
  */
-class UserRepository extends AbstractRepository
+final class UserRepository extends AbstractRepository
 {
     protected ?string $entity = User::class;
     protected ?string $alias = 'u';

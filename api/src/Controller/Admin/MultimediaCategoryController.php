@@ -18,13 +18,6 @@ use App\Service\MultimediaCategory\UpdateMultimediaCategoryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaCategoryController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/multimedia/category')]
 #[Authorization]
 class MultimediaCategoryController extends AbstractRestController
@@ -33,7 +26,6 @@ class MultimediaCategoryController extends AbstractRestController
     public function all(MultimediaCategoryResponseData $multimediaCategoryResponseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
     {
         $multimediaCategoryResponseData->setEntities($multimediaCategoryRepository->findAll());
-        $multimediaCategoryResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaCategoryResponseData->getResponse());
     }

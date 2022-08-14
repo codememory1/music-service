@@ -8,12 +8,7 @@ use App\Entity\Language;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class LanguageDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<Language>
- *
- * @author  Codememory
  */
 final class LanguageDto extends AbstractDataTransfer
 {

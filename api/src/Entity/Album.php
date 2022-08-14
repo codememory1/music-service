@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Interfaces\EntityS3SettingInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
@@ -14,22 +15,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * Class Album.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
 #[ORM\Table('albums')]
 #[ORM\HasLifecycleCallbacks]
-class Album implements EntityInterface, EntityS3SettingInterface
+final class Album implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'albums')]
     #[ORM\JoinColumn(nullable: false)]
@@ -181,6 +177,7 @@ class Album implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isPublished(): bool
     {
         return $this->getStatus() === AlbumStatusEnum::PUBLISHED->name;
@@ -193,6 +190,7 @@ class Album implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isUnpublished(): bool
     {
         return $this->getStatus() === AlbumStatusEnum::UNPUBLISHED->name;

@@ -8,13 +8,6 @@ use App\Security\AuthorizedUser;
 use App\Security\Http\BearerToken;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * Class AbstractRestController.
- *
- * @package App\Rest\Controller
- *
- * @author  Codememory
- */
 abstract class AbstractRestController extends AbstractController
 {
     protected readonly AuthorizedUser $authorizedUser;
@@ -26,11 +19,6 @@ abstract class AbstractRestController extends AbstractController
         $this->authorizedUser = $authorizedUser;
         $this->bearerToken = $bearerToken;
         $this->responseCollection = $responseCollection;
-    }
-
-    final protected function getManagerAuthorizedUser(): AuthorizedUser
-    {
-        return clone $this->authorizedUser;
     }
 
     final protected function getAuthorizedUser(): ?User

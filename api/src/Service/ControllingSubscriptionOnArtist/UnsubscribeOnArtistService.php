@@ -8,13 +8,6 @@ use App\Rest\Http\Exceptions\FailedException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class UnsubscribeOnArtistService.
- *
- * @package App\Service\ControllingSubscriptionOnArtist
- *
- * @author  Codememory
- */
 class UnsubscribeOnArtistService extends AbstractService
 {
     public function unsubscribe(User $artist, User $subscriber): ArtistSubscriber

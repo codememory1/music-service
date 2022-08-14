@@ -11,12 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class RoleDataFixture.
- *
- * @package App\DataFixtures
  * @template-extends AbstractDataFixture<Role>
- *
- * @author  Codememory
  */
 final class RoleDataFixture extends AbstractDataFixture implements DependentFixtureInterface, FixtureGroupInterface
 {

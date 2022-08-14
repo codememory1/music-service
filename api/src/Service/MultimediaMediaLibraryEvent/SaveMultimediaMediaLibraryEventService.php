@@ -7,13 +7,6 @@ use App\Entity\MultimediaMediaLibrary;
 use App\Service\AbstractService;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class SaveMultimediaMediaLibraryEventService.
- *
- * @package App\Service\MultimediaMediaLibraryEvent
- *
- * @author  Codememory
- */
 class SaveMultimediaMediaLibraryEventService extends AbstractService
 {
     #[Required]

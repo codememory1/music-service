@@ -2,13 +2,6 @@
 
 namespace App\Rest\S3;
 
-/**
- * Class ObjectPath.
- *
- * @package App\Rest\S3
- *
- * @author  Codememory
- */
 class ObjectPath
 {
     private ?string $path = null;

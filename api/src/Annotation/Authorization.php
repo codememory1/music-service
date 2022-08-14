@@ -5,13 +5,6 @@ namespace App\Annotation;
 use App\Annotation\Interfaces\MethodAnnotationInterface;
 use Attribute;
 
-/**
- * Class Authorization.
- *
- * @package App\Annotation
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class Authorization implements MethodAnnotationInterface
 {

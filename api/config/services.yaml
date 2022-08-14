@@ -44,57 +44,6 @@ services:
                 use_path_style_endpoint: true
                 disable_host_prefix_injection: true
 
-    App\EventListener\ApiExceptionListener:
-      tags:
-        - { name: kernel.event_listener, event: kernel.exception }
-
-    App\EventListener\Registration\CreateAccountActivationCodeListener:
-      tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 1 }
-
-    App\EventListener\Registration\SendAccountActivationCodeListener:
-      tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 0 }
-
-    App\EventListener\Registration\CreateRegistrationSessionListener:
-      tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: -1 }
-
-    App\EventListener\Registration\MailDomainCheckListener:
-      tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 2 }
-
-    # Auth
-    App\EventListener\Authorization\CreateTempSessionListener:
-      tags:
-        - { name: kernel.event_listener, event: app.auth, method: onAuth, priority: 1 }
-
-    App\EventListener\Authorization\NotifyNewAuthorizationListener:
-      tags:
-        - { name: kernel.event_listener, event: app.auth, method: onAuth, priority: 0 }
-
-    App\EventListener\KernelController\AnnotationListener:
-      tags:
-        - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-
-    # Password Reset
-    App\EventListener\RequestRestorationPassword\TemporaryBlockingListener:
-      tags:
-        - { name: kernel.event_listener, event: app.after-password-reset.request, method: onAfterRequestRestorationPassword, priority: 1 }
-
-    App\EventListener\RequestRestorationPassword\SendCodeListener:
-      tags:
-        - { name: kernel.event_listener, event: app.password-reset.request, method: onRequestRestorationPassword }
-
-    App\EventListener\MultimediaStatusChange\StatusChangeHandlerListener:
-      tags:
-        - { name: kernel.event_listener, event: app.multimedia.status-change, method: onMultimediaStatusChange }
-
-    # Album status change
-    App\EventListener\AlbumStatusChange\SendNotificationAboutNewReleaseListener:
-      tags:
-        - { name: kernel.event_listener, event: app.album.status-change, method: onAlbumStatusChange, priority: 1 }
-
     App\Rest\Http\:
       resource: '../src/Rest/Http/'
       public: true

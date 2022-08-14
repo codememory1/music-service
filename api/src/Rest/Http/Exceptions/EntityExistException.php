@@ -5,13 +5,6 @@ namespace App\Rest\Http\Exceptions;
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class EntityExistException.
- *
- * @package App\Rest\Http\Exceptions
- *
- * @author  Codememory
- */
 class EntityExistException extends ApiResponseException
 {
     #[Pure]

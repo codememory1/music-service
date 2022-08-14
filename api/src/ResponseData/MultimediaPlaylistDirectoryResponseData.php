@@ -7,14 +7,7 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 
-/**
- * Class MultimediaPlaylistDirectoryResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class MultimediaPlaylistDirectoryResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaPlaylistDirectoryResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     public ?int $id = null;
@@ -32,8 +25,6 @@ class MultimediaPlaylistDirectoryResponseData extends AbstractResponseData imple
     {
         $multimediaMediaLibraryResponseData = new MultimediaMediaLibraryResponseData($this->container);
 
-        $multimediaMediaLibraryResponseData->setEntities($multimedia);
-
-        return $multimediaMediaLibraryResponseData->collect()->getResponse(true);
+        return $multimediaMediaLibraryResponseData->setEntities($multimedia)->getResponse(true);
     }
 }

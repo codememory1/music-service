@@ -4,14 +4,7 @@ namespace App\Event;
 
 use App\Entity\MultimediaRating;
 
-/**
- * Class SetRatingMultimediaEvent.
- *
- * @package App\Event
- *
- * @author  Codememory
- */
-class SetRatingMultimediaEvent
+final class SetRatingMultimediaEvent
 {
     public readonly MultimediaRating $multimediaRating;
 

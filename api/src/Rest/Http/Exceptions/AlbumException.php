@@ -5,13 +5,6 @@ namespace App\Rest\Http\Exceptions;
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class AlbumException.
- *
- * @package App\Rest\Http\Exceptions
- *
- * @author  Codememory
- */
 class AlbumException extends ApiResponseException
 {
     #[Pure]

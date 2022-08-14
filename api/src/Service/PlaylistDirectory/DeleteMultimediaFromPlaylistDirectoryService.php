@@ -6,13 +6,6 @@ use App\Entity\MultimediaPlaylistDirectory;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class DeleteMultimediaFromPlaylistDirectoryService.
- *
- * @package App\Service\PlaylistDirectory
- *
- * @author  Codememory
- */
 class DeleteMultimediaFromPlaylistDirectoryService extends AbstractService
 {
     public function delete(MultimediaPlaylistDirectory $multimediaPlaylistDirectory): MultimediaPlaylistDirectory

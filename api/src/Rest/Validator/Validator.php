@@ -11,13 +11,6 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * Class Validator.
- *
- * @package App\Rest\Validator
- *
- * @author  Codememory
- */
 class Validator
 {
     private ValidatorInterface $validator;

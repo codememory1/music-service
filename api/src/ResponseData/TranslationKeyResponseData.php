@@ -7,14 +7,7 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 
-/**
- * Class TranslationKeyResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class TranslationKeyResponseData extends AbstractResponseData implements ResponseDataInterface
+final class TranslationKeyResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
 

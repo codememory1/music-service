@@ -9,14 +9,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class JsonSchemaValidator.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
-class JsonSchemaValidator extends ConstraintValidator
+final class JsonSchemaValidator extends ConstraintValidator
 {
     /**
      * @inheritDoc

@@ -2,13 +2,6 @@
 
 namespace App\Service\DataRepresentation;
 
-/**
- * Class FilterService.
- *
- * @package App\Service\DataRepresentation
- *
- * @author  Codememory
- */
 class FilterService extends AbstractDataRepresentation
 {
     protected ?string $keyName = 'filter';

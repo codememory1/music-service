@@ -10,13 +10,6 @@ use App\Service\Notification\NotificationCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class ShareMultimediaMediaLibraryWithFriendService.
- *
- * @package App\Service\MultimediaMediaLibrary
- *
- * @author  Codememory
- */
 class ShareMultimediaMediaLibraryWithFriendService extends AbstractService
 {
     #[Required]

@@ -15,13 +15,6 @@ use ReflectionProperty;
 use Symfony\Component\DependencyInjection\ReverseContainer;
 use function Symfony\Component\String\u;
 
-/**
- * Class AbstractResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
 abstract class AbstractResponseData implements ResponseDataInterface
 {
     protected array $ignoredProperties = [];
@@ -63,7 +56,20 @@ abstract class AbstractResponseData implements ResponseDataInterface
         return $this;
     }
 
-    public function collect(): self
+    public function getResponse(bool $first = false): array
+    {
+        $this->collect();
+        
+        if (true === $first && [] !== $this->response) {
+            $key = array_key_first($this->response);
+
+            return $this->response[$key];
+        }
+
+        return $this->response;
+    }
+
+    private function collect(): void
     {
         $reflection = new ReflectionClass(static::class);
         $properties = $reflection->getProperties();
@@ -82,18 +88,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
 
         $this->collectResponse();
 
-        return $this;
-    }
-
-    public function getResponse(bool $first = false): array
-    {
-        if (true === $first && [] !== $this->response) {
-            $key = array_key_first($this->response);
-
-            return $this->response[$key];
-        }
-
-        return $this->response;
     }
 
     #[ArrayShape(['isPassed' => 'bool', 'interceptor' => 'array'])]

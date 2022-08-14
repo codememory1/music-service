@@ -9,13 +9,6 @@ use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AddMediaLibraryEventService.
- *
- * @package App\Service\MediaLibraryEvent
- *
- * @author  codememory
- */
 class AddMediaLibraryEventService extends AbstractService
 {
     #[Required]

@@ -7,13 +7,6 @@ use App\Entity\PlaylistDirectory;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class UpdatePlaylistDirectoryService.
- *
- * @package App\Service\PlaylistDirectory
- *
- * @author  Codememory
- */
 class UpdatePlaylistDirectoryService extends AbstractService
 {
     public function update(PlaylistDirectoryDto $playlistDirectoryDto): PlaylistDirectory

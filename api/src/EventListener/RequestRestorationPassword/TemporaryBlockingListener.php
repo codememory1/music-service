@@ -4,15 +4,10 @@ namespace App\EventListener\RequestRestorationPassword;
 
 use App\Event\RequestRestorationPasswordEvent;
 use App\Rest\Http\Exceptions\FailedException;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 
-/**
- * Class TemporaryBlockingListener.
- *
- * @package App\EventListener\RequestRestorationPassword
- *
- * @author  Codememory
- */
-class TemporaryBlockingListener
+#[AsEntityListener('app.after-password-reset.request', 'onAfterRequestRestorationPassword', 1)]
+final class TemporaryBlockingListener
 {
     public function onAfterRequestRestorationPassword(RequestRestorationPasswordEvent $event): void
     {

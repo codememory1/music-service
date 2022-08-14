@@ -4,14 +4,7 @@ namespace App\Event;
 
 use App\Service\Event\Interfaces\EventInterface;
 
-/**
- * Class SaveEvent.
- *
- * @package App\Event
- *
- * @author  Codememory
- */
-class SaveEvent
+final class SaveEvent
 {
     public readonly EventInterface $event;
 

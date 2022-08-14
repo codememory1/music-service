@@ -9,6 +9,7 @@ use App\Enum\UserSessionTypeEnum;
 use App\Event\UserRegistrationEvent;
 use App\Service\UserSession\CreateSessionService;
 use App\Service\UserSession\UpdateSessionService;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -16,14 +17,8 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-/**
- * Class CreateRegistrationSessionListener.
- *
- * @package App\EventListener\Registration
- *
- * @author  Codememory
- */
-class CreateRegistrationSessionListener
+#[AsEntityListener('app.registration', 'onUserRegistration', -1)]
+final class CreateRegistrationSessionListener
 {
     private EntityManagerInterface $em;
     private CreateSessionService $createUserSessionService;

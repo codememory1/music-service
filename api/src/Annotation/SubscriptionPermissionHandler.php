@@ -7,14 +7,7 @@ use App\Annotation\Interfaces\MethodAnnotationInterface;
 use App\Rest\Http\Exceptions\AccessDeniedException;
 use App\Security\AuthorizedUser;
 
-/**
- * Class SubscriptionPermissionHandler.
- *
- * @package App\Annotation
- *
- * @author  Codememory
- */
-class SubscriptionPermissionHandler implements MethodAnnotationHandlerInterface
+final class SubscriptionPermissionHandler implements MethodAnnotationHandlerInterface
 {
     private AuthorizedUser $authorizedUser;
 
@@ -28,7 +21,7 @@ class SubscriptionPermissionHandler implements MethodAnnotationHandlerInterface
      */
     public function handle(MethodAnnotationInterface $annotation): void
     {
-        if (true !== $this->authorizedUser->isSubscriptionPermission($annotation->permission)) {
+        if (true !== $this->authorizedUser->getUser()?->isSubscriptionPermission($annotation->subscriptionPermission)) {
             throw AccessDeniedException::notEnoughSubscriptionPermissions();
         }
     }

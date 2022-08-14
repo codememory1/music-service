@@ -6,13 +6,6 @@ use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
-/**
- * Class ConstraintInfo.
- *
- * @package App\Rest\Validator
- *
- * @author  Codememory
- */
 class ConstraintInfo
 {
     private ConstraintViolationInterface $constraintViolation;

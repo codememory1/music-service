@@ -6,14 +6,9 @@ use App\Entity\Album;
 use App\Entity\User;
 
 /**
- * Class AlbumRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<Album>
- *
- * @author  Codememory
  */
-class AlbumRepository extends AbstractRepository
+final class AlbumRepository extends AbstractRepository
 {
     protected ?string $entity = Album::class;
     protected ?string $alias = 'a';

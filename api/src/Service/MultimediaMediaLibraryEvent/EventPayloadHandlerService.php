@@ -12,13 +12,6 @@ use App\Service\AbstractService;
 use App\Service\Event\MultimediaMediaLibrary\NextMultimediaAfterEndEventService;
 use App\Service\Event\MultimediaMediaLibrary\RangeTimeEventService;
 
-/**
- * Class EventPayloadHandlerService.
- *
- * @package App\Service\MultimediaMediaLibraryEvent
- *
- * @author  Codememory
- */
 class EventPayloadHandlerService extends AbstractService
 {
     private ?MediaLibrary $mediaLibrary;

@@ -12,17 +12,10 @@ use App\Repository\UserProfileDesignRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class UserProfileDesign.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: UserProfileDesignRepository::class)]
 #[ORM\Table('user_profile_designs')]
 #[ORM\HasLifecycleCallbacks]
-class UserProfileDesign implements EntityInterface, EntityS3SettingInterface
+final class UserProfileDesign implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;

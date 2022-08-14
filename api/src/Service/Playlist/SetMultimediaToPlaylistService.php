@@ -8,13 +8,6 @@ use App\Entity\Playlist;
 use App\Rest\Http\Exceptions\EntityNotFoundException;
 use Doctrine\Common\Collections\Criteria;
 
-/**
- * Class SetMultimediaToPlaylistService.
- *
- * @package App\Service\Playlist
- *
- * @author  Codememory
- */
 class SetMultimediaToPlaylistService
 {
     public function set(array $multimediaMediaLibrary, Playlist $playlist): void

@@ -4,14 +4,7 @@ namespace App\Event;
 
 use App\Entity\AccountActivationCode;
 
-/**
- * Class AccountActivationEvent.
- *
- * @package App\Event
- *
- * @author  Codememory
- */
-class AccountActivationEvent
+final class AccountActivationEvent
 {
     public readonly AccountActivationCode $accountActivationCode;
 

@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class PlaylistTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<PlaylistDto>
- *
- * @author  Codememory
  */
 final class PlaylistTransformer extends AbstractDataTransformer
 {
@@ -35,7 +30,7 @@ final class PlaylistTransformer extends AbstractDataTransformer
             ->setEntity($entity ?: new Playlist())
             ->collect([
                 ...$this->request->all(),
-                'image' => $this->request?->request->files->get('image')
+                'image' => $this->request->getRequest()->files->get('image')
             ]);
     }
 }

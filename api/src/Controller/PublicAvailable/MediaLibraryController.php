@@ -32,7 +32,6 @@ class MediaLibraryController extends AbstractRestController
         $multimediaMediaLibraryResponseData->setEntities(
             $this->getAuthorizedUser()->getMediaLibrary()?->getMultimedia() ?: []
         );
-        $multimediaMediaLibraryResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaMediaLibraryResponseData->getResponse());
     }
@@ -41,7 +40,7 @@ class MediaLibraryController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHARE_MEDIA_LIBRARY_WITH_FRIENDS)]
     public function share(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
-        ShareMediaLibraryWithFriendService $shareWithFriendMediaLibraryService
+        ShareMediaLibraryWithFriendService $shareMediaLibraryWithFriendService
     ): JsonResponse {
         if (null === $this->getAuthorizedUser()->getMediaLibrary()) {
             throw EntityNotFoundException::mediaLibraryNotCreated();
@@ -51,7 +50,7 @@ class MediaLibraryController extends AbstractRestController
             throw EntityNotFoundException::friend();
         }
 
-        return $shareWithFriendMediaLibraryService->request(
+        return $shareMediaLibraryWithFriendService->request(
             $this->getAuthorizedUser()->getMediaLibrary(),
             $this->getAuthorizedUser(),
             $friend
@@ -64,7 +63,6 @@ class MediaLibraryController extends AbstractRestController
         $mediaLibrary = $this->getAuthorizedUser()->getMediaLibrary();
 
         $mediaLibraryStatisticResponseData->setEntities($mediaLibrary?->getStatistic() ?: []);
-        $mediaLibraryStatisticResponseData->collect();
 
         return $this->responseCollection->dataOutput($mediaLibraryStatisticResponseData->getResponse(true));
     }

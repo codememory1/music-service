@@ -5,14 +5,7 @@ namespace App\Event;
 use App\Entity\User;
 use App\Security\Auth\AuthorizationToken;
 
-/**
- * Class UserAuthorizationEvent.
- *
- * @package App\Event
- *
- * @author  Codememory
- */
-class UserAuthorizationEvent
+final class UserAuthorizationEvent
 {
     public readonly User $authorizedUser;
     public readonly AuthorizationToken $authorizationToken;

@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class PlaylistDirectoryTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<PlaylistDirectoryDto>
- *
- * @author  Codememory
  */
 final class PlaylistDirectoryTransformer extends AbstractDataTransformer
 {
@@ -31,8 +26,6 @@ final class PlaylistDirectoryTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->playlistDirectoryDto
-            ->setEntity($entity ?: new PlaylistDirectory())
-            ->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->playlistDirectoryDto, $entity ?: new PlaylistDirectory());
     }
 }

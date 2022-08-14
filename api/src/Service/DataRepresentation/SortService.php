@@ -2,13 +2,6 @@
 
 namespace App\Service\DataRepresentation;
 
-/**
- * Class SortService.
- *
- * @package App\Service\DataRepresentation
- *
- * @author  Codememory
- */
 class SortService extends AbstractDataRepresentation
 {
     protected ?string $keyName = 'sort';

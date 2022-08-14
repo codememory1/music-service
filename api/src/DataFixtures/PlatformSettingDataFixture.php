@@ -3,19 +3,16 @@
 namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\PlatformSettingFactory;
+use App\Entity\PlatformSetting;
 use App\Enum\PlatformSettingEnum;
 use App\Enum\PlatformSettingValueKeyEnum;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class PlatformSettingDataFixture.
- *
- * @package App\DataFixtures
- *
- * @author  Codememory
+ * @template-extends AbstractDataFixture<PlatformSetting>
  */
-class PlatformSettingDataFixture extends AbstractDataFixture
+final class PlatformSettingDataFixture extends AbstractDataFixture
 {
     #[Pure]
     public function __construct()

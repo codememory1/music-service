@@ -16,13 +16,6 @@ use App\Service\UserSession\DeleteUserSessionService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class UseSessionController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user')]
 #[Authorization]
 class UseSessionController extends AbstractRestController
@@ -35,7 +28,6 @@ class UseSessionController extends AbstractRestController
         UserSessionRepository $userSessionRepository
     ): JsonResponse {
         $userSessionResponseData->setEntities($userSessionRepository->allByUser($user));
-        $userSessionResponseData->collect();
 
         return $this->responseCollection->dataOutput($userSessionResponseData->getResponse());
     }

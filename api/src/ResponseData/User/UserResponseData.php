@@ -9,14 +9,7 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 
-/**
- * Class UserResponseData.
- *
- * @package App\ResponseData\User
- *
- * @author  Codememory
- */
-class UserResponseData extends AbstractResponseData implements ResponseDataInterface
+final class UserResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     public ?int $id = null;
@@ -46,8 +39,6 @@ class UserResponseData extends AbstractResponseData implements ResponseDataInter
     {
         $userProfileResponseData = new UserProfileResponseData($this->container);
 
-        $userProfileResponseData->setEntities($userProfile);
-
-        return $userProfileResponseData->collect()->getResponse(true);
+        return $userProfileResponseData->setEntities($userProfile)->getResponse(true);
     }
 }

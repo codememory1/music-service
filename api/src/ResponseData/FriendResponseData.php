@@ -8,14 +8,7 @@ use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 use App\ResponseData\User\UserResponseData;
 
-/**
- * Class FriendResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class FriendResponseData extends AbstractResponseData implements ResponseDataInterface
+final class FriendResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     protected array $aliases = [
@@ -37,8 +30,6 @@ class FriendResponseData extends AbstractResponseData implements ResponseDataInt
     {
         $userResponseData = new UserResponseData($this->container);
 
-        $userResponseData->setEntities($friend);
-
-        return $userResponseData->collect()->getResponse(true);
+        return $userResponseData->setEntities($friend)->getResponse(true);
     }
 }

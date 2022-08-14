@@ -10,13 +10,6 @@ use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class CreatePlaylistService.
- *
- * @package App\Service\Playlist
- *
- * @author  Codememory
- */
 class CreatePlaylistService extends AbstractService
 {
     #[Required]

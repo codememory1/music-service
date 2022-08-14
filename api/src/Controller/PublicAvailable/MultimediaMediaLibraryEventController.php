@@ -17,13 +17,6 @@ use App\Service\MultimediaMediaLibraryEvent\UpdateMultimediaMediaLibraryEventSer
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaMediaLibraryEventController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user/media-library/multimedia')]
 #[Authorization]
 #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]

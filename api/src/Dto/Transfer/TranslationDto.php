@@ -11,12 +11,7 @@ use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TranslationDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<Translation>
- *
- * @author  Codememory
  */
 final class TranslationDto extends AbstractDataTransfer
 {

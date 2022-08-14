@@ -18,13 +18,6 @@ use App\Service\UserSession\UpdateAccessTokenService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class SecurityController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user')]
 class SecurityController extends AbstractRestController
 {

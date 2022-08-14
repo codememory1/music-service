@@ -10,13 +10,6 @@ use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\AbstractService;
 use App\Service\Event\MediaLibrary\ShareWithFriendsAfterAddEventService;
 
-/**
- * Class EventPayloadHandlerService.
- *
- * @package App\Service\MediaLibraryEvent
- *
- * @author  Codememory
- */
 class EventPayloadHandlerService extends AbstractService
 {
     private MediaLibrary $mediaLibrary;

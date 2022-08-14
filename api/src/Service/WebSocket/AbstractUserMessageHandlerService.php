@@ -8,13 +8,6 @@ use App\Service\AbstractService;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AbstractUserMessageHandlerService.
- *
- * @package App\Service\WebSocket
- *
- * @author  Codememory
- */
 abstract class AbstractUserMessageHandlerService extends AbstractService implements UserMessageHandlerInterface
 {
     #[Required]

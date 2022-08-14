@@ -13,13 +13,6 @@ use App\Service\Notification\Action\RedirectNotificationAction;
 use App\Service\TranslationService;
 use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Class NotificationCollection.
- *
- * @package App\Service\Notification
- *
- * @author  Codememory
- */
 class NotificationCollection
 {
     private EntityManagerInterface $em;

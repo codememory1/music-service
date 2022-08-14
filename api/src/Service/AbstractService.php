@@ -11,13 +11,6 @@ use App\Rest\Validator\Validator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * Class AbstractService.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 abstract class AbstractService
 {
     protected readonly EntityManagerInterface $em;

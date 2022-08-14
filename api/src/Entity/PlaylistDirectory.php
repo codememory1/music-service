@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\PlaylistDirectoryRepository;
@@ -12,20 +13,14 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class PlaylistDirectory.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: PlaylistDirectoryRepository::class)]
 #[ORM\Table('playlist_directories')]
 #[ORM\HasLifecycleCallbacks]
-class PlaylistDirectory implements EntityInterface
+final class PlaylistDirectory implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\Column(type: Types::STRING, length: 50, options: [
         'comment' => 'Directory name'

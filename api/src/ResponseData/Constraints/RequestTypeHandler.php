@@ -5,22 +5,14 @@ namespace App\ResponseData\Constraints;
 use App\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use App\Rest\Http\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
-/**
- * Class RequestTypeHandler.
- *
- * @package App\ResponseData\Constraints
- *
- * @author  Codememory
- */
-class RequestTypeHandler implements ConstraintHandlerInterface
+final class RequestTypeHandler implements ConstraintHandlerInterface
 {
-    private ParameterBag $attributes;
+    private Request $request;
 
     public function __construct(Request $request)
     {
-        $this->attributes = $request->request->attributes;
+        $this->request = $request;
     }
 
     /**
@@ -28,6 +20,6 @@ class RequestTypeHandler implements ConstraintHandlerInterface
      */
     public function handle(ConstraintInterface $constraint): bool
     {
-        return $constraint->requestType === $this->attributes->get('request_type');
+        return $constraint->requestType === $this->request->getRequestType();
     }
 }

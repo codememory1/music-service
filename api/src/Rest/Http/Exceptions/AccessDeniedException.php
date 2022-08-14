@@ -5,13 +5,6 @@ namespace App\Rest\Http\Exceptions;
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class AccessDeniedException.
- *
- * @package App\Rest\Http\Exceptions
- *
- * @author  Codememory
- */
 class AccessDeniedException extends ApiResponseException
 {
     #[Pure]

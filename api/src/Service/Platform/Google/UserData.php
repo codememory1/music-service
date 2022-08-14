@@ -7,13 +7,6 @@ use Google\Service\Oauth2;
 use Google\Service\Oauth2\Userinfo;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class UserData.
- *
- * @package App\Service\Platform\Google
- *
- * @author  Codememory
- */
 class UserData implements UserDataInterface
 {
     private Userinfo $data;

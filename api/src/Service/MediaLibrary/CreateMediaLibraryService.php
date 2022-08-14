@@ -13,13 +13,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class CreateMediaLibraryService.
- *
- * @package App\Service\MediaLibrary
- *
- * @author  Codememory
- */
 class CreateMediaLibraryService extends AbstractService
 {
     #[Required]

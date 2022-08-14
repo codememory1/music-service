@@ -6,15 +6,8 @@ use App\Enum\RequestTypeEnum;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use Attribute;
 
-/**
- * Class RequestType.
- *
- * @package App\ResponseData\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class RequestType implements ConstraintInterface
+final class RequestType implements ConstraintInterface
 {
     public readonly string $requestType;
 

@@ -13,12 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UserRoleDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<Role>
- *
- * @author  Codememory
  */
 final class UserRoleDto extends AbstractDataTransfer
 {

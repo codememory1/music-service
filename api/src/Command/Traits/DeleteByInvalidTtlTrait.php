@@ -6,23 +6,16 @@ use App\Repository\AbstractRepository;
 use function call_user_func;
 use DateTimeImmutable;
 
-/**
- * Trait DeleteByInvalidTtlTrait.
- *
- * @package App\Command\Traits
- *
- * @author  Codememory
- */
 trait DeleteByInvalidTtlTrait
 {
-    private function delete(AbstractRepository $repository, ?callable $deleteCallback = null): void
+    private function delete(AbstractRepository $entityRepository, ?callable $deleteCallback = null): void
     {
-        foreach ($repository->findAll() as $entity) {
+        foreach ($entityRepository->findAll() as $entity) {
             $of = $entity->getUpdatedAt() ?: $entity->getCreatedAt();
-            $of = $of->getTimestamp();
+            $ofTimestamp = $of->getTimestamp();
             $nowTimestamp = (new DateTimeImmutable())->getTimestamp();
 
-            if ($nowTimestamp > $of + $entity->getTtl()) {
+            if ($nowTimestamp > $ofTimestamp + $entity->getTtl()) {
                 $this->em->remove($entity);
                 $this->em->flush();
 

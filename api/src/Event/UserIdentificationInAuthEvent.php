@@ -5,14 +5,7 @@ namespace App\Event;
 use App\Dto\Transfer\AuthorizationDto;
 use App\Entity\User;
 
-/**
- * Class userIdentificationInAuthEvent.
- *
- * @package App\Event
- *
- * @author  Codememory
- */
-class UserIdentificationInAuthEvent
+final class UserIdentificationInAuthEvent
 {
     public readonly AuthorizationDto $authorizationDto;
     public readonly User $user;

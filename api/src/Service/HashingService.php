@@ -4,13 +4,6 @@ namespace App\Service;
 
 use const PASSWORD_ARGON2ID;
 
-/**
- * Class HashingService.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 class HashingService
 {
     final public function encode(string $password): string

@@ -10,13 +10,6 @@ use App\Service\Platform\Interfaces\UserDataInterface;
 use Google\Client as GoogleClient;
 use JetBrains\PhpStorm\NoReturn;
 
-/**
- * Class Client.
- *
- * @package App\Service\Platform\Google
- *
- * @author  Codememory
- */
 class Client implements ClientInterface
 {
     public readonly string $clientId;

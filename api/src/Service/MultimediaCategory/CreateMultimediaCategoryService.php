@@ -7,13 +7,6 @@ use App\Entity\MultimediaCategory;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class CreateMultimediaCategoryService.
- *
- * @package App\Service\MultimediaCategory
- *
- * @author  Codememory
- */
 class CreateMultimediaCategoryService extends AbstractService
 {
     public function create(MultimediaCategoryDto $multimediaCategoryDto): MultimediaCategory

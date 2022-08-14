@@ -21,13 +21,6 @@ use App\Service\PlaylistDirectory\UpdatePlaylistDirectoryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class PlaylistDirectoryController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user/media-library/playlist')]
 #[Authorization]
 class PlaylistDirectoryController extends AbstractRestController

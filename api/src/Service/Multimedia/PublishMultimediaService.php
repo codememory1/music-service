@@ -12,13 +12,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class PublishMultimediaService.
- *
- * @package App\Service\Multimedia
- *
- * @author  Codememory
- */
 class PublishMultimediaService extends AbstractService
 {
     #[Required]

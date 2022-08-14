@@ -1,20 +1,15 @@
 <?php
 
-namespace App\EventListener;
+namespace App\EventListener\KernelException;
 
 use App\Rest\Http\Exceptions\ApiResponseException;
 use App\Rest\Http\Response;
 use App\Rest\Http\ResponseSchema;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
-/**
- * Class ApiExceptionListener.
- *
- * @package App\EventListener
- *
- * @author  Codememory
- */
-class ApiExceptionListener
+#[AsEntityListener('kernel.exception')]
+final class ApiExceptionListener
 {
     private ResponseSchema $responseSchema;
     private Response $response;
