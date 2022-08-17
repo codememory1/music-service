@@ -7,12 +7,7 @@ use App\Entity\PlaylistDirectory;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class PlaylistDirectoryDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<PlaylistDirectory>
- *
- * @author  Codememory
  */
 final class PlaylistDirectoryDto extends AbstractDataTransfer
 {

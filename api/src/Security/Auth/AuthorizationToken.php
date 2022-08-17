@@ -6,13 +6,6 @@ use App\Entity\User;
 use App\Service\JwtTokenGenerator;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AuthorizationToken.
- *
- * @package App\Security\Auth
- *
- * @author  Codememory
- */
 class AuthorizationToken
 {
     #[Required]

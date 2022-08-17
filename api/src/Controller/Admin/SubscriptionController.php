@@ -8,23 +8,16 @@ use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\SubscriptionTransformer;
 use App\Entity\Subscription;
 use App\Enum\RolePermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\SubscriptionRepository;
 use App\ResponseData\SubscriptionResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Subscription\CreateSubscriptionService;
 use App\Service\Subscription\DeleteSubscriptionService;
 use App\Service\Subscription\UpdateSubscriptionService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class SubscriptionController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/subscription')]
 #[Authorization]
 class SubscriptionController extends AbstractRestController
@@ -34,7 +27,6 @@ class SubscriptionController extends AbstractRestController
     public function all(SubscriptionResponseData $subscriptionResponseData, SubscriptionRepository $subscriptionRepository): JsonResponse
     {
         $subscriptionResponseData->setEntities($subscriptionRepository->findAll());
-        $subscriptionResponseData->collect();
 
         return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse());
     }
@@ -46,7 +38,6 @@ class SubscriptionController extends AbstractRestController
         SubscriptionResponseData $subscriptionResponseData
     ): JsonResponse {
         $subscriptionResponseData->setEntities($subscription);
-        $subscriptionResponseData->collect();
 
         return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse(true));
     }
@@ -65,7 +56,7 @@ class SubscriptionController extends AbstractRestController
         SubscriptionTransformer $subscriptionTransformer,
         UpdateSubscriptionService $updateSubscriptionService
     ): JsonResponse {
-        return $updateSubscriptionService->request($subscriptionTransformer->transformFromRequest($subscription), $subscription);
+        return $updateSubscriptionService->request($subscriptionTransformer->transformFromRequest($subscription));
     }
 
     #[Route('/{subscription_id<\d+>}/delete', methods: 'DELETE')]

@@ -5,20 +5,13 @@ namespace App\Service\PlaylistDirectory;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\MultimediaPlaylistDirectory;
 use App\Entity\PlaylistDirectory;
+use App\Exception\Http\EntityExistException;
 use App\Repository\MultimediaPlaylistRepository;
-use App\Rest\Http\Exceptions\EntityExistException;
 use App\Service\AbstractService;
 use App\Service\Playlist\CheckExistMultimediaToPlaylistDirectoriesService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AddMultimediaToPlaylistDirectoryService.
- *
- * @package App\Service\PlaylistDirectory
- *
- * @author  Codememory
- */
 class AddMultimediaToPlaylistDirectoryService extends AbstractService
 {
     #[Required]

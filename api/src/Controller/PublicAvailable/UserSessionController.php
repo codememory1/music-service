@@ -5,21 +5,14 @@ namespace App\Controller\PublicAvailable;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Entity\UserSession;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\UserSessionRepository;
 use App\ResponseData\User\UserSessionResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\UserSession\DeleteUserSessionService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class UserSessionController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author Codememory
- */
 #[Route('/user/session')]
 #[Authorization]
 class UserSessionController extends AbstractRestController
@@ -28,7 +21,6 @@ class UserSessionController extends AbstractRestController
     public function all(UserSessionResponseData $userSessionResponseData, UserSessionRepository $userSessionRepository): JsonResponse
     {
         $userSessionResponseData->setEntities($userSessionRepository->authorizedUserSessions());
-        $userSessionResponseData->collect();
 
         return $this->responseCollection->dataOutput($userSessionResponseData->getResponse());
     }
@@ -38,7 +30,7 @@ class UserSessionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
         DeleteUserSessionService $deleteUserSessionService
     ): JsonResponse {
-        if (false === $this->getAuthorizedUser()->isInstance($userSession->getUser())) {
+        if (false === $this->getAuthorizedUser()->isCompare($userSession->getUser())) {
             throw EntityNotFoundException::userSession();
         }
 

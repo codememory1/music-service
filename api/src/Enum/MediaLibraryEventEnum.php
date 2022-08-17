@@ -6,13 +6,6 @@ use App\Enum\Interfaces\EventInterface;
 use App\Service\Event\MediaLibrary\ShareWithFriendsAfterAddEventService;
 use App\Service\Event\MediaLibrary\ShuffleAfterNumberPlaysEventService;
 
-/**
- * Enum MediaLibraryEventEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum MediaLibraryEventEnum : string implements EventInterface
 {
     case SHARE_WITH_FRIENDS_AFTER_ADD = 'events/media-library/share_with_friends_after_adding';

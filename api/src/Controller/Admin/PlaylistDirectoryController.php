@@ -11,8 +11,8 @@ use App\Entity\MultimediaPlaylistDirectory;
 use App\Entity\Playlist;
 use App\Entity\PlaylistDirectory;
 use App\Enum\RolePermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\PlaylistDirectory\AddMultimediaToPlaylistDirectoryService;
 use App\Service\PlaylistDirectory\CreatePlaylistDirectoryService;
 use App\Service\PlaylistDirectory\DeleteMultimediaFromPlaylistDirectoryService;
@@ -21,13 +21,6 @@ use App\Service\PlaylistDirectory\UpdatePlaylistDirectoryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class PlaylistDirectoryController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user/media-library/playlist')]
 #[Authorization]
 class PlaylistDirectoryController extends AbstractRestController

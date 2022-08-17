@@ -5,14 +5,9 @@ namespace App\Repository;
 use App\Entity\PlatformSetting;
 
 /**
- * Class PlatformSettingRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<PlatformSetting>
- *
- * @author  Codememory
  */
-class PlatformSettingRepository extends AbstractRepository
+final class PlatformSettingRepository extends AbstractRepository
 {
     protected ?string $entity = PlatformSetting::class;
     protected ?string $alias = 'ps';

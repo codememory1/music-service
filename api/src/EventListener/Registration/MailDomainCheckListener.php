@@ -6,18 +6,12 @@ use App\Entity\User;
 use App\Enum\PlatformSettingEnum;
 use App\Enum\ResponseTypeEnum;
 use App\Event\UserRegistrationEvent;
-use App\Rest\Http\Exceptions\ApiResponseException;
+use App\Exception\Http\HttpException;
 use App\Service\PlatformSettingService;
-use JetBrains\PhpStorm\Pure;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 
-/**
- * Class MailDomainCheckListener.
- *
- * @package App\EventListener\Registration
- *
- * @author  Codememory
- */
-class MailDomainCheckListener
+#[AsEntityListener('app.registration', 'onUserRegistration', 2)]
+final class MailDomainCheckListener
 {
     private PlatformSettingService $platformSettingService;
 
@@ -45,11 +39,10 @@ class MailDomainCheckListener
         }
 
         if (false === $isPassed) {
-            throw new ApiResponseException(451, ResponseTypeEnum::UNAVAILABLE, 'common@bannedDomainMail');
+            throw new HttpException(451, ResponseTypeEnum::UNAVAILABLE, 'common@bannedDomainMail');
         }
     }
 
-    #[Pure]
     private function getMailDomain(User $user): ?string
     {
         $email = $user->getEmail();

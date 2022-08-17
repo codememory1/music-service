@@ -9,12 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class RequestRestorationPasswordDTO.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<PasswordReset>
- *
- * @author  Codememory
  */
 final class RequestRestorationPasswordDto extends AbstractDataTransfer
 {

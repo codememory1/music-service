@@ -6,15 +6,8 @@ use App\Enum\RolePermissionEnum;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use Attribute;
 
-/**
- * Class RolePermission.
- *
- * @package App\ResponseData\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class RolePermission implements ConstraintInterface
+final class RolePermission implements ConstraintInterface
 {
     public readonly array|RolePermissionEnum $permissions;
 

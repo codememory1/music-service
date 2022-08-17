@@ -7,8 +7,8 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\Entity\Multimedia;
 use App\Enum\SubscriptionPermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Multimedia\AddMultimediaToMediaLibraryService;
 use App\Service\Multimedia\SendOnAppealService;
 use App\Service\Multimedia\SendOnModerationService;
@@ -17,13 +17,6 @@ use App\Service\Multimedia\SetLikeMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaActionController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user/multimedia/{multimedia_id<\d+>}')]
 #[Authorization]
 class MultimediaActionController extends AbstractRestController

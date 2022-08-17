@@ -12,13 +12,6 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-/**
- * Class Client.
- *
- * @package App\Service\IPGeolocation\IPApi
- *
- * @author  Codememory
- */
 class Client implements ClientInterface
 {
     private HttpClientInterface $client;

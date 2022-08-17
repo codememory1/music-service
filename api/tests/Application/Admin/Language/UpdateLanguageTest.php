@@ -9,8 +9,6 @@ use App\Tests\AbstractApiTestCase;
 /**
  * Class UpdateLanguageTest.
  *
- * @package App\Tests\Application\Admin\Language
- *
  * @author  Codememory
  */
 final class UpdateLanguageTest extends AbstractApiTestCase

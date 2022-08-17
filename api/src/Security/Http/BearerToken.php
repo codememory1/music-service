@@ -5,13 +5,6 @@ namespace App\Security\Http;
 use App\Rest\Http\Request;
 use App\Service\JwtTokenGenerator;
 
-/**
- * Class BearerToken.
- *
- * @package App\Security\Http
- *
- * @author  Codememory
- */
 class BearerToken
 {
     private JwtTokenGenerator $jwtTokenGenerator;
@@ -34,7 +27,7 @@ class BearerToken
     public function getToken(): ?string
     {
         if (null === $this->token) {
-            $authorization = $this->request->request?->headers->get('Authorization');
+            $authorization = $this->request->getRequest()?->headers->get('Authorization');
             $authorizationData = explode(' ', $authorization, 2);
 
             if (count($authorizationData) > 1 && 'Bearer' === $authorizationData[0]) {

@@ -11,12 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class UserDataFixture.
- *
- * @package App\DataFixtures
  * @template-extends AbstractDataFixture<User>
- *
- * @author  Codememory
  */
 final class UserDataFixture extends AbstractDataFixture implements DependentFixtureInterface
 {

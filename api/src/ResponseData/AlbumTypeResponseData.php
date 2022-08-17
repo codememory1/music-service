@@ -8,14 +8,7 @@ use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 use App\ResponseData\Traits\ToTranslationHandlerTrait;
 
-/**
- * Class AlbumTypeResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class AlbumTypeResponseData extends AbstractResponseData implements ResponseDataInterface
+final class AlbumTypeResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     use ToTranslationHandlerTrait;

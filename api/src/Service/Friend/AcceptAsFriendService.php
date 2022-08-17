@@ -6,13 +6,6 @@ use App\Entity\Friend;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class AcceptAsFriendService.
- *
- * @package App\Service\Friend
- *
- * @author  Codememory
- */
 class AcceptAsFriendService extends AbstractService
 {
     public function accept(Friend $friend): Friend

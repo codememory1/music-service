@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum MultimediaStatusEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum MultimediaStatusEnum: string
 {
     case DRAFT = 'status@draft';

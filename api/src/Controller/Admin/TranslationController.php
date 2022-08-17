@@ -9,21 +9,14 @@ use App\Dto\Transformer\DeleteTranslationTransformer;
 use App\Dto\Transformer\TranslationTransformer;
 use App\Entity\Translation;
 use App\Enum\RolePermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Translation\CreateTranslationService;
 use App\Service\Translation\DeleteTranslationService;
 use App\Service\Translation\UpdateTranslationService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class TranslationController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/translation')]
 #[Authorization]
 class TranslationController extends AbstractRestController

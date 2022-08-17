@@ -6,13 +6,6 @@ use App\Dto\Interfaces\DataTransferConstraintInterface;
 use App\Enum\RequestTypeEnum;
 use Attribute;
 
-/**
- * Class AllowedCallSetterByRequestTypeConstraint.
- *
- * @package App\Dto\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class AllowedCallSetterByRequestTypeConstraint implements DataTransferConstraintInterface
 {

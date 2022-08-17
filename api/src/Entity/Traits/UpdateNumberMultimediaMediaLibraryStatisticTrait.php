@@ -4,13 +4,6 @@ namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Trait UpdateNumberMultimediaMediaLibraryStatisticTrait.
- *
- * @package App\Entity\Traits
- *
- * @author  Codememory
- */
 trait UpdateNumberMultimediaMediaLibraryStatisticTrait
 {
     #[ORM\PrePersist]

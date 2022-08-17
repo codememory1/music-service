@@ -5,14 +5,7 @@ namespace App\Event;
 use App\Entity\Album;
 use App\Enum\AlbumStatusEnum;
 
-/**
- * Class AlbumStatusChangeEvent.
- *
- * @package App\Event
- *
- * @author  Codememory
- */
-class AlbumStatusChangeEvent
+final class AlbumStatusChangeEvent
 {
     public readonly Album $album;
     public readonly AlbumStatusEnum $onStatus;

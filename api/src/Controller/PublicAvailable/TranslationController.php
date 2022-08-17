@@ -4,20 +4,13 @@ namespace App\Controller\PublicAvailable;
 
 use App\Annotation\EntityNotFound;
 use App\Entity\Language;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\TranslationRepository;
 use App\ResponseData\TranslationResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class TranslationController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/translation')]
 class TranslationController extends AbstractRestController
 {
@@ -28,7 +21,6 @@ class TranslationController extends AbstractRestController
         TranslationRepository $translationRepository
     ): JsonResponse {
         $translationResponseData->setEntities($translationRepository->findAllByLanguage($language));
-        $translationResponseData->collect();
 
         return $this->responseCollection->dataOutput($translationResponseData->getResponse());
     }

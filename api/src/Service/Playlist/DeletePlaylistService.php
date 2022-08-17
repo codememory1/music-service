@@ -6,13 +6,6 @@ use App\Entity\Playlist;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class DeletePlaylistService.
- *
- * @package App\Service\Playlist
- *
- * @author  Codememory
- */
 class DeletePlaylistService extends AbstractService
 {
     public function delete(Playlist $playlist): Playlist

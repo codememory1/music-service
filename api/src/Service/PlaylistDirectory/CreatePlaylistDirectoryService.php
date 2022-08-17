@@ -8,13 +8,6 @@ use App\Entity\PlaylistDirectory;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class CreatePlaylistDirectoryService.
- *
- * @package App\Service\PlaylistDirectory
- *
- * @author  Codememory
- */
 class CreatePlaylistDirectoryService extends AbstractService
 {
     public function create(PlaylistDirectoryDto $playlistDirectoryDto, Playlist $toPlaylist): PlaylistDirectory

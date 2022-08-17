@@ -5,13 +5,6 @@ namespace App\Validator\Constraints;
 use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class QuantityByDelimiter.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class QuantityByDelimiter extends Constraint
 {

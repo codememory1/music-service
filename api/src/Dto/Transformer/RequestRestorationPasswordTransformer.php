@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class RequestRestorationPasswordTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<RequestRestorationPasswordDto>
- *
- * @author  Codememory
  */
 final class RequestRestorationPasswordTransformer extends AbstractDataTransformer
 {
@@ -31,8 +26,6 @@ final class RequestRestorationPasswordTransformer extends AbstractDataTransforme
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->requestRestorationPasswordDto
-            ->setEntity($entity ?: new PasswordReset())
-            ->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->requestRestorationPasswordDto, $entity ?: new PasswordReset());
     }
 }

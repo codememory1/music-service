@@ -12,13 +12,6 @@ use Aws\Result;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * Class AbstractUploader.
- *
- * @package App\Rest\S3\Uploader
- *
- * @author  Codememory
- */
 abstract class AbstractUploader implements S3UploaderInterface
 {
     protected Client $client;

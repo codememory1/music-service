@@ -9,10 +9,10 @@ use App\Dto\Transformer\MultimediaTransformer;
 use App\Entity\Multimedia;
 use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaRepository;
 use App\ResponseData\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Multimedia\AddMultimediaService;
 use App\Service\Multimedia\DeleteMultimediaService;
 use App\Service\Multimedia\PlayPauseMultimediaService;
@@ -20,13 +20,6 @@ use App\Service\Multimedia\UpdateMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user')]
 #[Authorization]
 class MultimediaController extends AbstractRestController
@@ -36,7 +29,6 @@ class MultimediaController extends AbstractRestController
     public function myAll(MultimediaResponseData $multimediaResponseData, MultimediaRepository $multimediaRepository): JsonResponse
     {
         $multimediaResponseData->setEntities($multimediaRepository->findAllByUser($this->getAuthorizedUser()));
-        $multimediaResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
     }
@@ -48,7 +40,6 @@ class MultimediaController extends AbstractRestController
         MultimediaRepository $multimediaRepository
     ): JsonResponse {
         $multimediaResponseData->setEntities($multimediaRepository->findAnother($user));
-        $multimediaResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
     }

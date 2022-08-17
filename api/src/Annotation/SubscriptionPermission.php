@@ -6,21 +6,14 @@ use App\Annotation\Interfaces\MethodAnnotationInterface;
 use App\Enum\SubscriptionPermissionEnum;
 use Attribute;
 
-/**
- * Class SubscriptionPermission.
- *
- * @package App\Annotation
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
-class SubscriptionPermission implements MethodAnnotationInterface
+final class SubscriptionPermission implements MethodAnnotationInterface
 {
-    public readonly SubscriptionPermissionEnum $permission;
+    public readonly SubscriptionPermissionEnum $subscriptionPermission;
 
-    public function __construct(SubscriptionPermissionEnum $subscriptionPermissionEnum)
+    public function __construct(SubscriptionPermissionEnum $subscriptionPermission)
     {
-        $this->permission = $subscriptionPermissionEnum;
+        $this->subscriptionPermission = $subscriptionPermission;
     }
 
     public function getHandler(): string

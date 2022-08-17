@@ -9,13 +9,6 @@ use App\Entity\Translation;
 use App\Entity\TranslationKey;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class TranslationFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class TranslationFactory implements DataFixtureFactoryInterface
 {
     private string $language;
@@ -37,13 +30,13 @@ final class TranslationFactory implements DataFixtureFactoryInterface
 
         /** @var TranslationKey $translationKey */
         $translationKey = $this->referenceRepository->getReference("tk-{$this->translationKey}");
-        $translationEntity = new Translation();
+        $translation = new Translation();
 
-        $translationEntity->setLanguage($language);
-        $translationEntity->setTranslationKey($translationKey);
-        $translationEntity->setTranslation($this->translation);
+        $translation->setLanguage($language);
+        $translation->setTranslationKey($translationKey);
+        $translation->setTranslation($this->translation);
 
-        return $translationEntity;
+        return $translation;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

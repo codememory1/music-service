@@ -14,8 +14,6 @@ use Symfony\Component\DomCrawler\Crawler;
 /**
  * Class AbstractApiTestCase.
  *
- * @package App\Tests
- *
  * @author  Codememory
  */
 abstract class AbstractApiTestCase extends WebTestCase

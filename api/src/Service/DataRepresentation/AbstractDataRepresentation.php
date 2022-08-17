@@ -10,13 +10,6 @@ use function is_array;
 use LogicException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-/**
- * Class AbstractDataRepresentation.
- *
- * @package App\Service\DataRepresentation
- *
- * @author  Codememory
- */
 abstract class AbstractDataRepresentation
 {
     protected ?string $keyName = null;
@@ -61,7 +54,7 @@ abstract class AbstractDataRepresentation
 
     private function getSettings(): array
     {
-        $settings = $this->request->request?->query->all()[$this->keyName] ?? false;
+        $settings = $this->request->getRequest()?->query->all()[$this->keyName] ?? false;
 
         if (false === $settings || false === is_array($settings)) {
             return [];

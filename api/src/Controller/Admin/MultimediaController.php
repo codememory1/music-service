@@ -10,24 +10,17 @@ use App\Entity\Multimedia;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
 use App\Enum\SubscriptionPermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
+use App\Exception\Http\MultimediaException;
 use App\Repository\MultimediaRepository;
 use App\ResponseData\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
-use App\Rest\Http\Exceptions\MultimediaException;
 use App\Service\Multimedia\AddMultimediaService;
 use App\Service\Multimedia\DeleteMultimediaService;
 use App\Service\Multimedia\UpdateMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user')]
 #[Authorization]
 class MultimediaController extends AbstractRestController
@@ -37,7 +30,6 @@ class MultimediaController extends AbstractRestController
     public function all(MultimediaResponseData $multimediaResponseData, MultimediaRepository $multimediaRepository): JsonResponse
     {
         $multimediaResponseData->setEntities($multimediaRepository->findAll());
-        $multimediaResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
     }
@@ -49,7 +41,6 @@ class MultimediaController extends AbstractRestController
         MultimediaResponseData $multimediaResponseData
     ): JsonResponse {
         $multimediaResponseData->setEntities($multimedia);
-        $multimediaResponseData->collect();
 
         return $this->responseCollection->dataOutput($multimediaResponseData->getResponse(true));
     }
@@ -61,9 +52,7 @@ class MultimediaController extends AbstractRestController
         MultimediaTransformer $multimediaTransformer,
         AddMultimediaService $addMultimediaService
     ): JsonResponse {
-        $userHelper = $this->getManagerAuthorizedUser()->setUser($user);
-
-        if (false === $userHelper->isSubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)) {
+        if (false === $user->isSubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)) {
             throw MultimediaException::badAddMultimediaToUserInvalid();
         }
 

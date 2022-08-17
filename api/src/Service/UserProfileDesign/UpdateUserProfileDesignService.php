@@ -10,13 +10,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class UpdateUserProfileDesignService.
- *
- * @package App\Service\UserProfileDesign
- *
- * @author  Codememory
- */
 class UpdateUserProfileDesignService extends AbstractService
 {
     #[Required]

@@ -9,14 +9,9 @@ use App\Security\AuthorizedUser;
 use Symfony\Contracts\Service\Attribute\Required;
 
 /**
- * Class UserSessionRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<UserSession>
- *
- * @author  Codememory
  */
-class UserSessionRepository extends AbstractRepository
+final class UserSessionRepository extends AbstractRepository
 {
     protected ?string $entity = UserSession::class;
     protected ?string $alias = 'us';
@@ -107,6 +102,14 @@ class UserSessionRepository extends AbstractRepository
     public function findByAccessToken(string $accessToken): ?UserSession
     {
         return $this->findOneBy([
+            'accessToken' => $accessToken
+        ]);
+    }
+
+    public function findByAccessTokenWithUser(User $user, string $accessToken): ?UserSession
+    {
+        return $this->findOneBy([
+            'user' => $user,
             'accessToken' => $accessToken
         ]);
     }

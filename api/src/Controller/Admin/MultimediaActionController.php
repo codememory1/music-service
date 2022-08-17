@@ -7,8 +7,8 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
 use App\Entity\Multimedia;
 use App\Enum\RolePermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Multimedia\AppealCanceledService;
 use App\Service\Multimedia\PublishMultimediaService;
 use App\Service\Multimedia\SendOnModerationService;
@@ -16,13 +16,6 @@ use App\Service\Multimedia\UnpublishMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaActionController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user/multimedia/{multimedia_id<\d+>}')]
 #[Authorization]
 #[UserRolePermission(RolePermissionEnum::MULTIMEDIA_STATUS_CONTROL_TO_USER)]

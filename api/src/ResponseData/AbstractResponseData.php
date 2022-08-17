@@ -2,6 +2,7 @@
 
 namespace App\ResponseData;
 
+use App\Collection\ResponseDataAllowedPropertyCollection;
 use App\Entity\Interfaces\EntityInterface;
 use App\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\ResponseData\Interfaces\ConstraintInterface;
@@ -15,13 +16,6 @@ use ReflectionProperty;
 use Symfony\Component\DependencyInjection\ReverseContainer;
 use function Symfony\Component\String\u;
 
-/**
- * Class AbstractResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
 abstract class AbstractResponseData implements ResponseDataInterface
 {
     protected array $ignoredProperties = [];
@@ -29,6 +23,10 @@ abstract class AbstractResponseData implements ResponseDataInterface
     protected array $aliases = [];
     protected ReverseContainer $container;
     private array $entities = [];
+
+    /**
+     * @var array<int, ResponseDataAllowedPropertyCollection>
+     */
     private array $allowedProperties = [];
     private array $response = [];
 
@@ -63,7 +61,20 @@ abstract class AbstractResponseData implements ResponseDataInterface
         return $this;
     }
 
-    public function collect(): self
+    public function getResponse(bool $first = false): array
+    {
+        $this->collect();
+
+        if (true === $first && [] !== $this->response) {
+            $key = array_key_first($this->response);
+
+            return $this->response[$key];
+        }
+
+        return $this->response;
+    }
+
+    private function collect(): void
     {
         $reflection = new ReflectionClass(static::class);
         $properties = $reflection->getProperties();
@@ -81,19 +92,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
         }
 
         $this->collectResponse();
-
-        return $this;
-    }
-
-    public function getResponse(bool $first = false): array
-    {
-        if (true === $first && [] !== $this->response) {
-            $key = array_key_first($this->response);
-
-            return $this->response[$key];
-        }
-
-        return $this->response;
     }
 
     #[ArrayShape(['isPassed' => 'bool', 'interceptor' => 'array'])]
@@ -129,14 +127,20 @@ abstract class AbstractResponseData implements ResponseDataInterface
     private function addAllowedProperty(ReflectionProperty $reflectionProperty, array $interceptor = []): void
     {
         $propertyName = $reflectionProperty->getName();
+
+        $this->allowedProperties[] = new ResponseDataAllowedPropertyCollection(
+            $propertyName,
+            $this->generateMethodName($reflectionProperty),
+            $interceptor
+        );
+    }
+
+    private function generateMethodName(ReflectionProperty $reflectionProperty): string
+    {
+        $propertyName = $reflectionProperty->getName();
         $methodPrefix = $this->methodPrefixesForProperties[$propertyName] ?? 'get__';
 
-        $this->allowedProperties[] = [
-            'propertyName' => $propertyName,
-            'getterToEntity' => u("${methodPrefix}${propertyName}")->camel()->toString(),
-            'keyToResponse' => u($propertyName)->snake()->toString(),
-            'interceptor' => $interceptor
-        ];
+        return u("${methodPrefix}${propertyName}")->camel()->toString();
     }
 
     private function collectResponse(): void
@@ -144,19 +148,22 @@ abstract class AbstractResponseData implements ResponseDataInterface
         foreach ($this->entities as $entity) {
             $toArray = [];
 
-            foreach ($this->allowedProperties as $allowedProperty) {
-                $value = $entity->{$allowedProperty['getterToEntity']}();
-                $keyToResponse = $allowedProperty['keyToResponse'];
+            foreach ($this->allowedProperties as $collection) {
+                $valueFromEntityMethod = $entity->{$collection->entityMethodGetterName}();
+                $propertyNameForResponse = $collection->getPropertyNameForResponse();
 
-                if ([] !== $interceptor = $allowedProperty['interceptor']) {
-                    $value = $interceptor['handler']->handle($interceptor['constraint'], $this, $value);
+                if ([] !== $collection->interceptor) {
+                    $interceptorConstraintHandler = $collection->interceptor['handler'];
+                    $interceptorConstraint = $collection->interceptor['constraint'];
+
+                    $valueFromEntityMethod = $interceptorConstraintHandler->handle($interceptorConstraint, $this, $valueFromEntityMethod);
                 }
 
-                if (array_key_exists($allowedProperty['keyToResponse'], $this->aliases)) {
-                    $keyToResponse = $this->aliases[$allowedProperty['keyToResponse']];
+                if (array_key_exists($collection->getPropertyNameForResponse(), $this->aliases)) {
+                    $propertyNameForResponse = $this->aliases[$collection->getPropertyNameForResponse()];
                 }
 
-                $toArray[$keyToResponse] = empty($value) ? $this->{$allowedProperty['propertyName']} : $value;
+                $toArray[$propertyNameForResponse] = empty($valueFromEntityMethod) ? $this->{$collection->propertyName} : $valueFromEntityMethod;
             }
 
             $this->response[] = $toArray;

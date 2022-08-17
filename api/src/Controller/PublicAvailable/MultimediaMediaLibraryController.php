@@ -9,21 +9,14 @@ use App\Dto\Transformer\MultimediaMediaLibraryTransformer;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\MediaLibrary\DeleteMultimediaMediaLibraryService;
 use App\Service\MultimediaMediaLibrary\ShareMultimediaMediaLibraryWithFriendService;
 use App\Service\MultimediaMediaLibrary\UpdateMultimediaMediaLibraryService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaMediaLibraryController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user/media-library')]
 #[Authorization]
 class MultimediaMediaLibraryController extends AbstractRestController

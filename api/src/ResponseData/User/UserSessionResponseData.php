@@ -7,14 +7,7 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 
-/**
- * Class UserSessionResponseData.
- *
- * @package App\ResponseData\User
- *
- * @author  Codememory
- */
-class UserSessionResponseData extends AbstractResponseData implements ResponseDataInterface
+final class UserSessionResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     protected array $methodPrefixesForProperties = [

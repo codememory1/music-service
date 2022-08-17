@@ -3,19 +3,13 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\MediaLibraryStatisticRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class MediaLibraryStatistic.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: MediaLibraryStatisticRepository::class)]
 #[ORM\Table('media_library_statistics')]
 #[ORM\HasLifecycleCallbacks]
@@ -23,6 +17,7 @@ class MediaLibraryStatistic implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\OneToOne(inversedBy: 'statistic', targetEntity: MediaLibrary::class)]
     #[ORM\JoinColumn(nullable: false)]

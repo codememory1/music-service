@@ -5,13 +5,6 @@ namespace App\Dto\Constraints;
 use App\Dto\Interfaces\DataTransferConstraintInterface;
 use Attribute;
 
-/**
- * Class IgnoreCallSetterCallbackConstraint.
- *
- * @package App\Dto\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class IgnoreCallSetterCallbackConstraint implements DataTransferConstraintInterface
 {

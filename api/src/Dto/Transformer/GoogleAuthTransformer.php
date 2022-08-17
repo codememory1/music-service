@@ -9,12 +9,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class GoogleAuthTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<GoogleAuthDto>
- *
- * @author  Codememory
  */
 final class GoogleAuthTransformer extends AbstractDataTransformer
 {
@@ -30,6 +25,6 @@ final class GoogleAuthTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->googleAuthDto->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->googleAuthDto, $entity);
     }
 }

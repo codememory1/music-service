@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Class EntityS3SettingEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum EntityS3SettingEnum: string
 {
     case ALBUM = 'album';

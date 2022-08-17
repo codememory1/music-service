@@ -2,13 +2,6 @@
 
 namespace App\Service\IPGeolocation\Interfaces;
 
-/**
- * Interface IPInformationInterface.
- *
- * @package  App\Service\IPGeolocation\Interfaces
- *
- * @author   Codememory
- */
 interface IPInformationInterface
 {
     public function getContinent(): ?string;

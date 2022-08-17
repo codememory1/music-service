@@ -31,6 +31,7 @@ services:
             - '../src/Rest/'
             - '../src/DataFixtures/{Factory,Interfaces,AbstractDataFixture.php}'
 
+    # Packages
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
     Aws\S3\S3Client:
@@ -43,69 +44,20 @@ services:
                 endpoint: 's3:9000'
                 use_path_style_endpoint: true
                 disable_host_prefix_injection: true
-
-    App\EventListener\ApiExceptionListener:
-      tags:
-        - { name: kernel.event_listener, event: kernel.exception }
-
-    App\EventListener\Registration\CreateAccountActivationCodeListener:
-      tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 1 }
-
-    App\EventListener\Registration\SendAccountActivationCodeListener:
-      tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 0 }
-
-    App\EventListener\Registration\CreateRegistrationSessionListener:
-      tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: -1 }
-
-    App\EventListener\Registration\MailDomainCheckListener:
-      tags:
-        - { name: kernel.event_listener, event: app.registration, method: onUserRegistration, priority: 2 }
-
-    # Auth
-    App\EventListener\Authorization\CreateTempSessionListener:
-      tags:
-        - { name: kernel.event_listener, event: app.auth, method: onAuth, priority: 1 }
-
-    App\EventListener\Authorization\NotifyNewAuthorizationListener:
-      tags:
-        - { name: kernel.event_listener, event: app.auth, method: onAuth, priority: 0 }
-
-    App\EventListener\KernelController\AnnotationListener:
-      tags:
-        - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-
-    # Password Reset
-    App\EventListener\RequestRestorationPassword\TemporaryBlockingListener:
-      tags:
-        - { name: kernel.event_listener, event: app.after-password-reset.request, method: onAfterRequestRestorationPassword, priority: 1 }
-
-    App\EventListener\RequestRestorationPassword\SendCodeListener:
-      tags:
-        - { name: kernel.event_listener, event: app.password-reset.request, method: onRequestRestorationPassword }
-
-    App\EventListener\MultimediaStatusChange\StatusChangeHandlerListener:
-      tags:
-        - { name: kernel.event_listener, event: app.multimedia.status-change, method: onMultimediaStatusChange }
-
-    # Album status change
-    App\EventListener\AlbumStatusChange\SendNotificationAboutNewReleaseListener:
-      tags:
-        - { name: kernel.event_listener, event: app.album.status-change, method: onAlbumStatusChange, priority: 1 }
-
-    App\Rest\Http\:
-      resource: '../src/Rest/Http/'
+    # Rest
+    App\Rest\Http\Request:
       public: true
-      exclude:
-        - '../src/Rest/Http/{Interfaces,Exceptions}'
 
-    App\Rest\Validator\:
-      resource: '../src/Rest/Validator/'
-      public: true
+    App\Rest\Response\:
+      resource: '../src/Rest/Response/*.php'
       exclude:
-        - '../src/Rest/Validator/ConstraintInfo.php'
+        - '../src/Rest/Response/Interfaces'
+
+    App\Rest\Validator\HttpValidator:
+      public: false
+
+    App\Rest\Validator\WebSocketValidator:
+      public: false
 
     App\Rest\S3\:
       resource: '../src/Rest/S3/'
@@ -114,6 +66,7 @@ services:
         - '../src/Rest/S3/{Interfaces}'
         - '../src/Rest/S3/Uploader/{UploadedFile.php,AbstractUploader.php}'
 
+    # Services
     App\Service\:
       resource: '../src/Service/'
       public: true
@@ -128,27 +81,6 @@ services:
       exclude:
         - '../src/Service/DataRepresentation/AbstractDataRepresentation.php'
 
-    # DTO
-    App\Dto\Constraints\:
-      resource: '../src/Dto/Constraints/*ConstraintHandler.php'
-      public: true
-
-    App\Dto\Transfer\:
-      resource: '../src/Dto/Transfer/*Dto.php'
-      public: true
-
-    App\Dto\Transformer\:
-      resource: '../src/Dto/Transformer/*Transformer.php'
-      public: true
-
-    App\ResponseData\Constraints\:
-      resource: '../src/ResponseData/Constraints/*Handler.php'
-      public: true
-
-    App\Annotation\:
-      resource: '../src/Annotation/*Handler.php'
-      public: true
-
     App\Service\Platform\Google\Client:
       arguments:
         $clientId: '%env(GOOGLE_CLIENT_ID)%'
@@ -157,12 +89,6 @@ services:
         $scopes:
           - !php/const App\Enum\GoogleScopeEnum::EMAIL
           - !php/const App\Enum\GoogleScopeEnum::PROFILE
-
-    # WebSocket
-    App\Service\WebSocket\Worker:
-      arguments:
-        $host: '%ws.host%'
-        $port: '%ws.port%'
 
     App\Service\IPGeolocation\IPApi\Client:
       arguments:
@@ -185,3 +111,36 @@ services:
           - offset
           - currency
           - proxy
+
+    # DTO
+    App\Dto\Constraints\:
+      resource: '../src/Dto/Constraints/*ConstraintHandler.php'
+      public: true
+
+    App\Dto\Transfer\:
+      resource: '../src/Dto/Transfer/*Dto.php'
+      public: true
+
+    App\Dto\Transformer\:
+      resource: '../src/Dto/Transformer/*Transformer.php'
+      public: true
+
+    # ResponseData
+    App\ResponseData\Constraints\:
+      resource: '../src/ResponseData/Constraints/*Handler.php'
+      public: true
+
+    App\ResponseData\:
+      resource: '../src/ResponseData/*ResponseData.php'
+      public: true
+
+    # Annotation
+    App\Annotation\:
+      resource: '../src/Annotation/*Handler.php'
+      public: true
+
+    # WebSocket
+    App\Service\WebSocket\Worker:
+      arguments:
+        $host: '%ws.host%'
+        $port: '%ws.port%'

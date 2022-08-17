@@ -2,14 +2,7 @@
 
 namespace App\Message;
 
-/**
- * Class MultimediaMetadataMessage.
- *
- * @package App\Message
- *
- * @author  Codememory
- */
-class MultimediaMetadataMessage
+final class MultimediaMetadataMessage
 {
     public readonly int $multimediaId;
 

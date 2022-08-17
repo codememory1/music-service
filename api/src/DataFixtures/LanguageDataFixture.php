@@ -9,12 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class LanguageDataFixture.
- *
- * @package App\DataFixtures
  * @template-extends AbstractDataFixture<Language>
- *
- * @author  Codememory
  */
 final class LanguageDataFixture extends AbstractDataFixture implements FixtureGroupInterface
 {

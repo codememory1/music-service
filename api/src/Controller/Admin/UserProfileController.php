@@ -8,19 +8,12 @@ use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\UserProfileDesignTransformer;
 use App\Entity\UserProfile;
 use App\Enum\RolePermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\UserProfileDesign\UpdateUserProfileDesignService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class UserProfileController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user/profile')]
 #[Authorization]
 class UserProfileController extends AbstractRestController

@@ -7,18 +7,13 @@ use App\Entity\Role;
 use App\Entity\RolePermissionKey;
 use App\Entity\TranslationKey;
 use App\Enum\ResponseTypeEnum;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UserRoleDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<Role>
- *
- * @author  Codememory
  */
 final class UserRoleDto extends AbstractDataTransfer
 {

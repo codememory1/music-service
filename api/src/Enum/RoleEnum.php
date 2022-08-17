@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum RoleEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum RoleEnum
 {
     case FOUNDER;

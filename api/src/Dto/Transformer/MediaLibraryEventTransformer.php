@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class MediaLibraryEventTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<MediaLibraryEventDto>
- *
- * @author  Codememory
  */
 final class MediaLibraryEventTransformer extends AbstractDataTransformer
 {
@@ -31,8 +26,6 @@ final class MediaLibraryEventTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->mediaLibraryEventDto
-            ->setEntity($entity ?: new MediaLibraryEvent())
-            ->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->mediaLibraryEventDto, $entity ?: new MediaLibraryEvent());
     }
 }

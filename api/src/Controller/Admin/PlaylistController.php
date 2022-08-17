@@ -11,10 +11,10 @@ use App\Entity\Playlist;
 use App\Entity\PlaylistDirectory;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\PlaylistRepository;
 use App\ResponseData\PlaylistResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Playlist\CreatePlaylistService;
 use App\Service\Playlist\DeletePlaylistService;
 use App\Service\Playlist\MoveMultimediaToDirectoryService;
@@ -22,13 +22,6 @@ use App\Service\Playlist\UpdatePlaylistService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class PlaylistController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user')]
 #[Authorization]
 class PlaylistController extends AbstractRestController
@@ -41,7 +34,6 @@ class PlaylistController extends AbstractRestController
         PlaylistRepository $playlistRepository
     ): JsonResponse {
         $playlistResponseData->setEntities($playlistRepository->findByUser($user));
-        $playlistResponseData->collect();
 
         return $this->responseCollection->dataOutput($playlistResponseData->getResponse());
     }
@@ -53,7 +45,6 @@ class PlaylistController extends AbstractRestController
         PlaylistResponseData $playlistResponseData
     ): JsonResponse {
         $playlistResponseData->setEntities($playlist);
-        $playlistResponseData->collect();
 
         return $this->responseCollection->dataOutput($playlistResponseData->getResponse(true));
     }

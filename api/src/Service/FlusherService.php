@@ -5,13 +5,6 @@ namespace App\Service;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Class FlusherService.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 class FlusherService
 {
     private EntityManagerInterface $em;

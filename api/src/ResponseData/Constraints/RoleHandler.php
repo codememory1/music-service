@@ -6,14 +6,7 @@ use App\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\ResponseData\Interfaces\ConstraintInterface;
 use App\Security\AuthorizedUser;
 
-/**
- * Class RoleHandler.
- *
- * @package App\ResponseData\Constraints
- *
- * @author  Codememory
- */
-class RoleHandler implements ConstraintHandlerInterface
+final class RoleHandler implements ConstraintHandlerInterface
 {
     private AuthorizedUser $authorizedUser;
 
@@ -27,6 +20,12 @@ class RoleHandler implements ConstraintHandlerInterface
      */
     public function handle(ConstraintInterface $constraint): bool
     {
-        return $this->authorizedUser->isRole($constraint->role);
+        $user = $this->authorizedUser->getUser();
+
+        if (null === $user) {
+            return false;
+        }
+
+        return $user->isRole($constraint->role);
     }
 }

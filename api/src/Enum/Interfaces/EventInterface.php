@@ -2,16 +2,7 @@
 
 namespace App\Enum\Interfaces;
 
-use UnitEnum;
-
-/**
- * Interface EventInterface.
- *
- * @package  App\Enum\Interfaces
- *
- * @author   Codememory
- */
-interface EventInterface extends UnitEnum, StringBackedEnumInterface
+interface EventInterface extends EnumInterface
 {
     public function getNamespaceSchema(): ?string;
 }

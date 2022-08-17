@@ -7,20 +7,13 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\ControllingSubscriptionOnArtist\SubscribeOnArtistService;
 use App\Service\ControllingSubscriptionOnArtist\UnsubscribeOnArtistService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class ControllingSubscriptionOnArtistController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/artist/{user_id<\d+>}')]
 #[Authorization]
 #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST)]
@@ -48,9 +41,7 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
 
     private function throwIfArtistNotAcceptingSubscribers(User $artist): void
     {
-        $artistUserHelper = $this->getManagerAuthorizedUser()->setUser($artist);
-
-        if (false === $artistUserHelper->isSubscriptionPermission(SubscriptionPermissionEnum::ACCEPTING_SUBSCRIBERS)) {
+        if (false === $artist->isSubscriptionPermission(SubscriptionPermissionEnum::ACCEPTING_SUBSCRIBERS)) {
             throw EntityNotFoundException::user();
         }
     }

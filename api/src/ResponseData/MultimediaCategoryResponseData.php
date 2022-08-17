@@ -9,14 +9,7 @@ use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 use App\ResponseData\Traits\ToTranslationHandlerTrait;
 
-/**
- * Class MultimediaCategoryResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class MultimediaCategoryResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaCategoryResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     use ToTranslationHandlerTrait;

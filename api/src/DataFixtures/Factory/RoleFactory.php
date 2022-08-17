@@ -8,35 +8,28 @@ use App\Entity\Role;
 use App\Enum\RoleEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class RoleFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class RoleFactory implements DataFixtureFactoryInterface
 {
-    private string $key;
+    private RoleEnum $key;
     private string $titleTranslationKey;
     private string $shortDescriptionTranslationKey;
 
     public function __construct(RoleEnum $key, string $titleTranslationKey, string $shortDescriptionTranslationKey)
     {
-        $this->key = $key->name;
+        $this->key = $key;
         $this->titleTranslationKey = $titleTranslationKey;
         $this->shortDescriptionTranslationKey = $shortDescriptionTranslationKey;
     }
 
     public function factoryMethod(): EntityInterface
     {
-        $roleEntity = new Role();
+        $role = new Role();
 
-        $roleEntity->setKey($this->key);
-        $roleEntity->setTitle($this->titleTranslationKey);
-        $roleEntity->setShortDescription($this->shortDescriptionTranslationKey);
+        $role->setKey($this->key->name);
+        $role->setTitle($this->titleTranslationKey);
+        $role->setShortDescription($this->shortDescriptionTranslationKey);
 
-        return $roleEntity;
+        return $role;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

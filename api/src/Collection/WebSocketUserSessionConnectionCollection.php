@@ -7,8 +7,6 @@ use App\Entity\UserSession;
 /**
  * Class WebSocketUserSessionConnectionCollection.
  *
- * @package App\Collection
- *
  * @author  Codememory
  */
 final class WebSocketUserSessionConnectionCollection

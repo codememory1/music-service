@@ -8,13 +8,6 @@ use App\Repository\PlatformSettingRepository;
 use function is_array;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class PlatformSettingService.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 class PlatformSettingService
 {
     #[Required]

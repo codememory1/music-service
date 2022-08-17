@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum ResponseTypeEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum ResponseTypeEnum
 {
     case CREATE;

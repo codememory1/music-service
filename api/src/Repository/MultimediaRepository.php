@@ -10,14 +10,9 @@ use App\Enum\MultimediaStatusEnum;
 use Doctrine\ORM\Query\Expr\Join;
 
 /**
- * Class MultimediaRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<Multimedia>
- *
- * @author  Codememory
  */
-class MultimediaRepository extends AbstractRepository
+final class MultimediaRepository extends AbstractRepository
 {
     protected ?string $entity = Multimedia::class;
     protected ?string $alias = 'm';

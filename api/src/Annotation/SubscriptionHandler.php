@@ -4,17 +4,10 @@ namespace App\Annotation;
 
 use App\Annotation\Interfaces\MethodAnnotationHandlerInterface;
 use App\Annotation\Interfaces\MethodAnnotationInterface;
-use App\Rest\Http\Exceptions\AccessDeniedException;
+use App\Exception\Http\AccessDeniedException;
 use App\Security\AuthorizedUser;
 
-/**
- * Class SubscriptionHandler.
- *
- * @package App\Annotation
- *
- * @author  Codememory
- */
-class SubscriptionHandler implements MethodAnnotationHandlerInterface
+final class SubscriptionHandler implements MethodAnnotationHandlerInterface
 {
     private AuthorizedUser $authorizedUser;
 
@@ -28,7 +21,7 @@ class SubscriptionHandler implements MethodAnnotationHandlerInterface
      */
     public function handle(MethodAnnotationInterface $annotation): void
     {
-        if (false === $this->authorizedUser->isSubscription($annotation->subscription)) {
+        if (true !== $this->authorizedUser->getUser()?->isSubscription($annotation->subscription)) {
             throw AccessDeniedException::notSubscription();
         }
     }

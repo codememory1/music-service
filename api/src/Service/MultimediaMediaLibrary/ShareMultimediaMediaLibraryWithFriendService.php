@@ -4,19 +4,12 @@ namespace App\Service\MultimediaMediaLibrary;
 
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\User;
-use App\Rest\Http\Exceptions\EntityExistException;
+use App\Exception\Http\EntityExistException;
 use App\Service\AbstractService;
 use App\Service\Notification\NotificationCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class ShareMultimediaMediaLibraryWithFriendService.
- *
- * @package App\Service\MultimediaMediaLibrary
- *
- * @author  Codememory
- */
 class ShareMultimediaMediaLibraryWithFriendService extends AbstractService
 {
     #[Required]

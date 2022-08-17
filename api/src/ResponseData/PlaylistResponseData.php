@@ -6,16 +6,8 @@ use App\Enum\RequestTypeEnum;
 use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
-use Doctrine\Common\Collections\Collection;
 
-/**
- * Class PlaylistResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class PlaylistResponseData extends AbstractResponseData implements ResponseDataInterface
+final class PlaylistResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     protected array $aliases = [
@@ -24,10 +16,10 @@ class PlaylistResponseData extends AbstractResponseData implements ResponseDataI
     public ?int $id = null;
     public ?string $title = null;
 
-    #[ResponseDataConstraints\Callback('handleMultimedia')]
+    #[ResponseDataConstraints\CallbackResponseData(MultimediaPlaylistResponseData::class)]
     public array $multimedia = [];
 
-    #[ResponseDataConstraints\Callback('handleDirectories')]
+    #[ResponseDataConstraints\CallbackResponseData(PlaylistDirectoryResponseData::class, ignoreProperties: ['multimedia'])]
     public array $directories = [];
 
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
@@ -38,23 +30,4 @@ class PlaylistResponseData extends AbstractResponseData implements ResponseDataI
 
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
-
-    public function handleDirectories(Collection $directories): array
-    {
-        $playlistDirectoryResponseData = new PlaylistDirectoryResponseData($this->container);
-
-        $playlistDirectoryResponseData->setEntities($directories->toArray());
-        $playlistDirectoryResponseData->setIgnoreProperty('multimedia');
-
-        return $playlistDirectoryResponseData->collect()->getResponse();
-    }
-
-    public function handleMultimedia(Collection $multimedia): array
-    {
-        $multimediaPlaylistResponseData = new MultimediaPlaylistResponseData($this->container);
-
-        $multimediaPlaylistResponseData->setEntities($multimedia->toArray());
-
-        return $multimediaPlaylistResponseData->collect()->getResponse();
-    }
 }

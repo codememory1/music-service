@@ -7,13 +7,6 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\TranslationKey;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class TranslationKeyFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class TranslationKeyFactory implements DataFixtureFactoryInterface
 {
     private string $key;
@@ -25,11 +18,11 @@ final class TranslationKeyFactory implements DataFixtureFactoryInterface
 
     public function factoryMethod(): EntityInterface
     {
-        $translationKeyEntity = new TranslationKey();
+        $translationKey = new TranslationKey();
 
-        $translationKeyEntity->setKey($this->key);
+        $translationKey->setKey($this->key);
 
-        return $translationKeyEntity;
+        return $translationKey;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

@@ -8,23 +8,16 @@ use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\UserRoleTransformer;
 use App\Entity\Role;
 use App\Enum\RolePermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\RoleRepository;
 use App\ResponseData\UserRoleResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\UserRole\CreateUserRoleService;
 use App\Service\UserRole\DeleteUserRoleService;
 use App\Service\UserRole\UpdateUserRoleService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class UserRoleController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user/role')]
 #[Authorization]
 class UserRoleController extends AbstractRestController
@@ -34,7 +27,6 @@ class UserRoleController extends AbstractRestController
     public function all(UserRoleResponseData $userRoleResponseData, RoleRepository $roleRepository): JsonResponse
     {
         $userRoleResponseData->setEntities($roleRepository->findAll());
-        $userRoleResponseData->collect();
 
         return $this->responseCollection->dataOutput($userRoleResponseData->getResponse());
     }
@@ -46,7 +38,6 @@ class UserRoleController extends AbstractRestController
         UserRoleResponseData $userRoleResponseData
     ): JsonResponse {
         $userRoleResponseData->setEntities($role);
-        $userRoleResponseData->collect();
 
         return $this->responseCollection->dataOutput($userRoleResponseData->getResponse());
     }

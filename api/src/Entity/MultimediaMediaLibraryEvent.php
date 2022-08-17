@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\MultimediaMediaLibraryEventEnum;
@@ -12,13 +13,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class MultimediaMediaLibraryEvent.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: MultimediaMediaLibraryEventRepository::class)]
 #[ORM\Table('multimedia_media_library_events')]
 #[ORM\HasLifecycleCallbacks]
@@ -31,6 +25,7 @@ class MultimediaMediaLibraryEvent implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: MultimediaMediaLibrary::class, inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]

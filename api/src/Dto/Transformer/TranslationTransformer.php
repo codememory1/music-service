@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class SubscriptionTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<TranslationDto>
- *
- * @author  Codememory
  */
 final class TranslationTransformer extends AbstractDataTransformer
 {
@@ -31,8 +26,6 @@ final class TranslationTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->translationDto
-            ->setEntity($entity ?: new Translation())
-            ->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->translationDto, $entity ?: new Translation());
     }
 }

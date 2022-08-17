@@ -9,13 +9,6 @@ use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AddMultimediaService.
- *
- * @package App\Service\Multimedia
- *
- * @author  Codememory
- */
 class AddMultimediaService extends AbstractService
 {
     #[Required]

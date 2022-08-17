@@ -5,15 +5,8 @@ namespace App\Validator\Constraints;
 use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class ArrayValues.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class ArrayValues extends Constraint
+final class ArrayValues extends Constraint
 {
     public readonly int $min;
     public readonly ?int $max;

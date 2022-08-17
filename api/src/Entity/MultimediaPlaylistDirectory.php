@@ -3,19 +3,14 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UpdateNumberMultimediaMediaLibraryStatisticTrait;
 use App\Repository\MultimediaPlaylistDirectoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * Class MultimediaPlaylistDirectoryFromMediaLibrary.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: MultimediaPlaylistDirectoryRepository::class)]
 #[ORM\Table('multimedia_playlist_directory')]
 #[ORM\HasLifecycleCallbacks]
@@ -24,6 +19,7 @@ class MultimediaPlaylistDirectory implements EntityInterface
     use IdentifierTrait;
     use TimestampTrait;
     use UpdateNumberMultimediaMediaLibraryStatisticTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: PlaylistDirectory::class, inversedBy: 'multimedia')]
     #[ORM\JoinColumn(nullable: false)]
@@ -57,11 +53,13 @@ class MultimediaPlaylistDirectory implements EntityInterface
         return $this;
     }
 
+    #[Pure]
     public function getMultimedia(): ?Multimedia
     {
         return $this->getMultimediaMediaLibrary()->getMultimedia();
     }
 
+    #[Pure]
     public function getMediaLibrary(): ?MediaLibrary
     {
         return $this->getMultimediaMediaLibrary()->getMediaLibrary();

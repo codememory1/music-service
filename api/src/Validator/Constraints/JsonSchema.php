@@ -5,15 +5,8 @@ namespace App\Validator\Constraints;
 use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class JsonSchema.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class JsonSchema extends Constraint
+final class JsonSchema extends Constraint
 {
     public readonly string $schemaName;
     public readonly string $message;

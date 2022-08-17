@@ -5,13 +5,6 @@ namespace App\Collection;
 use App\Dto\Interfaces\DataTransferConstraintInterface;
 use ReflectionAttribute;
 
-/**
- * Class DtoConstraintCollection.
- *
- * @package App\Collection
- *
- * @author  Codememory
- */
 final class DtoConstraintCollection
 {
     public readonly DataTransferConstraintInterface $constraint;

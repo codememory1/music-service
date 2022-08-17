@@ -7,14 +7,9 @@ use App\Entity\MultimediaRating;
 use App\Entity\User;
 
 /**
- * Class MultimediaRatingRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<MultimediaRating>
- *
- * @author  Codememory
  */
-class MultimediaRatingRepository extends AbstractRepository
+final class MultimediaRatingRepository extends AbstractRepository
 {
     protected ?string $entity = MultimediaRating::class;
     protected ?string $alias = 'mr';

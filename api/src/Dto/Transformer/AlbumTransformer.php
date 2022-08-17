@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class AlbumTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<AlbumDto>
- *
- * @author  Codememory
  */
 final class AlbumTransformer extends AbstractDataTransformer
 {
@@ -35,7 +30,7 @@ final class AlbumTransformer extends AbstractDataTransformer
             ->setEntity($entity ?: new Album())
             ->collect([
                 ...$this->request->all(),
-                'image' => $this->request?->request->files->get('image')
+                'image' => $this->request->getRequest()->files->get('image')
             ]);
     }
 }

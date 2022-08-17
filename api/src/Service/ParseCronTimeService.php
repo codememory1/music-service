@@ -2,13 +2,6 @@
 
 namespace App\Service;
 
-/**
- * Class ParseCronTimeService.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 class ParseCronTimeService
 {
     private const REGEX_TIME = '/^(?<time>\d+)(?<format>\w)$/';

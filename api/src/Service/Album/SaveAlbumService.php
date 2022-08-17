@@ -9,13 +9,6 @@ use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class SaveAlbumService.
- *
- * @package App\Service\Album
- *
- * @author  Codememory
- */
 class SaveAlbumService extends AbstractService
 {
     #[Required]

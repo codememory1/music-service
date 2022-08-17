@@ -11,13 +11,6 @@ use App\Service\TranslationKey\CreateTranslationKeyService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class CreateTranslationService.
- *
- * @package App\Service\Translation
- *
- * @author  Codememory
- */
 class CreateTranslationService extends AbstractService
 {
     #[Required]

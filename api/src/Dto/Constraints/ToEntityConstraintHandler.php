@@ -6,13 +6,6 @@ use App\Dto\Interfaces\DataTransferConstraintInterface;
 use App\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Class ToEntityConstraintHandler.
- *
- * @package App\Dto\Constraints
- *
- * @author  Codememory
- */
 final class ToEntityConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferValueInterceptorConstraintHandlerInterface
 {
     private EntityManagerInterface $em;

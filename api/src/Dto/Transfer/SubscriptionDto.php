@@ -8,18 +8,13 @@ use App\Entity\SubscriptionPermissionKey;
 use App\Entity\TranslationKey;
 use App\Enum\ResponseTypeEnum;
 use App\Enum\SubscriptionStatusEnum;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class SubscriptionDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<Subscription>
- *
- * @author  Codememory
  */
 final class SubscriptionDto extends AbstractDataTransfer
 {

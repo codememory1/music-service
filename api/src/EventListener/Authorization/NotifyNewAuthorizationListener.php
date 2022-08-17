@@ -10,19 +10,14 @@ use App\Service\MailMessagingService;
 use App\Service\Notification\NotificationCollection;
 use App\Service\ObjectComparisonPercentageService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-/**
- * Class NotifyNewAuthorizationListener.
- *
- * @package App\EventListener\Authorization
- *
- * @author  Codememory
- */
-class NotifyNewAuthorizationListener
+#[AsEventListener('app.auth', 'onAuth', 0)]
+final class NotifyNewAuthorizationListener
 {
     private EntityManagerInterface $em;
     private NotificationCollection $notificationCollection;

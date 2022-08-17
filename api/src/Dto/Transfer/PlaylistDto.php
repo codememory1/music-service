@@ -13,12 +13,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class PlaylistDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<Playlist>
- *
- * @author  Codememory
  */
 final class PlaylistDto extends AbstractDataTransfer
 {

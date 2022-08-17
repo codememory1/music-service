@@ -10,12 +10,7 @@ use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class MultimediaCategoryDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<MultimediaCategory>
- *
- * @author  Codememory
  */
 final class MultimediaCategoryDto extends AbstractDataTransfer
 {

@@ -10,13 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class CreateNotificationService.
- *
- * @package App\Service\Notification
- *
- * @author  Codememory
- */
 class CreateNotificationService extends AbstractService
 {
     #[Required]

@@ -14,12 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class AlbumDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<Album>
- *
- * @author  Codememory
  */
 final class AlbumDto extends AbstractDataTransfer
 {

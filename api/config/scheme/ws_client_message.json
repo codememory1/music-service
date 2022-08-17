@@ -5,26 +5,20 @@
             "type": "object",
             "properties": {
                 "access_token": {
-                    "type": ["string", "null"]
+                    "type": "string"
                 },
                 "refresh_token": {
-                    "type": ["string", "null"]
+                    "type": "string"
                 }
             },
             "required": ["access_token", "refresh_token"]
         },
+        "type": {
+            "type": "string"
+        },
         "data": {
-            "type": "object",
-            "properties": {
-                "type": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "any"
-                }
-            },
-            "required": ["type", "message"]
+            "type": "object"
         }
     },
-    "required": ["headers", "data"]
+    "required": ["headers", "type", "data"]
 }

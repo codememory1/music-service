@@ -2,13 +2,6 @@
 
 namespace App\Service\IPGeolocation\Interfaces;
 
-/**
- * Interface ClientInterface.
- *
- * @package  App\Service\IPGeolocation\Interfaces
- *
- * @author   Codememory
- */
 interface ClientInterface
 {
     public function getUrl(string $ip): ?string;

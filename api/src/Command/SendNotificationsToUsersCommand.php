@@ -12,13 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * Class SendNotificationsToUsersCommand.
- *
- * @package App\Command
- *
- * @author  Codememory
- */
 #[AsCommand(
     'app:notifications:send-to-users',
     'Send notifications to pending users'

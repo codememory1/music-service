@@ -8,32 +8,25 @@ use App\Entity\RolePermissionKey;
 use App\Enum\RolePermissionEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class RolePermissionKeyFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class RolePermissionKeyFactory implements DataFixtureFactoryInterface
 {
-    private string $key;
+    private RolePermissionEnum $rolePermission;
     private string $titleTranslationKey;
 
-    public function __construct(RolePermissionEnum $key, string $titleTranslationKey)
+    public function __construct(RolePermissionEnum $rolePermission, string $titleTranslationKey)
     {
-        $this->key = $key->name;
+        $this->rolePermission = $rolePermission;
         $this->titleTranslationKey = $titleTranslationKey;
     }
 
     public function factoryMethod(): EntityInterface
     {
-        $rolePermissionKeyEntity = new RolePermissionKey();
+        $rolePermissionKey = new RolePermissionKey();
 
-        $rolePermissionKeyEntity->setKey($this->key);
-        $rolePermissionKeyEntity->setTitle($this->titleTranslationKey);
+        $rolePermissionKey->setKey($this->rolePermission);
+        $rolePermissionKey->setTitle($this->titleTranslationKey);
 
-        return $rolePermissionKeyEntity;
+        return $rolePermissionKey;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

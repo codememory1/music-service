@@ -6,13 +6,6 @@ use App\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
 use App\Dto\Interfaces\DataTransferConstraintInterface;
 use LogicException;
 
-/**
- * Class IgnoreCallSetterCallbackConstraintHandler.
- *
- * @package App\Dto\Constraints
- *
- * @author  Codememory
- */
 final class IgnoreCallSetterCallbackConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferCallSetterConstraintHandlerInterface
 {
     /**

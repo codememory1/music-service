@@ -6,14 +6,9 @@ use App\Entity\Friend;
 use App\Entity\User;
 
 /**
- * Class FriendRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<Friend>
- *
- * @author  Codememory
  */
-class FriendRepository extends AbstractRepository
+final class FriendRepository extends AbstractRepository
 {
     protected ?string $entity = Friend::class;
     protected ?string $alias = 'f';

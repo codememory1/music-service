@@ -8,13 +8,6 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class RestorePasswordDTO.
- *
- * @package App\Dto\Transfer
- *
- * @author  Codememory
- */
 final class RestorePasswordDto extends AbstractDataTransfer
 {
     use SetPasswordTrait;

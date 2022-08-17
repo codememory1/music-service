@@ -10,13 +10,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class Authorization.
- *
- * @package App\Security\Auth
- *
- * @author  Сodememory
- */
 class Authorization extends AbstractService
 {
     #[Required]

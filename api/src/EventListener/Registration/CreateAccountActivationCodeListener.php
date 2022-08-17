@@ -5,15 +5,10 @@ namespace App\EventListener\Registration;
 use App\Entity\AccountActivationCode;
 use App\Event\UserRegistrationEvent;
 use App\Service\FlusherService;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-/**
- * Class CreateAccountActivationCodeListener.
- *
- * @package App\EventListener\Registration
- *
- * @author  Codememory
- */
-class CreateAccountActivationCodeListener
+#[AsEventListener('app.registration', 'onUserRegistration', 1)]
+final class CreateAccountActivationCodeListener
 {
     private FlusherService $flusherService;
 

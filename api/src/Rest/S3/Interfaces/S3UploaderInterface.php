@@ -7,13 +7,6 @@ use App\Rest\S3\Uploader\UploadedFile as S3UploadedFile;
 use Aws\Result;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * Interface S3UploaderInterface.
- *
- * @package  App\Rest\S3\Interfaces
- *
- * @author   Codememory
- */
 interface S3UploaderInterface
 {
     public function getBucketName(): string;

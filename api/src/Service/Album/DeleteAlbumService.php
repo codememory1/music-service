@@ -8,13 +8,6 @@ use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class DeleteAlbumService.
- *
- * @package App\Service\Album
- *
- * @author  Codememory
- */
 class DeleteAlbumService extends AbstractService
 {
     #[Required]

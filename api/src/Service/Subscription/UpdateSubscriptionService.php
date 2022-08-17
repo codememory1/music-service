@@ -7,13 +7,6 @@ use App\Entity\Subscription;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class UpdateSubscriptionService.
- *
- * @package App\Service\Subscription
- *
- * @author  Codememory
- */
 class UpdateSubscriptionService extends AbstractService
 {
     public function update(SubscriptionDto $subscriptionDto): Subscription

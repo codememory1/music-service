@@ -6,13 +6,6 @@ use Aws\Result;
 use Exception;
 use GuzzleHttp\Psr7\Stream;
 
-/**
- * Class UploadedObject.
- *
- * @package App\Rest\S3
- *
- * @author  Codememory
- */
 class UploadedObject
 {
     private Client $client;

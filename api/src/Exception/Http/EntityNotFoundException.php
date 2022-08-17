@@ -1,18 +1,11 @@
 <?php
 
-namespace App\Rest\Http\Exceptions;
+namespace App\Exception\Http;
 
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class EntityNotFoundException.
- *
- * @package App\Rest\Http\Exceptions
- *
- * @author  Codememory
- */
-class EntityNotFoundException extends ApiResponseException
+class EntityNotFoundException extends HttpException
 {
     #[Pure]
     final public function __construct(string $translationKey, array $parameters = [], array $data = [], array $headers = [])

@@ -5,13 +5,6 @@ namespace App\Rest\S3;
 use Aws\Result;
 use Aws\S3\S3Client as AwsS3Client;
 
-/**
- * Class Bucket.
- *
- * @package App\Rest\S3
- *
- * @author  Codememory
- */
 class Bucket
 {
     private AwsS3Client $awsS3Client;

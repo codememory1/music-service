@@ -8,32 +8,25 @@ use App\Entity\SubscriptionPermissionKey;
 use App\Enum\SubscriptionPermissionEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class SubscriptionPermissionKeyFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class SubscriptionPermissionKeyFactory implements DataFixtureFactoryInterface
 {
-    private string $key;
+    private SubscriptionPermissionEnum $subscriptionPermission;
     private string $title;
 
-    public function __construct(SubscriptionPermissionEnum $subscriptionPermissionEnum, string $title)
+    public function __construct(SubscriptionPermissionEnum $subscriptionPermission, string $title)
     {
-        $this->key = $subscriptionPermissionEnum->name;
+        $this->subscriptionPermission = $subscriptionPermission;
         $this->title = $title;
     }
 
     public function factoryMethod(): EntityInterface
     {
-        $subscriptionPermissionKeyEntity = new SubscriptionPermissionKey();
+        $subscriptionPermissionKey = new SubscriptionPermissionKey();
 
-        $subscriptionPermissionKeyEntity->setKey($this->key);
-        $subscriptionPermissionKeyEntity->setTitle($this->title);
+        $subscriptionPermissionKey->setKey($this->subscriptionPermission);
+        $subscriptionPermissionKey->setTitle($this->title);
 
-        return $subscriptionPermissionKeyEntity;
+        return $subscriptionPermissionKey;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

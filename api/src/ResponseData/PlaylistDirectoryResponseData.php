@@ -5,16 +5,8 @@ namespace App\ResponseData;
 use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
-use Doctrine\Common\Collections\Collection;
 
-/**
- * Class PlaylistDirectoryResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class PlaylistDirectoryResponseData extends AbstractResponseData implements ResponseDataInterface
+final class PlaylistDirectoryResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     protected array $aliases = [
@@ -23,7 +15,7 @@ class PlaylistDirectoryResponseData extends AbstractResponseData implements Resp
     public ?int $id = null;
     public ?string $title = null;
 
-    #[ResponseDataConstraints\Callback('handleMultimedia')]
+    #[ResponseDataConstraints\CallbackResponseData(MultimediaPlaylistDirectoryResponseData::class)]
     public array $multimedia = [];
 
     #[ResponseDataConstraints\Callback('handleDateTime')]
@@ -31,13 +23,4 @@ class PlaylistDirectoryResponseData extends AbstractResponseData implements Resp
 
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
-
-    public function handleMultimedia(Collection $multimedia): array
-    {
-        $multimediaPlaylistDirectoryResponseData = new MultimediaPlaylistDirectoryResponseData($this->container);
-
-        $multimediaPlaylistDirectoryResponseData->setEntities($multimedia->toArray());
-
-        return $multimediaPlaylistDirectoryResponseData->collect()->getResponse();
-    }
 }

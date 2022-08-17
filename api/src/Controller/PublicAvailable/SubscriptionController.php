@@ -8,13 +8,6 @@ use App\Rest\Controller\AbstractRestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class SubscriptionController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/subscription')]
 class SubscriptionController extends AbstractRestController
 {
@@ -22,7 +15,6 @@ class SubscriptionController extends AbstractRestController
     public function all(SubscriptionResponseData $subscriptionResponseData, SubscriptionRepository $subscriptionRepository): JsonResponse
     {
         $subscriptionResponseData->setEntities($subscriptionRepository->findAll());
-        $subscriptionResponseData->collect();
 
         return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse());
     }

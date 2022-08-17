@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\StreamMultimediaStatusEnum;
@@ -10,13 +11,6 @@ use App\Repository\StreamRunningMultimediaRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class StreamRunningMultimedia.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: StreamRunningMultimediaRepository::class)]
 #[ORM\Table('streams_running_multimedia')]
 #[ORM\HasLifecycleCallbacks]
@@ -24,6 +18,7 @@ class StreamRunningMultimedia implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\OneToOne(inversedBy: 'streamRunningMultimedia', targetEntity: RunningMultimedia::class)]
     #[ORM\JoinColumn(nullable: false)]

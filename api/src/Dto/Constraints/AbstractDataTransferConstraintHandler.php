@@ -8,13 +8,6 @@ use JetBrains\PhpStorm\Pure;
 use ReflectionProperty;
 use ReflectionType;
 
-/**
- * Class AbstractDataTransferConstraintHandler.
- *
- * @package App\Dto\Constraints
- *
- * @author  Codememory
- */
 abstract class AbstractDataTransferConstraintHandler implements DataTransferConstraintHandlerInterface
 {
     private ?DataTransferInterface $dataTransfer = null;

@@ -9,10 +9,10 @@ use App\Dto\Transformer\AlbumTransformer;
 use App\Entity\Album;
 use App\Entity\User;
 use App\Enum\RolePermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\AlbumRepository;
 use App\ResponseData\AlbumResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\Album\CreateAlbumService;
 use App\Service\Album\DeleteAlbumService;
 use App\Service\Album\PublishAlbumService;
@@ -20,13 +20,6 @@ use App\Service\Album\UpdateAlbumService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class AlbumController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/user')]
 #[Authorization]
 class AlbumController extends AbstractRestController
@@ -39,7 +32,6 @@ class AlbumController extends AbstractRestController
         AlbumRepository $albumRepository
     ): JsonResponse {
         $albumResponseData->setEntities($albumRepository->findAllByUser($user));
-        $albumResponseData->collect();
 
         return $this->responseCollection->dataOutput($albumResponseData->getResponse());
     }

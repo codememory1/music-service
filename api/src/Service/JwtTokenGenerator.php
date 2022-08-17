@@ -10,13 +10,6 @@ use JetBrains\PhpStorm\ArrayShape;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-/**
- * Class JwtTokenGenerator.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 class JwtTokenGenerator
 {
     private ParseCronTimeService $parseCronTime;

@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum GoogleScopeEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum GoogleScopeEnum: string
 {
     case EMAIL = 'https://www.googleapis.com/auth/userinfo.email';

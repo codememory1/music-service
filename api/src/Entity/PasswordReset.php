@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\DBAL\Types\CronTimeType;
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\ValidTtlTrait;
@@ -13,13 +14,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class PasswordReset.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: PasswordResetRepository::class)]
 #[ORM\Table('password_resets')]
 #[ORM\HasLifecycleCallbacks]
@@ -28,6 +22,7 @@ class PasswordReset implements EntityInterface
     use IdentifierTrait;
     use TimestampTrait;
     use ValidTtlTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'passwordResets')]
     #[ORM\JoinColumn(nullable: false)]

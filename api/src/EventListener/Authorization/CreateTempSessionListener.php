@@ -8,20 +8,15 @@ use App\Entity\UserSession;
 use App\Event\UserAuthorizationEvent;
 use App\Service\UserSession\UpdateSessionService;
 use DateTimeImmutable;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-/**
- * Class CreateTempSessionListener.
- *
- * @package App\EventListener\Authorization
- *
- * @author  Codememory
- */
-class CreateTempSessionListener
+#[AsEventListener('app.auth', 'onAuth', 1)]
+final class CreateTempSessionListener
 {
     private UpdateSessionService $updateUserSessionService;
     private UserDto $userDto;

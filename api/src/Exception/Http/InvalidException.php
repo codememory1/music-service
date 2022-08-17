@@ -1,18 +1,11 @@
 <?php
 
-namespace App\Rest\Http\Exceptions;
+namespace App\Exception\Http;
 
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class InvalidException.
- *
- * @package App\Rest\Http\Exceptions
- *
- * @author  Codememory
- */
-class InvalidException extends ApiResponseException
+class InvalidException extends HttpException
 {
     #[Pure]
     final public static function invalidRefreshToken(array $data = [], array $headers = []): self

@@ -3,17 +3,14 @@
 namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\SystemUserFactory;
+use App\Entity\User;
 use App\Enum\SystemUserEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class SystemUserDataFixture.
- *
- * @package App\DataFixtures
- *
- * @author  Codememory
+ * @template-extends AbstractDataFixture<User>
  */
 final class SystemUserDataFixture extends AbstractDataFixture implements DependentFixtureInterface
 {

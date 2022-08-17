@@ -5,16 +5,9 @@ namespace App\Service\Playlist;
 use App\Entity\MediaLibrary;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\Playlist;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use Doctrine\Common\Collections\Criteria;
 
-/**
- * Class SetMultimediaToPlaylistService.
- *
- * @package App\Service\Playlist
- *
- * @author  Codememory
- */
 class SetMultimediaToPlaylistService
 {
     public function set(array $multimediaMediaLibrary, Playlist $playlist): void

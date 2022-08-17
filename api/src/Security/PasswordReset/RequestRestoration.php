@@ -10,13 +10,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class RequestRestoration.
- *
- * @package App\Security\PasswordReset
- *
- * @author  Codememory
- */
 class RequestRestoration extends AbstractService
 {
     #[Required]

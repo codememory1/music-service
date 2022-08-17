@@ -3,19 +3,13 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\TranslationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class Translation.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: TranslationRepository::class)]
 #[ORM\Table('translations')]
 #[ORM\HasLifecycleCallbacks]
@@ -23,6 +17,7 @@ class Translation implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: Language::class, cascade: ['persist'], inversedBy: 'translations')]
     #[ORM\JoinColumn(nullable: false)]

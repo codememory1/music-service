@@ -7,13 +7,6 @@ use App\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mime\Exception\LogicException;
 
-/**
- * Class ToEntityCallbackConstraintHandler.
- *
- * @package App\Dto\Constraints
- *
- * @author  Codememory
- */
 final class ToEntityCallbackConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferValueInterceptorConstraintHandlerInterface
 {
     private EntityManagerInterface $em;

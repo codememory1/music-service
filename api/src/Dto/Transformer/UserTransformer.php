@@ -9,12 +9,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class UserTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<UserDto>
- *
- * @author  Codememory
  */
 final class UserTransformer extends AbstractDataTransformer
 {
@@ -31,7 +26,7 @@ final class UserTransformer extends AbstractDataTransformer
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
         return $this->userDto->collect([
-            'ip' => $this->request->request?->getClientIp()
+            'ip' => $this->request->getRequest()?->getClientIp()
         ]);
     }
 }
