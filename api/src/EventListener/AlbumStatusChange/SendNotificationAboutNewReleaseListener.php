@@ -5,15 +5,10 @@ namespace App\EventListener\AlbumStatusChange;
 use App\Enum\AlbumStatusEnum;
 use App\Event\AlbumStatusChangeEvent;
 use App\Service\Notification\NotificationCollection;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-/**
- * Class SendNotificationAboutNewReleaseListener.
- *
- * @package App\EventListener\AlbumStatusChange
- *
- * @author  codememory
- */
-class SendNotificationAboutNewReleaseListener
+#[AsEventListener('app.album.status-change', 'onAlbumStatusChange', 1)]
+final class SendNotificationAboutNewReleaseListener
 {
     private NotificationCollection $notificationCollection;
 

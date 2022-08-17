@@ -7,13 +7,6 @@ use App\Entity\Language;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class UpdateLanguageService.
- *
- * @package App\Service\Language
- *
- * @author  Codememory
- */
 class UpdateLanguageService extends AbstractService
 {
     public function update(LanguageDto $languageDto): Language

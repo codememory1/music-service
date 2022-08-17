@@ -9,16 +9,11 @@ use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\DependencyInjection\ReverseContainer;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 
-/**
- * Class AnnotationListener.
- *
- * @package App\EventListener\KernelController
- *
- * @author  Codememory
- */
-class AnnotationListener
+#[AsEventListener('kernel.controller')]
+final class AnnotationListener
 {
     private ReverseContainer $container;
 

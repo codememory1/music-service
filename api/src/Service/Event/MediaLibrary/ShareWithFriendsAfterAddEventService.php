@@ -4,13 +4,6 @@ namespace App\Service\Event\MediaLibrary;
 
 use App\Service\Event\Interfaces\EventInterface;
 
-/**
- * Class ShareWithFriendsAfterAddEventService.
- *
- * @package App\Service\MediaLibrary
- *
- * @author  Codememory
- */
 class ShareWithFriendsAfterAddEventService implements EventInterface
 {
     private array $payload;

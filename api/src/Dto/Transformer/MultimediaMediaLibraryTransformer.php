@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class MultimediaMediaLibraryTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<MultimediaMediaLibraryDto>
- *
- * @author  Codememory
  */
 final class MultimediaMediaLibraryTransformer extends AbstractDataTransformer
 {
@@ -35,7 +30,7 @@ final class MultimediaMediaLibraryTransformer extends AbstractDataTransformer
             ->setEntity($entity ?: new MultimediaMediaLibrary())
             ->collect([
                 ...$this->request->all(),
-                'image' => $this->request?->request->files->get('image'),
+                'image' => $this->request->getRequest()->files->get('image'),
             ]);
     }
 }

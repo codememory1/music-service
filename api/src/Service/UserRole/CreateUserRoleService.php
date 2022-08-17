@@ -7,13 +7,6 @@ use App\Entity\Role;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class CreateUserRoleService.
- *
- * @package App\Service\UserRole
- *
- * @author  Codememory
- */
 class CreateUserRoleService extends AbstractService
 {
     public function create(UserRoleDto $userRoleDto): Role

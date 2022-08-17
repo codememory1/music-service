@@ -6,14 +6,7 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 
-/**
- * Class MultimediaMetadataResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class MultimediaMetadataResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaMetadataResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     protected array $methodPrefixesForProperties = [

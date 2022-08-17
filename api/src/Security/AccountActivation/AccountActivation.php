@@ -6,19 +6,12 @@ use App\Dto\Transfer\AccountActivationDto;
 use App\Entity\AccountActivationCode;
 use App\Enum\EventEnum;
 use App\Event\AccountActivationEvent;
-use App\Rest\Http\Exceptions\InvalidException;
+use App\Exception\Http\InvalidException;
 use App\Service\AbstractService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AccountActivation.
- *
- * @package App\Security\AccountActivation
- *
- * @author  Codememory
- */
 class AccountActivation extends AbstractService
 {
     #[Required]

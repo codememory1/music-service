@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class NotificationTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<NotificationDto>
- *
- * @author  Codememory
  */
 final class NotificationTransformer extends AbstractDataTransformer
 {
@@ -31,8 +26,6 @@ final class NotificationTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->notificationDto
-            ->setEntity($entity ?: new Notification())
-            ->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->notificationDto, $entity ?: new Notification());
     }
 }

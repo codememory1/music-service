@@ -9,12 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class AlbumTypeDataFixture.
- *
- * @package App\DataFixtures
- * @template-extends AbstractDataFixture<AlbumType>
- *
- * @author  Codememory
+ * @template-extends AbstractDataFixture<AlbumType>y
  */
 final class AlbumTypeDataFixture extends AbstractDataFixture
 {

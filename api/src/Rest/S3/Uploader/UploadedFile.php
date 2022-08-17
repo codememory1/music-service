@@ -4,13 +4,6 @@ namespace App\Rest\S3\Uploader;
 
 use ArrayIterator;
 
-/**
- * Class UploadedFile.
- *
- * @package App\Rest\S3\Uploader
- *
- * @author  Codememory
- */
 class UploadedFile
 {
     private array $paths;

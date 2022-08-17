@@ -3,16 +3,11 @@
 namespace App\EventListener\RequestRestorationPassword;
 
 use App\Event\RequestRestorationPasswordEvent;
-use App\Rest\Http\Exceptions\FailedException;
+use App\Exception\Http\FailedException;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-/**
- * Class TemporaryBlockingListener.
- *
- * @package App\EventListener\RequestRestorationPassword
- *
- * @author  Codememory
- */
-class TemporaryBlockingListener
+#[AsEventListener('app.after-password-reset.request', 'onAfterRequestRestorationPassword', 1)]
+final class TemporaryBlockingListener
 {
     public function onAfterRequestRestorationPassword(RequestRestorationPasswordEvent $event): void
     {

@@ -4,17 +4,10 @@ namespace App\Service\ControllingSubscriptionOnArtist;
 
 use App\Entity\ArtistSubscriber;
 use App\Entity\User;
-use App\Rest\Http\Exceptions\FailedException;
+use App\Exception\Http\FailedException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class SubscribeOnArtistService.
- *
- * @package App\Service\ControllingSubscriptionOnArtist
- *
- * @author  Codememory
- */
 class SubscribeOnArtistService extends AbstractService
 {
     public function subscribe(User $artist, User $subscriber): ArtistSubscriber

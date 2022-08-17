@@ -8,16 +8,8 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 use App\ResponseData\Traits\ToTranslationHandlerTrait;
-use Doctrine\Common\Collections\Collection;
 
-/**
- * Class SubscriptionResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class SubscriptionResponseData extends AbstractResponseData implements ResponseDataInterface
+final class SubscriptionResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     use ToTranslationHandlerTrait;
@@ -40,7 +32,7 @@ class SubscriptionResponseData extends AbstractResponseData implements ResponseD
     public ?bool $isRecommend = null;
     public ?string $status = null;
 
-    #[ResponseDataConstraints\Callback('handlePermissions')]
+    #[ResponseDataConstraints\CallbackResponseData(SubscriptionPermissionResponseData::class)]
     public array $permissions = [];
 
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
@@ -52,13 +44,4 @@ class SubscriptionResponseData extends AbstractResponseData implements ResponseD
     #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
-
-    public function handlePermissions(Collection $collection): array
-    {
-        $responseData = new SubscriptionPermissionResponseData($this->container);
-
-        $responseData->setEntities($collection->toArray());
-
-        return $responseData->collect()->getResponse();
-    }
 }

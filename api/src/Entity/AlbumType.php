@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\AlbumTypeEnum;
@@ -15,13 +16,6 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class AlbumType.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: AlbumTypeRepository::class)]
 #[ORM\Table('album_types')]
 #[ORM\HasLifecycleCallbacks]
@@ -30,6 +24,7 @@ class AlbumType implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
         'comment' => 'Unique key for identification'

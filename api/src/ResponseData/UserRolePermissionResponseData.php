@@ -6,15 +6,9 @@ use App\Entity\RolePermissionKey;
 use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * Class UserRolePermissionResponseData.
- *
- * @package App\ResponseData
- *
- * @author  Codememory
- */
-class UserRolePermissionResponseData extends AbstractResponseData implements ResponseDataInterface
+final class UserRolePermissionResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     public ?int $id = null;
@@ -28,6 +22,7 @@ class UserRolePermissionResponseData extends AbstractResponseData implements Res
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
 
+    #[Pure]
     public function handlePermissionKey(?RolePermissionKey $rolePermissionKey): ?string
     {
         return $rolePermissionKey?->getKey();

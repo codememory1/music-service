@@ -9,12 +9,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class DeleteTranslationTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<DeleteTranslationDto>
- *
- * @author  Codememory
  */
 final class DeleteTranslationTransformer extends AbstractDataTransformer
 {
@@ -30,6 +25,6 @@ final class DeleteTranslationTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->deleteTranslationDto->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->deleteTranslationDto, $entity);
     }
 }

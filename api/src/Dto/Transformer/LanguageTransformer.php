@@ -10,12 +10,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class LanguageTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<LanguageDto>
- *
- * @author  Codememory
  */
 final class LanguageTransformer extends AbstractDataTransformer
 {
@@ -31,8 +26,6 @@ final class LanguageTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->languageDto
-            ->setEntity($entity ?: new Language())
-            ->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->languageDto, $entity ?: new Language());
     }
 }

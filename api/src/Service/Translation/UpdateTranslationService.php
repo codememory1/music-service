@@ -7,13 +7,6 @@ use App\Entity\Translation;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class UpdateTranslationService.
- *
- * @package App\Service\Translation
- *
- * @author  Codememory
- */
 class UpdateTranslationService extends AbstractService
 {
     public function update(TranslationDto $translationDto): Translation

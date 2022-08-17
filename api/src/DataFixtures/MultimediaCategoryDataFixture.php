@@ -3,18 +3,15 @@
 namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\MultimediaCategoryFactory;
+use App\Entity\MultimediaCategory;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class MultimediaCategoryDataFixture.
- *
- * @package App\DataFixtures
- *
- * @author  Codememory
+ * @template-extends AbstractDataFixture<MultimediaCategory>
  */
-class MultimediaCategoryDataFixture extends AbstractDataFixture implements DependentFixtureInterface
+final class MultimediaCategoryDataFixture extends AbstractDataFixture implements DependentFixtureInterface
 {
     #[Pure]
     public function __construct()

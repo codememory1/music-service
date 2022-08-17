@@ -8,13 +8,6 @@ use Ergebnis\Json\SchemaValidator\SchemaValidator;
 use function is_array;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-/**
- * Class SchemaValidatorService.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 class SchemaValidatorService
 {
     private ParameterBagInterface $parameterBag;

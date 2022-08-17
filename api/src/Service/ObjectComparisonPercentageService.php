@@ -2,13 +2,6 @@
 
 namespace App\Service;
 
-/**
- * Class ObjectComparisonPercentageService.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 class ObjectComparisonPercentageService
 {
     private object $forCompare;

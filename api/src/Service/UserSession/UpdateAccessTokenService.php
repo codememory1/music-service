@@ -4,7 +4,7 @@ namespace App\Service\UserSession;
 
 use App\Dto\Transfer\RefreshTokenDto;
 use App\Entity\UserSession;
-use App\Rest\Http\Exceptions\FailedException;
+use App\Exception\Http\FailedException;
 use App\Security\Auth\AuthorizationToken;
 use App\Service\AbstractService;
 use DateTimeImmutable;
@@ -12,13 +12,6 @@ use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class UpdateAccessTokenService.
- *
- * @package App\Service\UserSession
- *
- * @author  Codememory
- */
 class UpdateAccessTokenService extends AbstractService
 {
     #[Required]

@@ -11,13 +11,6 @@ use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class DeleteMultimediaService.
- *
- * @package App\Service\Multimedia
- *
- * @author  Codememory
- */
 class DeleteMultimediaService extends AbstractService
 {
     #[Required]

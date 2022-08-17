@@ -6,13 +6,6 @@ use App\Entity\Role;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class DeleteUserRoleService.
- *
- * @package App\Service\UserRole
- *
- * @author  Codememory
- */
 class DeleteUserRoleService extends AbstractService
 {
     public function delete(Role $role): Role

@@ -14,13 +14,6 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-/**
- * Class CollectorSessionService.
- *
- * @package App\Service\UserSession
- *
- * @author  Codememory
- */
 class CollectorSessionService
 {
     private Client $client;

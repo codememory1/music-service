@@ -10,14 +10,9 @@ use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class TranslationDataFixture.
- *
- * @package App\DataFixtures
  * @template-extends AbstractDataFixture<Translation>
- *
- * @author  Codememory
  */
-class TranslationDataFixture extends AbstractDataFixture implements DependentFixtureInterface, FixtureGroupInterface
+final class TranslationDataFixture extends AbstractDataFixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     #[Pure]
     public function __construct()

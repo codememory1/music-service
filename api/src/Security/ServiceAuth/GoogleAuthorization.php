@@ -6,13 +6,6 @@ use App\Dto\Interfaces\ServiceAuthorizationDtoInterface;
 use App\Service\Platform\Interfaces\ClientInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class GoogleAuthorization.
- *
- * @package App\Security\ServiceAuth
- *
- * @author  Codememory
- */
 class GoogleAuthorization extends AbstractServiceAuthorization
 {
     protected ?string $serviceType = 'google';

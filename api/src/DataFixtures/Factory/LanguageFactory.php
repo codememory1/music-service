@@ -7,13 +7,6 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Language;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class LanguageFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class LanguageFactory implements DataFixtureFactoryInterface
 {
     private string $code;
@@ -27,12 +20,12 @@ final class LanguageFactory implements DataFixtureFactoryInterface
 
     public function factoryMethod(): EntityInterface
     {
-        $languageEntity = new Language();
+        $language = new Language();
 
-        $languageEntity->setCode($this->code);
-        $languageEntity->setOriginalTitle($this->originalTitle);
+        $language->setCode($this->code);
+        $language->setOriginalTitle($this->originalTitle);
 
-        return $languageEntity;
+        return $language;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

@@ -1,19 +1,12 @@
 <?php
 
-namespace App\Rest\Http\Exceptions;
+namespace App\Exception\Http;
 
 use App\Enum\MultimediaStatusEnum;
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class MultimediaException.
- *
- * @package App\Rest\Http\Exceptions
- *
- * @author  Codememory
- */
-class MultimediaException extends ApiResponseException
+class MultimediaException extends HttpException
 {
     #[Pure]
     final public static function badTrackMimeType(array $data = [], array $headers = []): self

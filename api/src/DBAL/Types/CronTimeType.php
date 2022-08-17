@@ -6,14 +6,7 @@ use App\Service\ParseCronTimeService;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
-/**
- * Class CronTimeType.
- *
- * @package App\DBAL\Types
- *
- * @author  Codememory
- */
-class CronTimeType extends StringType
+final class CronTimeType extends StringType
 {
     public const NAME = 'cron_time';
 

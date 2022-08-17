@@ -6,14 +6,9 @@ use App\Entity\AccountActivationCode;
 use App\Entity\User;
 
 /**
- * Class AccountActivationCodeRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<AccountActivationCode>
- *
- * @author  Codememory
  */
-class AccountActivationCodeRepository extends AbstractRepository
+final class AccountActivationCodeRepository extends AbstractRepository
 {
     protected ?string $entity = AccountActivationCode::class;
     protected ?string $alias = 'aac';

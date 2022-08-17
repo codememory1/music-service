@@ -3,18 +3,12 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\MultimediaShareRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class MultimediaShare.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: MultimediaShareRepository::class)]
 #[ORM\Table('multimedia_shares')]
 #[ORM\HasLifecycleCallbacks]
@@ -22,6 +16,7 @@ class MultimediaShare implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: Multimedia::class, inversedBy: 'shares')]
     #[ORM\JoinColumn(nullable: false)]

@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum MultimediaMimeTypeEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum MultimediaMimeTypeEnum
 {
     public static function trackMimeTypes(): array

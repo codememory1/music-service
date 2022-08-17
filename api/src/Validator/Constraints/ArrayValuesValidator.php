@@ -6,14 +6,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class ArrayValuesValidator.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
-class ArrayValuesValidator extends ConstraintValidator
+final class ArrayValuesValidator extends ConstraintValidator
 {
     /**
      * @inheritDoc

@@ -6,19 +6,12 @@ use App\Dto\Transfer\MultimediaMediaLibraryEventDto;
 use App\Entity\MediaLibrary;
 use App\Entity\MultimediaMediaLibrary;
 use App\Enum\MultimediaMediaLibraryEventEnum;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
-use App\Rest\Http\Exceptions\EventException;
+use App\Exception\Http\EntityNotFoundException;
+use App\Exception\Http\EventException;
 use App\Service\AbstractService;
 use App\Service\Event\MultimediaMediaLibrary\NextMultimediaAfterEndEventService;
 use App\Service\Event\MultimediaMediaLibrary\RangeTimeEventService;
 
-/**
- * Class EventPayloadHandlerService.
- *
- * @package App\Service\MultimediaMediaLibraryEvent
- *
- * @author  Codememory
- */
 class EventPayloadHandlerService extends AbstractService
 {
     private ?MediaLibrary $mediaLibrary;

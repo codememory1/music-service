@@ -6,13 +6,6 @@ use App\Dto\Interfaces\DataTransferConstraintInterface;
 use App\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
 use App\Service\ParseCronTimeService;
 
-/**
- * Class CronTimeToSecondConstraintHandler.
- *
- * @package App\Dto\Constraints
- *
- * @author  Codememory
- */
 final class CronTimeToSecondConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferValueInterceptorConstraintHandlerInterface
 {
     private ParseCronTimeService $parseCronTimeService;

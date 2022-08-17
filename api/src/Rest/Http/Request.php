@@ -5,20 +5,18 @@ namespace App\Rest\Http;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * Class Request.
- *
- * @package App\Rest\Http
- *
- * @author  Codememory
- */
 class Request
 {
-    public readonly ?SymfonyRequest $request;
+    private RequestStack $requestStack;
 
     public function __construct(RequestStack $requestStack)
     {
-        $this->request = $requestStack->getCurrentRequest();
+        $this->requestStack = $requestStack;
+    }
+
+    public function getRequest(): ?SymfonyRequest
+    {
+        return $this->requestStack->getCurrentRequest();
     }
 
     public function get(string $key, mixed $default = null): mixed
@@ -39,18 +37,18 @@ class Request
 
     public function all(): array
     {
-        if ($this->request?->isXmlHttpRequest()) {
-            return $this->request->toArray();
+        if ($this->getRequest()?->isXmlHttpRequest()) {
+            return $this->getRequest()->toArray();
         }
 
-        $requestData = $this->request?->request->all() ?: [];
-        $queryData = $this->request?->query->all() ?: [];
+        $requestData = $this->getRequest()?->request->all() ?: [];
+        $queryData = $this->getRequest()?->query->all() ?: [];
 
         return array_merge($requestData, $queryData);
     }
 
     public function getRequestType(): ?string
     {
-        return $this->request?->attributes->get('request_type');
+        return $this->getRequest()?->attributes->get('request_type');
     }
 }

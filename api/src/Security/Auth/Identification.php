@@ -6,18 +6,11 @@ use App\Dto\Transfer\AuthorizationDto;
 use App\Entity\User;
 use App\Enum\EventEnum;
 use App\Event\UserIdentificationInAuthEvent;
-use App\Rest\Http\Exceptions\AuthorizationException;
+use App\Exception\Http\AuthorizationException;
 use App\Service\AbstractService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class Identification.
- *
- * @package App\Security\Auth
- *
- * @author  Codememory
- */
 class Identification extends AbstractService
 {
     #[Required]

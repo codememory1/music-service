@@ -8,32 +8,25 @@ use App\Entity\PlatformSetting;
 use App\Enum\PlatformSettingEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class PlatformSettingFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
-class PlatformSettingFactory implements DataFixtureFactoryInterface
+final class PlatformSettingFactory implements DataFixtureFactoryInterface
 {
-    private string $key;
+    private PlatformSettingEnum $platformSetting;
     private array $value;
 
-    public function __construct(PlatformSettingEnum $key, array $value = [])
+    public function __construct(PlatformSettingEnum $platformSetting, array $value = [])
     {
-        $this->key = $key->name;
+        $this->platformSetting = $platformSetting;
         $this->value = $value;
     }
 
     public function factoryMethod(): EntityInterface
     {
-        $platformSettingEntity = new PlatformSetting();
+        $platformSetting = new PlatformSetting();
 
-        $platformSettingEntity->setKey($this->key);
-        $platformSettingEntity->setValue($this->value);
+        $platformSetting->setKey($this->platformSetting);
+        $platformSetting->setValue($this->value);
 
-        return $platformSettingEntity;
+        return $platformSetting;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

@@ -4,31 +4,31 @@ namespace App\Service\WebSocket;
 
 use App\Entity\User;
 use App\Entity\UserSession;
-use App\Enum\WebSocketClientMessageTypeEnum;
 use App\Repository\UserSessionRepository;
+use App\Rest\Response\WebSocketSchema;
 use function call_user_func;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Server;
 
-/**
- * Class Worker.
- *
- * @package App\Service\WebSocket
- *
- * @author  Codememory
- */
 class Worker
 {
     private WorkerConnectionManager $workerConnectionManager;
     private UserSessionRepository $userSessionRepository;
-    private Server $server;
+    private string $host;
+    private int $port;
+    private ?Server $server = null;
 
     public function __construct(WorkerConnectionManager $workerConnectionManager, UserSessionRepository $userSessionRepository, string $host, int $port)
     {
         $this->workerConnectionManager = $workerConnectionManager;
         $this->userSessionRepository = $userSessionRepository;
+        $this->host = $host;
+        $this->port = $port;
+    }
 
-        $this->server = new Server($host, $port);
+    public function initServer(): void
+    {
+        $this->server = new Server($this->host, $this->port);
     }
 
     public function onStart(?callable $callback = null): self
@@ -72,33 +72,30 @@ class Worker
         return $this->server->start();
     }
 
-    public function sendToConnection(string $connectionId, WebSocketClientMessageTypeEnum $clientMessageType, array $data): void
+    public function sendToConnection(string $connectionId, WebSocketSchema $webSocketSchema): void
     {
         if ($this->server->exist($connectionId)) {
-            $this->server->push($connectionId, json_encode([
-                'type' => $clientMessageType->name,
-                'data' => $data
-            ]));
+            $this->server->push($connectionId, json_encode($webSocketSchema->getSchema()));
         }
     }
 
-    public function sendToUser(User $user, WebSocketClientMessageTypeEnum $clientMessageType, array $data): self
+    public function sendToUser(User $user, WebSocketSchema $webSocketSchema): self
     {
         $connectionIds = $this->workerConnectionManager->getAllUserConnectionIds($user->getId());
 
-        foreach ($connectionIds as $connectionId) {
-            $this->sendToConnection($connectionId, $clientMessageType, $data);
+        foreach ($connectionIds as $collection) {
+            $this->sendToConnection($collection->connectionId, $webSocketSchema);
         }
 
         return $this;
     }
 
-    public function sendToSession(UserSession $userSession, WebSocketClientMessageTypeEnum $clientMessageType, array $data): self
+    public function sendToSession(UserSession $userSession, WebSocketSchema $webSocketSchema): self
     {
         $connectionId = $this->workerConnectionManager->getConnectionIdByUserSession($userSession->getId());
 
         if (null !== $connectionId) {
-            $this->sendToConnection($connectionId, $clientMessageType, $data);
+            $this->sendToConnection($connectionId, $webSocketSchema);
         }
 
         return $this;

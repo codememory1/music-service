@@ -9,7 +9,7 @@ use App\Entity\MultimediaCategory;
 use App\Entity\MultimediaPerformer;
 use App\Entity\User;
 use App\Enum\MultimediaTypeEnum;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use App\Security\AuthorizedUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ReverseContainer;
@@ -17,12 +17,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class MultimediaDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<Multimedia>
- *
- * @author  Codememory
  */
 final class MultimediaDto extends AbstractDataTransfer
 {

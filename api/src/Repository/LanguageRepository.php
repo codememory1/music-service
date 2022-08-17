@@ -5,14 +5,9 @@ namespace App\Repository;
 use App\Entity\Language;
 
 /**
- * Class LanguageRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<Language>
- *
- * @author Codememory
  */
-class LanguageRepository extends AbstractRepository
+final class LanguageRepository extends AbstractRepository
 {
     protected ?string $entity = Language::class;
     protected ?string $alias = 'l';
@@ -28,5 +23,10 @@ class LanguageRepository extends AbstractRepository
         }
 
         return parent::findByCriteria([], $orderBy);
+    }
+
+    public function findByLang(string $lang): ?Language
+    {
+        return $this->findOneBy(['code' => $lang]);
     }
 }

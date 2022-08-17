@@ -4,14 +4,7 @@ namespace App\Event;
 
 use App\Entity\MediaLibrary;
 
-/**
- * Class CreateMediaLibraryEvent.
- *
- * @package App\Event
- *
- * @author  Codememory
- */
-class CreateMediaLibraryEvent
+final class CreateMediaLibraryEvent
 {
     public readonly MediaLibrary $mediaLibrary;
 

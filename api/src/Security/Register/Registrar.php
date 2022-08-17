@@ -11,13 +11,6 @@ use App\Service\AbstractService;
 use App\Service\UserSetting\AddUserDefaultSettingService;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class Registrar.
- *
- * @package App\Security\Registration
- *
- * @author  Codememory
- */
 class Registrar extends AbstractService
 {
     #[Required]

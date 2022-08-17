@@ -4,16 +4,12 @@ namespace App\Repository;
 
 use App\Entity\Language;
 use App\Entity\Translation;
+use App\Entity\TranslationKey;
 
 /**
- * Class TranslationRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<Translation>
- *
- * @author  Codememory
  */
-class TranslationRepository extends AbstractRepository
+final class TranslationRepository extends AbstractRepository
 {
     protected ?string $entity = Translation::class;
     protected ?string $alias = 't';
@@ -44,6 +40,14 @@ class TranslationRepository extends AbstractRepository
     {
         return $this->findByCriteria([
             't.language' => $language
+        ]);
+    }
+
+    public function findTranslation(Language $language, TranslationKey $translationKey): ?Translation
+    {
+        return $this->findOneBy([
+            'language' => $language,
+            'translationKey' => $translationKey
         ]);
     }
 }

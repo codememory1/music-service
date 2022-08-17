@@ -9,12 +9,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class RefreshTokenTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<RefreshTokenDto>
- *
- * @author  Codememory
  */
 final class RefreshTokenTransformer extends AbstractDataTransformer
 {
@@ -31,7 +26,7 @@ final class RefreshTokenTransformer extends AbstractDataTransformer
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
         return $this->refreshTokenDto->collect([
-            'refresh_token' => $this->request?->request->cookies->get('refresh_token')
+            'refresh_token' => $this->request->getRequest()->cookies->get('refresh_token')
         ]);
     }
 }

@@ -11,13 +11,6 @@ use App\Enum\RoleEnum;
 use App\Enum\SystemUserEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class SystemUserFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class SystemUserFactory implements DataFixtureFactoryInterface
 {
     private string $pseudonym;

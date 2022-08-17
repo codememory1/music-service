@@ -7,12 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class AbstractDataFixture.
- *
- * @package App\DataFixtures
  * @template Entity as mixed
- *
- * @author  Codememory
  */
 abstract class AbstractDataFixture extends Fixture
 {

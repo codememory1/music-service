@@ -2,13 +2,6 @@
 
 namespace App\Service;
 
-/**
- * Class MimeTypeConverter.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 class MimeTypeConverter
 {
     public const MIME_TYPES_TO_EXTENSION = [

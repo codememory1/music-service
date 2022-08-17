@@ -11,39 +11,32 @@ use App\Enum\SubscriptionEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class SubscriptionPermissionFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class SubscriptionPermissionFactory implements DataFixtureFactoryInterface
 {
     private string $subscription;
-    private string $subscriptionPermission;
+    private SubscriptionPermissionEnum $subscriptionPermission;
     private ReferenceRepository $referenceRepository;
 
-    public function __construct(SubscriptionEnum $subscriptionEnum, SubscriptionPermissionEnum $subscriptionPermissionEnum)
+    public function __construct(SubscriptionEnum $subscriptionEnum, SubscriptionPermissionEnum $subscriptionPermission)
     {
         $this->subscription = $subscriptionEnum->name;
-        $this->subscriptionPermission = $subscriptionPermissionEnum->name;
+        $this->subscriptionPermission = $subscriptionPermission;
     }
 
     public function factoryMethod(): EntityInterface
     {
-        $subscriptionPermissionEntity = new SubscriptionPermission();
+        $subscriptionPermission = new SubscriptionPermission();
 
         /** @var Subscription $subscription */
         $subscription = $this->referenceRepository->getReference("s-{$this->subscription}");
 
         /** @var SubscriptionPermissionKey $subscriptionPermissionKey */
-        $subscriptionPermissionKey = $this->referenceRepository->getReference("spk-{$this->subscriptionPermission}");
+        $subscriptionPermissionKey = $this->referenceRepository->getReference("spk-{$this->subscriptionPermission->name}");
 
-        $subscriptionPermissionEntity->setSubscription($subscription);
-        $subscriptionPermissionEntity->setPermissionKey($subscriptionPermissionKey);
+        $subscriptionPermission->setSubscription($subscription);
+        $subscriptionPermission->setPermissionKey($subscriptionPermissionKey);
 
-        return $subscriptionPermissionEntity;
+        return $subscriptionPermission;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

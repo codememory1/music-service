@@ -7,13 +7,6 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\MultimediaCategory;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class MultimediaCategoryFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class MultimediaCategoryFactory implements DataFixtureFactoryInterface
 {
     private string $titleTranslationKey;
@@ -25,11 +18,11 @@ final class MultimediaCategoryFactory implements DataFixtureFactoryInterface
 
     public function factoryMethod(): EntityInterface
     {
-        $multimediaCategoryEntity = new MultimediaCategory();
+        $multimediaCategory = new MultimediaCategory();
 
-        $multimediaCategoryEntity->setTitle($this->titleTranslationKey);
+        $multimediaCategory->setTitle($this->titleTranslationKey);
 
-        return $multimediaCategoryEntity;
+        return $multimediaCategory;
     }
 
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface

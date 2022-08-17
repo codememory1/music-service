@@ -11,13 +11,6 @@ use function is_array;
 use JetBrains\PhpStorm\Pure;
 use const JSON_ERROR_NONE;
 
-/**
- * Class ToTypeConstraintHandler.
- *
- * @package App\Dto\Constraints
- *
- * @author  Codememory
- */
 final class ToTypeConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferValueInterceptorConstraintHandlerInterface
 {
     private ?ToTypeConstraint $constraint = null;
@@ -106,7 +99,7 @@ final class ToTypeConstraintHandler extends AbstractDataTransferConstraintHandle
 
     private function toBoolean(mixed $value): float
     {
-        return (bool) (1 === $value || '1' === $value || true === $value || false === empty($value));
+        return 1 === $value || '1' === $value || true === $value || false === empty($value);
     }
 
     private function toDateTime(mixed $value): ?DateTimeInterface

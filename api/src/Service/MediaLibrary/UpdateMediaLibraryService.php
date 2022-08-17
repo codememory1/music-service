@@ -7,13 +7,6 @@ use App\Entity\MediaLibrary;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class UpdateMediaLibraryService.
- *
- * @package App\Service\MediaLibrary
- *
- * @author  Codememory
- */
 class UpdateMediaLibraryService extends AbstractService
 {
     public function update(MediaLibraryDto $mediaLibraryDto): MediaLibrary

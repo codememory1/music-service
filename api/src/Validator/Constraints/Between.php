@@ -5,13 +5,6 @@ namespace App\Validator\Constraints;
 use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class Between.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class Between extends Constraint
 {

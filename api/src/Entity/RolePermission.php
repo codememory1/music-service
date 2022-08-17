@@ -3,18 +3,12 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\RolePermissionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class RolePermission.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: RolePermissionRepository::class)]
 #[ORM\Table('role_permissions')]
 #[ORM\HasLifecycleCallbacks]
@@ -22,6 +16,7 @@ class RolePermission implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'permissions')]
     #[ORM\JoinColumn(nullable: false)]

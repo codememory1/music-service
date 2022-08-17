@@ -7,13 +7,6 @@ use App\Entity\Role;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class UpdateUserRoleService.
- *
- * @package App\Service\UserRole
- *
- * @author  Codememory
- */
 class UpdateUserRoleService extends AbstractService
 {
     public function update(UserRoleDto $userRoleDto): Role

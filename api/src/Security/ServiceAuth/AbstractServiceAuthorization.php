@@ -9,8 +9,8 @@ use App\Entity\UserProfile;
 use App\Enum\EventEnum;
 use App\Enum\RoleEnum;
 use App\Event\UserRegistrationEvent;
+use App\Exception\Http\AuthorizationException;
 use App\Repository\UserRepository;
-use App\Rest\Http\Exceptions\AuthorizationException;
 use App\Security\Auth\Authorization;
 use App\Service\AbstractService;
 use App\Service\Platform\Interfaces\ClientInterface;
@@ -19,13 +19,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AbstractServiceAuthorization.
- *
- * @package App\Security\ServiceAuth
- *
- * @author  Codememory
- */
 abstract class AbstractServiceAuthorization extends AbstractService
 {
     protected ?string $serviceType = null;

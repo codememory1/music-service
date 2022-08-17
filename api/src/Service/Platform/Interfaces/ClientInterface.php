@@ -4,13 +4,6 @@ namespace App\Service\Platform\Interfaces;
 
 use App\Dto\Transfer\GoogleAuthDto;
 
-/**
- * Interface ClientInterface.
- *
- * @package  App\Service\Platform\Interfaces
- *
- * @author   Codememory
- */
 interface ClientInterface
 {
     public function createAuthorizationUrl(): ?string;

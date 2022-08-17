@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Interfaces\EntityS3SettingInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
@@ -15,14 +16,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * Class Multimedia.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: MultimediaRepository::class)]
 #[ORM\Table('multimedia')]
 #[ORM\HasLifecycleCallbacks]
@@ -31,6 +26,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
     use IdentifierTrait;
     use UuidIdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'multimedia')]
     #[ORM\JoinColumn(nullable: false)]
@@ -162,6 +158,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isTrack(): bool
     {
         return $this->getType() === MultimediaTypeEnum::TRACK->name;
@@ -174,6 +171,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isClip(): bool
     {
         return $this->getType() === MultimediaTypeEnum::CLIP->name;
@@ -379,6 +377,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isDraft(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::DRAFT->name;
@@ -391,6 +390,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isModeration(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::MODERATION->name;
@@ -403,6 +403,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isPublished(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::PUBLISHED->name;
@@ -415,6 +416,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isUnpublished(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::UNPUBLISHED->name;
@@ -427,6 +429,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isAppeal(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::APPEAL->name;
@@ -439,6 +442,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    #[Pure]
     public function isAppealCanceled(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::APPEAL_CANCELED->name;

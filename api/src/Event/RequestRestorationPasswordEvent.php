@@ -4,14 +4,7 @@ namespace App\Event;
 
 use App\Entity\PasswordReset;
 
-/**
- * Class RequestRestorationPasswordEvent.
- *
- * @package App\Event
- *
- * @author  Codememory
- */
-class RequestRestorationPasswordEvent
+final class RequestRestorationPasswordEvent
 {
     public readonly PasswordReset $passwordReset;
 

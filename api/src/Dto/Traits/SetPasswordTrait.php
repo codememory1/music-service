@@ -7,13 +7,6 @@ use App\Enum\ValidationRuleEnum;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Trait SetPasswordTrait.
- *
- * @package App\Dto\Traits
- *
- * @author  Codememory
- */
 trait SetPasswordTrait
 {
     #[Assert\NotBlank(message: 'common@passwordIsRequired')]

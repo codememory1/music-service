@@ -9,13 +9,6 @@ use App\Service\MultimediaMediaLibrary\ShareMultimediaMediaLibraryWithFriendServ
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class ShareMediaLibraryWithFriendService.
- *
- * @package App\Service\MediaLibrary
- *
- * @author  Codememory
- */
 class ShareMediaLibraryWithFriendService extends AbstractService
 {
     #[Required]

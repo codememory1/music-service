@@ -4,7 +4,7 @@ namespace App\Resolver;
 
 use App\Annotation\EntityNotFound;
 use App\Entity\Interfaces\EntityInterface;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\ArrayShape;
 use LogicException;
@@ -15,13 +15,6 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use function Symfony\Component\String\u;
 
-/**
- * Class EntityFromRouteParameterResolver.
- *
- * @package App\Resolver
- *
- * @author  Codememory
- */
 final class EntityFromRouteParameterResolver implements ArgumentValueResolverInterface
 {
     private EntityManagerInterface $em;

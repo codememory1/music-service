@@ -6,15 +6,10 @@ use App\Entity\MultimediaQueue;
 use App\Enum\MultimediaStatusEnum;
 use App\Event\MultimediaStatusChangeEvent;
 use App\Service\FlusherService;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-/**
- * Class StatusChangeHandlerListener.
- *
- * @package App\EventListener\MultimediaStatusChange
- *
- * @author  Codememory
- */
-class StatusChangeHandlerListener
+#[AsEventListener('app.multimedia.status-change', 'onMultimediaStatusChange')]
+final class StatusChangeHandlerListener
 {
     private FlusherService $flusherService;
 

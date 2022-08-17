@@ -10,12 +10,7 @@ use App\Enum\MultimediaMediaLibraryEventEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class MultimediaMediaLibraryEventDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<MultimediaMediaLibraryEvent>
- *
- * @author  Codememory
  */
 final class MultimediaMediaLibraryEventDto extends AbstractDataTransfer
 {

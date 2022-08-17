@@ -3,18 +3,12 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\ArtistSubscriberRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class ArtistSubscriber.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: ArtistSubscriberRepository::class)]
 #[ORM\Table('artist_subscribers')]
 #[ORM\HasLifecycleCallbacks]
@@ -22,6 +16,7 @@ class ArtistSubscriber implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'subscribers')]
     #[ORM\JoinColumn(nullable: false)]

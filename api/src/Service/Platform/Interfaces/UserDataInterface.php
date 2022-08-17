@@ -2,13 +2,6 @@
 
 namespace App\Service\Platform\Interfaces;
 
-/**
- * Interface UserDataInterface.
- *
- * @package  App\Service\Platform\Interfaces
- *
- * @author   Codememory
- */
 interface UserDataInterface
 {
     public function getUniqueId(): ?string;

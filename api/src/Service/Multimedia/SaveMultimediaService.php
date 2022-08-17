@@ -8,10 +8,10 @@ use App\Enum\AlbumTypeEnum;
 use App\Enum\EventEnum;
 use App\Enum\MultimediaMimeTypeEnum;
 use App\Event\SaveMultimediaEvent;
+use App\Exception\Http\AlbumException;
+use App\Exception\Http\InvalidException;
+use App\Exception\Http\MultimediaException;
 use App\Message\MultimediaMetadataMessage;
-use App\Rest\Http\Exceptions\AlbumException;
-use App\Rest\Http\Exceptions\InvalidException;
-use App\Rest\Http\Exceptions\MultimediaException;
 use App\Rest\S3\Uploader\ClipUploader;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Rest\S3\Uploader\SubtitlesUploader;
@@ -24,13 +24,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class SaveMultimediaService.
- *
- * @package App\Service\Multimedia
- *
- * @author  Codememory
- */
 class SaveMultimediaService extends AbstractService
 {
     #[Required]

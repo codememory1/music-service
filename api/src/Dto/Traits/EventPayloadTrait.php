@@ -7,13 +7,6 @@ use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-/**
- * Trait MediaLibraryEventEnum.
- *
- * @package App\Dto\Traits
- *
- * @author  Codememory
- */
 trait EventPayloadTrait
 {
     #[DtoConstraints\ToTypeConstraint]

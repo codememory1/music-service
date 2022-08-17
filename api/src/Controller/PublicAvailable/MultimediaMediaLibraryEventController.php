@@ -9,21 +9,14 @@ use App\Dto\Transformer\MultimediaMediaLibraryEventTransformer;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\MultimediaMediaLibraryEvent;
 use App\Enum\SubscriptionPermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use App\Service\MultimediaMediaLibraryEvent\AddMultimediaMediaLibraryEventService;
 use App\Service\MultimediaMediaLibraryEvent\DeleteMultimediaMediaLibraryEventService;
 use App\Service\MultimediaMediaLibraryEvent\UpdateMultimediaMediaLibraryEventService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaMediaLibraryEventController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user/media-library/multimedia')]
 #[Authorization]
 #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]

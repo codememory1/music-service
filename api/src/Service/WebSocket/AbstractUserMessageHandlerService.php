@@ -2,33 +2,77 @@
 
 namespace App\Service\WebSocket;
 
+use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Enum\WebSocketClientMessageTypeEnum;
+use App\Rest\Response\WebSocketSchema;
+use App\Rest\Validator\WebSocketValidator;
 use App\Security\AuthorizedUser;
-use App\Service\AbstractService;
+use App\Service\TranslationService;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
-use Symfony\Contracts\Service\Attribute\Required;
+use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * Class AbstractUserMessageHandlerService.
- *
- * @package App\Service\WebSocket
- *
- * @author  Codememory
- */
-abstract class AbstractUserMessageHandlerService extends AbstractService implements UserMessageHandlerInterface
+abstract class AbstractUserMessageHandlerService implements UserMessageHandlerInterface
 {
-    protected ?Worker $worker = null;
-
-    #[Required]
-    public ?AuthorizedUser $authorizedUser = null;
+    protected EntityManagerInterface $em;
+    protected AuthorizedUser $authorizedUser;
+    protected TranslationService $translationService;
+    protected WebSocketValidator $webSocketValidator;
+    protected WebSocketSchema $webSocketSchema;
     private ?int $connectionId = null;
     private array $messageHeaders = [];
     private array $messageData = [];
+    private ?Worker $worker = null;
+
+    public function __construct(
+        EntityManagerInterface $manager,
+        AuthorizedUser $authorizedUser,
+        TranslationService $translationService,
+        WebSocketValidator $webSocketValidator,
+        WebSocketSchema $webSocketSchema
+    ) {
+        $this->em = $manager;
+        $this->authorizedUser = $authorizedUser;
+        $this->translationService = $translationService;
+        $this->webSocketValidator = $webSocketValidator;
+        $this->webSocketSchema = $webSocketSchema;
+    }
+
+    #[Pure]
+    protected function getLocale(): ?string
+    {
+        return $this->getMessageHeaders()['language'] ?? null;
+    }
+
+    protected function getTranslation(string $translationKey, array $parameters = []): ?string
+    {
+        if (null === $this->getLocale()) {
+            return null;
+        }
+
+        $this->translationService->setLocale($this->getLocale());
+
+        return $this->translationService->get($translationKey, $parameters);
+    }
+
+    protected function validate(EntityInterface|DataTransferInterface $object, ?callable $customResponse = null): void
+    {
+        $this->webSocketValidator->validate($object, $customResponse);
+    }
+
+    protected function validateWithEntity(DataTransferInterface $dataTransfer): void
+    {
+        $this->validate($dataTransfer);
+        $this->validate($dataTransfer->getEntity());
+    }
 
     protected function sendToClient(WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
     {
-        $this->worker->sendToConnection($this->connectionId, $clientMessageTypeEnum, $data);
+        $this->webSocketSchema->setType($clientMessageTypeEnum);
+        $this->webSocketSchema->setResult($data);
+
+        $this->worker->sendToConnection($this->connectionId, $this->webSocketSchema);
 
         return $this;
     }
@@ -40,25 +84,6 @@ abstract class AbstractUserMessageHandlerService extends AbstractService impleme
         }
 
         return $this->authorizedUser;
-    }
-
-    /**
-     * @template Entity
-     * @psalm-param Entity $entityNamespace
-     *
-     * @return null|Entity
-     */
-    protected function getEntityIfExist(string $messageKey, string $entityNamespace): ?EntityInterface
-    {
-        $entityRepository = $this->em->getRepository($entityNamespace);
-        $valueFromMessageKey = $this->getMessage()[$messageKey] ?? null;
-        $finedEntity = $entityRepository->find($valueFromMessageKey);
-
-        if (null === $valueFromMessageKey || null === $finedEntity) {
-            return null;
-        }
-
-        return $finedEntity;
     }
 
     public function setConnection(int $connectionId): UserMessageHandlerInterface

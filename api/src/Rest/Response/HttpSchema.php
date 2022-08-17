@@ -1,20 +1,11 @@
 <?php
 
-namespace App\Rest\Http;
+namespace App\Rest\Response;
 
 use App\Enum\ResponseTypeEnum;
-use App\Rest\Http\Interfaces\ResponseSchemaInterface;
-use App\Service\TranslationService;
-use function is_array;
+use App\Rest\Response\Interfaces\ResponseSchemaInterface;
 
-/**
- * Class ResponseSchema.
- *
- * @package App\Rest\Http
- *
- * @author  Codememory
- */
-class ResponseSchema implements ResponseSchemaInterface
+class HttpSchema implements ResponseSchemaInterface
 {
     private array $schema = [
         'status_code' => null,
@@ -22,12 +13,7 @@ class ResponseSchema implements ResponseSchemaInterface
         'message' => [],
         'data' => []
     ];
-    private TranslationService $translationService;
-
-    public function __construct(TranslationService $translationService)
-    {
-        $this->translationService = $translationService;
-    }
+    private array $parameters = [];
 
     public function setStatusCode(int $code): self
     {
@@ -43,14 +29,8 @@ class ResponseSchema implements ResponseSchemaInterface
         return $this;
     }
 
-    public function setMessage(string|array $message, array $parameters = []): self
+    public function setMessage(string $message): self
     {
-        if (is_array($message)) {
-            $message = array_map(fn(string $translationKey) => $this->translationService->get($translationKey, $parameters), $message);
-        } else {
-            $message = $this->translationService->get($message, $parameters);
-        }
-
         $this->schema['message'] = $message;
 
         return $this;
@@ -73,6 +53,18 @@ class ResponseSchema implements ResponseSchemaInterface
         $statusCode = $this->schema['status_code'];
 
         return empty($statusCode) ? 200 : $statusCode;
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    public function setParameters(array $parameters): self
+    {
+        $this->parameters = $parameters;
+
+        return $this;
     }
 
     public function __clone(): void

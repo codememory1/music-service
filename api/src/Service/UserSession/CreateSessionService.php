@@ -14,13 +14,6 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class CreateSessionService.
- *
- * @package App\Service\UserSession
- *
- * @author  Codememory
- */
 class CreateSessionService extends AbstractService
 {
     #[Required]

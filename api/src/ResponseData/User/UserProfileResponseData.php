@@ -8,14 +8,7 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 
-/**
- * Class UserProfileResponseData.
- *
- * @package App\ResponseData\User
- *
- * @author  Codememory
- */
-class UserProfileResponseData extends AbstractResponseData implements ResponseDataInterface
+final class UserProfileResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     public ?int $id = null;

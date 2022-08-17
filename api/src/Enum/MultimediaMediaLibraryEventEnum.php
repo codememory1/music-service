@@ -7,13 +7,6 @@ use App\Service\Event\MultimediaMediaLibrary\NextMultimediaAfterEndEventService;
 use App\Service\Event\MultimediaMediaLibrary\RangeTimeEventService;
 use App\Service\MultimediaMediaLibraryEvent\DeleteMultimediaMediaLibraryEventService;
 
-/**
- * Enum MultimediaMediaLibraryEventEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum MultimediaMediaLibraryEventEnum : string implements EventInterface
 {
     case RANGE_TIME = 'events/multimedia-media-library/range_time';

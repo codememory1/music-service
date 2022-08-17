@@ -2,18 +2,11 @@
 
 namespace App\Rest\Validator;
 
-use App\Enum\ResponseTypeEnum;
+use App\Enum\WebSocketClientMessageTypeEnum;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
-/**
- * Class ConstraintInfo.
- *
- * @package App\Rest\Validator
- *
- * @author  Codememory
- */
-class ConstraintInfo
+class WebSocketConstraintInfo
 {
     private ConstraintViolationInterface $constraintViolation;
 
@@ -34,14 +27,8 @@ class ConstraintInfo
     }
 
     #[Pure]
-    public function getType(): ?ResponseTypeEnum
+    public function getType(): ?WebSocketClientMessageTypeEnum
     {
         return $this->getPayload()[0] ?? null;
-    }
-
-    #[Pure]
-    public function getStatusCode(): ?int
-    {
-        return $this->getPayload()[1] ?? null;
     }
 }

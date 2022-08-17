@@ -9,12 +9,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class AbstractRepository.
- *
- * @package App\Repository
  * @template Entity as mixed
- *
- * @author  Codememory
  */
 abstract class AbstractRepository extends ServiceEntityRepository
 {

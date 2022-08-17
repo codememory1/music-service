@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum FrontendRouteEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum FrontendRouteEnum: string
 {
     case ARTIST_ALBUM = '/artist/{artist_id}/album/{album_id}';

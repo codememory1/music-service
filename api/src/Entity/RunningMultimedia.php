@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\RunningMultimediaRepository;
@@ -10,13 +11,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
-/**
- * Class RunningMultimedia.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: RunningMultimediaRepository::class)]
 #[ORM\Table('running_multimedia')]
 #[ORM\HasLifecycleCallbacks]
@@ -24,6 +18,7 @@ class RunningMultimedia implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\OneToOne(inversedBy: 'runningMultimedia', targetEntity: UserSession::class)]
     #[ORM\JoinColumn(nullable: false)]

@@ -9,12 +9,7 @@ use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class AuthorizationTransformer.
- *
- * @package App\Dto\Transformer
  * @template-extends AbstractDataTransformer<AuthorizationDto>
- *
- * @author  Codememory
  */
 final class AuthorizationTransformer extends AbstractDataTransformer
 {
@@ -30,6 +25,6 @@ final class AuthorizationTransformer extends AbstractDataTransformer
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
-        return $this->authorizationDto->collect($this->request->all());
+        return $this->baseTransformFromRequest($this->authorizationDto, $entity);
     }
 }

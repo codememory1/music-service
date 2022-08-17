@@ -8,12 +8,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class MultimediaMediaLibraryDto.
- *
- * @package App\Dto\Transfer
  * @template-extends AbstractDataTransfer<MultimediaMediaLibrary>
- *
- * @author  Codememory
  */
 final class MultimediaMediaLibraryDto extends AbstractDataTransfer
 {

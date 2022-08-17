@@ -14,13 +14,6 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-/**
- * Class MailMessagingService.
- *
- * @package App\Service
- *
- * @author  Codememory
- */
 class MailMessagingService
 {
     private MailerInterface $mailer;

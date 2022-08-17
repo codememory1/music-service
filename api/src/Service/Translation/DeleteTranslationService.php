@@ -7,13 +7,6 @@ use App\Entity\Translation;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-/**
- * Class DeleteTranslationService.
- *
- * @package App\Service\Translation
- *
- * @author  Codememory
- */
 class DeleteTranslationService extends AbstractService
 {
     public function delete(DeleteTranslationDto $deleteTranslationDto, Translation $translation): Translation

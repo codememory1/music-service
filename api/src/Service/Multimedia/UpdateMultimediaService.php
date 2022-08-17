@@ -4,18 +4,11 @@ namespace App\Service\Multimedia;
 
 use App\Dto\Transfer\MultimediaDto;
 use App\Entity\Multimedia;
-use App\Rest\Http\Exceptions\MultimediaException;
+use App\Exception\Http\MultimediaException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class UpdateMultimediaService.
- *
- * @package App\Service\Multimedia
- *
- * @author  Codememory
- */
 class UpdateMultimediaService extends AbstractService
 {
     #[Required]

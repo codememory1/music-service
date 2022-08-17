@@ -9,12 +9,7 @@ use App\Rest\Http\Request;
 use LogicException;
 
 /**
- * Class AbstractDataTransformer.
- *
- * @package App\Dto\Transformer
  * @template Dto as mixed
- *
- * @author  Codememory
  */
 abstract class AbstractDataTransformer implements DataTransformerInterface
 {
@@ -23,6 +18,15 @@ abstract class AbstractDataTransformer implements DataTransformerInterface
     public function __construct(Request $request)
     {
         $this->request = $request;
+    }
+
+    protected function baseTransformFromRequest(DataTransferInterface $dataTransfer, ?EntityInterface $entity = null): DataTransferInterface
+    {
+        if (null !== $entity) {
+            $dataTransfer->setEntity($entity);
+        }
+
+        return $dataTransfer->collect($this->request->all());
     }
 
     /**
