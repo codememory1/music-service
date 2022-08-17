@@ -7,7 +7,7 @@ use App\Dto\Transformer\AuthorizationTransformer;
 use App\Dto\Transformer\RefreshTokenTransformer;
 use App\Dto\Transformer\RegistrationTransformer;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Validator\Validator;
+use App\Rest\Validator\HttpValidator;
 use App\Security\AccountActivation\AccountActivation;
 use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
@@ -30,7 +30,7 @@ class SecurityController extends AbstractRestController
     #[Route('/auth', methods: 'POST')]
     public function auth(
         AuthorizationTransformer $authorizationTransformer,
-        Validator $validator,
+        HttpValidator $validator,
         Identification $identification,
         Authentication $authentication,
         Authorization $authorization

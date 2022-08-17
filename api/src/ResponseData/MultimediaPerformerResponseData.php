@@ -26,8 +26,6 @@ final class MultimediaPerformerResponseData extends AbstractResponseData impleme
     #[Pure]
     public function handleUser(User $user): array
     {
-        return [
-            'id' => $user->getId()
-        ];
+        return ['id' => $user->getId()];
     }
 }

@@ -14,7 +14,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: RunningMultimediaRepository::class)]
 #[ORM\Table('running_multimedia')]
 #[ORM\HasLifecycleCallbacks]
-final class RunningMultimedia implements EntityInterface
+class RunningMultimedia implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

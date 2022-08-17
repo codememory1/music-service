@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: UserProfileDesignRepository::class)]
 #[ORM\Table('user_profile_designs')]
 #[ORM\HasLifecycleCallbacks]
-final class UserProfileDesign implements EntityInterface, EntityS3SettingInterface
+class UserProfileDesign implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;

@@ -2,26 +2,24 @@
 
 namespace App\ResponseData;
 
-use App\Entity\AlbumType;
 use App\Enum\RequestTypeEnum;
 use App\Enum\RolePermissionEnum;
 use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
-use Doctrine\Common\Collections\Collection;
 
 final class AlbumResponseData extends AbstractResponseData implements ResponseDataInterface
 {
     use DateTimeHandlerTrait;
     public ?int $id = null;
 
-    #[ResponseDataConstraints\Callback('handleType')]
+    #[ResponseDataConstraints\CallbackResponseData(AlbumTypeResponseData::class, true)]
     public ?string $type = null;
     public ?string $title = null;
     public ?string $description = null;
     public ?string $image = null;
 
-    #[ResponseDataConstraints\Callback('handleMultimedia')]
+    #[ResponseDataConstraints\CallbackResponseData(MultimediaResponseData::class, ignoreProperties: ['album'])]
     public array $multimedia = [];
 
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
@@ -33,20 +31,4 @@ final class AlbumResponseData extends AbstractResponseData implements ResponseDa
 
     #[ResponseDataConstraints\Callback('handleDatetime')]
     public ?string $updatedAt = null;
-
-    public function handleType(AlbumType $albumType): array
-    {
-        $albumTypeResponseData = new AlbumTypeResponseData($this->container);
-
-        return $albumTypeResponseData->setEntities($albumType)->getResponse(true);
-    }
-
-    public function handleMultimedia(Collection $multimedia): array
-    {
-        $multimediaResponseData = new MultimediaResponseData($this->container);
-
-        $multimediaResponseData->setIgnoreProperty('album');
-
-        return $multimediaResponseData->setEntities($multimedia->toArray())->getResponse();
-    }
 }

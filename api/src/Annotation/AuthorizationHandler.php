@@ -4,7 +4,7 @@ namespace App\Annotation;
 
 use App\Annotation\Interfaces\MethodAnnotationHandlerInterface;
 use App\Annotation\Interfaces\MethodAnnotationInterface;
-use App\Rest\Http\Exceptions\AuthorizationException;
+use App\Exception\Http\AuthorizationException;
 use App\Security\AuthorizedUser;
 
 final class AuthorizationHandler implements MethodAnnotationHandlerInterface

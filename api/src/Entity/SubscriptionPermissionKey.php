@@ -17,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('subscription_permission_keys')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('key', 'entityExist@subscriptionPermissionKey', payload: [ResponseTypeEnum::EXIST, 409])]
-final class SubscriptionPermissionKey implements EntityInterface
+class SubscriptionPermissionKey implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

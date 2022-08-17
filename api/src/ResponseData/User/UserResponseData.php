@@ -2,7 +2,6 @@
 
 namespace App\ResponseData\User;
 
-use App\Entity\UserProfile;
 use App\Enum\RequestTypeEnum;
 use App\ResponseData\AbstractResponseData;
 use App\ResponseData\Constraints as ResponseDataConstraints;
@@ -14,7 +13,7 @@ final class UserResponseData extends AbstractResponseData implements ResponseDat
     use DateTimeHandlerTrait;
     public ?int $id = null;
 
-    #[ResponseDataConstraints\Callback('handleProfile')]
+    #[ResponseDataConstraints\CallbackResponseData(UserProfileResponseData::class, true)]
     public array $profile = [];
 
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
@@ -34,11 +33,4 @@ final class UserResponseData extends AbstractResponseData implements ResponseDat
 
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
-
-    public function handleProfile(?UserProfile $userProfile): array
-    {
-        $userProfileResponseData = new UserProfileResponseData($this->container);
-
-        return $userProfileResponseData->setEntities($userProfile)->getResponse(true);
-    }
 }

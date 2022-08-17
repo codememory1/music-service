@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MultimediaQueueRepository::class)]
 #[ORM\Table('multimedia_queue')]
 #[ORM\HasLifecycleCallbacks]
-final class MultimediaQueue implements EntityInterface
+class MultimediaQueue implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

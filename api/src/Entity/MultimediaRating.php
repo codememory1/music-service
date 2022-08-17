@@ -15,7 +15,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: MultimediaRatingRepository::class)]
 #[ORM\Table('multimedia_ratings')]
 #[ORM\HasLifecycleCallbacks]
-final class MultimediaRating implements EntityInterface
+class MultimediaRating implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

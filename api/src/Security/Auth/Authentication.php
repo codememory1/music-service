@@ -5,7 +5,7 @@ namespace App\Security\Auth;
 use App\Dto\Transfer\AuthorizationDto;
 use App\Entity\User;
 use App\Event\UserAuthenticationInAuthEvent;
-use App\Rest\Http\Exceptions\AuthorizationException;
+use App\Exception\Http\AuthorizationException;
 use App\Service\HashingService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;

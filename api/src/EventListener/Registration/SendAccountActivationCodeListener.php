@@ -5,14 +5,14 @@ namespace App\EventListener\Registration;
 use App\Entity\AccountActivationCode;
 use App\Event\UserRegistrationEvent;
 use App\Service\MailMessagingService;
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-#[AsEntityListener('app.registration', 'onUserRegistration', 0)]
+#[AsEventListener('app.registration', 'onUserRegistration', 0)]
 final class SendAccountActivationCodeListener
 {
     private EntityManagerInterface $em;

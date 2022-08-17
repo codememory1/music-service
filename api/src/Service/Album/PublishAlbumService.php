@@ -7,7 +7,7 @@ use App\Entity\Multimedia;
 use App\Enum\AlbumStatusEnum;
 use App\Enum\EventEnum;
 use App\Event\AlbumStatusChangeEvent;
-use App\Rest\Http\Exceptions\AlbumException;
+use App\Exception\Http\AlbumException;
 use App\Service\AbstractService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

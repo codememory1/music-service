@@ -6,8 +6,8 @@ use App\Collection\WebSocketUserConnectionCollection;
 use App\Collection\WebSocketUserSessionConnectionCollection;
 use App\Entity\User;
 use App\Entity\UserSession;
-use App\Enum\WebSocketClientMessageTypeEnum;
 use App\Repository\UserSessionRepository;
+use App\Rest\Response\WebSocketSchema;
 use function call_user_func;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Server;
@@ -15,7 +15,9 @@ use Swoole\WebSocket\Server;
 class Worker
 {
     private UserSessionRepository $userSessionRepository;
-    private Server $server;
+    private string $host;
+    private int $port;
+    private ?Server $server = null;
 
     /**
      * @var array<int, array<int, WebSocketUserConnectionCollection>>
@@ -30,8 +32,13 @@ class Worker
     public function __construct(UserSessionRepository $userSessionRepository, string $host, int $port)
     {
         $this->userSessionRepository = $userSessionRepository;
+        $this->host = $host;
+        $this->port = $port;
+    }
 
-        $this->server = new Server($host, $port);
+    public function initServer(): void
+    {
+        $this->server = new Server($this->host, $this->port);
     }
 
     public function onStart(?callable $callback = null): self
@@ -77,31 +84,28 @@ class Worker
         return $this->server->start();
     }
 
-    public function sendToConnection(string $connectionId, WebSocketClientMessageTypeEnum $clientMessageType, array $data): void
+    public function sendToConnection(string $connectionId, WebSocketSchema $webSocketSchema): void
     {
         if ($this->server->exist($connectionId)) {
-            $this->server->push($connectionId, json_encode([
-                'type' => $clientMessageType->name,
-                'data' => $data
-            ]));
+            $this->server->push($connectionId, json_encode($webSocketSchema->getSchema()));
         }
     }
 
-    public function sendToUser(User $user, WebSocketClientMessageTypeEnum $clientMessageType, array $data): self
+    public function sendToUser(User $user, WebSocketSchema $webSocketSchema): self
     {
         foreach ($this->usersWithConnections[$user->getId()] ?? [] as $collection) {
-            $this->sendToConnection($collection->connectionId, $clientMessageType, $data);
+            $this->sendToConnection($collection->connectionId, $webSocketSchema);
         }
 
         return $this;
     }
 
-    public function sendToSession(UserSession $userSession, WebSocketClientMessageTypeEnum $clientMessageType, array $data): self
+    public function sendToSession(UserSession $userSession, WebSocketSchema $webSocketSchema): self
     {
         $collection = $this->userSessionsWithConnection[$userSession->getId()] ?? null;
 
         if (null !== $collection) {
-            $this->sendToConnection($collection->connectionId, $clientMessageType, $data);
+            $this->sendToConnection($collection->connectionId, $webSocketSchema);
         }
 
         return $this;

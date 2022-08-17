@@ -22,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('user_profiles')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('user', message: 'userProfile@existByUser')]
-final class UserProfile implements EntityInterface, EntityS3SettingInterface
+class UserProfile implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;

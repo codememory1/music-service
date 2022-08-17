@@ -2,10 +2,6 @@
 
 namespace App\ResponseData;
 
-use App\Entity\Album;
-use App\Entity\MultimediaCategory;
-use App\Entity\MultimediaMetadata;
-use App\Entity\MultimediaQueue;
 use App\Entity\MultimediaRating;
 use App\Enum\MultimediaRatingTypeEnum;
 use App\Enum\SubscriptionPermissionEnum;
@@ -30,10 +26,10 @@ final class MultimediaResponseData extends AbstractResponseData implements Respo
     public ?string $description = null;
     public ?string $image = null;
 
-    #[ResponseDataConstraints\Callback('handleAlbum')]
+    #[ResponseDataConstraints\CallbackResponseData(AlbumResponseData::class, true)]
     public array $album = [];
 
-    #[ResponseDataConstraints\Callback('handleCategory')]
+    #[ResponseDataConstraints\CallbackResponseData(MultimediaCategoryResponseData::class, true)]
     public array $category = [];
 
     #[ResponseDataConstraints\SubscriptionPermission(SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA)]
@@ -43,15 +39,15 @@ final class MultimediaResponseData extends AbstractResponseData implements Respo
     public ?string $subtitles = null;
     public ?string $producer = null;
 
-    #[ResponseDataConstraints\Callback('handlePerformers')]
+    #[ResponseDataConstraints\CallbackResponseData(MultimediaPerformerResponseData::class)]
     public array $performers = [];
     public bool $isObsceneWords = false;
 
     #[ResponseDataConstraints\SubscriptionPermission(SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA)]
-    #[ResponseDataConstraints\Callback('handleMetadata')]
+    #[ResponseDataConstraints\CallbackResponseData(MultimediaMetadataResponseData::class, true)]
     public array $metadata = [];
 
-    #[ResponseDataConstraints\Callback('handleQueue')]
+    #[ResponseDataConstraints\CallbackResponseData(MultimediaQueueResponseData::class, true)]
     public array $queue = [];
 
     #[ResponseDataConstraints\Callback('handleShares')]
@@ -69,43 +65,6 @@ final class MultimediaResponseData extends AbstractResponseData implements Respo
 
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
-
-    public function handleAlbum(Album $album): array
-    {
-        $albumResponseData = new AlbumResponseData($this->container);
-
-        $albumResponseData->setIgnoreProperty('multimedia');
-
-        return $albumResponseData->setEntities($album)->getResponse(true);
-    }
-
-    public function handleCategory(MultimediaCategory $multimediaCategory): array
-    {
-        $multimediaCategoryResponseData = new MultimediaCategoryResponseData($this->container);
-
-        return $multimediaCategoryResponseData->setEntities($multimediaCategory)->getResponse(true);
-    }
-
-    public function handlePerformers(Collection $performers): array
-    {
-        $multimediaPerformerResponseData = new MultimediaPerformerResponseData($this->container);
-
-        return $multimediaPerformerResponseData->setEntities($performers)->getResponse();
-    }
-
-    public function handleMetadata(?MultimediaMetadata $multimediaMetadata): array
-    {
-        $multimediaMetadataResponseData = new MultimediaMetadataResponseData($this->container);
-
-        return $multimediaMetadataResponseData->setEntities($multimediaMetadata ?: [])->getResponse(true);
-    }
-
-    public function handleQueue(?MultimediaQueue $multimediaQueue): array
-    {
-        $multimediaQueueResponseData = new MultimediaQueueResponseData($this->container);
-
-        return $multimediaQueueResponseData->setEntities($multimediaQueue ?? [])->getResponse(true);
-    }
 
     public function handleShares(Collection $shares): int
     {

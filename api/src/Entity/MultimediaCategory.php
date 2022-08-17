@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MultimediaCategoryRepository::class)]
 #[ORM\Table('multimedia_categories')]
 #[ORM\HasLifecycleCallbacks]
-final class MultimediaCategory implements EntityInterface
+class MultimediaCategory implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

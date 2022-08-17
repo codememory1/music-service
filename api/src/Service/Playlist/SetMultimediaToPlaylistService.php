@@ -5,7 +5,7 @@ namespace App\Service\Playlist;
 use App\Entity\MediaLibrary;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\Playlist;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use Doctrine\Common\Collections\Criteria;
 
 class SetMultimediaToPlaylistService

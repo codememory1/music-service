@@ -6,7 +6,7 @@ use App\Entity\Multimedia;
 use App\Enum\EventEnum;
 use App\Enum\MultimediaStatusEnum;
 use App\Event\MultimediaStatusChangeEvent;
-use App\Rest\Http\Exceptions\MultimediaException;
+use App\Exception\Http\MultimediaException;
 use App\Service\AbstractService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

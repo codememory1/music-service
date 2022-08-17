@@ -5,7 +5,7 @@ namespace App\Service\Playlist;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\MultimediaPlaylistDirectory;
 use App\Entity\PlaylistDirectory;
-use App\Rest\Http\Exceptions\EntityExistException;
+use App\Exception\Http\EntityExistException;
 use Doctrine\Common\Collections\Collection;
 
 class CheckExistMultimediaToPlaylistDirectoriesService

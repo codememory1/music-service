@@ -4,7 +4,7 @@ namespace App\Service\ControllingSubscriptionOnArtist;
 
 use App\Entity\ArtistSubscriber;
 use App\Entity\User;
-use App\Rest\Http\Exceptions\FailedException;
+use App\Exception\Http\FailedException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

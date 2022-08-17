@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Enum\PlatformSettingEnum;
 use App\Enum\ResponseTypeEnum;
 use App\Event\UserRegistrationEvent;
-use App\Rest\Http\Exceptions\ApiResponseException;
+use App\Exception\Http\HttpException;
 use App\Service\PlatformSettingService;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 
@@ -39,7 +39,7 @@ final class MailDomainCheckListener
         }
 
         if (false === $isPassed) {
-            throw new ApiResponseException(451, ResponseTypeEnum::UNAVAILABLE, 'common@bannedDomainMail');
+            throw new HttpException(451, ResponseTypeEnum::UNAVAILABLE, 'common@bannedDomainMail');
         }
     }
 

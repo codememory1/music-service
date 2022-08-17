@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: RolePermissionRepository::class)]
 #[ORM\Table('role_permissions')]
 #[ORM\HasLifecycleCallbacks]
-final class RolePermission implements EntityInterface
+class RolePermission implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

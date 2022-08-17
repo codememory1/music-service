@@ -4,7 +4,7 @@ namespace App\Resolver;
 
 use App\Annotation\EntityNotFound;
 use App\Entity\Interfaces\EntityInterface;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\ArrayShape;
 use LogicException;

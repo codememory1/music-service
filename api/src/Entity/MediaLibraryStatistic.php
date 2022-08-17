@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MediaLibraryStatisticRepository::class)]
 #[ORM\Table('media_library_statistics')]
 #[ORM\HasLifecycleCallbacks]
-final class MediaLibraryStatistic implements EntityInterface
+class MediaLibraryStatistic implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

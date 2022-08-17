@@ -5,7 +5,7 @@ namespace App\Service\Playlist;
 use App\Dto\Transfer\PlaylistDto;
 use App\Entity\Playlist;
 use App\Entity\User;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;

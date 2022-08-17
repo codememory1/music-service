@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Rest\Http;
+namespace App\Rest\Response;
 
 use App\Enum\ResponseTypeEnum;
-use App\Rest\Http\Interfaces\ResponseSchemaInterface;
+use App\Rest\Response\Interfaces\ResponseSchemaInterface;
 
-class ResponseSchema implements ResponseSchemaInterface
+class HttpSchema implements ResponseSchemaInterface
 {
     private array $schema = [
         'status_code' => null,
@@ -13,6 +13,7 @@ class ResponseSchema implements ResponseSchemaInterface
         'message' => [],
         'data' => []
     ];
+    private array $parameters = [];
 
     public function setStatusCode(int $code): self
     {
@@ -28,7 +29,7 @@ class ResponseSchema implements ResponseSchemaInterface
         return $this;
     }
 
-    public function setMessage(string $message, array $parameters = []): self
+    public function setMessage(string $message): self
     {
         $this->schema['message'] = $message;
 
@@ -52,6 +53,18 @@ class ResponseSchema implements ResponseSchemaInterface
         $statusCode = $this->schema['status_code'];
 
         return empty($statusCode) ? 200 : $statusCode;
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    public function setParameters(array $parameters): self
+    {
+        $this->parameters = $parameters;
+
+        return $this;
     }
 
     public function __clone(): void

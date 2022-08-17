@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Enum\EventEnum;
 use App\Enum\ResponseTypeEnum;
 use App\Event\UserRegistrationEvent;
-use App\Rest\Http\Exceptions\ApiResponseException;
+use App\Exception\Http\HttpException;
 use App\Service\AbstractService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,7 +28,7 @@ class Registration extends AbstractService
         $userByEmail = $this->em->getRepository(User::class)->findByEmail($registrationDto->email);
 
         if (null !== $userByEmail && false === $userByEmail->isNotActive()) {
-            throw new ApiResponseException(409, ResponseTypeEnum::EXIST, 'user@existByEmail');
+            throw new HttpException(409, ResponseTypeEnum::EXIST, 'user@existByEmail');
         }
 
         $this->register($registrationDto, $userByEmail);

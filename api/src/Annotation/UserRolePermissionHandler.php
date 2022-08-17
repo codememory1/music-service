@@ -4,7 +4,7 @@ namespace App\Annotation;
 
 use App\Annotation\Interfaces\MethodAnnotationHandlerInterface;
 use App\Annotation\Interfaces\MethodAnnotationInterface;
-use App\Rest\Http\Exceptions\AccessDeniedException;
+use App\Exception\Http\AccessDeniedException;
 use App\Security\AuthorizedUser;
 
 final class UserRolePermissionHandler implements MethodAnnotationHandlerInterface

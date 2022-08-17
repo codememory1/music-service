@@ -5,9 +5,9 @@ namespace App\Service;
 use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Interfaces\EntityS3SettingInterface;
-use App\Rest\Http\ResponseCollection;
+use App\Rest\Response\HttpResponseCollection;
 use App\Rest\S3\Interfaces\S3UploaderInterface;
-use App\Rest\Validator\Validator;
+use App\Rest\Validator\HttpValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -15,14 +15,14 @@ abstract class AbstractService
 {
     protected readonly EntityManagerInterface $em;
     protected readonly FlusherService $flusherService;
-    protected readonly Validator $validator;
-    protected readonly ResponseCollection $responseCollection;
+    protected readonly HttpValidator $validator;
+    protected readonly HttpResponseCollection $responseCollection;
 
     public function __construct(
         EntityManagerInterface $manager,
         FlusherService $flusherService,
-        Validator $validator,
-        ResponseCollection $responseCollection
+        HttpValidator $validator,
+        HttpResponseCollection $responseCollection
     ) {
         $this->em = $manager;
         $this->flusherService = $flusherService;
@@ -41,8 +41,13 @@ abstract class AbstractService
         $this->validate($dataTransfer->getEntity());
     }
 
-    protected function simpleFileUpload(S3UploaderInterface $s3Uploader, ?string $oldPath, UploadedFile $uploadedFile, string $propertyName, EntityS3SettingInterface $entityS3Setting): ?string
-    {
+    protected function simpleFileUpload(
+        S3UploaderInterface $s3Uploader,
+        ?string $oldPath,
+        UploadedFile $uploadedFile,
+        string $propertyName,
+        EntityS3SettingInterface $entityS3Setting
+    ): ?string {
         $s3Uploader->save($oldPath, $uploadedFile, $propertyName, $entityS3Setting);
 
         return $s3Uploader->getUploadedFile()->first();

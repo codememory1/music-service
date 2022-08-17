@@ -6,7 +6,7 @@ use App\Dto\Transfer\MediaLibraryEventDto;
 use App\Entity\MediaLibrary;
 use App\Entity\User;
 use App\Enum\MediaLibraryEventEnum;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use App\Service\AbstractService;
 use App\Service\Event\MediaLibrary\ShareWithFriendsAfterAddEventService;
 

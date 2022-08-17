@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('roles')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('key', message: 'role@exist', payload: [ResponseTypeEnum::EXIST, 409])]
-final class Role implements EntityInterface
+class Role implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

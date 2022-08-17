@@ -27,6 +27,6 @@ final class LanguageRepository extends AbstractRepository
 
     public function findByLang(string $lang): ?Language
     {
-        return $this->findOneBy(['key' => $lang]);
+        return $this->findOneBy(['code' => $lang]);
     }
 }

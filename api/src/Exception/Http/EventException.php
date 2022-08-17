@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Rest\Http\Exceptions;
+namespace App\Exception\Http;
 
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-class EventException extends ApiResponseException
+class EventException extends HttpException
 {
     #[Pure]
     final public static function invalidRangeFromTime(array $data = [], array $headers = []): self

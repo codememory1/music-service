@@ -27,7 +27,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table(name: 'users')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('email', message: 'user@existByEmail', payload: [ResponseTypeEnum::EXIST, 409])]
-final class User implements EntityInterface
+class User implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

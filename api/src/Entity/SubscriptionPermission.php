@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SubscriptionPermissionRepository::class)]
 #[ORM\Table('subscription_permissions')]
 #[ORM\HasLifecycleCallbacks]
-final class SubscriptionPermission implements EntityInterface
+class SubscriptionPermission implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

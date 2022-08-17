@@ -4,7 +4,7 @@ namespace App\Security\Logout;
 
 use App\Dto\Transfer\RefreshTokenDto;
 use App\Entity\UserSession;
-use App\Rest\Http\Exceptions\FailedException;
+use App\Exception\Http\FailedException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

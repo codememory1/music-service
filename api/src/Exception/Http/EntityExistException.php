@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Rest\Http\Exceptions;
+namespace App\Exception\Http;
 
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-class EntityExistException extends ApiResponseException
+class EntityExistException extends HttpException
 {
     #[Pure]
     final public static function rolePermission(array $data = [], array $headers = []): self

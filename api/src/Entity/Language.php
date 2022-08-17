@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('languages')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('code', 'language@codeExist', payload: [ResponseTypeEnum::EXIST, 409])]
-final class Language implements EntityInterface
+class Language implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

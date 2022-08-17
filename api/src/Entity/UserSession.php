@@ -17,7 +17,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: UserSessionRepository::class)]
 #[ORM\Table('user_sessions')]
 #[ORM\HasLifecycleCallbacks]
-final class UserSession implements EntityInterface
+class UserSession implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MultimediaPerformerRepository::class)]
 #[ORM\Table('multimedia_performers')]
 #[ORM\HasLifecycleCallbacks]
-final class MultimediaPerformer implements EntityInterface
+class MultimediaPerformer implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

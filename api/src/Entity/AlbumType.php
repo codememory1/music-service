@@ -20,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('album_types')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('key', 'entityExist@albumType', payload: [ResponseTypeEnum::EXIST, 409])]
-final class AlbumType implements EntityInterface
+class AlbumType implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

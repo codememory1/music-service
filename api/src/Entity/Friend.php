@@ -15,7 +15,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: FriendRepository::class)]
 #[ORM\Table('friends')]
 #[ORM\HasLifecycleCallbacks]
-final class Friend implements EntityInterface
+class Friend implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

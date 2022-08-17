@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ArtistSubscriberRepository::class)]
 #[ORM\Table('artist_subscribers')]
 #[ORM\HasLifecycleCallbacks]
-final class ArtistSubscriber implements EntityInterface
+class ArtistSubscriber implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

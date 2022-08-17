@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MultimediaAuditionRepository::class)]
 #[ORM\Table('multimedia_auditions')]
 #[ORM\HasLifecycleCallbacks]
-final class MultimediaAudition implements EntityInterface
+class MultimediaAudition implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

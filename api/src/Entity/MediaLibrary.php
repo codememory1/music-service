@@ -17,7 +17,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: MediaLibraryRepository::class)]
 #[ORM\Table('media_libraries')]
 #[ORM\HasLifecycleCallbacks]
-final class MediaLibrary implements EntityInterface
+class MediaLibrary implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

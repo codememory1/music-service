@@ -21,7 +21,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: MultimediaRepository::class)]
 #[ORM\Table('multimedia')]
 #[ORM\HasLifecycleCallbacks]
-final class Multimedia implements EntityInterface, EntityS3SettingInterface
+class Multimedia implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;

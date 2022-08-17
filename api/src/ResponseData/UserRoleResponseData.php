@@ -6,7 +6,6 @@ use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
 use App\ResponseData\Traits\DateTimeHandlerTrait;
 use App\ResponseData\Traits\ToTranslationHandlerTrait;
-use Doctrine\Common\Collections\Collection;
 
 final class UserRoleResponseData extends AbstractResponseData implements ResponseDataInterface
 {
@@ -21,7 +20,7 @@ final class UserRoleResponseData extends AbstractResponseData implements Respons
     #[ResponseDataConstraints\Callback('handleToTranslation')]
     public ?string $shortDescription = null;
 
-    #[ResponseDataConstraints\Callback('handlePermissions')]
+    #[ResponseDataConstraints\CallbackResponseData(UserRolePermissionResponseData::class)]
     public array $permissions = [];
 
     #[ResponseDataConstraints\Callback('handleDateTime')]
@@ -29,11 +28,4 @@ final class UserRoleResponseData extends AbstractResponseData implements Respons
 
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
-
-    public function handlePermissions(Collection $collection): array
-    {
-        $responseData = new UserRolePermissionResponseData($this->container);
-
-        return $responseData->setEntities($collection)->getResponse();
-    }
 }

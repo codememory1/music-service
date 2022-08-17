@@ -20,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table('subscriptions')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity('key', 'entityExist@subscription', payload: [ResponseTypeEnum::EXIST, 409])]
-final class Subscription implements EntityInterface
+class Subscription implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

@@ -2,7 +2,6 @@
 
 namespace App\ResponseData;
 
-use App\Entity\TranslationKey;
 use App\Enum\RolePermissionEnum;
 use App\ResponseData\Constraints as ResponseDataConstraints;
 use App\ResponseData\Interfaces\ResponseDataInterface;
@@ -15,7 +14,7 @@ final class TranslationResponseData extends AbstractResponseData implements Resp
     #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_TRANSLATIONS)]
     public ?int $id = null;
 
-    #[ResponseDataConstraints\Callback('handleTranslationKey')]
+    #[ResponseDataConstraints\CallbackResponseData(TranslationKeyResponseData::class, true)]
     public ?string $translationKey = null;
     public ?string $translation = null;
 
@@ -26,11 +25,4 @@ final class TranslationResponseData extends AbstractResponseData implements Resp
     #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_TRANSLATIONS)]
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
-
-    public function handleTranslationKey(?TranslationKey $translationKey): array
-    {
-        $translationKeyResponseData = new TranslationKeyResponseData($this->container);
-
-        return $translationKeyResponseData->setEntities($translationKey)->getResponse(true);
-    }
 }

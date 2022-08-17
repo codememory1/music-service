@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MultimediaMetadataRepository::class)]
 #[ORM\Table('multimedia_metadata')]
 #[ORM\HasLifecycleCallbacks]
-final class MultimediaMetadata implements EntityInterface
+class MultimediaMetadata implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

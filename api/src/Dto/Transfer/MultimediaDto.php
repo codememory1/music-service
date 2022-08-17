@@ -9,7 +9,7 @@ use App\Entity\MultimediaCategory;
 use App\Entity\MultimediaPerformer;
 use App\Entity\User;
 use App\Enum\MultimediaTypeEnum;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use App\Security\AuthorizedUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ReverseContainer;

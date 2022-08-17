@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PlatformSettingRepository::class)]
 #[ORM\Table('platform_settings')]
 #[ORM\HasLifecycleCallbacks]
-final class PlatformSetting implements EntityInterface
+class PlatformSetting implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

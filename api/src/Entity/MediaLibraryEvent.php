@@ -21,7 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     'entityExist@mediaLibraryEvent',
     payload: [ResponseTypeEnum::EXIST, 409]
 )]
-final class MediaLibraryEvent implements EntityInterface
+class MediaLibraryEvent implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

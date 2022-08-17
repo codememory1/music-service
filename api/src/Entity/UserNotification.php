@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: UserNotificationRepository::class)]
 #[ORM\Table('user_notifications')]
 #[ORM\HasLifecycleCallbacks]
-final class UserNotification implements EntityInterface
+class UserNotification implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

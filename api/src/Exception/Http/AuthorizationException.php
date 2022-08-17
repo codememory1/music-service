@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Rest\Http\Exceptions;
+namespace App\Exception\Http;
 
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-class AuthorizationException extends ApiResponseException
+class AuthorizationException extends HttpException
 {
     #[Pure]
     final public static function failedToIdentify(array $data = [], array $headers = []): self

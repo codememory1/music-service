@@ -7,7 +7,7 @@ use App\Entity\MediaLibrary;
 use App\Entity\User;
 use App\Enum\EventEnum;
 use App\Event\CreateMediaLibraryEvent;
-use App\Rest\Http\Exceptions\EntityExistException;
+use App\Exception\Http\EntityExistException;
 use App\Service\AbstractService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -4,13 +4,13 @@ namespace App\EventListener\RequestRestorationPassword;
 
 use App\Event\RequestRestorationPasswordEvent;
 use App\Service\MailMessagingService;
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-#[AsEntityListener('app.password-reset.request', 'onRequestRestorationPassword')]
+#[AsEventListener('app.password-reset.request', 'onRequestRestorationPassword')]
 final class SendCodeListener
 {
     private MailMessagingService $mailMessagingService;

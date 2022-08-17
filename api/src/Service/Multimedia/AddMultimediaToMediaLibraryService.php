@@ -5,7 +5,7 @@ namespace App\Service\Multimedia;
 use App\Entity\Multimedia;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\User;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

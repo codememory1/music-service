@@ -16,7 +16,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: PlaylistDirectoryRepository::class)]
 #[ORM\Table('playlist_directories')]
 #[ORM\HasLifecycleCallbacks]
-final class PlaylistDirectory implements EntityInterface
+class PlaylistDirectory implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

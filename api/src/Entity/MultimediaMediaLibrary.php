@@ -27,7 +27,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     message: 'multimediaMediaLibrary@multimediaAlreadyAdd',
     payload: [ResponseTypeEnum::EXIST, 409]
 )]
-final class MultimediaMediaLibrary implements EntityInterface, EntityS3SettingInterface
+class MultimediaMediaLibrary implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;

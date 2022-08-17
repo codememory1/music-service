@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Rest\Http\Exceptions;
+namespace App\Exception\Http;
 
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-class AccessDeniedException extends ApiResponseException
+class AccessDeniedException extends HttpException
 {
     #[Pure]
     final public static function notEnoughPermissions(array $data = [], array $headers = []): self

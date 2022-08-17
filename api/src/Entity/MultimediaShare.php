@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: MultimediaShareRepository::class)]
 #[ORM\Table('multimedia_shares')]
 #[ORM\HasLifecycleCallbacks]
-final class MultimediaShare implements EntityInterface
+class MultimediaShare implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

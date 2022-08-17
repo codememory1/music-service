@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Rest\Http\Interfaces;
+namespace App\Rest\Response\Interfaces;
 
 interface ResponseSchemaInterface
 {
-    public function getStatusCode(): int;
-
     public function getSchema(): array;
 }

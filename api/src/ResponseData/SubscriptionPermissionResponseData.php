@@ -2,7 +2,6 @@
 
 namespace App\ResponseData;
 
-use App\Entity\SubscriptionPermissionKey;
 use App\Enum\RequestTypeEnum;
 use App\Enum\RolePermissionEnum;
 use App\ResponseData\Constraints as ResponseDataConstraints;
@@ -16,7 +15,7 @@ final class SubscriptionPermissionResponseData extends AbstractResponseData impl
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
     public ?int $id = null;
 
-    #[ResponseDataConstraints\Callback('handlePermissionKey')]
+    #[ResponseDataConstraints\CallbackResponseData(SubscriptionPermissionKeyResponseData::class, true)]
     #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
     public ?string $permissionKey = null;
 
@@ -29,11 +28,4 @@ final class SubscriptionPermissionResponseData extends AbstractResponseData impl
     #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
     #[ResponseDataConstraints\Callback('handleDateTime')]
     public ?string $updatedAt = null;
-
-    public function handlePermissionKey(?SubscriptionPermissionKey $subscriptionPermissionKey): ?array
-    {
-        $responseData = new SubscriptionPermissionKeyResponseData($this->container);
-
-        return $responseData->setEntities($subscriptionPermissionKey)->getResponse(true);
-    }
 }

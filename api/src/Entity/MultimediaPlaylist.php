@@ -14,7 +14,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: MultimediaPlaylistRepository::class)]
 #[ORM\Table('multimedia_playlist')]
 #[ORM\HasLifecycleCallbacks]
-final class MultimediaPlaylist implements EntityInterface
+class MultimediaPlaylist implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

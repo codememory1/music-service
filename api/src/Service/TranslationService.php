@@ -65,7 +65,7 @@ class TranslationService
             return null;
         }
 
-        return $this->translationRepository->findTranslation($language, $translationKey)->getTranslation();
+        return $this->translationRepository->findTranslation($language, $translationKey)?->getTranslation();
     }
 
     private function replaceParameters(?string &$translation, array $parameters): void

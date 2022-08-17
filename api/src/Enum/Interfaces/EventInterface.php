@@ -2,9 +2,7 @@
 
 namespace App\Enum\Interfaces;
 
-use UnitEnum;
-
-interface EventInterface extends UnitEnum, StringBackedEnumInterface
+interface EventInterface extends EnumInterface
 {
     public function getNamespaceSchema(): ?string;
 }

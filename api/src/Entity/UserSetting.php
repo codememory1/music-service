@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: UserSettingRepository::class)]
 #[ORM\Table('user_settings')]
 #[ORM\HasLifecycleCallbacks]
-final class UserSetting implements EntityInterface
+class UserSetting implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
@@ -27,11 +27,6 @@ final class UserSetting implements EntityInterface
         'comment' => ''
     ])]
     private ?bool $acceptMultimediaFromFriends = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getUser(): ?User
     {

@@ -17,7 +17,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 #[ORM\Table('notifications')]
 #[ORM\HasLifecycleCallbacks]
-final class Notification implements EntityInterface
+class Notification implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

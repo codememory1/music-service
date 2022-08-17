@@ -5,8 +5,8 @@ namespace App\Service\Friend;
 use App\Entity\Friend;
 use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
-use App\Rest\Http\Exceptions\EntityExistException;
-use App\Rest\Http\Exceptions\FailedException;
+use App\Exception\Http\EntityExistException;
+use App\Exception\Http\FailedException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

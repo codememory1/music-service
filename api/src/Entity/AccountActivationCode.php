@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AccountActivationCodeRepository::class)]
 #[ORM\Table('account_activation_codes')]
 #[ORM\HasLifecycleCallbacks]
-final class AccountActivationCode implements EntityInterface
+class AccountActivationCode implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

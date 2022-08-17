@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Rest\Http\Exceptions;
+namespace App\Exception\Http;
 
 use App\Enum\ResponseTypeEnum;
 use JetBrains\PhpStorm\Pure;
 
-class FailedException extends ApiResponseException
+class FailedException extends HttpException
 {
     #[Pure]
     final public static function failedToLogout(array $data = [], array $headers = []): self

@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: TranslationKeyRepository::class)]
 #[ORM\Table('translation_keys')]
 #[ORM\HasLifecycleCallbacks]
-final class TranslationKey implements EntityInterface
+class TranslationKey implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

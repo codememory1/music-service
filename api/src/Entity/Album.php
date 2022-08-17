@@ -20,7 +20,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
 #[ORM\Table('albums')]
 #[ORM\HasLifecycleCallbacks]
-final class Album implements EntityInterface, EntityS3SettingInterface
+class Album implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;

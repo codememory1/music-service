@@ -17,7 +17,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: PasswordResetRepository::class)]
 #[ORM\Table('password_resets')]
 #[ORM\HasLifecycleCallbacks]
-final class PasswordReset implements EntityInterface
+class PasswordReset implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;

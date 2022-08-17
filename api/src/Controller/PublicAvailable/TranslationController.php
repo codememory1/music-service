@@ -4,10 +4,10 @@ namespace App\Controller\PublicAvailable;
 
 use App\Annotation\EntityNotFound;
 use App\Entity\Language;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\TranslationRepository;
 use App\ResponseData\TranslationResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 

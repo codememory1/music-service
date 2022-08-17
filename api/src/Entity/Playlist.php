@@ -20,7 +20,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
 #[ORM\Table('playlists')]
 #[ORM\HasLifecycleCallbacks]
-final class Playlist implements EntityInterface, EntityS3SettingInterface
+class Playlist implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
     use UuidIdentifierTrait;

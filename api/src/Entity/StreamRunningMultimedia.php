@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: StreamRunningMultimediaRepository::class)]
 #[ORM\Table('streams_running_multimedia')]
 #[ORM\HasLifecycleCallbacks]
-final class StreamRunningMultimedia implements EntityInterface
+class StreamRunningMultimedia implements EntityInterface
 {
     use IdentifierTrait;
     use TimestampTrait;
