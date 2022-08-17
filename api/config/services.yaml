@@ -151,9 +151,3 @@ services:
     App\Annotation\:
       resource: '../src/Annotation/*Handler.php'
       public: true
-
-    # WebSocket
-    App\Service\WebSocket\Worker:
-      arguments:
-        $host: '%ws.host%'
-        $port: '%ws.port%'
