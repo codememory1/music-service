@@ -8,8 +8,6 @@ use Predis\Client;
 /**
  * Class WorkerConnectionManager.
  *
- * @package App\Service\WebSocket
- *
  * @author  Сodememory
  */
 class WorkerConnectionManager

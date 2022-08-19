@@ -63,6 +63,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityNotFound@friend'),
             new TranslationKeyFactory('entityNotFound@multimediaEvent'),
             new TranslationKeyFactory('entityNotFound@mediaLibraryEvent'),
+            new TranslationKeyFactory('entityNotFound@runningMultimedia'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -433,6 +434,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('event@keyIsRequired'),
             new TranslationKeyFactory('event@invalidPayload'),
             new TranslationKeyFactory('event@invalidRangeFromTime'),
+
+            new TranslationKeyFactory('streamMultimedia@toUserSessionIsRequired'),
         ]);
     }
 

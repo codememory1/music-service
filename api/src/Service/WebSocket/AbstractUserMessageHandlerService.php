@@ -20,10 +20,10 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
     protected TranslationService $translationService;
     protected WebSocketValidator $webSocketValidator;
     protected WebSocketSchema $webSocketSchema;
+    protected ?Worker $worker = null;
     private ?int $connectionId = null;
     private array $messageHeaders = [];
     private array $messageData = [];
-    private ?Worker $worker = null;
 
     public function __construct(
         EntityManagerInterface $manager,
@@ -111,9 +111,9 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         return $this->messageHeaders;
     }
 
-    public function getMessage(): array
+    public function getMessageData(): array
     {
-        return $this->messageData['message'] ?? [];
+        return $this->messageData['data'] ?? [];
     }
 
     public function setWorker(Worker $worker): self

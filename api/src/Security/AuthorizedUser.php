@@ -51,6 +51,7 @@ class AuthorizedUser
 
         if (false !== $tokenData = $this->bearerToken->getData()) {
             $user = $this->userRepository->find($tokenData['id']);
+
             $this->userSession = $this->userSessionRepository->findByAccessTokenWithUser($user, $this->bearerToken->getToken());
         }
 
