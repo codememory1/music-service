@@ -50,12 +50,14 @@ final class UserSessionRepository extends AbstractRepository
 
     public function authorizedUserSessions(): array
     {
-        if (null === $this->authorizedUser->getUser()) {
+        $user = $this->authorizedUser->fromBearer()->getUser();
+
+        if (null === $user) {
             return [];
         }
 
         return $this->findByCriteria([
-            'us.user' => $this->authorizedUser->getUser(),
+            'us.user' => $user,
             'us.type' => UserSessionTypeEnum::TEMP->name
         ]);
     }
@@ -111,6 +113,15 @@ final class UserSessionRepository extends AbstractRepository
         return $this->findOneBy([
             'user' => $user,
             'accessToken' => $accessToken
+        ]);
+    }
+
+    public function findActiveUserSessionById(int $userSessionId, User $user): ?UserSession
+    {
+        return $this->findOneBy([
+            'id' => $userSessionId,
+            'user' => $user,
+            'isActive' => true
         ]);
     }
 }

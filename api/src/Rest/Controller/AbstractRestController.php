@@ -23,6 +23,6 @@ abstract class AbstractRestController extends AbstractController
 
     final protected function getAuthorizedUser(): ?User
     {
-        return $this->authorizedUser->getUser();
+        return $this->authorizedUser->fromBearer()->getUser();
     }
 }

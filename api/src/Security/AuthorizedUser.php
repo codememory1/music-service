@@ -6,32 +6,36 @@ use App\Entity\User;
 use App\Entity\UserSession;
 use App\Repository\UserRepository;
 use App\Repository\UserSessionRepository;
+use App\Rest\Jwt\AccessToken;
 use App\Security\Http\BearerToken;
-use Doctrine\ORM\EntityManagerInterface;
 
 class AuthorizedUser
 {
     private UserRepository $userRepository;
     private UserSessionRepository $userSessionRepository;
+    private AccessToken $accessToken;
     private BearerToken $bearerToken;
-    private ?string $accessToken;
     private ?User $user = null;
     private ?UserSession $userSession = null;
 
-    public function __construct(EntityManagerInterface $manager, BearerToken $bearerToken)
+    public function __construct(UserRepository $userRepository, UserSessionRepository $userSessionRepository, AccessToken $accessToken, BearerToken $bearerToken)
     {
-        $this->userRepository = $manager->getRepository(User::class);
-        $this->userSessionRepository = $manager->getRepository(UserSession::class);
+        $this->userRepository = $userRepository;
+        $this->userSessionRepository = $userSessionRepository;
+        $this->accessToken = $accessToken;
         $this->bearerToken = $bearerToken;
-
-        $this->accessToken = $this->bearerToken->getToken();
     }
 
     public function setAccessToken(string $token): self
     {
-        $this->accessToken = $token;
+        $this->accessToken->setToken($token);
 
-        $this->bearerToken->setToken($this->accessToken);
+        return $this;
+    }
+
+    public function fromBearer(): self
+    {
+        $this->setAccessToken($this->bearerToken->getToken());
 
         return $this;
     }
@@ -49,11 +53,16 @@ class AuthorizedUser
             return $this->userSession;
         }
 
-        if (false !== $tokenData = $this->bearerToken->getData()) {
-            $user = $this->userRepository->find($tokenData['id']);
-
-            $this->userSession = $this->userSessionRepository->findByAccessTokenWithUser($user, $this->bearerToken->getToken());
+        if (false === $this->accessToken->isValid()) {
+            return null;
         }
+
+        $accessTokenData = $this->accessToken->getData();
+
+        $this->userSession = $this->userSessionRepository->findByAccessTokenWithUser(
+            $this->userRepository->find($accessTokenData['id']),
+            $this->accessToken->getToken()
+        );
 
         return $this->userSession;
     }

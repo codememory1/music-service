@@ -67,6 +67,12 @@ services:
         - '../src/Rest/S3/{Interfaces}'
         - '../src/Rest/S3/Uploader/{UploadedFile.php,AbstractUploader.php}'
 
+    App\Rest\Jwt\AccessToken:
+      public: false
+
+    App\Rest\Jwt\RefreshToken:
+      public: false
+
     # Services
     App\Service\:
       resource: '../src/Service/'

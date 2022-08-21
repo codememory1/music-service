@@ -113,7 +113,7 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
 
     public function getMessageData(): array
     {
-        return $this->messageData['data'] ?? [];
+        return $this->messageData;
     }
 
     public function setWorker(Worker $worker): self
