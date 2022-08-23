@@ -435,6 +435,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('event@invalidPayload'),
             new TranslationKeyFactory('event@invalidRangeFromTime'),
 
+            new TranslationKeyFactory('streamMultimedia@multimediaIsRequired'),
             new TranslationKeyFactory('streamMultimedia@toUserSessionIsRequired'),
         ]);
     }

@@ -20,10 +20,10 @@ class WebSocketSchema implements ResponseSchemaInterface
         return $this;
     }
 
-    public function setError(string $messageTranslationKey): self
+    public function setError(string $message): self
     {
         $this->schema['error'] = [
-            'message' => $messageTranslationKey
+            'message' => $message
         ];
 
         return $this;

@@ -3,21 +3,21 @@
 namespace App\Dto\Transformer\WebSocket;
 
 use App\Dto\Interfaces\DataTransferInterface;
-use App\Dto\Transfer\WebSocket\StreamMultimediaBetweenCurrentAccountDto;
+use App\Dto\Transfer\WebSocket\CreateStreamMultimediaOfferBetweenCurrentAccountDto;
 use App\Dto\Transformer\AbstractDataTransformer;
 use App\Entity\Interfaces\EntityInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * @template-extends AbstractDataTransformer<StreamMultimediaBetweenCurrentAccountDto>
+ * @template-extends AbstractDataTransformer<CreateStreamMultimediaOfferBetweenCurrentAccountDto>
  */
-final class StreamMultimediaBetweenCurrentAccountTransformer extends AbstractDataTransformer
+final class CreateStreamMultimediaOfferBetweenCurrentAccountTransformer extends AbstractDataTransformer
 {
-    private StreamMultimediaBetweenCurrentAccountDto $streamMultimediaBetweenCurrentAccountDto;
+    private CreateStreamMultimediaOfferBetweenCurrentAccountDto $streamMultimediaBetweenCurrentAccountDto;
 
     #[Pure]
-    public function __construct(Request $request, StreamMultimediaBetweenCurrentAccountDto $streamMultimediaBetweenCurrentAccountDto)
+    public function __construct(Request $request, CreateStreamMultimediaOfferBetweenCurrentAccountDto $streamMultimediaBetweenCurrentAccountDto)
     {
         parent::__construct($request);
 

@@ -106,7 +106,8 @@ services:
         $host: '%ws.host%'
         $port: '%ws.port%'
 
-    App\Service\WebSocket\StreamMultimediaBetweenCurrentAccountHandlerService:
+    App\Service\WebSocket\Handle\:
+      resource: '../src/Service/WebSocket/Handle/*.php'
       public: true
 
     App\Service\IPGeolocation\IPApi\Client:

@@ -430,6 +430,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'event@invalidPayload', 'Некорректные входные данные события'),
             new TranslationFactory('ru', 'event@invalidRangeFromTime', 'Время старта не может превышать время окончания'),
 
+            new TranslationFactory('ru', 'streamMultimedia@multimediaIsRequired', 'Мультимедиа обязательна к заполнению'),
             new TranslationFactory('ru', 'streamMultimedia@toUserSessionIsRequired', 'Сессия обазательна к заполнению'),
         ]);
     }

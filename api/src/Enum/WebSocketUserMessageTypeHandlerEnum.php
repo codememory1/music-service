@@ -4,7 +4,7 @@ namespace App\Enum;
 
 enum WebSocketUserMessageTypeHandlerEnum: string
 {
-    case STREAM_MULTIMEDIA_BETWEEN_CURRENT_ACCOUNT = 'App\Service\WebSocket\StreamMultimediaBetweenCurrentAccountHandlerService';
+    case CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_CURRENT_ACCOUNT = 'App\Service\WebSocket\Handle\CreateStreamMultimediaOfferBetweenCurrentAccountHandler';
 
     public static function get(string $name): ?string
     {

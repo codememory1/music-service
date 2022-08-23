@@ -4,7 +4,7 @@ namespace App\Service\WebSocket;
 
 use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
-use App\Enum\WebSocketClientMessageTypeEnum;
+use App\Rest\Response\WebSocketResponseCollection;
 use App\Rest\Response\WebSocketSchema;
 use App\Rest\Validator\WebSocketValidator;
 use App\Security\AuthorizedUser;
@@ -19,7 +19,7 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
     protected AuthorizedUser $authorizedUser;
     protected TranslationService $translationService;
     protected WebSocketValidator $webSocketValidator;
-    protected WebSocketSchema $webSocketSchema;
+    protected WebSocketResponseCollection $responseCollection;
     protected ?Worker $worker = null;
     private ?int $connectionId = null;
     private array $messageHeaders = [];
@@ -30,13 +30,13 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         AuthorizedUser $authorizedUser,
         TranslationService $translationService,
         WebSocketValidator $webSocketValidator,
-        WebSocketSchema $webSocketSchema
+        WebSocketResponseCollection $webSocketResponseCollection
     ) {
         $this->em = $manager;
         $this->authorizedUser = $authorizedUser;
         $this->translationService = $translationService;
         $this->webSocketValidator = $webSocketValidator;
-        $this->webSocketSchema = $webSocketSchema;
+        $this->responseCollection = $webSocketResponseCollection;
     }
 
     #[Pure]
@@ -67,12 +67,9 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         $this->validate($dataTransfer->getEntity());
     }
 
-    protected function sendToClient(WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
+    protected function sendToClient(WebSocketSchema $webSocketSchema): self
     {
-        $this->webSocketSchema->setType($clientMessageTypeEnum);
-        $this->webSocketSchema->setResult($data);
-
-        $this->worker->sendToConnection($this->connectionId, $this->webSocketSchema);
+        $this->worker->sendToConnection($this->connectionId, $webSocketSchema);
 
         return $this;
     }
@@ -102,6 +99,8 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
     {
         $this->messageHeaders = $headers;
         $this->messageData = $data;
+
+        $this->responseCollection->setLocale($headers['language']);
 
         return $this;
     }
