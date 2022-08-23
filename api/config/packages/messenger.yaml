@@ -5,3 +5,4 @@ framework:
         routing:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             App\Message\MultimediaMetadataMessage: async
+            App\Message\WebSocketConnectionCloseMessage: async

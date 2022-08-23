@@ -4,24 +4,33 @@ namespace App\Service\WebSocket;
 
 use App\Entity\User;
 use App\Entity\UserSession;
+use App\Message\WebSocketConnectionCloseMessage;
 use App\Repository\UserSessionRepository;
 use App\Rest\Response\WebSocketSchema;
 use function call_user_func;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Server;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class Worker
 {
     private WorkerConnectionManager $workerConnectionManager;
     private UserSessionRepository $userSessionRepository;
+    private MessageBusInterface $bus;
     private string $host;
     private int $port;
     private ?Server $server = null;
 
-    public function __construct(WorkerConnectionManager $workerConnectionManager, UserSessionRepository $userSessionRepository, string $host, int $port)
-    {
+    public function __construct(
+        WorkerConnectionManager $workerConnectionManager,
+        UserSessionRepository $userSessionRepository,
+        MessageBusInterface $bus,
+        string $host,
+        int $port
+    ) {
         $this->workerConnectionManager = $workerConnectionManager;
         $this->userSessionRepository = $userSessionRepository;
+        $this->bus = $bus;
         $this->host = $host;
         $this->port = $port;
     }
@@ -132,7 +141,7 @@ class Worker
 
     private function deleteConnection(int $connectionId): void
     {
-        $this->workerConnectionManager->deleteConnection($connectionId);
+        $this->bus->dispatch(new WebSocketConnectionCloseMessage($connectionId));
     }
 
     private function getAccessToken(Request $request): ?string
