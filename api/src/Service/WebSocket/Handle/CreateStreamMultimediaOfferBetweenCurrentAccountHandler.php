@@ -7,9 +7,7 @@ use App\Dto\Transformer\WebSocket\CreateStreamMultimediaOfferBetweenCurrentAccou
 use App\Entity\RunningMultimedia;
 use App\Entity\StreamRunningMultimedia;
 use App\Entity\UserSession;
-use App\Enum\StreamMultimediaStatusEnum;
 use App\Enum\WebSocketClientMessageTypeEnum;
-use App\Exception\WebSocket\AuthorizationException;
 use App\Exception\WebSocket\EntityNotFoundException;
 use App\Rest\Jwt\AccessToken;
 use App\Service\WebSocket\AbstractUserMessageHandlerService;
@@ -27,11 +25,7 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
 
     public function handler(): void
     {
-        $authorizedUser = $this->getAuthorizedUser();
-
-        if (null === $authorizedUser->getUser()) {
-            throw AuthorizationException::authorizationIsRequired($this->clientMessageType);
-        }
+        $this->throwIfNotAuthorized($this->clientMessageType);
 
         $dto = $this->transformer->transformFromArray($this->getMessageData());
 
@@ -42,7 +36,7 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
 
         $streamRunningMultimedia = $this->createStreamRunningMultimedia(
             $runningMultimedia,
-            $authorizedUser->getUserSession(),
+            $this->getAuthorizedUser()->getUserSession(),
             $userSession
         );
         $this->createStreamAcceptRequestResponse($streamRunningMultimedia, $userSession);
@@ -96,7 +90,7 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
         $streamRunningMultimedia->setRunningMultimedia($runningMultimedia);
         $streamRunningMultimedia->setFromUserSession($fromUserSession);
         $streamRunningMultimedia->setToUserSession($toUserSession);
-        $streamRunningMultimedia->setStatus(StreamMultimediaStatusEnum::PENDING);
+        $streamRunningMultimedia->pending();
 
         $this->em->persist($streamRunningMultimedia);
         $this->em->flush();

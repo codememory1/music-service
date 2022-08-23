@@ -10,6 +10,6 @@ class AuthorizationException extends WebSocketException
     #[Pure]
     final public static function authorizationIsRequired(WebSocketClientMessageTypeEnum $clientMessageType): self
     {
-        return new self($clientMessageType, 'auth@authNotRequired');
+        return new self($clientMessageType, 'auth@authRequired');
     }
 }

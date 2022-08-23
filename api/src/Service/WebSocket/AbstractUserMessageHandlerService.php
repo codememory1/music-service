@@ -4,6 +4,8 @@ namespace App\Service\WebSocket;
 
 use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
+use App\Enum\WebSocketClientMessageTypeEnum;
+use App\Exception\WebSocket\AuthorizationException;
 use App\Rest\Response\WebSocketResponseCollection;
 use App\Rest\Response\WebSocketSchema;
 use App\Rest\Validator\WebSocketValidator;
@@ -81,6 +83,15 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         }
 
         return $this->authorizedUser;
+    }
+
+    protected function throwIfNotAuthorized(WebSocketClientMessageTypeEnum $clientMessageType): void
+    {
+        $authorizedUser = $this->getAuthorizedUser();
+
+        if (null === $authorizedUser->getUser()) {
+            throw AuthorizationException::authorizationIsRequired($clientMessageType);
+        }
     }
 
     public function setConnection(int $connectionId): UserMessageHandlerInterface
