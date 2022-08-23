@@ -65,6 +65,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'entityNotFound@multimediaEvent', 'События мультимедиа не найдено'),
             new TranslationFactory('ru', 'entityNotFound@mediaLibraryEvent', 'События медиатеки не найдено'),
             new TranslationFactory('ru', 'entityNotFound@runningMultimedia', 'Запущенная мультимедиа не найдена'),
+            new TranslationFactory('ru', 'entityNotFound@streamRunningMultimedia', 'Стриминг запущенной мультимедиа не найден'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
