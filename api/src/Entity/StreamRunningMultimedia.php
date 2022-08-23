@@ -10,6 +10,7 @@ use App\Enum\StreamMultimediaStatusEnum;
 use App\Repository\StreamRunningMultimediaRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: StreamRunningMultimediaRepository::class)]
 #[ORM\Table('streams_running_multimedia')]
@@ -83,5 +84,44 @@ class StreamRunningMultimedia implements EntityInterface
         $this->status = $status?->name;
 
         return $this;
+    }
+
+    public function pending(): self
+    {
+        $this->setStatus(StreamMultimediaStatusEnum::PENDING);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isPending(): bool
+    {
+        return $this->getStatus() === StreamMultimediaStatusEnum::PENDING->name;
+    }
+
+    public function accepted(): self
+    {
+        $this->setStatus(StreamMultimediaStatusEnum::ACCEPTED);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isAccepted(): bool
+    {
+        return $this->getStatus() === StreamMultimediaStatusEnum::ACCEPTED->name;
+    }
+
+    public function canceled(): self
+    {
+        $this->setStatus(StreamMultimediaStatusEnum::CANCELED);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isCanceled(): bool
+    {
+        return $this->getStatus() === StreamMultimediaStatusEnum::CANCELED->name;
     }
 }
