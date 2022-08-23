@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cbaed374818bf659a0ad13e0e0c8fbe",
+    "content-hash": "453e0fba5288f1cbc26aab62d3a9fcfd",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -4197,6 +4197,72 @@
             "time": "2022-04-04T05:15:45+00:00"
         },
         {
+            "name": "predis/predis",
+            "version": "v1.1.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/predis/predis.git",
+                "reference": "a2fb02d738bedadcffdbb07efa3a5e7bd57f8d6e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/predis/predis/zipball/a2fb02d738bedadcffdbb07efa3a5e7bd57f8d6e",
+                "reference": "a2fb02d738bedadcffdbb07efa3a5e7bd57f8d6e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net",
+                    "role": "Creator & Maintainer"
+                },
+                {
+                    "name": "Till Krüss",
+                    "homepage": "https://till.im",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/predis/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "support": {
+                "issues": "https://github.com/predis/predis/issues",
+                "source": "https://github.com/predis/predis/tree/v1.1.10"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/tillkruss",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-01-05T17:46:08+00:00"
+        },
+        {
             "name": "psr/cache",
             "version": "3.0.0",
             "source": {
@@ -5104,6 +5170,95 @@
                 "source": "https://github.com/sixlive/dotenv-editor/tree/v2.0.0"
             },
             "time": "2021-11-15T13:52:36+00:00"
+        },
+        {
+            "name": "snc/redis-bundle",
+            "version": "4.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/snc/SncRedisBundle.git",
+                "reference": "93db8c437c1337f1dd04fc46abf7164c771685da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/snc/SncRedisBundle/zipball/93db8c437c1337f1dd04fc46abf7164c771685da",
+                "reference": "93db8c437c1337f1dd04fc46abf7164c771685da",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "symfony/framework-bundle": "^4.4 || ^5.3 || ^6.0",
+                "symfony/http-foundation": "^4.4 || ^5.3 || ^6.0",
+                "symfony/var-dumper": "^4.4 || ^5.3 || ^6.0"
+            },
+            "conflict": {
+                "ext-redis": "<5.3",
+                "predis/predis": "<1.1,>=2.0"
+            },
+            "require-dev": {
+                "doctrine/annotations": "^1.13",
+                "doctrine/coding-standard": "^9.0",
+                "ext-pdo_sqlite": "*",
+                "ext-redis": "*",
+                "friendsofphp/proxy-manager-lts": "^1.0.6",
+                "monolog/monolog": "*",
+                "phpunit/phpunit": "^8.5 || ^9.5",
+                "predis/predis": ">=1.1",
+                "symfony/browser-kit": "^4.4 || ^5.3 || ^6.0",
+                "symfony/cache": "^4.4 || ^5.3 || ^6.0",
+                "symfony/console": "^4.4 || ^5.3 || ^6.0",
+                "symfony/dom-crawler": "^4.4 || ^5.3 || ^6.0",
+                "symfony/filesystem": "^4.4 || ^5.3 || ^6.0",
+                "symfony/phpunit-bridge": "^6.0",
+                "symfony/profiler-pack": "^1.0",
+                "symfony/stopwatch": "^4.4 || ^5.3 || ^6.0",
+                "symfony/twig-bundle": "^4.4 || ^5.3 || ^6.0",
+                "symfony/yaml": "^4.4 || ^5.3 || ^6.0",
+                "vimeo/psalm": "^4.13"
+            },
+            "suggest": {
+                "monolog/monolog": "If you want to use the monolog redis handler.",
+                "predis/predis": "If you want to use predis.",
+                "symfony/console": "If you want to use commands to interact with the redis database",
+                "symfony/proxy-manager-bridge": "If you want to lazy-load some services"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Snc\\RedisBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Henrik Westphal",
+                    "email": "henrik.westphal@gmail.com"
+                },
+                {
+                    "name": "Community contributors",
+                    "homepage": "https://github.com/snc/SncRedisBundle/contributors"
+                }
+            ],
+            "description": "A Redis bundle for Symfony",
+            "homepage": "https://github.com/snc/SncRedisBundle",
+            "keywords": [
+                "nosql",
+                "redis",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/snc/SncRedisBundle/issues",
+                "source": "https://github.com/snc/SncRedisBundle/tree/4.2.1"
+            },
+            "time": "2022-07-02T16:30:22+00:00"
         },
         {
             "name": "spatie/temporary-directory",

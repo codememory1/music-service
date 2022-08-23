@@ -64,6 +64,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'entityNotFound@friend', 'Друг не найден'),
             new TranslationFactory('ru', 'entityNotFound@multimediaEvent', 'События мультимедиа не найдено'),
             new TranslationFactory('ru', 'entityNotFound@mediaLibraryEvent', 'События медиатеки не найдено'),
+            new TranslationFactory('ru', 'entityNotFound@runningMultimedia', 'Запущенная мультимедиа не найдена'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -428,6 +429,9 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'event@keyIsRequired', 'Ключ события обязательный к заполнению'),
             new TranslationFactory('ru', 'event@invalidPayload', 'Некорректные входные данные события'),
             new TranslationFactory('ru', 'event@invalidRangeFromTime', 'Время старта не может превышать время окончания'),
+
+            new TranslationFactory('ru', 'streamMultimedia@multimediaIsRequired', 'Мультимедиа обязательна к заполнению'),
+            new TranslationFactory('ru', 'streamMultimedia@toUserSessionIsRequired', 'Сессия обазательна к заполнению'),
         ]);
     }
 

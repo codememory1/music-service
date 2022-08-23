@@ -26,7 +26,7 @@ final class MultimediaResponseData extends AbstractResponseData implements Respo
     public ?string $description = null;
     public ?string $image = null;
 
-    #[ResponseDataConstraints\CallbackResponseData(AlbumResponseData::class, true)]
+    #[ResponseDataConstraints\CallbackResponseData(AlbumResponseData::class, true, ['multimedia'])]
     public array $album = [];
 
     #[ResponseDataConstraints\CallbackResponseData(MultimediaCategoryResponseData::class, true)]

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Multimedia;
 use App\Entity\RunningMultimedia;
+use App\Entity\UserSession;
 
 /**
  * @template-extends AbstractRepository<RunningMultimedia>
@@ -17,6 +18,14 @@ final class RunningMultimediaRepository extends AbstractRepository
     {
         return $this->findOneBy([
             'multimedia' => $multimedia
+        ]);
+    }
+
+    public function findByIdAndUserSession(int $id, UserSession $userSession): ?RunningMultimedia
+    {
+        return $this->findOneBy([
+            'id' => $id,
+            'userSession' => $userSession
         ]);
     }
 }

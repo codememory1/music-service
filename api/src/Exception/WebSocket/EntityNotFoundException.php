@@ -12,4 +12,10 @@ class EntityNotFoundException extends WebSocketException
     {
         return new self($clientMessageType, 'entityNotFound@userSession');
     }
+
+    #[Pure]
+    final public static function runningMultimedia(WebSocketClientMessageTypeEnum $clientMessageType): self
+    {
+        return new self($clientMessageType, 'entityNotFound@runningMultimedia');
+    }
 }

@@ -32,6 +32,7 @@ services:
             - '../src/DataFixtures/{Factory,Interfaces,AbstractDataFixture.php}'
 
     # Packages
+    Predis\Client: '@snc_redis.default'
     Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
 
     Aws\S3\S3Client:
@@ -66,6 +67,12 @@ services:
         - '../src/Rest/S3/{Interfaces}'
         - '../src/Rest/S3/Uploader/{UploadedFile.php,AbstractUploader.php}'
 
+    App\Rest\Jwt\AccessToken:
+      public: false
+
+    App\Rest\Jwt\RefreshToken:
+      public: false
+
     # Services
     App\Service\:
       resource: '../src/Service/'
@@ -89,6 +96,19 @@ services:
         $scopes:
           - !php/const App\Enum\GoogleScopeEnum::EMAIL
           - !php/const App\Enum\GoogleScopeEnum::PROFILE
+
+    # WebSocket
+    App\Service\WebSocket\WorkerConnectionManager:
+      public: false
+
+    App\Service\WebSocket\Worker:
+      arguments:
+        $host: '%ws.host%'
+        $port: '%ws.port%'
+
+    App\Service\WebSocket\Handle\:
+      resource: '../src/Service/WebSocket/Handle/*.php'
+      public: true
 
     App\Service\IPGeolocation\IPApi\Client:
       arguments:
@@ -125,6 +145,14 @@ services:
       resource: '../src/Dto/Transformer/*Transformer.php'
       public: true
 
+    App\Dto\Transfer\WebSocket\:
+      resource: '../src/Dto/Transfer/WebSocket/*Dto.php'
+      public: true
+
+    App\Dto\Transformer\WebSocket\:
+      resource: '../src/Dto/Transformer/WebSocket/*Transformer.php'
+      public: true
+
     # ResponseData
     App\ResponseData\Constraints\:
       resource: '../src/ResponseData/Constraints/*Handler.php'
@@ -138,9 +166,3 @@ services:
     App\Annotation\:
       resource: '../src/Annotation/*Handler.php'
       public: true
-
-    # WebSocket
-    App\Service\WebSocket\Worker:
-      arguments:
-        $host: '%ws.host%'
-        $port: '%ws.port%'

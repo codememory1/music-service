@@ -2,8 +2,6 @@
 
 namespace App\Service\WebSocket;
 
-use App\Collection\WebSocketUserConnectionCollection;
-use App\Collection\WebSocketUserSessionConnectionCollection;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Repository\UserSessionRepository;
@@ -14,23 +12,15 @@ use Swoole\WebSocket\Server;
 
 class Worker
 {
+    private WorkerConnectionManager $workerConnectionManager;
     private UserSessionRepository $userSessionRepository;
     private string $host;
     private int $port;
     private ?Server $server = null;
 
-    /**
-     * @var array<int, array<int, WebSocketUserConnectionCollection>>
-     */
-    private array $usersWithConnections = [];
-
-    /**
-     * @var array<int, WebSocketUserSessionConnectionCollection>
-     */
-    private array $userSessionsWithConnection = [];
-
-    public function __construct(UserSessionRepository $userSessionRepository, string $host, int $port)
+    public function __construct(WorkerConnectionManager $workerConnectionManager, UserSessionRepository $userSessionRepository, string $host, int $port)
     {
+        $this->workerConnectionManager = $workerConnectionManager;
         $this->userSessionRepository = $userSessionRepository;
         $this->host = $host;
         $this->port = $port;
@@ -60,8 +50,7 @@ class Worker
         $context = $this;
 
         $this->server->on('Open', $this->closure($callback, static function(Server $server, Request $request) use ($context): void {
-            $context->addUserWithConnection($request);
-            $context->addUserSessionWithConnection($request);
+            $context->addConnection($request);
         }));
 
         return $this;
@@ -72,8 +61,7 @@ class Worker
         $context = $this;
 
         $this->server->on('Close', $this->closure($callback, static function(Server $server, int $connectionId) use ($context): void {
-            $context->removeUserWithConnection($connectionId);
-            $context->removeUserSessionWithConnection($connectionId);
+            $context->deleteConnection($connectionId);
         }));
 
         return $this;
@@ -93,7 +81,9 @@ class Worker
 
     public function sendToUser(User $user, WebSocketSchema $webSocketSchema): self
     {
-        foreach ($this->usersWithConnections[$user->getId()] ?? [] as $collection) {
+        $connectionIds = $this->workerConnectionManager->getAllUserConnectionIds($user->getId());
+
+        foreach ($connectionIds as $collection) {
             $this->sendToConnection($collection->connectionId, $webSocketSchema);
         }
 
@@ -102,10 +92,10 @@ class Worker
 
     public function sendToSession(UserSession $userSession, WebSocketSchema $webSocketSchema): self
     {
-        $collection = $this->userSessionsWithConnection[$userSession->getId()] ?? null;
+        $connectionId = $this->workerConnectionManager->getConnectionIdByUserSession($userSession->getId());
 
-        if (null !== $collection) {
-            $this->sendToConnection($collection->connectionId, $webSocketSchema);
+        if (null !== $connectionId) {
+            $this->sendToConnection($connectionId, $webSocketSchema);
         }
 
         return $this;
@@ -124,21 +114,12 @@ class Worker
         };
     }
 
-    private function addUserWithConnection(Request $request): void
-    {
-        $user = $this->getUserSession($request)?->getUser();
-
-        if (null !== $user) {
-            $this->usersWithConnections[$user->getId()][$request->fd] = new WebSocketUserConnectionCollection($user, $request->fd);
-        }
-    }
-
-    private function addUserSessionWithConnection(Request $request): void
+    private function addConnection(Request $request): void
     {
         $userSession = $this->getUserSession($request);
 
         if (null !== $userSession) {
-            $this->userSessionsWithConnection[$userSession->getId()] = new WebSocketUserSessionConnectionCollection($userSession, $request->fd);
+            $this->workerConnectionManager->addConnectionUserSession($request->fd, $userSession);
         }
     }
 
@@ -149,31 +130,14 @@ class Worker
         return null === $accessToken ? null : $this->userSessionRepository->findByAccessToken($accessToken);
     }
 
-    private function removeUserWithConnection(int $connectionId): void
+    private function deleteConnection(int $connectionId): void
     {
-        foreach ($this->usersWithConnections as $userId => $collections) {
-            if (array_key_exists($connectionId, $collections)) {
-                unset($this->usersWithConnections[$userId][$connectionId]);
-
-                break;
-            }
-        }
-    }
-
-    private function removeUserSessionWithConnection(int $connectionId): void
-    {
-        foreach ($this->userSessionsWithConnection as $userSessionId => $collection) {
-            if ($collection->connectionId === $connectionId) {
-                unset($this->userSessionsWithConnection[$userSessionId]);
-
-                break;
-            }
-        }
+        $this->workerConnectionManager->deleteConnection($connectionId);
     }
 
     private function getAccessToken(Request $request): ?string
     {
-        $bearerToken = $request->header['Authorization'] ?? null;
+        $bearerToken = $request->header['authorization'] ?? null;
 
         if (false === empty($bearerToken)) {
             $bearerTokenData = explode(' ', $bearerToken, 2);

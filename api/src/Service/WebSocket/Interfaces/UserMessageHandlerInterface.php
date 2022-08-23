@@ -14,7 +14,7 @@ interface UserMessageHandlerInterface
 
     public function getMessageHeaders(): array;
 
-    public function getMessage(): array;
+    public function getMessageData(): array;
 
     public function setWorker(Worker $worker): self;
 
