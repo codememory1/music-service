@@ -111,17 +111,4 @@ class StreamRunningMultimedia implements EntityInterface
     {
         return $this->getStatus() === StreamMultimediaStatusEnum::ACCEPTED->name;
     }
-
-    public function canceled(): self
-    {
-        $this->setStatus(StreamMultimediaStatusEnum::CANCELED);
-
-        return $this;
-    }
-
-    #[Pure]
-    public function isCanceled(): bool
-    {
-        return $this->getStatus() === StreamMultimediaStatusEnum::CANCELED->name;
-    }
 }

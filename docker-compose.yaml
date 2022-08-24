@@ -146,7 +146,7 @@ services:
     depends_on:
       - api
 
-  send-user-notification:
+  stream-running-multimedia-reset-process:
     container_name: send-user-notification
     build:
       context: ./
@@ -157,7 +157,7 @@ services:
     volumes:
       - "${API_PATH}:${API_WORKDIR}"
       - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
-    command: sh -c "sleep 30 && bin/console --no-debug app:notifications:send-to-users"
+    command: sh -c "sleep 30 && bin/console --no-debug app:stream:delete-invalid"
     restart: unless-stopped
     depends_on:
       - api
@@ -176,6 +176,22 @@ services:
       - "${API_PATH}:${API_WORKDIR}"
       - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
     command: sh -c "bin/console --no-debug app:ws-server"
+    restart: unless-stopped
+    depends_on:
+      - api
+
+  send-user-notification:
+    container_name: send-user-notification
+    build:
+      context: ./
+      dockerfile: "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/Dockerfile"
+      args:
+        workdir: ${API_WORKDIR}
+        app_path: ${API_PATH}
+    volumes:
+      - "${API_PATH}:${API_WORKDIR}"
+      - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
+    command: sh -c "sleep 30 && bin/console --no-debug app:notifications:send-to-users"
     restart: unless-stopped
     depends_on:
       - api

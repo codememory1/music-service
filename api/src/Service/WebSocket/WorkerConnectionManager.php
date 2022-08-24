@@ -57,6 +57,17 @@ class WorkerConnectionManager
         return $connectionsIds;
     }
 
+    public function getUserSessionByConnectionId(int $connectionId): ?int
+    {
+        $userSession = $this->redisClient->get($this->generateConnectionKey($connectionId));
+
+        if (empty($userSession)) {
+            return null;
+        }
+
+        return (int) $userSession;
+    }
+
     public function deleteConnection(int $connectionId): self
     {
         if (1 === $this->redisClient->exists($this->generateConnectionKey($connectionId))) {

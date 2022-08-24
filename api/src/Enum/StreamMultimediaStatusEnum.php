@@ -6,5 +6,4 @@ enum StreamMultimediaStatusEnum
 {
     case PENDING;
     case ACCEPTED;
-    case CANCELED;
 }
