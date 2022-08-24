@@ -2,19 +2,19 @@
 
 namespace App\Service\WebSocket\Handle;
 
-use App\Dto\Transformer\WebSocket\AcceptOfferedStreamingTransformer;
+use App\Dto\Transformer\WebSocket\RejectOfferedStreamingTransformer;
 use App\Entity\StreamRunningMultimedia;
 use App\Enum\WebSocketClientMessageTypeEnum;
 use App\Exception\WebSocket\EntityNotFoundException;
 use App\Service\WebSocket\AbstractUserMessageHandlerService;
 use Symfony\Contracts\Service\Attribute\Required;
 
-final class AcceptOfferedStreamingHandler extends AbstractUserMessageHandlerService
+final class RejectOfferedStreamingHandle extends AbstractUserMessageHandlerService
 {
-    protected ?WebSocketClientMessageTypeEnum $clientMessageType = WebSocketClientMessageTypeEnum::ACCEPT_OFFERED_STREAMING;
+    protected ?WebSocketClientMessageTypeEnum $clientMessageType = WebSocketClientMessageTypeEnum::REJECT_OFFERED_STREAMING;
 
     #[Required]
-    public ?AcceptOfferedStreamingTransformer $transformer = null;
+    public ?RejectOfferedStreamingTransformer $transformer = null;
 
     public function handler(): void
     {
@@ -28,7 +28,7 @@ final class AcceptOfferedStreamingHandler extends AbstractUserMessageHandlerServ
             throw EntityNotFoundException::streamRunningMultimedia($this->clientMessageType);
         }
 
-        $this->accept($dto->streamRunningMultimedia);
+        $this->reject($dto->streamRunningMultimedia);
     }
 
     private function streamingOfferedToMe(StreamRunningMultimedia $streamRunningMultimedia): bool
@@ -38,9 +38,9 @@ final class AcceptOfferedStreamingHandler extends AbstractUserMessageHandlerServ
             ->isCompare($this->getAuthorizedUser()->getUserSession());
     }
 
-    private function accept(StreamRunningMultimedia $streamRunningMultimedia): void
+    private function reject(StreamRunningMultimedia $streamRunningMultimedia): void
     {
-        $streamRunningMultimedia->accepted();
+        $streamRunningMultimedia->canceled();
 
         $this->em->flush();
     }
