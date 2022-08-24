@@ -24,7 +24,8 @@ final class PlatformSettingDataFixture extends AbstractDataFixture
             new PlatformSettingFactory(PlatformSettingEnum::MULTIMEDIA_DURATION, [
                 PlatformSettingValueKeyEnum::MULTIMEDIA_DURATION_TRACK_KEY->value => 600,
                 PlatformSettingValueKeyEnum::MULTIMEDIA_DURATION_CLIP_KEY->value => 240
-            ])
+            ]),
+            new PlatformSettingFactory(PlatformSettingEnum::AUTO_REJECT_OFFERED_STREAMING, [30])
         ]);
     }
 

@@ -40,8 +40,7 @@ final class RejectOfferedStreamingHandle extends AbstractUserMessageHandlerServi
 
     private function reject(StreamRunningMultimedia $streamRunningMultimedia): void
     {
-        $streamRunningMultimedia->canceled();
-
+        $this->em->remove($streamRunningMultimedia);
         $this->em->flush();
     }
 }
