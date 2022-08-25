@@ -2,26 +2,26 @@
 
 namespace App\Tests;
 
+use App\Entity\Interfaces\EntityInterface;
+use App\Enum\ResponseTypeEnum;
+use App\Exception\Http\HttpException;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Ergebnis\Json\Pointer\JsonPointer;
-use Ergebnis\Json\SchemaValidator\Json;
-use Ergebnis\Json\SchemaValidator\SchemaValidator;
 use const JSON_ERROR_NONE;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
-/**
- * Class AbstractApiTestCase.
- *
- * @author  Codememory
- */
 abstract class AbstractApiTestCase extends WebTestCase
 {
     protected readonly EntityManagerInterface $em;
     private KernelBrowser $client;
-    private SchemaValidator $jsonSchemaValidator;
-    private array $schemes;
+    private array $response = [
+        'status_code' => null,
+        'type' => null,
+        'message' => null,
+        'data' => []
+    ];
 
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
@@ -30,15 +30,26 @@ abstract class AbstractApiTestCase extends WebTestCase
         self::ensureKernelShutdown();
 
         $this->client = static::createClient();
-        $this->jsonSchemaValidator = new SchemaValidator();
+        $this->client->catchExceptions(false);
 
-        $this->schemes['api_response'] = $this->readSchema('api_response.json');
         $this->em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
     }
 
-    protected function createRequest(string $url, string $method, array $data = []): Crawler
+    protected function createRequest(string $url, string $method, array $data = []): ?Crawler
     {
-        return $this->client->request($method, $url, $data);
+        try {
+            $crawler = $this->client->request($method, $url, $data);
+
+            $this->response = $this->getProcessedResponse();
+
+            return $crawler;
+        } catch (HttpException $e) {
+            $this->response['status_code'] = $e->getStatusCode();
+            $this->response['type'] = $e->getResponseType()->name;
+            $this->response['message'] = $e->getMessageTranslationKey();
+
+            return null;
+        }
     }
 
     protected function clearBase(): void
@@ -46,42 +57,57 @@ abstract class AbstractApiTestCase extends WebTestCase
         shell_exec('bin/console doctrine:fixtures:load --env=test');
     }
 
-    protected function assertApiResponse(?string $message = null): void
+    protected function em(): EntityManagerInterface
     {
-        $jsonSchemaValidator = (clone $this->jsonSchemaValidator)->validate(
-            Json::fromString(json_encode($this->getApiResponse())),
-            $this->getSchema('api_response'),
-            JsonPointer::document()
-        );
+        return self::getContainer()->get('doctrine.orm.default_entity_manager');
+    }
 
-        $this->assertEquals(
-            true,
-            $jsonSchemaValidator->isValid(),
-            $message ?? 'Api response did not match schema config/scheme/api_response.json'
-        );
+    protected function persistFlush(EntityInterface $entity): void
+    {
+        $em = $this->em();
+
+        $em->persist($entity);
+        $em->flush();
+    }
+
+    protected function authorize(string $email): ?string
+    {
+        $userRepository = self::em()->getRepository(UserRepository::class);
+        $user = $userRepository->findOneBy(['email' => $email]);
+
+        if (null === $user) {
+            return null;
+        }
+
+        return null;
     }
 
     protected function assertApiStatusCode(int $expect, ?string $message = null): void
     {
-        $this->assertEquals($expect, $this->getApiResponse()['status_code'], $message ?? '');
+        $this->assertEquals($expect, $this->response['status_code'], $message ?? '');
     }
 
-    protected function assertApiType(string $expect, ?string $message = null): void
+    protected function assertApiType(ResponseTypeEnum $expect, ?string $message = null): void
     {
-        $this->assertEquals($expect, $this->getApiResponse()['type'], $message ?? '');
+        $this->assertEquals($expect->name, $this->response['type'], $message ?? '');
     }
 
     protected function assertApiMessage(string|array $expect, ?string $message = null): void
     {
-        $this->assertEquals($expect, $this->getApiResponse()['message'], $message ?? '');
+        $this->assertEquals($expect, $this->response['message'], $message ?? '');
     }
 
     protected function assertApiData(array $expect, ?string $message = null): void
     {
-        $this->assertEquals($expect, $this->getApiResponse()['data'], $message ?? '');
+        $this->assertEquals($expect, $this->response['data'], $message ?? '');
     }
 
-    protected function getApiResponse(): ?array
+    protected function getApiResponseData(): ?array
+    {
+        return $this->response['data'];
+    }
+
+    private function getProcessedResponse(): array
     {
         $this->saveRequestResponse();
 
@@ -91,23 +117,7 @@ abstract class AbstractApiTestCase extends WebTestCase
             return $response;
         }
 
-        return null;
-    }
-
-    protected function readSchema(string $name): ?Json
-    {
-        $fullPath = sprintf('%s/../config/scheme/%s', __DIR__, $name);
-
-        if (file_exists($fullPath)) {
-            return Json::fromString(file_get_contents($fullPath));
-        }
-
-        return null;
-    }
-
-    protected function getSchema(string $name): ?Json
-    {
-        return $this->schemes[$name] ?? null;
+        return [];
     }
 
     private function saveRequestResponse(): void

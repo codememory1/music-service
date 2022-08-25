@@ -1,0 +1,20 @@
+#!/bin/sh
+
+echo "Deleting a test database..."
+bin/console d:d:d --force --env=test
+echo "\n"
+
+echo "Create a test database..."
+bin/console d:d:c --env=test
+echo "\n"
+
+echo "Updating the test database schema..."
+bin/console d:s:u --force --env=test
+echo "\n"
+
+echo "Loading fixtures into the test database..."
+bin/console d:f:l -n --env=test
+echo "\n"
+
+echo "Run phpunit"
+docker-compose exec api php vendor/bin/phpunit $@

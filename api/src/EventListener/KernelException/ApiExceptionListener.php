@@ -7,10 +7,8 @@ use App\Rest\Http\Request;
 use App\Rest\Response\HttpResponse;
 use App\Rest\Response\HttpSchema;
 use App\Service\TranslationService;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
-#[AsEventListener('kernel.exception')]
 final class ApiExceptionListener
 {
     private HttpResponse $httpResponse;
