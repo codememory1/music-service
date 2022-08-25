@@ -147,7 +147,7 @@ services:
       - api
 
   stream-running-multimedia-reset-process:
-    container_name: send-user-notification
+    container_name: stream-running-multimedia-reset-process
     build:
       context: ./
       dockerfile: "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/Dockerfile"
