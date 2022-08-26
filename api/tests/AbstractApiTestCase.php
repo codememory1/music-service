@@ -2,19 +2,20 @@
 
 namespace App\Tests;
 
-use App\Entity\Interfaces\EntityInterface;
+use App\Entity\User;
+use App\Entity\UserSession;
 use App\Enum\ResponseTypeEnum;
 use App\Exception\Http\HttpException;
-use App\Repository\UserRepository;
+use App\Security\Auth\AuthorizationToken;
 use Doctrine\ORM\EntityManagerInterface;
 use const JSON_ERROR_NONE;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
 
 abstract class AbstractApiTestCase extends WebTestCase
 {
-    protected readonly EntityManagerInterface $em;
     private KernelBrowser $client;
     private array $response = [
         'status_code' => null,
@@ -31,14 +32,35 @@ abstract class AbstractApiTestCase extends WebTestCase
 
         $this->client = static::createClient();
         $this->client->catchExceptions(false);
-
-        $this->em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
     }
 
-    protected function createRequest(string $url, string $method, array $data = []): ?Crawler
+    protected function em(): EntityManagerInterface
+    {
+        return static::getContainer()->get('doctrine')->getManager();
+    }
+
+    /**
+     * @template Service
+     * @psalm-param  Service $service
+     *
+     * @return Service
+     */
+    protected function getService(string $service): object
+    {
+        return self::getContainer()->get($service);
+    }
+
+    /**
+     * @param array<Cookie> $cookies
+     */
+    protected function createRequest(string $url, string $method, array $data = [], array $server = [], array $cookies = []): ?Crawler
     {
         try {
-            $crawler = $this->client->request($method, $url, $data);
+            foreach ($cookies as $cookie) {
+                $this->client->getCookieJar()->set($cookie);
+            }
+
+            $crawler = $this->client->request($method, $url, $data, server: $server);
 
             $this->response = $this->getProcessedResponse();
 
@@ -57,26 +79,26 @@ abstract class AbstractApiTestCase extends WebTestCase
         shell_exec('bin/console doctrine:fixtures:load --env=test');
     }
 
-    protected function em(): EntityManagerInterface
+    protected function authorize(string $email): ?UserSession
     {
-        return self::getContainer()->get('doctrine.orm.default_entity_manager');
-    }
-
-    protected function persistFlush(EntityInterface $entity): void
-    {
-        $em = $this->em();
-
-        $em->persist($entity);
-        $em->flush();
-    }
-
-    protected function authorize(string $email): ?string
-    {
-        $userRepository = self::em()->getRepository(UserRepository::class);
+        $authorizationToken = $this->getService(AuthorizationToken::class);
+        $userRepository = $this->em()->getRepository(User::class);
         $user = $userRepository->findOneBy(['email' => $email]);
 
-        if (null === $user) {
-            return null;
+        if (null !== $user) {
+            $userSession = new UserSession();
+
+            $authorizationToken->generateRefreshToken($user);
+            $authorizationToken->generateRefreshToken($user);
+
+            $userSession->setUser($user);
+            $userSession->setAccessToken($authorizationToken->getAccessToken());
+            $userSession->setRefreshToken($authorizationToken->getRefreshToken());
+
+            $this->em()->persist($userSession);
+            $this->em()->flush();
+
+            return $userSession;
         }
 
         return null;
@@ -105,6 +127,11 @@ abstract class AbstractApiTestCase extends WebTestCase
     protected function getApiResponseData(): ?array
     {
         return $this->response['data'];
+    }
+
+    protected function getApiResponse(): array
+    {
+        return $this->response;
     }
 
     private function getProcessedResponse(): array
