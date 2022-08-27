@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Application\PublicAvailable;
+namespace App\Tests\Application\PublicAvailable\Security;
 
 use App\Entity\User;
 use App\Enum\ResponseTypeEnum;

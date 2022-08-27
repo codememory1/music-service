@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Application\PublicAvailable;
+namespace App\Tests\Application\PublicAvailable\Security;
 
 use App\Entity\PasswordReset;
 use App\Entity\User;
