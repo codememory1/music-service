@@ -23,8 +23,12 @@ final class RequestRestorationPasswordDto extends AbstractDataTransfer
 
     public function callbackUserEntity(EntityManagerInterface $manager, mixed $value): ?User
     {
-        $userRepository = $manager->getRepository(User::class);
+        if (null !== $value) {
+            $userRepository = $manager->getRepository(User::class);
 
-        return $userRepository->findActiveByEmail($value);
+            return $userRepository->findActiveByEmail($value);
+        }
+
+        return null;
     }
 }

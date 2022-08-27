@@ -35,7 +35,9 @@ class AuthorizedUser
 
     public function fromBearer(): self
     {
-        $this->setAccessToken($this->bearerToken->getToken());
+        if (null !== $token = $this->bearerToken->getToken()) {
+            $this->setAccessToken($token);
+        }
 
         return $this;
     }
