@@ -22,6 +22,9 @@ final class AllLanguagesTest extends AbstractApiTestCase
             $this->assertIsArray($data);
             $this->assertArrayHasKey('code', $data);
             $this->assertArrayHasKey('original_title', $data);
+            $this->assertIsString($data['code']);
+            $this->assertIsString($data['original_title']);
+            $this->assertLessThan(3, mb_strlen($data['code']));
         }
     }
 
