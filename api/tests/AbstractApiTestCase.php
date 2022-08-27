@@ -8,6 +8,8 @@ use App\Enum\ResponseTypeEnum;
 use App\Exception\Http\HttpException;
 use App\Security\Auth\AuthorizationToken;
 use Doctrine\ORM\EntityManagerInterface;
+use function gettype;
+use function is_array;
 use const JSON_ERROR_NONE;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -123,6 +125,24 @@ abstract class AbstractApiTestCase extends WebTestCase
     protected function assertApiData(array $expect, ?string $message = null): void
     {
         $this->assertEquals($expect, $this->response['data'], $message ?? '');
+    }
+
+    protected function assertIsType(string|array $expect, mixed $value, ?string $message = null): void
+    {
+        $valueType = mb_strtolower(gettype($value));
+        $expectTypes = is_array($expect) ? $expect : [$expect];
+        $expectTypesToString = implode(',', $expect);
+        $isType = false;
+
+        foreach ($expectTypes as $expectType) {
+            if ($valueType === $expectType) {
+                $isType = true;
+
+                break;
+            }
+        }
+
+        $this->assertTrue($isType, $message ?: "Failed to validate that the value is one of the \"${expectTypesToString}\" types.");
     }
 
     protected function getApiResponseData(): ?array

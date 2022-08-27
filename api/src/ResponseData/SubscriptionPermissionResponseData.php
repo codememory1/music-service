@@ -16,8 +16,7 @@ final class SubscriptionPermissionResponseData extends AbstractResponseData impl
     public ?int $id = null;
 
     #[ResponseDataConstraints\CallbackResponseData(SubscriptionPermissionKeyResponseData::class, true)]
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
-    public ?string $permissionKey = null;
+    public array $permissionKey = [];
 
     #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
     #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]

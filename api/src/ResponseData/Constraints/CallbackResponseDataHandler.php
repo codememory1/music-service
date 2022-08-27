@@ -32,7 +32,7 @@ final class CallbackResponseDataHandler implements ValueHandlerInterface
         }
 
         /** @var ResponseDataInterface $responseData */
-        $responseData = $this->container->getService($namespaceResponseData);
+        $responseData = new $namespaceResponseData($this->container);
 
         foreach ($constraint->ignoreProperties as $ignoreProperty) {
             $responseData->setIgnoreProperty($ignoreProperty);
