@@ -19,4 +19,9 @@ final class AccountActivationCodeRepository extends AbstractRepository
             'user' => $user
         ]);
     }
+
+    public function findAllByUser(User $user): array
+    {
+        return $this->findBy(['user' => $user]);
+    }
 }

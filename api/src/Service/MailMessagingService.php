@@ -39,7 +39,7 @@ class MailMessagingService
 
         $email->from('kostynd1@gmail.com');
         $email->to($accountActivationCode->getUser()->getEmail());
-        $email->subject($this->translationService->get('registration@registration'));
+        $email->subject('c');
         $email->html($this->getTemplate('register', ['accountActivationCode' => $accountActivationCode]));
 
         $this->mailer->send($email);
