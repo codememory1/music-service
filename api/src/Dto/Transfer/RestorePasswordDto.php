@@ -15,18 +15,22 @@ final class RestorePasswordDto extends AbstractDataTransfer
         'user' => 'email'
     ];
 
-    #[Assert\NotBlank(message: 'common@invalidCode')]
-    #[DtoConstraints\ToTypeConstraint]
-    public ?string $code = null;
-
     #[Assert\NotBlank(message: 'user@failedToIdentify')]
     #[DtoConstraints\ToEntityCallbackConstraint('callbackUserEntity')]
     public ?User $user = null;
 
+    #[Assert\NotBlank(message: 'common@codeIsRequired')]
+    #[DtoConstraints\ToTypeConstraint]
+    public ?string $code = null;
+
     public function callbackUserEntity(EntityManagerInterface $manager, mixed $value): ?User
     {
-        $userRepository = $manager->getRepository(User::class);
+        if (null !== $value) {
+            $userRepository = $manager->getRepository(User::class);
 
-        return $userRepository->findActiveByEmail($value);
+            return $userRepository->findActiveByEmail($value);
+        }
+
+        return null;
     }
 }

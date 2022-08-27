@@ -42,6 +42,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'common@authFromUnknownDevice', 'Авторизация с незнакомого устройства'),
             new TranslationFactory('ru', 'common@authFromUnknownDeviceMessage', 'На ваш аккаунт был выполнен вход с незнакомого устройтсва. Название устройства: "%device%", IP-адрес: "%ip%"'),
             new TranslationFactory('ru', 'common@invalidMultimediaFile', 'Произошла ошибка при попытке прочитать файл'),
+            new TranslationFactory('ru', 'common@codeIsRequired', 'Код обязательный к заполнению'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
