@@ -3,4 +3,7 @@ web_profiler:
     intercept_redirects: false
 
 framework:
-    profiler: { collect: false }
+    profiler:
+      dsn: file:/usr/src/app/var/cache/dev/profiler/
+      enabled: true
+      collect: false

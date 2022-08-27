@@ -48,7 +48,7 @@ final class ActivationAccountTest extends AbstractApiTestCase
 
         $this->createRequest('/api/ru/public/user/account-activation', 'POST', [
             'email' => $registeredEmail,
-            'code' => 000000
+            'code' => '000000'
         ]);
 
         $this->assertApiStatusCode(400);
@@ -58,8 +58,8 @@ final class ActivationAccountTest extends AbstractApiTestCase
 
     public function testSuccessActivate(): void
     {
-        $userRepository = $this->em()->getRepository(User::class);
         $registeredEmail = $this->register();
+        $userRepository = $this->em()->getRepository(User::class);
         $user = $userRepository->findByEmail($registeredEmail);
 
         $this->createRequest('/api/ru/public/user/account-activation', 'POST', [
@@ -70,6 +70,9 @@ final class ActivationAccountTest extends AbstractApiTestCase
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::UPDATE);
         $this->assertApiMessage('Аккаунт успешно активирован');
-        $this->assertTrue($user->isActive());
+
+        $this->em()->clear();
+
+        $this->assertTrue($userRepository->findByEmail($registeredEmail)->isActive());
     }
 }

@@ -16,7 +16,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 abstract class AbstractApiTestCase extends WebTestCase
 {
-    private KernelBrowser $client;
+    protected KernelBrowser $client;
     private array $response = [
         'status_code' => null,
         'type' => null,
@@ -31,6 +31,7 @@ abstract class AbstractApiTestCase extends WebTestCase
         self::ensureKernelShutdown();
 
         $this->client = static::createClient();
+        $this->client->enableProfiler();
         $this->client->catchExceptions(false);
     }
 
