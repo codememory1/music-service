@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 
-final class PasswordRequestRestorationTest extends AbstractApiTestCase
+final class RequestRestorationPasswordTest extends AbstractApiTestCase
 {
     public function testEmailIsRequired(): void
     {
