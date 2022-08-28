@@ -20,8 +20,21 @@
     </php>
 
     <testsuites>
-        <testsuite name="Api Tests">
-            <directory>tests/Application</directory>
+        <testsuite name="Public Security">
+            <directory>tests/Application/PublicAvailable/Security</directory>
+        </testsuite>
+        <testsuite name="Public Language">
+            <directory>tests/Application/PublicAvailable/Language</directory>
+        </testsuite>
+        <testsuite name="Public Translation">
+            <directory>tests/Application/PublicAvailable/Translation</directory>
+        </testsuite>
+        <testsuite name="Public Subscription">
+            <directory>tests/Application/PublicAvailable/Subscription</directory>
+        </testsuite>
+        <testsuite name="Public Album">
+            <file>tests/Application/PublicAvailable/Album/CreateAlbumTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/UpdateAlbumTest.php</file>
         </testsuite>
     </testsuites>
 
