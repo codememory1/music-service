@@ -11,10 +11,10 @@ use App\Security\Http\BearerToken;
 
 class AuthorizedUser
 {
+    public BearerToken $bearerToken;
     private UserRepository $userRepository;
     private UserSessionRepository $userSessionRepository;
     private AccessToken $accessToken;
-    private BearerToken $bearerToken;
     private ?User $user = null;
     private ?UserSession $userSession = null;
 

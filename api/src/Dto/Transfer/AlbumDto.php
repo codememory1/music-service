@@ -18,6 +18,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class AlbumDto extends AbstractDataTransfer
 {
+    #[Assert\NotBlank(message: 'album@typeIsRequired')]
+    #[DtoConstraints\ToEntityConstraint('key')]
+    public ?AlbumType $type = null;
+
     #[Assert\NotBlank(message: 'album@titleIsRequired')]
     #[Assert\Length(max: 50, maxMessage: 'album@maxTitleLength')]
     #[DtoConstraints\ToTypeConstraint]
@@ -29,6 +33,7 @@ final class AlbumDto extends AbstractDataTransfer
     public ?string $description = null;
 
     #[Assert\NotBlank(message: 'album@imageIsRequired')]
+    #[Assert\Type(UploadedFile::class, message: 'common@onlyOneImage')]
     #[Assert\File(
         maxSize: '5M',
         mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
@@ -36,11 +41,7 @@ final class AlbumDto extends AbstractDataTransfer
         mimeTypesMessage: 'common@uploadFileNotImage'
     )]
     #[DtoConstraints\IgnoreCallSetterConstraint]
-    public ?UploadedFile $image = null;
-
-    #[Assert\NotBlank(message: 'album@typeIsRequired')]
-    #[DtoConstraints\ToEntityConstraint('key')]
-    public ?AlbumType $type = null;
+    public null|array|UploadedFile $image = null;
 
     #[AppAssert\Condition('callbackStatus', [
         new Assert\NotBlank(message: 'common@invalidStatus')

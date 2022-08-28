@@ -10,11 +10,13 @@ use App\Security\Auth\AuthorizationToken;
 use Doctrine\ORM\EntityManagerInterface;
 use function gettype;
 use function is_array;
+use function is_string;
 use const JSON_ERROR_NONE;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractApiTestCase extends WebTestCase
 {
@@ -53,17 +55,27 @@ abstract class AbstractApiTestCase extends WebTestCase
         return self::getContainer()->get($service);
     }
 
+    protected function getProjectDir(): string
+    {
+        return $this->getService(KernelInterface::class)->getProjectDir();
+    }
+
+    protected function getFilePathFromFixture(string $filename): string
+    {
+        return "{$this->getProjectDir()}/src/DataFixtures/Files/{$filename}";
+    }
+
     /**
      * @param array<Cookie> $cookies
      */
-    protected function createRequest(string $url, string $method, array $data = [], array $server = [], array $cookies = []): ?Crawler
+    protected function createRequest(string $url, string $method, array $data = [], array $server = [], array $cookies = [], array $files = []): ?Crawler
     {
         try {
             foreach ($cookies as $cookie) {
                 $this->client->getCookieJar()->set($cookie);
             }
 
-            $crawler = $this->client->request($method, $url, $data, server: $server);
+            $crawler = $this->client->request($method, $url, $data, $files, $server);
 
             $this->response = $this->getProcessedResponse();
 
@@ -82,16 +94,16 @@ abstract class AbstractApiTestCase extends WebTestCase
         shell_exec('bin/console doctrine:fixtures:load --env=test');
     }
 
-    protected function authorize(string $email): ?UserSession
+    protected function authorize(User|string $userOrEmail): ?UserSession
     {
         $authorizationToken = $this->getService(AuthorizationToken::class);
         $userRepository = $this->em()->getRepository(User::class);
-        $user = $userRepository->findOneBy(['email' => $email]);
+        $user = is_string($userOrEmail) ? $userRepository->findOneBy(['email' => $userOrEmail]) : $userOrEmail;
 
         if (null !== $user) {
             $userSession = new UserSession();
 
-            $authorizationToken->generateRefreshToken($user);
+            $authorizationToken->generateAccessToken($user);
             $authorizationToken->generateRefreshToken($user);
 
             $userSession->setUser($user);
