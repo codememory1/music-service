@@ -35,6 +35,7 @@
         <testsuite name="Public Album">
             <file>tests/Application/PublicAvailable/Album/CreateAlbumTest.php</file>
             <file>tests/Application/PublicAvailable/Album/UpdateAlbumTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/AllAlbumsTest.php</file>
         </testsuite>
     </testsuites>
 
