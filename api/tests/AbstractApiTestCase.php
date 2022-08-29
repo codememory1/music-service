@@ -4,12 +4,10 @@ namespace App\Tests;
 
 use App\Entity\User;
 use App\Entity\UserSession;
-use App\Enum\ResponseTypeEnum;
 use App\Exception\Http\HttpException;
 use App\Security\Auth\AuthorizationToken;
+use App\Tests\Traits\AssertTrait;
 use Doctrine\ORM\EntityManagerInterface;
-use function gettype;
-use function is_array;
 use function is_string;
 use const JSON_ERROR_NONE;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -20,6 +18,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractApiTestCase extends WebTestCase
 {
+    use AssertTrait;
     protected KernelBrowser $client;
     private array $response = [
         'status_code' => null,
@@ -117,44 +116,6 @@ abstract class AbstractApiTestCase extends WebTestCase
         }
 
         return null;
-    }
-
-    protected function assertApiStatusCode(int $expect, ?string $message = null): void
-    {
-        $this->assertEquals($expect, $this->response['status_code'], $message ?? '');
-    }
-
-    protected function assertApiType(ResponseTypeEnum $expect, ?string $message = null): void
-    {
-        $this->assertEquals($expect->name, $this->response['type'], $message ?? '');
-    }
-
-    protected function assertApiMessage(string|array $expect, ?string $message = null): void
-    {
-        $this->assertEquals($expect, $this->response['message'], $message ?? '');
-    }
-
-    protected function assertApiData(array $expect, ?string $message = null): void
-    {
-        $this->assertEquals($expect, $this->response['data'], $message ?? '');
-    }
-
-    protected function assertIsType(string|array $expect, mixed $value, ?string $message = null): void
-    {
-        $valueType = mb_strtolower(gettype($value));
-        $expectTypes = is_array($expect) ? $expect : [$expect];
-        $expectTypesToString = implode(',', $expect);
-        $isType = false;
-
-        foreach ($expectTypes as $expectType) {
-            if ($valueType === $expectType) {
-                $isType = true;
-
-                break;
-            }
-        }
-
-        $this->assertTrue($isType, $message ?: "Failed to validate that the value is one of the \"${expectTypesToString}\" types.");
     }
 
     protected function getApiResponseData(): ?array
