@@ -40,7 +40,7 @@ final class DeleteAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('entityNotFound@album');
     }
 
-    public function testAlbumNotExistIfAlbumNotBelongMe(): void
+    public function testAlbumNotBelongToMe(): void
     {
         $ownerAlbum = $this->createArtistAccount('owner-album@gmail.com');
         $albumId = $this->createAlbum($this->authorize($ownerAlbum));

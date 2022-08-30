@@ -37,6 +37,7 @@
             <file>tests/Application/PublicAvailable/Album/UpdateAlbumTest.php</file>
             <file>tests/Application/PublicAvailable/Album/AllAlbumsTest.php</file>
             <file>tests/Application/PublicAvailable/Album/DeleteAlbumTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/PublishAlbumTest.php</file>
         </testsuite>
     </testsuites>
 

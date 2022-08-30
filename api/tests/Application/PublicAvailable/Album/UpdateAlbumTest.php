@@ -43,6 +43,35 @@ final class UpdateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('accessDenied@notSubscriptionPermissions');
     }
 
+    public function testAlbumNotExist(): void
+    {
+        $authorizedUser = $this->authorize('developer@gmail.com');
+
+        $this->createRequest('/api/ru/public/album/0/edit', 'POST', server: [
+            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
+        ]);
+
+        $this->assertApiStatusCode(404);
+        $this->assertApiType(ResponseTypeEnum::NOT_EXIST);
+        $this->assertApiMessage('entityNotFound@album');
+    }
+
+    public function testAlbumNotBelongToMe(): void
+    {
+        $ownerAlbum = $this->createArtistAccount('owner-album@gmail.com');
+        $albumId = $this->createAlbum($this->authorize($ownerAlbum));
+        $authorizedUser = $this->authorize('developer@gmail.com');
+
+        $this->assertNotNull($albumId);
+        $this->createRequest("/api/ru/public/album/{$albumId}/edit", 'POST', server: [
+            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
+        ]);
+
+        $this->assertApiStatusCode(404);
+        $this->assertApiType(ResponseTypeEnum::NOT_EXIST);
+        $this->assertApiMessage('entityNotFound@album');
+    }
+
     public function testTypeIsRequired(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
