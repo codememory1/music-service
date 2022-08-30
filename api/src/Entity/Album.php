@@ -131,6 +131,9 @@ class Album implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, Multimedia>
+     */
     public function getMultimedia(): Collection
     {
         return $this->multimedia;
