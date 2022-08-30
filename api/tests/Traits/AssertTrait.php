@@ -65,4 +65,15 @@ trait AssertTrait
             $message
         );
     }
+
+    protected function assertOnlyArrayHasKey(int|string|array $key, array $array, ?string $message = null)
+    {
+        $keys = is_array($key) ? $key : [$key];
+
+        foreach ($array as $key => $value) {
+            if (false === in_array($key, $keys)) {
+                $this->assertArrayNotHasKey($key, $keys, $message);
+            }
+        }
+    }
 }
