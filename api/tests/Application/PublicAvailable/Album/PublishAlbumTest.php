@@ -6,6 +6,11 @@ use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class PublishAlbumTest extends AbstractApiTestCase
 {
@@ -21,6 +26,13 @@ final class PublishAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('auth@authRequired');
     }
 
+    /**
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     */
     public function testAccessDenied(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -36,6 +48,13 @@ final class PublishAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('accessDenied@notSubscriptionPermissions');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testAlbumNotExist(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -49,6 +68,13 @@ final class PublishAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('entityNotFound@album');
     }
 
+    /**
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     */
     public function testAlbumNotBelongToMe(): void
     {
         $ownerAlbum = $this->authorize($this->createArtistAccount('owner-album@gmail.com'));
@@ -65,6 +91,13 @@ final class PublishAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('entityNotFound@album');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testBadPublicationWithoutMultimedia(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());

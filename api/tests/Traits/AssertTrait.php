@@ -46,7 +46,7 @@ trait AssertTrait
         $this->assertTrue($isType, $message ?: "Failed to validate that the value is one of the \"${expectTypesToString}\" types.");
     }
 
-    protected function assertCreatedAt(mixed $actual, string $message = ''): void
+    protected function assertDateTime(mixed $actual, string $message = ''): void
     {
         $this->assertIsString($actual);
         $this->assertMatchesRegularExpression(
@@ -56,7 +56,7 @@ trait AssertTrait
         );
     }
 
-    protected function assertUpdatedAt(mixed $actual, string $message = ''): void
+    protected function assertDateTimeWithNull(mixed $actual, string $message = ''): void
     {
         $this->assertIsString($actual ?: '');
         $this->assertMatchesRegularExpression(
@@ -66,13 +66,13 @@ trait AssertTrait
         );
     }
 
-    protected function assertOnlyArrayHasKey(int|string|array $key, array $array, ?string $message = null)
+    protected function assertOnlyArrayHasKey(int|string|array $key, array $array, ?string $message = null): void
     {
         $keys = is_array($key) ? $key : [$key];
 
         foreach ($array as $key => $value) {
-            if (false === in_array($key, $keys)) {
-                $this->assertArrayNotHasKey($key, $keys, $message);
+            if (false === in_array($key, $keys, true)) {
+                $this->assertArrayNotHasKey($key, $keys, $message ?: '');
             }
         }
     }

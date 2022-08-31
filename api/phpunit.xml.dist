@@ -39,6 +39,9 @@
             <file>tests/Application/PublicAvailable/Album/DeleteAlbumTest.php</file>
             <file>tests/Application/PublicAvailable/Album/PublishAlbumTest.php</file>
         </testsuite>
+        <testsuite name="Public User Session">
+            <file>tests/Application/PublicAvailable/Session/AllSessionsTest.php</file>
+        </testsuite>
     </testsuites>
 
     <coverage processUncoveredFiles="true">

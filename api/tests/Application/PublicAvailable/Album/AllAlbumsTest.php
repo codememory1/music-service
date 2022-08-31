@@ -6,6 +6,11 @@ use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class AllAlbumsTest extends AbstractApiTestCase
 {
@@ -21,6 +26,13 @@ final class AllAlbumsTest extends AbstractApiTestCase
         $this->assertApiMessage('auth@authRequired');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testReturnAlbums(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -52,8 +64,8 @@ final class AllAlbumsTest extends AbstractApiTestCase
             $this->assertIsString($data['description']);
             $this->assertIsString($data['image']);
             $this->assertIsArray($data['multimedia']);
-            $this->assertCreatedAt($data['created_at']);
-            $this->assertUpdatedAt($data['updated_at']);
+            $this->assertDateTime($data['created_at']);
+            $this->assertDateTimeWithNull($data['updated_at']);
             $this->assertArrayHasKey('title', $data['type']);
             $this->assertIsString($data['type']['title']);
 
@@ -104,8 +116,8 @@ final class AllAlbumsTest extends AbstractApiTestCase
                     $this->assertArrayHasKey('updated_at', $performer);
 
                     $this->assertIsInt($performer['user']['id']);
-                    $this->assertCreatedAt($performer['created_at']);
-                    $this->assertUpdatedAt($performer['updated_at']);
+                    $this->assertDateTime($performer['created_at']);
+                    $this->assertDateTimeWithNull($performer['updated_at']);
                 }
 
                 $this->assertIsBool($multimedia['is_obscene_words']);
@@ -115,7 +127,7 @@ final class AllAlbumsTest extends AbstractApiTestCase
                 $this->assertIsInt($multimedia['metadata']['bitrate']);
                 $this->assertIsType(['integer', 'null'], $multimedia['metadata']['framerate']);
                 $this->assertIsBool($multimedia['metadata']['is_lossless']);
-                $this->assertUpdatedAt($multimedia['metadata']['updated_at']);
+                $this->assertDateTimeWithNull($multimedia['metadata']['updated_at']);
 
                 $this->assertIsArray($multimedia['queue']);
 
@@ -123,8 +135,8 @@ final class AllAlbumsTest extends AbstractApiTestCase
                     $this->assertArrayNotHasKey('id', $multimedia['queue']);
                     $this->assertArrayNotHasKey('created_at', $multimedia['queue']);
                     $this->assertArrayNotHasKey('updated_at', $multimedia['queue']);
-                    $this->assertCreatedAt($multimedia['queue']['created_at']);
-                    $this->assertUpdatedAt($multimedia['queue']['updated_at']);
+                    $this->assertDateTime($multimedia['queue']['created_at']);
+                    $this->assertDateTimeWithNull($multimedia['queue']['updated_at']);
                 }
 
                 $this->assertIsInt($multimedia['shares']);
@@ -137,8 +149,8 @@ final class AllAlbumsTest extends AbstractApiTestCase
                 $this->assertIsInt($multimedia['ratings']['dislike']);
 
                 $this->assertIsString($multimedia['status']);
-                $this->assertCreatedAt($multimedia['created_at']);
-                $this->assertUpdatedAt($multimedia['updated_at']);
+                $this->assertDateTime($multimedia['created_at']);
+                $this->assertDateTimeWithNull($multimedia['updated_at']);
             }
         }
     }

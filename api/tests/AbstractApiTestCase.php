@@ -2,11 +2,15 @@
 
 namespace App\Tests;
 
+use App\Dto\Transformer\UserTransformer;
 use App\Entity\User;
 use App\Entity\UserSession;
+use App\Enum\UserSessionTypeEnum;
 use App\Exception\Http\HttpException;
 use App\Security\Auth\AuthorizationToken;
+use App\Service\UserSession\CollectorSessionService;
 use App\Tests\Traits\AssertTrait;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use function is_string;
 use const JSON_ERROR_NONE;
@@ -15,6 +19,11 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 abstract class AbstractApiTestCase extends WebTestCase
 {
@@ -93,21 +102,31 @@ abstract class AbstractApiTestCase extends WebTestCase
         shell_exec('bin/console doctrine:fixtures:load --env=test');
     }
 
-    protected function authorize(User|string $userOrEmail): ?UserSession
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    protected function authorize(User|string $userOrEmail, bool $isActive = true): ?UserSession
     {
         $authorizationToken = $this->getService(AuthorizationToken::class);
         $userRepository = $this->em()->getRepository(User::class);
         $user = is_string($userOrEmail) ? $userRepository->findOneBy(['email' => $userOrEmail]) : $userOrEmail;
 
         if (null !== $user) {
-            $userSession = new UserSession();
+            $userTransformer = $this->getService(UserTransformer::class);
+            $userDto = $userTransformer->transformFromArray(['ip' => '127.0.0.1']);
+            $userSession = $this->getService(CollectorSessionService::class)->collect($userDto, $user, UserSessionTypeEnum::TEMP);
 
             $authorizationToken->generateAccessToken($user);
             $authorizationToken->generateRefreshToken($user);
 
-            $userSession->setUser($user);
             $userSession->setAccessToken($authorizationToken->getAccessToken());
             $userSession->setRefreshToken($authorizationToken->getRefreshToken());
+            $userSession->setLastActivity(new DateTimeImmutable());
+            $userSession->setIsActive($isActive);
 
             $this->em()->persist($userSession);
             $this->em()->flush();

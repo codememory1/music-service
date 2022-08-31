@@ -29,4 +29,9 @@ final class UserTransformer extends AbstractDataTransformer
             'ip' => $this->request->getRequest()?->getClientIp()
         ]);
     }
+
+    public function transformFromArray(array $data, ?EntityInterface $entity = null): DataTransferInterface
+    {
+        return $this->userDto->collect($data);
+    }
 }

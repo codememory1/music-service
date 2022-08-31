@@ -5,6 +5,11 @@ namespace App\Tests\Application\PublicAvailable\Security;
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class UpdateAccessTokenTest extends AbstractApiTestCase
 {
@@ -28,6 +33,13 @@ final class UpdateAccessTokenTest extends AbstractApiTestCase
         $this->assertApiMessage('common@failedToUpdateAccessToken');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testSuccessUpdate(): void
     {
         $authorizedUser = $this->authorize('developer@gmail.com');

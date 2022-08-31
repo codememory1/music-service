@@ -6,6 +6,11 @@ use App\Entity\UserSession;
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class LogoutTest extends AbstractApiTestCase
 {
@@ -29,6 +34,13 @@ final class LogoutTest extends AbstractApiTestCase
         $this->assertApiMessage('logout@failedToLogout');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testSuccessLogout(): UserSession
     {
         $authorizedUser = $this->authorize('developer@gmail.com');

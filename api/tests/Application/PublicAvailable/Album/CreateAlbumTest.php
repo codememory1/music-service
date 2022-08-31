@@ -9,6 +9,11 @@ use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class CreateAlbumTest extends AbstractApiTestCase
 {
@@ -24,6 +29,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('auth@authRequired');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testAccessDenied(): void
     {
         $authorizedUser = $this->authorize('user@gmail.com');
@@ -37,6 +49,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('accessDenied@notSubscriptionPermissions');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testTypeIsRequired(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -50,6 +69,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('album@typeIsRequired');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testTypeNotExist(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -65,6 +91,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('album@typeIsRequired');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testTitleIsRequired(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -80,6 +113,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('album@titleIsRequired');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testTitleMaxLength(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -96,6 +136,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('album@maxTitleLength');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testDescriptionIsRequired(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -112,6 +159,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('album@descriptionIsRequired');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testDescriptionMaxLength(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -129,6 +183,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('album@maxDescriptionLength');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testImageIsRequired(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -146,6 +207,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('album@imageIsRequired');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testAllowedMimeTypeImage(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -168,6 +236,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('common@uploadFileNotImage');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testMaxSizeImage(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -190,6 +265,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('album@maxSizeImage');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testOnlyOneImage(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -218,6 +300,13 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('common@onlyOneImage');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testSuccessCreate(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -233,6 +322,12 @@ final class CreateAlbumTest extends AbstractApiTestCase
 
     /**
      * @depends testSuccessCreate
+     *
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function testSuccessFlushToDb(): void
     {
@@ -245,6 +340,12 @@ final class CreateAlbumTest extends AbstractApiTestCase
 
     /**
      * @depends testSuccessFlushToDb
+     *
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function testSuccessSaveImageToS3(): void
     {
