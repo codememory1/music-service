@@ -22,6 +22,19 @@ trait SecurityTrait
         return $email;
     }
 
+    private function createUser(?string $email = null): string
+    {
+        $userRepository = $this->em()->getRepository(User::class);
+        $emailRegisteredUser = $this->register($email);
+
+        $this->createRequest('/api/ru/public/user/account-activation', 'POST', [
+            'email' => $emailRegisteredUser,
+            'code' => $userRepository->findByEmail($emailRegisteredUser)->getAccountActivationCode()->last()->getCode()
+        ]);
+
+        return $emailRegisteredUser;
+    }
+
     private function createArtistAccount(?string $email = null): User
     {
         $email ??= 'test-artist@gmail.com';
