@@ -42,6 +42,7 @@
         <testsuite name="Public User Session">
             <file>tests/Application/PublicAvailable/Session/AllSessionsTest.php</file>
             <file>tests/Application/PublicAvailable/Session/DeleteSessionTest.php</file>
+            <file>tests/Application/PublicAvailable/Session/DeleteAllSessionTest.php</file>
         </testsuite>
     </testsuites>
 
