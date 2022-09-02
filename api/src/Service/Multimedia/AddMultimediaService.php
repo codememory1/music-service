@@ -30,8 +30,10 @@ class AddMultimediaService extends AbstractService
 
     public function request(MultimediaDto $multimediaDto, User $toUser): JsonResponse
     {
-        $this->add($multimediaDto, $toUser);
+        $multimedia = $this->add($multimediaDto, $toUser);
 
-        return $this->responseCollection->successCreate('multimedia@successAdd');
+        return $this->responseCollection->successCreate('multimedia@successAdd', [
+            'id' => $multimedia->getId()
+        ]);
     }
 }

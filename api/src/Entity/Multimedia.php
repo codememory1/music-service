@@ -261,7 +261,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    public function IsObsceneWords(): ?bool
+    public function isObsceneWords(): ?bool
     {
         return $this->isObsceneWords;
     }
@@ -303,6 +303,11 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
     public function getPerformers(): Collection
     {
         return $this->performers;
+    }
+
+    public function getEmailPerformers(): array
+    {
+        return $this->getPerformers()->map(static fn(MultimediaPerformer $multimediaPerformer) => $multimediaPerformer->getUser()->getEmail())->toArray();
     }
 
     /**

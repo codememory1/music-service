@@ -19,7 +19,7 @@ class PlatformSettingService
 
     public function get(PlatformSettingEnum $platformSettingEnum): mixed
     {
-        return $this->platformSettingRepository->getSetting($platformSettingEnum->name)?->getValue();
+        return $this->platformSettingRepository->getSetting($platformSettingEnum)?->getValue();
     }
 
     public function saveToMemory(PlatformSettingEnum $platformSettingEnum): self

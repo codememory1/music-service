@@ -2,9 +2,18 @@
 
 namespace App\Tests\Application\PublicAvailable\Multimedia;
 
+use App\Entity\Multimedia;
 use App\Entity\MultimediaCategory;
+use App\Entity\PlatformSetting;
+use App\Enum\MultimediaStatusEnum;
 use App\Enum\MultimediaTypeEnum;
+use App\Enum\PlatformSettingEnum;
+use App\Enum\PlatformSettingValueKeyEnum;
 use App\Enum\ResponseTypeEnum;
+use App\Rest\S3\Uploader\ClipUploader;
+use App\Rest\S3\Uploader\ImageUploader;
+use App\Rest\S3\Uploader\SubtitlesUploader;
+use App\Rest\S3\Uploader\TrackUploader;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
@@ -314,12 +323,10 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testMultimediaIsRequired(): void
     {
-        $multimediaCategory = $this->em()->getRepository(MultimediaCategory::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
         $albumId = $this->createAlbum($authorizedUser);
-        $categoryId = $multimediaCategory->findOneBy([
-            'titleTranslationKey' => $this->validData['category']
-        ])->getId();
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
 
         $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
             'type' => $this->validData['type']->name,
@@ -345,12 +352,10 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testInvalidMimeTypeSubtitles(): void
     {
-        $multimediaCategory = $this->em()->getRepository(MultimediaCategory::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
         $albumId = $this->createAlbum($authorizedUser);
-        $categoryId = $multimediaCategory->findOneBy([
-            'titleTranslationKey' => $this->validData['category']
-        ])->getId();
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
 
         $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
             'type' => $this->validData['type']->name,
@@ -385,12 +390,10 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testIsObsceneWordsIsRequired(): void
     {
-        $multimediaCategory = $this->em()->getRepository(MultimediaCategory::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
         $albumId = $this->createAlbum($authorizedUser);
-        $categoryId = $multimediaCategory->findOneBy([
-            'titleTranslationKey' => $this->validData['category']
-        ])->getId();
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
 
         $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
             'type' => $this->validData['type']->name,
@@ -425,12 +428,10 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testImageIsRequired(): void
     {
-        $multimediaCategory = $this->em()->getRepository(MultimediaCategory::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
         $albumId = $this->createAlbum($authorizedUser);
-        $categoryId = $multimediaCategory->findOneBy([
-            'titleTranslationKey' => $this->validData['category']
-        ])->getId();
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
 
         $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
             'type' => $this->validData['type']->name,
@@ -466,12 +467,10 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testInvalidMimeTypeImage(): void
     {
-        $multimediaCategory = $this->em()->getRepository(MultimediaCategory::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
         $albumId = $this->createAlbum($authorizedUser);
-        $categoryId = $multimediaCategory->findOneBy([
-            'titleTranslationKey' => $this->validData['category']
-        ])->getId();
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
 
         $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
             'type' => $this->validData['type']->name,
@@ -511,12 +510,10 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testMaxSizeImage(): void
     {
-        $multimediaCategory = $this->em()->getRepository(MultimediaCategory::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
         $albumId = $this->createAlbum($authorizedUser);
-        $categoryId = $multimediaCategory->findOneBy([
-            'titleTranslationKey' => $this->validData['category']
-        ])->getId();
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
 
         $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
             'type' => $this->validData['type']->name,
@@ -556,12 +553,10 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testPerformerNotExist(): void
     {
-        $multimediaCategory = $this->em()->getRepository(MultimediaCategory::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
         $albumId = $this->createAlbum($authorizedUser);
-        $categoryId = $multimediaCategory->findOneBy([
-            'titleTranslationKey' => $this->validData['category']
-        ])->getId();
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
 
         $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
             'type' => $this->validData['type']->name,
@@ -602,12 +597,10 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testInvalidMimeTypeTrack(): void
     {
-        $multimediaCategory = $this->em()->getRepository(MultimediaCategory::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
         $albumId = $this->createAlbum($authorizedUser);
-        $categoryId = $multimediaCategory->findOneBy([
-            'titleTranslationKey' => $this->validData['category']
-        ])->getId();
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
 
         $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
             'type' => $this->validData['type']->name,
@@ -648,12 +641,10 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testInvalidMimeTypeClip(): void
     {
-        $multimediaCategory = $this->em()->getRepository(MultimediaCategory::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
         $albumId = $this->createAlbum($authorizedUser);
-        $categoryId = $multimediaCategory->findOneBy([
-            'titleTranslationKey' => $this->validData['category']
-        ])->getId();
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
 
         $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
             'type' => MultimediaTypeEnum::CLIP->name,
@@ -694,12 +685,10 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testInvalidSubtitles(): void
     {
-        $multimediaCategory = $this->em()->getRepository(MultimediaCategory::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
         $albumId = $this->createAlbum($authorizedUser);
-        $categoryId = $multimediaCategory->findOneBy([
-            'titleTranslationKey' => $this->validData['category']
-        ])->getId();
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
 
         $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
             'type' => $this->validData['type']->name,
@@ -731,31 +720,410 @@ final class UploadMultimediaTest extends AbstractApiTestCase
         $this->assertApiMessage('common@invalidSubtitles');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testInvalidDurationToClip(): void
     {
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
+        $authorizedUser = $this->authorize($this->createArtistAccount());
+        $albumId = $this->createAlbum($authorizedUser);
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
+
+        $this->changeMultimediaDurationToPlatformSetting(120, 60);
+
+        $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
+            'type' => MultimediaTypeEnum::CLIP->name,
+            'album' => $albumId,
+            'title' => $this->validData['title'],
+            'description' => $this->validData['description'],
+            'category' => $categoryId,
+            'is_obscene_words' => $this->validData['is_obscene_words'],
+            'performers' => $this->validData['performers']
+        ], [
+            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
+        ], files: [
+            'multimedia' => new UploadedFile(
+                $this->getFilePathFromFixture('video_50.2mb_01-32time.mp4'),
+                'video_50.2mb_01-32.mp4'
+            ),
+            'subtitles' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['subtitles']),
+                $this->validData['subtitles']
+            ),
+            'image' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['image']),
+                $this->validData['image']
+            )
+        ]);
+
+        $this->assertApiStatusCode(400);
+        $this->assertApiType(ResponseTypeEnum::FAILED);
+        $this->assertApiMessage('multimedia@badDuration');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testInvalidDurationToTrack(): void
     {
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
+        $authorizedUser = $this->authorize($this->createArtistAccount());
+        $albumId = $this->createAlbum($authorizedUser);
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
+
+        $this->changeMultimediaDurationToPlatformSetting(120, 60);
+
+        $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
+            'type' => $this->validData['type']->name,
+            'album' => $albumId,
+            'title' => $this->validData['title'],
+            'description' => $this->validData['description'],
+            'category' => $categoryId,
+            'is_obscene_words' => $this->validData['is_obscene_words'],
+            'performers' => $this->validData['performers']
+        ], [
+            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
+        ], files: [
+            'multimedia' => new UploadedFile(
+                $this->getFilePathFromFixture('music_5.8mb_02-23time.wav'),
+                'music_5.8mb_02023time.wav'
+            ),
+            'subtitles' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['subtitles']),
+                $this->validData['subtitles']
+            ),
+            'image' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['image']),
+                $this->validData['image']
+            )
+        ]);
+
+        $this->assertApiStatusCode(400);
+        $this->assertApiType(ResponseTypeEnum::FAILED);
+        $this->assertApiMessage('multimedia@badDuration');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testSuccessUpload(): void
     {
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
+        $authorizedUser = $this->authorize($this->createArtistAccount());
+        $albumId = $this->createAlbum($authorizedUser);
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
+
+        $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
+            'type' => $this->validData['type']->name,
+            'album' => $albumId,
+            'title' => $this->validData['title'],
+            'description' => $this->validData['description'],
+            'category' => $categoryId,
+            'text' => $this->validData['text'],
+            'is_obscene_words' => $this->validData['is_obscene_words'],
+            'performers' => $this->validData['performers']
+        ], [
+            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
+        ], files: [
+            'multimedia' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['multimedia']),
+                $this->validData['multimedia']
+            ),
+            'subtitles' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['subtitles']),
+                $this->validData['subtitles']
+            ),
+            'image' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['image']),
+                $this->validData['image']
+            )
+        ]);
+
+        $this->assertApiStatusCode(200);
+        $this->assertApiType(ResponseTypeEnum::CREATE);
+        $this->assertApiMessage('Мультимедия успешно добавлена и ожидает отправки на модерацию');
+        $this->assertArrayHasKey('id', $this->getApiResponseData());
+        $this->assertIsInt($this->getApiResponseData()['id']);
     }
 
+    /**
+     * @depends testSuccessUpload
+     *
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
     public function testSuccessFlushToDb(): void
     {
+        $multimediaRepository = $this->em()->getRepository(Multimedia::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
+        $authorizedUser = $this->authorize($this->createArtistAccount());
+        $albumId = $this->createAlbum($authorizedUser);
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
+
+        $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
+            'type' => $this->validData['type']->name,
+            'album' => $albumId,
+            'title' => $this->validData['title'],
+            'description' => $this->validData['description'],
+            'category' => $categoryId,
+            'text' => $this->validData['text'],
+            'is_obscene_words' => $this->validData['is_obscene_words'],
+            'performers' => $this->validData['performers']
+        ], [
+            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
+        ], files: [
+            'multimedia' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['multimedia']),
+                $this->validData['multimedia']
+            ),
+            'subtitles' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['subtitles']),
+                $this->validData['subtitles']
+            ),
+            'image' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['image']),
+                $this->validData['image']
+            )
+        ]);
+
+        $uploadedMultimedia = $multimediaRepository->find($this->getApiResponseData()['id']);
+
+        $this->assertEquals($this->validData['type']->name, $uploadedMultimedia->getType());
+        $this->assertEquals($albumId, $uploadedMultimedia->getAlbum()->getId());
+        $this->assertEquals($this->validData['title'], $uploadedMultimedia->getTitle());
+        $this->assertEquals($this->validData['description'], $uploadedMultimedia->getDescription());
+        $this->assertEquals($categoryId, $uploadedMultimedia->getCategory()->getId());
+        $this->assertEquals($this->validData['text'], $uploadedMultimedia->getText());
+        $this->assertEquals($this->validData['is_obscene_words'], $uploadedMultimedia->isObsceneWords());
+        $this->assertEquals($this->validData['performers'], $uploadedMultimedia->getEmailPerformers());
+        $this->assertNotNull($uploadedMultimedia->getMultimedia());
+        $this->assertNotNull($uploadedMultimedia->getSubtitles());
+        $this->assertNotNull($uploadedMultimedia->getImage());
+        $this->assertEquals(MultimediaStatusEnum::DRAFT->name, $uploadedMultimedia->getStatus());
+        $this->assertNull($uploadedMultimedia->getQueue());
     }
 
-    public function testSuccessUploadMultimediaToS3(): void
+    /**
+     * @depends testSuccessUpload
+     *
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function testSuccessUploadClipToS3(): void
     {
+        $clipUploader = $this->getService(ClipUploader::class);
+        $multimediaRepository = $this->em()->getRepository(Multimedia::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
+        $authorizedUser = $this->authorize($this->createArtistAccount());
+        $albumId = $this->createAlbum($authorizedUser);
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
+
+        $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
+            'type' => MultimediaTypeEnum::CLIP->name,
+            'album' => $albumId,
+            'title' => $this->validData['title'],
+            'description' => $this->validData['description'],
+            'category' => $categoryId,
+            'is_obscene_words' => $this->validData['is_obscene_words'],
+            'performers' => $this->validData['performers']
+        ], [
+            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
+        ], files: [
+            'multimedia' => new UploadedFile(
+                $this->getFilePathFromFixture('video_544kb_00-31time.mp4'),
+                'video_544kb_00-31time.mp4'
+            ),
+            'subtitles' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['subtitles']),
+                $this->validData['subtitles']
+            ),
+            'image' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['image']),
+                $this->validData['image']
+            )
+        ]);
+
+        $uploadedMultimedia = $multimediaRepository->find($this->getApiResponseData()['id']);
+
+        $this->assertNotNull($clipUploader->getObject($uploadedMultimedia->getMultimedia()));
     }
 
+    /**
+     * @depends testSuccessUpload
+     *
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function testSuccessUploaderTrackToS3(): void
+    {
+        $trackUploader = $this->getService(TrackUploader::class);
+        $multimediaRepository = $this->em()->getRepository(Multimedia::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
+        $authorizedUser = $this->authorize($this->createArtistAccount());
+        $albumId = $this->createAlbum($authorizedUser);
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
+
+        $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
+            'type' => $this->validData['type']->name,
+            'album' => $albumId,
+            'title' => $this->validData['title'],
+            'description' => $this->validData['description'],
+            'category' => $categoryId,
+            'is_obscene_words' => $this->validData['is_obscene_words'],
+            'performers' => $this->validData['performers']
+        ], [
+            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
+        ], files: [
+            'multimedia' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['multimedia']),
+                $this->validData['multimedia']
+            ),
+            'subtitles' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['subtitles']),
+                $this->validData['subtitles']
+            ),
+            'image' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['image']),
+                $this->validData['image']
+            )
+        ]);
+
+        $uploadedMultimedia = $multimediaRepository->find($this->getApiResponseData()['id']);
+
+        $this->assertNotNull($trackUploader->getObject($uploadedMultimedia->getMultimedia()));
+    }
+
+    /**
+     * @depends testSuccessUpload
+     *
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testSuccessUploadSubtitlesToS3(): void
     {
+        $subtitlesUploader = $this->getService(SubtitlesUploader::class);
+        $multimediaRepository = $this->em()->getRepository(Multimedia::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
+        $authorizedUser = $this->authorize($this->createArtistAccount());
+        $albumId = $this->createAlbum($authorizedUser);
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
+
+        $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
+            'type' => $this->validData['type']->name,
+            'album' => $albumId,
+            'title' => $this->validData['title'],
+            'description' => $this->validData['description'],
+            'category' => $categoryId,
+            'text' => $this->validData['text'],
+            'is_obscene_words' => $this->validData['is_obscene_words'],
+            'performers' => $this->validData['performers']
+        ], [
+            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
+        ], files: [
+            'multimedia' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['multimedia']),
+                $this->validData['multimedia']
+            ),
+            'subtitles' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['subtitles']),
+                $this->validData['subtitles']
+            ),
+            'image' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['image']),
+                $this->validData['image']
+            )
+        ]);
+
+        $uploadedMultimedia = $multimediaRepository->find($this->getApiResponseData()['id']);
+
+        $this->assertNotNull($subtitlesUploader->getObject($uploadedMultimedia->getSubtitles()));
     }
 
+    /**
+     * @depends testSuccessUpload
+     *
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testSuccessUploadImageToS3(): void
     {
+        $imageUploader = $this->getService(ImageUploader::class);
+        $multimediaRepository = $this->em()->getRepository(Multimedia::class);
+        $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
+        $authorizedUser = $this->authorize($this->createArtistAccount());
+        $albumId = $this->createAlbum($authorizedUser);
+        $categoryId = $multimediaCategoryRepository->findByTitle($this->validData['category'])->getId();
+
+        $this->createRequest('/api/ru/public/user/multimedia/add', 'POST', [
+            'type' => $this->validData['type']->name,
+            'album' => $albumId,
+            'title' => $this->validData['title'],
+            'description' => $this->validData['description'],
+            'category' => $categoryId,
+            'text' => $this->validData['text'],
+            'is_obscene_words' => $this->validData['is_obscene_words'],
+            'performers' => $this->validData['performers']
+        ], [
+            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
+        ], files: [
+            'multimedia' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['multimedia']),
+                $this->validData['multimedia']
+            ),
+            'subtitles' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['subtitles']),
+                $this->validData['subtitles']
+            ),
+            'image' => new UploadedFile(
+                $this->getFilePathFromFixture($this->validData['image']),
+                $this->validData['image']
+            )
+        ]);
+
+        $uploadedMultimedia = $multimediaRepository->find($this->getApiResponseData()['id']);
+
+        $this->assertNotNull($imageUploader->getObject($uploadedMultimedia->getImage()));
+    }
+
+    private function changeMultimediaDurationToPlatformSetting(int $track, int $clip): void
+    {
+        $platformSettingRepository = $this->em()->getRepository(PlatformSetting::class);
+
+        $platformSettingRepository
+            ->getSetting(PlatformSettingEnum::MULTIMEDIA_DURATION)
+            ->setValue([
+                PlatformSettingValueKeyEnum::MULTIMEDIA_DURATION_TRACK_KEY->value => $track,
+                PlatformSettingValueKeyEnum::MULTIMEDIA_DURATION_CLIP_KEY->value => $clip
+            ]);
+
+        $this->em()->flush();
     }
 }
