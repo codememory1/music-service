@@ -73,7 +73,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
     #[ORM\Column(type: Types::BOOLEAN, options: [
         'comment' => 'Are there obscene words in the text'
     ])]
-    private bool $isObsceneWords = false;
+    private ?bool $isObsceneWords = false;
 
     #[ORM\Column(type: Types::TEXT, nullable: true, options: [
         'comment' => 'Path to image file (preview)'

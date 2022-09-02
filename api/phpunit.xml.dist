@@ -44,6 +44,9 @@
             <file>tests/Application/PublicAvailable/Session/DeleteSessionTest.php</file>
             <file>tests/Application/PublicAvailable/Session/DeleteAllSessionTest.php</file>
         </testsuite>
+        <testsuite name="Public My Multimedia">
+            <file>tests/Application/PublicAvailable/Multimedia/UploadMultimediaTest.php</file>
+        </testsuite>
     </testsuites>
 
     <coverage processUncoveredFiles="true">
