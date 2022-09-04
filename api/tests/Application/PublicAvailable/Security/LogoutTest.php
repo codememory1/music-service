@@ -5,7 +5,6 @@ namespace App\Tests\Application\PublicAvailable\Security;
 use App\Entity\UserSession;
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
-use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -14,9 +13,16 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class LogoutTest extends AbstractApiTestCase
 {
+    public const API_PATH = '/api/ru/public/user/logout';
+
+    protected function setUp(): void
+    {
+        $this->browser->createRequest(self::API_PATH);
+    }
+
     public function testRefreshTokenIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/logout', 'GET');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -25,9 +31,8 @@ final class LogoutTest extends AbstractApiTestCase
 
     public function testFailedLogout(): void
     {
-        $this->createRequest('/api/ru/public/user/logout', 'GET', cookies: [
-            new Cookie('refresh_token', 'InvalidRefreshToken', path: '/')
-        ]);
+        $this->browser->addCookie('refresh_token', 'InvalidRefreshToken');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(400);
         $this->assertApiType(ResponseTypeEnum::FAILED);
@@ -41,28 +46,35 @@ final class LogoutTest extends AbstractApiTestCase
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function testSuccessLogout(): UserSession
+    public function testSuccessLogout(): void
     {
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/logout', 'GET', cookies: [
-            new Cookie('refresh_token', $authorizedUser->getRefreshToken(), path: '/')
-        ]);
+        $this->browser->addCookie('refresh_token', $authorizedUserSession->getRefreshToken());
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::DELETE);
         $this->assertApiMessage('Вы успешно вышли из аккаунта');
-
-        return $authorizedUser;
     }
 
     /**
      * @depends testSuccessLogout
+     *
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
-    public function testSuccessDeleteSession(UserSession $userSession): void
+    public function testSuccessDeleteSession(): void
     {
         $userSessionRepository = $this->em()->getRepository(UserSession::class);
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->assertNull($userSessionRepository->findByRefreshToken($userSession->getRefreshToken()));
+        $this->browser->addCookie('refresh_token', $authorizedUserSession->getRefreshToken());
+        $this->browser->sendRequest();
+
+        $this->assertNull($userSessionRepository->findByRefreshToken($authorizedUserSession->getRefreshToken()));
     }
 }

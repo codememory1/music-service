@@ -6,12 +6,21 @@ use App\Entity\User;
 use App\Enum\ResponseTypeEnum;
 use App\Service\HashingService;
 use App\Tests\AbstractApiTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class RestorePasswordTest extends AbstractApiTestCase
 {
+    public const API_PATH = '/api/ru/public/user/password-reset/restore-password';
+
+    protected function setUp(): void
+    {
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+    }
+
     public function testEmailIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/password-reset/restore-password', 'POST');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -20,9 +29,8 @@ final class RestorePasswordTest extends AbstractApiTestCase
 
     public function testInvalidIdentify(): void
     {
-        $this->createRequest('/api/ru/public/user/password-reset/restore-password', 'POST', [
-            'email' => 'test-user@gmail.com'
-        ]);
+        $this->browser->addRequestData('email', 'test-user@gmail.com');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -31,9 +39,8 @@ final class RestorePasswordTest extends AbstractApiTestCase
 
     public function testCodeIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/password-reset/restore-password', 'POST', [
-            'email' => 'developer@gmail.com'
-        ]);
+        $this->browser->addRequestData('email', 'developer@gmail.com');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -42,10 +49,9 @@ final class RestorePasswordTest extends AbstractApiTestCase
 
     public function testPasswordIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/password-reset/restore-password', 'POST', [
-            'email' => 'developer@gmail.com',
-            'code' => '000000'
-        ]);
+        $this->browser->addRequestData('email', 'developer@gmail.com');
+        $this->browser->addRequestData('code', '000000');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -54,11 +60,10 @@ final class RestorePasswordTest extends AbstractApiTestCase
 
     public function testPasswordMinLength(): void
     {
-        $this->createRequest('/api/ru/public/user/password-reset/restore-password', 'POST', [
-            'email' => 'developer@gmail.com',
-            'code' => '000000',
-            'password' => 'p'
-        ]);
+        $this->browser->addRequestData('email', 'developer@gmail.com');
+        $this->browser->addRequestData('code', '000000');
+        $this->browser->addRequestData('password', 'p');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -67,11 +72,10 @@ final class RestorePasswordTest extends AbstractApiTestCase
 
     public function testInvalidPasswordByRegex(): void
     {
-        $this->createRequest('/api/ru/public/user/password-reset/restore-password', 'POST', [
-            'email' => 'developer@gmail.com',
-            'code' => '000000',
-            'password' => 'Пароль'
-        ]);
+        $this->browser->addRequestData('email', 'developer@gmail.com');
+        $this->browser->addRequestData('code', '000000');
+        $this->browser->addRequestData('password', 'Пароль');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -80,12 +84,11 @@ final class RestorePasswordTest extends AbstractApiTestCase
 
     public function testInvalidConfirmPassword(): void
     {
-        $this->createRequest('/api/ru/public/user/password-reset/restore-password', 'POST', [
-            'email' => 'developer@gmail.com',
-            'code' => '000000',
-            'password' => 'new_password',
-            'confirm_password' => 'invalid_confirm_password'
-        ]);
+        $this->browser->addRequestData('email', 'developer@gmail.com');
+        $this->browser->addRequestData('code', '000000');
+        $this->browser->addRequestData('password', 'new_password');
+        $this->browser->addRequestData('password_confirm', 'invalid_password_confirm');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -94,12 +97,11 @@ final class RestorePasswordTest extends AbstractApiTestCase
 
     public function testInvalidCode(): void
     {
-        $this->createRequest('/api/ru/public/user/password-reset/restore-password', 'POST', [
-            'email' => 'developer@gmail.com',
-            'code' => '000000',
-            'password' => 'new_password',
-            'password_confirm' => 'new_password'
-        ]);
+        $this->browser->addRequestData('email', 'developer@gmail.com');
+        $this->browser->addRequestData('code', '000000');
+        $this->browser->addRequestData('password', 'new_password');
+        $this->browser->addRequestData('password_confirm', 'new_password');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(400);
         $this->assertApiType(ResponseTypeEnum::CHECK_VALID);
@@ -112,20 +114,24 @@ final class RestorePasswordTest extends AbstractApiTestCase
         $userRepository = $this->em()->getRepository(User::class);
         $hashingService = $this->getService(HashingService::class);
 
-        $this->createRequest('/api/ru/public/user/password-reset/request-restoration', 'POST', [
-            'email' => $email
-        ]);
+        // Submit a password reset request to receive a password reset code
+        $this->browser->createRequest(RequestRestorationPasswordTest::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->addRequestData('email', $email);
+        $this->browser->sendRequest();
 
-        $lastPasswordReset = $userRepository->findByEmail($email)->getPasswordResets()->last();
+        $lastPasswordResetCode = $userRepository->findByEmail($email)->getLastPasswordResetCode();
 
-        $this->assertNotFalse($lastPasswordReset);
+        $this->assertNotNull($lastPasswordResetCode);
 
-        $this->createRequest('/api/ru/public/user/password-reset/restore-password', 'POST', [
-            'email' => $email,
-            'code' => $lastPasswordReset->getCode(),
-            'password' => 'new_password',
-            'password_confirm' => 'new_password'
-        ]);
+        // Reset and change password
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->addRequestData('email', $email);
+        $this->browser->addRequestData('code', $lastPasswordResetCode);
+        $this->browser->addRequestData('password', 'new_password');
+        $this->browser->addRequestData('password_confirm', 'new_password');
+        $this->browser->sendRequest();
 
         $this->em()->clear();
 

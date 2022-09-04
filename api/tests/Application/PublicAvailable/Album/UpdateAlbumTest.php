@@ -4,12 +4,13 @@ namespace App\Tests\Application\PublicAvailable\Album;
 
 use App\Entity\Album;
 use App\Entity\UserSession;
+use App\Enum\AlbumTypeEnum;
 use App\Enum\ResponseTypeEnum;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -20,6 +21,13 @@ final class UpdateAlbumTest extends AbstractApiTestCase
 {
     use SecurityTrait;
     use MultimediaTrait;
+    public const API_PATH = '/api/ru/public/album/{id}/edit';
+    private array $validateData = [
+        'type' => AlbumTypeEnum::DOUBLE,
+        'title' => 'Battle grounds edit',
+        'description' => 'Edited album description',
+        'image' => 'image_2mb.png'
+    ];
 
     /**
      * @throws TransportExceptionInterface
@@ -30,10 +38,12 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testAuthorizeIsRequired(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST');
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(401);
         $this->assertApiType(ResponseTypeEnum::CHECK_AUTH);
@@ -49,13 +59,14 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testAccessDenied(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
-        $authorizedUser = $this->authorize('user@gmail.com');
+        $albumOwnerSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($albumOwnerSession);
+        $authorizedUserSession = $this->authorize('user@gmail.com');
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(403);
         $this->assertApiType(ResponseTypeEnum::CHECK_ACCESS);
@@ -71,11 +82,12 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testAlbumNotExist(): void
     {
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/album/0/edit', 'POST', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => 0]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(404);
         $this->assertApiType(ResponseTypeEnum::NOT_EXIST);
@@ -91,14 +103,14 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testAlbumNotBelongToMe(): void
     {
-        $ownerAlbum = $this->createArtistAccount('owner-album@gmail.com');
-        $albumId = $this->createAlbum($this->authorize($ownerAlbum));
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $albumOwnerSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($albumOwnerSession);
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->assertNotNull($albumId);
-        $this->createRequest("/api/ru/public/album/{$albumId}/edit", 'POST', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(404);
         $this->assertApiType(ResponseTypeEnum::NOT_EXIST);
@@ -114,12 +126,13 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testTypeIsRequired(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -135,14 +148,14 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testTypeNotExist(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', [
-            'type' => 'InvalidType'
-        ], [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->addRequestData('type', 'InvalidType');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -158,14 +171,14 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testTitleIsRequired(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', [
-            'type' => 'SINGLE'
-        ], [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->addRequestData('type', $this->validateData['type']->name);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -181,15 +194,15 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testTitleMaxLength(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', [
-            'type' => 'SINGLE',
-            'title' => 'PEhssogFEJDvDKFsuyQytFFcvrpEFPWVHddAdemmWTbkNMpjSkMjjbk'
-        ], [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->addRequestData('type', $this->validateData['type']->name);
+        $this->browser->addRequestData('title', 'PEhssogFEJDvDKFsuyQytFFcvrpEFPWVHddAdemmWTbkNMpjSkMjjbk');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -205,15 +218,15 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testDescriptionIsRequired(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', [
-            'type' => 'SINGLE',
-            'title' => 'Test Album'
-        ], [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->addRequestData('type', $this->validateData['type']->name);
+        $this->browser->addRequestData('title', $this->validateData['title']);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -229,16 +242,16 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testDescriptionMaxLength(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', [
-            'type' => 'SINGLE',
-            'title' => 'Test Album',
-            'description' => 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words'
-        ], [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->addRequestData('type', $this->validateData['type']->name);
+        $this->browser->addRequestData('title', $this->validateData['title']);
+        $this->browser->addRequestData('description', 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -254,16 +267,16 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testImageIsRequired(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', [
-            'type' => 'SINGLE',
-            'title' => 'Test Album',
-            'description' => 'Description for test album'
-        ], [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->addRequestData('type', $this->validateData['type']->name);
+        $this->browser->addRequestData('title', $this->validateData['title']);
+        $this->browser->addRequestData('description', $this->validateData['description']);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -279,21 +292,17 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testAllowedMimeTypeImage(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', [
-            'type' => 'SINGLE',
-            'title' => 'Test Album',
-            'description' => 'Description for test album'
-        ], [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ], files: [
-            'image' => new UploadedFile(
-                $this->getFilePathFromFixture('text_2.5mb.txt'),
-                'text_2.5mb.txt'
-            )
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->addRequestData('type', $this->validateData['type']->name);
+        $this->browser->addRequestData('title', $this->validateData['title']);
+        $this->browser->addRequestData('description', $this->validateData['description']);
+        $this->browser->addFile('image', $this->getFilePathFromFixture('text_2.5mb.txt'));
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -309,21 +318,17 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testMaxSizeImage(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', [
-            'type' => 'SINGLE',
-            'title' => 'Test Album',
-            'description' => 'Description for test album'
-        ], [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ], files: [
-            'image' => new UploadedFile(
-                $this->getFilePathFromFixture('image_18mb.png'),
-                'image_18mb.png'
-            )
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->addRequestData('type', $this->validateData['type']->name);
+        $this->browser->addRequestData('title', $this->validateData['title']);
+        $this->browser->addRequestData('description', $this->validateData['description']);
+        $this->browser->addFile('image', $this->getFilePathFromFixture('image_18mb.png'));
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -339,27 +344,21 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testOnlyOneImage(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/edit", 'POST', [
-            'type' => 'SINGLE',
-            'title' => 'Test Album',
-            'description' => 'Description for test album'
-        ], [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ], files: [
-            'image' => [
-                new UploadedFile(
-                    $this->getFilePathFromFixture('image_1.3mb.jpg'),
-                    'image_1.3mb.jpg'
-                ),
-                new UploadedFile(
-                    $this->getFilePathFromFixture('image_2mb.png'),
-                    'image_2mb.png'
-                )
-            ]
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->addRequestData('type', $this->validateData['type']->name);
+        $this->browser->addRequestData('title', $this->validateData['title']);
+        $this->browser->addRequestData('description', $this->validateData['description']);
+        $this->browser->addMultipleFile(
+            'image',
+            $this->getFilePathFromFixture('image_1.3mb.jpg'),
+            $this->getFilePathFromFixture('image_2mb.png')
+        );
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -375,10 +374,10 @@ final class UpdateAlbumTest extends AbstractApiTestCase
      */
     public function testSuccessUpdate(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->updateAlbum($authorizedUser, $createdAlbumId);
+        $this->updateAlbum($authorizedUserSession, $album);
 
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::UPDATE);
@@ -397,16 +396,18 @@ final class UpdateAlbumTest extends AbstractApiTestCase
     public function testSuccessFlushToDb(): void
     {
         $albumRepository = $this->em()->getRepository(Album::class);
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->updateAlbum($authorizedUser, $createdAlbumId);
+        $this->updateAlbum($authorizedUserSession, $album);
 
-        $updatedAlbum = $albumRepository->find($createdAlbumId);
+        $this->em()->clear();
 
-        $this->assertSame('DOUBLE', $updatedAlbum->getType()->getKey());
-        $this->assertSame('Edit title', $updatedAlbum->getTitle());
-        $this->assertSame('Edit description', $updatedAlbum->getDescription());
+        $updatedAlbum = $albumRepository->find($album);
+
+        $this->assertEquals($this->validateData['type']->name, $updatedAlbum->getType()->getKey());
+        $this->assertEquals($this->validateData['title'], $updatedAlbum->getTitle());
+        $this->assertEquals($this->validateData['description'], $updatedAlbum->getDescription());
         $this->assertStringEndsWith('.png', $updatedAlbum->getImage());
     }
 
@@ -424,33 +425,27 @@ final class UpdateAlbumTest extends AbstractApiTestCase
         $imageUploader = $this->getService(ImageUploader::class);
         $albumRepository = $this->em()->getRepository(Album::class);
         $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
+        $createdAlbum = $this->createAlbum($authorizedUser);
 
-        $createdAlbum = $albumRepository->find($createdAlbumId);
-
-        $this->updateAlbum($authorizedUser, $createdAlbumId);
+        $this->updateAlbum($authorizedUser, $createdAlbum);
 
         $this->em()->clear();
 
-        $updatedAlbum = $albumRepository->find($createdAlbumId);
+        $updatedAlbum = $albumRepository->find($createdAlbum->getId());
 
         $this->assertNull($imageUploader->getObject($createdAlbum->getImage())); // The old image should be removed from S3
         $this->assertNotNull($imageUploader->getObject($updatedAlbum->getImage())); // The new image should be saved in S3
     }
 
-    private function updateAlbum(UserSession $authorizedUser, int $id): void
+    private function updateAlbum(UserSession $authorizedUserSession, Album $album): void
     {
-        $this->createRequest("/api/ru/public/album/{$id}/edit", 'POST', [
-            'type' => 'DOUBLE',
-            'title' => 'Edit title',
-            'description' => 'Edit description'
-        ], [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ], files: [
-            'image' => new UploadedFile(
-                $this->getFilePathFromFixture('image_2mb.png'),
-                'image_2mb.png'
-            )
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->addRequestData('type', $this->validateData['type']->name);
+        $this->browser->addRequestData('title', $this->validateData['title']);
+        $this->browser->addRequestData('description', $this->validateData['description']);
+        $this->browser->addFile('image', $this->getFilePathFromFixture($this->validateData['image']));
+        $this->browser->sendRequest();
     }
 }

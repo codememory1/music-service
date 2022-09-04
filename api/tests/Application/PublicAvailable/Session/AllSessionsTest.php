@@ -16,10 +16,16 @@ final class AllSessionsTest extends AbstractApiTestCase
 {
     use SortableTrait;
     use FilterableTrait;
+    public const API_PATH = '/api/ru/public/user/session/all';
+
+    protected function setUp(): void
+    {
+        $this->browser->createRequest(self::API_PATH);
+    }
 
     public function testAuthorizeIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/session/all', 'GET');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(401);
         $this->assertApiType(ResponseTypeEnum::CHECK_AUTH);
@@ -35,13 +41,12 @@ final class AllSessionsTest extends AbstractApiTestCase
      */
     public function testReturnSessions(): void
     {
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        foreach ($this->getApiResponseData() as $data) {
+        foreach ($this->browser->getResponseData() as $data) {
             $this->assertIsArray($data);
             $this->assertOnlyArrayHasKey([
                 'id',
@@ -92,17 +97,17 @@ final class AllSessionsTest extends AbstractApiTestCase
      */
     public function testSortAscByCreatedAt(): void
     {
-        $this->authorize('developer@gmail.com');
+        $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
 
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all?sort[0][name]=createdAt&sort[0][value]=ASC', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addSortQuery('createdAt', 'ASC');
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $sortedData = $this->sortByAsc($this->getApiResponseData(), 'created_at');
+        $sortedData = $this->sortByAsc($this->browser->getResponseData(), 'created_at');
 
-        $this->assertSame(json_encode($this->getApiResponseData()), json_encode($sortedData));
+        $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
     /**
@@ -116,17 +121,17 @@ final class AllSessionsTest extends AbstractApiTestCase
      */
     public function testSortDescByCreatedAt(): void
     {
-        $this->authorize('developer@gmail.com');
+        $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
 
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all?sort[0][name]=createdAt&sort[0][value]=DESC', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addSortQuery('createdAt', 'DESC');
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $sortedData = $this->sortByDesc($this->getApiResponseData(), 'created_at');
+        $sortedData = $this->sortByDesc($this->browser->getResponseData(), 'created_at');
 
-        $this->assertSame(json_encode($this->getApiResponseData()), json_encode($sortedData));
+        $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
     /**
@@ -138,17 +143,17 @@ final class AllSessionsTest extends AbstractApiTestCase
      */
     public function testSortAscByLastActivity(): void
     {
-        $this->authorize('developer@gmail.com');
+        $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
 
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all?sort[0][name]=lastActivity&sort[0][value]=ASC', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addSortQuery('lastActivity', 'ASC');
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $sortedData = $this->sortByAsc($this->getApiResponseData(), 'last_activity');
+        $sortedData = $this->sortByAsc($this->browser->getResponseData(), 'last_activity');
 
-        $this->assertSame(json_encode($this->getApiResponseData()), json_encode($sortedData));
+        $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
     /**
@@ -160,17 +165,17 @@ final class AllSessionsTest extends AbstractApiTestCase
      */
     public function testSortDescByLastActivity(): void
     {
-        $this->authorize('developer@gmail.com');
+        $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
 
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all?sort[0][name]=lastActivity&sort[0][value]=DESC', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addSortQuery('lastActivity', 'DESC');
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $sortedData = $this->sortByDesc($this->getApiResponseData(), 'last_activity');
+        $sortedData = $this->sortByDesc($this->browser->getResponseData(), 'last_activity');
 
-        $this->assertSame(json_encode($this->getApiResponseData()), json_encode($sortedData));
+        $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
     /**
@@ -182,17 +187,17 @@ final class AllSessionsTest extends AbstractApiTestCase
      */
     public function testSortAscByCountry(): void
     {
-        $this->authorize('developer@gmail.com');
+        $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
 
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all?sort[0][name]=country&sort[0][value]=ASC', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addSortQuery('country', 'ASC');
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $sortedData = $this->sortByAsc($this->getApiResponseData(), 'country');
+        $sortedData = $this->sortByAsc($this->browser->getResponseData(), 'country');
 
-        $this->assertSame(json_encode($this->getApiResponseData()), json_encode($sortedData));
+        $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
     /**
@@ -204,17 +209,17 @@ final class AllSessionsTest extends AbstractApiTestCase
      */
     public function testSortDescByCountry(): void
     {
-        $this->authorize('developer@gmail.com');
+        $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
 
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all?sort[0][name]=country&sort[0][value]=DESC', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addSortQuery('country', 'DESC');
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $sortedData = $this->sortByDesc($this->getApiResponseData(), 'country');
+        $sortedData = $this->sortByDesc($this->browser->getResponseData(), 'country');
 
-        $this->assertSame(json_encode($this->getApiResponseData()), json_encode($sortedData));
+        $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
     /**
@@ -226,17 +231,17 @@ final class AllSessionsTest extends AbstractApiTestCase
      */
     public function testSortAscByCity(): void
     {
-        $this->authorize('developer@gmail.com');
+        $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
 
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all?sort[0][name]=city&sort[0][value]=ASC', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addSortQuery('city', 'ASC');
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $sortedData = $this->sortByAsc($this->getApiResponseData(), 'city');
+        $sortedData = $this->sortByAsc($this->browser->getResponseData(), 'city');
 
-        $this->assertSame(json_encode($this->getApiResponseData()), json_encode($sortedData));
+        $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
     /**
@@ -248,17 +253,17 @@ final class AllSessionsTest extends AbstractApiTestCase
      */
     public function testSortDescByCity(): void
     {
-        $this->authorize('developer@gmail.com');
+        $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
 
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all?sort[0][name]=city&sort[0][value]=DESC', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addSortQuery('city', 'DESC');
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $sortedData = $this->sortByDesc($this->getApiResponseData(), 'city');
+        $sortedData = $this->sortByDesc($this->browser->getResponseData(), 'city');
 
-        $this->assertSame(json_encode($this->getApiResponseData()), json_encode($sortedData));
+        $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
     /**
@@ -270,17 +275,17 @@ final class AllSessionsTest extends AbstractApiTestCase
      */
     public function testFilterByActive(): void
     {
-        $this->authorize('developer@gmail.com', false);
+        $this->authorize('developer@gmail.com', false); // Authorization and creation of the first session
 
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all?filter[0][name]=isActive&filter[0][value]=true', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addFilterQuery('isActive', 'true');
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $filteredData = $this->filter($this->getApiResponseData(), 'is_active', true);
+        $filteredData = $this->filter($this->browser->getResponseData(), 'is_active', true);
 
-        $this->assertSame(json_encode($this->getApiResponseData()), json_encode($filteredData));
+        $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($filteredData));
     }
 
     /**
@@ -294,14 +299,14 @@ final class AllSessionsTest extends AbstractApiTestCase
     {
         $this->authorize('developer@gmail.com', true);
 
-        $authorizedUser = $this->authorize('developer@gmail.com', false);
+        $authorizedUserSession = $this->authorize('developer@gmail.com', false);
 
-        $this->createRequest('/api/ru/public/user/session/all?filter[0][name]=isActive&filter[0][value]=false', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addFilterQuery('isActive', 'false');
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $filteredData = $this->filter($this->getApiResponseData(), 'is_active', false);
+        $filteredData = $this->filter($this->browser->getResponseData(), 'is_active', false);
 
-        $this->assertSame(json_encode($this->getApiResponseData()), json_encode($filteredData));
+        $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($filteredData));
     }
 }

@@ -2,20 +2,33 @@
 
 namespace App\Tests\Application\PublicAvailable\Security;
 
-use App\Entity\AccountActivationCode;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\ResponseTypeEnum;
+use App\Service\HashingService;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\SecurityTrait;
+use Symfony\Component\HttpFoundation\Request;
 
 final class RegisterTest extends AbstractApiTestCase
 {
     use SecurityTrait;
+    public const API_PATH = '/api/ru/public/user/register';
+    private array $validData = [
+        'pseudonym' => 'Codememory',
+        'email' => 'test-user@gmail.com',
+        'password' => 'test_user_password'
+    ];
+
+    protected function setUp(): void
+    {
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+    }
 
     public function testPseudonymIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/register', 'POST');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -24,9 +37,8 @@ final class RegisterTest extends AbstractApiTestCase
 
     public function testEmailIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/register', 'POST', [
-            'pseudonym' => 'Codememory'
-        ]);
+        $this->browser->addRequestData('pseudonym', $this->validData['pseudonym']);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -35,10 +47,9 @@ final class RegisterTest extends AbstractApiTestCase
 
     public function testInvalidEmail(): void
     {
-        $this->createRequest('/api/ru/public/user/register', 'POST', [
-            'pseudonym' => 'Codememory',
-            'email' => 'invalid-email'
-        ]);
+        $this->browser->addRequestData('pseudonym', $this->validData['pseudonym']);
+        $this->browser->addRequestData('email', 'invalid-email');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -47,10 +58,9 @@ final class RegisterTest extends AbstractApiTestCase
 
     public function testPasswordIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/register', 'POST', [
-            'pseudonym' => 'Codememory',
-            'email' => 'test-user@gmail.com'
-        ]);
+        $this->browser->addRequestData('pseudonym', $this->validData['pseudonym']);
+        $this->browser->addRequestData('email', $this->validData['email']);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -59,11 +69,10 @@ final class RegisterTest extends AbstractApiTestCase
 
     public function testInvalidPassword(): void
     {
-        $this->createRequest('/api/ru/public/user/register', 'POST', [
-            'pseudonym' => 'Codememory',
-            'email' => 'test-user@gmail.com',
-            'password' => '0000'
-        ]);
+        $this->browser->addRequestData('pseudonym', $this->validData['pseudonym']);
+        $this->browser->addRequestData('email', $this->validData['email']);
+        $this->browser->addRequestData('password', '0000');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -72,12 +81,11 @@ final class RegisterTest extends AbstractApiTestCase
 
     public function testInvalidConfirmPassword(): void
     {
-        $this->createRequest('/api/ru/public/user/register', 'POST', [
-            'pseudonym' => 'Codememory',
-            'email' => 'test-user@gmail.com',
-            'password' => 'test_user_password',
-            'password_confirm' => 'test_user_password_confirm'
-        ]);
+        $this->browser->addRequestData('pseudonym', $this->validData['pseudonym']);
+        $this->browser->addRequestData('email', $this->validData['email']);
+        $this->browser->addRequestData('password', $this->validData['password']);
+        $this->browser->addRequestData('password_confirm', 'test_user_password_confirm');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -86,12 +94,11 @@ final class RegisterTest extends AbstractApiTestCase
 
     public function testEmailExist(): void
     {
-        $this->createRequest('/api/ru/public/user/register', 'POST', [
-            'pseudonym' => 'Codememory',
-            'email' => 'developer@gmail.com',
-            'password' => 'test_user_password',
-            'password_confirm' => 'test_user_password'
-        ]);
+        $this->browser->addRequestData('pseudonym', $this->validData['pseudonym']);
+        $this->browser->addRequestData('email', 'developer@gmail.com');
+        $this->browser->addRequestData('password', $this->validData['password']);
+        $this->browser->addRequestData('password_confirm', $this->validData['password']);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(409);
         $this->assertApiType(ResponseTypeEnum::EXIST);
@@ -100,7 +107,7 @@ final class RegisterTest extends AbstractApiTestCase
 
     public function testSuccessRegister(): void
     {
-        $this->register();
+        $this->successRegister();
 
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::SUCCESS_REGISTRATION);
@@ -112,32 +119,31 @@ final class RegisterTest extends AbstractApiTestCase
      */
     public function testSuccessCreateUser(): void
     {
+        $this->successRegister();
+
+        $hashingService = $this->getService(HashingService::class);
         $userRepository = $this->em()->getRepository(User::class);
-
-        $this->assertNotNull($userRepository->findByEmail($this->register()));
-    }
-
-    /**
-     * @depends testSuccessCreateUser
-     */
-    public function testSuccessCreateRegisteredUserSession(): void
-    {
         $userSessionRepository = $this->em()->getRepository(UserSession::class);
-        $userRepository = $this->em()->getRepository(User::class);
-        $registeredUser = $userRepository->findByEmail($this->register());
+        $registeredUser = $userRepository->findByEmail($this->validData['email']);
 
+        $this->assertNotNull($registeredUser);
+        $this->assertNotNull($registeredUser->getLastAccountActivationCode());
+        $this->assertNotNull($registeredUser->getProfile());
         $this->assertNotNull($userSessionRepository->findRegistered($registeredUser));
+        $this->assertEquals($this->validData['pseudonym'], $registeredUser->getProfile()->getPseudonym());
+        $this->assertEquals($this->validData['email'], $registeredUser->getEmail());
+        $this->assertTrue($hashingService->compare(
+            $this->validData['password'],
+            $registeredUser->getPassword()
+        ));
     }
 
-    /**
-     * @depends testSuccessCreateUser
-     */
-    public function testSuccessCreateAccountActivationCode(): void
+    private function successRegister(): void
     {
-        $accountActivationCodeRepository = $this->em()->getRepository(AccountActivationCode::class);
-        $userRepository = $this->em()->getRepository(User::class);
-        $registeredUser = $userRepository->findByEmail($this->register());
-
-        $this->assertNotEmpty($accountActivationCodeRepository->findAllByUser($registeredUser));
+        $this->browser->addRequestData('pseudonym', $this->validData['pseudonym']);
+        $this->browser->addRequestData('email', $this->validData['email']);
+        $this->browser->addRequestData('password', $this->validData['password']);
+        $this->browser->addRequestData('password_confirm', $this->validData['password']);
+        $this->browser->sendRequest();
     }
 }

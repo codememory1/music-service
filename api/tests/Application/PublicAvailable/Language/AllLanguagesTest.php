@@ -9,19 +9,24 @@ use App\Tests\Traits\SortableTrait;
 final class AllLanguagesTest extends AbstractApiTestCase
 {
     use SortableTrait;
+    public const API_PATH = '/api/ru/public/language/all';
+
+    protected function setUp(): void
+    {
+        $this->browser->createRequest(self::API_PATH);
+    }
 
     public function testReturnLanguages(): void
     {
-        $this->createRequest('/api/ru/public/language/all', 'GET');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::DATA_OUTPUT);
         $this->assertApiMessage('Вывод данных');
 
-        foreach ($this->getApiResponseData() as $data) {
+        foreach ($this->browser->getResponseData() as $data) {
             $this->assertIsArray($data);
-            $this->assertArrayHasKey('code', $data);
-            $this->assertArrayHasKey('original_title', $data);
+            $this->assertOnlyArrayHasKey(['code', 'original_title'], $data);
             $this->assertIsString($data['code']);
             $this->assertIsString($data['original_title']);
             $this->assertLessThan(3, mb_strlen($data['code']));
@@ -33,11 +38,12 @@ final class AllLanguagesTest extends AbstractApiTestCase
      */
     public function testSortAscByCode(): void
     {
-        $this->createRequest('/api/ru/public/language/all?sort[0][name]=code&sort[0][value]=ASC', 'GET');
+        $this->browser->addSortQuery('code', 'ASC');
+        $this->browser->sendRequest();
 
-        $sortedData = $this->sortByAsc($this->getApiResponseData(), 'code');
+        $sortedData = $this->sortByAsc($this->browser->getResponseData(), 'code');
 
-        $this->assertEquals(json_encode($sortedData), json_encode($this->getApiResponseData()));
+        $this->assertEquals(json_encode($sortedData), json_encode($this->browser->getResponseData()));
     }
 
     /**
@@ -45,11 +51,11 @@ final class AllLanguagesTest extends AbstractApiTestCase
      */
     public function testSortDescByCode(): void
     {
-        $this->createRequest('/api/ru/public/language/all?sort[0][name]=code&sort[0][value]=DESC', 'GET');
+        $this->browser->addSortQuery('code', 'DESC');
 
-        $sortedData = $this->sortByDesc($this->getApiResponseData(), 'code');
+        $sortedData = $this->sortByDesc($this->browser->getResponseData(), 'code');
 
-        $this->assertEquals(json_encode($sortedData), json_encode($this->getApiResponseData()));
+        $this->assertEquals(json_encode($sortedData), json_encode($this->browser->getResponseData()));
     }
 
     /**
@@ -57,11 +63,11 @@ final class AllLanguagesTest extends AbstractApiTestCase
      */
     public function testSortAscByTitle(): void
     {
-        $this->createRequest('/api/ru/public/language/all?sort[0][name]=title&sort[0][value]=ASC', 'GET');
+        $this->browser->addSortQuery('title', 'ASC');
 
-        $sortedData = $this->sortByAsc($this->getApiResponseData(), 'original_title');
+        $sortedData = $this->sortByAsc($this->browser->getResponseData(), 'original_title');
 
-        $this->assertEquals(json_encode($sortedData), json_encode($this->getApiResponseData()));
+        $this->assertEquals(json_encode($sortedData), json_encode($this->browser->getResponseData()));
     }
 
     /**
@@ -69,10 +75,10 @@ final class AllLanguagesTest extends AbstractApiTestCase
      */
     public function testSortDescByTitle(): void
     {
-        $this->createRequest('/api/ru/public/language/all?sort[0][name]=title&sort[0][value]=DESC', 'GET');
+        $this->browser->addSortQuery('title', 'DESC');
 
-        $sortedData = $this->sortByDesc($this->getApiResponseData(), 'original_title');
+        $sortedData = $this->sortByDesc($this->browser->getResponseData(), 'original_title');
 
-        $this->assertEquals(json_encode($sortedData), json_encode($this->getApiResponseData()));
+        $this->assertEquals(json_encode($sortedData), json_encode($this->browser->getResponseData()));
     }
 }

@@ -10,22 +10,22 @@ trait AssertTrait
 {
     protected function assertApiStatusCode(int $expect, ?string $message = null): void
     {
-        $this->assertEquals($expect, $this->response['status_code'], $message ?: '');
+        $this->assertEquals($expect, $this->browser->getResponse('status_code'), $message ?: '');
     }
 
     protected function assertApiType(ResponseTypeEnum $expect, ?string $message = null): void
     {
-        $this->assertEquals($expect->name, $this->response['type'], $message ?: '');
+        $this->assertEquals($expect->name, $this->browser->getResponse('type'), $message ?: '');
     }
 
     protected function assertApiMessage(string|array $expect, ?string $message = null): void
     {
-        $this->assertEquals($expect, $this->response['message'], $message ?: '');
+        $this->assertEquals($expect, $this->browser->getResponse('message'), $message ?: '');
     }
 
     protected function assertApiData(array $expect, ?string $message = null): void
     {
-        $this->assertEquals($expect, $this->response['data'], $message ?: '');
+        $this->assertEquals($expect, $this->browser->getResponse('data'), $message ?: '');
     }
 
     protected function assertIsType(string|array $expect, mixed $value, ?string $message = null): void

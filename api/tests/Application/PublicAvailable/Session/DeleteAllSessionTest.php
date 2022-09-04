@@ -5,6 +5,7 @@ namespace App\Tests\Application\PublicAvailable\Session;
 use App\Entity\UserSession;
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -13,9 +14,17 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class DeleteAllSessionTest extends AbstractApiTestCase
 {
+    public const API_PATH = '/api/ru/public/user/session/all/delete';
+
+    protected function setUp(): void
+    {
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_DELETE);
+    }
+
     public function testAuthorizeIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/session/all/delete', 'DELETE');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(401);
         $this->assertApiType(ResponseTypeEnum::CHECK_AUTH);
@@ -37,11 +46,10 @@ final class DeleteAllSessionTest extends AbstractApiTestCase
         $this->authorize('developer@gmail.com');
         $this->authorize('developer@gmail.com');
 
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/all/delete', 'DELETE', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::DELETE);
@@ -49,6 +57,6 @@ final class DeleteAllSessionTest extends AbstractApiTestCase
 
         $this->em()->clear();
 
-        $this->assertEmpty($userSessionRepository->findAllTemp($authorizedUser->getUser()));
+        $this->assertEmpty($userSessionRepository->findAllTemp($authorizedUserSession->getUser()));
     }
 }

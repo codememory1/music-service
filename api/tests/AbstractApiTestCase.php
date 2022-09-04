@@ -6,18 +6,14 @@ use App\Dto\Transformer\UserTransformer;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
-use App\Exception\Http\HttpException;
 use App\Security\Auth\AuthorizationToken;
 use App\Service\UserSession\CollectorSessionService;
 use App\Tests\Traits\AssertTrait;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use function is_string;
-use const JSON_ERROR_NONE;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -29,12 +25,7 @@ abstract class AbstractApiTestCase extends WebTestCase
 {
     use AssertTrait;
     protected KernelBrowser $client;
-    private array $response = [
-        'status_code' => null,
-        'type' => null,
-        'message' => null,
-        'data' => []
-    ];
+    protected BrowserKitClient $browser;
 
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
@@ -45,6 +36,7 @@ abstract class AbstractApiTestCase extends WebTestCase
         $this->client = static::createClient();
         $this->client->enableProfiler();
         $this->client->catchExceptions(false);
+        $this->browser = new BrowserKitClient($this->client);
     }
 
     protected function em(): EntityManagerInterface
@@ -54,7 +46,7 @@ abstract class AbstractApiTestCase extends WebTestCase
 
     /**
      * @template Service
-     * @psalm-param  Service $service
+     * @psalm-param Service $service
      *
      * @return Service
      */
@@ -71,30 +63,6 @@ abstract class AbstractApiTestCase extends WebTestCase
     protected function getFilePathFromFixture(string $filename): string
     {
         return "{$this->getProjectDir()}/src/DataFixtures/Files/{$filename}";
-    }
-
-    /**
-     * @param array<Cookie> $cookies
-     */
-    protected function createRequest(string $url, string $method, array $data = [], array $server = [], array $cookies = [], array $files = []): ?Crawler
-    {
-        try {
-            foreach ($cookies as $cookie) {
-                $this->client->getCookieJar()->set($cookie);
-            }
-
-            $crawler = $this->client->request($method, $url, $data, $files, $server);
-
-            $this->response = $this->getProcessedResponse();
-
-            return $crawler;
-        } catch (HttpException $e) {
-            $this->response['status_code'] = $e->getStatusCode();
-            $this->response['type'] = $e->getResponseType()->name;
-            $this->response['message'] = $e->getMessageTranslationKey();
-
-            return null;
-        }
     }
 
     protected function clearBase(): void
@@ -135,36 +103,5 @@ abstract class AbstractApiTestCase extends WebTestCase
         }
 
         return null;
-    }
-
-    protected function getApiResponseData(): ?array
-    {
-        return $this->response['data'];
-    }
-
-    protected function getApiResponse(): array
-    {
-        return $this->response;
-    }
-
-    private function getProcessedResponse(): array
-    {
-        $this->saveRequestResponse();
-
-        $response = json_decode($this->client->getResponse()->getContent(), true);
-
-        if (JSON_ERROR_NONE === json_last_error()) {
-            return $response;
-        }
-
-        return [];
-    }
-
-    private function saveRequestResponse(): void
-    {
-        file_put_contents(
-            __DIR__ . '/../var/log/test_response.txt',
-            $this->client->getResponse()->getContent()
-        );
     }
 }

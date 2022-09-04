@@ -6,6 +6,7 @@ use App\Entity\UserSession;
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\SecurityTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -15,10 +16,18 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 final class DeleteSessionTest extends AbstractApiTestCase
 {
     use SecurityTrait;
+    public const API_PATH = '/api/ru/public/user/session/{id}/delete';
+
+    protected function setUp(): void
+    {
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_DELETE);
+    }
 
     public function testAuthorizeIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/session/0/delete', 'DELETE');
+        $this->browser->addParameter('id', 0);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(401);
         $this->assertApiType(ResponseTypeEnum::CHECK_AUTH);
@@ -34,11 +43,11 @@ final class DeleteSessionTest extends AbstractApiTestCase
      */
     public function testSessionNotExist(): void
     {
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/session/0/delete', 'DELETE', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addParameter('id', 0);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(404);
         $this->assertApiType(ResponseTypeEnum::NOT_EXIST);
@@ -55,11 +64,12 @@ final class DeleteSessionTest extends AbstractApiTestCase
     public function testSessionNotBelongToMe(): void
     {
         $userSessionForDelete = $this->authorize($this->createUser());
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest("/api/ru/public/user/session/{$userSessionForDelete->getId()}/delete", 'DELETE', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $userSessionForDelete->getId()]);
+        $this->browser->setMethod(Request::METHOD_DELETE);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(404);
         $this->assertApiType(ResponseTypeEnum::NOT_EXIST);
@@ -76,11 +86,11 @@ final class DeleteSessionTest extends AbstractApiTestCase
     public function testSuccessDelete(): void
     {
         $userSessionRepository = $this->em()->getRepository(UserSession::class);
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest("/api/ru/public/user/session/{$authorizedUser->getId()}/delete", 'DELETE', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->addParameter('id', $authorizedUserSession->getId());
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::DELETE);
@@ -88,6 +98,6 @@ final class DeleteSessionTest extends AbstractApiTestCase
 
         $this->em()->clear();
 
-        $this->assertNull($userSessionRepository->find($authorizedUser->getId()));
+        $this->assertNull($userSessionRepository->find($authorizedUserSession->getId()));
     }
 }

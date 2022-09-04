@@ -7,24 +7,33 @@ use App\Tests\AbstractApiTestCase;
 
 final class AllSubscriptionsTest extends AbstractApiTestCase
 {
+    public const API_PATH = '/api/ru/public/subscription/all';
+
+    protected function setUp(): void
+    {
+        $this->browser->createRequest(self::API_PATH);
+    }
+
     public function testReturnSubscriptions(): void
     {
-        $this->createRequest('/api/ru/public/subscription/all', 'GET');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::DATA_OUTPUT);
         $this->assertApiMessage('Вывод данных');
 
-        foreach ($this->getApiResponseData() as $data) {
+        foreach ($this->browser->getResponseData() as $data) {
             $this->assertIsArray($data);
-            $this->assertArrayHasKey('id', $data);
-            $this->assertArrayHasKey('title', $data);
-            $this->assertArrayHasKey('description', $data);
-            $this->assertArrayHasKey('old_price', $data);
-            $this->assertArrayHasKey('price', $data);
-            $this->assertArrayHasKey('is_recommend', $data);
-            $this->assertArrayHasKey('status', $data);
-            $this->assertArrayHasKey('permissions', $data);
+            $this->assertOnlyArrayHasKey([
+                'id',
+                'title',
+                'description',
+                'old_price',
+                'price',
+                'is_recommend',
+                'status',
+                'permissions'
+            ], $data);
 
             $this->assertIsInt($data['id']);
             $this->assertIsString($data['title']);
@@ -37,9 +46,9 @@ final class AllSubscriptionsTest extends AbstractApiTestCase
 
             foreach ($data['permissions'] as $permission) {
                 $this->assertIsArray($permission);
-                $this->assertArrayHasKey('permission_key', $permission);
+                $this->assertOnlyArrayHasKey('permission_key', $permission);
                 $this->assertIsArray($permission['permission_key']);
-                $this->assertArrayHasKey('title', $permission['permission_key']);
+                $this->assertOnlyArrayHasKey('title', $permission['permission_key']);
                 $this->assertIsString($permission['permission_key']['title']);
             }
         }

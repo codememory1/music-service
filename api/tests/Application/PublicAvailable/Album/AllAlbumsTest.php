@@ -6,6 +6,7 @@ use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -16,10 +17,12 @@ final class AllAlbumsTest extends AbstractApiTestCase
 {
     use SecurityTrait;
     use MultimediaTrait;
+    public const API_PATH = '/api/ru/public/album/all';
 
     public function testAuthorizeIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/album/all', 'GET');
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(401);
         $this->assertApiType(ResponseTypeEnum::CHECK_AUTH);
@@ -35,28 +38,32 @@ final class AllAlbumsTest extends AbstractApiTestCase
      */
     public function testReturnAlbums(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
 
-        $this->createAlbum($authorizedUser);
+        $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest('/api/ru/public/album/all', 'GET', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_GET);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::DATA_OUTPUT);
         $this->assertApiMessage('Вывод данных');
+        $this->assertNotEmpty($this->browser->getResponseData());
 
-        foreach ($this->getApiResponseData() as $data) {
+        foreach ($this->browser->getResponseData() as $data) {
             $this->assertIsArray($data);
-            $this->assertArrayHasKey('id', $data);
-            $this->assertArrayHasKey('type', $data);
-            $this->assertArrayHasKey('title', $data);
-            $this->assertArrayHasKey('description', $data);
-            $this->assertArrayHasKey('image', $data);
-            $this->assertArrayHasKey('multimedia', $data);
-            $this->assertArrayHasKey('created_at', $data);
-            $this->assertArrayHasKey('updated_at', $data);
+            $this->assertOnlyArrayHasKey([
+                'id',
+                'type',
+                'title',
+                'description',
+                'image',
+                'multimedia',
+                'created_at',
+                'updated_at'
+            ], $data);
 
             $this->assertIsInt($data['id']);
             $this->assertIsArray($data['type']);
@@ -71,26 +78,27 @@ final class AllAlbumsTest extends AbstractApiTestCase
 
             foreach ($data['multimedia'] as $multimedia) {
                 $this->assertIsArray($multimedia);
-                $this->assertArrayHasKey('id', $multimedia);
-                $this->assertArrayHasKey('type', $multimedia);
-                $this->assertArrayHasKey('title', $multimedia);
-                $this->assertArrayHasKey('multimedia', $multimedia);
-                $this->assertArrayHasKey('description', $multimedia);
-                $this->assertArrayHasKey('image', $multimedia);
-                $this->assertArrayHasKey('category', $multimedia);
-                $this->assertArrayHasKey('text', $multimedia);
-                $this->assertArrayHasKey('subtitles', $multimedia);
-                $this->assertArrayHasKey('producer', $multimedia);
-                $this->assertArrayHasKey('performers', $multimedia);
-                $this->assertArrayHasKey('is_obscene_words', $multimedia);
-                $this->assertArrayHasKey('metadata', $multimedia);
-                $this->assertArrayHasKey('queue', $multimedia);
-                $this->assertArrayHasKey('shares', $multimedia);
-                $this->assertArrayHasKey('auditions', $multimedia);
-                $this->assertArrayHasKey('ratings', $multimedia);
-                $this->assertArrayHasKey('status', $multimedia);
-                $this->assertArrayHasKey('created_at', $multimedia);
-                $this->assertArrayHasKey('updated_at', $multimedia);
+                $this->assertOnlyArrayHasKey([
+                    'id',
+                    'type',
+                    'title',
+                    'description',
+                    'image',
+                    'category',
+                    'text',
+                    'subtitles',
+                    'producer',
+                    'performers',
+                    'is_obscene_words',
+                    'metadata',
+                    'queue',
+                    'shares',
+                    'auditions',
+                    'ratings',
+                    'status',
+                    'created_at',
+                    'updated_at'
+                ], $multimedia);
 
                 $this->assertIsInt($multimedia['id']);
                 $this->assertIsString($multimedia['type']);
@@ -100,7 +108,7 @@ final class AllAlbumsTest extends AbstractApiTestCase
                 $this->assertIsString($multimedia['image']);
 
                 $this->assertIsArray($multimedia['category']);
-                $this->assertArrayHasKey('title', $multimedia['category']);
+                $this->assertOnlyArrayHasKey('title', $multimedia['category']);
                 $this->assertIsString($multimedia['category']['title']);
 
                 $this->assertIsType(['array', 'null'], $multimedia['text']);
@@ -111,9 +119,7 @@ final class AllAlbumsTest extends AbstractApiTestCase
 
                 foreach ($multimedia['performers'] as $performer) {
                     $this->assertIsArray($performer);
-                    $this->assertArrayHasKey('user', $performer);
-                    $this->assertArrayHasKey('created_at', $performer);
-                    $this->assertArrayHasKey('updated_at', $performer);
+                    $this->assertOnlyArrayHasKey(['user', 'created_at', 'updated_at'], $performer);
 
                     $this->assertIsInt($performer['user']['id']);
                     $this->assertDateTime($performer['created_at']);
@@ -132,9 +138,7 @@ final class AllAlbumsTest extends AbstractApiTestCase
                 $this->assertIsArray($multimedia['queue']);
 
                 if ([] !== $multimedia['queue']) {
-                    $this->assertArrayNotHasKey('id', $multimedia['queue']);
-                    $this->assertArrayNotHasKey('created_at', $multimedia['queue']);
-                    $this->assertArrayNotHasKey('updated_at', $multimedia['queue']);
+                    $this->assertOnlyArrayHasKey(['id', 'created_at', 'updated_at'], $multimedia['queue']);
                     $this->assertDateTime($multimedia['queue']['created_at']);
                     $this->assertDateTimeWithNull($multimedia['queue']['updated_at']);
                 }
@@ -143,8 +147,7 @@ final class AllAlbumsTest extends AbstractApiTestCase
                 $this->assertIsInt($multimedia['auditions']);
 
                 $this->assertIsArray($multimedia['ratings']);
-                $this->assertArrayHasKey('like', $multimedia['ratings']);
-                $this->assertArrayHasKey('dislike', $multimedia['ratings']);
+                $this->assertOnlyArrayHasKey(['like', 'dislike'], $multimedia['ratings']);
                 $this->assertIsInt($multimedia['ratings']['like']);
                 $this->assertIsInt($multimedia['ratings']['dislike']);
 

@@ -12,6 +12,7 @@ use App\Rest\S3\Uploader\TrackUploader;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -22,10 +23,13 @@ final class DeleteAlbumTest extends AbstractApiTestCase
 {
     use SecurityTrait;
     use MultimediaTrait;
+    public const API_PATH = '/api/ru/public/album/{id}/delete';
 
     public function testAuthorizeIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/album/all', 'GET');
+        $this->browser->createRequest(self::API_PATH, ['id' => 0]);
+        $this->browser->setMethod(Request::METHOD_DELETE);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(401);
         $this->assertApiType(ResponseTypeEnum::CHECK_AUTH);
@@ -41,11 +45,10 @@ final class DeleteAlbumTest extends AbstractApiTestCase
      */
     public function testAlbumNotExist(): void
     {
-        $authorizedUser = $this->authorize('developer@gmail.com');
-
-        $this->createRequest('/api/ru/public/album/0/delete', 'DELETE', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => 0]);
+        $this->browser->setMethod(Request::METHOD_DELETE);
+        $this->browser->setBearerAuth($this->authorize('developer@gmail.com'));
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(404);
         $this->assertApiType(ResponseTypeEnum::NOT_EXIST);
@@ -61,14 +64,14 @@ final class DeleteAlbumTest extends AbstractApiTestCase
      */
     public function testAlbumNotBelongToMe(): void
     {
-        $ownerAlbum = $this->createArtistAccount('owner-album@gmail.com');
-        $albumId = $this->createAlbum($this->authorize($ownerAlbum));
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $albumOwnerSession = $this->authorize($this->createArtistAccount('owner-album@gmail.com'));
+        $album = $this->createAlbum($albumOwnerSession);
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->assertNotNull($albumId);
-        $this->createRequest("/api/ru/public/album/{$albumId}/delete", 'DELETE', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_DELETE);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(404);
         $this->assertApiType(ResponseTypeEnum::NOT_EXIST);
@@ -85,14 +88,17 @@ final class DeleteAlbumTest extends AbstractApiTestCase
     public function testSuccessDelete(): void
     {
         $albumRepository = $this->em()->getRepository(Album::class);
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $albumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$albumId}/delete", 'DELETE', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_DELETE);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
-        $this->assertNull($albumRepository->find($albumId));
+        $this->em()->clear();
+
+        $this->assertNull($albumRepository->find($album->getId()));
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::DELETE);
         $this->assertApiMessage('Альбом успешно удален');
@@ -110,13 +116,13 @@ final class DeleteAlbumTest extends AbstractApiTestCase
     public function testSuccessDeleteImageToS3(): void
     {
         $imageUploader = $this->getService(ImageUploader::class);
-        $albumRepository = $this->em()->getRepository(Album::class);
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $album = $albumRepository->find($this->createAlbum($authorizedUser));
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$album->getId()}/delete", 'DELETE', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_DELETE);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertNull($imageUploader->getObject($album->getImage()));
     }
@@ -135,14 +141,14 @@ final class DeleteAlbumTest extends AbstractApiTestCase
         $imageUploader = $this->getService(ImageUploader::class);
         $trackUploader = $this->getService(TrackUploader::class);
         $clipUploader = $this->getService(ClipUploader::class);
-        $albumRepository = $this->em()->getRepository(Album::class);
         $multimediaRepository = $this->em()->getRepository(Multimedia::class);
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $album = $albumRepository->find($this->createAlbum($authorizedUser)); // TODO: В созданный альбом, добавить мультимедиа
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession); // TODO: В созданный альбом, добавить мультимедиа
 
-        $this->createRequest("/api/ru/public/album/{$album->getId()}/delete", 'DELETE', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_DELETE);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         foreach ($album->getMultimedia() as $multimedia) {
             $this->assertNull($imageUploader->getObject($multimedia->getImage()));

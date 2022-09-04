@@ -6,6 +6,7 @@ use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -16,10 +17,13 @@ final class PublishAlbumTest extends AbstractApiTestCase
 {
     use SecurityTrait;
     use MultimediaTrait;
+    public const API_PATH = '/api/ru/public/album/{id}/publish';
 
     public function testAuthorizeIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/album/0/publish', 'PATCH');
+        $this->browser->createRequest(self::API_PATH, ['id' => 0]);
+        $this->browser->setMethod(Request::METHOD_PATCH);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(401);
         $this->assertApiType(ResponseTypeEnum::CHECK_AUTH);
@@ -35,13 +39,13 @@ final class PublishAlbumTest extends AbstractApiTestCase
      */
     public function testAccessDenied(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $createdAlbumId = $this->createAlbum($authorizedUser);
-        $authorizedUser = $this->authorize('user@gmail.com');
+        $album = $this->createAlbum($this->authorize($this->createArtistAccount()));
+        $authorizedUserSession = $this->authorize('user@gmail.com');
 
-        $this->createRequest("/api/ru/public/album/{$createdAlbumId}/publish", 'PATCH', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_PATCH);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(403);
         $this->assertApiType(ResponseTypeEnum::CHECK_ACCESS);
@@ -57,11 +61,12 @@ final class PublishAlbumTest extends AbstractApiTestCase
      */
     public function testAlbumNotExist(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
 
-        $this->createRequest('/api/ru/public/album/0/publish', 'PATCH', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => 0]);
+        $this->browser->setMethod(Request::METHOD_PATCH);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(404);
         $this->assertApiType(ResponseTypeEnum::NOT_EXIST);
@@ -77,14 +82,13 @@ final class PublishAlbumTest extends AbstractApiTestCase
      */
     public function testAlbumNotBelongToMe(): void
     {
-        $ownerAlbum = $this->authorize($this->createArtistAccount('owner-album@gmail.com'));
-        $albumId = $this->createAlbum($ownerAlbum);
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $album = $this->createAlbum($this->authorize($this->createArtistAccount()));
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->assertNotNull($albumId);
-        $this->createRequest("/api/ru/public/album/{$albumId}/publish", 'PATCH', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_PATCH);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(404);
         $this->assertApiType(ResponseTypeEnum::NOT_EXIST);
@@ -100,12 +104,13 @@ final class PublishAlbumTest extends AbstractApiTestCase
      */
     public function testBadPublicationWithoutMultimedia(): void
     {
-        $authorizedUser = $this->authorize($this->createArtistAccount());
-        $albumId = $this->createAlbum($authorizedUser);
+        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $album = $this->createAlbum($authorizedUserSession);
 
-        $this->createRequest("/api/ru/public/album/{$albumId}/publish", 'PATCH', server: [
-            'HTTP_AUTHORIZATION' => "Bearer {$authorizedUser->getAccessToken()}"
-        ]);
+        $this->browser->createRequest(self::API_PATH, ['id' => $album->getId()]);
+        $this->browser->setMethod(Request::METHOD_PATCH);
+        $this->browser->setBearerAuth($authorizedUserSession);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(400);
         $this->assertApiType(ResponseTypeEnum::FAILED);

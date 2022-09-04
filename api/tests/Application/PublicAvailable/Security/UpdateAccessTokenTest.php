@@ -4,7 +4,7 @@ namespace App\Tests\Application\PublicAvailable\Security;
 
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
-use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -13,9 +13,17 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class UpdateAccessTokenTest extends AbstractApiTestCase
 {
+    public const API_PATH = '/api/ru/public/user/access-token/update';
+
+    protected function setUp(): void
+    {
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_PUT);
+    }
+
     public function testRefreshTokenIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/access-token/update', 'PUT');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -24,9 +32,8 @@ final class UpdateAccessTokenTest extends AbstractApiTestCase
 
     public function testInvalidRefreshToken(): void
     {
-        $this->createRequest('/api/ru/public/user/access-token/update', 'PUT', cookies: [
-            new Cookie('refresh_token', 'InvalidRefreshToken', path: '/')
-        ]);
+        $this->browser->addCookie('refresh_token', 'InvalidRefreshToken');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(400);
         $this->assertApiType(ResponseTypeEnum::FAILED);
@@ -42,18 +49,16 @@ final class UpdateAccessTokenTest extends AbstractApiTestCase
      */
     public function testSuccessUpdate(): void
     {
-        $authorizedUser = $this->authorize('developer@gmail.com');
+        $authorizedUserSession = $this->authorize('developer@gmail.com');
 
-        $this->createRequest('/api/ru/public/user/access-token/update', 'PUT', cookies: [
-            new Cookie('refresh_token', $authorizedUser->getRefreshToken(), path: '/')
-        ]);
+        $this->browser->addCookie('refresh_token', $authorizedUserSession->getRefreshToken());
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::UPDATE);
         $this->assertApiMessage('Токен успешно обновлен');
-        $this->assertArrayHasKey('access_token', $this->getApiResponseData());
-        $this->assertArrayHasKey('refresh_token', $this->getApiResponseData());
-        $this->assertNotEquals($this->getApiResponseData()['access_token'], $authorizedUser->getAccessToken());
-        $this->assertNotEquals($this->getApiResponseData()['refresh_token'], $authorizedUser->getRefreshToken());
+        $this->assertOnlyArrayHasKey(['access_token', 'refresh_token'], $this->browser->getResponseData());
+        $this->assertNotEquals($this->browser->getResponseData('access_token'), $authorizedUserSession->getAccessToken());
+        $this->assertNotEquals($this->browser->getResponseData('refresh_token'), $authorizedUserSession->getRefreshToken());
     }
 }

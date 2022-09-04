@@ -6,14 +6,18 @@ use App\Entity\User;
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\SecurityTrait;
+use Symfony\Component\HttpFoundation\Request;
 
 final class ActivationAccountTest extends AbstractApiTestCase
 {
     use SecurityTrait;
+    public const API_PATH = '/api/ru/public/user/account-activation';
 
     public function testEmailIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/account-activation', 'POST');
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -22,9 +26,10 @@ final class ActivationAccountTest extends AbstractApiTestCase
 
     public function testInvalidIdentify(): void
     {
-        $this->createRequest('/api/ru/public/user/account-activation', 'POST', [
-            'email' => 'invalid-email@gmail.com'
-        ]);
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->addRequestData('email', 'invalid-email@gmail.com');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -33,9 +38,10 @@ final class ActivationAccountTest extends AbstractApiTestCase
 
     public function testCodeIsRequired(): void
     {
-        $this->createRequest('/api/ru/public/user/account-activation', 'POST', [
-            'email' => 'developer@gmail.com'
-        ]);
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->addRequestData('email', 'developer@gmail.com');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(422);
         $this->assertApiType(ResponseTypeEnum::INPUT_VALIDATION);
@@ -46,10 +52,11 @@ final class ActivationAccountTest extends AbstractApiTestCase
     {
         $registeredEmail = $this->register();
 
-        $this->createRequest('/api/ru/public/user/account-activation', 'POST', [
-            'email' => $registeredEmail,
-            'code' => '000000'
-        ]);
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->addRequestData('email', $registeredEmail);
+        $this->browser->addRequestData('code', '000000');
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(400);
         $this->assertApiType(ResponseTypeEnum::CHECK_VALID);
@@ -62,10 +69,11 @@ final class ActivationAccountTest extends AbstractApiTestCase
         $userRepository = $this->em()->getRepository(User::class);
         $user = $userRepository->findByEmail($registeredEmail);
 
-        $this->createRequest('/api/ru/public/user/account-activation', 'POST', [
-            'email' => $registeredEmail,
-            'code' => $user->getAccountActivationCode()->last()->getCode()
-        ]);
+        $this->browser->createRequest(self::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->addRequestData('email', $registeredEmail);
+        $this->browser->addRequestData('code', $user->getLastAccountActivationCode());
+        $this->browser->sendRequest();
 
         $this->assertApiStatusCode(200);
         $this->assertApiType(ResponseTypeEnum::UPDATE);
