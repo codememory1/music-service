@@ -83,6 +83,8 @@ abstract class AbstractApiTestCase extends WebTestCase
 
             $user->addSession($userSession);
 
+            $this->em()->flush();
+
             return $userSession;
         }
 
