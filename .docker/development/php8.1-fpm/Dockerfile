@@ -33,8 +33,10 @@ RUN apt-get update && apt-get install -y \
     bash-doc  \
     bash-completion
 
+# DB driver
 RUN docker-php-ext-install pdo pdo_pgsql
 
+# Pcntl signal
 RUN docker-php-ext-configure pcntl --enable-pcntl \
   && docker-php-ext-install \
     pcntl

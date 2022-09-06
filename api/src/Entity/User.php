@@ -55,7 +55,7 @@ class User implements EntityInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserProfile::class, cascade: ['persist', 'remove'])]
     private ?UserProfile $profile = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserSession::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserSession::class, cascade: ['persist', 'remove'])]
     private Collection $sessions;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: AccountActivationCode::class, cascade: ['persist', 'remove'])]

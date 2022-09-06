@@ -15,8 +15,7 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
-        <server name="API_VERSION" value="v1" />
-        <server name="APP_DEBUG" value="false" />
+        <server name="APP_DEBUG" value="true" />
     </php>
 
     <testsuites>
@@ -46,6 +45,9 @@
         </testsuite>
         <testsuite name="Public My Multimedia">
             <file>tests/Application/PublicAvailable/Multimedia/UploadMultimediaTest.php</file>
+            <file>tests/Application/PublicAvailable/Multimedia/MultimediaUpdateAccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Multimedia/MyList/AccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Multimedia/MyList/AllListTest.php</file>
         </testsuite>
     </testsuites>
 
