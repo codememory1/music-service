@@ -9,6 +9,7 @@ use App\Rest\S3\ObjectPath;
 use App\Rest\S3\Uploader\UploadedFile as S3UploadedFile;
 use App\Service\MimeTypeConverter;
 use Aws\Result;
+use Exception;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -123,6 +124,21 @@ abstract class AbstractUploader implements S3UploaderInterface
             'Key' => $this->objectPath->getKey(),
             ...$argc
         ]);
+    }
+
+    public function getObject(string $pathInStorage, array $argc = []): ?Result
+    {
+        $this->objectPath->setPath($pathInStorage);
+
+        try {
+            return $this->client->awsS3Client->getObject([
+                'Bucket' => $this->getBucketName(),
+                'Key' => $this->objectPath->getKey(),
+                ...$argc
+            ]);
+        } catch (Exception) {
+            return null;
+        }
     }
 
     #[Pure]

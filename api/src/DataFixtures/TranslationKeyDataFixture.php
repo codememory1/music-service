@@ -41,6 +41,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('common@authFromUnknownDevice'),
             new TranslationKeyFactory('common@authFromUnknownDeviceMessage'),
             new TranslationKeyFactory('common@invalidMultimediaFile'),
+            new TranslationKeyFactory('common@codeIsRequired'),
+            new TranslationKeyFactory('common@onlyOneImage'),
 
             new TranslationKeyFactory('entityNotFound@page'),
             new TranslationKeyFactory('entityNotFound@language'),

@@ -10,3 +10,5 @@
 
 /api/.phpunit.result.cache
 .DS_Store
+
+/api/src/DataFixtures/Files

@@ -163,11 +163,16 @@ abstract class AbstractResponseData implements ResponseDataInterface
                     $propertyNameForResponse = $this->aliases[$collection->getPropertyNameForResponse()];
                 }
 
-                $toArray[$propertyNameForResponse] = empty($valueFromEntityMethod) ? $this->{$collection->propertyName} : $valueFromEntityMethod;
+                $toArray[$propertyNameForResponse] = $this->isEmptyValueFromEntityMethod($valueFromEntityMethod) ? $this->{$collection->propertyName} : $valueFromEntityMethod;
             }
 
             $this->response[] = $toArray;
         }
+    }
+
+    private function isEmptyValueFromEntityMethod(mixed $value): bool
+    {
+        return null === $value || '' === $value;
     }
 
     private function getConstraintHandler(ConstraintInterface $constraint): object

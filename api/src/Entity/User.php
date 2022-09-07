@@ -55,7 +55,7 @@ class User implements EntityInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserProfile::class, cascade: ['persist', 'remove'])]
     private ?UserProfile $profile = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserSession::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserSession::class, cascade: ['persist', 'remove'])]
     private Collection $sessions;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: AccountActivationCode::class, cascade: ['persist', 'remove'])]
@@ -268,6 +268,17 @@ class User implements EntityInterface
         return $this->accountActivationCodes;
     }
 
+    public function getLastAccountActivationCode(): ?int
+    {
+        $lastAccountActivationCode = $this->getAccountActivationCode()->last();
+
+        if (false === $lastAccountActivationCode) {
+            return null;
+        }
+
+        return $lastAccountActivationCode->getCode();
+    }
+
     public function setAccountActivationCode(AccountActivationCode $accountActivationCode): self
     {
         if (!$this->accountActivationCodes->contains($accountActivationCode)) {
@@ -284,6 +295,17 @@ class User implements EntityInterface
     public function getPasswordResets(): Collection
     {
         return $this->passwordResets;
+    }
+
+    public function getLastPasswordResetCode(): ?int
+    {
+        $lastPasswordReset = $this->getPasswordResets()->last();
+
+        if (false === $lastPasswordReset) {
+            return null;
+        }
+
+        return $lastPasswordReset->getCode();
     }
 
     public function setPasswordReset(PasswordReset $passwordReset): self

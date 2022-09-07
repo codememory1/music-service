@@ -49,6 +49,10 @@ services:
     App\Rest\Http\Request:
       public: true
 
+    App\EventListener\KernelException\ApiExceptionListener:
+      tags:
+        - {name: kernel.event_listener, event: kernel.exception}
+
     App\Rest\Response\:
       resource: '../src/Rest/Response/*.php'
       exclude:

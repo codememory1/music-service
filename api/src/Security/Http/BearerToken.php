@@ -17,7 +17,7 @@ class BearerToken
     {
         $request = $this->request->getRequest();
         $authorizationHeader = $request?->headers->get('Authorization');
-        $authorizationHeaderData = explode(' ', $authorizationHeader, 2);
+        $authorizationHeaderData = null === $authorizationHeader ? [] : explode(' ', $authorizationHeader, 2);
 
         if (count($authorizationHeaderData) > 1 && 'Bearer' === $authorizationHeaderData[0]) {
             return $authorizationHeaderData[1];

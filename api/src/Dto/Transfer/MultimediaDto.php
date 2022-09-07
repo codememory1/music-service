@@ -38,13 +38,13 @@ final class MultimediaDto extends AbstractDataTransfer
     #[DtoConstraints\ToTypeConstraint]
     public ?string $description = null;
 
-    #[Assert\NotBlank(message: 'multimedia@multimediaIsRequired')]
-    #[DtoConstraints\IgnoreCallSetterConstraint]
-    public ?UploadedFile $multimedia = null;
-
     #[Assert\NotBlank(message: 'multimedia@categoryIsRequired')]
     #[DtoConstraints\ToEntityConstraint('id')]
     public ?MultimediaCategory $category = null;
+
+    #[Assert\NotBlank(message: 'multimedia@multimediaIsRequired')]
+    #[DtoConstraints\IgnoreCallSetterConstraint]
+    public ?UploadedFile $multimedia = null;
 
     #[DtoConstraints\ToTypeConstraint]
     public ?array $text = null;
@@ -69,6 +69,9 @@ final class MultimediaDto extends AbstractDataTransfer
     )]
     #[DtoConstraints\IgnoreCallSetterConstraint]
     public ?UploadedFile $image = null;
+
+    #[Assert\Length(max: 50, maxMessage: 'multimedia@max')]
+    public ?string $producer = null;
 
     #[DtoConstraints\ToTypeConstraint]
     #[DtoConstraints\ToEntityCallbackConstraint('callbackPerformersEntity')]

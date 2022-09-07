@@ -42,6 +42,8 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'common@authFromUnknownDevice', 'Авторизация с незнакомого устройства'),
             new TranslationFactory('ru', 'common@authFromUnknownDeviceMessage', 'На ваш аккаунт был выполнен вход с незнакомого устройтсва. Название устройства: "%device%", IP-адрес: "%ip%"'),
             new TranslationFactory('ru', 'common@invalidMultimediaFile', 'Произошла ошибка при попытке прочитать файл'),
+            new TranslationFactory('ru', 'common@codeIsRequired', 'Код обязательный к заполнению'),
+            new TranslationFactory('ru', 'common@onlyOneImage', 'Невозможно загрузить более одного изображения'),
 
             new TranslationFactory('ru', 'entityNotFound@page', 'Страница не найдена'),
             new TranslationFactory('ru', 'entityNotFound@language', 'Язык не найден'),
@@ -209,10 +211,14 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'subscription@family', 'Семейная'),
             new TranslationFactory('ru', 'subscription@familyDescription', 'Одна подписка на 7-ми аккаунтах'),
 
+            new TranslationFactory('ru', 'subscriptionPermissionKey@showMyAlbums', 'Просмотр моих альбомов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@createAlbum', 'Создание альбомов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@updateAlbum', 'Обновление альбомов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteAlbum', 'Удаление альбомов'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@showMyMultimedia', 'Просмотр моей мультимедиа'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@addMultimedia', 'Добавление мультимедий'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@updateMultimedia', 'Обновление мультимедиа'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@deleteMultimedia', 'Удаление мультимедиа'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@listeningToMultimedia', 'Прослушивание мультимедии артистов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@controlSubscriptionOnArtist', 'Подписаться или отписаться от артиста'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@acceptingSubscribers', 'Возможность подписываться на артиста'),

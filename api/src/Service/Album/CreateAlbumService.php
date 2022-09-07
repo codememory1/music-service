@@ -29,8 +29,10 @@ class CreateAlbumService extends AbstractService
 
     public function request(AlbumDto $albumDto, User $toUser): JsonResponse
     {
-        $this->create($albumDto, $toUser);
+        $album = $this->create($albumDto, $toUser);
 
-        return $this->responseCollection->successCreate('album@successCreate');
+        return $this->responseCollection->successCreate('album@successCreate', [
+            'id' => $album->getId()
+        ]);
     }
 }

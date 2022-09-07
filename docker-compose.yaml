@@ -26,6 +26,8 @@ services:
         app_path: ${API_PATH}
     expose:
       - "9000"
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
     volumes:
       - "${API_PATH}:${API_WORKDIR}"
       - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"

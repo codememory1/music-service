@@ -15,21 +15,39 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
-        <server name="API_VERSION" value="v1" />
         <server name="APP_DEBUG" value="true" />
     </php>
 
     <testsuites>
-        <testsuite name="Api Tests">
-            <directory>tests/Application</directory>
+        <testsuite name="Public Security">
+            <directory>tests/Application/PublicAvailable/Security</directory>
+        </testsuite>
+        <testsuite name="Public Language">
+            <directory>tests/Application/PublicAvailable/Language</directory>
+        </testsuite>
+        <testsuite name="Public Translation">
+            <directory>tests/Application/PublicAvailable/Translation</directory>
+        </testsuite>
+        <testsuite name="Public Subscription">
+            <directory>tests/Application/PublicAvailable/Subscription</directory>
+        </testsuite>
+        <testsuite name="Public Album">
+            <file>tests/Application/PublicAvailable/Album/CreateAlbumTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/UpdateAlbumTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/AllAlbumsTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/DeleteAlbumTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/PublishAlbumTest.php</file>
+        </testsuite>
+        <testsuite name="Public User Session">
+            <file>tests/Application/PublicAvailable/Session/AllSessionsTest.php</file>
+            <file>tests/Application/PublicAvailable/Session/DeleteSessionTest.php</file>
+            <file>tests/Application/PublicAvailable/Session/DeleteAllSessionTest.php</file>
+        </testsuite>
+        <testsuite name="Public My Multimedia">
+            <file>tests/Application/PublicAvailable/Multimedia/UploadMultimediaTest.php</file>
+            <file>tests/Application/PublicAvailable/Multimedia/MyList/AccessCheckTest.php</file>
         </testsuite>
     </testsuites>
-
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">src</directory>
-        </include>
-    </coverage>
 
     <extensions>
         <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />

@@ -39,7 +39,7 @@ class MailMessagingService
 
         $email->from('kostynd1@gmail.com');
         $email->to($accountActivationCode->getUser()->getEmail());
-        $email->subject($this->translationService->get('registration@registration'));
+        $email->subject('Регистрация'); // TODO: translation - registration@registration
         $email->html($this->getTemplate('register', ['accountActivationCode' => $accountActivationCode]));
 
         $this->mailer->send($email);
@@ -57,7 +57,7 @@ class MailMessagingService
 
         $email->from('kostynd1@gmail.com');
         $email->to($passwordReset->getUser()->getEmail());
-        $email->subject($this->translationService->get('passwordReset@requestRestoration'));
+        $email->subject('Сброс пароля'); // TODO: translation - passwordReset@requestRestoration
         $email->html($this->getTemplate('request-restoration-password', ['passwordReset' => $passwordReset]));
 
         $this->mailer->send($email);
