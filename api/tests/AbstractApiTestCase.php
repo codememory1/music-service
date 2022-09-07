@@ -79,6 +79,10 @@ abstract class AbstractApiTestCase extends WebTestCase
             $userSession->setAccessToken($authorizationToken->getAccessToken());
             $userSession->setRefreshToken($authorizationToken->getRefreshToken());
             $userSession->setLastActivity(new DateTimeImmutable());
+            $userSession->setCoordinates([
+                'latitude' => null,
+                'longitude' => null
+            ]);
             $userSession->setIsActive($isActive);
 
             $user->addSession($userSession);

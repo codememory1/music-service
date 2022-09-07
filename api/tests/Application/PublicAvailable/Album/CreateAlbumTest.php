@@ -10,11 +10,6 @@ use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class CreateAlbumTest extends AbstractApiTestCase
 {
@@ -28,13 +23,6 @@ final class CreateAlbumTest extends AbstractApiTestCase
         'image' => 'image_1.3mb.jpg'
     ];
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     protected function setUp(): void
     {
         $authorizedUser = $this->authorize($this->createArtistAccount());
@@ -54,13 +42,6 @@ final class CreateAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('auth@authRequired');
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testAccessDenied(): void
     {
         $this->browser->setBearerAuth($this->authorize('user@gmail.com'));

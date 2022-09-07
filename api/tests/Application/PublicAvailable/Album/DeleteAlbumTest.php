@@ -13,11 +13,6 @@ use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class DeleteAlbumTest extends AbstractApiTestCase
 {
@@ -36,13 +31,6 @@ final class DeleteAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('auth@authRequired');
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testAlbumNotExist(): void
     {
         $this->browser->createRequest(self::API_PATH, ['id' => 0]);
@@ -55,13 +43,6 @@ final class DeleteAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('entityNotFound@album');
     }
 
-    /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     */
     public function testAlbumNotBelongToMe(): void
     {
         $albumOwnerSession = $this->authorize($this->createArtistAccount('owner-album@gmail.com'));
@@ -78,13 +59,6 @@ final class DeleteAlbumTest extends AbstractApiTestCase
         $this->assertApiMessage('entityNotFound@album');
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testSuccessDelete(): void
     {
         $albumRepository = $this->em()->getRepository(Album::class);
@@ -106,12 +80,6 @@ final class DeleteAlbumTest extends AbstractApiTestCase
 
     /**
      * @depends testSuccessDelete
-     *
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function testSuccessDeleteImageToS3(): void
     {
@@ -129,12 +97,6 @@ final class DeleteAlbumTest extends AbstractApiTestCase
 
     /**
      * @depends testSuccessDelete
-     *
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function testSuccessDeleteMultimedia(): void
     {

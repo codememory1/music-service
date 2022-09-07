@@ -7,11 +7,6 @@ use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\SecurityTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class DeleteSessionTest extends AbstractApiTestCase
 {
@@ -34,13 +29,6 @@ final class DeleteSessionTest extends AbstractApiTestCase
         $this->assertApiMessage('auth@authRequired');
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testSessionNotExist(): void
     {
         $authorizedUserSession = $this->authorize('developer@gmail.com');
@@ -54,13 +42,6 @@ final class DeleteSessionTest extends AbstractApiTestCase
         $this->assertApiMessage('entityNotFound@userSession');
     }
 
-    /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     */
     public function testSessionNotBelongToMe(): void
     {
         $userSessionForDelete = $this->authorize($this->createUser());
@@ -76,13 +57,6 @@ final class DeleteSessionTest extends AbstractApiTestCase
         $this->assertApiMessage('entityNotFound@userSession');
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testSuccessDelete(): void
     {
         $userSessionRepository = $this->em()->getRepository(UserSession::class);

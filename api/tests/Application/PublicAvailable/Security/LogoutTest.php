@@ -5,11 +5,6 @@ namespace App\Tests\Application\PublicAvailable\Security;
 use App\Entity\UserSession;
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class LogoutTest extends AbstractApiTestCase
 {
@@ -39,13 +34,6 @@ final class LogoutTest extends AbstractApiTestCase
         $this->assertApiMessage('logout@failedToLogout');
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testSuccessLogout(): void
     {
         $authorizedUserSession = $this->authorize('developer@gmail.com');
@@ -60,12 +48,6 @@ final class LogoutTest extends AbstractApiTestCase
 
     /**
      * @depends testSuccessLogout
-     *
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function testSuccessDeleteSession(): void
     {

@@ -6,11 +6,6 @@ use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\FilterableTrait;
 use App\Tests\Traits\SortableTrait;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class AllSessionsTest extends AbstractApiTestCase
 {
@@ -32,13 +27,6 @@ final class AllSessionsTest extends AbstractApiTestCase
         $this->assertApiMessage('auth@authRequired');
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testReturnSessions(): void
     {
         $authorizedUserSession = $this->authorize('developer@gmail.com');
@@ -88,12 +76,6 @@ final class AllSessionsTest extends AbstractApiTestCase
 
     /**
      * @depends testReturnSessions
-     *
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function testSortAscByCreatedAt(): void
     {
@@ -112,12 +94,6 @@ final class AllSessionsTest extends AbstractApiTestCase
 
     /**
      * @depends testReturnSessions
-     *
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function testSortDescByCreatedAt(): void
     {
@@ -134,13 +110,6 @@ final class AllSessionsTest extends AbstractApiTestCase
         $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testSortAscByLastActivity(): void
     {
         $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
@@ -156,13 +125,6 @@ final class AllSessionsTest extends AbstractApiTestCase
         $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testSortDescByLastActivity(): void
     {
         $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
@@ -178,13 +140,6 @@ final class AllSessionsTest extends AbstractApiTestCase
         $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testSortAscByCountry(): void
     {
         $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
@@ -200,13 +155,6 @@ final class AllSessionsTest extends AbstractApiTestCase
         $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testSortDescByCountry(): void
     {
         $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
@@ -222,13 +170,6 @@ final class AllSessionsTest extends AbstractApiTestCase
         $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testSortAscByCity(): void
     {
         $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
@@ -244,13 +185,6 @@ final class AllSessionsTest extends AbstractApiTestCase
         $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testSortDescByCity(): void
     {
         $this->authorize('developer@gmail.com'); // Authorization and creation of the first session
@@ -266,13 +200,6 @@ final class AllSessionsTest extends AbstractApiTestCase
         $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($sortedData));
     }
 
-    /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     */
     public function testFilterByActive(): void
     {
         $this->authorize('developer@gmail.com', false); // Authorization and creation of the first session
@@ -288,13 +215,6 @@ final class AllSessionsTest extends AbstractApiTestCase
         $this->assertSame(json_encode($this->browser->getResponseData()), json_encode($filteredData));
     }
 
-    /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     */
     public function testFilterByNotActive(): void
     {
         $this->authorize('developer@gmail.com', true);

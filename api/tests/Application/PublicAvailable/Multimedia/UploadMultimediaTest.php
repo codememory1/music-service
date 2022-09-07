@@ -19,11 +19,6 @@ use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SecurityTrait;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class UploadMultimediaTest extends AbstractApiTestCase
 {
@@ -48,13 +43,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
     ];
     private ?MultimediaRepository $multimediaRepository = null;
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     protected function setUp(): void
     {
         $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
@@ -91,13 +79,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
         $this->assertApiMessage('auth@authRequired');
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testAccessDenied(): void
     {
         $authorizedUserSession = $this->authorize('user@gmail.com');

@@ -4,11 +4,6 @@ namespace App\Tests\Application\PublicAvailable\Multimedia\MyList;
 
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\BaseTestTrait;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class AccessCheckTest extends AbstractApiTestCase
 {
@@ -25,13 +20,6 @@ final class AccessCheckTest extends AbstractApiTestCase
         $this->baseTestAuthorizeIsRequired();
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function testNotEnoughPermissionsToSubscription(): void
     {
         $this->browser->setBearerAuth($this->authorize('user@gmail.com'));

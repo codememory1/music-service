@@ -6,11 +6,6 @@ use App\Entity\UserSession;
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class DeleteAllSessionTest extends AbstractApiTestCase
 {
@@ -31,13 +26,6 @@ final class DeleteAllSessionTest extends AbstractApiTestCase
         $this->assertApiMessage('auth@authRequired');
     }
 
-    /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     */
     public function testSuccessDelete(): void
     {
         $userSessionRepository = $this->em()->getRepository(UserSession::class);
