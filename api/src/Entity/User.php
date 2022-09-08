@@ -119,6 +119,10 @@ class User implements EntityInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSetting::class, cascade: ['persist', 'remove'])]
     private ?UserSetting $setting = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaListeningHistory::class, cascade: ['remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Collection $multimediaListeningHistory;
+
     #[Pure]
     public function __construct()
     {
@@ -137,6 +141,7 @@ class User implements EntityInterface
         $this->subscriptions = new ArrayCollection();
         $this->friendRequests = new ArrayCollection();
         $this->acceptedFriendRequests = new ArrayCollection();
+        $this->multimediaListeningHistory = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -708,7 +713,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isRole(RoleEnum $role): bool
     {
         return $this->getRole()->getKey() === $role->name;
@@ -731,7 +735,6 @@ class User implements EntityInterface
         return $subscriptionPermissions->exists(static fn(int $key, SubscriptionPermission $subscriptionPermission): bool => $subscriptionPermission->getPermissionKey()->getKey() === $expectedSubscriptionPermission->name);
     }
 
-    #[Pure]
     public function isSubscription(SubscriptionEnum $expectedSubscription): bool
     {
         if (null === $subscription = $this->getSubscription()) {
@@ -788,5 +791,35 @@ class User implements EntityInterface
             ->getMultimediaMediaLibrary()
             ->getMediaLibrary()
             ->isCompare($this->getMediaLibrary());
+    }
+
+    /**
+     * @return Collection<int, MultimediaListeningHistory>
+     */
+    public function getMultimediaListeningHistory(): ?Collection
+    {
+        return $this->multimediaListeningHistory;
+    }
+
+    public function addMultimediaToListeningHistory(MultimediaListeningHistory $multimediaListeningHistory): self
+    {
+        if (!$this->multimediaListeningHistory->contains($multimediaListeningHistory)) {
+            $this->multimediaListeningHistory[] = $multimediaListeningHistory;
+            $multimediaListeningHistory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMultimediaToListeningHistory(MultimediaListeningHistory $multimediaListeningHistory): self
+    {
+        if ($this->multimediaListeningHistory->removeElement($multimediaListeningHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($multimediaListeningHistory->getUser() === $this) {
+                $multimediaListeningHistory->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

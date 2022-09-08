@@ -67,6 +67,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityNotFound@mediaLibraryEvent'),
             new TranslationKeyFactory('entityNotFound@runningMultimedia'),
             new TranslationKeyFactory('entityNotFound@streamRunningMultimedia'),
+            new TranslationKeyFactory('entityNotFound@listenToHistory'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -440,6 +441,8 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
 
             new TranslationKeyFactory('streamMultimedia@multimediaIsRequired'),
             new TranslationKeyFactory('streamMultimedia@toUserSessionIsRequired'),
+
+            new TranslationKeyFactory('multimediaListeningHistory@successDelete'),
         ]);
     }
 

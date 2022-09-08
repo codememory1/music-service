@@ -68,6 +68,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'entityNotFound@mediaLibraryEvent', 'События медиатеки не найдено'),
             new TranslationFactory('ru', 'entityNotFound@runningMultimedia', 'Запущенная мультимедиа не найдена'),
             new TranslationFactory('ru', 'entityNotFound@streamRunningMultimedia', 'Стриминг запущенной мультимедиа не найден'),
+            new TranslationFactory('ru', 'entityNotFound@listenToHistory', 'Прослушивание в истории не найдено'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -439,6 +440,8 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
 
             new TranslationFactory('ru', 'streamMultimedia@multimediaIsRequired', 'Мультимедиа обязательна к заполнению'),
             new TranslationFactory('ru', 'streamMultimedia@toUserSessionIsRequired', 'Сессия обазательна к заполнению'),
+
+            new TranslationFactory('ru', 'multimediaListeningHistory@successDelete', 'Прослушивание успешно удалено из истории'),
         ]);
     }
 

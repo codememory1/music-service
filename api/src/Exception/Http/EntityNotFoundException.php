@@ -152,4 +152,10 @@ class EntityNotFoundException extends HttpException
     {
         return new self('entityNotFound@mediaLibraryEvent', data: $data, headers: $headers);
     }
+
+    #[Pure]
+    final public static function listenToHistory(array $data = [], array $headers = []): self
+    {
+        return new self('entityNotFound@listenToHistory', data: $data, headers: $headers);
+    }
 }
