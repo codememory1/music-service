@@ -26,7 +26,7 @@ class MultimediaListeningHistory implements EntityInterface
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'multimediaListeningHistory')]
     private ?User $user = null;
 
-    #[ORM\Column(type: Types::FLOAT, options: [
+    #[ORM\Column('`current_time`', Types::FLOAT, options: [
         'comment' => 'The time at which listening stopped'
     ])]
     private ?float $currentTime = null;
