@@ -46,6 +46,7 @@
         <testsuite name="Public My Multimedia">
             <file>tests/Application/PublicAvailable/Multimedia/UploadMultimediaTest.php</file>
             <file>tests/Application/PublicAvailable/Multimedia/MyList/AccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Multimedia/MyList/AllListTest.php</file>
         </testsuite>
     </testsuites>
 

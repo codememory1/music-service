@@ -12,6 +12,8 @@ use App\Enum\RoleEnum;
 use App\Enum\SubscriptionEnum;
 use App\Enum\UserProfileStatusEnum;
 use App\Enum\UserStatusEnum;
+use function call_user_func;
+use Closure;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class UserFactory implements DataFixtureFactoryInterface
@@ -22,14 +24,16 @@ final class UserFactory implements DataFixtureFactoryInterface
     private string $role;
     private ?ReferenceRepository $referenceRepository = null;
     private ?SubscriptionEnum $subscription;
+    private ?Closure $callbackEntity;
 
-    public function __construct(string $pseudonym, string $email, string $password, RoleEnum $role, ?SubscriptionEnum $subscription = null)
+    public function __construct(string $pseudonym, string $email, string $password, RoleEnum $role, ?SubscriptionEnum $subscription = null, ?callable $callbackEntity = null)
     {
         $this->pseudonym = $pseudonym;
         $this->email = $email;
         $this->password = $password;
         $this->role = $role->name;
         $this->subscription = $subscription;
+        $this->callbackEntity = $callbackEntity;
     }
 
     public function factoryMethod(): EntityInterface
@@ -55,6 +59,10 @@ final class UserFactory implements DataFixtureFactoryInterface
         $user->setStatus(UserStatusEnum::ACTIVE);
         $user->setProfile($userProfile);
         $user->setSubscription($subscription);
+
+        if (null !== $this->callbackEntity) {
+            call_user_func($this->callbackEntity, $user);
+        }
 
         return $user;
     }
