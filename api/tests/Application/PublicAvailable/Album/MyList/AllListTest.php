@@ -1,38 +1,28 @@
 <?php
 
-namespace App\Tests\Application\PublicAvailable\Album;
+namespace App\Tests\Application\PublicAvailable\Album\MyList;
 
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
-use App\Tests\Traits\MultimediaTrait;
-use App\Tests\Traits\SecurityTrait;
-use Symfony\Component\HttpFoundation\Request;
+use App\Tests\Traits\BaseRequestTrait;
 
-final class AllAlbumsTest extends AbstractApiTestCase
+final class AllListTest extends AbstractApiTestCase
 {
-    use SecurityTrait;
-    use MultimediaTrait;
+    use BaseRequestTrait;
     public const API_PATH = '/api/ru/public/album/all';
 
-    public function testAuthorizeIsRequired(): void
+    protected function setUp(): void
     {
-        $this->browser->createRequest(self::API_PATH);
-        $this->browser->sendRequest();
-
-        $this->assertApiStatusCode(401);
-        $this->assertApiType(ResponseTypeEnum::CHECK_AUTH);
-        $this->assertApiMessage('auth@authRequired');
-    }
-
-    public function testReturnAlbums(): void
-    {
-        $authorizedUserSession = $this->authorize($this->createArtistAccount());
+        $authorizedUserSession = $this->authorize('artist@gmail.com');
 
         $this->createAlbum($authorizedUserSession);
 
         $this->browser->createRequest(self::API_PATH);
-        $this->browser->setMethod(Request::METHOD_GET);
         $this->browser->setBearerAuth($authorizedUserSession);
+    }
+
+    public function testFetchData(): void
+    {
         $this->browser->sendRequest();
 
         $this->assertApiStatusCode(200);

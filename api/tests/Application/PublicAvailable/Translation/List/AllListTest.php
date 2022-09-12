@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Application\PublicAvailable\Translation;
+namespace App\Tests\Application\PublicAvailable\Translation\List;
 
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\FilterableTrait;
 
-final class AllTranslationTest extends AbstractApiTestCase
+final class AllListTest extends AbstractApiTestCase
 {
     use FilterableTrait;
     public const API_PATH = '/api/ru/public/translation/{locale}/all';

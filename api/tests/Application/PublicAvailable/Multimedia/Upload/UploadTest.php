@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Application\PublicAvailable\Multimedia;
+namespace App\Tests\Application\PublicAvailable\Multimedia\Upload;
 
 use App\Entity\Multimedia;
 use App\Entity\MultimediaCategory;
@@ -16,14 +16,12 @@ use App\Rest\S3\Uploader\ImageUploader;
 use App\Rest\S3\Uploader\SubtitlesUploader;
 use App\Rest\S3\Uploader\TrackUploader;
 use App\Tests\AbstractApiTestCase;
-use App\Tests\Traits\MultimediaTrait;
-use App\Tests\Traits\SecurityTrait;
+use App\Tests\Traits\BaseRequestTrait;
 use Symfony\Component\HttpFoundation\Request;
 
-final class UploadMultimediaTest extends AbstractApiTestCase
+final class UploadTest extends AbstractApiTestCase
 {
-    use SecurityTrait;
-    use MultimediaTrait;
+    use BaseRequestTrait;
     public const API_PATH = '/api/ru/public/user/multimedia/add';
     private array $validData = [
         'type' => MultimediaTypeEnum::TRACK,
@@ -48,8 +46,8 @@ final class UploadMultimediaTest extends AbstractApiTestCase
         $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
         $multimediaRepository = $this->em()->getRepository(Multimedia::class);
         $multimediaCategory = $multimediaCategoryRepository->findByTitle($this->validData['category']);
-        $authorizedUserSession = $this->authorize($this->createArtistAccount());
-        $albumOwnerSession = $this->authorize($this->createArtistAccount('owner-album@gmail.com'));
+        $authorizedUserSession = $this->authorize('artist@gmail.com');
+        $albumOwnerSession = $this->authorize('artist2@gmail.com');
         $album = $this->createAlbum($authorizedUserSession);
         $albumNotBelongToAuthorizedUser = $this->createAlbum($albumOwnerSession);
 
@@ -57,7 +55,7 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
         $this->browser->createRequest(self::API_PATH);
         $this->browser->setMethod(Request::METHOD_POST);
-        $this->browser->prepareBearerAuth($authorizedUserSession);
+        $this->browser->setBearerAuth($authorizedUserSession);
         $this->browser->prepareRequestData('type', $this->validData['type']->name);
         $this->browser->prepareRequestData('album', $album->getId());
         $this->browser->prepareRequestData('title', $this->validData['title']);
@@ -68,27 +66,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
         $this->browser->prepareRequestData('producer', $this->validData['producer']);
         $this->browser->prepareRequestData('performers', $this->validData['performers']);
         $this->browser->addReference('notMyAlbum', $albumNotBelongToAuthorizedUser->getId());
-    }
-
-    public function testAuthorizeIsRequired(): void
-    {
-        $this->browser->sendRequest();
-
-        $this->assertApiStatusCode(401);
-        $this->assertApiType(ResponseTypeEnum::CHECK_AUTH);
-        $this->assertApiMessage('auth@authRequired');
-    }
-
-    public function testAccessDenied(): void
-    {
-        $authorizedUserSession = $this->authorize('user@gmail.com');
-
-        $this->browser->setBearerAuth($authorizedUserSession);
-        $this->browser->sendRequest();
-
-        $this->assertApiStatusCode(403);
-        $this->assertApiType(ResponseTypeEnum::CHECK_ACCESS);
-        $this->assertApiMessage('accessDenied@notSubscriptionPermissions');
     }
 
     public function testTypeIsRequired(): void
@@ -114,7 +91,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testAlbumIsRequired(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData('type');
         $this->browser->sendRequest();
 
@@ -125,7 +101,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testAlbumNotExist(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData('type');
         $this->browser->addRequestData('album', 0);
         $this->browser->sendRequest();
@@ -137,7 +112,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testAlbumNotBelongToMe(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type']);
         $this->browser->addRequestData('album', $this->browser->getReference('notMyAlbum'));
         $this->browser->sendRequest();
@@ -149,7 +123,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testTitleIsRequired(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album']);
         $this->browser->sendRequest();
 
@@ -160,7 +133,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testTitleMaxLength(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album']);
         $this->browser->addRequestData('title', 'PEhssogFEJDvDKFsuyQytFFcvrpEFPWVHddAdemmWTbkNMpjSkMjjbk');
         $this->browser->sendRequest();
@@ -172,7 +144,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function tesDescriptionMaxLength(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title']);
         $this->browser->addRequestData('description', 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words');
         $this->browser->sendRequest();
@@ -184,7 +155,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testCategoryIsRequired(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description']);
         $this->browser->sendRequest();
 
@@ -195,7 +165,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testCategoryNotExist(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description']);
         $this->browser->addRequestData('category', 0);
         $this->browser->sendRequest();
@@ -212,7 +181,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testMultimediaIsRequired(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text']);
         $this->browser->sendRequest();
 
@@ -223,7 +191,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testInvalidMimeTypeSubtitles(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture('image_1.3mb.jpeg'));
@@ -236,7 +203,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testIsObsceneWordsIsRequired(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'text', 'category']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));
@@ -249,7 +215,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testImageIsRequired(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));
@@ -262,7 +227,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testInvalidMimeTypeImage(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));
@@ -276,7 +240,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testMaxSizeImage(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));
@@ -290,7 +253,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testPerformerNotExist(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words']);
         $this->browser->addRequestData('performers', ['invalid-performer@gmail.com']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
@@ -305,7 +267,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testInvalidMimeTypeTrack(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture('video_544kb_00-31time.mp4'));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));
@@ -319,7 +280,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testInvalidMimeTypeClip(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
         $this->browser->addRequestData('type', MultimediaTypeEnum::CLIP->name);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture('music_5.8mb_02-23time.mp3'));
@@ -334,7 +294,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testInvalidSubtitles(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture('subtitles_182B_not_valid.srt'));
@@ -350,7 +309,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
     {
         $this->changeMultimediaDurationToPlatformSetting(120, 60);
 
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
         $this->browser->addRequestData('type', MultimediaTypeEnum::CLIP->name);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture('video_50.2mb_01-32time.mp4'));
@@ -367,8 +325,8 @@ final class UploadMultimediaTest extends AbstractApiTestCase
     {
         $this->changeMultimediaDurationToPlatformSetting(120, 60);
 
-        $this->browser->usePreparedBearerAuth();
-        $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
+        $this->browser->usePreparedRequestData(['album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
+        $this->browser->addRequestData('type', MultimediaTypeEnum::TRACK->name);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture('music_5.8mb_02-23time.wav'));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));
         $this->browser->addFile('image', $this->getFilePathFromFixture($this->validData['image']));
@@ -381,7 +339,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
 
     public function testSuccessUpload(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));
@@ -400,7 +357,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
      */
     public function testSuccessFlushToDb(): void
     {
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));
@@ -431,7 +387,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
     {
         $clipUploader = $this->getService(ClipUploader::class);
 
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
         $this->browser->addRequestData('type', MultimediaTypeEnum::CLIP->name);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture('video_544kb_00-31time.mp4'));
@@ -451,7 +406,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
     {
         $trackUploader = $this->getService(TrackUploader::class);
 
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));
@@ -470,7 +424,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
     {
         $subtitlesUploader = $this->getService(SubtitlesUploader::class);
 
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));
@@ -489,7 +442,6 @@ final class UploadMultimediaTest extends AbstractApiTestCase
     {
         $imageUploader = $this->getService(ImageUploader::class);
 
-        $this->browser->usePreparedBearerAuth();
         $this->browser->usePreparedRequestData(['type', 'album', 'title', 'description', 'category', 'text', 'is_obscene_words', 'performers']);
         $this->browser->addFile('multimedia', $this->getFilePathFromFixture($this->validData['multimedia']));
         $this->browser->addFile('subtitles', $this->getFilePathFromFixture($this->validData['subtitles']));

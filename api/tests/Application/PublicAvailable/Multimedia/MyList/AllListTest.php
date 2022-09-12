@@ -5,13 +5,13 @@ namespace App\Tests\Application\PublicAvailable\Multimedia\MyList;
 use App\Enum\AlbumTypeEnum;
 use App\Enum\MultimediaTypeEnum;
 use App\Tests\AbstractApiTestCase;
+use App\Tests\Traits\BaseRequestTrait;
 use App\Tests\Traits\FilterableTrait;
-use App\Tests\Traits\MultimediaTrait;
 use App\Tests\Traits\SortableTrait;
 
 final class AllListTest extends AbstractApiTestCase
 {
-    use MultimediaTrait;
+    use BaseRequestTrait;
     use SortableTrait;
     use FilterableTrait;
     public const API_PATH = '/api/ru/public/user/multimedia/all';

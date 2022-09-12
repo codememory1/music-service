@@ -49,6 +49,7 @@ class MultimediaMetadataValidationService
     public function validateDuration(): void
     {
         $this->platformSetting->saveToMemory(PlatformSettingEnum::MULTIMEDIA_DURATION);
+
         $allowedDuration = match ($this->multimedia->getType()) {
             MultimediaTypeEnum::TRACK->name => $this->platformSetting->getFromValue(PlatformSettingValueKeyEnum::MULTIMEDIA_DURATION_TRACK_KEY),
             MultimediaTypeEnum::CLIP->name => $this->platformSetting->getFromValue(PlatformSettingValueKeyEnum::MULTIMEDIA_DURATION_CLIP_KEY),

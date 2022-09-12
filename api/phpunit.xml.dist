@@ -23,30 +23,40 @@
             <directory>tests/Application/PublicAvailable/Security</directory>
         </testsuite>
         <testsuite name="Public Language">
-            <directory>tests/Application/PublicAvailable/Language</directory>
+            <directory>tests/Application/PublicAvailable/Language/List</directory>
         </testsuite>
         <testsuite name="Public Translation">
             <directory>tests/Application/PublicAvailable/Translation</directory>
         </testsuite>
         <testsuite name="Public Subscription">
-            <directory>tests/Application/PublicAvailable/Subscription</directory>
+            <directory>tests/Application/PublicAvailable/Subscription/List</directory>
         </testsuite>
         <testsuite name="Public Album">
-            <file>tests/Application/PublicAvailable/Album/CreateAlbumTest.php</file>
-            <file>tests/Application/PublicAvailable/Album/UpdateAlbumTest.php</file>
-            <file>tests/Application/PublicAvailable/Album/AllAlbumsTest.php</file>
-            <file>tests/Application/PublicAvailable/Album/DeleteAlbumTest.php</file>
-            <file>tests/Application/PublicAvailable/Album/PublishAlbumTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/Create/AccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/Create/CreateTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/Update/AccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/Update/UpdateTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/MyList/AccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/MyList/AllListTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/Delete/AccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/Delete/DeleteTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/Publish/AccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Album/Publish/PublishTest.php</file>
         </testsuite>
         <testsuite name="Public User Session">
-            <file>tests/Application/PublicAvailable/Session/AllSessionsTest.php</file>
-            <file>tests/Application/PublicAvailable/Session/DeleteSessionTest.php</file>
-            <file>tests/Application/PublicAvailable/Session/DeleteAllSessionTest.php</file>
+            <file>tests/Application/PublicAvailable/Session/MyList/AccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Session/MyList/AllListTest.php</file>
+            <file>tests/Application/PublicAvailable/Session/Delete/AccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Session/Delete/DeleteTest.php</file>
+            <file>tests/Application/PublicAvailable/Session/DeleteAll/AccessCheckTest.php</file>
+            <file>tests/Application/PublicAvailable/Session/DeleteAll/DeleteAllTest.php</file>
         </testsuite>
         <testsuite name="Public My Multimedia">
-            <file>tests/Application/PublicAvailable/Multimedia/UploadMultimediaTest.php</file>
+            <file>tests/Application/PublicAvailable/Multimedia/Upload/UploadTest.php</file>
+            <file>tests/Application/PublicAvailable/Multimedia/Upload/AccessCheckTest.php</file>
             <file>tests/Application/PublicAvailable/Multimedia/MyList/AccessCheckTest.php</file>
             <file>tests/Application/PublicAvailable/Multimedia/MyList/AllListTest.php</file>
+            <file>tests/Application/PublicAvailable/DebugTest.php</file>
         </testsuite>
     </testsuites>
 

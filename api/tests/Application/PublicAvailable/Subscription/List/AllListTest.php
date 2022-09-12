@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Application\PublicAvailable\Subscription;
+namespace App\Tests\Application\PublicAvailable\Subscription\List;
 
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 
-final class AllSubscriptionsTest extends AbstractApiTestCase
+final class AllListTest extends AbstractApiTestCase
 {
     public const API_PATH = '/api/ru/public/subscription/all';
 

@@ -5,12 +5,12 @@ namespace App\Tests\Application\PublicAvailable\Security;
 use App\Entity\User;
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
-use App\Tests\Traits\SecurityTrait;
+use App\Tests\Traits\BaseRequestTrait;
 use Symfony\Component\HttpFoundation\Request;
 
-final class ActivationAccountTest extends AbstractApiTestCase
+final class AccountActivationTest extends AbstractApiTestCase
 {
-    use SecurityTrait;
+    use BaseRequestTrait;
     public const API_PATH = '/api/ru/public/user/account-activation';
 
     public function testEmailIsRequired(): void
@@ -65,8 +65,8 @@ final class ActivationAccountTest extends AbstractApiTestCase
 
     public function testSuccessActivate(): void
     {
-        $registeredEmail = $this->register();
         $userRepository = $this->em()->getRepository(User::class);
+        $registeredEmail = $this->register();
         $user = $userRepository->findByEmail($registeredEmail);
 
         $this->browser->createRequest(self::API_PATH);

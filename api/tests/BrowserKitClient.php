@@ -367,6 +367,9 @@ class BrowserKitClient
         $this->server = [];
         $this->cookies = [];
         $this->isRequestError = false;
+        $this->preparedRequestData = [];
+        $this->preparedServer = [];
+        $this->references = [];
     }
 
     private function processDecodeResponse(): array

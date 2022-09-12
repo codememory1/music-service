@@ -5,19 +5,54 @@ namespace App\Tests\Traits;
 use App\Entity\Album;
 use App\Entity\Multimedia;
 use App\Entity\MultimediaCategory;
+use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\AlbumTypeEnum;
 use App\Enum\MultimediaTypeEnum;
-use App\Tests\Application\PublicAvailable\Multimedia\UploadMultimediaTest;
+use App\Tests\Application\PublicAvailable\Album\Create\CreateTest;
+use App\Tests\Application\PublicAvailable\Multimedia\Upload\UploadTest;
+use App\Tests\Application\PublicAvailable\Security\AccountActivationTest;
+use App\Tests\Application\PublicAvailable\Security\RegisterTest;
 use Symfony\Component\HttpFoundation\Request;
 
-trait MultimediaTrait
+trait BaseRequestTrait
 {
+    private function register(?string $email = null): string
+    {
+        $email ??= 'test-user@gmail.com';
+
+        $this->browser->createRequest(RegisterTest::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->addRequestData('pseudonym', 'Codememory');
+        $this->browser->addRequestData('email', $email);
+        $this->browser->addRequestData('password', 'test_user_password');
+        $this->browser->addRequestData('password_confirm', 'test_user_password');
+        $this->browser->sendRequest();
+
+        return $email;
+    }
+
+    private function createUser(?string $email = null): string
+    {
+        $email = $this->register($email);
+
+        $userRepository = $this->em()->getRepository(User::class);
+        $accountActivationCode = $userRepository->findByEmail($email)->getLastAccountActivationCode();
+
+        $this->browser->createRequest(AccountActivationTest::API_PATH);
+        $this->browser->setMethod(Request::METHOD_POST);
+        $this->browser->addRequestData('email', $email);
+        $this->browser->addRequestData('code', $accountActivationCode);
+        $this->browser->sendRequest();
+
+        return $email;
+    }
+
     private function createAlbum(UserSession $authorizedUserSession, ?AlbumTypeEnum $type = null): ?Album
     {
         $albumRepository = $this->em()->getRepository(Album::class);
 
-        $this->browser->createRequest('/api/ru/public/album/create');
+        $this->browser->createRequest(CreateTest::API_PATH);
         $this->browser->setMethod(Request::METHOD_POST);
         $this->browser->setBearerAuth($authorizedUserSession);
         $this->browser->addRequestData('type', null !== $type ? $type->name : AlbumTypeEnum::SINGLE->name);
@@ -38,7 +73,7 @@ trait MultimediaTrait
         $multimediaRepository = $this->em()->getRepository(Multimedia::class);
         $multimediaCategoryRepository = $this->em()->getRepository(MultimediaCategory::class);
 
-        $this->browser->createRequest(UploadMultimediaTest::API_PATH);
+        $this->browser->createRequest(UploadTest::API_PATH);
         $this->browser->setMethod(Request::METHOD_POST);
         $this->browser->setBearerAuth($authorizedUserSession);
         $this->browser->addRequestData('type', $multimediaType->name);
