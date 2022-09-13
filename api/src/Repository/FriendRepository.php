@@ -13,6 +13,19 @@ final class FriendRepository extends AbstractRepository
     protected ?string $entity = Friend::class;
     protected ?string $alias = 'f';
 
+    protected function findByCriteria(array $criteria, array $orderBy = []): array
+    {
+        if (false !== $sortByDate = $this->sortService->get('date')) {
+            $this->qb->orderBy('f.createdAt', $this->getOrderType($sortByDate));
+        }
+
+        if (false !== $sortByAcceptFriendship = $this->sortService->get('acceptFriendship')) {
+            $this->qb->orderBy('f.updatedAt', $this->getOrderType($sortByAcceptFriendship));
+        }
+
+        return $this->findByCriteria([]);
+    }
+
     public function getFriend(User $user, User $friend): ?Friend
     {
         return $this->findOneBy([
@@ -25,8 +38,10 @@ final class FriendRepository extends AbstractRepository
     {
         $qb = $this->getQueryBuilder();
 
-        $qb->orWhere('f.user = :user');
-        $qb->orWhere('f.friend = :user');
+        $qb->where($qb->expr()->orX(
+            $qb->expr()->eq('f.user', ':user'),
+            $qb->expr()->eq('f.friend', ':user')
+        ));
         $qb->setParameter('user', $user);
 
         return $this->findByCriteria([]);
