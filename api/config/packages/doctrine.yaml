@@ -5,13 +5,18 @@ doctrine:
           cron_time: App\DBAL\Types\CronTimeType
           password: App\DBAL\Types\PasswordType
     orm:
-        auto_generate_proxy_classes: true
-        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-        auto_mapping: true
-        mappings:
-            App:
-                type: attribute
-                is_bundle: false
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
+      auto_generate_proxy_classes: true
+      naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+      auto_mapping: true
+
+      dql:
+        datetime_functions:
+          date: Oro\ORM\Query\AST\Functions\SimpleFunction
+
+      mappings:
+          App:
+              type: attribute
+              is_bundle: false
+              dir: '%kernel.project_dir%/src/Entity'
+              prefix: 'App\Entity'
+              alias: App

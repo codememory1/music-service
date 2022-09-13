@@ -19,6 +19,7 @@
         "gedmo/doctrine-extensions": "^3.5",
         "google/apiclient": "^2.12",
         "jenssegers/agent": "^2.6",
+        "oro/doctrine-extensions": "^2.0",
         "php-ffmpeg/php-ffmpeg": "^1.0",
         "predis/predis": "1.1.10",
         "ramsey/uuid": "^4.3",
