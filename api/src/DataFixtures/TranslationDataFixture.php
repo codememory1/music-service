@@ -69,6 +69,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'entityNotFound@runningMultimedia', 'Запущенная мультимедиа не найдена'),
             new TranslationFactory('ru', 'entityNotFound@streamRunningMultimedia', 'Стриминг запущенной мультимедиа не найден'),
             new TranslationFactory('ru', 'entityNotFound@listenToHistory', 'Прослушивание в истории не найдено'),
+            new TranslationFactory('ru', 'entityNotFound@languageCode', 'Код языка %code% не найден'),
 
             new TranslationFactory('ru', 'entityExist@oneOfPermissionExistToRole', 'Одно из разрешений у данной роли уже существует'),
             new TranslationFactory('ru', 'entityExist@subscriptionPermissionKey', 'Данный ключ разрешения для подписок уже существует'),
@@ -337,6 +338,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'multimedia@badDuration', 'Продолжительность мультимедиа не должно превышать %allowed_duration% секунд'),
             new TranslationFactory('ru', 'multimedia@successPlay', 'Мультимедиа успешно воспроизведено'),
             new TranslationFactory('ru', 'multimedia@successPause', 'Воспроизведение мультимедиа успешно остановлено'),
+            new TranslationFactory('ru', 'multimedia@invalidText', 'Некорректный формат текста'),
 
             new TranslationFactory('ru', 'multimediaPlaylist@successMoveToDirectory', 'Мультимедиа успешно перемещена в директорию'),
 
