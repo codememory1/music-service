@@ -20,7 +20,7 @@ class MultimediaListeningHistoryController extends AbstractRestController
     #[Route('/all', methods: 'GET')]
     public function all(MultimediaListeningHistoryResponseData $multimediaListeningHistoryResponseData, MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository): JsonResponse
     {
-        $multimediaListeningHistoryResponseData->setEntities($multimediaListeningHistoryRepository->findByUser($this->getAuthorizedUser()));
+        $multimediaListeningHistoryResponseData->setEntities($multimediaListeningHistoryRepository->findAllByUser($this->getAuthorizedUser()));
 
         return $this->responseCollection->dataOutput($multimediaListeningHistoryResponseData->getResponse());
     }

@@ -253,6 +253,9 @@
     "nikic/php-parser": {
         "version": "v4.13.2"
     },
+    "oro/doctrine-extensions": {
+        "version": "2.0.2"
+    },
     "paragonie/constant_time_encoding": {
         "version": "v2.5.0"
     },
