@@ -10,11 +10,14 @@ use App\Entity\MultimediaPerformer;
 use App\Entity\User;
 use App\Enum\MultimediaTypeEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\Repository\LanguageCodeRepository;
 use App\Security\AuthorizedUser;
 use Doctrine\ORM\EntityManagerInterface;
+use function is_string;
 use Symfony\Component\DependencyInjection\ReverseContainer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @template-extends AbstractDataTransfer<Multimedia>
@@ -77,12 +80,14 @@ final class MultimediaDto extends AbstractDataTransfer
     #[DtoConstraints\ToEntityCallbackConstraint('callbackPerformersEntity')]
     public array $performers = [];
     private AuthorizedUser $authorizedUser;
+    private LanguageCodeRepository $languageCodeRepository;
 
-    public function __construct(ReverseContainer $container, AuthorizedUser $authorizedUser)
+    public function __construct(ReverseContainer $container, AuthorizedUser $authorizedUser, LanguageCodeRepository $languageCodeRepository)
     {
         parent::__construct($container);
 
         $this->authorizedUser = $authorizedUser;
+        $this->languageCodeRepository = $languageCodeRepository;
     }
 
     public function callbackAlbumToEntity(EntityManagerInterface $manager, mixed $value): ?Album
@@ -114,5 +119,26 @@ final class MultimediaDto extends AbstractDataTransfer
         }
 
         return $value;
+    }
+
+    #[Assert\Callback]
+    public function callbackValidationText(ExecutionContextInterface $context): void
+    {
+        $texts = $this->text ?: [];
+
+        foreach ($texts as $code => $text) {
+            if (false === is_string($code) || false === is_string($text)) {
+                $context
+                    ->buildViolation('multimedia@invalidText')
+                    ->atPath('text')
+                    ->addViolation();
+
+                return;
+            }
+
+            if (null === $this->languageCodeRepository->findByCode($code)) {
+                throw EntityNotFoundException::languageCode($code);
+            }
+        }
     }
 }
