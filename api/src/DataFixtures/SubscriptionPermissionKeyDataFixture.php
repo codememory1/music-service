@@ -48,6 +48,9 @@ final class SubscriptionPermissionKeyDataFixture extends AbstractDataFixture imp
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::SHARE_MEDIA_LIBRARY_WITH_FRIENDS, 'subscriptionPermissionKey@shareMediaLibraryWithFriends'),
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT, 'subscriptionPermissionKey@controlMultimediaMediaLibraryEvent'),
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::CONTROL_MEDIA_LIBRARY_EVENT, 'subscriptionPermissionKey@controlMediaLibraryEvent'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::ADD_TIME_CODE_TO_MULTIMEDIA, 'subscriptionPermissionKey@addTimeCodeToMultimedia'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::UPDATE_TIME_CODE_TO_MULTIMEDIA, 'subscriptionPermissionKey@updateTimeCodeToMultimedia'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_TIME_CODE_TO_MULTIMEDIA, 'subscriptionPermissionKey@deleteTimeCodeToMultimedia'),
         ]);
     }
 

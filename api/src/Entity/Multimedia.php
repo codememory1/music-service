@@ -16,7 +16,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: MultimediaRepository::class)]
 #[ORM\Table('multimedia')]
@@ -111,6 +110,9 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
     #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: RunningMultimedia::class, cascade: ['persist', 'remove'])]
     private Collection $runningMultimedia;
 
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaTimeCode::class, cascade: ['persist', 'remove'])]
+    private Collection $timeCodes;
+
     public function __construct()
     {
         $this->generateUuid();
@@ -120,6 +122,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         $this->auditions = new ArrayCollection();
         $this->ratings = new ArrayCollection();
         $this->runningMultimedia = new ArrayCollection();
+        $this->timeCodes = new ArrayCollection();
     }
 
     public function getFolderName(): EntityS3SettingEnum
@@ -158,7 +161,6 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure]
     public function isTrack(): bool
     {
         return $this->getType() === MultimediaTypeEnum::TRACK->name;
@@ -171,7 +173,6 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure]
     public function isClip(): bool
     {
         return $this->getType() === MultimediaTypeEnum::CLIP->name;
@@ -382,7 +383,6 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure]
     public function isDraft(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::DRAFT->name;
@@ -395,7 +395,6 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure]
     public function isModeration(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::MODERATION->name;
@@ -408,7 +407,6 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure]
     public function isPublished(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::PUBLISHED->name;
@@ -421,7 +419,6 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure]
     public function isUnpublished(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::UNPUBLISHED->name;
@@ -434,7 +431,6 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure]
     public function isAppeal(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::APPEAL->name;
@@ -447,7 +443,6 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this;
     }
 
-    #[Pure]
     public function isAppealCanceled(): bool
     {
         return $this->getStatus() === MultimediaStatusEnum::APPEAL_CANCELED->name;
@@ -562,6 +557,36 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
             // set the owning side to null (unless already changed)
             if ($runningMultimedia->getMultimedia() === $this) {
                 $runningMultimedia->setMultimedia(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaTimeCode>
+     */
+    public function getTimeCodes(): Collection
+    {
+        return $this->timeCodes;
+    }
+
+    public function addTimeCode(MultimediaTimeCode $timeCode): self
+    {
+        if (!$this->timeCodes->contains($timeCode)) {
+            $this->timeCodes[] = $timeCode;
+            $timeCode->setMultimedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTimeCode(MultimediaTimeCode $timeCode): self
+    {
+        if ($this->timeCodes->removeElement($timeCode)) {
+            // set the owning side to null (unless already changed)
+            if ($timeCode->getMultimedia() === $this) {
+                $timeCode->setMultimedia(null);
             }
         }
 

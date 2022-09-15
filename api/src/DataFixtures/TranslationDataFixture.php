@@ -444,6 +444,20 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'streamMultimedia@toUserSessionIsRequired', 'Сессия обазательна к заполнению'),
 
             new TranslationFactory('ru', 'multimediaListeningHistory@successDelete', 'Прослушивание успешно удалено из истории'),
+
+            new TranslationFactory('ru', 'multimediaTimeCode@rangeTimeIsRequired', 'Диапазон времени тайм-кода обязательно к заполнению'),
+            new TranslationFactory('ru', 'multimediaTimeCode@invalidFromTime', 'Некорректное минимальное значение тайм-кода'),
+            new TranslationFactory('ru', 'multimediaTimeCode@minFromTime', 'Минимальное значение тайм-кода не может быть меньше 0'),
+            new TranslationFactory('ru', 'multimediaTimeCode@invalidToTime', 'Некорректное максимальное значение тайм-кода'),
+            new TranslationFactory('ru', 'multimediaTimeCode@titleIsRequired', 'Название тайм-кода обязательное к заполнению'),
+            new TranslationFactory('ru', 'multimediaTimeCode@titleMaxLength', 'Название тайм-кода не может превышать 50 символов'),
+            new TranslationFactory('ru', 'multimediaTimeCode@fromTimeMoreToTime', 'Минимальное значение тайм-кода не должно быть больше максимального'),
+            new TranslationFactory('ru', 'multimediaTimeCode@toTimeLessFromTime', 'Максимальное значение тайм-кода не должно быть меньше минимального'),
+            new TranslationFactory('ru', 'multimediaTimeCode@timeCodeAlreadyAdded', 'Одно из значений тайм-кода уже было добавлено ранее'),
+            new TranslationFactory('ru', 'multimediaTimeCode@toTimeMoreDuration', 'Максимальное значение тайм-кода не должно превышать продолжительность мультимедиа'),
+            new TranslationFactory('ru', 'multimediaTimeCode@successAdd', 'Тайм-код успешно добавлен'),
+            new TranslationFactory('ru', 'multimediaTimeCode@successUpdate', 'Тайм-код успешно обновлен'),
+            new TranslationFactory('ru', 'multimediaTimeCode@successDelete', 'Тайм-код успешно удален'),
         ]);
     }
 

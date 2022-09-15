@@ -3,7 +3,6 @@
 namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
-use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Language;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,8 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class LanguageDto extends AbstractDataTransfer
 {
-    protected EntityInterface|string|null $entity = Language::class;
-
     #[Assert\Length(min: 2, max: 5, minMessage: 'language@minCodeLength', maxMessage: 'language@maxCodeLength')]
     #[DtoConstraints\ToTypeConstraint]
     public ?string $code = null;
