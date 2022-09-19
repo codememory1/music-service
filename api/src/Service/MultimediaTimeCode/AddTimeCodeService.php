@@ -16,8 +16,9 @@ final class AddTimeCodeService extends AbstractService
         $this->validate($multimediaTimeCodeDto);
 
         $multimediaTimeCodeRepository = $this->em->getRepository(MultimediaTimeCode::class);
+        $multimediaTimeCode = $multimediaTimeCodeRepository->findByMaxToTime($multimedia);
 
-        if (null !== $multimediaTimeCodeRepository->findByAnyTime($multimedia, $multimediaTimeCodeDto->fromTime, $multimediaTimeCodeDto->toTime)) {
+        if (null !== $multimediaTimeCode && $multimediaTimeCodeDto->fromTime < $multimediaTimeCode->getToTime()) {
             throw InvalidInputValidationException::multimediaTimeCodeAlreadyAdded();
         }
 
