@@ -7,12 +7,12 @@ use App\Entity\UserSession;
 use App\Enum\ResponseTypeEnum;
 use App\Service\HashingService;
 use App\Tests\AbstractApiTestCase;
-use App\Tests\Traits\SecurityTrait;
+use App\Tests\Traits\BaseRequestTrait;
 use Symfony\Component\HttpFoundation\Request;
 
 final class RegisterTest extends AbstractApiTestCase
 {
-    use SecurityTrait;
+    use BaseRequestTrait;
     public const API_PATH = '/api/ru/public/user/register';
     private array $validData = [
         'pseudonym' => 'Codememory',

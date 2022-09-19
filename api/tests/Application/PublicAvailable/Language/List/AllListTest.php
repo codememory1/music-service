@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Application\PublicAvailable\Language;
+namespace App\Tests\Application\PublicAvailable\Language\List;
 
 use App\Enum\ResponseTypeEnum;
 use App\Tests\AbstractApiTestCase;
 use App\Tests\Traits\SortableTrait;
 
-final class AllLanguagesTest extends AbstractApiTestCase
+final class AllListTest extends AbstractApiTestCase
 {
     use SortableTrait;
     public const API_PATH = '/api/ru/public/language/all';

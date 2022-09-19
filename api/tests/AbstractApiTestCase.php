@@ -5,6 +5,7 @@ namespace App\Tests;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
+use App\Rest\S3\Bucket;
 use App\Security\Auth\AuthorizationToken;
 use App\Tests\Traits\AssertTrait;
 use DateTimeImmutable;
@@ -27,14 +28,20 @@ abstract class AbstractApiTestCase extends WebTestCase
         self::ensureKernelShutdown();
 
         $this->client = static::createClient();
-        $this->client->enableProfiler();
         $this->client->catchExceptions(false);
         $this->browser = new BrowserKitClient($this->client);
     }
 
+    protected function tearDown(): void
+    {
+        $s3Bucket = $this->getService(Bucket::class);
+
+        $s3Bucket->clearAllBuckets();
+    }
+
     protected function em(): EntityManagerInterface
     {
-        return static::getContainer()->get('doctrine')->getManager();
+        return static::getContainer()->get(EntityManagerInterface::class);
     }
 
     /**

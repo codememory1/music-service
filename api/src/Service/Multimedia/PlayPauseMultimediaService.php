@@ -15,6 +15,9 @@ class PlayPauseMultimediaService extends AbstractService
     #[Required]
     public ?UpsertListenService $upsertListenHistoryService = null;
 
+    #[Required]
+    public ?AddAuditionService $addAuditionService = null;
+
     public function playPause(Multimedia $multimedia, UserSession $userSession): RunningMultimedia
     {
         $runningMultimediaRepository = $this->em->getRepository(RunningMultimedia::class);
@@ -34,6 +37,7 @@ class PlayPauseMultimediaService extends AbstractService
         $this->flusherService->save($runningMultimedia);
 
         $this->upsertListenHistoryService->upsert($multimedia, $userSession->getUser(), $runningMultimedia->getCurrentTime());
+        $this->addAuditionService->add($multimedia, $userSession->getUser());
 
         return $runningMultimedia;
     }

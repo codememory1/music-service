@@ -120,6 +120,8 @@ final class RestorePasswordTest extends AbstractApiTestCase
         $this->browser->addRequestData('email', $email);
         $this->browser->sendRequest();
 
+        $this->em()->clear();
+
         $lastPasswordResetCode = $userRepository->findByEmail($email)->getLastPasswordResetCode();
 
         $this->assertNotNull($lastPasswordResetCode);

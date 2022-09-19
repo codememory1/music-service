@@ -21,7 +21,7 @@ final class MultimediaRepository extends AbstractRepository
     {
         $this->qb->leftJoin('m.metadata', 'md');
         $this->qb->leftJoin('m.auditions', 'a');
-        $this->qb->groupBy('m, a');
+        $this->qb->groupBy('m, a, md');
 
         if (false !== $sortByTitle = $this->sortService->get('title')) {
             $orderBy['m.title'] = $this->getOrderType($sortByTitle);

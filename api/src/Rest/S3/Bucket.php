@@ -44,11 +44,11 @@ class Bucket
 
     public function clear(string $name): static
     {
-        $objects = $this->awsS3Client->listObjects([
+        $objects = $this->awsS3Client->getIterator('ListObjects', ([
             'Bucket' => $name
-        ]);
+        ]));
 
-        foreach ($objects->get('Contents') as $object) {
+        foreach ($objects as $object) {
             $this->awsS3Client->deleteObject([
                 'Bucket' => $name,
                 'Key' => $object['Key'],
@@ -56,6 +56,13 @@ class Bucket
         }
 
         return $this;
+    }
+
+    public function clearAllBuckets(): void
+    {
+        foreach ($this->all() as $bucket) {
+            $this->clear($bucket['Name']);
+        }
     }
 
     public function exist(string $name): bool
