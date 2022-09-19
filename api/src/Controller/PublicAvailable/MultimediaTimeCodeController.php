@@ -7,10 +7,12 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\Dto\Transformer\MultimediaTimeCodeTransformer;
 use App\Entity\Multimedia;
+use App\Entity\MultimediaTimeCode;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\MultimediaTimeCode\AddTimeCodeService;
+use App\Service\MultimediaTimeCode\DeleteTimeCodeService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,5 +33,18 @@ class MultimediaTimeCodeController extends AbstractRestController
         }
 
         return $addTimeCodeService->request($multimedia, $multimediaTimeCodeTransformer->transformFromRequest());
+    }
+
+    #[Route('/{multimediaTimeCode_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_TIME_CODE_TO_MULTIMEDIA)]
+    public function delete(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimediaTimeCode')] MultimediaTimeCode $multimediaTimeCode,
+        DeleteTimeCodeService $deleteTimeCodeService
+    ): JsonResponse {
+        if (false === $multimediaTimeCode->getMultimedia()->getUser()->isCompare($this->getAuthorizedUser())) {
+            throw EntityNotFoundException::multimediaTimeCode();
+        }
+
+        return $deleteTimeCodeService->request($multimediaTimeCode);
     }
 }

@@ -69,6 +69,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityNotFound@streamRunningMultimedia'),
             new TranslationKeyFactory('entityNotFound@listenToHistory'),
             new TranslationKeyFactory('entityNotFound@languageCode'),
+            new TranslationKeyFactory('entityNotFound@multimediaTimeCode'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
