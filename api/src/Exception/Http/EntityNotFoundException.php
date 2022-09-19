@@ -164,4 +164,10 @@ class EntityNotFoundException extends HttpException
     {
         return new self('entityNotFound@languageCode', ['code' => $code], data: $data, headers: $headers);
     }
+
+    #[Pure]
+    final public static function multimediaTimeCode(array $data = [], array $headers = []): self
+    {
+        return new self('entityNotFound@multimediaTimeCode', data: $data, headers: $headers);
+    }
 }

@@ -69,6 +69,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('entityNotFound@streamRunningMultimedia'),
             new TranslationKeyFactory('entityNotFound@listenToHistory'),
             new TranslationKeyFactory('entityNotFound@languageCode'),
+            new TranslationKeyFactory('entityNotFound@multimediaTimeCode'),
 
             new TranslationKeyFactory('entityExist@oneOfPermissionExistToRole'),
             new TranslationKeyFactory('entityExist@subscriptionPermissionKey'),
@@ -244,6 +245,9 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@shareMediaLibraryWithFriends'),
             new TranslationKeyFactory('subscriptionPermissionKey@controlMultimediaMediaLibraryEvent'),
             new TranslationKeyFactory('subscriptionPermissionKey@controlMediaLibraryEvent'),
+            new TranslationKeyFactory('subscriptionPermissionKey@addTimeCodeToMultimedia'),
+            new TranslationKeyFactory('subscriptionPermissionKey@updateTimeCodeToMultimedia'),
+            new TranslationKeyFactory('subscriptionPermissionKey@deleteTimeCodeToMultimedia'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),
@@ -628,6 +632,20 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('languageCode@yiddish'),
             new TranslationKeyFactory('languageCode@yoruba'),
             new TranslationKeyFactory('languageCode@zhuangChuang'),
+
+            new TranslationKeyFactory('multimediaTimeCode@rangeTimeIsRequired'),
+            new TranslationKeyFactory('multimediaTimeCode@invalidFromTime'),
+            new TranslationKeyFactory('multimediaTimeCode@minFromTime'),
+            new TranslationKeyFactory('multimediaTimeCode@invalidToTime'),
+            new TranslationKeyFactory('multimediaTimeCode@titleIsRequired'),
+            new TranslationKeyFactory('multimediaTimeCode@titleMaxLength'),
+            new TranslationKeyFactory('multimediaTimeCode@fromTimeMoreToTime'),
+            new TranslationKeyFactory('multimediaTimeCode@toTimeLessFromTime'),
+            new TranslationKeyFactory('multimediaTimeCode@timeCodeAlreadyAdded'),
+            new TranslationKeyFactory('multimediaTimeCode@toTimeMoreDuration'),
+            new TranslationKeyFactory('multimediaTimeCode@successAdd'),
+            new TranslationKeyFactory('multimediaTimeCode@successUpdate'),
+            new TranslationKeyFactory('multimediaTimeCode@successDelete'),
         ]);
     }
 

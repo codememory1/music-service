@@ -35,6 +35,9 @@ final class MultimediaResponseData extends AbstractResponseData implements Respo
     #[ResponseDataConstraints\SubscriptionPermission(SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA)]
     public array $text = [];
 
+    #[ResponseDataConstraints\CallbackResponseData(MultimediaTimeCodeResponseData::class)]
+    public array $timeCodes = [];
+
     #[ResponseDataConstraints\SubscriptionPermission(SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA)]
     public ?string $subtitles = null;
     public ?string $producer = null;
