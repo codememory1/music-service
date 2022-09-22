@@ -13,6 +13,7 @@ use Predis\Client;
 
 class MessageQueueToClient
 {
+    public const KEY = 'websocket:prepared_message_for_client#%s';
     private Client $redisClient;
     private UserRepository $userRepository;
     private UserSessionRepository $userSessionRepository;
@@ -41,13 +42,20 @@ class MessageQueueToClient
 
     public function getNextKey(): string
     {
-        return $this->redisClient->dbsize() + 1;
+        $index = $this->redisClient->dbsize() + 1;
+
+        return sprintf(self::KEY, $index);
+    }
+
+    public function getPreparedMessageKeys(): array
+    {
+        return $this->redisClient->keys(sprintf('%s*', self::KEY));
     }
 
     public function pickMessage(callable $pick): void
     {
         while (true) {
-            foreach ($this->redisClient->keys('*') as $key) {
+            foreach ($this->getPreparedMessageKeys() as $key) {
                 if (1 === preg_match('/^\d+$/', $key)) {
                     $data = json_decode($this->redisClient->get($key), true);
                     $to = null;
