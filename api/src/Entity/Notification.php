@@ -58,7 +58,7 @@ class Notification implements EntityInterface
     private ?string $status = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true, options: [
-        'comment' => 'Notification status from NotificationStatusEnum'
+        'comment' => 'Date the notice was sent'
     ])]
     private ?DateTimeImmutable $departureDate = null;
 

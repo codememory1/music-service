@@ -5,11 +5,6 @@ namespace App\Service\WebSocket;
 use App\Entity\UserSession;
 use Predis\Client;
 
-/**
- * Class WorkerConnectionManager.
- *
- * @author  Сodememory
- */
 class WorkerConnectionManager
 {
     private const FORMAT_KEY_CONNECTION = 'websocket:connection#%s.user_session_id';
@@ -19,8 +14,6 @@ class WorkerConnectionManager
     public function __construct(Client $redisClient)
     {
         $this->redisClient = $redisClient;
-
-        $this->redisClient->select(0);
     }
 
     public function addConnectionUserSession(int $connectionId, UserSession $userSession): self
