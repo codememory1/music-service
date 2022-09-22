@@ -105,6 +105,9 @@ services:
     App\Service\WebSocket\WorkerConnectionManager:
       public: false
 
+    App\Service\WebSocket\MessageQueueToClient:
+      public: false
+
     App\Service\WebSocket\Worker:
       arguments:
         $host: '%ws.host%'

@@ -2,16 +2,20 @@
 
 namespace App\Command;
 
+use App\Entity\User;
+use App\Entity\UserSession;
 use App\Enum\WebSocketUserMessageTypeHandlerEnum;
 use App\Exception\Interfaces\WebSocketExceptionInterface;
 use App\Rest\Response\WebSocketSchema;
 use App\Service\SchemaValidatorService;
 use App\Service\TranslationService;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
+use App\Service\WebSocket\MessageQueueToClient;
 use App\Service\WebSocket\Worker;
 use Exception;
 use ReflectionClass;
 use ReflectionException;
+use Swoole\Process;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -33,13 +37,15 @@ class WebSocketServerCommand extends Command
     private Worker $worker;
     private WebSocketSchema $webSocketSchema;
     private TranslationService $translationService;
+    private MessageQueueToClient $messageQueueToClient;
 
     public function __construct(
         ReverseContainer $container,
         SchemaValidatorService $schemaValidatorService,
         Worker $worker,
         WebSocketSchema $webSocketSchema,
-        TranslationService $translationService
+        TranslationService $translationService,
+        MessageQueueToClient $messageQueueToClient
     ) {
         parent::__construct();
 
@@ -48,6 +54,7 @@ class WebSocketServerCommand extends Command
         $this->worker = $worker;
         $this->webSocketSchema = $webSocketSchema;
         $this->translationService = $translationService;
+        $this->messageQueueToClient = $messageQueueToClient;
     }
 
     /**
@@ -65,6 +72,8 @@ class WebSocketServerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $context = $this;
+        $worker = $this->worker;
+        $messageQueueToClient = $this->messageQueueToClient;
 
         $this->worker->initServer();
         $this->worker->onStart();
@@ -74,6 +83,16 @@ class WebSocketServerCommand extends Command
                 $context->messageHandler($frame->fd, $frame->data);
             }
         });
+
+        $this->worker->getServer()->addProcess(new Process(static function() use ($worker, $messageQueueToClient): void {
+            $messageQueueToClient->pickMessage(static function(User|UserSession $to, WebSocketSchema $webSocketSchema) use ($worker): void {
+                match ($to::class) {
+                    User::class => $worker->sendToUser($to, $webSocketSchema),
+                    UserSession::class => $worker->sendToSession($to, $webSocketSchema)
+                };
+            });
+        }));
+
         $this->worker->onCloseConnect();
         $this->worker->startServer();
 

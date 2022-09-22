@@ -92,8 +92,8 @@ class Worker
     {
         $connectionIds = $this->workerConnectionManager->getAllUserConnectionIds($user->getId());
 
-        foreach ($connectionIds as $collection) {
-            $this->sendToConnection($collection->connectionId, $webSocketSchema);
+        foreach ($connectionIds as $connectionId) {
+            $this->sendToConnection($connectionId, $webSocketSchema);
         }
 
         return $this;
@@ -108,6 +108,11 @@ class Worker
         }
 
         return $this;
+    }
+
+    public function getServer(): ?Server
+    {
+        return $this->server;
     }
 
     private function closure(?callable $callback = null, ?callable $privateCallback = null): callable
