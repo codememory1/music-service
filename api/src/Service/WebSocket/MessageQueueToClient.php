@@ -25,7 +25,7 @@ class MessageQueueToClient
         $this->userSessionRepository = $userSessionRepository;
     }
 
-    public function addMessage(WebSocketSchema $webSocketSchema, ?User $toUser = null, ?UserSession $toUserSession = null): self
+    public function sendMessage(WebSocketSchema $webSocketSchema, ?User $toUser = null, ?UserSession $toUserSession = null): self
     {
         if ((null !== $toUser && null !== $toUserSession) || (null === $toUser && null === $toUserSession)) {
             throw new LogicException('Specify one of the $toUser or $toUserSession parameters');

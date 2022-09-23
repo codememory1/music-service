@@ -91,6 +91,6 @@ class SendNotificationsToUsersCommand extends Command
 
     private function sendInRealTime(Notification $notification, User $toUser): void
     {
-        $this->messageQueueToClient->addMessage($this->webSocketResponseCollection->userNotification($notification), $toUser);
+        $this->messageQueueToClient->sendMessage($this->webSocketResponseCollection->userNotification($notification), $toUser);
     }
 }
