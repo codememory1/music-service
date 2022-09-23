@@ -49,6 +49,6 @@ final class NotificationDto extends AbstractDataTransfer
             return $value;
         }
 
-        return $userRepository->findActiveByEmail($value);
+        return null !== $userRepository->findActiveByEmail($value) ? $value : null;
     }
 }

@@ -5,6 +5,8 @@ namespace App\Command;
 use App\Entity\Notification;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Rest\Response\WebSocketResponseCollection;
+use App\Service\WebSocket\MessageQueueToClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,12 +21,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class SendNotificationsToUsersCommand extends Command
 {
     private EntityManagerInterface $em;
+    private WebSocketResponseCollection $webSocketResponseCollection;
+    private MessageQueueToClient $messageQueueToClient;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager, WebSocketResponseCollection $webSocketResponseCollection, MessageQueueToClient $messageQueueToClient)
     {
         parent::__construct();
 
         $this->em = $manager;
+        $this->webSocketResponseCollection = $webSocketResponseCollection;
+        $this->messageQueueToClient = $messageQueueToClient;
     }
 
     /**
@@ -66,16 +72,25 @@ class SendNotificationsToUsersCommand extends Command
         foreach ($userRepository->findActive() as $registeredUser) {
             $registeredUser->addNotification($notification);
 
+            $this->sendInRealTime($notification, $registeredUser);
+
             sleep(1);
         }
     }
 
     private function sendToUser(UserRepository $userRepository, Notification $notification): void
     {
-        $user = $userRepository->findOneBy([
-            'email' => $notification->getToUser()
-        ]);
+        $user = $userRepository->findByEmail($notification->getToUser());
 
-        $user?->addNotification($notification);
+        if (null !== $user) {
+            $user->addNotification($notification);
+
+            $this->sendInRealTime($notification, $user);
+        }
+    }
+
+    private function sendInRealTime(Notification $notification, User $toUser): void
+    {
+        $this->messageQueueToClient->addMessage($this->webSocketResponseCollection->userNotification($notification), $toUser);
     }
 }

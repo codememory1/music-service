@@ -49,31 +49,29 @@ class MessageQueueToClient
 
     public function getPreparedMessageKeys(): array
     {
-        return $this->redisClient->keys(sprintf('%s*', self::KEY));
+        return $this->redisClient->keys(sprintf(self::KEY, '*'));
     }
 
     public function pickMessage(callable $pick): void
     {
         while (true) {
             foreach ($this->getPreparedMessageKeys() as $key) {
-                if (1 === preg_match('/^\d+$/', $key)) {
-                    $data = json_decode($this->redisClient->get($key), true);
-                    $to = null;
+                $data = json_decode($this->redisClient->get($key), true);
+                $to = null;
 
-                    if (null !== $data['to_user']) {
-                        $to = $this->userRepository->find($data['to_user']);
-                    } else {
-                        if (null !== $data['to_user_session']) {
-                            $to = $this->userSessionRepository->find($data['to_user_session']);
-                        }
+                if (null !== $data['to_user']) {
+                    $to = $this->userRepository->find($data['to_user']);
+                } else {
+                    if (null !== $data['to_user_session']) {
+                        $to = $this->userSessionRepository->find($data['to_user_session']);
                     }
-
-                    if (null !== $to) {
-                        call_user_func($pick, $to, unserialize($data['schema']));
-                    }
-
-                    $this->redisClient->del($key);
                 }
+
+                if (null !== $to) {
+                    call_user_func($pick, $to, unserialize($data['schema']));
+                }
+
+                $this->redisClient->del($key);
             }
 
             sleep(1);
