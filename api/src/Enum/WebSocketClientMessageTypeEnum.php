@@ -8,4 +8,5 @@ enum WebSocketClientMessageTypeEnum
     case MULTIMEDIA_STREAM_OFFER;
     case ACCEPT_OFFERED_STREAMING;
     case REJECT_OFFERED_STREAMING;
+    case USER_NOTIFICATION;
 }
