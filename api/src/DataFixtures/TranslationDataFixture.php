@@ -443,6 +443,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
 
             new TranslationFactory('ru', 'streamMultimedia@multimediaIsRequired', 'Мультимедиа обязательна к заполнению'),
             new TranslationFactory('ru', 'streamMultimedia@toUserSessionIsRequired', 'Сессия обазательна к заполнению'),
+            new TranslationFactory('ru', 'streamMultimedia@toFriendIsRequired', 'Друг обязательный к заполнению'),
 
             new TranslationFactory('ru', 'multimediaListeningHistory@successDelete', 'Прослушивание успешно удалено из истории'),
 

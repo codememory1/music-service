@@ -51,4 +51,16 @@ final class WebSocketResponseCollection
 
         return $schema;
     }
+
+    public function test(): WebSocketSchema
+    {
+        $schema = clone $this->webSocketSchema;
+
+        $schema->setType(WebSocketClientMessageTypeEnum::USER_NOTIFICATION);
+        $schema->setResult([
+            'cd' => 123
+        ]);
+
+        return $schema;
+    }
 }

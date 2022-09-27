@@ -21,15 +21,15 @@ class StreamRunningMultimedia implements EntityInterface
     use TimestampTrait;
     use ComparisonTrait;
 
-    #[ORM\OneToOne(inversedBy: 'streamRunningMultimedia', targetEntity: RunningMultimedia::class)]
+    #[ORM\ManyToOne(targetEntity: RunningMultimedia::class, inversedBy: 'streamRunningMultimedia')]
     #[ORM\JoinColumn(nullable: false)]
     private ?RunningMultimedia $runningMultimedia = null;
 
-    #[ORM\OneToOne(inversedBy: 'streamRunningMultimediaFromMe', targetEntity: UserSession::class)]
+    #[ORM\ManyToOne(targetEntity: UserSession::class, inversedBy: 'streamRunningMultimediaFromMe')]
     #[ORM\JoinColumn(nullable: false)]
     private ?UserSession $fromUserSession = null;
 
-    #[ORM\OneToOne(inversedBy: 'streamRunningMultimediaForMe', targetEntity: UserSession::class)]
+    #[ORM\ManyToOne(targetEntity: UserSession::class, inversedBy: 'streamRunningMultimediaForMe')]
     #[ORM\JoinColumn(nullable: false)]
     private ?UserSession $toUserSession = null;
 

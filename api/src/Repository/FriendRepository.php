@@ -16,14 +16,14 @@ final class FriendRepository extends AbstractRepository
     protected function findByCriteria(array $criteria, array $orderBy = []): array
     {
         if (false !== $sortByDate = $this->sortService->get('date')) {
-            $this->qb->orderBy('f.createdAt', $this->getOrderType($sortByDate));
+            $orderBy['f.createdAt'] = $this->getOrderType($sortByDate);
         }
 
         if (false !== $sortByAcceptFriendship = $this->sortService->get('acceptFriendship')) {
-            $this->qb->orderBy('f.updatedAt', $this->getOrderType($sortByAcceptFriendship));
+            $orderBy['f.updatedAt'] = $this->getOrderType($sortByAcceptFriendship);
         }
 
-        return $this->findByCriteria([]);
+        return parent::findByCriteria([], $orderBy);
     }
 
     public function getFriend(User $user, User $friend): ?Friend
