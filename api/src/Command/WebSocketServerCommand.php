@@ -13,6 +13,7 @@ use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use App\Service\WebSocket\MessageQueueToClient;
 use App\Service\WebSocket\Worker;
 use Exception;
+use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use ReflectionException;
 use Swoole\Process;
@@ -38,6 +39,7 @@ class WebSocketServerCommand extends Command
     private WebSocketSchema $webSocketSchema;
     private TranslationService $translationService;
     private MessageQueueToClient $messageQueueToClient;
+    private LoggerInterface $logger;
 
     public function __construct(
         ReverseContainer $container,
@@ -45,7 +47,8 @@ class WebSocketServerCommand extends Command
         Worker $worker,
         WebSocketSchema $webSocketSchema,
         TranslationService $translationService,
-        MessageQueueToClient $messageQueueToClient
+        MessageQueueToClient $messageQueueToClient,
+        LoggerInterface $logger
     ) {
         parent::__construct();
 
@@ -55,6 +58,7 @@ class WebSocketServerCommand extends Command
         $this->webSocketSchema = $webSocketSchema;
         $this->translationService = $translationService;
         $this->messageQueueToClient = $messageQueueToClient;
+        $this->logger = $logger;
     }
 
     /**
@@ -132,6 +136,8 @@ class WebSocketServerCommand extends Command
             } catch (Exception $exception) {
                 if ($exception instanceof WebSocketExceptionInterface) {
                     $this->throwHandler($exception, $connectionId, $message);
+                } else {
+                    $this->logger->critical($exception->getMessage());
                 }
             }
         }

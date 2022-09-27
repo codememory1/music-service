@@ -10,9 +10,9 @@ use App\Enum\UserSessionTypeEnum;
 use App\Repository\UserSessionRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: UserSessionRepository::class)]
 #[ORM\Table('user_sessions')]
@@ -120,11 +120,11 @@ class UserSession implements EntityInterface
     #[ORM\OneToOne(mappedBy: 'userSession', targetEntity: RunningMultimedia::class, cascade: ['persist', 'remove'])]
     private ?RunningMultimedia $runningMultimedia = null;
 
-    #[ORM\OneToOne(mappedBy: 'fromUserSession', targetEntity: StreamRunningMultimedia::class, cascade: ['persist', 'remove'])]
-    private ?StreamRunningMultimedia $streamRunningMultimediaFromMe = null;
+    #[ORM\OneToMany(mappedBy: 'fromUserSession', targetEntity: StreamRunningMultimedia::class)]
+    private Collection $streamRunningMultimediaFromMe;
 
-    #[ORM\OneToOne(mappedBy: 'toUserSession', targetEntity: StreamRunningMultimedia::class, cascade: ['persist', 'remove'])]
-    private ?StreamRunningMultimedia $streamRunningMultimediaForMe = null;
+    #[ORM\OneToMany(mappedBy: 'toUserSession', targetEntity: StreamRunningMultimedia::class)]
+    private Collection $streamRunningMultimediaForMe;
 
     public function __construct()
     {
@@ -148,13 +148,11 @@ class UserSession implements EntityInterface
         return $this->type;
     }
 
-    #[Pure]
     public function isTemp(): bool
     {
         return $this->getType() === UserSessionTypeEnum::TEMP->name;
     }
 
-    #[Pure]
     public function isRegistered(): bool
     {
         return $this->getType() === UserSessionTypeEnum::REGISTRATION->name;
@@ -388,37 +386,13 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    public function getStreamRunningMultimediaFromMe(): ?StreamRunningMultimedia
+    public function getStreamRunningMultimediaFromMe(): ?Collection
     {
         return $this->streamRunningMultimediaFromMe;
     }
 
-    public function setStreamRunningMultimediaFromMe(StreamRunningMultimedia $streamRunningMultimedia): self
-    {
-        // set the owning side of the relation if necessary
-        if ($streamRunningMultimedia->getFromUserSession() !== $this) {
-            $streamRunningMultimedia->setFromUserSession($this);
-        }
-
-        $this->streamRunningMultimediaFromMe = $streamRunningMultimedia;
-
-        return $this;
-    }
-
-    public function getStreamRunningMultimediaForMe(): ?StreamRunningMultimedia
+    public function getStreamRunningMultimediaForMe(): ?Collection
     {
         return $this->streamRunningMultimediaFromMe;
-    }
-
-    public function setStreamRunningMultimediaForMe(StreamRunningMultimedia $streamRunningMultimedia): self
-    {
-        // set the owning side of the relation if necessary
-        if ($streamRunningMultimedia->getToUserSession() !== $this) {
-            $streamRunningMultimedia->setToUserSession($this);
-        }
-
-        $this->streamRunningMultimediaFromMe = $streamRunningMultimedia;
-
-        return $this;
     }
 }

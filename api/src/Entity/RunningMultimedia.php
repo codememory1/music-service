@@ -7,6 +7,8 @@ use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\RunningMultimediaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
@@ -38,8 +40,14 @@ class RunningMultimedia implements EntityInterface
     ])]
     private bool $isPlaying = false;
 
-    #[ORM\OneToOne(mappedBy: 'runningMultimedia', targetEntity: StreamRunningMultimedia::class, cascade: ['persist', 'remove'])]
-    private ?StreamRunningMultimedia $streamRunningMultimedia = null;
+    #[ORM\OneToMany(mappedBy: 'runningMultimedia', targetEntity: StreamRunningMultimedia::class)]
+    private Collection $streamRunningMultimedia;
+
+    #[Pure]
+    public function __construct()
+    {
+        $this->streamRunningMultimedia = new ArrayCollection();
+    }
 
     public function getUserSession(): ?UserSession
     {
@@ -112,20 +120,8 @@ class RunningMultimedia implements EntityInterface
         return $this;
     }
 
-    public function getStreamRunningMultimedia(): ?StreamRunningMultimedia
+    public function getStreamRunningMultimedia(): Collection
     {
         return $this->streamRunningMultimedia;
-    }
-
-    public function setStreamRunningMultimedia(StreamRunningMultimedia $streamRunningMultimedia): self
-    {
-        // set the owning side of the relation if necessary
-        if ($streamRunningMultimedia->getRunningMultimedia() !== $this) {
-            $streamRunningMultimedia->setRunningMultimedia($this);
-        }
-
-        $this->streamRunningMultimedia = $streamRunningMultimedia;
-
-        return $this;
     }
 }

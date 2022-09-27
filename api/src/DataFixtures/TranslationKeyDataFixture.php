@@ -447,6 +447,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
 
             new TranslationKeyFactory('streamMultimedia@multimediaIsRequired'),
             new TranslationKeyFactory('streamMultimedia@toUserSessionIsRequired'),
+            new TranslationKeyFactory('streamMultimedia@toFriendIsRequired'),
 
             new TranslationKeyFactory('multimediaListeningHistory@successDelete'),
 

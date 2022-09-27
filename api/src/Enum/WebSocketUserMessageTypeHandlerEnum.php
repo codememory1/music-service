@@ -7,6 +7,7 @@ enum WebSocketUserMessageTypeHandlerEnum: string
     case CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_CURRENT_ACCOUNT = 'App\Service\WebSocket\Handle\CreateStreamMultimediaOfferBetweenCurrentAccountHandler';
     case ACCEPT_OFFERED_STREAMING = 'App\Service\WebSocket\Handle\AcceptOfferedStreamingHandler';
     case REJECT_OFFERED_STREAMING = 'App\Service\WebSocket\Handle\RejectOfferedStreamingHandler';
+    case CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_FRIEND = 'App\Service\WebSocket\Handle\CreateStreamMultimediaOfferBetweenFriendHandler';
 
     public static function get(string $name): ?string
     {

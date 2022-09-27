@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class Worker
 {
-    private WorkerConnectionManager $workerConnectionManager;
+    public WorkerConnectionManager $workerConnectionManager;
     private UserSessionRepository $userSessionRepository;
     private MessageBusInterface $bus;
     private string $host;
@@ -94,6 +94,19 @@ class Worker
 
         foreach ($connectionIds as $connectionId) {
             $this->sendToConnection($connectionId, $webSocketSchema);
+        }
+
+        return $this;
+    }
+
+    public function sendToUserWithIterationSession(User $user, callable $callback): self
+    {
+        $connectionIds = $this->workerConnectionManager->getAllUserConnectionIds($user->getId());
+
+        foreach ($connectionIds as $connectionId) {
+            $userSession = $this->userSessionRepository->find($this->workerConnectionManager->getUserSessionByConnectionId($connectionId));
+
+            $this->sendToConnection($connectionId, call_user_func($callback, $userSession));
         }
 
         return $this;

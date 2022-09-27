@@ -5,17 +5,24 @@ namespace App\Service\WebSocket\Handle;
 use App\Dto\Transfer\WebSocket\CreateStreamMultimediaOfferBetweenCurrentAccountDto;
 use App\Dto\Transformer\WebSocket\CreateStreamMultimediaOfferBetweenCurrentAccountTransformer;
 use App\Entity\RunningMultimedia;
-use App\Entity\StreamRunningMultimedia;
 use App\Entity\UserSession;
 use App\Enum\WebSocketClientMessageTypeEnum;
 use App\Exception\WebSocket\EntityNotFoundException;
 use App\Rest\Jwt\AccessToken;
 use App\Service\WebSocket\AbstractUserMessageHandlerService;
+use App\Service\WebSocket\Components\RunningMultimediaComponent;
+use App\Service\WebSocket\Components\StreamRunningMultimediaComponent;
 use Symfony\Contracts\Service\Attribute\Required;
 
 final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends AbstractUserMessageHandlerService
 {
     protected ?WebSocketClientMessageTypeEnum $clientMessageType = WebSocketClientMessageTypeEnum::CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_CURRENT_ACCOUNT;
+
+    #[Required]
+    public ?RunningMultimediaComponent $runningMultimediaComponent = null;
+
+    #[Required]
+    public ?StreamRunningMultimediaComponent $streamRunningMultimediaComponent = null;
 
     #[Required]
     public ?AccessToken $accessToken = null;
@@ -31,18 +38,17 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
 
         $this->validate($dto);
 
-        $userSession = $this->getUserSession($dto);
-        $runningMultimedia = $this->getRunningMultimedia($dto);
-
-        $streamRunningMultimedia = $this->createStreamRunningMultimedia(
-            $runningMultimedia,
-            $this->getAuthorizedUser()->getUserSession(),
-            $userSession
+        $authorizedUserSession = $this->getAuthorizedUser()->getUserSession();
+        $toUserSession = $this->getToUserSession($dto);
+        $runningMultimedia = $this->runningMultimediaComponent->getRunningMultimedia(
+            $dto->runningMultimedia,
+            $authorizedUserSession,
+            $this->clientMessageType
         );
-        $this->createStreamAcceptRequestResponse($streamRunningMultimedia, $userSession);
+        $this->createStreamAcceptRequestResponse($runningMultimedia, $authorizedUserSession, $toUserSession);
     }
 
-    private function getUserSession(CreateStreamMultimediaOfferBetweenCurrentAccountDto $dto): ?UserSession
+    private function getToUserSession(CreateStreamMultimediaOfferBetweenCurrentAccountDto $dto): ?UserSession
     {
         $authorizedUser = $this->getAuthorizedUser();
         $userSessionRepository = $this->em->getRepository(UserSession::class);
@@ -68,41 +74,11 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
         }
     }
 
-    private function getRunningMultimedia(CreateStreamMultimediaOfferBetweenCurrentAccountDto $dto): ?RunningMultimedia
+    private function createStreamAcceptRequestResponse(RunningMultimedia $runningMultimedia, UserSession $from, UserSession $to): void
     {
-        $runningMultimediaRepository = $this->em->getRepository(RunningMultimedia::class);
-        $runningMultimedia = $runningMultimediaRepository->findByIdAndUserSession(
-            $dto->runningMultimedia,
-            $this->getAuthorizedUser()->getUserSession()
-        );
+        $streamRunningMultimedia = $this->streamRunningMultimediaComponent->createStreamRunningMultimedia($runningMultimedia, $from, $to);
+        $response = $this->responseCollection->multimediaStreamAcceptRequest($streamRunningMultimedia);
 
-        if (null === $runningMultimedia) {
-            throw EntityNotFoundException::runningMultimedia($this->clientMessageType);
-        }
-
-        return $runningMultimedia;
-    }
-
-    private function createStreamRunningMultimedia(RunningMultimedia $runningMultimedia, UserSession $fromUserSession, UserSession $toUserSession): StreamRunningMultimedia
-    {
-        $streamRunningMultimedia = new StreamRunningMultimedia();
-
-        $streamRunningMultimedia->setRunningMultimedia($runningMultimedia);
-        $streamRunningMultimedia->setFromUserSession($fromUserSession);
-        $streamRunningMultimedia->setToUserSession($toUserSession);
-        $streamRunningMultimedia->pending();
-
-        $this->em->persist($streamRunningMultimedia);
-        $this->em->flush();
-
-        return $streamRunningMultimedia;
-    }
-
-    private function createStreamAcceptRequestResponse(StreamRunningMultimedia $streamRunningMultimedia, UserSession $toUserSession): void
-    {
-        $this->worker->sendToSession(
-            $toUserSession,
-            $this->responseCollection->multimediaStreamAcceptRequest($streamRunningMultimedia)
-        );
+        $this->worker->sendToSession($to, $response);
     }
 }
