@@ -27,10 +27,13 @@ final class PauseRunningMultimediaEventListener
 
         if (null !== $userSessionId) {
             $userSession = $userSessionRepository->find($userSessionId);
+            $runningMultimedia = $userSession->getRunningMultimedia();
 
-            $userSession->getRunningMultimedia()->pause();
+            if (null !== $runningMultimedia) {
+                $runningMultimedia->pause();
 
-            $this->em->flush();
+                $this->em->flush();
+            }
         }
     }
 }
