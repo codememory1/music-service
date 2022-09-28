@@ -9,7 +9,7 @@ use Attribute;
 final class MethodNamePrefix implements ConstraintInterface
 {
     public function __construct(
-        public readonly string $prefix
+        public readonly string $prefix = ''
     ) {
     }
 

@@ -3,34 +3,32 @@
 namespace App\ResponseData\User;
 
 use App\Enum\RequestTypeEnum;
-use App\ResponseData\AbstractResponseData;
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Availability as RDCA;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class UserResponseData extends AbstractResponseData implements ResponseDataInterface
+final class UserResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    public ?int $id = null;
+    private ?int $id = null;
 
-    #[ResponseDataConstraints\CallbackResponseData(UserProfileResponseData::class, true)]
-    public array $profile = [];
+    #[RDCV\CallbackResponseData(UserProfileResponseData::class, true)]
+    private array $profile = [];
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    public ?string $email = null;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    private ?string $email = null;
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    public array $role = [];
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    private array $role = [];
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    public array $subscription = [];
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    private array $subscription = [];
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    public ?string $status = null;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    private ?string $status = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 }

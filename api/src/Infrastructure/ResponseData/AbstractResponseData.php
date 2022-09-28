@@ -76,14 +76,20 @@ abstract class AbstractResponseData implements ResponseDataInterface
 
     private function handle(): void
     {
+        $ignoredProperties = $this->ignoredProperties;
+
         foreach ($this->entities as $entity) {
             $response = [];
 
-            foreach ($this->reflection->getStrictlyClassProperties() as $property) {
+            $properties = $this->reflection->getStrictlyClassProperties(static fn(ReflectionProperty $property) => false === in_array($property->getName(), $ignoredProperties, true));
+
+            foreach ($properties as $property) {
                 $propertyDataDeterminant = $this->propertyHandler($property, $entity);
 
-                if (null !== $propertyDataDeterminant && false === in_array($propertyDataDeterminant->getPropertyName(), $this->ignoredProperties, true)) {
-                    $response[$propertyDataDeterminant->getPropertyNameInResponse()] = $propertyDataDeterminant->getPropertyValue();
+                if (null !== $propertyDataDeterminant) {
+                    $propertyValue = $propertyDataDeterminant->getPropertyValue() ?: $propertyDataDeterminant->getDefaultPropertyValue();
+
+                    $response[$propertyDataDeterminant->getPropertyNameInResponse()] = $propertyValue;
                 }
             }
 
@@ -138,9 +144,11 @@ abstract class AbstractResponseData implements ResponseDataInterface
         return $propertyIsPassed ? $propertyDataDeterminant : null;
     }
 
-    private function getConstraintHandler(PropertyInterceptorRepository $propertyInterceptorRepository): ConstraintHandlerInterface
+    /**
+     * @return ConstraintHandlerInterface
+     */
+    private function getConstraintHandler(PropertyInterceptorRepository $propertyInterceptorRepository): object
     {
-        /** @var ConstraintHandlerInterface $service */
         return $this->container->getService($propertyInterceptorRepository->handler);
     }
 

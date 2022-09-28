@@ -4,27 +4,25 @@ namespace App\ResponseData;
 
 use App\Enum\RequestTypeEnum;
 use App\Enum\RolePermissionEnum;
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Availability as RDCA;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class SubscriptionPermissionResponseData extends AbstractResponseData implements ResponseDataInterface
+final class SubscriptionPermissionResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    private ?int $id = null;
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    public ?int $id = null;
+    #[RDCV\CallbackResponseData(SubscriptionPermissionKeyResponseData::class, true)]
+    private array $permissionKey = [];
 
-    #[ResponseDataConstraints\CallbackResponseData(SubscriptionPermissionKeyResponseData::class, true)]
-    public array $permissionKey = [];
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
-
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 }

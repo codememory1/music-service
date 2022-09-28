@@ -2,26 +2,28 @@
 
 namespace App\ResponseData;
 
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\System as RDCS;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 use App\ResponseData\User\UserResponseData;
+use App\Security\AuthorizedUser;
+use Symfony\Contracts\Service\Attribute\Required;
 
-final class FriendResponseData extends AbstractResponseData implements ResponseDataInterface
+final class FriendResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    protected array $aliases = [
-        'friend' => 'user'
-    ];
-    public ?int $id = null;
+    #[Required]
+    public ?AuthorizedUser $authorizedUser = null;
+    private ?int $id = null;
 
-    #[ResponseDataConstraints\CallbackResponseData(UserResponseData::class, true)]
-    public array $friend = [];
-    public ?string $status = null;
+    #[RDCS\AsCustomProperty]
+    #[RDCS\AliasInResponse('user')]
+    #[RDCV\CallbackResponseData(UserResponseData::class, true)]
+    private array $friend = [];
+    private ?string $status = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 }

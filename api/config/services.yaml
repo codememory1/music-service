@@ -163,10 +163,6 @@ services:
       public: true
 
     # ResponseData
-    App\ResponseData\Constraints\:
-      resource: '../src/ResponseData/Constraints/*Handler.php'
-      public: true
-
     App\Infrastructure\ResponseData\Constraints\System\:
       resource: '../src/Infrastructure/ResponseData/Constraints/System/*Handler.php'
       public: true

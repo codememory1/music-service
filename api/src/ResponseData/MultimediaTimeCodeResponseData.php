@@ -2,12 +2,12 @@
 
 namespace App\ResponseData;
 
-use App\ResponseData\Interfaces\ResponseDataInterface;
+use App\Infrastructure\ResponseData\AbstractResponseData;
 
-final class MultimediaTimeCodeResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaTimeCodeResponseData extends AbstractResponseData
 {
-    public ?int $id = null;
-    public ?string $title = null;
-    public ?int $fromTime = null;
-    public ?int $toTime = null;
+    private ?int $id = null;
+    private ?string $title = null;
+    private ?int $fromTime = null;
+    private ?int $toTime = null;
 }

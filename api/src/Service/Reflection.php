@@ -26,7 +26,7 @@ class Reflection
     {
         $namespaceClass = $this->namespaceClass;
 
-        return array_filter($this->reflectionClass->getProperties(), static function(ReflectionProperty $property) use ($namespaceClass, $filter) {
+        return array_filter($this->reflectionClass->getProperties(ReflectionProperty::IS_PRIVATE), static function(ReflectionProperty $property) use ($namespaceClass, $filter) {
             $filter = null === $filter || call_user_func($filter, $property);
 
             return $property->class === $namespaceClass && $filter;

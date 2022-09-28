@@ -2,14 +2,15 @@
 
 namespace App\ResponseData;
 
-use App\ResponseData\Constraints as ResponseDataConstraints;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
 final class MediaLibraryStatisticResponseData extends AbstractResponseData
 {
-    public int $numberOfTracks = 0;
-    public int $numberOfClips = 0;
-    public int $numberOfPlaylists = 0;
+    private int $numberOfTracks = 0;
+    private int $numberOfClips = 0;
+    private int $numberOfPlaylists = 0;
 
-    #[ResponseDataConstraints\CallbackResponseData(MultimediaMediaLibraryResponseData::class, true)]
-    public ?array $lastAddedMultimedia = null;
+    #[RDCV\CallbackResponseData(MultimediaMediaLibraryResponseData::class, true)]
+    private ?array $lastAddedMultimedia = null;
 }

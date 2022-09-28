@@ -3,31 +3,29 @@
 namespace App\ResponseData;
 
 use App\Enum\RequestTypeEnum;
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Availability as RDCA;
+use App\Infrastructure\ResponseData\Constraints\System as RDCS;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class PlaylistResponseData extends AbstractResponseData implements ResponseDataInterface
+final class PlaylistResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    protected array $aliases = [
-        'multimedia' => 'multimedia_playlist'
-    ];
-    public ?int $id = null;
-    public ?string $title = null;
+    private ?int $id = null;
+    private ?string $title = null;
 
-    #[ResponseDataConstraints\CallbackResponseData(MultimediaPlaylistResponseData::class)]
-    public array $multimedia = [];
+    #[RDCS\AliasInResponse('multimedia_playlist')]
+    #[RDCV\CallbackResponseData(MultimediaPlaylistResponseData::class)]
+    private array $multimedia = [];
 
-    #[ResponseDataConstraints\CallbackResponseData(PlaylistDirectoryResponseData::class, ignoreProperties: ['multimedia'])]
-    public array $directories = [];
+    #[RDCV\CallbackResponseData(PlaylistDirectoryResponseData::class, ignoreProperties: ['multimedia'])]
+    private array $directories = [];
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    public ?string $status = null;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    private ?string $status = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 }

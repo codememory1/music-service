@@ -3,24 +3,21 @@
 namespace App\ResponseData;
 
 use App\Entity\User;
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
-final class MultimediaPerformerResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaPerformerResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
+    #[RDCV\Callback('handleUser')]
+    private array $user = [];
 
-    #[ResponseDataConstraints\Callback('handleUser')]
-    public array $user = [];
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
-
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 
     #[ArrayShape(['id' => 'int|null'])]
     #[Pure]
