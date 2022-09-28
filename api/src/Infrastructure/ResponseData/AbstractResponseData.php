@@ -3,13 +3,15 @@
 namespace App\Infrastructure\ResponseData;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Infrastructure\Repository\PropertyInterceptorRepository;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintAvailabilityHandlerInterface;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintInterface;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintSystemHandlerInterface;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintValueHandlerInterface;
 use App\Infrastructure\ResponseData\Interfaces\ResponseDataInterface;
+use App\Infrastructure\ResponseData\Repository\AllowedPropertyRepository;
+use App\Infrastructure\ResponseData\Repository\PropertyInterceptorRepository;
+use App\Infrastructure\ResponseData\Repository\PropertyMethodRepository;
 use App\Service\Reflection;
 use Doctrine\Common\Collections\Collection;
 use ReflectionProperty;
@@ -19,8 +21,10 @@ abstract class AbstractResponseData implements ResponseDataInterface
 {
     protected ReverseContainer $container;
     protected null|array|EntityInterface|Collection $entities = null;
+    protected bool $asFirstResponse = false;
     protected Reflection $reflection;
     protected array $ignoredProperties = [];
+    protected array $response = [];
 
     public function __construct(ReverseContainer $container)
     {
@@ -30,41 +34,76 @@ abstract class AbstractResponseData implements ResponseDataInterface
 
     public function setEntities(EntityInterface|Collection|array $entities): self
     {
+        if ($entities instanceof EntityInterface) {
+            $entities = [$entities];
+
+            $this->asFirstResponse = true;
+        }
+
+        if ($entities instanceof Collection) {
+            $entities = $entities->toArray();
+        }
+
         $this->entities = $entities;
 
         return $this;
     }
 
-    public function setIgnoredProperties(array $names): self
+    public function setIgnoredProperties(array $propertyNames): self
     {
-        $this->ignoredProperties = $names;
+        $this->ignoredProperties = $propertyNames;
 
         return $this;
     }
 
-    public function addIgnoreProperty(string $name): self
+    public function addIgnoreProperty(string $propertyName): self
     {
-        $this->ignoredProperties[] = $name;
+        $this->ignoredProperties[] = $propertyName;
 
         return $this;
     }
 
-    public function getResponse(bool $asFirst = false): array
+    public function getResponse(): array
     {
         $this->handle();
 
-        return [];
+        if ($this->asFirstResponse) {
+            return $this->response[0] ?? [];
+        }
+
+        return $this->response;
     }
 
     private function handle(): void
     {
-        foreach ($this->reflection->getStrictlyClassProperties() as $property) {
-            $this->propertyHandler($property);
+        foreach ($this->entities as $entity) {
+            $response = [];
+
+            foreach ($this->reflection->getStrictlyClassProperties() as $property) {
+                $propertyDataDeterminant = $this->propertyHandler($property, $entity);
+
+                if (null !== $propertyDataDeterminant && false === in_array($propertyDataDeterminant->getPropertyName(), $this->ignoredProperties, true)) {
+                    $response[$propertyDataDeterminant->getPropertyNameInResponse()] = $propertyDataDeterminant->getPropertyValue();
+                }
+            }
+
+            $this->response[] = $response;
         }
     }
 
-    private function propertyHandler(ReflectionProperty $property): void
+    private function propertyHandler(ReflectionProperty $property, EntityInterface $entity): ?PropertyDataDeterminant
     {
+        $propertyIsPassed = true;
+        $allowedPropertyRepository = new AllowedPropertyRepository($property);
+        $propertyMethodRepository = new PropertyMethodRepository('get', $property->getName());
+        $propertyDataDeterminant = new PropertyDataDeterminant();
+
+        $propertyDataDeterminant->setPropertyMethodRepository($propertyMethodRepository);
+        $propertyDataDeterminant->setPropertyName($allowedPropertyRepository->getPropertyName());
+        $propertyDataDeterminant->setPropertyNameInResponse($allowedPropertyRepository->getPropertyNameInResponse());
+        $propertyDataDeterminant->setPropertyValue($this->getPropertyValue($entity, $propertyMethodRepository));
+        $propertyDataDeterminant->setDefaultPropertyValue($property->getValue($this));
+
         foreach ($property->getAttributes() as $attribute) {
             $attributeInstance = $attribute->newInstance();
 
@@ -72,24 +111,41 @@ abstract class AbstractResponseData implements ResponseDataInterface
                 $propertyInterceptorRepository = new PropertyInterceptorRepository($attributeInstance, $attributeInstance->getHandler());
                 $constraintHandler = $this->getConstraintHandler($propertyInterceptorRepository);
 
+                $constraintHandler->setEntityIteration($entity);
+                $constraintHandler->setResponseData($this);
+
                 if ($constraintHandler instanceof ConstraintSystemHandlerInterface) {
-                    // TODO: System
+                    $constraintHandler->setPropertyDataDeterminant($propertyDataDeterminant);
+                    $constraintHandler->handle($attributeInstance);
                 }
 
                 if ($constraintHandler instanceof ConstraintAvailabilityHandlerInterface) {
-                    // TODO: Availability
+                    if (false === $constraintHandler->handle($attributeInstance)) {
+                        $propertyIsPassed = false;
+
+                        break;
+                    }
                 }
 
                 if ($constraintHandler instanceof ConstraintValueHandlerInterface) {
-                    // TODO: Value
+                    $propertyDataDeterminant->setPropertyValue(
+                        $constraintHandler->handle($attributeInstance, $this, $propertyDataDeterminant->getPropertyValue())
+                    );
                 }
             }
         }
+
+        return $propertyIsPassed ? $propertyDataDeterminant : null;
     }
 
     private function getConstraintHandler(PropertyInterceptorRepository $propertyInterceptorRepository): ConstraintHandlerInterface
     {
         /** @var ConstraintHandlerInterface $service */
         return $this->container->getService($propertyInterceptorRepository->handler);
+    }
+
+    private function getPropertyValue(EntityInterface $entity, PropertyMethodRepository $propertyMethodRepository): mixed
+    {
+        return method_exists($entity, $propertyMethodRepository->getMethodName()) ? $entity->{$propertyMethodRepository->getMethodName()}() : null;
     }
 }

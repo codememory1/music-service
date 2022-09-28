@@ -2,17 +2,15 @@
 
 namespace App\Infrastructure\ResponseData\Interfaces;
 
-use App\Infrastructure\Repository\PropertyMethodRepository;
+use ReflectionProperty;
 
 interface ConstraintSystemHandlerInterface extends ConstraintHandlerInterface
 {
-    public function setPropertyMethodRepository(PropertyMethodRepository $propertyMethodRepository): self;
+    public function setReflectionProperty(ReflectionProperty $property): self;
 
-    public function setPropertyName(string $name): self;
+    public function getPropertyDataDeterminant(): PropertyDataDeterminantInterface;
 
-    public function setPropertyNameInResponse(string $name): self;
+    public function setPropertyDataDeterminant(PropertyDataDeterminantInterface $propertyDataDeterminant): self;
 
-    public function setIsAllowed(bool $isAllowed): self;
-
-    public function handle(): void;
+    public function handle(ConstraintInterface $constraint): void;
 }

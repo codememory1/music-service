@@ -2,40 +2,30 @@
 
 namespace App\Infrastructure\ResponseData\Constraints;
 
-use App\Infrastructure\Repository\PropertyMethodRepository;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintSystemHandlerInterface;
+use App\Infrastructure\ResponseData\Interfaces\PropertyDataDeterminantInterface;
+use ReflectionProperty;
 
 abstract class AbstractConstraintSystemHandler extends AbstractConstraintHandler implements ConstraintSystemHandlerInterface
 {
-    protected ?PropertyMethodRepository $propertyMethodRepository = null;
-    protected ?string $propertyName = null;
-    protected ?string $propertyNameInResponse = null;
-    protected bool $isAllowed = true;
+    protected ?ReflectionProperty $property = null;
+    protected PropertyDataDeterminantInterface $propertyDataDeterminant;
 
-    public function setPropertyMethodRepository(PropertyMethodRepository $propertyMethodRepository): self
+    public function setReflectionProperty(ReflectionProperty $property): self
     {
-        $this->propertyMethodRepository = $propertyMethodRepository;
+        $this->property = $property;
 
         return $this;
     }
 
-    public function setPropertyName(string $name): self
+    public function getPropertyDataDeterminant(): PropertyDataDeterminantInterface
     {
-        $this->propertyName = $name;
-
-        return $this;
+        return $this->propertyDataDeterminant;
     }
 
-    public function setPropertyNameInResponse(string $name): self
+    public function setPropertyDataDeterminant(PropertyDataDeterminantInterface $propertyDataDeterminant): ConstraintSystemHandlerInterface
     {
-        $this->propertyNameInResponse = $name;
-
-        return $this;
-    }
-
-    public function setIsAllowed(bool $isAllowed): self
-    {
-        $this->isAllowed = $isAllowed;
+        $this->propertyDataDeterminant = $propertyDataDeterminant;
 
         return $this;
     }

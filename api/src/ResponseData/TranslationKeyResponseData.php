@@ -3,23 +3,20 @@
 namespace App\ResponseData;
 
 use App\Enum\RolePermissionEnum;
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
+use App\Infrastructure\ResponseData\Constraints\Availability as RDCA;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class TranslationKeyResponseData extends AbstractResponseData implements ResponseDataInterface
+final class TranslationKeyResponseData extends \App\Infrastructure\ResponseData\AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_TRANSLATIONS)]
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_TRANSLATIONS)]
     public ?int $id = null;
     public ?string $key = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_TRANSLATIONS)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_TRANSLATIONS)]
+    #[RDCV\DateTime]
     public ?string $createdAt = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_TRANSLATIONS)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_TRANSLATIONS)]
+    #[RDCV\DateTime]
     public ?string $updatedAt = null;
 }

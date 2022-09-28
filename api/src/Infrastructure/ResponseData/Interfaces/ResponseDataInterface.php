@@ -9,9 +9,9 @@ interface ResponseDataInterface
 {
     public function setEntities(EntityInterface|Collection|array $entities): self;
 
-    public function setIgnoredProperties(array $names): self;
+    public function setIgnoredProperties(array $propertyNames): self;
 
-    public function addIgnoreProperty(string $name): self;
+    public function addIgnoreProperty(string $propertyName): self;
 
-    public function getResponse(bool $asFirst = false): array;
+    public function getResponse(): array;
 }

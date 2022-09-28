@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Repository;
+namespace App\Infrastructure\ResponseData\Repository;
 
 use App\Infrastructure\ResponseData\Interfaces\ConstraintInterface;
 

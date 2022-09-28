@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Repository;
+namespace App\Infrastructure\ResponseData\Repository;
+
+use function Symfony\Component\String\u;
 
 final class PropertyMethodRepository
 {
@@ -32,5 +34,10 @@ final class PropertyMethodRepository
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getMethodName(): string
+    {
+        return u("{$this->prefix}_{$this->name}")->camel()->toString();
     }
 }

@@ -30,6 +30,7 @@ services:
             - '../src/Service/'
             - '../src/Rest/'
             - '../src/DataFixtures/{Factory,Interfaces,AbstractDataFixture.php}'
+            - '../src/Infrastructure/'
 
     # Packages
     Predis\Client: '@snc_redis.default'
@@ -164,6 +165,18 @@ services:
     # ResponseData
     App\ResponseData\Constraints\:
       resource: '../src/ResponseData/Constraints/*Handler.php'
+      public: true
+
+    App\Infrastructure\ResponseData\Constraints\System\:
+      resource: '../src/Infrastructure/ResponseData/Constraints/System/*Handler.php'
+      public: true
+
+    App\Infrastructure\ResponseData\Constraints\Availability\:
+      resource: '../src/Infrastructure/ResponseData/Constraints/Availability/*Handler.php'
+      public: true
+
+    App\Infrastructure\ResponseData\Constraints\Value\:
+      resource: '../src/Infrastructure/ResponseData/Constraints/Value/*Handler.php'
       public: true
 
     App\ResponseData\:
