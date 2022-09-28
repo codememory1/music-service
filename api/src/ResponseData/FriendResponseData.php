@@ -2,6 +2,8 @@
 
 namespace App\ResponseData;
 
+use App\Entity\Friend;
+use App\Entity\User;
 use App\Infrastructure\ResponseData\AbstractResponseData;
 use App\Infrastructure\ResponseData\Constraints\System as RDCS;
 use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
@@ -17,7 +19,7 @@ final class FriendResponseData extends AbstractResponseData
 
     #[RDCS\AsCustomProperty]
     #[RDCS\AliasInResponse('user')]
-    #[RDCV\CallbackResponseData(UserResponseData::class, true)]
+    #[RDCV\Callback('callbackFriend')]
     private array $friend = [];
     private ?string $status = null;
 
@@ -26,4 +28,15 @@ final class FriendResponseData extends AbstractResponseData
 
     #[RDCV\DateTime]
     private ?string $updatedAt = null;
+
+    public function callbackFriend(?User $user, Friend $friend): array
+    {
+        $userResponseData = new UserResponseData($this->container);
+
+        if ($friend->getUser()->isCompare($this->authorizedUser->getUser())) {
+            return $userResponseData->setEntities($friend->getFriend())->getResponse();
+        }
+
+        return $userResponseData->setEntities($friend->getUser())->getResponse();
+    }
 }

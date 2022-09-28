@@ -16,6 +16,6 @@ final class CallbackHandler extends AbstractConstraintHandler implements Constra
     {
         $class = null === $constraint->class ? $responseData : new ($constraint->class)();
 
-        return $class->{$constraint->methodName}($value);
+        return $class->{$constraint->methodName}($value, $this->entityIteration);
     }
 }
