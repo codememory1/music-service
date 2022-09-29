@@ -7,7 +7,7 @@ use Aws\S3\S3Client as AwsS3Client;
 
 class Bucket
 {
-    private AwsS3Client $awsS3Client;
+    public readonly AwsS3Client $awsS3Client;
     private ?Result $listBuckets = null;
 
     public function __construct(AwsS3Client $awsS3Client)
