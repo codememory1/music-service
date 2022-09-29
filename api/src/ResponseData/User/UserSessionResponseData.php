@@ -12,8 +12,8 @@ final class UserSessionResponseData extends AbstractResponseData
     private ?string $accessToken = null;
     private ?string $refreshToken = null;
 
-    #[RDCS\MethodNamePrefix]
-    private bool $isActive = false;
+    #[RDCS\Prefix('is', 'is')]
+    private bool $active = false;
     private ?string $ip = null;
     private ?string $browser = null;
     private ?string $device = null;

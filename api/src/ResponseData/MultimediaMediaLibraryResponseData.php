@@ -9,7 +9,7 @@ final class MultimediaMediaLibraryResponseData extends AbstractResponseData
 {
     private ?int $id = null;
 
-    #[RDCV\CallbackResponseData(MultimediaResponseData::class, ignoreProperties: ['album'])]
+    #[RDCV\CallbackResponseData(MultimediaResponseData::class, ['album'])]
     private array $multimedia = [];
     private ?string $title = null;
     private ?string $image = null;

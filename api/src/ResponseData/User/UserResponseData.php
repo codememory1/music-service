@@ -11,7 +11,7 @@ final class UserResponseData extends AbstractResponseData
 {
     private ?int $id = null;
 
-    #[RDCV\CallbackResponseData(UserProfileResponseData::class, true)]
+    #[RDCV\CallbackResponseData(UserProfileResponseData::class)]
     private array $profile = [];
 
     #[RDCA\RequestType(RequestTypeEnum::ADMIN)]

@@ -6,16 +6,10 @@ use App\Infrastructure\ResponseData\Interfaces\ConstraintInterface;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-final class Callback implements ConstraintInterface
+final class AsCount implements ConstraintInterface
 {
-    public function __construct(
-        public readonly string $methodName,
-        public readonly ?string $class = null
-    ) {
-    }
-
     public function getHandler(): string
     {
-        return CallbackHandler::class;
+        return AsCountHandler::class;
     }
 }

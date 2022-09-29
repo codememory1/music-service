@@ -9,7 +9,7 @@ final class MultimediaPlaylistDirectoryResponseData extends AbstractResponseData
 {
     private ?int $id = null;
 
-    #[RDCV\CallbackResponseData(MultimediaMediaLibraryResponseData::class, true)]
+    #[RDCV\CallbackResponseData(MultimediaMediaLibraryResponseData::class)]
     private array $multimediaMediaLibrary = [];
 
     #[RDCV\DateTime]

@@ -9,11 +9,9 @@ use App\Rest\Http\Request;
 
 final class RequestTypeHandler extends AbstractConstraintHandler implements ConstraintAvailabilityHandlerInterface
 {
-    private Request $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
+    public function __construct(
+        private Request $request
+    ) {
     }
 
     /**

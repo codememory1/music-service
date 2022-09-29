@@ -3,7 +3,6 @@
 namespace App\ResponseData;
 
 use App\Entity\Friend;
-use App\Entity\User;
 use App\Infrastructure\ResponseData\AbstractResponseData;
 use App\Infrastructure\ResponseData\Constraints\System as RDCS;
 use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
@@ -29,7 +28,7 @@ final class FriendResponseData extends AbstractResponseData
     #[RDCV\DateTime]
     private ?string $updatedAt = null;
 
-    public function callbackFriend(?User $user, Friend $friend): array
+    public function callbackFriend(Friend $friend): array
     {
         $userResponseData = new UserResponseData($this->container);
 

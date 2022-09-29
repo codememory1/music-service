@@ -2,6 +2,7 @@
 
 namespace App\ResponseData;
 
+use App\Entity\Interfaces\EntityInterface;
 use App\Entity\RolePermissionKey;
 use App\Infrastructure\ResponseData\AbstractResponseData;
 use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
@@ -19,7 +20,7 @@ final class UserRolePermissionResponseData extends AbstractResponseData
     #[RDCV\DateTime]
     private ?string $updatedAt = null;
 
-    public function handlePermissionKey(?RolePermissionKey $rolePermissionKey): ?string
+    public function handlePermissionKey(EntityInterface $entity, ?RolePermissionKey $rolePermissionKey): ?string
     {
         return $rolePermissionKey?->getKey();
     }

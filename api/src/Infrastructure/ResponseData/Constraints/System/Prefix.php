@@ -6,15 +6,16 @@ use App\Infrastructure\ResponseData\Interfaces\ConstraintInterface;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-final class MethodNamePrefix implements ConstraintInterface
+final class Prefix implements ConstraintInterface
 {
     public function __construct(
-        public readonly string $prefix = ''
+        public readonly ?string $methodPrefix = null,
+        public readonly ?string $responsePrefix = null,
     ) {
     }
 
     public function getHandler(): string
     {
-        return MethodNamePrefixHandler::class;
+        return PrefixHandler::class;
     }
 }

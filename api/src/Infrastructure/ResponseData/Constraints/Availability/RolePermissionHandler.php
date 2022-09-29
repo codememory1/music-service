@@ -10,11 +10,9 @@ use function is_array;
 
 final class RolePermissionHandler extends AbstractConstraintHandler implements ConstraintAvailabilityHandlerInterface
 {
-    private AuthorizedUser $authorizedUser;
-
-    public function __construct(AuthorizedUser $authorizedUser)
-    {
-        $this->authorizedUser = $authorizedUser;
+    public function __construct(
+        private AuthorizedUser $authorizedUser
+    ) {
     }
 
     /**
