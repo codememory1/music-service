@@ -40,6 +40,12 @@ final class AcceptOfferedStreamingHandler extends AbstractUserMessageHandlerServ
 
     private function accept(StreamRunningMultimedia $streamRunningMultimedia): void
     {
+        $streamRunningMultimedia
+            ->getRunningMultimedia()
+            ->getMultimedia()
+            ->getStatistic()
+            ->addSuccessFulStreams();
+
         $streamRunningMultimedia->accepted();
 
         $this->em->flush();

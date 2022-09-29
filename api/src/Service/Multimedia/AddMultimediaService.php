@@ -4,6 +4,7 @@ namespace App\Service\Multimedia;
 
 use App\Dto\Transfer\MultimediaDto;
 use App\Entity\Multimedia;
+use App\Entity\MultimediaStatistic;
 use App\Entity\User;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +23,7 @@ class AddMultimediaService extends AbstractService
 
         $multimedia->setUser($toUser);
         $multimedia->setDraftStatus();
+        $multimedia->setStatistic(new MultimediaStatistic());
 
         $this->saveMultimediaService->make($multimediaDto, $multimedia);
 
