@@ -2,30 +2,26 @@
 
 namespace App\ResponseData;
 
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
-use App\ResponseData\Traits\ToTranslationHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class UserRoleResponseData extends AbstractResponseData implements ResponseDataInterface
+final class UserRoleResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    use ToTranslationHandlerTrait;
-    public ?int $id = null;
-    public ?string $key = null;
+    private ?int $id = null;
+    private ?string $key = null;
 
-    #[ResponseDataConstraints\Callback('handleToTranslation')]
-    public ?string $title = null;
+    #[RDCV\AsTranslation]
+    private ?string $title = null;
 
-    #[ResponseDataConstraints\Callback('handleToTranslation')]
-    public ?string $shortDescription = null;
+    #[RDCV\AsTranslation]
+    private ?string $shortDescription = null;
 
-    #[ResponseDataConstraints\CallbackResponseData(UserRolePermissionResponseData::class)]
-    public array $permissions = [];
+    #[RDCV\CallbackResponseData(UserRolePermissionResponseData::class)]
+    private array $permissions = [];
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 }

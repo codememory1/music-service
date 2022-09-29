@@ -3,59 +3,57 @@
 namespace App\ResponseData\Admin;
 
 use App\Enum\RolePermissionEnum;
-use App\ResponseData\AbstractResponseData;
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Availability as RDCA;
+use App\Infrastructure\ResponseData\Constraints\System as RDCS;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class UserSessionResponseData extends AbstractResponseData implements ResponseDataInterface
+final class UserSessionResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    protected array $methodPrefixesForProperties = [
-        'isActive' => ''
-    ];
-    public ?int $id = null;
+    private ?int $id = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
-    public ?string $type = null;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
+    private ?string $type = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_USER_SESSION_TOKEN_TO_USER)]
-    public ?string $accessToken = null;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_USER_SESSION_TOKEN_TO_USER)]
+    private ?string $accessToken = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_USER_SESSION_TOKEN_TO_USER)]
-    public ?string $refreshToken = null;
-    public bool $isActive = false;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_USER_SESSION_TOKEN_TO_USER)]
+    private ?string $refreshToken = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
-    public ?string $ip = null;
+    #[RDCS\Prefix('is', 'is')]
+    private bool $active = false;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
-    public ?string $browser = null;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
+    private ?string $ip = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
-    public ?string $device = null;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
+    private ?string $browser = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
-    public ?string $operatingSystem = null;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
+    private ?string $device = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
-    public ?string $city = null;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
+    private ?string $operatingSystem = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
-    public ?string $country = null;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
+    private ?string $city = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
-    public array $coordinates = [];
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
+    private ?string $country = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $lastActivity = null;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
+    private array $coordinates = [];
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
+    #[RDCV\DateTime]
+    private ?string $lastActivity = null;
 
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
+
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 }

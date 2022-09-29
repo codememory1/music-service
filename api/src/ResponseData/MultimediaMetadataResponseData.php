@@ -2,21 +2,19 @@
 
 namespace App\ResponseData;
 
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\System as RDCS;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class MultimediaMetadataResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaMetadataResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    protected array $methodPrefixesForProperties = [
-        'isLossless' => ''
-    ];
-    public ?float $duration = null;
-    public ?int $bitrate = null;
-    public ?int $framerate = null;
-    public bool $isLossless = false;
+    private ?float $duration = null;
+    private ?int $bitrate = null;
+    private ?int $framerate = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCS\Prefix('is', 'is')]
+    private bool $lossless = false;
+
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 }

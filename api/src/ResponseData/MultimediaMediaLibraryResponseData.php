@@ -2,20 +2,18 @@
 
 namespace App\ResponseData;
 
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class MultimediaMediaLibraryResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaMediaLibraryResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    public ?int $id = null;
+    private ?int $id = null;
 
-    #[ResponseDataConstraints\CallbackResponseData(MultimediaResponseData::class, ignoreProperties: ['album'])]
-    public array $multimedia = [];
-    public ?string $title = null;
-    public ?string $image = null;
+    #[RDCV\CallbackResponseData(MultimediaResponseData::class, ['album'])]
+    private array $multimedia = [];
+    private ?string $title = null;
+    private ?string $image = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 }

@@ -3,30 +3,26 @@
 namespace App\ResponseData;
 
 use App\Enum\RequestTypeEnum;
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
-use App\ResponseData\Traits\ToTranslationHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Availability as RDCA;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class AlbumTypeResponseData extends AbstractResponseData implements ResponseDataInterface
+final class AlbumTypeResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    use ToTranslationHandlerTrait;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    private ?int $id = null;
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    public ?int $id = null;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    private ?string $key = null;
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    public ?string $key = null;
+    #[RDCV\AsTranslation]
+    private ?string $title = null;
 
-    #[ResponseDataConstraints\Callback('handleToTranslation')]
-    public ?string $title = null;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
-
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 }

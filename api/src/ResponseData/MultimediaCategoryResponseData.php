@@ -4,30 +4,26 @@ namespace App\ResponseData;
 
 use App\Enum\RequestTypeEnum;
 use App\Enum\RolePermissionEnum;
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
-use App\ResponseData\Traits\ToTranslationHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Availability as RDCA;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class MultimediaCategoryResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaCategoryResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    use ToTranslationHandlerTrait;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_MULTIMEDIA_CATEGORIES)]
+    private ?int $id = null;
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_MULTIMEDIA_CATEGORIES)]
-    public ?int $id = null;
+    #[RDCV\AsTranslation]
+    private ?string $title = null;
 
-    #[ResponseDataConstraints\Callback('handleToTranslation')]
-    public ?string $title = null;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_MULTIMEDIA_CATEGORIES)]
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_MULTIMEDIA_CATEGORIES)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
-
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_MULTIMEDIA_CATEGORIES)]
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_MULTIMEDIA_CATEGORIES)]
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 }

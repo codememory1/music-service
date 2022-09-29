@@ -4,31 +4,30 @@ namespace App\ResponseData;
 
 use App\Enum\RequestTypeEnum;
 use App\Enum\RolePermissionEnum;
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Availability as RDCA;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class AlbumResponseData extends AbstractResponseData implements ResponseDataInterface
+final class AlbumResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    public ?int $id = null;
+    private ?int $id = null;
 
-    #[ResponseDataConstraints\CallbackResponseData(AlbumTypeResponseData::class, true)]
-    public ?string $type = null;
-    public ?string $title = null;
-    public ?string $description = null;
-    public ?string $image = null;
+    #[RDCV\CallbackResponseData(AlbumTypeResponseData::class)]
+    private ?string $type = null;
+    private ?string $title = null;
+    private ?string $description = null;
+    private ?string $image = null;
 
-    #[ResponseDataConstraints\CallbackResponseData(MultimediaResponseData::class, ignoreProperties: ['album'])]
-    public array $multimedia = [];
+    #[RDCV\CallbackResponseData(MultimediaResponseData::class, ['album'])]
+    private array $multimedia = [];
 
-    #[ResponseDataConstraints\RequestType(RequestTypeEnum::ADMIN)]
-    #[ResponseDataConstraints\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUMS)]
-    public ?string $status = null;
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
+    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUMS)]
+    private ?string $status = null;
 
-    #[ResponseDataConstraints\Callback('handleDatetime')]
-    public ?string $createdAt = null;
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 
-    #[ResponseDataConstraints\Callback('handleDatetime')]
-    public ?string $updatedAt = null;
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 }

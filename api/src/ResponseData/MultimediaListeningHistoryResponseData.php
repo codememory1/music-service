@@ -2,14 +2,14 @@
 
 namespace App\ResponseData;
 
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class MultimediaListeningHistoryResponseData extends AbstractResponseData implements ResponseDataInterface
+final class MultimediaListeningHistoryResponseData extends AbstractResponseData
 {
-    public ?int $id = null;
+    private ?int $id = null;
 
-    #[ResponseDataConstraints\CallbackResponseData(MultimediaResponseData::class, true, [
+    #[RDCV\CallbackResponseData(MultimediaResponseData::class, [
         'album',
         'category',
         'text',
@@ -25,6 +25,6 @@ final class MultimediaListeningHistoryResponseData extends AbstractResponseData 
         'createdAt',
         'updatedAt'
     ])]
-    public array $multimedia = [];
-    public ?float $currentTime = null;
+    private array $multimedia = [];
+    private ?float $currentTime = null;
 }

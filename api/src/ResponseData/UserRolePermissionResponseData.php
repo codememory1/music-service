@@ -2,28 +2,25 @@
 
 namespace App\ResponseData;
 
+use App\Entity\Interfaces\EntityInterface;
 use App\Entity\RolePermissionKey;
-use App\ResponseData\Constraints as ResponseDataConstraints;
-use App\ResponseData\Interfaces\ResponseDataInterface;
-use App\ResponseData\Traits\DateTimeHandlerTrait;
-use JetBrains\PhpStorm\Pure;
+use App\Infrastructure\ResponseData\AbstractResponseData;
+use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
-final class UserRolePermissionResponseData extends AbstractResponseData implements ResponseDataInterface
+final class UserRolePermissionResponseData extends AbstractResponseData
 {
-    use DateTimeHandlerTrait;
-    public ?int $id = null;
+    private ?int $id = null;
 
-    #[ResponseDataConstraints\Callback('handlePermissionKey')]
-    public ?string $permissionKey = null;
+    #[RDCV\Callback('handlePermissionKey')]
+    private ?string $permissionKey = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $createdAt = null;
+    #[RDCV\DateTime]
+    private ?string $createdAt = null;
 
-    #[ResponseDataConstraints\Callback('handleDateTime')]
-    public ?string $updatedAt = null;
+    #[RDCV\DateTime]
+    private ?string $updatedAt = null;
 
-    #[Pure]
-    public function handlePermissionKey(?RolePermissionKey $rolePermissionKey): ?string
+    public function handlePermissionKey(EntityInterface $entity, ?RolePermissionKey $rolePermissionKey): ?string
     {
         return $rolePermissionKey?->getKey();
     }
