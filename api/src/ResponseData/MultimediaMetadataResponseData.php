@@ -12,8 +12,8 @@ final class MultimediaMetadataResponseData extends AbstractResponseData
     private ?int $bitrate = null;
     private ?int $framerate = null;
 
-    #[RDCS\MethodNamePrefix]
-    private bool $isLossless = false;
+    #[RDCS\Prefix('is', 'is')]
+    private bool $lossless = false;
 
     #[RDCV\DateTime]
     private ?string $updatedAt = null;

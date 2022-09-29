@@ -3,17 +3,15 @@
 namespace App\Infrastructure\ResponseData\Constraints\Availability;
 
 use App\Enum\RoleEnum;
-use App\ResponseData\Interfaces\ConstraintInterface;
+use App\Infrastructure\ResponseData\Interfaces\ConstraintInterface;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class Role implements ConstraintInterface
 {
-    public readonly RoleEnum $role;
-
-    public function __construct(RoleEnum $roleEnum)
-    {
-        $this->role = $roleEnum;
+    public function __construct(
+        public readonly RoleEnum $role
+    ) {
     }
 
     public function getHandler(): string

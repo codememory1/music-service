@@ -2,6 +2,7 @@
 
 namespace App\ResponseData;
 
+use App\Entity\Interfaces\EntityInterface;
 use App\Entity\MultimediaRating;
 use App\Enum\MultimediaRatingTypeEnum;
 use App\Enum\SubscriptionPermissionEnum;
@@ -23,10 +24,10 @@ final class MultimediaResponseData extends AbstractResponseData
     private ?string $description = null;
     private ?string $image = null;
 
-    #[RDCV\CallbackResponseData(AlbumResponseData::class, true, ['multimedia'])]
+    #[RDCV\CallbackResponseData(AlbumResponseData::class, ['multimedia'])]
     private array $album = [];
 
-    #[RDCV\CallbackResponseData(MultimediaCategoryResponseData::class, true)]
+    #[RDCV\CallbackResponseData(MultimediaCategoryResponseData::class)]
     private array $category = [];
 
     #[RDCA\SubscriptionPermission(SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA)]
@@ -42,20 +43,20 @@ final class MultimediaResponseData extends AbstractResponseData
     #[RDCV\CallbackResponseData(MultimediaPerformerResponseData::class)]
     private array $performers = [];
 
-    #[RDCS\MethodNamePrefix]
-    private bool $isObsceneWords = false;
+    #[RDCS\Prefix('is', 'is')]
+    private bool $obsceneWords = false;
 
     #[RDCA\SubscriptionPermission(SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA)]
-    #[RDCV\CallbackResponseData(MultimediaMetadataResponseData::class, true)]
+    #[RDCV\CallbackResponseData(MultimediaMetadataResponseData::class)]
     private array $metadata = [];
 
-    #[RDCV\CallbackResponseData(MultimediaQueueResponseData::class, true)]
+    #[RDCV\CallbackResponseData(MultimediaQueueResponseData::class)]
     private array $queue = [];
 
-    #[RDCV\Callback('handleShares')]
+    #[RDCV\AsCount]
     private int $shares = 0;
 
-    #[RDCV\Callback('handleAuditions')]
+    #[RDCV\AsCount]
     private int $auditions = 0;
 
     #[RDCV\Callback('handleRatings')]
@@ -68,18 +69,8 @@ final class MultimediaResponseData extends AbstractResponseData
     #[RDCV\DateTime]
     private ?string $updatedAt = null;
 
-    public function handleShares(Collection $shares): int
-    {
-        return $shares->count();
-    }
-
-    public function handleAuditions(Collection $auditions): int
-    {
-        return $auditions->count();
-    }
-
     #[ArrayShape(['like' => 'int', 'dislike' => 'int'])]
-    public function handleRatings(Collection $ratings): array
+    public function handleRatings(EntityInterface $entity, Collection $ratings): array
     {
         return [
             'like' => $ratings->filter(static fn(MultimediaRating $multimediaRating) => $multimediaRating->getType() === MultimediaRatingTypeEnum::LIKE->name)->count(),

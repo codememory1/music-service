@@ -19,16 +19,16 @@ use Symfony\Component\DependencyInjection\ReverseContainer;
 
 abstract class AbstractResponseData implements ResponseDataInterface
 {
-    protected ReverseContainer $container;
     protected null|array|EntityInterface|Collection $entities = null;
     protected bool $asFirstResponse = false;
     protected Reflection $reflection;
     protected array $ignoredProperties = [];
+    protected array $onlyProperties = [];
     protected array $response = [];
 
-    public function __construct(ReverseContainer $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        protected ReverseContainer $container
+    ) {
         $this->reflection = new Reflection(static::class);
     }
 
@@ -63,6 +63,20 @@ abstract class AbstractResponseData implements ResponseDataInterface
         return $this;
     }
 
+    public function setOnlyProperties(array $propertyNames): self
+    {
+        $this->onlyProperties = $propertyNames;
+
+        return $this;
+    }
+
+    public function addOnlyProperty(string $propertyName): self
+    {
+        $this->onlyProperties[] = $propertyName;
+
+        return $this;
+    }
+
     public function getResponse(): array
     {
         $this->handle();
@@ -77,11 +91,18 @@ abstract class AbstractResponseData implements ResponseDataInterface
     private function handle(): void
     {
         $ignoredProperties = $this->ignoredProperties;
+        $onlyProperties = $this->onlyProperties;
 
         foreach ($this->entities as $entity) {
             $response = [];
 
-            $properties = $this->reflection->getStrictlyClassProperties(static fn(ReflectionProperty $property) => false === in_array($property->getName(), $ignoredProperties, true));
+            $properties = $this->reflection->getStrictlyClassProperties(static function(ReflectionProperty $property) use ($ignoredProperties, $onlyProperties) {
+                if (in_array($property->getName(), $ignoredProperties, true)) {
+                    return false;
+                }
+
+                return [] === $onlyProperties || in_array($property->getName(), $onlyProperties, true);
+            });
 
             foreach ($properties as $property) {
                 $propertyDataDeterminant = $this->propertyHandler($property, $entity);

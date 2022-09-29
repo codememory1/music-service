@@ -17,7 +17,7 @@ final class PlaylistResponseData extends AbstractResponseData
     #[RDCV\CallbackResponseData(MultimediaPlaylistResponseData::class)]
     private array $multimedia = [];
 
-    #[RDCV\CallbackResponseData(PlaylistDirectoryResponseData::class, ignoreProperties: ['multimedia'])]
+    #[RDCV\CallbackResponseData(PlaylistDirectoryResponseData::class, ['multimedia'])]
     private array $directories = [];
 
     #[RDCA\RequestType(RequestTypeEnum::ADMIN)]

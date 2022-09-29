@@ -21,8 +21,8 @@ final class UserSessionResponseData extends AbstractResponseData
     #[RDCA\RolePermission(RolePermissionEnum::SHOW_USER_SESSION_TOKEN_TO_USER)]
     private ?string $refreshToken = null;
 
-    #[RDCS\MethodNamePrefix]
-    private bool $isActive = false;
+    #[RDCS\Prefix('is', 'is')]
+    private bool $active = false;
 
     #[RDCA\RolePermission(RolePermissionEnum::SHOW_INFO_ABOUT_USER_SESSION)]
     private ?string $ip = null;

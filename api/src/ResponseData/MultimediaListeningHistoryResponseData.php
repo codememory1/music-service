@@ -9,7 +9,7 @@ final class MultimediaListeningHistoryResponseData extends AbstractResponseData
 {
     private ?int $id = null;
 
-    #[RDCV\CallbackResponseData(MultimediaResponseData::class, true, [
+    #[RDCV\CallbackResponseData(MultimediaResponseData::class, [
         'album',
         'category',
         'text',

@@ -12,7 +12,7 @@ final class TranslationResponseData extends AbstractResponseData
     #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_TRANSLATIONS)]
     private ?int $id = null;
 
-    #[RDCV\CallbackResponseData(TranslationKeyResponseData::class, true)]
+    #[RDCV\CallbackResponseData(TranslationKeyResponseData::class)]
     private ?string $translationKey = null;
     private ?string $translation = null;
 

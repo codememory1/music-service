@@ -2,15 +2,13 @@
 
 namespace App\ResponseData;
 
-use App\Entity\User;
 use App\Infrastructure\ResponseData\AbstractResponseData;
 use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
-use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\Pure;
+use App\ResponseData\User\UserResponseData;
 
 final class MultimediaPerformerResponseData extends AbstractResponseData
 {
-    #[RDCV\Callback('handleUser')]
+    #[RDCV\CallbackResponseData(UserResponseData::class, onlyProperties: ['id'])]
     private array $user = [];
 
     #[RDCV\DateTime]
@@ -18,11 +16,4 @@ final class MultimediaPerformerResponseData extends AbstractResponseData
 
     #[RDCV\DateTime]
     private ?string $updatedAt = null;
-
-    #[ArrayShape(['id' => 'int|null'])]
-    #[Pure]
-    public function handleUser(User $user): array
-    {
-        return ['id' => $user->getId()];
-    }
 }

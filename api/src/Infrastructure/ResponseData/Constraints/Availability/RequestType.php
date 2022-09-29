@@ -9,11 +9,9 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class RequestType implements ConstraintInterface
 {
-    public readonly RequestTypeEnum $requestType;
-
-    public function __construct(RequestTypeEnum $requestType)
-    {
-        $this->requestType = $requestType;
+    public function __construct(
+        public readonly RequestTypeEnum $requestType
+    ) {
     }
 
     public function getHandler(): string

@@ -13,7 +13,7 @@ final class SubscriptionPermissionResponseData extends AbstractResponseData
     #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
     private ?int $id = null;
 
-    #[RDCV\CallbackResponseData(SubscriptionPermissionKeyResponseData::class, true)]
+    #[RDCV\CallbackResponseData(SubscriptionPermissionKeyResponseData::class)]
     private array $permissionKey = [];
 
     #[RDCA\RequestType(RequestTypeEnum::ADMIN)]

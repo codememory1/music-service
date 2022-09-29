@@ -11,6 +11,6 @@ final class MediaLibraryStatisticResponseData extends AbstractResponseData
     private int $numberOfClips = 0;
     private int $numberOfPlaylists = 0;
 
-    #[RDCV\CallbackResponseData(MultimediaMediaLibraryResponseData::class, true)]
+    #[RDCV\CallbackResponseData(MultimediaMediaLibraryResponseData::class)]
     private ?array $lastAddedMultimedia = null;
 }

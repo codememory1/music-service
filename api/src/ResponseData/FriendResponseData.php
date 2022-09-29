@@ -17,7 +17,7 @@ final class FriendResponseData extends AbstractResponseData
 
     #[RDCS\AsCustomProperty]
     #[RDCS\AliasInResponse('user')]
-    #[RDCV\CallbackResponseData(UserResponseData::class, true)]
+    #[RDCV\CallbackResponseData(UserResponseData::class)]
     private array $friend = [];
     private ?string $status = null;
 

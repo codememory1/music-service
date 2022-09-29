@@ -9,11 +9,9 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class RolePermission implements ConstraintInterface
 {
-    public readonly array|RolePermissionEnum $permissions;
-
-    public function __construct(array|RolePermissionEnum $rolePermissionEnum)
-    {
-        $this->permissions = $rolePermissionEnum;
+    public function __construct(
+        public readonly array|RolePermissionEnum $permissions
+    ) {
     }
 
     public function getHandler(): string

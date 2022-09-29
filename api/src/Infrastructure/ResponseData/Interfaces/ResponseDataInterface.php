@@ -13,5 +13,9 @@ interface ResponseDataInterface
 
     public function addIgnoreProperty(string $propertyName): self;
 
+    public function setOnlyProperties(array $propertyNames): self;
+
+    public function addOnlyProperty(string $propertyName): self;
+
     public function getResponse(): array;
 }

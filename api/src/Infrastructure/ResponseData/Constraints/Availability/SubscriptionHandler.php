@@ -9,11 +9,9 @@ use App\Security\AuthorizedUser;
 
 final class SubscriptionHandler extends AbstractConstraintHandler implements ConstraintAvailabilityHandlerInterface
 {
-    private AuthorizedUser $authorizedUser;
-
-    public function __construct(AuthorizedUser $authorizedUser)
-    {
-        $this->authorizedUser = $authorizedUser;
+    public function __construct(
+        private AuthorizedUser $authorizedUser
+    ) {
     }
 
     /**

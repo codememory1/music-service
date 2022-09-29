@@ -25,8 +25,8 @@ final class SubscriptionResponseData extends AbstractResponseData
     private ?float $oldPrice = null;
     private ?float $price = null;
 
-    #[RDCS\MethodNamePrefix]
-    private ?bool $isRecommend = null;
+    #[RDCS\Prefix('is', 'is')]
+    private ?bool $recommend = null;
     private ?string $status = null;
 
     #[RDCV\CallbackResponseData(SubscriptionPermissionResponseData::class)]

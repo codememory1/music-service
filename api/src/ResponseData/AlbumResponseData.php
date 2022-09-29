@@ -12,13 +12,13 @@ final class AlbumResponseData extends AbstractResponseData
 {
     private ?int $id = null;
 
-    #[RDCV\CallbackResponseData(AlbumTypeResponseData::class, true)]
+    #[RDCV\CallbackResponseData(AlbumTypeResponseData::class)]
     private ?string $type = null;
     private ?string $title = null;
     private ?string $description = null;
     private ?string $image = null;
 
-    #[RDCV\CallbackResponseData(MultimediaResponseData::class, ignoreProperties: ['album'])]
+    #[RDCV\CallbackResponseData(MultimediaResponseData::class, ['album'])]
     private array $multimedia = [];
 
     #[RDCA\RequestType(RequestTypeEnum::ADMIN)]

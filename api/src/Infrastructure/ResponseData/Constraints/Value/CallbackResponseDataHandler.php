@@ -14,11 +14,9 @@ use Symfony\Component\DependencyInjection\ReverseContainer;
 
 final class CallbackResponseDataHandler extends AbstractConstraintHandler implements ConstraintValueHandlerInterface
 {
-    private ReverseContainer $container;
-
-    public function __construct(ReverseContainer $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        private ReverseContainer $container
+    ) {
     }
 
     /**
@@ -40,6 +38,9 @@ final class CallbackResponseDataHandler extends AbstractConstraintHandler implem
         if (false === is_array($value) && false === $value instanceof Collection && false === $value instanceof EntityInterface) {
             return [];
         }
+
+        $responseData->setEntities($value);
+        $responseData->setOnlyProperties($constraint->onlyProperties);
 
         return $responseData->setEntities($value)->getResponse();
     }
