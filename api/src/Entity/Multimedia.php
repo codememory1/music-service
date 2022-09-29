@@ -95,11 +95,14 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
     ])]
     private ?string $status = null;
 
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaMediaLibrary::class, cascade: ['remove'])]
+    private Collection $multimediaMediaLibrary;
+
     #[ORM\OneToOne(mappedBy: 'multimedia', targetEntity: MultimediaQueue::class, cascade: ['persist', 'remove'])]
     private ?MultimediaQueue $queue = null;
 
     #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaShare::class, cascade: ['persist', 'remove'])]
-    private ?Collection $shares;
+    private Collection $shares;
 
     #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaAudition::class)]
     private Collection $auditions;
@@ -112,6 +115,9 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
 
     #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaTimeCode::class, cascade: ['persist', 'remove'])]
     private Collection $timeCodes;
+
+    #[ORM\OneToOne(mappedBy: 'multimedia', targetEntity: MultimediaStatistic::class, cascade: ['persist', 'remove'])]
+    private ?MultimediaStatistic $statistic = null;
 
     public function __construct()
     {
@@ -448,6 +454,11 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
         return $this->getStatus() === MultimediaStatusEnum::APPEAL_CANCELED->name;
     }
 
+    public function getMultimediaMediaLibrary(): Collection
+    {
+        return $this->multimediaMediaLibrary;
+    }
+
     public function getQueue(): ?MultimediaQueue
     {
         return $this->queue;
@@ -589,6 +600,23 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
                 $timeCode->setMultimedia(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatistic(): ?MultimediaStatistic
+    {
+        return $this->statistic;
+    }
+
+    public function setStatistic(MultimediaStatistic $statistic): self
+    {
+        // set the owning side of the relation if necessary
+        if ($statistic->getMultimedia() !== $this) {
+            $statistic->setMultimedia($this);
+        }
+
+        $this->statistic = $statistic;
 
         return $this;
     }

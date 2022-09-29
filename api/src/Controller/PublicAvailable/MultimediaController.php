@@ -12,12 +12,14 @@ use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaRepository;
 use App\ResponseData\MultimediaResponseData;
+use App\ResponseData\MultimediaStatistics;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\Multimedia\AddMultimediaService;
 use App\Service\Multimedia\DeleteMultimediaService;
 use App\Service\Multimedia\PlayPauseMultimediaService;
 use App\Service\Multimedia\UpdateMultimediaService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user')]
@@ -80,5 +82,19 @@ class MultimediaController extends AbstractRestController
         PlayPauseMultimediaService $playPauseMultimediaService
     ): JsonResponse {
         return $playPauseMultimediaService->request($multimedia, $this->authorizedUser->getUserSession());
+    }
+
+    #[Route('/multimedia/{multimedia_id<\d+>}/statistics', methods: Request::METHOD_GET)]
+    public function statistics(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        MultimediaStatistics $multimediaStatistics
+    ): JsonResponse {
+        if (false === $this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
+            throw EntityNotFoundException::multimedia();
+        }
+
+        $multimediaStatistics->setEntities($multimedia->getStatistic());
+
+        return $this->responseCollection->dataOutput($multimediaStatistics->getResponse());
     }
 }
