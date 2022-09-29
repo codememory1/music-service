@@ -64,4 +64,5 @@ enum RolePermissionEnum
     case UPDATE_USER_PROFILE_DESIGN;
     case ADD_FRIEND_TO_USER;
     case DELETE_FRIEND_TO_USER;
+    case SHOW_MULTIMEDIA_STATISTICS_TO_USER;
 }

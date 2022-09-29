@@ -167,6 +167,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'rolePermission@updateUserProfileDesign', 'Редактирование дизайна профиля у пользователя'),
             new TranslationFactory('ru', 'rolePermission@addFriendToUser', 'Добавление друзей пользователю'),
             new TranslationFactory('ru', 'rolePermission@deleteFriendToUser', 'Удаление друзей у пользователя'),
+            new TranslationFactory('ru', 'rolePermission@showMultimediaStatisticsToUser', 'Просмотр статистики мультимедиа пользователя'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль преднозначена только для тестирования в dev режиме'),
@@ -244,6 +245,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'subscriptionPermissionKey@shareMediaLibraryWithFriends', 'Поделится медиатекой с друзьями'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@controlMultimediaMediaLibraryEvent', 'Контроль над событиями мультимедиа в медиатеки'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@controlMediaLibraryEvent', 'Контроль над событиями медиатеки'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@showMultimediaStatistics', 'Просмотр статистики мультимедиа'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),

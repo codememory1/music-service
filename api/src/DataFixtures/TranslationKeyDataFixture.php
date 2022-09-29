@@ -168,6 +168,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@updateUserProfileDesign'),
             new TranslationKeyFactory('rolePermission@addFriendToUser'),
             new TranslationKeyFactory('rolePermission@deleteFriendToUser'),
+            new TranslationKeyFactory('rolePermission@showMultimediaStatisticsToUser'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),
@@ -248,6 +249,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@addTimeCodeToMultimedia'),
             new TranslationKeyFactory('subscriptionPermissionKey@updateTimeCodeToMultimedia'),
             new TranslationKeyFactory('subscriptionPermissionKey@deleteTimeCodeToMultimedia'),
+            new TranslationKeyFactory('subscriptionPermissionKey@showMultimediaStatistics'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),

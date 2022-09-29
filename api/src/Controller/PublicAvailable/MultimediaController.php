@@ -12,7 +12,7 @@ use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaRepository;
 use App\ResponseData\MultimediaResponseData;
-use App\ResponseData\MultimediaStatistics;
+use App\ResponseData\User\MultimediaStatistics;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\Multimedia\AddMultimediaService;
 use App\Service\Multimedia\DeleteMultimediaService;

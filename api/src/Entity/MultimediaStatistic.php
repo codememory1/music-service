@@ -7,6 +7,7 @@ use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\MultimediaRatingTypeEnum;
 use App\Repository\MultimediaStatisticRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -58,33 +59,33 @@ class MultimediaStatistic implements EntityInterface
         return $this;
     }
 
-    public function getShared(): int
+    public function getShared(): Collection
     {
-        return $this->multimedia->getShares()->count();
+        return $this->multimedia->getShares();
     }
 
-    public function getAddedToMediaLibraries(): int
+    public function getAddedToMediaLibraries(): Collection
     {
-        return $this->multimedia->getMultimediaMediaLibrary()->count();
+        return $this->multimedia->getMultimediaMediaLibrary();
     }
 
-    public function getFullAuditions(): int
+    public function getFullAuditions(): Collection
     {
-        return $this->multimedia->getAuditions()->filter(static fn(MultimediaAudition $multimediaAudition) => $multimediaAudition->isIsFull())->count();
+        return $this->multimedia->getAuditions()->filter(static fn(MultimediaAudition $multimediaAudition) => $multimediaAudition->isIsFull());
     }
 
-    public function getAuditions(): int
+    public function getAuditions(): Collection
     {
-        return $this->multimedia->getAuditions()->count();
+        return $this->multimedia->getAuditions();
     }
 
-    public function getLikes(): int
+    public function getLikes(): Collection
     {
-        return $this->multimedia->getRatings()->filter(static fn(MultimediaRating $multimediaRating) => $multimediaRating->getType() === MultimediaRatingTypeEnum::LIKE->name)->count();
+        return $this->multimedia->getRatings()->filter(static fn(MultimediaRating $multimediaRating) => $multimediaRating->getType() === MultimediaRatingTypeEnum::LIKE->name);
     }
 
-    public function getDislikes(): int
+    public function getDislikes(): Collection
     {
-        return $this->multimedia->getRatings()->filter(static fn(MultimediaRating $multimediaRating) => $multimediaRating->getType() === MultimediaRatingTypeEnum::DISLIKE->name)->count();
+        return $this->multimedia->getRatings()->filter(static fn(MultimediaRating $multimediaRating) => $multimediaRating->getType() === MultimediaRatingTypeEnum::DISLIKE->name);
     }
 }
