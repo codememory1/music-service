@@ -25,6 +25,6 @@ module.exports = {
     'comma-dangle': ['error', 'never'],
     'vue/no-unused-components': ['error', { ignoreWhenBindingPresent: true }],
     'vue/no-useless-template-attributes': ['error'],
-    'prettier/prettier': ['error', { trailingComma: 'none', singleQuote: true }]
+    'prettier/prettier': ['error', { trailingComma: 'none', singleQuote: true, printWidth: 100 }]
   }
 };
