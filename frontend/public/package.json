@@ -1,0 +1,42 @@
+{
+  "name": "SumronMusic",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "test": "jest",
+    "mjml:build": "node_modules/mjml/bin/mjml ../api/templates/mail/*.mjml -o ../api/templates/mail/output/",
+    "lint": "eslint --fix --ext .js,.vue ./"
+  },
+  "dependencies": {
+    "@typescript-eslint/parser": "^5.38.1",
+    "core-js": "^3.19.3",
+    "http-build-query": "^0.7.0",
+    "normalize.css": "^8.0.1",
+    "nuxt": "^2.12.2",
+    "vue": "^2.6.14",
+    "vue-server-renderer": "^2.6.14",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.13.2",
+    "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/eslint-config": "^11.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@vue/test-utils": "^1.3.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^27.4.4",
+    "eslint": "^8.2.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "jest": "^27.4.4",
+    "ts-jest": "^27.1.1",
+    "vue-jest": "^3.0.4",
+    "vue-property-decorator": "^9.1.2",
+    "webpack": "^4.46.0"
+  }
+}

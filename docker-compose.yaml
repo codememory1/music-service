@@ -14,6 +14,7 @@ services:
       - "${API_PATH}:${API_WORKDIR}"
     links:
       - api
+      - public-frontend
       - rabbitmq
 
   api:
@@ -214,3 +215,14 @@ services:
     depends_on:
       - api
       - rabbitmq
+
+  public-frontend:
+    container_name: public-frontend
+    build:
+      context: ./
+      dockerfile: "${DOCKER_DEV_PATH}/frontend/Dockerfile"
+    volumes:
+        - "./frontend/public:/usr/src/frontend/public"
+    expose:
+      - "3000"
+    restart: unless-stopped
