@@ -1,138 +1,210 @@
+import { ApiRoute } from '~/api/ApiRoute';
+import { EnumRequestMethods } from '~/Enums/EnumRequestMethods';
+
 export default {
   lang: {
-    all: '/language/all'
+    all: new ApiRoute('/language/all', EnumRequestMethods.Get, [], ['code', 'title'])
   },
 
   security: {
-    register: '/user/register',
-    auth: '/user/auth',
-    update_access_token: '/user/access-token/update',
-    logout: '/user/logout',
-    account_activation: '/user/account-activation',
+    register: new ApiRoute('/user/register', EnumRequestMethods.Post),
+    auth: new ApiRoute('/user/auth', EnumRequestMethods.Post),
+    update_access_token: new ApiRoute('/user/access-token/update', EnumRequestMethods.Put),
+    logout: new ApiRoute('/user/logout'),
+    account_activation: new ApiRoute('/user/account-activation', EnumRequestMethods.Post),
 
     password_reset: {
-      request_restoration: '/user/password-reset/request-restoration',
-      restore: '/user/password-reset/restore-password'
+      request_restoration: new ApiRoute(
+        '/user/password-reset/request-restoration',
+        EnumRequestMethods.Post
+      ),
+      restore: new ApiRoute('/user/password-reset/restore-password', EnumRequestMethods.Post)
     }
   },
 
   subscription: {
-    all: '/subscription/all'
+    all: new ApiRoute('/subscription/all')
   },
 
   album: {
-    all: '/album/all',
-    create: '/album/create',
-    publish: (id: number) => `/album/${id}/publish`,
-    update: (id: number) => `/album/${id}/edit`,
-    delete: (id: number) => `/album/${id}/delete`
+    all: new ApiRoute('/album/all'),
+    create: new ApiRoute('/album/create', EnumRequestMethods.Post),
+    publish: (id: number) => new ApiRoute(`/album/${id}/publish`, EnumRequestMethods.Patch),
+    update: (id: number) => new ApiRoute(`/album/${id}/edit`, EnumRequestMethods.Put),
+    delete: (id: number) => new ApiRoute(`/album/${id}/delete`, EnumRequestMethods.Delete)
   },
 
   user_session: {
-    all: '/user/session/all',
-    delete: (id: number) => `/user/session/${id}/delete`,
-    delete_all_active: '/user/session/all/delete'
+    all: new ApiRoute(
+      '/user/session/all',
+      EnumRequestMethods.Get,
+      ['isActive'],
+      ['createdAt', 'lastActivity', 'country', 'city']
+    ),
+    delete: (id: number) => new ApiRoute(`/user/session/${id}/delete`, EnumRequestMethods.Delete),
+    delete_all_active: new ApiRoute('/user/session/all/delete', EnumRequestMethods.Delete)
   },
 
   social_auth: {
     google: {
-      url_auth: '/user/google/authorization-url',
-      auth: '/user/google/auth'
+      url_auth: new ApiRoute('/user/google/authorization-url'),
+      auth: new ApiRoute('/user/google/auth', EnumRequestMethods.Post)
     }
   },
 
   multimedia: {
     category: {
-      all: '/multimedia/category/all'
+      all: new ApiRoute('/multimedia/category/all')
     },
 
-    all: (id?: number) => (undefined === id ? '/album/all' : `/user/${id}/multimedia/all`),
-    statistics: (id: number) => `/user/multimedia/${id}/statistics`,
-    add: '/user/multimedia/add',
-    update: (id: number) => `/user/multimedia/${id}/edit`,
-    delete: (id: number) => `/user/multimedia/${id}/delete`,
-    like: (id: number) => `/user/multimedia/${id}/like`,
-    dislike: (id: number) => `/user/multimedia/${id}/dislike`,
-    send_on_moderation: (id: number) => `/user/multimedia/${id}/send-on-moderation`,
-    send_on_appeal: (id: number) => `/user/multimedia/${id}/send-on-appeal`,
-    add_to_media_library: (id: number) => `/user/multimedia/${id}/add-to-media-library`,
-    play_pause: (id: number) => `/user/multimedia/${id}/play-pause`,
+    all_my: new ApiRoute(
+      '/album/all',
+      EnumRequestMethods.Get,
+      ['type'],
+      ['title', 'createdAt', 'duration', 'auditions', 'like']
+    ),
+    all_by_user: (id: number) =>
+      new ApiRoute(
+        `/user/${id}/multimedia/all`,
+        EnumRequestMethods.Get,
+        ['type'],
+        ['title', 'createdAt', 'duration', 'auditions', 'like']
+      ),
+    statistics: (id: number) => new ApiRoute(`/user/multimedia/${id}/statistics`),
+    add: new ApiRoute('/user/multimedia/add', EnumRequestMethods.Post),
+    update: (id: number) => new ApiRoute(`/user/multimedia/${id}/edit`, EnumRequestMethods.Put),
+    delete: (id: number) =>
+      new ApiRoute(`/user/multimedia/${id}/delete`, EnumRequestMethods.Delete),
+    like: (id: number) => new ApiRoute(`/user/multimedia/${id}/like`, EnumRequestMethods.Patch),
+    dislike: (id: number) =>
+      new ApiRoute(`/user/multimedia/${id}/dislike`, EnumRequestMethods.Patch),
+    send_on_moderation: (id: number) =>
+      new ApiRoute(`/user/multimedia/${id}/send-on-moderation`, EnumRequestMethods.Patch),
+    send_on_appeal: (id: number) =>
+      new ApiRoute(`/user/multimedia/${id}/send-on-appeal`, EnumRequestMethods.Patch),
+    add_to_media_library: (id: number) =>
+      new ApiRoute(`/user/multimedia/${id}/add-to-media-library`, EnumRequestMethods.Post),
+    play_pause: (id: number) =>
+      new ApiRoute(`/user/multimedia/${id}/play-pause`, EnumRequestMethods.Patch),
 
     time_code: {
-      add: (id: number) => `/user/multimedia/${id}/time-code/add`,
-      delete: (id: number) => `/user/multimedia/time-code/${id}/delete`
+      add: (id: number) =>
+        new ApiRoute(`/user/multimedia/${id}/time-code/add`, EnumRequestMethods.Post),
+      delete: (id: number) =>
+        new ApiRoute(`/user/multimedia/time-code/${id}/delete`, EnumRequestMethods.Delete)
     }
   },
 
   artist: {
-    subscribe: (id: number) => `/artist/${id}/subscribe`,
-    unsubscribe: (id: number) => `/artist/${id}/unsubscribe`
+    subscribe: (id: number) => new ApiRoute(`/artist/${id}/subscribe`, EnumRequestMethods.Patch),
+    unsubscribe: (id: number) => new ApiRoute(`/artist/${id}/unsubscribe`, EnumRequestMethods.Patch)
   },
 
   media_library: {
-    all: '/user/media-library/multimedia/all',
-    statistics: '/user/media-library/statistic',
+    all: new ApiRoute('/user/media-library/multimedia/all'),
+    statistics: new ApiRoute('/user/media-library/statistic'),
 
     multimedia: {
       share: (multimediaId: number, friendId: number) =>
-        `/user/media-library/multimedia/${multimediaId}/share/with-friend/${friendId}`,
-      update: (id: number) => `/user/media-library/multimedia/${id}/edit`,
-      delete: (id: number) => `/user/media-library/multimedia/${id}/delete`,
+        new ApiRoute(
+          `/user/media-library/multimedia/${multimediaId}/share/with-friend/${friendId}`,
+          EnumRequestMethods.Patch
+        ),
+      update: (id: number) =>
+        new ApiRoute(`/user/media-library/multimedia/${id}/edit`, EnumRequestMethods.Put),
+      delete: (id: number) =>
+        new ApiRoute(`/user/media-library/multimedia/${id}/delete`, EnumRequestMethods.Delete),
 
       event: {
-        add: (id: number) => `/user/media-library/multimedia/${id}/event/add`,
-        update: (id: number) => `/user/media-library/multimedia/event/${id}/edit`,
-        delete: (id: number) => `/user/media-library/multimedia/event/${id}/delete`
+        add: (id: number) =>
+          new ApiRoute(`/user/media-library/multimedia/${id}/event/add`, EnumRequestMethods.Post),
+        update: (id: number) =>
+          new ApiRoute(`/user/media-library/multimedia/event/${id}/edit`, EnumRequestMethods.Put),
+        delete: (id: number) =>
+          new ApiRoute(
+            `/user/media-library/multimedia/event/${id}/delete`,
+            EnumRequestMethods.Delete
+          )
       }
     },
 
     event: {
-      add: '/user/media-library/event/add',
-      update: (id: number) => `/user/media-library/event/${id}/edit`,
-      delete: (id: number) => `/user/media-library/event/${id}/delete`
+      add: new ApiRoute('/user/media-library/event/add', EnumRequestMethods.Post),
+      update: (id: number) =>
+        new ApiRoute(`/user/media-library/event/${id}/edit`, EnumRequestMethods.Put),
+      delete: (id: number) =>
+        new ApiRoute(`/user/media-library/event/${id}/delete`, EnumRequestMethods.Delete)
     }
   },
 
   playlist: {
-    all: '/user/media-library/playlist/all',
-    read: (id: number) => `/user/media-library/playlist/${id}/read`,
-    create: '/user/media-library/playlist/create',
-    update: (id: number) => `/user/media-library/playlist/${id}/edit`,
-    delete: (id: number) => `/user/media-library/playlist/${id}/delete`,
+    all: new ApiRoute(
+      '/user/media-library/playlist/all',
+      EnumRequestMethods.Get,
+      ['title'],
+      ['title', 'createdAt', 'numberMultimedia']
+    ),
+    read: (id: number) => new ApiRoute(`/user/media-library/playlist/${id}/read`),
+    create: new ApiRoute('/user/media-library/playlist/create', EnumRequestMethods.Post),
+    update: (id: number) =>
+      new ApiRoute(`/user/media-library/playlist/${id}/edit`, EnumRequestMethods.Put),
+    delete: (id: number) =>
+      new ApiRoute(`/user/media-library/playlist/${id}/delete`, EnumRequestMethods.Delete),
 
     multimedia: {
       move_to_directory: (multimediaId: number, directoryId: number) =>
-        `/user/media-library/playlist/multimedia/${multimediaId}/move/directory/${directoryId}`
+        new ApiRoute(
+          `/user/media-library/playlist/multimedia/${multimediaId}/move/directory/${directoryId}`,
+          EnumRequestMethods.Put
+        )
     },
 
     directory: {
-      create: (id: number) => `/user/media-library/playlist/${id}/directory/create`,
-      update: (id: number) => `/user/media-library/playlist/directory/${id}/edit`,
-      delete: (id: number) => `/user/media-library/playlist/directory/${id}/delete`,
+      create: (id: number) =>
+        new ApiRoute(
+          `/user/media-library/playlist/${id}/directory/create`,
+          EnumRequestMethods.Post
+        ),
+      update: (id: number) =>
+        new ApiRoute(`/user/media-library/playlist/directory/${id}/edit`, EnumRequestMethods.Put),
+      delete: (id: number) =>
+        new ApiRoute(
+          `/user/media-library/playlist/directory/${id}/delete`,
+          EnumRequestMethods.Delete
+        ),
 
       multimedia: {
         add: (directoryId: number, multimediaId: number) =>
-          `/user/media-library/playlist/directory/${directoryId}/multimedia/${multimediaId}/add`,
-        delete: (id: number) => `/user/media-library/playlist/directory/multimedia/${id}/delete`
+          new ApiRoute(
+            `/user/media-library/playlist/directory/${directoryId}/multimedia/${multimediaId}/add`,
+            EnumRequestMethods.Post
+          ),
+        delete: (id: number) =>
+          new ApiRoute(
+            `/user/media-library/playlist/directory/multimedia/${id}/delete`,
+            EnumRequestMethods.Delete
+          )
       }
     }
   },
 
   user: {
     profile: {
-      update_design: '/user/profile/design/edit'
+      update_design: new ApiRoute('/user/profile/design/edit', EnumRequestMethods.Put)
     }
   },
 
   friend: {
-    all: '/user/friend/all',
-    add: (id: number) => `/user/${id}/add-as-friend`,
-    accept_application: (id: number) => `/user/friend/${id}/accept`,
-    delete: (id: number) => `/user/friend/${id}/delete`
+    all: new ApiRoute('/user/friend/all', EnumRequestMethods.Get, [], ['date', 'acceptFriendship']),
+    add: (id: number) => new ApiRoute(`/user/${id}/add-as-friend`, EnumRequestMethods.Post),
+    accept_application: (id: number) =>
+      new ApiRoute(`/user/friend/${id}/accept`, EnumRequestMethods.Patch),
+    delete: (id: number) => new ApiRoute(`/user/friend/${id}/delete`, EnumRequestMethods.Delete)
   },
 
   history: {
-    all: '/user/history/all',
-    delete: (id: number) => `/user/history/listen/${id}/delete`
+    all: new ApiRoute('/user/history/all', EnumRequestMethods.Get, ['now'], ['date']),
+    delete: (id: number) =>
+      new ApiRoute(`/user/history/listen/${id}/delete`, EnumRequestMethods.Delete)
   }
 };

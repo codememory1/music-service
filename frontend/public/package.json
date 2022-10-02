@@ -1,5 +1,5 @@
 {
-  "name": "Sumron Music",
+  "name": "SumronMusic",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -14,6 +14,7 @@
   "dependencies": {
     "@typescript-eslint/parser": "^5.38.1",
     "core-js": "^3.19.3",
+    "http-build-query": "^0.7.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.12.2",
     "vue": "^2.6.14",
