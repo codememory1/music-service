@@ -1,0 +1,56 @@
+@import "../include/variables";
+
+.subscription-card {
+  display: flex;
+  flex-direction: column;
+  width: 375px;
+  background-color: $dark-bg;
+  padding: 40px;
+  border-radius: 5px;
+
+  &__title {
+    color: $white;
+    font-weight: 500;
+    font-size: 25px;
+    text-align: center;
+  }
+
+  &__description {
+    color: $gray;
+    font-weight: 500;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  &__old-price {
+    color: $gray;
+    text-decoration: line-through;
+    font-weight: 500;
+    font-size: 22px;
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  &__price {
+    color: $white;
+    font-weight: 500;
+    font-size: 32px;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  &-permissions {
+    margin-top: 20px;
+  }
+
+  &__buy-btn {
+    width: 100%;
+    margin-top: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
