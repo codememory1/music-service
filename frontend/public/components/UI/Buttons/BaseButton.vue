@@ -12,5 +12,5 @@ export default class BaseButton extends Vue {}
 </script>
 
 <style lang="scss">
-@import '~/assets/scss/ui/buttons/base-button';
+@import '@/assets/scss/ui/buttons/base-button';
 </style>

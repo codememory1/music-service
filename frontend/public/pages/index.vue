@@ -1,27 +1,35 @@
 <template>
   <div>
-    <SubscriptionCard
-      title="Первая подписка"
-      description="Описание подписки"
-      :old-price="59.99"
-      :price="49.99"
-      @buy="buy"
-    >
-      <SubscriptionPermission title="Добавление мультимедиа" />
-      <SubscriptionPermission title="Конструктор дизайна профиля" />
-      <SubscriptionPermission title="Удаление друзей" :has="false" />
-    </SubscriptionCard>
-    <SubscriptionCard
-      title="Первая подписка"
-      description="Описание подписки"
-      :old-price="59.99"
-      :price="49.99"
-      :is-recommend="true"
-    >
-      <SubscriptionPermission title="Добавление мультимедиа" />
-      <SubscriptionPermission title="Конструктор дизайна профиля" />
-      <SubscriptionPermission title="Удаление друзей" :has="false" />
-    </SubscriptionCard>
+    <base-our-advantage
+      icon="unique-feature.svg"
+      :title="$t('our_advantage.items.unique_features.title')"
+      :description="$t('our_advantage.items.unique_features.description')"
+    />
+    <base-our-advantage
+      icon="subscription-price.svg"
+      :title="$t('our_advantage.items.subscription_price.title')"
+      :description="$t('our_advantage.items.subscription_price.description')"
+    />
+    <base-our-advantage
+      icon="more-options-for-free-subscription.svg"
+      :title="$t('our_advantage.items.options_for_free_subscription.title')"
+      :description="$t('our_advantage.items.options_for_free_subscription.description')"
+    />
+    <base-our-advantage
+      icon="listen-to-opinions-users.svg"
+      :title="$t('our_advantage.items.listen_to_opinions_users.title')"
+      :description="$t('our_advantage.items.listen_to_opinions_users.description')"
+    />
+    <base-our-advantage
+      icon="unique-feature.svg"
+      :title="$t('our_advantage.items.unique_features.title')"
+      :description="$t('our_advantage.items.unique_features.description')"
+    />
+    <base-our-advantage
+      icon="subscription-price.svg"
+      :title="$t('our_advantage.items.subscription_price.title')"
+      :description="$t('our_advantage.items.subscription_price.description')"
+    />
   </div>
 </template>
 
@@ -29,11 +37,13 @@
 import { Component, Vue, Emit } from 'vue-property-decorator';
 import SubscriptionCard from '~/components/Business/Subscription/SubscriptionCard';
 import SubscriptionPermission from '~/components/Business/Subscription/SubscriptionPermission';
+import BaseOurAdvantage from '~/components/Business/OurAdvantage/BaseOurAdvantage';
 
 @Component({
   components: {
     SubscriptionCard,
-    SubscriptionPermission
+    SubscriptionPermission,
+    BaseOurAdvantage
   }
 })
 export default class Index extends Vue {
