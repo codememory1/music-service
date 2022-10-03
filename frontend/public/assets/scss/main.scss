@@ -3,6 +3,7 @@
 @import "include/functions";
 @import "include/mixins";
 @import "include/fonts";
+@import "vendor/font-awesome";
 
 :root {
   --accent: #{$accent};

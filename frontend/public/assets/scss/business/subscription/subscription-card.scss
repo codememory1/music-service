@@ -1,4 +1,4 @@
-@import "../include/variables";
+@import "~/assets/scss/include/variables";
 
 .subscription-card {
   display: flex;
@@ -23,13 +23,22 @@
     text-align: center;
   }
 
+  &__old-price,
+  &__price {
+    display: flex;
+    justify-content: center;
+
+    i {
+      margin-right: 3.5px;
+    }
+  }
+
   &__old-price {
     color: $gray;
     text-decoration: line-through;
     font-weight: 500;
     font-size: 22px;
     margin-top: 30px;
-    text-align: center;
   }
 
   &__price {
@@ -37,7 +46,6 @@
     font-weight: 500;
     font-size: 32px;
     margin-top: 10px;
-    text-align: center;
   }
 
   &-permissions {

@@ -5,6 +5,7 @@
       description="Описание подписки"
       :old-price="59.99"
       :price="49.99"
+      @buy="buy"
     >
       <SubscriptionPermission title="Добавление мультимедиа" />
       <SubscriptionPermission title="Конструктор дизайна профиля" />
@@ -14,13 +15,21 @@
 </template>
 
 <script>
-import SubscriptionCard from '~/components/Subscription/SubscriptionCard';
-import SubscriptionPermission from '~/components/Subscription/SubscriptionPermission';
+import { Component, Vue, Emit } from 'vue-property-decorator';
+import SubscriptionCard from '~/components/Business/Subscription/SubscriptionCard';
+import SubscriptionPermission from '~/components/Business/Subscription/SubscriptionPermission';
 
-export default {
-  name: 'Index',
-  components: { SubscriptionCard, SubscriptionPermission }
-};
+@Component({
+  components: {
+    SubscriptionCard,
+    SubscriptionPermission
+  }
+})
+export default class Index extends Vue {
+  buy() {
+    console.log(123);
+  }
+}
 </script>
 
 <style scoped></style>

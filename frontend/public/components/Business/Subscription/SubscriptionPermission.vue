@@ -31,5 +31,5 @@ export default class SubscriptionPermission extends Vue {
 </script>
 
 <style lang="scss">
-@import '~/assets/scss/subscription/subscription-permission';
+@import '~/assets/scss/business/subscription/subscription-permission';
 </style>

@@ -3,14 +3,18 @@
     <h3 class="subscription-card__title">{{ title }}</h3>
     <span class="subscription-card__description">{{ description }}</span>
 
-    <span v-if="oldPrice !== null" class="subscription-card__old-price">{{ oldPrice }}</span>
-    <span class="subscription-card__price">{{ price }}</span>
+    <span v-if="oldPrice !== null" class="subscription-card__old-price">
+      <i class="fas fa-dollar-sign"></i> {{ oldPrice }}
+    </span>
+    <span class="subscription-card__price"><i class="far fa-dollar-sign"></i> {{ price }}</span>
 
     <div class="subscription-card-permissions">
       <slot />
     </div>
 
-    <BaseButton class="button_bg--accent subscription-card__buy-btn">Buy a subscription</BaseButton>
+    <BaseButton class="button_bg--accent subscription-card__buy-btn" @click="$emit('buy', $event)">
+      Buy a subscription
+    </BaseButton>
   </div>
 </template>
 
@@ -42,5 +46,5 @@ export default class SubscriptionCard extends Vue {
 </script>
 
 <style lang="scss">
-@import '~/assets/scss/subscription/subscription-card';
+@import '~/assets/scss/business/subscription/subscription-card';
 </style>
