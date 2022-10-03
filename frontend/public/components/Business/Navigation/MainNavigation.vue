@@ -23,12 +23,10 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+@Component
 export default class MainNavigation extends Vue {}
 </script>
 
 <style lang="scss">
 @import '@/assets/scss/business/navigation/main-navigation';
-</style>
-<style lang="scss" scoped>
-
 </style>
