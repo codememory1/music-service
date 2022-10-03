@@ -1,0 +1,30 @@
+@import "normalize.css";
+@import "include/variables";
+@import "include/functions";
+@import "include/mixins";
+@import "include/fonts";
+@import "vendor/font-awesome";
+
+:root {
+  --accent: #{$accent};
+  --accent-second: #{$accent-second};
+  --dark-bg: #{$dark-bg};
+  --light-bg: #{$light-bg};
+  --light-for-dark: #{$light-for-dark};
+  --gray: #{$gray};
+  --white: #{$white};
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+
+  @include scrollbar();
+}
+
+a {
+  text-decoration: none;
+}

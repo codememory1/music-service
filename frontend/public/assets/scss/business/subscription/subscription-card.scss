@@ -1,0 +1,79 @@
+@import "~/assets/scss/include/variables";
+
+.subscription-card {
+  display: flex;
+  flex-direction: column;
+  width: 375px;
+  background-color: $dark-bg;
+  padding: 40px;
+  border-radius: 5px;
+  position: relative;
+
+  &__title {
+    color: $white;
+    font-weight: 500;
+    font-size: 25px;
+    text-align: center;
+  }
+
+  &__description {
+    color: $gray;
+    font-weight: 500;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  &__old-price,
+  &__price {
+    display: flex;
+    justify-content: center;
+
+    i {
+      margin-right: 3.5px;
+    }
+  }
+
+  &__old-price {
+    color: $gray;
+    text-decoration: line-through;
+    font-weight: 500;
+    font-size: 22px;
+    margin-top: 30px;
+  }
+
+  &__price {
+    color: $white;
+    font-weight: 500;
+    font-size: 32px;
+    margin-top: 10px;
+  }
+
+  &-permissions {
+    margin-top: 20px;
+  }
+
+  &__buy-btn {
+    width: 100%;
+    margin-top: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  &__recommend {
+    background-color: $accent-second;
+    width: 100%;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    position: absolute;
+    top: -20px;
+    left: 0;
+    padding: 10px 0;
+    border-radius: 5px;
+    text-align: center;
+  }
+}

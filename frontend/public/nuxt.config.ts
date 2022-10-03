@@ -53,7 +53,7 @@ const config: NuxtConfig = {
     ]
   },
 
-  css: ['normalize.css'],
+  css: ['@/assets/scss/main.scss'],
 
   plugins: [],
 

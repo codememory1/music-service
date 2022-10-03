@@ -1,0 +1,52 @@
+@import "../../include/variables";
+@import "../../include/functions";
+
+.button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  &_bg {
+    &--accent {
+      color: #fff;
+      background-color: $accent;
+      transition: ease-in 0.15s;
+
+      &:hover {
+        background-color: darken($accent, 7%);
+      }
+
+      &:active {
+        background-color: darken($accent, darkenActiveFromHover(7));
+      }
+    }
+
+    &--blue {
+      color: #fff;
+      background-color: $accent-second;
+      transition: ease-in 0.15s;
+
+      &:hover {
+        background-color: darken($accent-second, 7%);
+      }
+
+      &:active {
+        background-color: darken($accent-second, darkenActiveFromHover(7));
+      }
+    }
+
+    &--dark {
+      color: #fff;
+      background-color: $dark-bg;
+      transition: ease-in 0.15s;
+
+      &:hover {
+        background-color: lighten($dark-bg, 7%);
+      }
+
+      &:active {
+        background-color: lighten($dark-bg, darkenActiveFromHover(7));
+      }
+    }
+  }
+}

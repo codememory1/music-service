@@ -1,5 +1,6 @@
 export default {
   subscription: {
-    recommend: 'Recommended'
+    recommend: 'Recommended',
+    buy_btn: 'Buy a subscription'
   }
 };
