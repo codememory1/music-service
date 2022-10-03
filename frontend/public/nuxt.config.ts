@@ -1,5 +1,9 @@
 import type { NuxtConfig } from '@nuxt/types';
 
+require('dotenv').config({
+  path: '../.env'
+});
+
 const config: NuxtConfig = {
   dev: false,
   server: {
@@ -7,8 +11,12 @@ const config: NuxtConfig = {
     port: 3000
   },
 
+  publicRuntimeConfig: {
+    title: process.env.SITE_NAME
+  },
+
   head: {
-    title: 'Sumron Music',
+    title: process.env.SITE_NAME,
 
     htmlAttrs: {
       lang: 'en'

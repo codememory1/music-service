@@ -1,0 +1,13 @@
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 60px;
+
+  &-navigation {
+    display: flex;
+  }
+
+  &__select-lang {
+    margin-left: 110px;
+  }
+}
