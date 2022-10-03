@@ -14,7 +14,7 @@
       padding-right: 0;
     }
 
-    &--sign-up {
+    &-sign-up {
       &:before {
         content: '';
         position: absolute;
@@ -46,14 +46,16 @@
       bottom: -5px;
     }
 
-    &:hover {
-      &:before {
-        width: 75%;
-      }
+    &:hover:before {
+      width: 75%;
     }
 
     &:active {
       color: $accent;
+    }
+
+    &.active:before {
+      width: 75%;
     }
   }
 }
