@@ -1,7 +1,7 @@
 import type { NuxtConfig } from '@nuxt/types';
 
 const config: NuxtConfig = {
-  dev: true,
+  dev: false,
   server: {
     host: '0.0.0.0',
     port: 3000
@@ -61,7 +61,7 @@ const config: NuxtConfig = {
 
   buildModules: ['@nuxt/typescript-build'],
 
-  modules: ['@nuxtjs/i18n'],
+  modules: ['@nuxtjs/i18n', '@nuxtjs/sentry'],
 
   i18n: {
     langDir: 'i18n/',
@@ -74,6 +74,10 @@ const config: NuxtConfig = {
         name: 'English'
       }
     ]
+  },
+
+  sentry: {
+    dsn: 'https://e00d68afca5b44d0bf2d420d6564adcd@o1287257.ingest.sentry.io/4503920999792640'
   }
 };
 
