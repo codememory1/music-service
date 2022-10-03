@@ -1,0 +1,31 @@
+@import "../../include/variables";
+
+.our-advantage {
+  display: flex;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 500;
+    color: $accent;
+    text-transform: uppercase;
+    line-height: 24px;
+  }
+
+  &__description {
+    margin-top: 10px;
+    color: $white;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+  }
+
+  &__icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+  }
+}

@@ -49,5 +49,5 @@ export default class SubscriptionCard extends Vue {
 </script>
 
 <style lang="scss">
-@import '~/assets/scss/business/subscription/subscription-card';
+@import '@/assets/scss/business/subscription/subscription-card';
 </style>
