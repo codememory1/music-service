@@ -1,6 +1,8 @@
 <template>
   <div class="subscription-card">
-    <div v-if="isRecommend" class="subscription-card__recommend">Рекомендовано</div>
+    <div v-if="isRecommend" class="subscription-card__recommend">
+      {{ $t('subscription.recommend') }}
+    </div>
     <h3 class="subscription-card__title">{{ title }}</h3>
     <span class="subscription-card__description">{{ description }}</span>
 
@@ -14,7 +16,7 @@
     </div>
 
     <BaseButton class="button_bg--accent subscription-card__buy-btn" @click="$emit('buy', $event)">
-      Buy a subscription
+      {{ $t('subscription.buy_btn') }}
     </BaseButton>
   </div>
 </template>
