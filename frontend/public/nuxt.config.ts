@@ -61,7 +61,20 @@ const config: NuxtConfig = {
 
   buildModules: ['@nuxt/typescript-build'],
 
-  modules: []
+  modules: ['@nuxtjs/i18n'],
+
+  i18n: {
+    langDir: 'i18n/',
+    defaultLocale: 'en',
+    locales: [
+      {
+        code: 'en',
+        iso: 'en-US',
+        file: 'en-US.ts',
+        name: 'English'
+      }
+    ]
+  }
 };
 
 export default config;

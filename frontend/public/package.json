@@ -12,6 +12,7 @@
     "lint": "eslint --fix --ext .js,.vue ./"
   },
   "dependencies": {
+    "@nuxtjs/i18n": "^7.2.3",
     "@typescript-eslint/parser": "^5.38.1",
     "core-js": "^3.19.3",
     "http-build-query": "^0.7.0",
