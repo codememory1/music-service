@@ -11,6 +11,17 @@
       <SubscriptionPermission title="Конструктор дизайна профиля" />
       <SubscriptionPermission title="Удаление друзей" :has="false" />
     </SubscriptionCard>
+    <SubscriptionCard
+      title="Первая подписка"
+      description="Описание подписки"
+      :old-price="59.99"
+      :price="49.99"
+      :is-recommend="true"
+    >
+      <SubscriptionPermission title="Добавление мультимедиа" />
+      <SubscriptionPermission title="Конструктор дизайна профиля" />
+      <SubscriptionPermission title="Удаление друзей" :has="false" />
+    </SubscriptionCard>
   </div>
 </template>
 

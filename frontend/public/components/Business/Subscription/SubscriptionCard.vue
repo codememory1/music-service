@@ -1,5 +1,6 @@
 <template>
   <div class="subscription-card">
+    <div v-if="isRecommend" class="subscription-card__recommend">Рекомендовано</div>
     <h3 class="subscription-card__title">{{ title }}</h3>
     <span class="subscription-card__description">{{ description }}</span>
 
