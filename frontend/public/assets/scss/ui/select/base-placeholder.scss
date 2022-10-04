@@ -1,0 +1,9 @@
+@import "../../include/variables";
+
+.select-top__placeholder {
+  color: $gray;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding-right: 5px;
+}
