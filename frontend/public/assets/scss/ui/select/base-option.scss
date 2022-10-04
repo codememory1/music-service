@@ -1,0 +1,31 @@
+@import "../../include/variables";
+
+.select-list__item {
+  padding: 10px;
+  cursor: pointer;
+  transition: ease-in 0.15s;
+  display: flex;
+  justify-content: space-between;
+
+  &:hover {
+    background-color: lighten($dark-bg, 7%);
+  }
+
+  &.active  {
+    background-color: lighten($dark-bg, 7%);
+  }
+
+  &-text {
+    color: $gray;
+    font-size: 14px;
+    font-weight: 400;
+    user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  > i {
+    color: $green;
+    font-size: 14px;
+  }
+}

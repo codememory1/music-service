@@ -14,13 +14,13 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component
 export default class BaseOurAdvantage extends Vue {
   @Prop({ required: true })
-  title!: string;
+  private readonly title!: string;
 
   @Prop({ required: true })
-  description!: string;
+  private readonly description!: string;
 
   @Prop({ required: true })
-  icon!: string;
+  private readonly icon!: string;
 }
 </script>
 

@@ -1,0 +1,27 @@
+@import "../../include/variables";
+
+.select-search {
+  position: relative;
+
+  &__input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid $light-for-dark;
+    color: $gray;
+    background-color: $dark-bg;
+    padding: 8px 8px 8px 25px;
+    font-size: 14px;
+    outline: none;
+  }
+
+  i {
+    font-size: 13px;
+    color: $gray;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 6px;
+    opacity: 0.4;
+    backface-visibility: hidden;
+  }
+}

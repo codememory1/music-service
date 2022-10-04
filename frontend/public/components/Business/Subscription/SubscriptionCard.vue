@@ -32,19 +32,19 @@ import BaseButton from '~/components/UI/Buttons/BaseButton.vue';
 })
 export default class SubscriptionCard extends Vue {
   @Prop({ required: true })
-  readonly title!: string;
+  private readonly title!: string;
 
   @Prop({ required: true })
-  readonly description!: string;
+  private readonly description!: string;
 
   @Prop({ required: true })
-  readonly price!: number;
+  private readonly price!: number;
 
   @Prop({ required: false, default: null })
-  oldPrice!: number;
+  private readonly oldPrice!: number;
 
   @Prop({ required: false, default: false })
-  readonly isRecommend!: boolean;
+  private readonly isRecommend!: boolean;
 }
 </script>
 
