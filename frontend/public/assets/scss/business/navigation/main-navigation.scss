@@ -1,8 +1,12 @@
 @import "../../include/variables";
 
 .main-navigation {
+  display: flex;
+  align-items: center;
+
   &-items {
     display: flex;
+    align-content: center;
   }
 
   &__item {

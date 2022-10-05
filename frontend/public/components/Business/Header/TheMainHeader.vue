@@ -5,9 +5,15 @@
     </div>
     <div class="main-header-navigation">
       <MainNavigation />
-      <div class="main-header__select-lang">
-        <!-- TODO: Тут должен быть select с языками -->
-      </div>
+      <BaseSelect
+        class="main-header__select-lang"
+        placeholder="Lang"
+        :options="[
+          { key: 'en', value: 'En' },
+          { key: 'ru', value: 'Ru' }
+        ]"
+        :active-options="['en']"
+      />
     </div>
   </header>
 </template>
@@ -15,13 +21,15 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import MainNavigation from '~/components/Business/Navigation/MainNavigation.vue';
+import BaseSelect from '~/components/UI/Select/BaseSelect.vue';
 
 @Component({
   components: {
-    MainNavigation
+    MainNavigation,
+    BaseSelect
   }
 })
-export default class MainHeader extends Vue {}
+export default class TheMainHeader extends Vue {}
 </script>
 
 <style lang="scss">

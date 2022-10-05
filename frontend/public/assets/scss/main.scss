@@ -36,3 +36,12 @@ a {
 .horizontal-logo {
   width: 300px;
 }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.wrapper-gradient {
+  background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+}
