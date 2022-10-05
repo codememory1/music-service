@@ -1,0 +1,19 @@
+@import "../include/variables";
+
+.our-advantages {
+  margin-top: 205px;
+
+  &-list {
+    margin-top: 65px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 40px;
+  }
+}
+
+.subscription-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 40px;
+  margin-top: 65px;
+}
