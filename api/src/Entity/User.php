@@ -822,4 +822,15 @@ class User implements EntityInterface
 
         return $this;
     }
+
+    public function getTotalNumberAuditions(): int
+    {
+        $total = 0;
+
+        $this->getMultimedia()->map(static function(Multimedia $multimedia) use (&$total): void {
+            $total += $multimedia->getAuditions()->count();
+        });
+
+        return $total;
+    }
 }

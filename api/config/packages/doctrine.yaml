@@ -12,7 +12,8 @@ doctrine:
       dql:
         datetime_functions:
           date: Oro\ORM\Query\AST\Functions\SimpleFunction
-
+        numeric_functions:
+          month: Oro\ORM\Query\AST\Functions\SimpleFunction
       mappings:
           App:
               type: attribute
