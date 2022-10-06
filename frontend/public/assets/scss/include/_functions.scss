@@ -1,3 +1,7 @@
 @function darkenActiveFromHover($hoverPrecent) {
   @return $hoverPrecent * 2;
 }
+
+@function lightenActiveFromHover($hoverPrecent) {
+  @return $hoverPrecent * 2;
+}
