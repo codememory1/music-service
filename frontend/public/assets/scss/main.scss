@@ -4,6 +4,7 @@
 @import "include/mixins";
 @import "include/fonts";
 @import "vendor/font-awesome";
+@import "ui/tooltip/tooltip";
 
 :root {
   --accent: #{$accent};

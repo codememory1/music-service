@@ -34,5 +34,11 @@ export default {
 
   common: {
     search: 'Search'
+  },
+
+  multimedia: {
+    like: 'I like it. Recommend Similar',
+    dislike: 'I did not like',
+    add_to_media_library: 'Add to library'
   }
 };
