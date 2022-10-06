@@ -63,7 +63,12 @@ const config: NuxtConfig = {
 
   css: ['@/assets/scss/main.scss'],
 
-  plugins: [],
+  plugins: [
+    {
+      src: '~plugins/vue-slider.ts',
+      ssr: false
+    }
+  ],
 
   components: true,
 
