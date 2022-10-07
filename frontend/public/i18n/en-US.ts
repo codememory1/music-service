@@ -33,12 +33,20 @@ export default {
   },
 
   common: {
-    search: 'Search'
+    search: 'Search',
+    status: {
+      online: 'Online',
+      offline: 'Offline'
+    }
   },
 
   multimedia: {
     like: 'I like it. Recommend Similar',
     dislike: 'I did not like',
     add_to_media_library: 'Add to library'
-  }
+  },
+
+  your_devices: 'Your devices',
+  ip: 'IP-address',
+  last_activity: 'Latest Activity'
 };
