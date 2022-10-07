@@ -1,0 +1,63 @@
+@import "../../include/variables";
+@import "../../include/functions";
+
+.album {
+  position: relative;
+  width: 200px;
+  height: 230px;
+  padding: 10px;
+  background-color: $dark-bg;
+  transition: ease-in background-color 0.15s;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    background-color: lighten($dark-bg, 7%);
+  }
+
+  &__image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 15px 0;
+  }
+
+  &__title {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: $white;
+    width: 100%;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  &-artists {
+    margin-top: 5px;
+    display: flex;
+  }
+
+  &__play-btn {
+    position: absolute;
+    background: $accent-second;
+    color: $white;
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    border: 7px solid $dark-bg;
+    right: -15px;
+    bottom: 75px;
+    transition: ease-in background-color 0.15s;
+
+    &:hover {
+      background-color: darken($accent-second, 7%);
+    }
+
+    &:active {
+      background-color: darken($accent-second, darkenActiveFromHover(7));
+    }
+  }
+}
