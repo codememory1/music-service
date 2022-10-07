@@ -3,21 +3,26 @@
     <a href="">
       <img class="album__image" :src="image" :alt="title" />
       <div class="album__title">{{ title }}</div>
+      <span class="album-artists">
+        <ArtistLink v-for="artist in artists" :key="artist.id" href="/">
+          {{ artist.name }}
+        </ArtistLink>
+      </span>
     </a>
 
-    <BaseButton class="album__play-btn">
-      <i v-if="!isPlay" class="fas fa-play"></i>
-      <i v-else class="fas fa-pause"></i>
-    </BaseButton>
+    <slot />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import BaseButton from '@/components/UI/Button/BaseButton.vue';
+import ArtistLink from '~/components/Business/Link/ArtistLink.vue';
+import BaseButton from '~/components/UI/Button/BaseButton.vue';
+import { ArtistType } from '~/types/ArtistType';
 
 @Component({
   components: {
+    ArtistLink,
     BaseButton
   }
 })
@@ -31,8 +36,8 @@ export default class BaseAlbum extends Vue {
   @Prop({ required: true })
   private readonly image!: string;
 
-  @Prop({ required: false, default: false })
-  private readonly isPlay!: boolean;
+  @Prop({ required: true })
+  private readonly artists!: ArtistType[];
 }
 </script>
 

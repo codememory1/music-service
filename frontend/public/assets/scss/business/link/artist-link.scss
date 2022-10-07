@@ -1,0 +1,27 @@
+@import "../../include/variables";
+
+.artist-link {
+  color: $gray;
+  font-size: 14px;
+  font-weight: 100;
+  position: relative;
+  margin-right: 5px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:not(:last-child) {
+    &:before {
+      content: ', ';
+      position: absolute;
+      color: $gray;
+      font-size: 14px;
+      right: 0;
+    }
+  }
+
+  &:hover {
+    text-decoration: revert;
+  }
+}
