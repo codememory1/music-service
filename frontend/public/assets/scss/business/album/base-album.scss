@@ -1,10 +1,9 @@
 @import "../../include/variables";
-@import "../../include/functions";
 
 .album {
   position: relative;
   width: 200px;
-  height: 230px;
+  height: 240px;
   padding: 10px;
   background-color: $dark-bg;
   transition: ease-in background-color 0.15s;
@@ -37,27 +36,11 @@
 
   &-artists {
     margin-top: 5px;
-    display: flex;
-  }
-
-  &__play-btn {
-    position: absolute;
-    background: $accent-second;
-    color: $white;
-    border-radius: 100%;
-    width: 60px;
-    height: 60px;
-    border: 7px solid $dark-bg;
-    right: -15px;
-    bottom: 75px;
-    transition: ease-in background-color 0.15s;
-
-    &:hover {
-      background-color: darken($accent-second, 7%);
-    }
-
-    &:active {
-      background-color: darken($accent-second, darkenActiveFromHover(7));
-    }
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    color: $gray;
+    text-align: center;
   }
 }
