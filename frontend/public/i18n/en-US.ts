@@ -49,5 +49,10 @@ export default {
 
   your_devices: 'Your devices',
   ip: 'IP-address',
-  last_activity: 'Latest Activity'
+  last_activity: 'Latest Activity',
+
+  button: {
+    subscribe: 'Subscribe',
+    unsubscribe: 'Unsubscribe'
+  }
 };
