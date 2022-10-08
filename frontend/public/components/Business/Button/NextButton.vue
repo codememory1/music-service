@@ -1,6 +1,6 @@
 <template>
   <BaseButton class="prev-next__btn button_bg--blue">
-    <i class="fas fa-chevron-right"></i>
+    <i class="far fa-chevron-right" />
   </BaseButton>
 </template>
 
