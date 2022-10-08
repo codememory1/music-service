@@ -20,6 +20,12 @@
         >
           <i class="fas fa-album-collection" />
         </BaseButton>
+        <BaseButton
+          v-tooltip="$t('multimedia.create_stream')"
+          class="desktop-player_multimedia-control-btn desktop-player__devices"
+        >
+          <i class="fas fa-users-class" />
+        </BaseButton>
       </div>
       <div class="desktop-player-player-control">
         <BaseButton class="desktop-player_player-control-btn desktop-player_repeat-btn">

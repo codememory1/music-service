@@ -43,7 +43,8 @@ export default {
   multimedia: {
     like: 'I like it. Recommend Similar',
     dislike: 'I did not like',
-    add_to_media_library: 'Add to library'
+    add_to_media_library: 'Add to library',
+    create_stream: 'Create stream'
   },
 
   your_devices: 'Your devices',
