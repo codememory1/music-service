@@ -1,6 +1,6 @@
 <template>
-  <BaseButton class="prev-next__btn button_bg--dark">
-    <i class="far fa-chevron-left" />
+  <BaseButton class="share__btn button_bg--blue">
+    <i class="far fa-share-alt" />
   </BaseButton>
 </template>
 
@@ -13,9 +13,9 @@ import BaseButton from '~/components/UI/Button/BaseButton.vue';
     BaseButton
   }
 })
-export default class PrevButton extends Vue {}
+export default class ShareButton extends Vue {}
 </script>
 
 <style lang="scss">
-@import '~/assets/scss/business/button/prev-next-button';
+@import '@/assets/scss/business/button/share-button';
 </style>
