@@ -11,6 +11,10 @@ const config: NuxtConfig = {
     port: 3000
   },
 
+  router: {
+    linkExactActiveClass: 'active-link'
+  },
+
   publicRuntimeConfig: {
     title: process.env.SITE_NAME
   },
