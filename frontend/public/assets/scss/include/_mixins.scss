@@ -1,3 +1,5 @@
+@import "variables";
+
 @mixin font($name, $type, $weight: 'normal', $style: 'normal') {
   $path: '~/assets/fonts/#{$name}/#{$type}/#{$name}-#{$type}';
 

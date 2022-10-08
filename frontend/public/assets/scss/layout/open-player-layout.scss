@@ -1,0 +1,38 @@
+@import "../include/variables";
+
+.open-player-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.content-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  overflow: auto;
+}
+
+.content-scroll {
+  height: 100%;
+  overflow: auto;
+  padding: 0 40px;
+}
+
+.player-navigation {
+  border-right: 2px solid $light-bg;
+}
+
+.desktop-player {
+  border-top: 2px solid $light-bg;
+}
+
+.open-player-header {
+  display: flex;
+  padding: 20px 40px;
+  backdrop-filter: saturate(180%) blur(10px);
+  background-color: rgba($dark-bg, 0.5);
+}
