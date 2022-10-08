@@ -1,5 +1,7 @@
 <template>
-  <BaseButton class="subscribe__btn button_bg--dark">{{ $t('button.unsubscribe') }}</BaseButton>
+  <BaseButton class="prev-next__btn button_bg--dark">
+    <i class="fas fa-chevron-left"></i>
+  </BaseButton>
 </template>
 
 <script lang="ts">
@@ -11,9 +13,9 @@ import BaseButton from '~/components/UI/Button/BaseButton.vue';
     BaseButton
   }
 })
-export default class UnsubscribeButton extends Vue {}
+export default class PrevButton extends Vue {}
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/button/subscribe-unsubscribe-button';
+@import '~/assets/scss/business/button/prev-next-button';
 </style>

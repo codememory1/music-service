@@ -15,5 +15,5 @@ export default class SubscribeButton extends Vue {}
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/button/subscribe';
+@import '@/assets/scss/business/button/subscribe-unsubscribe-button';
 </style>
