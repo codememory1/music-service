@@ -1,5 +1,5 @@
 <template>
-  <BaseButton class="prev-next__btn button_bg--dark">
+  <BaseButton class="prev-next__btn button_bg--dark" @click="$emit('click', $event)">
     <i class="far fa-chevron-left" />
   </BaseButton>
 </template>
@@ -17,5 +17,5 @@ export default class PrevButton extends Vue {}
 </script>
 
 <style lang="scss">
-@import '~/assets/scss/business/button/prev-next-button';
+@import '@/assets/scss/business/button/prev-next-button';
 </style>

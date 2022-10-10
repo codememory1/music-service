@@ -1,18 +1,18 @@
 <template>
   <div class="track">
     <div class="track-left">
-      <img :src="image" :alt="title" class="track__img" />
+      <img :src="data.image" :alt="data.title" class="track__img" />
       <div class="track-multimedia-info">
-        <div class="track__name">{{ title }}</div>
+        <div class="track__name">{{ data.title }}</div>
         <span class="track__artists">
-          <ArtistLink v-for="artist in artists" :key="artist.id" href="/">
-            {{ artist.name }}
+          <ArtistLink v-for="performer in data.performers" :key="performer.id" href="/">
+            {{ performer.name }}
           </ArtistLink>
         </span>
       </div>
     </div>
     <div class="track-right">
-      <span class="track__duration-time">{{ duration }}</span>
+      <span class="track__duration-time">{{ data.duration }}</span>
       <div class="track-control">
         <BaseButton class="track__btn track__like-btn">
           <i class="fas fa-thumbs-up" />
@@ -29,7 +29,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import ArtistLink from '~/components/Business/Link/ArtistLink.vue';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import { ArtistType } from '~/types/ArtistType';
+import { TrackType } from '~/types/TrackType';
 
 @Component({
   components: {
@@ -39,19 +39,7 @@ import { ArtistType } from '~/types/ArtistType';
 })
 export default class BaseTrack extends Vue {
   @Prop({ required: true })
-  private readonly id!: number;
-
-  @Prop({ required: true })
-  private readonly title!: string;
-
-  @Prop({ required: true })
-  private readonly image!: string;
-
-  @Prop({ required: true })
-  private readonly artists!: ArtistType[];
-
-  @Prop({ required: true })
-  private readonly duration!: string;
+  private readonly data!: TrackType;
 }
 </script>
 

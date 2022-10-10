@@ -55,3 +55,11 @@ img {
 .wrapper-gradient {
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
 }
+
+.row {
+  display: flex;
+}
+
+.row-grid {
+  display: grid;
+}

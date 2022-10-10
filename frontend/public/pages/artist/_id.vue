@@ -3,6 +3,18 @@
     <template #header>
       <ArtistHeaderSearch />
     </template>
+
+    <ArtistProfileHeader
+      :id="2"
+      pseudonym="Zara Larsson"
+      description="Millions of songs and podcasts. No credit card. of songs and podcasts. No credit card."
+    />
+    <TopAlbumsSection :albums="albums()" />
+
+    <div class="row-grid">
+      <TopTracksSection :tracks="tracks()" />
+      <SimilarArtistsSection :artists="similarArtists()" />
+    </div>
   </OpenPlayerLayout>
 </template>
 
@@ -10,6 +22,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import OpenPlayerLayout from '~/layouts/OpenPlayerLayout.vue';
 import ArtistHeaderSearch from '~/components/Business/Artist/Profile/ArtistProfileHeaderSearch.vue';
+import ArtistProfileHeader from '~/components/Business/Artist/Profile/ArtistProfileHeader.vue';
+import TopAlbumsSection from '~/components/Business/Section/TopAlbumsSection.vue';
+import TopTracksSection from '~/components/Business/Section/TopTracksSection.vue';
+import SimilarArtistsSection from '~/components/Business/Section/SimilarArtistsSection.vue';
+import { AlbumType } from '~/types/AlbumType';
+import { TrackType } from '~/types/TrackType';
+import { ArtistType } from '~/types/ArtistType';
 
 @Component({
   validate({ params }) {
@@ -18,10 +37,136 @@ import ArtistHeaderSearch from '~/components/Business/Artist/Profile/ArtistProfi
 
   components: {
     OpenPlayerLayout,
-    ArtistHeaderSearch
+    ArtistHeaderSearch,
+    ArtistProfileHeader,
+    TopAlbumsSection,
+    TopTracksSection,
+    SimilarArtistsSection
   }
 })
-export default class Artist extends Vue {}
+export default class Artist extends Vue {
+  private albums(): AlbumType[] {
+    return [
+      {
+        id: 1,
+        title: 'Album Name',
+        image: '/images/album1.png',
+        performers: [
+          {
+            id: 1,
+            name: 'Tvbuu'
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: 'Album Name',
+        image: '/images/album1.png',
+        performers: [
+          {
+            id: 1,
+            name: 'Tvbuu'
+          }
+        ]
+      },
+      {
+        id: 3,
+        title: 'Album Name',
+        image: '/images/album1.png',
+        performers: [
+          {
+            id: 1,
+            name: 'Tvbuu'
+          }
+        ]
+      },
+      {
+        id: 4,
+        title: 'Album Name',
+        image: '/images/album1.png',
+        performers: [
+          {
+            id: 1,
+            name: 'Tvbuu'
+          }
+        ]
+      },
+      {
+        id: 5,
+        title: 'Album Name',
+        image: '/images/album1.png',
+        performers: [
+          {
+            id: 1,
+            name: 'Tvbuu'
+          }
+        ]
+      },
+      {
+        id: 6,
+        title: 'Album Name',
+        image: '/images/album1.png',
+        performers: [
+          {
+            id: 1,
+            name: 'Tvbuu'
+          }
+        ]
+      }
+    ];
+  }
+
+  private tracks(): TrackType[] {
+    return [
+      {
+        id: 1,
+        title: 'Music Name',
+        image: '/images/track1.png',
+        performers: [
+          {
+            id: 1,
+            name: 'Tvbuu'
+          }
+        ],
+        duration: '02:39'
+      },
+      {
+        id: 2,
+        title: 'Music Name',
+        image: '/images/track1.png',
+        performers: [
+          {
+            id: 1,
+            name: 'Tvbuu'
+          }
+        ],
+        duration: '02:39'
+      },
+      {
+        id: 3,
+        title: 'Music Name',
+        image: '/images/track1.png',
+        performers: [
+          {
+            id: 1,
+            name: 'Tvbuu'
+          }
+        ],
+        duration: '02:39'
+      }
+    ];
+  }
+
+  private similarArtists(): ArtistType[] {
+    return [
+      {
+        id: 1,
+        name: 'Tvbuu',
+        image: '/images/album1.png'
+      }
+    ];
+  }
+}
 </script>
 
 <style lang="scss">

@@ -1,5 +1,5 @@
 <template>
-  <BaseButton class="subscribe__btn button_bg--accent">{{ $t('button.subscribe') }}</BaseButton>
+  <BaseButton class="subscribe-unsubscribe__btn button_bg--accent">{{ $t('button.subscribe') }}</BaseButton>
 </template>
 
 <script lang="ts">

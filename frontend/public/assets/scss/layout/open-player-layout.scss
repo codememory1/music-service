@@ -19,7 +19,6 @@
 .content-scroll {
   height: 100%;
   overflow: auto;
-  padding: 0 40px;
 }
 
 .player-navigation {
@@ -33,6 +32,13 @@
 .open-player-header {
   display: flex;
   padding: 20px 40px;
-  backdrop-filter: saturate(180%) blur(10px);
-  background-color: rgba($dark-bg, 0.5);
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  transition: ease-in background-color 0.15s;
+
+  &.active {
+    backdrop-filter: saturate(180%) blur(10px);
+    background-color: rgba($dark-bg, 0.5);
+  }
 }

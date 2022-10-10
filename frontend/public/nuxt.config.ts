@@ -72,7 +72,8 @@ const config: NuxtConfig = {
       src: '~plugins/vue-slider.ts',
       ssr: false
     },
-    '~plugins/tooltip.ts'
+    '~plugins/tooltip.ts',
+    '~plugins/swiper.ts'
   ],
 
   components: true,
