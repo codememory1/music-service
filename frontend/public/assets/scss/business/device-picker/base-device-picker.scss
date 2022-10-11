@@ -1,0 +1,20 @@
+@import "../../include/variables";
+
+.device-picker {
+  background-color: $dark-bg;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+
+  &__header {
+    color: $white;
+    text-align: center;
+    font-weight: 400;
+    margin-bottom: 20px;
+  }
+
+  &__separator {
+    border-color: $light-for-dark;
+    margin: 20px 0;
+  }
+}

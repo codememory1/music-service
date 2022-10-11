@@ -33,6 +33,26 @@ export default {
   },
 
   common: {
-    search: 'Search'
+    search: 'Search',
+    status: {
+      online: 'Online',
+      offline: 'Offline'
+    }
+  },
+
+  multimedia: {
+    like: 'I like it. Recommend Similar',
+    dislike: 'I did not like',
+    add_to_media_library: 'Add to library',
+    create_stream: 'Create stream'
+  },
+
+  your_devices: 'Your devices',
+  ip: 'IP-address',
+  last_activity: 'Latest Activity',
+
+  button: {
+    subscribe: 'Subscribe',
+    unsubscribe: 'Unsubscribe'
   }
 };

@@ -1,0 +1,121 @@
+@import "../../include/variables";
+@import "../../include/functions";
+
+.desktop-player {
+  display: flex;
+  flex-direction: column;
+  background-color: $dark-bg;
+  padding: 20px 40px;
+
+  &-control {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_multimedia-control-btn {
+    width: 35px;
+    height: 35px;
+    background-color: $light-for-dark;
+    border-radius: 10px;
+    transition: ease-in 0.15s;
+    font-size: 15px;
+    color: $gray;
+    margin-right: 5px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:hover {
+      background-color: lighten($light-for-dark, 7%);
+    }
+
+    &:active {
+      background-color: lighten($light-for-dark, lightenActiveFromHover(7));
+    }
+  }
+
+  &-player-control {
+    display: flex;
+    align-items: center;
+  }
+
+  &_player-control-btn {
+    margin-right: 20px;
+    transition: ease-in 0.15s;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &_repeat-btn,
+  &_shuffle-btn {
+    color: $gray;
+    font-size: 18px;
+    background-color: transparent;
+
+    &:hover {
+      color: $white;
+    }
+  }
+
+  &_next-btn,
+  &_prev-btn {
+    color: $accent;
+    font-size: 18px;
+    background-color: transparent;
+
+    &:hover {
+      color: darken($accent, 10%);
+    }
+  }
+
+  &_play-pause-btn {
+    color: #fff;
+    background-color: $accent;
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: ease-in 0.15s;
+
+    &:hover {
+      background-color: darken($accent, 10%);
+    }
+  }
+
+  &-volume-control {
+    display: flex;
+    align-items: center;
+    color: $gray;
+
+    i {
+      font-size: 18px;
+    }
+  }
+
+  &_volume-progress {
+    width: 55px!important;
+    margin: 0 10px;
+  }
+
+  &-time-wrapper {
+    display: flex;
+    margin-top: 25px;
+  }
+
+  &_current-time,
+  &_duration-time {
+    color: $gray;
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  &_time-progress {
+    width: 100%!important;
+    margin: 0 55px;
+  }
+}

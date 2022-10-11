@@ -3,7 +3,9 @@
 @import "include/functions";
 @import "include/mixins";
 @import "include/fonts";
+@import "include/grid";
 @import "vendor/font-awesome";
+@import "ui/tooltip/tooltip";
 
 :root {
   --accent: #{$accent};
@@ -13,6 +15,11 @@
   --light-for-dark: #{$light-for-dark};
   --gray: #{$gray};
   --white: #{$white};
+  --green: #{$green};
+  --red: #{$red};
+  --grid-gap: #{$grid-gap};
+  --column-width: #{$column-width};
+  --column-count: #{$column-count};
 }
 
 * {
@@ -33,6 +40,10 @@ a {
   text-decoration: none;
 }
 
+img {
+  user-select: none;
+}
+
 .horizontal-logo {
   width: 300px;
 }
@@ -44,4 +55,12 @@ a {
 
 .wrapper-gradient {
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.row {
+  display: flex;
+}
+
+.m-40 {
+  margin: 40px;
 }

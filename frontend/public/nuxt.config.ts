@@ -11,6 +11,10 @@ const config: NuxtConfig = {
     port: 3000
   },
 
+  router: {
+    linkExactActiveClass: 'active-link'
+  },
+
   publicRuntimeConfig: {
     title: process.env.SITE_NAME
   },
@@ -63,7 +67,14 @@ const config: NuxtConfig = {
 
   css: ['@/assets/scss/main.scss'],
 
-  plugins: [],
+  plugins: [
+    {
+      src: '~plugins/vue-slider.ts',
+      ssr: false
+    },
+    '~plugins/tooltip.ts',
+    '~plugins/swiper.ts'
+  ],
 
   components: true,
 

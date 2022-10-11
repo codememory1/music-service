@@ -1,0 +1,25 @@
+@import "../../include/variables";
+@import "../../include/functions";
+
+.single-album {
+  &__play-btn {
+    position: absolute;
+    background: $accent-second;
+    color: $white;
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    border: 7px solid $dark-bg;
+    right: -15px;
+    bottom: 75px;
+    transition: ease-in background-color 0.15s;
+
+    &:hover {
+      background-color: darken($accent-second, 7%);
+    }
+
+    &:active {
+      background-color: darken($accent-second, darkenActiveFromHover(7));
+    }
+  }
+}
