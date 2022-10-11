@@ -1,6 +1,8 @@
-@import "../../include/variables";
+@import "../../../include/variables";
 
 .player-navigation__item {
+  user-select: none;
+
   &-link {
     display: flex;
     position: relative;

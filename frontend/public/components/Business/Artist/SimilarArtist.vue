@@ -1,26 +1,19 @@
 <template>
-  <div class="similar-artists">
-    <div class="similar-artist">
-      <NuxtLink to="/">
-        <img :src="image" :alt="name" />
-      </NuxtLink>
-    </div>
+  <div class="similar-artist">
+    <NuxtLink to="/">
+      <img :src="data.image" :alt="data.name" />
+    </NuxtLink>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { ArtistType } from '~/types/ArtistType';
 
 @Component
 export default class SimilarArtist extends Vue {
   @Prop({ required: true })
-  private readonly id!: number;
-
-  @Prop({ required: true })
-  private readonly name!: string;
-
-  @Prop({ required: true })
-  private readonly image!: string;
+  private readonly data!: ArtistType;
 }
 </script>
 

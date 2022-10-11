@@ -1,7 +1,8 @@
-@import "../../include/variables";
+@import "../../../include/variables";
 
 .player-navigation-category {
   margin-top: 40px;
+  user-select: none;
 
   &__title {
     color: $accent;

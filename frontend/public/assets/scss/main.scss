@@ -3,6 +3,7 @@
 @import "include/functions";
 @import "include/mixins";
 @import "include/fonts";
+@import "include/grid";
 @import "vendor/font-awesome";
 @import "ui/tooltip/tooltip";
 
@@ -39,6 +40,10 @@ a {
   text-decoration: none;
 }
 
+img {
+  user-select: none;
+}
+
 .horizontal-logo {
   width: 300px;
 }
@@ -50,4 +55,12 @@ a {
 
 .wrapper-gradient {
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.row {
+  display: flex;
+}
+
+.m-40 {
+  margin: 40px;
 }

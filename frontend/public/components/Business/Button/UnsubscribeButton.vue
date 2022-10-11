@@ -1,5 +1,5 @@
 <template>
-  <BaseButton class="subscribe__btn button_bg--dark">{{ $t('button.unsubscribe') }}</BaseButton>
+  <BaseButton class="subscribe-unsubscribe__btn button_bg--dark">{{ $t('button.unsubscribe') }}</BaseButton>
 </template>
 
 <script lang="ts">

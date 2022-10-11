@@ -20,5 +20,5 @@ export default class PlayerNavigationCategory extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/player-navigation/player-navigation-category';
+@import '~/assets/scss/business/navigation/player-navigation/player-navigation-category';
 </style>

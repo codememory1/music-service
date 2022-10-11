@@ -24,5 +24,5 @@ export default class PlayerNavigationItem extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/player-navigation/player-navigation-item';
+@import '~/assets/scss/business/navigation/player-navigation/player-navigation-item';
 </style>
