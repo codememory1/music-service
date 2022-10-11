@@ -64,10 +64,14 @@ class Subscription implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPermission::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $permissions;
 
+    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPayment::class, cascade: ['remove'])]
+    private Collection $payments;
+
     #[Pure]
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function getKey(): ?string
@@ -233,5 +237,13 @@ class Subscription implements EntityInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, SubscriptionPayment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
     }
 }
