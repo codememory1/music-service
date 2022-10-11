@@ -1,5 +1,5 @@
 <template>
-  <BaseButton class="prev-next__btn button_bg--dark" @click="$emit('click', $event)">
+  <BaseButton class="prev-next__btn button_bg--blue" @click="$emit('click', $event)">
     <i class="far fa-chevron-left" />
   </BaseButton>
 </template>

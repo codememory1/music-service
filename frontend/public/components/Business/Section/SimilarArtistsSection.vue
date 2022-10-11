@@ -1,10 +1,12 @@
 <template>
-  <BaseSection>
+  <BaseSection class="similar-artists">
     <template #header>
-      <BaseSectionHeader title="Monthly Top Artists" />
+      <BaseSectionHeader title="Monthly Top Artists" class="similar-artists__header" />
     </template>
 
-    <SimilarArtist v-for="artist in artists" :key="artist.id" :data="artist" />
+    <div class="row-grid cl-6">
+      <SimilarArtist v-for="artist in artists" :key="artist.id" :data="artist" />
+    </div>
   </BaseSection>
 </template>
 

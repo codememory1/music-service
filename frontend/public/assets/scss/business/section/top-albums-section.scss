@@ -1,3 +1,5 @@
+@import "../../include/variables";
+
 .top-albums {
   margin: 40px;
 
@@ -9,6 +11,13 @@
 
   .section__title {
     font-size: 20px;
+  }
+}
+
+.prev-top-album__btn,
+.next-top-album__btn {
+  &.swiper-button-disabled {
+    background-color: $dark-bg
   }
 }
 

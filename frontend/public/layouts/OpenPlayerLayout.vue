@@ -23,13 +23,13 @@
     </PlayerNavigation>
 
     <div class="content-wrapper">
-      <div class="open-player-header">
+      <div class="open-player-header" :class="{ active: headerIsActive }">
         <slot name="header" />
 
         <OpenPlayerHeaderUserInfo />
       </div>
 
-      <div class="content-scroll">
+      <div ref="content" class="content-scroll" @scroll="scrollContent">
         <slot />
       </div>
 
@@ -55,7 +55,13 @@ import DesktopPlayer from '~/components/Business/Player/DesktopPlayer.vue';
     DesktopPlayer
   }
 })
-export default class OpenPlayerLayout extends Vue {}
+export default class OpenPlayerLayout extends Vue {
+  private headerIsActive: boolean = false;
+
+  private scrollContent(event: Event): void {
+    this.headerIsActive = (event.target as HTMLElement).scrollTop >= 40;
+  }
+}
 </script>
 
 <style lang="scss">

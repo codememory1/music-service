@@ -1,10 +1,8 @@
 <template>
-  <div class="similar-artists">
-    <div class="similar-artist">
-      <NuxtLink to="/">
-        <img :src="data.image" :alt="data.name" />
-      </NuxtLink>
-    </div>
+  <div class="similar-artist">
+    <NuxtLink to="/">
+      <img :src="data.image" :alt="data.name" />
+    </NuxtLink>
   </div>
 </template>
 

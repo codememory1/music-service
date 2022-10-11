@@ -3,6 +3,7 @@
 @import "include/functions";
 @import "include/mixins";
 @import "include/fonts";
+@import "include/grid";
 @import "vendor/font-awesome";
 @import "ui/tooltip/tooltip";
 
@@ -60,6 +61,6 @@ img {
   display: flex;
 }
 
-.row-grid {
-  display: grid;
+.m-40 {
+  margin: 40px;
 }

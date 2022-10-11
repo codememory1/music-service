@@ -34,8 +34,8 @@
   padding: 20px 40px;
   position: absolute;
   width: 100%;
-  z-index: 1;
-  transition: ease-in background-color 0.15s;
+  z-index: 2;
+  transition: ease-in 0.3s;
 
   &.active {
     backdrop-filter: saturate(180%) blur(10px);

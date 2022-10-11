@@ -11,7 +11,7 @@
     />
     <TopAlbumsSection :albums="albums()" />
 
-    <div class="row-grid">
+    <div class="row-grid cl-2 grid-gap-20 m-40">
       <TopTracksSection :tracks="tracks()" />
       <SimilarArtistsSection :artists="similarArtists()" />
     </div>
@@ -54,6 +54,7 @@ export default class Artist extends Vue {
         performers: [
           {
             id: 1,
+            image: '/images/album1.png',
             name: 'Tvbuu'
           }
         ]
@@ -61,10 +62,11 @@ export default class Artist extends Vue {
       {
         id: 2,
         title: 'Album Name',
-        image: '/images/album1.png',
+        image: '/images/album2.png',
         performers: [
           {
             id: 1,
+            image: '/images/album3.png',
             name: 'Tvbuu'
           }
         ]
@@ -72,10 +74,11 @@ export default class Artist extends Vue {
       {
         id: 3,
         title: 'Album Name',
-        image: '/images/album1.png',
+        image: '/images/album3.png',
         performers: [
           {
             id: 1,
+            image: '/images/album1.png',
             name: 'Tvbuu'
           }
         ]
@@ -83,10 +86,11 @@ export default class Artist extends Vue {
       {
         id: 4,
         title: 'Album Name',
-        image: '/images/album1.png',
+        image: '/images/album4.png',
         performers: [
           {
             id: 1,
+            image: '/images/album1.png',
             name: 'Tvbuu'
           }
         ]
@@ -94,10 +98,11 @@ export default class Artist extends Vue {
       {
         id: 5,
         title: 'Album Name',
-        image: '/images/album1.png',
+        image: '/images/album5.png',
         performers: [
           {
             id: 1,
+            image: '/images/album1.png',
             name: 'Tvbuu'
           }
         ]
@@ -105,10 +110,11 @@ export default class Artist extends Vue {
       {
         id: 6,
         title: 'Album Name',
-        image: '/images/album1.png',
+        image: '/images/album2.png',
         performers: [
           {
             id: 1,
+            image: '/images/album1.png',
             name: 'Tvbuu'
           }
         ]
@@ -125,6 +131,7 @@ export default class Artist extends Vue {
         performers: [
           {
             id: 1,
+            image: '/images/album1.png',
             name: 'Tvbuu'
           }
         ],
@@ -133,10 +140,11 @@ export default class Artist extends Vue {
       {
         id: 2,
         title: 'Music Name',
-        image: '/images/track1.png',
+        image: '/images/track2.png',
         performers: [
           {
             id: 1,
+            image: '/images/album1.png',
             name: 'Tvbuu'
           }
         ],
@@ -145,10 +153,37 @@ export default class Artist extends Vue {
       {
         id: 3,
         title: 'Music Name',
-        image: '/images/track1.png',
+        image: '/images/track3.png',
         performers: [
           {
             id: 1,
+            image: '/images/album1.png',
+            name: 'Tvbuu'
+          }
+        ],
+        duration: '02:39'
+      },
+      {
+        id: 3,
+        title: 'Music Name',
+        image: '/images/track4.png',
+        performers: [
+          {
+            id: 1,
+            image: '/images/album1.png',
+            name: 'Tvbuu'
+          }
+        ],
+        duration: '02:39'
+      },
+      {
+        id: 3,
+        title: 'Music Name',
+        image: '/images/track2.png',
+        performers: [
+          {
+            id: 1,
+            image: '/images/album1.png',
             name: 'Tvbuu'
           }
         ],
@@ -162,7 +197,32 @@ export default class Artist extends Vue {
       {
         id: 1,
         name: 'Tvbuu',
-        image: '/images/album1.png'
+        image: '/images/artist1.png'
+      },
+      {
+        id: 2,
+        name: 'Tvbuu',
+        image: '/images/artist2.png'
+      },
+      {
+        id: 3,
+        name: 'Tvbuu',
+        image: '/images/artist3.png'
+      },
+      {
+        id: 4,
+        name: 'Tvbuu',
+        image: '/images/artist4.png'
+      },
+      {
+        id: 5,
+        name: 'Tvbuu',
+        image: '/images/artist1.png'
+      },
+      {
+        id: 6,
+        name: 'Tvbuu',
+        image: '/images/artist3.png'
       }
     ];
   }

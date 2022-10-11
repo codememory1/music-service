@@ -3,8 +3,8 @@
     <template #header>
       <BaseSectionHeader title="Weeklly Top Track" class="top-albums__header">
         <div class="slider-navigation">
-          <PrevButton @click="prev" />
-          <NextButton @click="next" />
+          <PrevButton class="prev-top-album__btn" />
+          <NextButton class="next-top-album__btn" />
         </div>
       </BaseSectionHeader>
     </template>
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue as VueDecorator, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { AlbumType } from '~/types/AlbumType';
 import BaseSection from '~/components/UI/Section/BaseSection.vue';
 import BaseSectionHeader from '~/components/UI/Section/BaseSectionHeader.vue';
@@ -35,27 +35,23 @@ import BaseAlbum from '~/components/Business/Album/BaseAlbum.vue';
     BaseAlbum
   }
 })
-export default class TopAlbumsSection extends VueDecorator {
+export default class TopAlbumsSection extends Vue {
   @Prop({ required: true })
   private readonly albums!: AlbumType[];
 
-  get swiper(): object {
-    return this.$refs.albumsSwiper.$swiper;
+  get swiper(): Vue {
+    return this.$refs.albumsSwiper as Vue;
   }
 
   get swiperOptions(): object {
     return {
       slidesPerView: 5,
-      spaceBetween: 12
+      spaceBetween: 12,
+      navigation: {
+        prevEl: '.prev-top-album__btn',
+        nextEl: '.next-top-album__btn'
+      }
     };
-  }
-
-  private prev(): void {
-    this.swiper.$swiper.slidePrev();
-  }
-
-  private next(): void {
-    this.swiper.$swiper.slideNext();
   }
 }
 </script>
