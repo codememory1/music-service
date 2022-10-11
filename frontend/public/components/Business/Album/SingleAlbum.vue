@@ -1,6 +1,6 @@
 <template>
-  <BaseAlbum :data="data">
-    <BaseButton class="album__play-btn">
+  <BaseAlbum :data="data" class="single-album">
+    <BaseButton class="single-album__play-btn">
       <i v-if="!isPlay" class="fas fa-play"></i>
       <i v-else class="fas fa-pause"></i>
     </BaseButton>
