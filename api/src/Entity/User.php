@@ -123,6 +123,9 @@ class User implements EntityInterface
     #[ORM\JoinColumn(nullable: false)]
     private Collection $multimediaListeningHistory;
 
+    #[ORM\OneToMany(mappedBy: 'buyer', targetEntity: Transaction::class, cascade: ['remove'])]
+    private Collection $transactions;
+
     #[Pure]
     public function __construct()
     {
@@ -142,6 +145,7 @@ class User implements EntityInterface
         $this->friendRequests = new ArrayCollection();
         $this->acceptedFriendRequests = new ArrayCollection();
         $this->multimediaListeningHistory = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -192,7 +196,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isActive(): bool
     {
         return $this->getStatus() === UserStatusEnum::ACTIVE->name;
@@ -205,7 +208,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isNotActive(): bool
     {
         return $this->getStatus() === UserStatusEnum::NOT_ACTIVE->name;
@@ -821,5 +823,13 @@ class User implements EntityInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
     }
 }
