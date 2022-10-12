@@ -11,9 +11,9 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 final class PlatformSettingFactory implements DataFixtureFactoryInterface
 {
     private PlatformSettingEnum $platformSetting;
-    private array $value;
+    private array|string|int|float $value;
 
-    public function __construct(PlatformSettingEnum $platformSetting, array $value = [])
+    public function __construct(PlatformSettingEnum $platformSetting, array|string|int|float $value = [])
     {
         $this->platformSetting = $platformSetting;
         $this->value = $value;

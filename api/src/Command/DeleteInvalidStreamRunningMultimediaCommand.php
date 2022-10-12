@@ -34,7 +34,7 @@ final class DeleteInvalidStreamRunningMultimediaCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $streamRunningMultimediaRepository = $this->em->getRepository(StreamRunningMultimedia::class);
-        $autoRejectTime = $this->platformSettingService->saveToMemory(PlatformSettingEnum::AUTO_REJECT_OFFERED_STREAMING)->getFirst();
+        $autoRejectTime = $this->platformSettingService->get(PlatformSettingEnum::AUTO_REJECT_OFFERED_STREAMING);
 
         $io->info('Worker started successfully');
 

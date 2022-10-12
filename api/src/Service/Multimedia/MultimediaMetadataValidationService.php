@@ -5,7 +5,6 @@ namespace App\Service\Multimedia;
 use App\Entity\Multimedia;
 use App\Enum\MultimediaTypeEnum;
 use App\Enum\PlatformSettingEnum;
-use App\Enum\PlatformSettingValueKeyEnum;
 use App\Exception\Http\InvalidException;
 use App\Exception\Http\MultimediaException;
 use App\Service\PlatformSettingService;
@@ -48,11 +47,12 @@ class MultimediaMetadataValidationService
 
     public function validateDuration(): void
     {
-        $this->platformSetting->saveToMemory(PlatformSettingEnum::MULTIMEDIA_DURATION);
+        $maxDurationTrack = $this->platformSetting->get(PlatformSettingEnum::MULTIMEDIA_DURATION_TRACK_KEY);
+        $maxDurationClip = $this->platformSetting->get(PlatformSettingEnum::MULTIMEDIA_DURATION_CLIP_KEY);
 
         $allowedDuration = match ($this->multimedia->getType()) {
-            MultimediaTypeEnum::TRACK->name => $this->platformSetting->getFromValue(PlatformSettingValueKeyEnum::MULTIMEDIA_DURATION_TRACK_KEY),
-            MultimediaTypeEnum::CLIP->name => $this->platformSetting->getFromValue(PlatformSettingValueKeyEnum::MULTIMEDIA_DURATION_CLIP_KEY),
+            MultimediaTypeEnum::TRACK->name => $maxDurationTrack,
+            MultimediaTypeEnum::CLIP->name => $maxDurationClip,
             default => null
         };
 

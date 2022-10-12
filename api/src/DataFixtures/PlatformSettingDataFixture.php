@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 use App\DataFixtures\Factory\PlatformSettingFactory;
 use App\Entity\PlatformSetting;
 use App\Enum\PlatformSettingEnum;
-use App\Enum\PlatformSettingValueKeyEnum;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
@@ -21,11 +20,11 @@ final class PlatformSettingDataFixture extends AbstractDataFixture
             new PlatformSettingFactory(PlatformSettingEnum::ALLOWED_REGISTRATION_DOMAINS, [
                 'gmail\.com', '/^yandex\.[a-z]{2,3}$/', 'yahoo\.com'
             ]),
-            new PlatformSettingFactory(PlatformSettingEnum::MULTIMEDIA_DURATION, [
-                PlatformSettingValueKeyEnum::MULTIMEDIA_DURATION_TRACK_KEY->value => 600,
-                PlatformSettingValueKeyEnum::MULTIMEDIA_DURATION_CLIP_KEY->value => 240
-            ]),
-            new PlatformSettingFactory(PlatformSettingEnum::AUTO_REJECT_OFFERED_STREAMING, [30])
+            new PlatformSettingFactory(PlatformSettingEnum::MULTIMEDIA_DURATION_TRACK_KEY, 600),
+            new PlatformSettingFactory(PlatformSettingEnum::MULTIMEDIA_DURATION_CLIP_KEY, 240),
+            new PlatformSettingFactory(PlatformSettingEnum::AUTO_REJECT_OFFERED_STREAMING, 30),
+            new PlatformSettingFactory(PlatformSettingEnum::PERCENT_ARTIST_INCOME_FROM_TURNOVER, 45),
+            new PlatformSettingFactory(PlatformSettingEnum::MONTHLY_EXPENSES, 2000)
         ]);
     }
 

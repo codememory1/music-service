@@ -10,14 +10,14 @@ use function is_array;
 class PlatformSettingService
 {
     public PlatformSettingRepository $platformSettingRepository;
-    private mixed $setting = null;
+    private string|array|null $setting = null;
 
     public function __construct(PlatformSettingRepository $platformSettingRepository)
     {
         $this->platformSettingRepository = $platformSettingRepository;
     }
 
-    public function get(PlatformSettingEnum $platformSettingEnum): mixed
+    public function get(PlatformSettingEnum $platformSettingEnum): string|array|null
     {
         return $this->platformSettingRepository->getSetting($platformSettingEnum)?->getValue();
     }
@@ -29,7 +29,7 @@ class PlatformSettingService
         return $this;
     }
 
-    public function getFromValue(PlatformSettingValueKeyEnum $key): mixed
+    public function getFromValueByKey(PlatformSettingValueKeyEnum $key): mixed
     {
         if (false === is_array($this->setting)) {
             return null;

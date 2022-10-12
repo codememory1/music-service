@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\DBAL\Types\ArrayOrStringType;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
@@ -10,6 +11,7 @@ use App\Enum\PlatformSettingEnum;
 use App\Repository\PlatformSettingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use function is_array;
 
 #[ORM\Entity(repositoryClass: PlatformSettingRepository::class)]
 #[ORM\Table('platform_settings')]
@@ -25,10 +27,10 @@ class PlatformSetting implements EntityInterface
     ])]
     private ?string $key = null;
 
-    #[ORM\Column(type: Types::ARRAY, options: [
+    #[ORM\Column(type: ArrayOrStringType::NAME, options: [
         'comment' => 'Setting value'
     ])]
-    private array $value = [];
+    private null|array|string $value = null;
 
     public function getKey(): ?string
     {
@@ -42,14 +44,14 @@ class PlatformSetting implements EntityInterface
         return $this;
     }
 
-    public function getValue(): mixed
+    public function getValue(): string|array|null
     {
-        return $this->value['value'] ?? null;
+        return $this->value;
     }
 
-    public function setValue(mixed $value): self
+    public function setValue(array|string|int|float $value): self
     {
-        $this->value = ['value' => $value];
+        $this->value = is_array($value) ? $value : (string) $value;
 
         return $this;
     }
