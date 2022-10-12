@@ -4,6 +4,7 @@ doctrine:
         types:
           cron_time: App\DBAL\Types\CronTimeType
           password: App\DBAL\Types\PasswordType
+          array_string: App\DBAL\Types\ArrayOrStringType
     orm:
       auto_generate_proxy_classes: true
       naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
@@ -12,10 +13,8 @@ doctrine:
       dql:
         datetime_functions:
           date: Oro\ORM\Query\AST\Functions\SimpleFunction
-
         numeric_functions:
           month: Oro\ORM\Query\AST\Functions\SimpleFunction
-
       mappings:
           App:
               type: attribute
