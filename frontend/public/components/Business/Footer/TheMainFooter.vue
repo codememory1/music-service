@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer__logo">
-        <img class="horizontal-logo" src="/images/logo.svg" :alt="$config.title" />
+        <MainLogo />
       </div>
       <div class="footer__columns">
         <div class="footer__column">
@@ -72,8 +72,13 @@
 
 <script>
 import { Component, Vue } from 'vue-property-decorator';
+import MainLogo from '~/components/Business/Logo/MainLogo.vue';
 
-@Component
+@Component({
+  components: {
+    MainLogo
+  }
+})
 export default class TheMainFooter extends Vue {}
 </script>
 

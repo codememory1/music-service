@@ -45,7 +45,7 @@ img {
 }
 
 .horizontal-logo {
-  width: 300px;
+  width: 200px;
 }
 
 .container {
@@ -63,4 +63,12 @@ img {
 
 .m-40 {
   margin: 40px;
+}
+
+.page-enter-active, .page-leave-active {
+  transition: ease-in opacity 0.5s;
+}
+
+.page-enter, .page-leave-active {
+  opacity: 0;
 }
