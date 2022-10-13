@@ -1,7 +1,7 @@
 <template>
   <header class="main-header">
     <div class="main-header-logo">
-      <img class="horizontal-logo" src="/images/logo.svg" :alt="$config.title" />
+      <MainLogo />
     </div>
     <div class="main-header-navigation">
       <MainNavigation />
@@ -20,11 +20,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import MainLogo from '~/components/Business/Logo/MainLogo.vue';
 import MainNavigation from '~/components/Business/Navigation/MainNavigation.vue';
 import BaseSelect from '~/components/UI/Select/BaseSelect.vue';
 
 @Component({
   components: {
+    MainLogo,
     MainNavigation,
     BaseSelect
   }
