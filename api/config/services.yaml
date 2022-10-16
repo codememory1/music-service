@@ -141,6 +141,14 @@ services:
           - currency
           - proxy
 
+    # Parser
+    App\Service\Parser\Http\:
+      resource: '../src/Service/Parser/Http/*.php'
+      public: false
+
+    App\Service\Parser\Zaycev\Parser:
+      public: false
+
     # DTO
     App\Dto\Constraints\:
       resource: '../src/Dto/Constraints/*ConstraintHandler.php'
