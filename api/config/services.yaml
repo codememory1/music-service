@@ -87,6 +87,7 @@ services:
         - '../src/Service/ObjectComparisonPercentageService.php'
         - '../src/Service/Event/'
         - '../src/Service/Reflection.php'
+        - '../src/Service/Parser/'
 
     App\Service\DataRepresentation\:
       resource: '../src/Service/DataRepresentation/'
@@ -140,6 +141,14 @@ services:
           - offset
           - currency
           - proxy
+
+    # Parser
+    App\Service\Parser\Http\:
+      resource: '../src/Service/Parser/Http/*.php'
+      public: false
+
+    App\Service\Parser\Zaycev\Parser:
+      public: false
 
     # DTO
     App\Dto\Constraints\:
