@@ -3,6 +3,7 @@
 namespace App\Service\Parser\Interfaces;
 
 use App\Enum\MultimediaTypeEnum;
+use App\Service\Parser\Repository\MultimediaCategory;
 
 interface MultimediaInterface
 {
@@ -10,9 +11,12 @@ interface MultimediaInterface
 
     public function setType(MultimediaTypeEnum $type): self;
 
-    public function getCategory(): ?string;
+    /**
+     * @return array<int, MultimediaCategory>
+     */
+    public function getCategories(): array;
 
-    public function setCategory(string $category): self;
+    public function addCategory(MultimediaCategory $category): self;
 
     public function getTitle(): ?string;
 

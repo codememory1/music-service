@@ -2,11 +2,13 @@
 
 namespace App\Service\Parser\Zaycev;
 
+use App\Service\Parser\Repository\Artist;
+use App\Service\Parser\Repository\MultimediaCategory;
 use App\Service\Parser\AbstractParser;
 use App\Service\Parser\Http\HttpRequest;
 use App\Service\Parser\Http\PreparedRoute;
 use App\Service\Parser\Interfaces\ParserInterface;
-use App\Service\Parser\Multimedia;
+use App\Service\Parser\Repository\Multimedia;
 use function array_slice;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -27,7 +29,8 @@ class Parser extends AbstractParser implements ParserInterface
             ->addExampleRoute('list_tracks', self::API_PATH . '/pages/artist/{id}/tracks?page={page}&sort=popularity&limit=100')
             ->addExampleRoute('filezmeta', self::API_PATH . '/track/filezmeta')
             ->addExampleRoute('cdn_media', self::API_PATH . '/track/play/{hash}')
-            ->addExampleRoute('media_info', self::API_PATH . '/pages/track?page=1&id={id}');
+            ->addExampleRoute('media_info', self::API_PATH . '/pages/track?page=1&id={id}')
+            ->addExampleRoute('artist_info', self::API_PATH . '/pages/artist/{id}?page=1&sort=popularity&limit=1&source=WEB-getInfoTracks-ARTISTPAGE-getArtistItemPageById-{od}');
     }
 
     /**
@@ -51,7 +54,7 @@ class Parser extends AbstractParser implements ParserInterface
         ]);
         $this->consoleLogger->info('Preparing to parse all artist pages...');
 
-        for ($i = 1; $i <= 1; ++$i) {
+        for ($i = 1; $i <= $countArtistPages; ++$i) {
             $this->consoleLogger->info('Started parsing page number {page} of {count_pages}...', [
                 'page' => $i,
                 'count_pages' => $countArtistPages
@@ -83,11 +86,17 @@ class Parser extends AbstractParser implements ParserInterface
             'page' => $page
         ]);
 
-        $this->http->get($this->preparedRoute->getRoute('list_artists', ['page' => $page]));
+        $this->http->get($this->preparedRoute->getRoute('list_artists', ['page' => $page]), callbackRepeat: static fn(HttpRequest $http) => false === array_key_exists('list', $http->getResponseData()));
 
         $responseData = $this->http->getResponseData();
 
-        return $responseData['list'] ?? [];
+        return array_map(function (array $artistData) {
+            $this->consoleLogger->info('We start building the artist with id: {id}...', [
+                'id' => $artistData['id']
+            ]);
+
+            return $this->collectArtist($artistData);
+        }, $responseData['list']);
     }
 
     /**
@@ -105,14 +114,17 @@ class Parser extends AbstractParser implements ParserInterface
         ]);
 
         $countMultimediaPages = $this->http
-            ->get($this->preparedRoute->getRoute('list_tracks', ['page' => 1]))
+            ->get($this->preparedRoute->getRoute('list_tracks', [
+                'id' => $artistId,
+                'page' => 1
+            ]), callbackRepeat: static fn(HttpRequest $http) => false === array_key_exists('pagesCount', $http->getResponseData()))
             ->getResponseData('pagesCount');
 
         $this->consoleLogger->info('Successfully determined the number of pages with multimedia, the number is {count_pages}', [
             'count_pages' => $countMultimediaPages
         ]);
 
-        for ($i = 1; $i <= 1; ++$i) {
+        for ($i = 1; $i <= $countMultimediaPages; ++$i) {
             $this->consoleLogger->info('Starting media parsing from page {page}...', [
                 'page' => $i
             ]);
@@ -154,10 +166,11 @@ class Parser extends AbstractParser implements ParserInterface
      */
     public function parsingPageWithMultimedia(int $artistId, int $numberPage): array
     {
-        $tracksFromResponse = $this->http->get($this->preparedRoute->getRoute('list_tracks', [
+        $route = $this->preparedRoute->getRoute('list_tracks', [
             'id' => $artistId,
             'page' => $numberPage
-        ]))->getResponseData('tracksInfo');
+        ]);
+        $tracksFromResponse = $this->http->get($route, callbackRepeat: static fn(HttpRequest $http) => false === array_key_exists('tracksInfo', $http->getResponseData()))->getResponseData('tracksInfo');
 
         $this->consoleLogger->info('Got a response from page {page} with media. Got {count_multimedia} multimedia', [
             'page' => $numberPage,
@@ -191,51 +204,41 @@ class Parser extends AbstractParser implements ParserInterface
                     'of' => $countIteration
                 ]);
 
-                while (true) {
-                    $multimediaIds = array_slice(
-                        array_keys($multimedia),
-                        ($numberMultimediaInOneRequest * $i) - $numberMultimediaInOneRequest,
-                        $numberMultimediaInOneRequest
-                    );
+                $multimediaIds = array_slice(
+                    array_keys($multimedia),
+                    ($numberMultimediaInOneRequest * $i) - $numberMultimediaInOneRequest,
+                    $numberMultimediaInOneRequest
+                );
 
-                    $this->consoleLogger->info('Sent a request to get iteration {iteration} media hashes', [
+                $this->consoleLogger->info('Sent a request to get iteration {iteration} media hashes', [
+                    'iteration' => $i
+                ]);
+
+                $consoleLogger = $this->consoleLogger;
+                $responseData = $this->http->post($this->preparedRoute->getRoute('filezmeta'), [
+                    'json' => [
+                        'subscription' => false,
+                        'trackIds' => $multimediaIds
+                    ],
+                    'timeout' => 10
+                ], static function(HttpRequest $http) use ($i, $consoleLogger) {
+                    $consoleLogger->info('Received a response to a request with hashes of {iteration} iteration', [
                         'iteration' => $i
                     ]);
 
-                    $responseData = $this->http->post($this->preparedRoute->getRoute('filezmeta'), [
-                        'json' => [
-                            'subscription' => false,
-                            'trackIds' => $multimediaIds
-                        ],
-                        'timeout' => 10
-                    ])->getResponseData();
+                    return false === array_key_exists('tracks', $http->getResponseData());
+                })->getResponseData();
 
-                    $this->consoleLogger->info('Received a response to a request with hashes of {iteration} iteration', [
-                        'iteration' => $i
-                    ]);
+                $this->consoleLogger->info('Let\'s start morphing the response with hashes...');
 
-                    if (false === array_key_exists('tracks', $responseData)) {
-                        $this->consoleLogger->info(sprintf(
-                            'Failed to get %s media hashes. Wait 5 seconds and try again',
-                            implode(', ', $multimediaIds)
-                        ));
-
-                        sleep(5);
-                    } else {
-                        $this->consoleLogger->info('Let\'s start morphing the response with hashes...');
-
-                        foreach ($responseData['tracks'] as $multimedia) {
-                            $modernizedHashes[$multimedia['id']] = [
-                                'download' => $multimedia['download'],
-                                'streaming' => $multimedia['streaming']
-                            ];
-                        }
-
-                        $this->consoleLogger->info('Finished modernizing media hashes');
-
-                        break;
-                    }
+                foreach ($responseData['tracks'] as $track) {
+                    $modernizedHashes[$track['id']] = [
+                        'download' => $track['download'],
+                        'streaming' => $track['streaming']
+                    ];
                 }
+
+                $this->consoleLogger->info('Finished modernizing media hashes');
             }
 
             $this->consoleLogger->info('Finished iteration to get media hashes');
@@ -244,6 +247,41 @@ class Parser extends AbstractParser implements ParserInterface
         }
 
         return [];
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function collectArtist(array $artistData): Artist
+    {
+        $this->consoleLogger->info('Sending a request to get full information about the artist with id: {id}...', [
+            'id' => $artistData['id']
+        ]);
+
+        $artistInfoData = $this->http->get($this->preparedRoute->getRoute('artist_info', [
+            'id' => $artistData['id']
+        ]), callbackRepeat: static function (HttpRequest $http) {
+            return false === array_key_exists('info', $http->getResponseData());
+        })->getResponseData('info');
+
+        $this->consoleLogger->info('Successfully received information with id: {id}', [
+            'id' => $artistInfoData['id']
+        ]);
+
+        $artist = new Artist();
+
+        $artist->setId($artistData['id']);
+        $artist->setPseudonym($artistInfoData['name']);
+        $artist->setPhoto(self::CDN_IMG_HOST.$artistInfoData['image']);
+
+        $this->consoleLogger->info('Finished building the artist object with id: {id}', [
+            'id' => $artistInfoData['id']
+        ]);
+
+        return $artist;
     }
 
     /**
@@ -261,9 +299,10 @@ class Parser extends AbstractParser implements ParserInterface
         $this->consoleLogger->info('Send a request to get the media DSN for media hash {hash}', [
             'hash' => $hash
         ]);
+
         $dsn = $this->http->get($this->preparedRoute->getRoute('cdn_media', [
             'hash' => $hash
-        ]))->getResponseData('url');
+        ]), callbackRepeat: static fn(HttpRequest $http) => false === array_key_exists('url', $http->getResponseData()))->getResponseData('url');
 
         $this->consoleLogger->info('Got media dsn for {hash} hash', [
             'hash' => $hash
@@ -276,7 +315,7 @@ class Parser extends AbstractParser implements ParserInterface
         $multimediaInfo = $this->http
             ->get($this->preparedRoute->getRoute('media_info', ['id' => $multimediaData['id']]), [
                 'timeout' => 10
-            ])
+            ], static fn(HttpRequest $http) => false === array_key_exists('info', $http->getResponseData()))
             ->getResponseData('info');
 
         $this->consoleLogger->info('Successfully received a response about the complete information of multimedia: {id}', [
@@ -298,6 +337,10 @@ class Parser extends AbstractParser implements ParserInterface
         $multimedia->setLinkToMediaFile($dsn);
         $multimedia->setTitle($multimediaData['track']);
         $multimedia->setIsObsceneWords($multimediaData['explicit']);
+
+        foreach ($multimediaData['genres'] ?? [] as $genre) {
+            $multimedia->addCategory(new MultimediaCategory($genre['url'], $genre['name']));
+        }
 
         $this->consoleLogger->info('Finished assembling multimedia with id: {id}', [
             'id' => $multimediaData['id']

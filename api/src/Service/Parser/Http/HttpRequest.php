@@ -2,8 +2,10 @@
 
 namespace App\Service\Parser\Http;
 
+use function call_user_func;
 use Exception;
 use const JSON_THROW_ON_ERROR;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -14,20 +16,16 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class HttpRequest
 {
-    public readonly HttpClientInterface $client;
     private ?ResponseInterface $response = null;
+    private ?ConsoleLogger $consoleLogger = null;
 
-    public function __construct(HttpClientInterface $client)
-    {
-        $this->client = $client;
-    }
+    public function __construct(
+        public readonly HttpClientInterface $client
+    ) {}
 
-    /**
-     * @throws TransportExceptionInterface
-     */
-    public function get(string $url, array $options = []): self
+    public function setConsoleLogger(ConsoleLogger $consoleLogger): self
     {
-        $this->response = $this->client->request(Request::METHOD_GET, $url, $options);
+        $this->consoleLogger = $consoleLogger;
 
         return $this;
     }
@@ -35,9 +33,44 @@ class HttpRequest
     /**
      * @throws TransportExceptionInterface
      */
-    public function post(string $url, array $options = []): self
+    public function get(string $url, array $options = [], ?callable $callbackRepeat = null): self
     {
-        $this->response = $this->client->request(Request::METHOD_POST, $url, $options);
+        $this->request($url, Request::METHOD_GET, $options, $callbackRepeat);
+
+        return $this;
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function post(string $url, array $options = [], ?callable $callbackRepeat = null): self
+    {
+        $this->request($url, Request::METHOD_POST, $options, $callbackRepeat);
+
+        return $this;
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function request(string $url, string $method, array $options = [], ?callable $callbackRepeat = null): self
+    {
+        if (null === $callbackRepeat) {
+            $this->response = $this->client->request($method, $url, $options);
+        } else {
+            while (true) {
+                $this->response = $this->client->request($method, $url, $options);
+
+                if (false === call_user_func($callbackRepeat, $this)) {
+                    break;
+                }
+                $this->consoleLogger->warning('Failed to get specific data from {url} response. Wait 5 seconds and try again', [
+                        'url' => $url
+                    ]);
+
+                sleep(5);
+            }
+        }
 
         return $this;
     }

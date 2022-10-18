@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Parser;
+namespace App\Service\Parser\Repository;
 
 use App\Enum\MultimediaTypeEnum;
 use App\Service\Parser\Interfaces\MultimediaInterface;
@@ -11,7 +11,7 @@ use App\Service\Parser\Interfaces\SubtitlesInterface;
 class Multimedia implements MultimediaInterface
 {
     private ?MultimediaTypeEnum $type = null;
-    private ?string $category = null;
+    private array $categories = [];
     private ?string $title = null;
     private ?string $description;
     private ?string $text = null;
@@ -35,14 +35,17 @@ class Multimedia implements MultimediaInterface
         return $this;
     }
 
-    public function getCategory(): ?string
+    /**
+     * @inheritDoc
+     */
+    public function getCategories(): array
     {
-        return $this->category;
+        return $this->categories;
     }
 
-    public function setCategory(string $category): self
+    public function addCategory(MultimediaCategory $category): self
     {
-        $this->category = $category;
+        $this->categories[] = $category;
 
         return $this;
     }

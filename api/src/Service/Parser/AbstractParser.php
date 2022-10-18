@@ -12,19 +12,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractParser
 {
-    protected readonly HttpRequest $http;
-    protected readonly PreparedRoute $preparedRoute;
     protected readonly ConsoleOutput $consoleOutput;
     protected readonly ConsoleLogger $consoleLogger;
 
-    public function __construct(HttpRequest $httpRequest, PreparedRoute $preparedRoute)
-    {
-        $this->http = $httpRequest;
-        $this->preparedRoute = $preparedRoute;
+    public function __construct(    
+        protected readonly HttpRequest $http, 
+        protected readonly PreparedRoute $preparedRoute
+    ) {
         $this->consoleOutput = new ConsoleOutput();
         $this->consoleLogger = new ConsoleLogger($this->consoleOutput, [
             LogLevel::INFO => OutputInterface::VERBOSITY_NORMAL
+        ], [
+            LogLevel::WARNING => 'fg=yellow'
         ]);
+
+        $this->http->setConsoleLogger($this->consoleLogger);
     }
 
     protected function progressBar(int $max): ProgressBar
