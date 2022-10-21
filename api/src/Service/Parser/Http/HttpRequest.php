@@ -21,7 +21,8 @@ class HttpRequest
 
     public function __construct(
         public readonly HttpClientInterface $client
-    ) {}
+    ) {
+    }
 
     public function setConsoleLogger(ConsoleLogger $consoleLogger): self
     {
@@ -78,6 +79,20 @@ class HttpRequest
     public function getResponse(): ?ResponseInterface
     {
         return $this->response;
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function is(int $statusCode, callable $resolve, ?callable $reject = null): mixed
+    {
+        if ($statusCode === $this->response->getStatusCode()) {
+            return call_user_func($resolve, $this->response, $this);
+        }
+
+        $reject = null === $reject ? static fn() => [] : $reject;
+
+        return call_user_func($reject, $this->response, $this);
     }
 
     /**

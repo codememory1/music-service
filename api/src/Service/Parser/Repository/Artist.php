@@ -12,28 +12,28 @@ class Artist implements ArtistInfoInterface
     private ?string $photo = null;
     private ?DateTimeInterface $dateBirth = null;
     private ?string $email = null;
-    
+
     public function getId(): ?int
     {
         return $this->id;
     }
-    
+
     public function setId(int $id): self
     {
         $this->id = $id;
-        
+
         return $this;
     }
-    
+
     public function getPseudonym(): string
     {
         return $this->pseudonym;
     }
-    
+
     public function setPseudonym(string $pseudonym): ArtistInfoInterface
     {
         $this->pseudonym = $pseudonym;
-        
+
         return $this;
     }
 
@@ -41,11 +41,11 @@ class Artist implements ArtistInfoInterface
     {
         return $this->photo;
     }
-    
+
     public function setPhoto(string $photoUrl): ArtistInfoInterface
     {
         $this->photo = $photoUrl;
-        
+
         return $this;
     }
 
@@ -53,11 +53,11 @@ class Artist implements ArtistInfoInterface
     {
         return $this->dateBirth;
     }
-    
+
     public function setDateBirth(DateTimeInterface $dateBirth): ArtistInfoInterface
     {
         $this->dateBirth = $dateBirth;
-        
+
         return $this;
     }
 
@@ -65,11 +65,11 @@ class Artist implements ArtistInfoInterface
     {
         return $this->email;
     }
-    
+
     public function setEmail(string $email): ArtistInfoInterface
     {
         $this->email = $email;
-        
+
         return $this;
     }
 }
