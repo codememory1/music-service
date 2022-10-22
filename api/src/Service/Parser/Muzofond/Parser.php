@@ -26,7 +26,8 @@ final class Parser extends AbstractParser implements ParserInterface
             ->addExampleRoute('list_artists', self::MUZOFOND_HOST . '/collections/artists/{id}')
             ->addExampleRoute('artist_photos', self::LAST_FM_HOST . '/music/{name}/+images')
             ->addExampleRoute('artist_albums', self::LAST_FM_HOST . '/music/{name}/+albums')
-            ->addExampleRoute('artist_wiki', self::LAST_FM_HOST . '/music/{name}/+wiki');
+            ->addExampleRoute('artist_wiki', self::LAST_FM_HOST . '/music/{name}/+wiki')
+            ->addExampleRoute('album_tracks', self::LAST_FM_HOST . '/music/{artist_name}/{album_name}');
     }
 
     public function getListArtists(): array
@@ -64,9 +65,7 @@ final class Parser extends AbstractParser implements ParserInterface
     #[ArrayShape(['name' => 'mixed', 'biography' => 'null|string', 'photos' => 'mixed', 'albums' => 'array'])]
     public function getArtistInfo(string $artistName): array
     {
-        $decodedArtistName = $this->getDecodedName($artistName);
-
-        $url = $this->preparedRoute->getRoute('artist_photos', ['name' => $decodedArtistName]);
+        $url = $this->preparedRoute->getRoute('artist_photos', ['name' => encode_reserved_url_chars($artistName)]);
         [$name, $photos] = $this->http
             ->get($url, ['timeout' => 30])
             ->is(200, static function(ResponseInterface $response) {
@@ -101,12 +100,11 @@ final class Parser extends AbstractParser implements ParserInterface
      */
     public function getArtistAlbums(string $artistName): array
     {
-        $decodedArtistName = $this->getDecodedName($artistName);
-        $url = $this->preparedRoute->getRoute('artist_albums', ['name' => $decodedArtistName]);
+        $url = $this->preparedRoute->getRoute('artist_albums', ['name' => encode_reserved_url_chars($artistName)]);
 
         return $this->http
             ->get($url, ['timeout' => 30])
-            ->is(200, function(ResponseInterface $response) use ($url) {
+            ->is(200, function(ResponseInterface $response) use ($url, $artistName) {
                 $crawler = new Crawler($response->getContent());
 
                 try {
@@ -116,15 +114,15 @@ final class Parser extends AbstractParser implements ParserInterface
                 }
 
                 if (0 === $countPages) {
-                    return $this->getAlbumsFromContent($crawler);
+                    return $this->getAlbumsFromContent($crawler, $artistName);
                 }
 
                 $albums = [];
 
                 for ($i = 2; $i <= $countPages; ++$i) {
                     $albumsByPage = $this->http
-                        ->get($url . "?page={$i}", ['timeout' => 30])
-                        ->is(200, fn(ResponseInterface $response) => $this->getAlbumsFromContent(new Crawler($response->getContent())));
+                        ->get($url, ['query' => ['page' => $i], 'timeout' => 30])
+                        ->is(200, fn(ResponseInterface $response) => $this->getAlbumsFromContent(new Crawler($response->getContent()), $artistName));
 
                     $albums = array_merge($albums, $albumsByPage);
                 }
@@ -138,8 +136,7 @@ final class Parser extends AbstractParser implements ParserInterface
      */
     public function getArtistBiography(string $artistName): ?string
     {
-        $decodedArtistName = $this->getDecodedName($artistName);
-        $url = $this->preparedRoute->getRoute('artist_wiki', ['name' => $decodedArtistName]);
+        $url = $this->preparedRoute->getRoute('artist_wiki', ['name' => encode_reserved_url_chars($artistName)]);
 
         return $this->http
             ->get($url, ['timeout' => 30])
@@ -154,25 +151,19 @@ final class Parser extends AbstractParser implements ParserInterface
             });
     }
 
-    public function getDecodedName(string $name): string
-    {
-        $artistName = trim(preg_replace('/\(.*\)/', '', $name));
-
-        return str_replace([' ', '/'], ['+', '%2F'], $artistName);
-    }
-
-    private function getAlbumsFromContent(Crawler $crawler): array
+    private function getAlbumsFromContent(Crawler $crawler, string $artistName): array
     {
         $albums = $crawler
             ->filter('section#artist-albums-section > ol.resource-list--release-list > li.resource-list--release-list-item-wrap > div.resource-list--release-list-item')
-            ->each(static function(Crawler $node) {
+            ->each(function(Crawler $node) use ($artistName) {
                 try {
                     $linkNode = $node->filter('h3.resource-list--release-list-item-name > a');
 
                     return [
                         'name' => $linkNode->text(),
                         'link' => self::LAST_FM_HOST . $linkNode->attr('href'),
-                        'image_link' => $node->filter('div.media-item > span.resource-list--release-list-item-image > img')->attr('src')
+                        'image_link' => $node->filter('div.media-item > span.resource-list--release-list-item-image > img')->attr('src'),
+                        'tracks' => $this->getTracksInAlbum($artistName, $linkNode->text())
                     ];
                 } catch (Throwable) {
                     return null;
@@ -180,5 +171,37 @@ final class Parser extends AbstractParser implements ParserInterface
             });
 
         return array_filter($albums, static fn(?array $data) => null !== $data);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    private function getTracksInAlbum(string $artistName, string $albumName): array
+    {
+        $url = $this->preparedRoute->getRoute('album_tracks', [
+            'artist_name' => encode_reserved_url_chars($artistName),
+            'album_name' => encode_reserved_url_chars($albumName)
+        ]);
+
+        return $this->http
+            ->get($url, ['timeout' => 30])
+            ->is(200, static function(ResponseInterface $response) {
+                $crawler = new Crawler($response->getContent());
+
+                $tracks = $crawler
+                    ->filter('section#tracklist > div.buffer-standard > table.chartlist > tbody > tr.chartlist-row')
+                    ->each(static function(Crawler $node) {
+                       try {
+                           return [
+                               'number' => $node->filter('td.chartlist-index')->text(),
+                               'name' => $node->filter('td.chartlist-name')->text()
+                           ];
+                       } catch (Exception) {
+                           return null;
+                       }
+                   });
+
+                return array_filter($tracks, static fn(?array $data) => null !== $data);
+            });
     }
 }

@@ -2,49 +2,34 @@
 
 namespace App\Service\Parser\Repository;
 
-use App\Service\Parser\Interfaces\ArtistInfoInterface;
 use DateTimeInterface;
 
-class Artist implements ArtistInfoInterface
+class Artist
 {
-    private ?int $id = null;
     private ?string $pseudonym = null;
-    private ?string $photo = null;
+    private array $photos = [];
     private ?DateTimeInterface $dateBirth = null;
-    private ?string $email = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
 
     public function getPseudonym(): string
     {
         return $this->pseudonym;
     }
 
-    public function setPseudonym(string $pseudonym): ArtistInfoInterface
+    public function setPseudonym(string $pseudonym): self
     {
         $this->pseudonym = $pseudonym;
 
         return $this;
     }
 
-    public function getPhoto(): ?string
+    public function getPhotos(): array
     {
-        return $this->photo;
+        return $this->photos;
     }
 
-    public function setPhoto(string $photoUrl): ArtistInfoInterface
+    public function addPhoto(string $link): self
     {
-        $this->photo = $photoUrl;
+        $this->photos[] = $link;
 
         return $this;
     }
@@ -54,21 +39,9 @@ class Artist implements ArtistInfoInterface
         return $this->dateBirth;
     }
 
-    public function setDateBirth(DateTimeInterface $dateBirth): ArtistInfoInterface
+    public function setDateBirth(DateTimeInterface $dateBirth): self
     {
         $this->dateBirth = $dateBirth;
-
-        return $this;
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): ArtistInfoInterface
-    {
-        $this->email = $email;
 
         return $this;
     }

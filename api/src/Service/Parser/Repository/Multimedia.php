@@ -3,16 +3,16 @@
 namespace App\Service\Parser\Repository;
 
 use App\Enum\MultimediaTypeEnum;
-use App\Service\Parser\Interfaces\MultimediaInterface;
 use App\Service\Parser\Interfaces\MultimediaPerformerInterface;
 use App\Service\Parser\Interfaces\MultimediaTimeCodeInterface;
 use App\Service\Parser\Interfaces\SubtitlesInterface;
 
-class Multimedia implements MultimediaInterface
+class Multimedia
 {
     private ?MultimediaTypeEnum $type = null;
+    private ?int $number = null;
     private array $categories = [];
-    private ?string $title = null;
+    private ?string $name = null;
     private ?string $description;
     private ?string $text = null;
     private array $subtitles = [];
@@ -28,16 +28,25 @@ class Multimedia implements MultimediaInterface
         return $this->type;
     }
 
-    public function setType(MultimediaTypeEnum $type): MultimediaInterface
+    public function setType(MultimediaTypeEnum $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
+    public function getNumber(): ?int
+    {
+        return $this->number;
+    }
+
+    public function setNumber(int $number): self
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
     public function getCategories(): array
     {
         return $this->categories;
@@ -50,14 +59,14 @@ class Multimedia implements MultimediaInterface
         return $this;
     }
 
-    public function getTitle(): string
+    public function getName(): string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): MultimediaInterface
+    public function setName(string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -67,7 +76,7 @@ class Multimedia implements MultimediaInterface
         return $this->description;
     }
 
-    public function setDescription(string $description): MultimediaInterface
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -79,22 +88,19 @@ class Multimedia implements MultimediaInterface
         return $this->text;
     }
 
-    public function setText(string $text): MultimediaInterface
+    public function setText(string $text): self
     {
         $this->text = $text;
 
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getSubtitles(): array
     {
         return $this->subtitles;
     }
 
-    public function addSubtitle(SubtitlesInterface $subtitle): MultimediaInterface
+    public function addSubtitle(SubtitlesInterface $subtitle): self
     {
         $this->subtitles[] = $subtitle;
 
@@ -106,7 +112,7 @@ class Multimedia implements MultimediaInterface
         return $this->isObsceneWords;
     }
 
-    public function setIsObsceneWords(bool $isObsceneWords): MultimediaInterface
+    public function setIsObsceneWords(bool $isObsceneWords): self
     {
         $this->isObsceneWords = $isObsceneWords;
 
@@ -118,7 +124,7 @@ class Multimedia implements MultimediaInterface
         return $this->image;
     }
 
-    public function setImage(string $urlImage): MultimediaInterface
+    public function setImage(string $urlImage): self
     {
         $this->image = $urlImage;
 
@@ -130,22 +136,19 @@ class Multimedia implements MultimediaInterface
         return $this->producer;
     }
 
-    public function setProducer(string $producer): MultimediaInterface
+    public function setProducer(string $producer): self
     {
         $this->producer = $producer;
 
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getPerformers(): array
     {
         return $this->performers;
     }
 
-    public function addPerformer(MultimediaPerformerInterface $performer): MultimediaInterface
+    public function addPerformer(MultimediaPerformerInterface $performer): self
     {
         $this->performers[] = $performer;
 
@@ -164,15 +167,12 @@ class Multimedia implements MultimediaInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getTimeCodes(): array
     {
         return $this->timeCodes;
     }
 
-    public function addTimeCode(MultimediaTimeCodeInterface $timeCode): MultimediaInterface
+    public function addTimeCode(MultimediaTimeCodeInterface $timeCode): self
     {
         $this->timeCodes[] = $timeCode;
 
