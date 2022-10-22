@@ -21,9 +21,11 @@ abstract class AbstractParser
     ) {
         $this->consoleOutput = new ConsoleOutput();
         $this->consoleLogger = new ConsoleLogger($this->consoleOutput, [
-            LogLevel::INFO => OutputInterface::VERBOSITY_NORMAL
+            LogLevel::INFO => OutputInterface::VERBOSITY_NORMAL,
+            LogLevel::DEBUG => OutputInterface::VERBOSITY_NORMAL
         ], [
-            LogLevel::WARNING => 'fg=yellow'
+            LogLevel::WARNING => 'fg=yellow',
+            LogLevel::DEBUG => 'fg=blue',
         ]);
 
         $this->http->setConsoleLogger($this->consoleLogger);

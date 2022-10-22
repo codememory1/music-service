@@ -9,6 +9,8 @@ class Artist
     private ?string $pseudonym = null;
     private array $photos = [];
     private ?DateTimeInterface $dateBirth = null;
+    private ?string $biography = null;
+    private array $albums = [];
 
     public function getPseudonym(): string
     {
@@ -18,6 +20,18 @@ class Artist
     public function setPseudonym(string $pseudonym): self
     {
         $this->pseudonym = $pseudonym;
+
+        return $this;
+    }
+
+    public function getBiography(): ?string
+    {
+        return $this->biography;
+    }
+
+    public function setBiography(?string $biography): self
+    {
+        $this->biography = $biography;
 
         return $this;
     }
@@ -44,5 +58,23 @@ class Artist
         $this->dateBirth = $dateBirth;
 
         return $this;
+    }
+
+    /**
+     * @param array<int, Album> $albums
+     */
+    public function setAlbums(array $albums): self
+    {
+        $this->albums = $albums;
+
+        return $this;
+    }
+
+    /**
+     * @return array<int, Album>
+     */
+    public function getAlbums(): array
+    {
+        return $this->albums;
     }
 }

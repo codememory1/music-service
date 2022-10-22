@@ -47,6 +47,16 @@ class Multimedia
         return $this;
     }
 
+    /**
+     * @param array<int, MultimediaCategory> $categories
+     */
+    public function setCategories(array $categories): self
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
     public function getCategories(): array
     {
         return $this->categories;

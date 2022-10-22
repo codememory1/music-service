@@ -18,7 +18,9 @@ if (false === \function_exists('encode_reserved_url_chars')) {
             '/' => '%2F',
             '<' => '%3C',
             '>' => '%3E',
-            '|' => '%7C'
+            '|' => '%7C',
+            '[' => '%5B',
+            ']' => '%5D'
         ];
 
         return str_replace(array_keys($symbolForReplaced), $symbolForReplaced, $string);

@@ -9,7 +9,7 @@ use App\Service\Parser\Interfaces\ParserInterface;
 use App\Service\Parser\Repository\Album;
 use App\Service\Parser\Repository\Artist;
 use App\Service\Parser\Repository\Multimedia;
-use Exception;
+use App\Service\Parser\Repository\MultimediaCategory;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -27,7 +27,8 @@ class Parser extends AbstractParser implements ParserInterface
         'album' => 'section#artist-albums-section > ol.resource-list--release-list > li.resource-list--release-list-item-wrap > div.resource-list--release-list-item',
         'album_link' => 'h3.resource-list--release-list-item-name > a',
         'album_img' => 'div.media-item > span.resource-list--release-list-item-image > img',
-        'track_row' => 'section#tracklist > div.buffer-standard > table.chartlist > tbody > tr.chartlist-row'
+        'track_row' => 'section#tracklist > div.buffer-standard > table.chartlist > tbody > tr.chartlist-row',
+        'track_tag' => 'ol.big-tags > li.big-tags-item-wrap > div.big-tags-item > h3.big-tags-item-name > a'
     ];
 
     public function __construct(HttpRequest $http, PreparedRoute $preparedRoute)
@@ -38,7 +39,8 @@ class Parser extends AbstractParser implements ParserInterface
             ->addExampleRoute('artist_photos', self::HOST . '/music/{artist_name}/+images')
             ->addExampleRoute('artist_albums', self::HOST . '/music/{artist_name}/+albums')
             ->addExampleRoute('artist_wiki', self::HOST . '/music/{artist_name}/+wiki')
-            ->addExampleRoute('album_tracks', self::HOST . '/music/{artist_name}/{album_name}');
+            ->addExampleRoute('album_tracks', self::HOST . '/music/{artist_name}/{album_name}')
+            ->addExampleRoute('track_tags', self::HOST . '/music/{artist_name}/_/{track_name}/+tags');
     }
 
     /**
@@ -47,7 +49,7 @@ class Parser extends AbstractParser implements ParserInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function getArtist(string $artistName): array
+    public function getArtist(string $artistName): ?Artist
     {
         $this->consoleLogger->info('We send a request to a page with a photo of an artist named {name}...', [
             'name' => $artistName
@@ -85,9 +87,54 @@ class Parser extends AbstractParser implements ParserInterface
             $this->consoleLogger->info('Finished parsing a page with a photo of an artist named {name}', [
                 'name' => $artistName
             ]);
+
+            $artist->setBiography($this->getBiography($artistName));
+            $artist->setAlbums($this->getAlbums($artistName));
+
+            return $artist;
         }
 
-        return [];
+        $this->consoleLogger->warning('Failed to get page content with photo from artist {artist_name}');
+
+        return null;
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function getBiography(string $artistName): ?string
+    {
+        $this->consoleLogger->info('Sending a request for an artist biography {artist_name}...', [
+            'artist_name' => $artistName
+        ]);
+
+        $wikiRoute = $this->preparedRoute->getRoute('artist_wiki', [
+            'artist_name' => encode_reserved_url_chars($artistName)
+        ]);
+        $response = $this->http->get($wikiRoute, ['timeout' => 30])->getResponse();
+
+        if (200 === $response->getStatusCode()) {
+            $this->consoleLogger->info('We start parsing the biography of the artist {artist_name}...', [
+                'artist_name' => $artistName
+            ]);
+
+            $crawler = new Crawler($response->getContent());
+
+            try {
+                return $crawler->filter('div.wiki-content[itemprop="description"]')->text();
+            } catch (Throwable) {
+                return null;
+            }
+        }
+
+        $this->consoleLogger->warning('Failed to get bio page content for artist {artist_name}', [
+            'artist_name' => $artistName
+        ]);
+
+        return null;
     }
 
     /**
@@ -142,6 +189,16 @@ class Parser extends AbstractParser implements ParserInterface
                     ]);
 
                     $albums = array_merge($albums, $this->getAlbumsFromContent(new Crawler($response->getContent()), $artistName));
+
+                    $this->consoleLogger->info('Successfully completed parsing of albums from page {page} of the artist {artist_name}', [
+                        'page' => $i,
+                        'artist_name' => $artistName
+                    ]);
+                } else {
+                    $this->consoleLogger->warning('Unable to get page {page} content with albums from artist {artist_name}', [
+                        'page' => $i,
+                        'artist_name' => $artistName
+                    ]);
                 }
             }
 
@@ -185,6 +242,63 @@ class Parser extends AbstractParser implements ParserInterface
     }
 
     /**
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getTrackCategories(string $artistName, string $trackName): array
+    {
+        $this->consoleLogger->info('We send a request for content with the tags of the track {track_name} from the artist {artist_name}...', [
+           'track_name' => $trackName,
+           'artist_name' => $artistName
+        ]);
+
+        $trackTagsRoute = $this->preparedRoute->getRoute('track_tags', [
+            'artist_name' => encode_reserved_url_chars($artistName),
+            'track_name' => encode_reserved_url_chars($trackName)
+        ]);
+
+        $response = $this->http->get($trackTagsRoute, ['timeout' => 30])->getResponse();
+
+        if (200 === $response->getStatusCode()) {
+            $this->consoleLogger->info('We start parsing pages with the tags of the track {track_name} from the artist {artist_name}...', [
+                'track_name' => $trackName,
+                'artist_name' => $artistName
+            ]);
+
+            $categories = [];
+            $crawler = new Crawler($response->getContent());
+
+            $crawler->filter(self::UI_CLASSES['track_tag'])->each(static function(Crawler $node) use (&$categories) {
+                try {
+                    $multimediaCategory = new MultimediaCategory($node->text());
+
+                    $categories[] = $multimediaCategory;
+
+                    return $node;
+                } catch (Throwable) {
+                    return $node;
+                }
+            });
+
+            $this->consoleLogger->info('Parsing of the page with the tags of the track {track_name} for the artist {artist_name} has been successfully completed', [
+                'track_name' => $trackName,
+                'artist_name' => $artistName
+            ]);
+
+            return $categories;
+        }
+
+        $this->consoleLogger->warning('failed to get page content tagged with track {track_name} from artist {artist_name}', [
+            'track_name' => $trackName,
+            'artist_name' => $artistName
+        ]);
+
+        return [];
+    }
+
+    /**
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -216,17 +330,19 @@ class Parser extends AbstractParser implements ParserInterface
 
             $crawler
                 ->filter(self::UI_CLASSES['track_row'])
-                ->each(static function(Crawler $node) use (&$multimediaList) {
+                ->each(function(Crawler $node) use (&$multimediaList, $artistName) {
                     try {
+                        $multimediaName = $node->filter('td.chartlist-name')->text();
                         $multimedia = new Multimedia();
 
                         $multimedia->setNumber($node->filter('td.chartlist-index')->text());
-                        $multimedia->setName($node->filter('td.chartlist-name')->text());
+                        $multimedia->setName($multimediaName);
+                        $multimedia->setCategories($this->getTrackCategories($artistName, $multimediaName));
 
                         $multimediaList[] = $multimedia;
 
                         return $node;
-                    } catch (Exception) {
+                    } catch (Throwable) {
                         return $node;
                     }
                 });
@@ -238,6 +354,11 @@ class Parser extends AbstractParser implements ParserInterface
 
             return $multimediaList;
         }
+
+        $this->consoleLogger->warning('Failed to get page content with tracks from album {album_name} from artist {artist_name}', [
+            'album_name' => $albumName,
+            'artist_name' => $artistName
+        ]);
 
         return [];
     }

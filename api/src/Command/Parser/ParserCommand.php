@@ -2,7 +2,7 @@
 
 namespace App\Command\Parser;
 
-use App\Service\Parser\Muzofond\Parser;
+use App\Service\Parser\LastFM\Parser;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,7 +24,7 @@ class ParserCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        dd($this->parser->getArtistInfo('25/17'));
+        dd($this->parser->getArtist('25/17'));
 
         return self::SUCCESS;
     }

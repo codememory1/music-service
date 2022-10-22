@@ -6,7 +6,7 @@ final class MultimediaCategory
 {
     public function __construct(
         public readonly string $key,
-        public readonly string $nameInRussian
+        public readonly ?string $nameInRussian = null
     ) {
     }
 }

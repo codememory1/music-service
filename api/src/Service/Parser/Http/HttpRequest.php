@@ -4,6 +4,7 @@ namespace App\Service\Parser\Http;
 
 use function call_user_func;
 use Exception;
+use const JSON_PRETTY_PRINT;
 use const JSON_THROW_ON_ERROR;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,6 +57,17 @@ class HttpRequest
      */
     public function request(string $url, string $method, array $options = [], ?callable $callbackRepeat = null): self
     {
+        $optionsToString = json_encode($options, JSON_PRETTY_PRINT);
+
+        $this->consoleLogger->debug(
+            <<<EQL
+        HTTP REQUEST: 
+            <fg=magenta>URL:</> <fg=white>${url}</>
+            <fg=magenta>HTTP METHOD:</> <fg=white>${method}</>
+            <fg=magenta>OPTIONS:</> <fg=white>${optionsToString}</>
+        EQL
+        );
+
         if (null === $callbackRepeat) {
             $this->response = $this->client->request($method, $url, $options);
         } else {
@@ -65,6 +77,7 @@ class HttpRequest
                 if (false === call_user_func($callbackRepeat, $this)) {
                     break;
                 }
+
                 $this->consoleLogger->warning('Failed to get specific data from {url} response. Wait 5 seconds and try again', [
                         'url' => $url
                     ]);
