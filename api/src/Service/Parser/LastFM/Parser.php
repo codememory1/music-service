@@ -89,7 +89,6 @@ class Parser extends AbstractParser implements ParserInterface
             ]);
 
             $artist->setBiography($this->getBiography($artistName));
-            $artist->setAlbums($this->getAlbums($artistName));
 
             return $artist;
         }
@@ -337,6 +336,7 @@ class Parser extends AbstractParser implements ParserInterface
 
                         $multimedia->setNumber($node->filter('td.chartlist-index')->text());
                         $multimedia->setName($multimediaName);
+                        $multimedia->setImageLink($node->filter('td.chartlist-image > a > img')->attr('src'));
                         $multimedia->setCategories($this->getTrackCategories($artistName, $multimediaName));
 
                         $multimediaList[] = $multimedia;

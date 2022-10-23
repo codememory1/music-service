@@ -6,9 +6,10 @@ use App\Service\Parser\AbstractParser;
 use App\Service\Parser\Http\HttpRequest;
 use App\Service\Parser\Http\PreparedRoute;
 use App\Service\Parser\Interfaces\ParserInterface;
-use Exception;
-use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
@@ -16,7 +17,10 @@ use Throwable;
 final class Parser extends AbstractParser implements ParserInterface
 {
     private const MUZOFOND_HOST = 'https://muzofond.fm';
-    private const LAST_FM_HOST = 'https://www.last.fm';
+    private const UI_CLASSES = [
+        'pagination_page' => 'div.pagination > ul > a',
+        'track_row' => 'ul.songs > li.item'
+    ];
 
     public function __construct(HttpRequest $http, PreparedRoute $preparedRoute)
     {
@@ -24,10 +28,7 @@ final class Parser extends AbstractParser implements ParserInterface
 
         $preparedRoute
             ->addExampleRoute('list_artists', self::MUZOFOND_HOST . '/collections/artists/{id}')
-            ->addExampleRoute('artist_photos', self::LAST_FM_HOST . '/music/{name}/+images')
-            ->addExampleRoute('artist_albums', self::LAST_FM_HOST . '/music/{name}/+albums')
-            ->addExampleRoute('artist_wiki', self::LAST_FM_HOST . '/music/{name}/+wiki')
-            ->addExampleRoute('album_tracks', self::LAST_FM_HOST . '/music/{artist_name}/{album_name}');
+            ->addExampleRoute('list_tracks', self::MUZOFOND_HOST . '/collections/artists/{artist_name}');
     }
 
     public function getListArtists(): array
@@ -46,7 +47,6 @@ final class Parser extends AbstractParser implements ParserInterface
                     try {
                         $artists[] = [
                             'url' => $node->filter('a')->attr('href'),
-                            'info' => $this->getArtistInfo($node->filter('span.title')->text())
                         ];
 
                         return $node;
@@ -61,147 +61,94 @@ final class Parser extends AbstractParser implements ParserInterface
 
     /**
      * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
      */
-    #[ArrayShape(['name' => 'mixed', 'biography' => 'null|string', 'photos' => 'mixed', 'albums' => 'array'])]
-    public function getArtistInfo(string $artistName): array
+    public function getTracks(string $artistLink, string $artistName): array
     {
-        $url = $this->preparedRoute->getRoute('artist_photos', ['name' => encode_reserved_url_chars($artistName)]);
-        [$name, $photos] = $this->http
-            ->get($url, ['timeout' => 30])
-            ->is(200, static function(ResponseInterface $response) {
-                $crawler = new Crawler($response->getContent());
-
-                $photos = $crawler
-                    ->filter('ul.image-list > li.image-list-item-wrapper > a.image-list-item > img')
-                    ->each(static function(Crawler $node) {
-                        try {
-                            return $node->attr('src');
-                        } catch (Exception) {
-                            return null;
-                        }
-                    });
-
-                return [
-                    $crawler->filter('h1.header-new-title[itemprop="name"]')->text(),
-                    array_filter($photos, static fn(?string $src) => null !== $src)
-                ];
-            });
-
-        return [
-            'name' => $name,
-            'biography' => $this->getArtistBiography($artistName),
-            'photos' => $photos,
-            'albums' => $this->getArtistAlbums($artistName)
-        ];
-    }
-
-    /**
-     * @throws TransportExceptionInterface
-     */
-    public function getArtistAlbums(string $artistName): array
-    {
-        $url = $this->preparedRoute->getRoute('artist_albums', ['name' => encode_reserved_url_chars($artistName)]);
-
-        return $this->http
-            ->get($url, ['timeout' => 30])
-            ->is(200, function(ResponseInterface $response) use ($url, $artistName) {
-                $crawler = new Crawler($response->getContent());
-
-                try {
-                    $countPages = $crawler->filter('ul.pagination-list > li.pagination-page')->last()->filter('a')->text();
-                } catch (Throwable) {
-                    $countPages = 0;
-                }
-
-                if (0 === $countPages) {
-                    return $this->getAlbumsFromContent($crawler, $artistName);
-                }
-
-                $albums = [];
-
-                for ($i = 2; $i <= $countPages; ++$i) {
-                    $albumsByPage = $this->http
-                        ->get($url, ['query' => ['page' => $i], 'timeout' => 30])
-                        ->is(200, fn(ResponseInterface $response) => $this->getAlbumsFromContent(new Crawler($response->getContent()), $artistName));
-
-                    $albums = array_merge($albums, $albumsByPage);
-                }
-
-                return $albums;
-            });
-    }
-
-    /**
-     * @throws TransportExceptionInterface
-     */
-    public function getArtistBiography(string $artistName): ?string
-    {
-        $url = $this->preparedRoute->getRoute('artist_wiki', ['name' => encode_reserved_url_chars($artistName)]);
-
-        return $this->http
-            ->get($url, ['timeout' => 30])
-            ->is(200, function(ResponseInterface $response) {
-                $crawler = new Crawler($response->getContent());
-
-                try {
-                    return $crawler->filter('div.wiki-content[itemprop="description"]')->text();
-                } catch (Throwable) {
-                    return null;
-                }
-            });
-    }
-
-    private function getAlbumsFromContent(Crawler $crawler, string $artistName): array
-    {
-        $albums = $crawler
-            ->filter('section#artist-albums-section > ol.resource-list--release-list > li.resource-list--release-list-item-wrap > div.resource-list--release-list-item')
-            ->each(function(Crawler $node) use ($artistName) {
-                try {
-                    $linkNode = $node->filter('h3.resource-list--release-list-item-name > a');
-
-                    return [
-                        'name' => $linkNode->text(),
-                        'link' => self::LAST_FM_HOST . $linkNode->attr('href'),
-                        'image_link' => $node->filter('div.media-item > span.resource-list--release-list-item-image > img')->attr('src'),
-                        'tracks' => $this->getTracksInAlbum($artistName, $linkNode->text())
-                    ];
-                } catch (Throwable) {
-                    return null;
-                }
-            });
-
-        return array_filter($albums, static fn(?array $data) => null !== $data);
-    }
-
-    /**
-     * @throws TransportExceptionInterface
-     */
-    private function getTracksInAlbum(string $artistName, string $albumName): array
-    {
-        $url = $this->preparedRoute->getRoute('album_tracks', [
-            'artist_name' => encode_reserved_url_chars($artistName),
-            'album_name' => encode_reserved_url_chars($albumName)
+        $this->consoleLogger->info('We send a request to determine the number of pages with tracks from the artist {artist_name}...', [
+            'artist_name' => $artistName
         ]);
 
-        return $this->http
-            ->get($url, ['timeout' => 30])
-            ->is(200, static function(ResponseInterface $response) {
+        $responseToDeterminePagination = $this->http->get("${artistLink}/2", ['timeout' => 30])->getResponse();
+        $countPages = $this->getNumberPaginationPages($responseToDeterminePagination);
+
+        $tracks = [];
+
+        for ($i = 0; $i <= $countPages; ++$i) {
+            $this->consoleLogger->info('We send a request to receive tracks from page {page} from the artist {artist_name}...', [
+                'page' => $i,
+                'artist_name' => $artistName
+            ]);
+
+            $tracksRoute = 0 === $i ? $artistLink : "${artistLink}/${i}";
+            $response = $this->http->get($tracksRoute, ['timeout' => 30])->getResponse();
+
+            if (200 === $response->getStatusCode()) {
+                $this->consoleLogger->info('Successfully received content with tracks from page {page} from artist {artist_name}', [
+                    'page' => $i,
+                    'artist_name' => $artistName
+                ]);
+
+                $this->consoleLogger->info('We start parsing tracks from page {page} of the artist {artist_name}...', [
+                    'page' => $i,
+                    'artist_name' => $artistName
+                ]);
+
                 $crawler = new Crawler($response->getContent());
 
-                $tracks = $crawler
-                    ->filter('section#tracklist > div.buffer-standard > table.chartlist > tbody > tr.chartlist-row')
-                    ->each(static function(Crawler $node) {
-                       try {
-                           return [
-                               'number' => $node->filter('td.chartlist-index')->text(),
-                               'name' => $node->filter('td.chartlist-name')->text()
-                           ];
-                       } catch (Exception) {
-                           return null;
-                       }
-                   });
+                $crawler->filter(self::UI_CLASSES['track_row'])->each(static function(Crawler $node) use (&$tracks) {
+                    try {
+                        $artistName = $node->filter('div.desc.descriptionIs > h3 > span.artist')->text();
+                        $fullTrackName = $node->filter('div.desc.descriptionIs > h3 > span.track')->text();
+                        $albumImg = $node->attr('data-img');
+                        $albumName = null;
+                        $trackName = $fullTrackName;
 
-                return array_filter($tracks, static fn(?array $data) => null !== $data);
-            });
+                        preg_match_all('/(\((?<text>.*?)\))/', $fullTrackName, $match);
+
+                        if (array_key_exists('text', $match)) {
+                            $lastValueInBrackets = $match['text'][array_key_last($match['text'])];
+
+                            if (0 < count($match['text']) && 1 === preg_match('/[0-9]{4}$/', $lastValueInBrackets)) {
+                                $albumName = $lastValueInBrackets;
+                                $trackName = mb_substr($fullTrackName, 0, mb_strpos($fullTrackName, '('));
+                            }
+                        }
+
+                        $tracks[] = [
+                            'artist_name' => trim($artistName),
+                            'full_track_name' => $fullTrackName,
+                            'album_img_link' => empty($albumImg) ? null : self::MUZOFOND_HOST . $albumImg,
+                            'album_name' => trim($albumName),
+                            'track_name' => trim($trackName)
+                        ];
+
+                        return $node;
+                    } catch (Throwable) {
+                        return $node;
+                    }
+                });
+
+                $this->consoleLogger->info('Successfully completed the parsing of tracks from page {page} of the artist {artist_name}', [
+                    'page' => $i,
+                    'artist_name' => $artistName
+                ]);
+            }
+        }
+
+        dd($tracks);
+    }
+
+    public function getNumberPaginationPages(ResponseInterface $response): int
+    {
+        try {
+            $crawler = new Crawler($response->getContent());
+
+            return $crawler->filter(self::UI_CLASSES['pagination_page'])->last()->text();
+        } catch (Throwable) {
+            return 0;
+        }
     }
 }

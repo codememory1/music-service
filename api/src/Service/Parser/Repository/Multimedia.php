@@ -17,7 +17,7 @@ class Multimedia
     private ?string $text = null;
     private array $subtitles = [];
     private bool $isObsceneWords = false;
-    private ?string $image = null;
+    private ?string $imageLink = null;
     private ?string $producer = null;
     private array $performers = [];
     private ?string $linkToMediaFile = null;
@@ -129,14 +129,14 @@ class Multimedia
         return $this;
     }
 
-    public function getImage(): ?string
+    public function getImageLink(): ?string
     {
-        return $this->image;
+        return $this->imageLink;
     }
 
-    public function setImage(string $urlImage): self
+    public function setImageLink(string $imageLink): self
     {
-        $this->image = $urlImage;
+        $this->imageLink = $imageLink;
 
         return $this;
     }

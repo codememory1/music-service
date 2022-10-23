@@ -10,7 +10,6 @@ class Artist
     private array $photos = [];
     private ?DateTimeInterface $dateBirth = null;
     private ?string $biography = null;
-    private array $albums = [];
 
     public function getPseudonym(): string
     {
@@ -58,23 +57,5 @@ class Artist
         $this->dateBirth = $dateBirth;
 
         return $this;
-    }
-
-    /**
-     * @param array<int, Album> $albums
-     */
-    public function setAlbums(array $albums): self
-    {
-        $this->albums = $albums;
-
-        return $this;
-    }
-
-    /**
-     * @return array<int, Album>
-     */
-    public function getAlbums(): array
-    {
-        return $this->albums;
     }
 }
