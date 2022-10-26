@@ -33,6 +33,12 @@ class LockFile
         }
     }
 
+    public function autoChange(string $keysInString, mixed $value): self
+    {
+        $lockData = $this->lockData;
+        $keys = explode('.', $keysInString);
+    }
+
     public function change(callable $callback): self
     {
         call_user_func_array($callback, [&$this->lockData[$this->parserName]]);

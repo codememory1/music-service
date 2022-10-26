@@ -1,24 +1,45 @@
 doctrine:
     dbal:
-        url: '%env(resolve:DATABASE_URL)%'
+        default_connection: default
+        connections:
+          default:
+            url: '%env(resolve:DATABASE_URL)%'
+          parser:
+            url: 'sqlite:///%kernel.project_dir%/sumron-music-parser.sqlite'
         types:
           cron_time: App\DBAL\Types\CronTimeType
           password: App\DBAL\Types\PasswordType
           array_string: App\DBAL\Types\ArrayOrStringType
     orm:
       auto_generate_proxy_classes: true
-      naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-      auto_mapping: true
+      # auto_mapping: true
+      default_entity_manager: default
 
-      dql:
-        datetime_functions:
-          date: Oro\ORM\Query\AST\Functions\SimpleFunction
-        numeric_functions:
-          month: Oro\ORM\Query\AST\Functions\SimpleFunction
-      mappings:
-          App:
+      entity_managers:
+        default:
+          connection: default
+          naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+          mappings:
+            App:
               type: attribute
               is_bundle: false
               dir: '%kernel.project_dir%/src/Entity'
               prefix: 'App\Entity'
               alias: App
+
+          dql:
+            datetime_functions:
+              date: Oro\ORM\Query\AST\Functions\SimpleFunction
+            numeric_functions:
+              month: Oro\ORM\Query\AST\Functions\SimpleFunction
+
+        parser:
+          connection: parser
+          naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+          mappings:
+            Parser:
+              type: attribute
+              is_bundle: false
+              dir: '%kernel.project_dir%/src/Entity/Parser'
+              prefix: 'App\Entity\Parser'
+              alias: Parser

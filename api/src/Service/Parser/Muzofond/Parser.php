@@ -122,7 +122,8 @@ final class Parser extends AbstractParser implements ParserInterface
                             'full_track_name' => $fullTrackName,
                             'album_img_link' => empty($albumImg) ? null : self::MUZOFOND_HOST . $albumImg,
                             'album_name' => trim($albumName),
-                            'track_name' => trim($trackName)
+                            'track_name' => trim($trackName),
+                            'media_file' => $node->filter('div.actions > ul > li.play')->attr('data-url')
                         ];
 
                         return $node;

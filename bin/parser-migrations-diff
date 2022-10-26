@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# shellcheck disable=SC2068
+docker-compose exec api bin/console d:m:diff --configuration=config/packages/migrations/parser_doctrine_migrations.yaml
