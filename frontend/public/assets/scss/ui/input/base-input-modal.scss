@@ -1,0 +1,28 @@
+@import "../../include/variables";
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &__label {
+    margin-bottom: 4px;
+    color: $gray;
+  }
+
+  &__input {
+    background-color: transparent;
+    color: $white;
+    padding: 12px 20px 12px 12px;
+    border-radius: 5px;
+    border: 2px solid $light-for-dark;
+    outline: none;
+    font-size: 14px;
+    height: 40px;
+    transition: ease-in border 0.15s;
+
+    &:focus {
+      border-color: $accent;
+    }
+  }
+}

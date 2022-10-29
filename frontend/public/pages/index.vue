@@ -92,6 +92,7 @@
       </BaseSection>
     </div>
     <TheMainFooter />
+    <PasswordResetModal></PasswordResetModal>
   </div>
 </template>
 
