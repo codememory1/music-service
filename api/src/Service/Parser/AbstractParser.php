@@ -3,7 +3,7 @@
 namespace App\Service\Parser;
 
 use App\Service\Parser\Http\HttpRequest;
-use App\Service\Parser\Http\PreparedRoute;
+use App\Service\Parser\Http\Router;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -15,15 +15,17 @@ abstract class AbstractParser
     protected readonly ConsoleOutput $consoleOutput;
     protected readonly ConsoleLogger $consoleLogger;
 
-    public function __construct(    
-        protected readonly HttpRequest $http, 
-        protected readonly PreparedRoute $preparedRoute
+    public function __construct(
+        protected readonly HttpRequest $http,
+        protected readonly Router $preparedRoute
     ) {
         $this->consoleOutput = new ConsoleOutput();
         $this->consoleLogger = new ConsoleLogger($this->consoleOutput, [
-            LogLevel::INFO => OutputInterface::VERBOSITY_NORMAL
+            LogLevel::INFO => OutputInterface::VERBOSITY_NORMAL,
+            LogLevel::DEBUG => OutputInterface::VERBOSITY_NORMAL
         ], [
-            LogLevel::WARNING => 'fg=yellow'
+            LogLevel::WARNING => 'fg=yellow',
+            LogLevel::DEBUG => 'fg=blue',
         ]);
 
         $this->http->setConsoleLogger($this->consoleLogger);

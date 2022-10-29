@@ -1,0 +1,3 @@
+em: parser
+migrations_paths:
+  'DoctrineMigrations': '../../../migrations/Parser'

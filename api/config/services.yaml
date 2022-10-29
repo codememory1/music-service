@@ -150,6 +150,12 @@ services:
     App\Service\Parser\Zaycev\Parser:
       public: false
 
+    App\Service\Parser\Muzofond\Parser:
+      public: false
+
+    App\Service\Parser\LastFM\Parser:
+      public: false
+
     # DTO
     App\Dto\Constraints\:
       resource: '../src/Dto/Constraints/*ConstraintHandler.php'
