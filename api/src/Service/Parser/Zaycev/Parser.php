@@ -4,7 +4,7 @@ namespace App\Service\Parser\Zaycev;
 
 use App\Service\Parser\AbstractParser;
 use App\Service\Parser\Http\HttpRequest;
-use App\Service\Parser\Http\PreparedRoute;
+use App\Service\Parser\Http\Router;
 use App\Service\Parser\Interfaces\ParserInterface;
 use App\Service\Parser\Repository\Artist;
 use App\Service\Parser\Repository\Multimedia;
@@ -20,7 +20,7 @@ class Parser extends AbstractParser implements ParserInterface
     private const CDN_IMG_HOST = 'https://cdnimg.zaycev.net';
     private const API_PATH = 'https://zaycev.net/api/external';
 
-    public function __construct(HttpRequest $httpRequest, PreparedRoute $preparedRoute)
+    public function __construct(HttpRequest $httpRequest, Router $preparedRoute)
     {
         parent::__construct($httpRequest, $preparedRoute);
 

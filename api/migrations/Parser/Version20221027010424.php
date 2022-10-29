@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20221026013908 extends AbstractMigration
+final class Version20221027010424 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -35,6 +35,10 @@ final class Version20221026013908 extends AbstractMigration
         , updated_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
         )');
         $this->addSql('CREATE INDEX IDX_D0C2BB3020531EB8 ON multimedia_tags (multimedia_id)');
+        $this->addSql('CREATE TABLE service_caches (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, link CLOB NOT NULL, link_params CLOB NOT NULL --(DC2Type:array)
+        , content CLOB NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
+        , updated_at DATETIME DEFAULT NULL --(DC2Type:datetime_immutable)
+        )');
     }
 
     public function down(Schema $schema): void
@@ -45,5 +49,6 @@ final class Version20221026013908 extends AbstractMigration
         $this->addSql('DROP TABLE artists');
         $this->addSql('DROP TABLE multimedia');
         $this->addSql('DROP TABLE multimedia_tags');
+        $this->addSql('DROP TABLE service_caches');
     }
 }

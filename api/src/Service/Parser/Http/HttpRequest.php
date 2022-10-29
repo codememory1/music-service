@@ -2,6 +2,12 @@
 
 namespace App\Service\Parser\Http;
 
+use App\Entity\Parser\ServiceCache;
+use App\Repository\Parser\ServiceCacheRepository;
+use App\Entity\Parser\Album;
+use Doctrine\DBAL\Connection;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use function call_user_func;
 use Exception;
 use const JSON_PRETTY_PRINT;
@@ -17,12 +23,20 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class HttpRequest
 {
+    public readonly HttpClientInterface $client;
+    private readonly ManagerRegistry $managerRegistry;
     private ?ResponseInterface $response = null;
     private ?ConsoleLogger $consoleLogger = null;
+    private readonly ObjectManager $em;
+    private readonly ServiceCacheRepository $serviceCacheRepository;
+    private ?string $content = null;
 
-    public function __construct(
-        public readonly HttpClientInterface $client
-    ) {
+    public function __construct(HttpClientInterface $client, ManagerRegistry $managerRegistry)
+    {
+        $this->client = $client;
+        $this->managerRegistry = $managerRegistry;
+        $this->em = $this->managerRegistry->getManager('parser');
+        $this->serviceCacheRepository = $this->managerRegistry->getRepository(ServiceCache::class, 'parser');
     }
 
     public function setConsoleLogger(ConsoleLogger $consoleLogger): self
@@ -33,54 +47,76 @@ class HttpRequest
     }
 
     /**
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function get(string $url, array $options = [], ?callable $callbackRepeat = null): self
+    public function get(PreparedRoute $preparedRoute, array $options = [], ?callable $callbackRepeat = null): self
     {
-        $this->request($url, Request::METHOD_GET, $options, $callbackRepeat);
+        $this->request($preparedRoute, Request::METHOD_GET, $options, $callbackRepeat);
 
         return $this;
     }
 
     /**
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function post(string $url, array $options = [], ?callable $callbackRepeat = null): self
+    public function post(PreparedRoute $preparedRoute, array $options = [], ?callable $callbackRepeat = null): self
     {
-        $this->request($url, Request::METHOD_POST, $options, $callbackRepeat);
+        $this->request($preparedRoute, Request::METHOD_POST, $options, $callbackRepeat);
 
         return $this;
     }
 
     /**
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function request(string $url, string $method, array $options = [], ?callable $callbackRepeat = null): self
+    public function request(PreparedRoute $preparedRoute, string $method, array $options = [], ?callable $callbackRepeat = null): self
     {
         $optionsToString = json_encode($options, JSON_PRETTY_PRINT);
+        $responseFromCache = $this->serviceCacheRepository->findByLink($preparedRoute->getCollectedRoute());
 
-        $this->consoleLogger->debug(
-            <<<EQL
+        $this->consoleLogger->debug(<<<EQL
         HTTP REQUEST: 
-            <fg=magenta>URL:</> <fg=white>${url}</>
+            <fg=magenta>URL:</> <fg=white>{$preparedRoute->getCollectedRoute()}</>
             <fg=magenta>HTTP METHOD:</> <fg=white>${method}</>
             <fg=magenta>OPTIONS:</> <fg=white>${optionsToString}</>
-        EQL
-        );
+        EQL);
+
+        if (null !== $responseFromCache) {
+            $this->content = $responseFromCache->getContent();
+
+            return $this;
+        }
 
         if (null === $callbackRepeat) {
-            $this->response = $this->client->request($method, $url, $options);
+            $this->response = $this->client->request($method, $preparedRoute->getCollectedRoute(), $options);
+
+            if (200 === $this->response->getStatusCode()) {
+                $this->saveResponseToCache($preparedRoute, $this->response);
+            }
         } else {
             while (true) {
-                $this->response = $this->client->request($method, $url, $options);
+                $this->response = $this->client->request($method, $preparedRoute->getCollectedRoute(), $options);
 
                 if (false === call_user_func($callbackRepeat, $this)) {
+                    if (200 === $this->response->getStatusCode()) {
+                        $this->saveResponseToCache($preparedRoute, $this->response);
+                    }
+
                     break;
                 }
 
                 $this->consoleLogger->warning('Failed to get specific data from {url} response. Wait 5 seconds and try again', [
-                        'url' => $url
-                    ]);
+                    'url' => $preparedRoute->getCollectedRoute()
+                ]);
 
                 sleep(5);
             }
@@ -120,7 +156,7 @@ class HttpRequest
             if (200 !== $this->response->getStatusCode()) {
                 $originalResponseData = [];
             } else {
-                $originalResponseData = json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+                $originalResponseData = json_decode($this->getResponseContent(), true, 512, JSON_THROW_ON_ERROR);
             }
         } catch (Exception) {
             $originalResponseData = [];
@@ -141,5 +177,36 @@ class HttpRequest
         }
 
         return $responseData;
+    }
+
+    public function getResponseContent(): ?string
+    {
+        return $this->content;
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    private function saveResponseToCache(PreparedRoute $preparedRoute, ResponseInterface $response): void
+    {
+        $routeLink = rtrim($preparedRoute->getCollectedRoute(), '/');
+
+        if (null === $content = $this->serviceCacheRepository->findByLink($routeLink)) {
+            $serviceCache = new ServiceCache();
+
+            $serviceCache->setLink($routeLink);
+            $serviceCache->setLinkParams($preparedRoute->parameters);
+            $serviceCache->setContent($response->getContent());
+
+            $this->em->persist($serviceCache);
+            $this->em->flush();
+
+            $this->content = $response->getContent();
+        } else {
+            $this->content = $content;
+        }
     }
 }

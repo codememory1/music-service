@@ -4,7 +4,7 @@ namespace App\Service\Parser\LastFM;
 
 use App\Service\Parser\AbstractParser;
 use App\Service\Parser\Http\HttpRequest;
-use App\Service\Parser\Http\PreparedRoute;
+use App\Service\Parser\Http\Router;
 use App\Service\Parser\Interfaces\ParserInterface;
 use App\Service\Parser\Repository\Album;
 use App\Service\Parser\Repository\Artist;
@@ -31,7 +31,7 @@ class Parser extends AbstractParser implements ParserInterface
         'track_tag' => 'ol.big-tags > li.big-tags-item-wrap > div.big-tags-item > h3.big-tags-item-name > a'
     ];
 
-    public function __construct(HttpRequest $http, PreparedRoute $preparedRoute)
+    public function __construct(HttpRequest $http, Router $preparedRoute)
     {
         parent::__construct($http, $preparedRoute);
 

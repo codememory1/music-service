@@ -5,6 +5,7 @@ namespace App\Service\Parser\Muzofond;
 use App\Service\Parser\AbstractParser;
 use App\Service\Parser\Http\HttpRequest;
 use App\Service\Parser\Http\PreparedRoute;
+use App\Service\Parser\Http\Router;
 use App\Service\Parser\Interfaces\ParserInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -22,7 +23,7 @@ final class Parser extends AbstractParser implements ParserInterface
         'track_row' => 'ul.songs > li.item'
     ];
 
-    public function __construct(HttpRequest $http, PreparedRoute $preparedRoute)
+    public function __construct(HttpRequest $http, Router $preparedRoute)
     {
         parent::__construct($http, $preparedRoute);
 
@@ -65,24 +66,27 @@ final class Parser extends AbstractParser implements ParserInterface
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function getTracks(string $artistLink, string $artistName): array
+    public function getTracks(PreparedRoute $artistRoute, string $artistName): array
     {
         $this->consoleLogger->info('We send a request to determine the number of pages with tracks from the artist {artist_name}...', [
             'artist_name' => $artistName
         ]);
 
-        $responseToDeterminePagination = $this->http->get("${artistLink}/2", ['timeout' => 30])->getResponse();
-        $countPages = $this->getNumberPaginationPages($responseToDeterminePagination);
+        $responseToDeterminePagination = $this->http->get($artistRoute->addPathToLink('2'), ['timeout' => 30])->getResponse();
 
+        $countPages = $this->getNumberPaginationPages($this->http->getResponseContent());
+            
         $tracks = [];
 
+        $artistRoute->removeLastAddedPath();
+        
         for ($i = 0; $i <= $countPages; ++$i) {
             $this->consoleLogger->info('We send a request to receive tracks from page {page} from the artist {artist_name}...', [
                 'page' => $i,
                 'artist_name' => $artistName
             ]);
-
-            $tracksRoute = 0 === $i ? $artistLink : "${artistLink}/${i}";
+            
+            $tracksRoute = 0 === $i ? $artistRoute : $artistRoute->addPathToLink($i);
             $response = $this->http->get($tracksRoute, ['timeout' => 30])->getResponse();
 
             if (200 === $response->getStatusCode()) {
@@ -142,10 +146,10 @@ final class Parser extends AbstractParser implements ParserInterface
         dd($tracks);
     }
 
-    public function getNumberPaginationPages(ResponseInterface $response): int
+    public function getNumberPaginationPages(string $content): int
     {
         try {
-            $crawler = new Crawler($response->getContent());
+            $crawler = new Crawler($content);
 
             return $crawler->filter(self::UI_CLASSES['pagination_page'])->last()->text();
         } catch (Throwable) {
