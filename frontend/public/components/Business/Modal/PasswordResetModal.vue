@@ -1,7 +1,12 @@
 <template>
   <BaseModal ref="modal" title="Password Reset">
     <div class="modal-fields">
-      <InputCode :active-square-number="2" :count-squares="6" class="input-code-squares--center" />
+      <InputCode
+        ref="code"
+        :active-square-number="1"
+        :count-squares="6"
+        class="input-code-squares--center"
+      />
       <BaseInputModal
         class="password-field"
         input-type="password"
@@ -14,17 +19,21 @@
       <BaseInputModal input-type="password" placeholder="Enter your password confirmation" />
     </div>
 
-    <BaseButton class="btn-auth button_bg--accent">Reset the password</BaseButton>
+    <BaseButton class="btn-auth button_bg--accent" @click="resetPassword"
+      >Reset the password</BaseButton
+    >
 
-    <div class="security-modal__switch-to-another-modal">
-      Have an account?
-      <a class="link__switch-to-another-modal" @click="$emit('openAuthModal')">Login</a>
+    <div class="switch-to-another-modal-container row-grid grid-gap-5">
+      <div class="security-modal__switch-to-another-modal">
+        Have an account?
+        <a class="link__switch-to-another-modal" @click="$emit('openLoginModal')">Login</a>
+      </div>
     </div>
   </BaseModal>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Emit } from 'vue-property-decorator';
 import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import BaseInputModal from '~/components/UI/Input/BaseInputModal.vue';
 import BaseCheckbox from '~/components/UI/Checkbox/BaseCheckbox.vue';
@@ -43,18 +52,29 @@ import InputCode from '~/components/UI/Input/InputCode.vue';
   }
 })
 export default class PasswordResetModal extends Vue {
-  private modal!: BaseModal;
-
-  private mounted(): void {
-    this.modal = this.$refs.modal as BaseModal;
-  }
-
   public open(): void {
-    this.modal.open();
+    const modal = this.$refs.modal as BaseModal;
+
+    modal.open();
   }
 
   public close(): void {
-    this.modal.close();
+    const modal = this.$refs.modal as BaseModal;
+
+    modal.close();
+  }
+
+  @Emit('resetPassword')
+  private resetPassword(): void {
+    const code = this.$refs.code as InputCode;
+
+    code.codes.forEach((v, i) => {
+      if (!/^\d+$/.test(v)) {
+        code.setErrorSquare(i);
+      } else {
+        code.removeErrorSquare(i);
+      }
+    });
   }
 }
 </script>

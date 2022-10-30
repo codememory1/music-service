@@ -10,10 +10,10 @@
       <li class="main-navigation__item">
         <NuxtLink to="" class="main-navigation__link">Donwload</NuxtLink>
       </li>
-      <li class="main-navigation__item main-navigation__item-sign-up">
+      <li class="main-navigation__item main-navigation__item-sign-up" @click="$emit('signUp')">
         <NuxtLink to="" class="main-navigation__link">Sign up</NuxtLink>
       </li>
-      <li class="main-navigation__item">
+      <li class="main-navigation__item" @click="$emit('signIn')">
         <NuxtLink to="" class="main-navigation__link">Sign in</NuxtLink>
       </li>
     </ul>

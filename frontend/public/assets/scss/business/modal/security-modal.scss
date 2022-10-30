@@ -1,16 +1,21 @@
 @import "../../include/variables";
 
+.switch-to-another-modal-container {
+  margin-top: 35px;
+}
+
 .security-modal {
   &__switch-to-another-modal {
-    margin-top: 35px;
     color: $gray;
     font-weight: 400;
     text-align: center;
+    font-size: 14px;
 
     a.link__switch-to-another-modal {
       color: $accent;
       font-weight: 300;
       text-decoration: underline;
+      cursor: pointer;
     }
   }
 

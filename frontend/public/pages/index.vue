@@ -9,95 +9,72 @@
     <div class="container">
       <BaseSection class="our-advantages">
         <template #header>
-          <BaseSectionHeader title="Our advantages" class="our-advantages__header" />
+          <BaseSectionHeader :title="$t('our_advantage.title')" class="our-advantages__header" />
         </template>
 
         <BaseOurAdvantage
-          title="Unique features"
-          description="Since your most unique feature is your brand's voice, build out your content using your blog."
-          icon="unique-feature.svg"
+          :title="$t('our_advantage.items.unique_features.title')"
+          :description="$t('our_advantage.items.unique_features.description')"
+          icon="feature.svg"
         />
         <BaseOurAdvantage
-          title="Subscription price"
-          description="Like a rights issue or open offer, it allows shareholders to buy additional shares, usually at a fixed price."
-          icon="subscription-price.svg"
+          :title="$t('our_advantage.items.subscription_price.title')"
+          :description="$t('our_advantage.items.subscription_price.description')"
+          icon="best-price.svg"
         />
         <BaseOurAdvantage
-          title="More options for free subscription"
-          description="A freemium app allows customers to use the app at no cost, with the option to subscribe."
-          icon="more-options-for-free-subscription.svg"
+          :title="$t('our_advantage.items.more_options_for_free_subscription.title')"
+          :description="$t('our_advantage.items.more_options_for_free_subscription.description')"
+          icon="options.svg"
         />
         <BaseOurAdvantage
-          title="We listen to the opinions of users"
-          description="When we spoke of individual journalists, it was often specific to outspoken personalities and opinion writers."
-          icon="listen-to-opinions-users.svg"
+          :title="$t('our_advantage.items.listen_to_opinions_users.title')"
+          :description="$t('our_advantage.items.listen_to_opinions_users.description')"
+          icon="community.svg"
         />
         <BaseOurAdvantage
-          title="Unique features"
-          description="Since your most unique feature is your brand's voice, build out your content using your blog."
-          icon="unique-feature.svg"
+          :title="$t('our_advantage.items.ease_use.title')"
+          :description="$t('our_advantage.items.ease_use.description')"
+          icon="ease-use.svg"
         />
         <BaseOurAdvantage
-          title="Subscription price"
-          description="Like a rights issue or open offer, it allows shareholders to buy additional shares, usually at a fixed price."
-          icon="subscription-price.svg"
+          :title="$t('our_advantage.items.stream_control.title')"
+          :description="$t('our_advantage.items.stream_control.description')"
+          icon="stream.svg"
         />
       </BaseSection>
       <BaseSection class="subscriptions">
         <template #header>
           <BaseSectionHeader
-            title="Choose your subscription"
-            description="Listen without limits on your phone, speaker and other devices"
+            :title="$t('choose_subscription.title')"
+            :description="$t('choose_subscription.description')"
             class="subscriptions__header"
           />
         </template>
 
         <SubscriptionCard
-          title="Basic"
-          description="Essential feature"
-          :old-price="59.99"
-          :price="53.99"
+          v-for="subscription in subscriptions"
+          :key="subscription.id"
+          :title="subscription.title"
+          :description="subscription.description"
+          :old-price="subscription.old_price"
+          :price="subscription.price"
         >
-          <SubscriptionPermission title="Access to all features" />
-          <SubscriptionPermission title="5 Watchlists included" />
-          <SubscriptionPermission title="10+ exclusive premium widgets" :has="false" />
-          <SubscriptionPermission title="Priority support" />
-          <SubscriptionPermission title="Another great feature" />
-        </SubscriptionCard>
-        <SubscriptionCard
-          title="Pro"
-          description="Advanced feature"
-          :old-price="89.99"
-          :price="80.99"
-          :is-recommend="true"
-        >
-          <SubscriptionPermission title="Access to all features" />
-          <SubscriptionPermission title="5 Watchlists included" />
-          <SubscriptionPermission title="10+ exclusive premium widgets" :has="false" />
-          <SubscriptionPermission title="Priority support" />
-          <SubscriptionPermission title="Another great feature" />
-        </SubscriptionCard>
-        <SubscriptionCard
-          title="Basic"
-          description="Essential feature"
-          :old-price="59.99"
-          :price="53.99"
-        >
-          <SubscriptionPermission title="Access to all features" />
-          <SubscriptionPermission title="5 Watchlists included" />
-          <SubscriptionPermission title="10+ exclusive premium widgets" :has="false" />
-          <SubscriptionPermission title="Priority support" />
-          <SubscriptionPermission title="Another great feature" />
+          <SubscriptionPermission
+            v-for="(permission, index) in subscription.permissions"
+            :key="index"
+            :title="permission.permission_key.title"
+          />
         </SubscriptionCard>
       </BaseSection>
     </div>
     <TheMainFooter />
-    <PasswordResetModal></PasswordResetModal>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Context } from '@nuxt/types';
 import TheMainHeader from '~/components/Business/Header/TheMainHeader.vue';
 import TheHomeHero from '~/components/Business/Hero/TheHomeHero.vue';
 import BaseSectionHeader from '~/components/UI/Section/BaseSectionHeader.vue';
@@ -106,6 +83,7 @@ import BaseOurAdvantage from '~/components/Business/OurAdvantage/BaseOurAdvantag
 import SubscriptionCard from '~/components/Business/Subscription/SubscriptionCard.vue';
 import SubscriptionPermission from '~/components/Business/Subscription/SubscriptionPermission.vue';
 import TheMainFooter from '~/components/Business/Footer/TheMainFooter.vue';
+import ApiRouters from '~/api/api-routers';
 
 @Component({
   components: {
@@ -117,9 +95,18 @@ import TheMainFooter from '~/components/Business/Footer/TheMainFooter.vue';
     SubscriptionCard,
     SubscriptionPermission,
     TheMainFooter
+  },
+  async asyncData({ $api }: Context) {
+    const api = await $api(ApiRouters.subscription.all);
+
+    return {
+      subscriptions: api.data
+    };
   }
 })
-export default class Index extends Vue {}
+export default class Index extends Vue {
+  private subscriptions = [];
+}
 </script>
 
 <style lang="scss">
