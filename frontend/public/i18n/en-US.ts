@@ -4,27 +4,38 @@ export default {
     items: {
       unique_features: {
         title: 'Unique features',
-        description:
-          "Since your most unique feature is your brand's voice, build out your content using your blog. "
+        description: 'Lots of unique features for your use.'
       },
       subscription_price: {
         title: 'Subscription price',
-        description:
-          'Like a rights issue or open offer, it allows shareholders to buy additional shares, usually at a fixed price.'
+        description: 'Low prices for extended list of subscriptions.'
       },
 
-      options_for_free_subscription: {
+      more_options_for_free_subscription: {
         title: 'More options for free subscription',
-        description:
-          'A freemium app allows customers to use the app at no cost, with the option to subscribe.'
+        description: 'Lots of features for free use.'
       },
 
       listen_to_opinions_users: {
         title: 'We listen to the opinions of users',
-        description:
-          'When we spoke of individual journalists, it was often specific to outspoken personalities and opinion writers'
+        description: 'We listen to your opinion on the implementation of new functionality.'
+      },
+
+      ease_use: {
+        title: 'Ease of use',
+        description: 'Use all the features of the platform with convenience.'
+      },
+
+      stream_control: {
+        title: 'Stream control',
+        description: 'Control media flow if you have poor internet.'
       }
     }
+  },
+
+  choose_subscription: {
+    title: 'Choose your subscription',
+    description: 'Listen without limits on your phone, speaker and other devices'
   },
 
   subscription: {

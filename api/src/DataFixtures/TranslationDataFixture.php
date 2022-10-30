@@ -233,7 +233,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'subscriptionPermissionKey@createPlaylist', 'Создание плейлиста'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@updatePlaylist', 'Обновление плейлиста'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deletePlaylist', 'Удаление плейлиста'),
-            new TranslationFactory('ru', 'subscriptionPermissionKey@showMyPlaylistDirectories', 'Просмотр моих директорий плелиста'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@showMyPlaylistDirectories', 'Просмотр моих директорий плейлиста'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@createDirectoryToPlaylist', 'Создание директорий в плейлисте'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@updateDirectoryToPlaylist', 'Обновление директории плейлиста'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteDirectoryToPlaylist', 'Удаление директорий плейлиста'),
@@ -246,6 +246,9 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'subscriptionPermissionKey@controlMultimediaMediaLibraryEvent', 'Контроль над событиями мультимедиа в медиатеки'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@controlMediaLibraryEvent', 'Контроль над событиями медиатеки'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@showMultimediaStatistics', 'Просмотр статистики мультимедиа'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@addTimeCodeToMultimedia', 'Добавление тайм-кода мультимедиа'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@updateTimeCodeToMultimedia', 'Обновление тайм-кода мультимедиа'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@deleteTimeCodeToMultimedia', 'Удаление тайм-кода мультимедиа'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),
@@ -278,7 +281,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'album@successCreate', 'Альбом успешно создан'),
             new TranslationFactory('ru', 'album@successUpdate', 'Альбом успешно обновлен'),
             new TranslationFactory('ru', 'album@successDelete', 'Альбом успешно удален'),
-            new TranslationFactory('ru', 'album@badAddMultimediaToSingleAlbum', 'Сингл альбом не может содержать более 1-й мультимедии'),
+            new TranslationFactory('ru', 'album@badAddMultimediaToSingleAlbum', 'Сингл альбом не может содержать более 1-й мультимедиа'),
             new TranslationFactory('ru', 'album@badPublicationToAlreadyPublication', 'Данный альбом уже опубликован'),
             new TranslationFactory('ru', 'album@successPublication', 'Альбом успешно опубликован'),
             new TranslationFactory('ru', 'album@badPublicationWithoutPublishedMultimedia', 'Невозможно публиковать альбом! Альбом должен содержать хотя бы одну опубликованную мультимедиа'),
@@ -287,7 +290,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'userSession@successDeleteMultiple', 'Сеансы успешно удалены'),
 
             new TranslationFactory('ru', 'notification@typeIsRequired', 'Тип уведомления обязателен к заполнению'),
-            new TranslationFactory('ru', 'notification@toIsRequired', 'Получаетель уведомления обязателен к заполнению'),
+            new TranslationFactory('ru', 'notification@toIsRequired', 'Получатель уведомления обязателен к заполнению'),
             new TranslationFactory('ru', 'notification@titleIsRequired', 'Заголовок уведомления обязателен к заполнению'),
             new TranslationFactory('ru', 'notification@maxLengthTitle', 'Заголовок уведомления не должен превышать 50 символов'),
             new TranslationFactory('ru', 'notification@messageIsRequired', 'Сообщение уведомления обязательно к заполнению'),
@@ -297,7 +300,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
 
             new TranslationFactory('ru', 'userNotification@titleNewRelease', 'Новый релиз'),
             new TranslationFactory('ru', 'userNotification@messageNewReleaseToArtist', 'У артиста %artist_pseudonym% вышел новый релиз'),
-            new TranslationFactory('ru', 'userNotification@titleSharedMultimedia', 'С вами поделились мультимедией'),
+            new TranslationFactory('ru', 'userNotification@titleSharedMultimedia', 'С вами поделились мультимедиа'),
             new TranslationFactory('ru', 'userNotification@messageSharedMultimedia', 'Ваш друг «%friend_name%» поделился с вами мультимедией «%multimedia_original_title%»'),
 
             new TranslationFactory('ru', 'serviceAuth@authorizationCodeIsRequired', 'Код авторизации обязателен к заполнению'),

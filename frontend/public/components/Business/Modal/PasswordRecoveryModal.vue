@@ -1,14 +1,14 @@
 <template>
-  <BaseModal title="Password recovery">
+  <BaseModal ref="modal" title="Password recovery">
     <div class="modal-fields">
       <BaseInputModal placeholder="Enter your email" />
     </div>
-    <BaseButton class="btn-auth button_bg--accent">Send code</BaseButton>
+    <BaseButton class="btn-auth button_bg--accent" @click="send">Send code</BaseButton>
   </BaseModal>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Emit, Vue } from 'vue-property-decorator';
 import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import BaseInputModal from '~/components/UI/Input/BaseInputModal.vue';
 import BaseCheckbox from '~/components/UI/Checkbox/BaseCheckbox.vue';
@@ -24,7 +24,25 @@ import PasswordProgressBar from '~/components/UI/ProgressBar/PasswordProgressBar
     PasswordProgressBar
   }
 })
-export default class PasswordRecovery extends Vue {}
+export default class PasswordRecovery extends Vue {
+  private send(): void {
+    this.$emit('successSend');
+  }
+
+  @Emit('open')
+  public open(): void {
+    const modal = this.$refs.modal as BaseModal;
+
+    modal.open();
+  }
+
+  @Emit('close')
+  public close(): void {
+    const modal = this.$refs.modal as BaseModal;
+
+    modal.close();
+  }
+}
 </script>
 
 <style lang="scss">

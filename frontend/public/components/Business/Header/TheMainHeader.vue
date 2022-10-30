@@ -1,10 +1,42 @@
 <template>
   <header class="main-header">
+    <RegistrationModal
+      ref="registrationModel"
+      @openLoginModal="
+        $refs.registrationModel.close();
+        $refs.authorizationModel.open();
+      "
+    />
+    <AuthorizationModal
+      ref="authorizationModel"
+      @openRegisterModal="
+        $refs.authorizationModel.close();
+        $refs.registrationModel.open();
+      "
+      @openPasswordRecoveryModal="
+        $refs.authorizationModel.close();
+        $refs.passwordRecoveryModal.open();
+      "
+    />
+    <PasswordRecoveryModal
+      ref="passwordRecoveryModal"
+      @successSend="
+        $refs.passwordRecoveryModal.close();
+        $refs.passwordResetModal.open();
+      "
+    />
+    <PasswordResetModal
+      ref="passwordResetModal"
+      @openLoginModal="
+        $refs.passwordResetModal.close();
+        $refs.authorizationModel.open();
+      "
+    />
     <div class="main-header-logo">
       <MainLogo />
     </div>
     <div class="main-header-navigation">
-      <MainNavigation />
+      <MainNavigation @signUp="signUp" @signIn="signIn" />
       <BaseSelect
         class="main-header__select-lang"
         placeholder="Lang"
@@ -23,15 +55,35 @@ import { Component, Vue } from 'vue-property-decorator';
 import MainLogo from '~/components/Business/Logo/MainLogo.vue';
 import MainNavigation from '~/components/Business/Navigation/MainNavigation.vue';
 import BaseSelect from '~/components/UI/Select/BaseSelect.vue';
+import RegistrationModal from '~/components/Business/Modal/RegistrationModal.vue';
+import AuthorizationModal from '~/components/Business/Modal/AuthorizationModal.vue';
+import PasswordRecoveryModal from '~/components/Business/Modal/PasswordRecoveryModal.vue';
+import PasswordResetModal from '~/components/Business/Modal/PasswordResetModal.vue';
 
 @Component({
   components: {
     MainLogo,
     MainNavigation,
-    BaseSelect
+    BaseSelect,
+    RegistrationModal,
+    AuthorizationModal,
+    PasswordRecoveryModal,
+    PasswordResetModal
   }
 })
-export default class TheMainHeader extends Vue {}
+export default class TheMainHeader extends Vue {
+  private signUp(): void {
+    const modal = this.$refs.registrationModel as RegistrationModal;
+
+    modal.open();
+  }
+
+  private signIn(): void {
+    const modal = this.$refs.authorizationModel as AuthorizationModal;
+
+    modal.open();
+  }
+}
 </script>
 
 <style lang="scss">

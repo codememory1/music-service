@@ -73,14 +73,15 @@ const config: NuxtConfig = {
       ssr: false
     },
     '~plugins/tooltip.ts',
-    '~plugins/swiper.ts'
+    '~plugins/swiper.ts',
+    '~plugins/api.ts'
   ],
 
   components: true,
 
   buildModules: ['@nuxt/typescript-build'],
 
-  modules: ['@nuxtjs/i18n', '@nuxtjs/sentry'],
+  modules: ['@nuxtjs/i18n', '@nuxtjs/sentry', '@nuxtjs/axios'],
 
   i18n: {
     langDir: 'i18n/',

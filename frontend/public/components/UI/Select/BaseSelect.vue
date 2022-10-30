@@ -1,5 +1,5 @@
 <template>
-  <div class="select">
+  <div ref="select" class="select">
     <div class="select-top" @click="clickBySelect">
       <BasePlaceholder v-if="activeOptionKeys.length === 0" :placeholder="placeholder" />
       <div v-if="isMultiple" ref="selectedTags" class="select-top-selected-tags">
@@ -39,6 +39,7 @@ import BaseSelectedTag from '~/components/UI/Select/BaseSelectedTag.vue';
 import BaseSelectedOption from '~/components/UI/Select/BaseSelectedOption.vue';
 import BaseSearch from '~/components/UI/Select/BaseSearch.vue';
 import { OptionType } from '~/types/SelectOptionType';
+import clickOut from '~/utils/click-out';
 
 @Component({
   components: {
@@ -75,12 +76,23 @@ export default class BaseSelect extends Vue {
   private activeOptionKeys = this.activeOptions;
   private isOpen: boolean = false;
 
+  private mounted(): void {
+    clickOut(this.$refs.select as Node, (is: boolean, event: PointerEvent) => {
+      if (is) {
+        this.close(event);
+      }
+    });
+  }
+
   @Emit('open')
-  public open(event: PointerEvent): void {}
+  public open(event: PointerEvent): void {
+    this.isOpen = true;
+  }
 
   @Emit('close')
   public close(event: PointerEvent): void {
     this.updatedOptions = this.options;
+    this.isOpen = false;
   }
 
   @Emit('selectElement')
@@ -103,9 +115,7 @@ export default class BaseSelect extends Vue {
   }
 
   private clickBySelect(event: PointerEvent): void {
-    this.isOpen = !this.isOpen;
-
-    this.isOpen ? this.open(event) : this.close(event);
+    this.isOpen ? this.close(event) : this.open(event);
   }
 
   private get firstActiveOption(): OptionType | null {
