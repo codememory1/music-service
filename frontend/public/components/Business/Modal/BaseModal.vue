@@ -38,7 +38,10 @@ export default class BaseModal extends Vue {
   private isOpenData: boolean = this.isOpen;
 
   private closeOurContainer(event: PointerEvent): void {
-    if (event.target.contains(this.$refs.modal)) {
+    const element = this.$refs.modal as Element;
+    const target = event.target as Element;
+
+    if (target.contains(element)) {
       this.close();
     }
   }
