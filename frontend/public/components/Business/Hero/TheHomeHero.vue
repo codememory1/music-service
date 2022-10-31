@@ -8,7 +8,7 @@
       <a href="" class="button button_bg--accent hero-content__btn">Create account</a>
     </div>
     <div class="hero-mockup">
-      <img class="hero-mockup__img" src="~/assets/images/mockup.png" alt="">
+      <img class="hero-mockup__img" src="~/assets/images/mockup.png" :alt="$config.title">
     </div>
   </section>
 </template>
@@ -16,6 +16,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+@Component
 export default class TheHomeHero extends Vue {}
 </script>
 
