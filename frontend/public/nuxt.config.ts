@@ -19,11 +19,36 @@ const config: NuxtConfig = {
     title: process.env.SITE_NAME
   },
 
+  pwa: {
+    manifest: {
+      name: process.env.SITE_NAME,
+      short_name: process.env.SITE_NAME,
+      description: '',
+      start_url: '/',
+      display: 'fullscreen',
+      background_color: '#0E1723',
+      theme_color: '#070E17',
+      lang: process.env.DEFAULT_LANG,
+      orientation: 'landscape-primary'
+    },
+
+    icon: {
+      fileName: 'favicon/icon.png',
+      sizes: [64, 120, 144, 152, 192, 328, 512],
+      purpose: 'any'
+    },
+
+    workbox: {
+      debug: true,
+      dev: true
+    }
+  },
+
   head: {
     title: process.env.SITE_NAME,
 
     htmlAttrs: {
-      lang: 'en'
+      lang: process.env.DEFAULT_LANG as string
     },
 
     meta: [
@@ -79,7 +104,7 @@ const config: NuxtConfig = {
 
   components: true,
 
-  buildModules: ['@nuxt/typescript-build'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/pwa'],
 
   modules: ['@nuxtjs/i18n', '@nuxtjs/sentry', '@nuxtjs/axios'],
 
