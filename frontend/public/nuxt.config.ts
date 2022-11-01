@@ -39,8 +39,8 @@ const config: NuxtConfig = {
     },
 
     workbox: {
-      debug: true,
-      dev: true
+      // debug: true,
+      // dev: true
     }
   },
 

@@ -1,0 +1,95 @@
+@import "../../include/variables";
+@import "../../include/mixins";
+
+$notification-height: 400px;
+
+.notification-list {
+  position: absolute;
+  width: 420px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid $light-for-dark;
+  background-color: $dark-bg;
+  height: $notification-height;
+  z-index: 100;
+
+  &__wrapper {
+    position: relative;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: -44px;
+      border-top: 12px solid transparent;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 12px solid $light-for-dark;
+      right: 40px;
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: -40px;
+      border-top: 12px solid transparent;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 10px solid $light-for-dark;
+      right: 42px;
+      z-index: 9;
+    }
+  }
+
+  &__top {
+    display: flex;
+    padding-bottom: 15px;
+    border-bottom: 1px solid $light-for-dark;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__content {
+    overflow: auto;
+    height: $notification-height - 70px;
+    padding-right: 10px;
+
+    @include scrollbar();
+
+    & > div.notification:last-of-type {
+      border-bottom: none;
+    }
+  }
+
+  &__title {
+    color: $white-with-hint-blue;
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  &__read-all-btn {
+    color: $accent;
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.2s ease-in-out;
+    background-color: transparent;
+
+    &:hover {
+      color: darken($accent, 10%);
+    }
+  }
+
+  &-empty-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+    & > p {
+      color: $white-with-hint-blue;
+      font-weight: 500;
+      margin-top: 36px;
+    }
+  }
+}
+
