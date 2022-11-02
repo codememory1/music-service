@@ -18,7 +18,8 @@ final class SystemUserFactory implements DataFixtureFactoryInterface
     public function __construct(
         private readonly string $pseudonym,
         private readonly SystemUserEnum $email
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

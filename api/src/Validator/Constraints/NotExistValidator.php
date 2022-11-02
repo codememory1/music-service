@@ -11,7 +11,8 @@ final class NotExistValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     /**
      * @inheritDoc

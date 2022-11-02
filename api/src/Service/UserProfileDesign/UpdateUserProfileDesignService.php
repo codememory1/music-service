@@ -15,7 +15,7 @@ class UpdateUserProfileDesignService extends AbstractService
 {
     #[Required]
     public ?ImageUploader $imageUploader = null;
-    
+
     #[Required]
     public ?Uploader $fileUploader = null;
 

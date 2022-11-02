@@ -12,7 +12,8 @@ final class RunningMultimediaComponent
 {
     public function __construct(
         private readonly RunningMultimediaRepository $runningMultimediaRepository
-    ) {}
+    ) {
+    }
 
     public function getRunningMultimedia(int $id, UserSession $userSession, WebSocketClientMessageTypeEnum $clientMessageType): RunningMultimedia
     {

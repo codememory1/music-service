@@ -13,7 +13,8 @@ class PlatformSettingService
 
     public function __construct(
         private readonly PlatformSettingRepository $platformSettingRepository
-    ) {}
+    ) {
+    }
 
     public function get(PlatformSettingEnum $platformSettingEnum): string|array|null
     {

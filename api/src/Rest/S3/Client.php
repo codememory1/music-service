@@ -8,6 +8,8 @@ class Client
 {
     public function __construct(
         public readonly AwsS3Client $awsS3Client,
-        public readonly Bucket $bucket)
-    {}
+        public readonly Bucket $bucket
+    )
+    {
+    }
 }

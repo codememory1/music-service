@@ -9,5 +9,6 @@ final class UserRegistrationEvent extends Event
 {
     public function __construct(
         public readonly User $user
-    ) {}
+    ) {
+    }
 }

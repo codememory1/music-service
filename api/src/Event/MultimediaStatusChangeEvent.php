@@ -10,5 +10,6 @@ final class MultimediaStatusChangeEvent
     public function __construct(
         public readonly Multimedia $multimedia,
         public readonly MultimediaStatusEnum $onStatus
-    ) {}
+    ) {
+    }
 }

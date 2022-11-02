@@ -8,5 +8,6 @@ final class SaveEvent
 {
     public function __construct(
         public readonly EventInterface $event
-    ) {}
+    ) {
+    }
 }

@@ -10,5 +10,6 @@ final class DtoConstraintCollection
     public function __construct(
         public readonly DataTransferConstraintInterface $constraint,
         public readonly ReflectionAttribute $reflectionAttribute
-    ) {}
+    ) {
+    }
 }

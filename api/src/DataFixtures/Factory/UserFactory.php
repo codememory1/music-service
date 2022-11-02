@@ -27,7 +27,8 @@ final class UserFactory implements DataFixtureFactoryInterface
         private readonly RoleEnum $role,
         private readonly ?SubscriptionEnum $subscription = null,
         private readonly ?Closure $callbackEntity = null
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

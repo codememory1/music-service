@@ -12,7 +12,8 @@ class WorkerConnectionManager
 
     public function __construct(
         private readonly Client $redisClient
-    ){}
+    ) {
+    }
 
     public function addConnectionUserSession(int $connectionId, UserSession $userSession): self
     {

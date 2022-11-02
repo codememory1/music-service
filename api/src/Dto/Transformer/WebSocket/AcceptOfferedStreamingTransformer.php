@@ -2,12 +2,12 @@
 
 namespace App\Dto\Transformer\WebSocket;
 
-use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\WebSocket\AcceptOfferedStreamingDto;
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastucture\Dto\AbstractDataTransformer;
+use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
-use App\Infrastucture\Dto\AbstractDataTransformer;
 
 /**
  * @template-extends AbstractDataTransformer<AcceptOfferedStreamingDto>

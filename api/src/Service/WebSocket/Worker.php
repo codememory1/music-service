@@ -22,7 +22,8 @@ class Worker
         private readonly MessageBusInterface $bus,
         private readonly string $host,
         private readonly int $port
-    ) {}
+    ) {
+    }
 
     public function initServer(): void
     {

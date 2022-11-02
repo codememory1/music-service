@@ -10,7 +10,8 @@ final class ToEntityCallbackConstraint implements DataTransferConstraintInterfac
 {
     public function __construct(
         public readonly string $methodName
-    ) {}
+    ) {
+    }
 
     public function getHandler(): ?string
     {

@@ -15,11 +15,12 @@ class AuthorizedUser
     private ?UserSession $userSession = null;
 
     public function __construct(
-        private readonly UserRepository $userRepository, 
-        private readonly UserSessionRepository $userSessionRepository, 
-        private readonly AccessToken $accessToken, 
+        private readonly UserRepository $userRepository,
+        private readonly UserSessionRepository $userSessionRepository,
+        private readonly AccessToken $accessToken,
         public readonly BearerToken $bearerToken
-    ) {}
+    ) {
+    }
 
     public function setAccessToken(string $token): self
     {

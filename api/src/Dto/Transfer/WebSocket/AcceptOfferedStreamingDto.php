@@ -3,8 +3,8 @@
 namespace App\Dto\Transfer\WebSocket;
 
 use App\Dto\Constraints as DtoConstraints;
-use App\Infrastucture\Dto\AbstractDataTransfer;
 use App\Entity\StreamRunningMultimedia;
+use App\Infrastucture\Dto\AbstractDataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class AcceptOfferedStreamingDto extends AbstractDataTransfer

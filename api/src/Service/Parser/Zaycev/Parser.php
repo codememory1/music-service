@@ -2,13 +2,13 @@
 
 namespace App\Service\Parser\Zaycev;
 
-use App\Service\Parser\Repository\Artist;
-use App\Service\Parser\Repository\MultimediaCategory;
 use App\Service\Parser\AbstractParser;
 use App\Service\Parser\Http\HttpRequest;
 use App\Service\Parser\Http\PreparedRoute;
 use App\Service\Parser\Interfaces\ParserInterface;
+use App\Service\Parser\Repository\Artist;
 use App\Service\Parser\Repository\Multimedia;
+use App\Service\Parser\Repository\MultimediaCategory;
 use function array_slice;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -90,7 +90,7 @@ class Parser extends AbstractParser implements ParserInterface
 
         $responseData = $this->http->getResponseData();
 
-        return array_map(function (array $artistData) {
+        return array_map(function(array $artistData) {
             $this->consoleLogger->info('We start building the artist with id: {id}...', [
                 'id' => $artistData['id']
             ]);
@@ -263,9 +263,7 @@ class Parser extends AbstractParser implements ParserInterface
 
         $artistInfoData = $this->http->get($this->preparedRoute->getRoute('artist_info', [
             'id' => $artistData['id']
-        ]), callbackRepeat: static function (HttpRequest $http) {
-            return false === array_key_exists('info', $http->getResponseData());
-        })->getResponseData('info');
+        ]), callbackRepeat: static fn(HttpRequest $http) => false === array_key_exists('info', $http->getResponseData()))->getResponseData('info');
 
         $this->consoleLogger->info('Successfully received information with id: {id}', [
             'id' => $artistInfoData['id']
@@ -275,7 +273,7 @@ class Parser extends AbstractParser implements ParserInterface
 
         $artist->setId($artistData['id']);
         $artist->setPseudonym($artistInfoData['name']);
-        $artist->setPhoto(self::CDN_IMG_HOST.$artistInfoData['image']);
+        $artist->setPhoto(self::CDN_IMG_HOST . $artistInfoData['image']);
 
         $this->consoleLogger->info('Finished building the artist object with id: {id}', [
             'id' => $artistInfoData['id']

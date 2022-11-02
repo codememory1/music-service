@@ -2,9 +2,9 @@
 
 namespace App\Infrastucture\Dto;
 
+use App\Entity\Interfaces\EntityInterface;
 use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
 use App\Infrastucture\Dto\Interfaces\DataTransformerInterface;
-use App\Entity\Interfaces\EntityInterface;
 use App\Rest\Http\Request;
 use LogicException;
 
@@ -15,7 +15,8 @@ abstract class AbstractDataTransformer implements DataTransformerInterface
 {
     public function __construct(
         protected readonly Request $request
-    ) {}
+    ) {
+    }
 
     protected function baseTransformFromRequest(DataTransferInterface $dataTransfer, ?EntityInterface $entity = null): DataTransferInterface
     {

@@ -17,10 +17,11 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final class MultimediaMetadataMessageHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $em, 
-        private readonly FlusherService $flusherService, 
+        private readonly EntityManagerInterface $em,
+        private readonly FlusherService $flusherService,
         private readonly UploadedObject $uploadedObject
-    ) {}
+    ) {
+    }
 
     private function getMultimediaMetadata(Multimedia $multimedia): ?MultimediaMetadata
     {

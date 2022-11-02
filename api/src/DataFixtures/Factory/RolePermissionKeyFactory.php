@@ -13,7 +13,8 @@ final class RolePermissionKeyFactory implements DataFixtureFactoryInterface
     public function __construct(
         private readonly RolePermissionEnum $rolePermission,
         private readonly string $titleTranslationKey
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

@@ -21,8 +21,8 @@ abstract class AbstractRepository extends ServiceEntityRepository
     protected readonly QueryBuilder $qb;
 
     public function __construct(
-        ManagerRegistry $registry, 
-        protected readonly FilterService $filterService, 
+        ManagerRegistry $registry,
+        protected readonly FilterService $filterService,
         protected readonly SortService $sortService
     ) {
         parent::__construct($registry, $this->entity);

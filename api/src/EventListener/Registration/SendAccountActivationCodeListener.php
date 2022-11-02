@@ -18,7 +18,8 @@ final class SendAccountActivationCodeListener
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly MailMessagingService $mailMessagingService
-    ) {}
+    ) {
+    }
 
     /**
      * @throws TransportExceptionInterface

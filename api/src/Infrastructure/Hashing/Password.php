@@ -2,6 +2,8 @@
 
 namespace App\Infrastructure\Hashing;
 
+use const PASSWORD_ARGON2ID;
+
 class Password
 {
     final public function encode(string $password): string

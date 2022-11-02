@@ -13,7 +13,8 @@ final class PlatformSettingFactory implements DataFixtureFactoryInterface
     public function __construct(
         private readonly PlatformSettingEnum $platformSetting,
         private readonly array|string|int|float $value = []
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

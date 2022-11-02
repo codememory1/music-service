@@ -11,7 +11,8 @@ final class SubscriptionHandler implements MethodAnnotationHandlerInterface
 {
     public function __construct(
         private readonly AuthorizedUser $authorizedUser
-    ) {}
+    ) {
+    }
 
     /**
      * @param Subscription $annotation

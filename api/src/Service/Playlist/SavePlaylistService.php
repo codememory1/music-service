@@ -16,7 +16,8 @@ class SavePlaylistService
         private readonly Uploader $fileUploader,
         private readonly SetMultimediaToPlaylistService $setMultimediaToPlaylist,
         private readonly ImageUploader $imageUploader,
-    ) {}
+    ) {
+    }
 
     public function make(PlaylistDto $playlistDto, Playlist $playlist): void
     {

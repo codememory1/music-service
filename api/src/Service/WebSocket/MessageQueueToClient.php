@@ -19,7 +19,8 @@ class MessageQueueToClient
         private readonly Client $redisClient,
         private readonly UserRepository $userRepository,
         private readonly UserSessionRepository $userSessionRepository
-    ) {}
+    ) {
+    }
 
     public function sendMessage(WebSocketSchema $webSocketSchema, ?User $toUser = null, ?UserSession $toUserSession = null): self
     {

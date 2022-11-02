@@ -12,7 +12,8 @@ class SaveMediaLibraryEventService
     public function __construct(
         private readonly FlusherService $flusherService,
         private readonly EventPayloadHandlerService $eventPayloadHandlerService
-    ) {}
+    ) {
+    }
 
     public function make(MediaLibraryEventDto $mediaLibraryEventDto, MediaLibrary $mediaLibrary, ?MediaLibraryEvent $mediaLibraryEvent = null): void
     {

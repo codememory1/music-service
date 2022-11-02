@@ -13,7 +13,8 @@ class SetDisLikeMultimediaService
     public function __construct(
         private readonly HttpResponseCollection $responseCollection,
         private readonly SaveMultimediaRatingService $multimediaRating
-    ) {}
+    ) {
+    }
 
     public function setOrRemoveDislike(Multimedia $multimedia, User $fromUser, ?callable $callbackRemove = null): Multimedia
     {

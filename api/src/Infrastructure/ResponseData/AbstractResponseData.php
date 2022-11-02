@@ -27,7 +27,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
     protected array $onlyProperties = [];
     protected array $response = [];
 
-    #[Pure] 
+    #[Pure]
     public function __construct(
         protected ReverseContainer $container
     ) {

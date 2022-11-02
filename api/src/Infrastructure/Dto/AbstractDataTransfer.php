@@ -3,12 +3,12 @@
 namespace App\Infrastucture\Dto;
 
 use App\Collection\DtoConstraintCollection;
+use App\Entity\Interfaces\EntityInterface;
 use App\Infrastucture\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
 use App\Infrastucture\Dto\Interfaces\DataTransferConstraintHandlerInterface;
 use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
 use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
 use App\Infrastucture\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
-use App\Entity\Interfaces\EntityInterface;
 use JetBrains\PhpStorm\Pure;
 use LogicException;
 use ReflectionClass;

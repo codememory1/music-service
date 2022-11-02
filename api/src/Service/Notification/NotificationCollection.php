@@ -18,7 +18,8 @@ class NotificationCollection
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly TranslationService $translationService
-    ) {}
+    ) {
+    }
 
     final public function authFromUnknownDevice(User $from, User $to, ?string $device, ?string $ip): self
     {

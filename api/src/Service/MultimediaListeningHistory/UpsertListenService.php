@@ -15,7 +15,8 @@ final class UpsertListenService
         private readonly FlusherService $flusher,
         private readonly MultimediaMediaLibraryRepository $multimediaMediaLibraryRepository,
         private readonly MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository
-    ) {}
+    ) {
+    }
 
     public function upsert(Multimedia $multimedia, User $toUser, float $currentTime): ?MultimediaListeningHistory
     {

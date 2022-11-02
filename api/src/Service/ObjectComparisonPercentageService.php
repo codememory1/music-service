@@ -5,10 +5,11 @@ namespace App\Service;
 class ObjectComparisonPercentageService
 {
     public function __construct(
-        private readonly object $forCompare, 
-        private readonly object $withCompare, 
+        private readonly object $forCompare,
+        private readonly object $withCompare,
         private readonly array $methodsForCompare
-    ) {}
+    ) {
+    }
 
     public function compare(): ?int
     {

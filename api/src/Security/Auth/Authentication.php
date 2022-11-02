@@ -14,7 +14,8 @@ class Authentication
     public function __construct(
         private readonly HashingService $hashing,
         private readonly EventDispatcherInterface $eventDispatcher
-    ) {}
+    ) {
+    }
 
     public function authenticate(AuthorizationDto $authorizationDto, User $identifiedUser): User
     {

@@ -18,7 +18,8 @@ final class ApiExceptionListener
         private readonly HttpSchema $httpSchema,
         private readonly Request $request,
         private readonly TranslationService $translation
-    ) {}
+    ) {
+    }
 
     public function onKernelException(ExceptionEvent $event): void
     {

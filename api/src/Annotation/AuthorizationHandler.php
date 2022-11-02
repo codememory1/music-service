@@ -11,7 +11,8 @@ final class AuthorizationHandler implements MethodAnnotationHandlerInterface
 {
     public function __construct(
         private readonly AuthorizedUser $authorizedUser
-    ) {}
+    ) {
+    }
 
     /**
      * @param Authorization|MethodAnnotationInterface $annotation

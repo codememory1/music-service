@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\JwtToken;
 
+use App\Infrastructure\CronTime\Parser as CronTimeParser;
 use DateTimeImmutable;
 use Exception;
 use Firebase\JWT\JWT;
@@ -9,7 +10,6 @@ use Firebase\JWT\Key;
 use JetBrains\PhpStorm\ArrayShape;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use App\Infrastructure\CronTime\Parser as CronTimeParser;
 
 class Generator
 {

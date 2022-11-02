@@ -24,7 +24,8 @@ final class CreateRegistrationSessionListener
         private readonly CreateSessionService $createSession,
         private readonly UpdateSessionService $updateSession,
         private readonly UserTransformer $userTransformer
-    ) {}
+    ) {
+    }
 
     /**
      * @throws RedirectionExceptionInterface
@@ -40,15 +41,15 @@ final class CreateRegistrationSessionListener
 
         if (null !== $finedUserSession) {
             $this->updateSession->make(
-                $this->userTransformer->transformFromRequest(), 
-                $event->user, 
+                $this->userTransformer->transformFromRequest(),
+                $event->user,
                 $finedUserSession,
                 UserSessionTypeEnum::REGISTRATION
             );
         } else {
             $this->createSession->make(
                 $this->userTransformer->transformFromRequest(),
-                $event->user, 
+                $event->user,
                 type: UserSessionTypeEnum::REGISTRATION
             );
         }

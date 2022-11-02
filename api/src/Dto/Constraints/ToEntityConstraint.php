@@ -10,7 +10,8 @@ final class ToEntityConstraint implements DataTransferConstraintInterface
 {
     public function __construct(
         public readonly string $byProperty
-    ) {}
+    ) {
+    }
 
     public function getHandler(): ?string
     {

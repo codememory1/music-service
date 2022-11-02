@@ -14,7 +14,8 @@ final class RoleFactory implements DataFixtureFactoryInterface
         private readonly RoleEnum $key,
         private readonly string $titleTranslationKey,
         private readonly string $shortDescriptionTranslationKey
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

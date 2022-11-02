@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraint;
 final class CronTime extends Constraint
 {
     public function __construct(
-        public readonly string $message = 'Incorrect cron time format. Possible formats: {{ formats }}', 
-        mixed $options = null, 
-        ?array $groups = null, 
+        public readonly string $message = 'Incorrect cron time format. Possible formats: {{ formats }}',
+        mixed $options = null,
+        ?array $groups = null,
         mixed $payload = null
     ) {
         parent::__construct($options, $groups, $payload);

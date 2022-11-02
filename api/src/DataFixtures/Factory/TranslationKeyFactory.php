@@ -11,7 +11,8 @@ final class TranslationKeyFactory implements DataFixtureFactoryInterface
 {
     public function __construct(
         private readonly string $key
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

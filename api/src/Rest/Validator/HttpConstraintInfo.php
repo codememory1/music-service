@@ -10,7 +10,8 @@ class HttpConstraintInfo
 {
     public function __construct(
         private readonly ConstraintViolationInterface $constraintViolation
-    ) {}
+    ) {
+    }
 
     public function getMessage(): ?string
     {

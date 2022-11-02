@@ -19,7 +19,8 @@ class PlayPauseMultimediaService
         private readonly HttpResponseCollection $responseCollection,
         private readonly UpsertListenService $upsertListenHistoryService,
         private readonly AddAuditionService $addAuditionService
-    ) {}
+    ) {
+    }
 
     public function playPause(Multimedia $multimedia, UserSession $userSession): RunningMultimedia
     {

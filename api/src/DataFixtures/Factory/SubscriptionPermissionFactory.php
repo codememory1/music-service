@@ -18,7 +18,8 @@ final class SubscriptionPermissionFactory implements DataFixtureFactoryInterface
     public function __construct(
         private readonly SubscriptionEnum $subscription,
         private readonly SubscriptionPermissionEnum $subscriptionPermission
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

@@ -8,7 +8,8 @@ class ComparisonPercentage
         private readonly object $forCompare,
         private readonly object $withCompare,
         private readonly array $methodsForCompare
-    ) {}
+    ) {
+    }
 
     public function compare(): ?int
     {

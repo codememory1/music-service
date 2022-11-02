@@ -2,6 +2,8 @@
 
 namespace App\Service\Parser\Storage;
 
+use function call_user_func_array;
+
 class LockFile
 {
     private array $lockData;
@@ -18,12 +20,12 @@ class LockFile
             file_put_contents($this->path, json_encode($this->lockData));
         } else {
             $lockContent = file_get_contents($this->path);
-            
+
             if (empty($lockContent)) {
                 $this->lockData = [$this->parserName => []];
             } else {
                 $this->lockData = json_decode($lockContent, true);
-                
+
                 if (false === array_key_exists($this->parserName, $this->lockData)) {
                     $this->lockData[$this->parserName] = [];
                 }

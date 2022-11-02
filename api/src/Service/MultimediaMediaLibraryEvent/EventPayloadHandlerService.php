@@ -16,8 +16,9 @@ class EventPayloadHandlerService
 {
     public function __construct(
         private readonly EntityManagerInterface $em
-    ) {}
-    
+    ) {
+    }
+
     public function handler(MultimediaMediaLibraryEventDto $multimediaMediaLibraryEventDto, MultimediaMediaLibrary $multimediaMediaLibrary): void
     {
         $mediaLibrary = $multimediaMediaLibrary->getMediaLibrary();

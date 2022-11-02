@@ -17,7 +17,8 @@ class ArtistIncome
         private readonly PlatformSettingService $platformSettingService,
         private readonly MultimediaAuditionRepository $multimediaAuditionRepository,
         private readonly TransactionRepository $transactionRepository
-    ) {}
+    ) {
+    }
 
     /**
      * @throws NonUniqueResultException

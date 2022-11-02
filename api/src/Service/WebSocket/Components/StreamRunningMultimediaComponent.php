@@ -11,7 +11,8 @@ final class StreamRunningMultimediaComponent
 {
     public function __construct(
         private readonly EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function createStreamRunningMultimedia(RunningMultimedia $runningMultimedia, UserSession $from, UserSession $to): StreamRunningMultimedia
     {

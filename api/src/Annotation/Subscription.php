@@ -11,7 +11,8 @@ final class Subscription implements MethodAnnotationInterface
 {
     public function __construct(
         public readonly SubscriptionEnum $subscription
-    ) {}
+    ) {
+    }
 
     public function getHandler(): string
     {

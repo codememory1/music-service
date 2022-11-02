@@ -13,7 +13,8 @@ class SetLikeMultimediaService
     public function __construct(
         private readonly HttpResponseCollection $responseCollection,
         private readonly SaveMultimediaRatingService $saveMultimediaRating
-    ) {}
+    ) {
+    }
 
     public function setOrRemoveLike(Multimedia $multimedia, User $from, ?callable $callbackRemove = null): Multimedia
     {

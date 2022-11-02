@@ -14,7 +14,8 @@ class MoveMultimediaToDirectoryService
     public function __construct(
         private readonly FlusherService $flusherService,
         private readonly HttpResponseCollection $responseCollection
-    ) {}
+    ) {
+    }
 
     public function move(MultimediaPlaylist $multimediaPlaylist, PlaylistDirectory $toDirectory): MultimediaPlaylist
     {

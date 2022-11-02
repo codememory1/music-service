@@ -22,7 +22,8 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
 
     public function __construct(
         private readonly EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     /**
      * @inheritDoc

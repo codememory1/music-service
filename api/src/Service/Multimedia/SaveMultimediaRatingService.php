@@ -8,8 +8,8 @@ use App\Entity\User;
 use App\Enum\MultimediaRatingTypeEnum;
 use App\Event\SetRatingMultimediaEvent;
 use App\Service\FlusherService;
-use Doctrine\ORM\EntityManagerInterface;
 use function call_user_func;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SaveMultimediaRatingService
@@ -18,7 +18,8 @@ class SaveMultimediaRatingService
         private readonly EntityManagerInterface $em,
         private readonly FlusherService $flusherService,
         private readonly EventDispatcherInterface $eventDispatcher
-    ) {}
+    ) {
+    }
 
     public function make(
         Multimedia $multimedia,

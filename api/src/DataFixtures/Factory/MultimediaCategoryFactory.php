@@ -11,7 +11,8 @@ final class MultimediaCategoryFactory implements DataFixtureFactoryInterface
 {
     public function __construct(
         private readonly string $titleTranslationKey
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

@@ -10,11 +10,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class HttpResponseCollection
 {
     public function __construct(
-        private readonly HttpSchema $httpResponseSchema, 
-        private readonly HttpResponse $httpResponse, 
-        private readonly Request $request, 
+        private readonly HttpSchema $httpResponseSchema,
+        private readonly HttpResponse $httpResponse,
+        private readonly Request $request,
         private readonly TranslationService $translation
-    ) {}
+    ) {
+    }
 
     final public function successCreate(string $translationKey, array $data = [], array $headers = []): JsonResponse
     {

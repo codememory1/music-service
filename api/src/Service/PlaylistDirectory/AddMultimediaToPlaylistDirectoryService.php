@@ -18,7 +18,8 @@ class AddMultimediaToPlaylistDirectoryService
         private readonly FlusherService $flusherService,
         private readonly HttpResponseCollection $responseCollection,
         private readonly MultimediaPlaylistRepository $multimediaPlaylistRepository
-    ){}
+    ) {
+    }
 
     public function add(PlaylistDirectory $playlistDirectory, MultimediaMediaLibrary $multimediaMediaLibrary): MultimediaPlaylistDirectory
     {

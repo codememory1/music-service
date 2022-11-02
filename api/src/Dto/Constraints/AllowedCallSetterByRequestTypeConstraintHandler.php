@@ -10,7 +10,8 @@ final class AllowedCallSetterByRequestTypeConstraintHandler extends AbstractData
 {
     public function __construct(
         private readonly Request $request
-    ) {}
+    ) {
+    }
 
     /**
      * @param AllowedCallSetterByRequestTypeConstraint $constraint

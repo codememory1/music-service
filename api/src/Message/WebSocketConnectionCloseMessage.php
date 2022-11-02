@@ -6,5 +6,6 @@ final class WebSocketConnectionCloseMessage
 {
     public function __construct(
         public readonly int $connectionId
-    ){}
+    ) {
+    }
 }

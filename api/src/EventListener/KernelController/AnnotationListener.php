@@ -17,7 +17,8 @@ final class AnnotationListener
 {
     public function __construct(
         private readonly ReverseContainer $container
-    ) {}
+    ) {
+    }
 
     /**
      * @throws ReflectionException

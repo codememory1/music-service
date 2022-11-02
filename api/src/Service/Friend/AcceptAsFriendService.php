@@ -12,7 +12,8 @@ class AcceptAsFriendService
     public function __construct(
         private readonly FlusherService $flusherService,
         private readonly HttpResponseCollection $responseCollection
-    ) {}
+    ) {
+    }
 
     public function accept(Friend $friend): Friend
     {

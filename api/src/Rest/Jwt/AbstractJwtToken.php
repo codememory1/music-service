@@ -13,7 +13,8 @@ abstract class AbstractJwtToken
 
     public function __construct(
         private readonly JwtTokenGenerator $jwtTokenGenerator
-    ) {}
+    ) {
+    }
 
     public function getToken(): ?string
     {

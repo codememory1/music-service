@@ -11,7 +11,8 @@ final class PauseRunningMultimedia
 {
     public function __construct(
         private readonly EntityManagerInterface $em
-    ) {}
+    ) {
+    }
 
     public function onLogout(LogoutEvent $event): void
     {

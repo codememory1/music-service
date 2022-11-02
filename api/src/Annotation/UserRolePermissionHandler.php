@@ -11,7 +11,8 @@ final class UserRolePermissionHandler implements MethodAnnotationHandlerInterfac
 {
     public function __construct(
         private readonly AuthorizedUser $authorizedUser
-    ) {}
+    ) {
+    }
 
     /**
      * @param MethodAnnotationInterface|UserRolePermission $annotation

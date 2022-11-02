@@ -15,7 +15,8 @@ final class MailDomainCheckListener
 {
     public function __construct(
         private readonly PlatformSettingService $platformSettingService
-    ) {}
+    ) {
+    }
 
     public function onUserRegistration(UserRegistrationEvent $event): void
     {

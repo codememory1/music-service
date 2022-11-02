@@ -18,7 +18,8 @@ class CollectorSessionService
 {
     public function __construct(
         private readonly Client $client
-    ) {}
+    ) {
+    }
 
     /**
      * @throws TransportExceptionInterface

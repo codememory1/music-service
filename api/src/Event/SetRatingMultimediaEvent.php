@@ -8,5 +8,6 @@ final class SetRatingMultimediaEvent
 {
     public function __construct(
         public readonly MultimediaRating $multimediaRating
-    ) {}
+    ) {
+    }
 }

@@ -15,7 +15,8 @@ final class SendCodeListener
 {
     public function __construct(
         private readonly MailMessagingService $mailMessagingService
-    ) {}
+    ) {
+    }
 
     /**
      * @throws SyntaxError

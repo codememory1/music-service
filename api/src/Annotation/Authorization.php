@@ -10,7 +10,8 @@ class Authorization implements MethodAnnotationInterface
 {
     public function __construct(
         public readonly bool $required = true
-    ) {}
+    ) {
+    }
 
     public function getHandler(): string
     {

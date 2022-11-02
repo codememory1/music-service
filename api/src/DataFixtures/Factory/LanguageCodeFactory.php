@@ -13,7 +13,8 @@ final class LanguageCodeFactory implements DataFixtureFactoryInterface
         private readonly string $twoLetterCode,
         private readonly string $threeLetterCode,
         private readonly string $title
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

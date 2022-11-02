@@ -11,7 +11,8 @@ final class UserRolePermission implements MethodAnnotationInterface
 {
     public function __construct(
         public readonly RolePermissionEnum $rolePermission
-    ) {}
+    ) {
+    }
 
     public function getHandler(): string
     {

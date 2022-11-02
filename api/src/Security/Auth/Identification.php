@@ -14,9 +14,9 @@ class Identification
     public function __construct(
         private readonly UserRepository $userRepository,
         private readonly EventDispatcherInterface $eventDispatcher
-    )
-    {}
-    
+    ) {
+    }
+
     public function identify(AuthorizationDto $authorizationDto): ?User
     {
         $identifiedUser = $this->userRepository->findByEmail($authorizationDto->email);

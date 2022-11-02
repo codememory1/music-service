@@ -13,7 +13,8 @@ final class StatusChangeHandlerListener
 {
     public function __construct(
         private readonly FlusherService $flusherService
-    ) {}
+    ) {
+    }
 
     public function onMultimediaStatusChange(MultimediaStatusChangeEvent $event): void
     {

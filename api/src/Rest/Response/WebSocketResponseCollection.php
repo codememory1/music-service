@@ -12,7 +12,8 @@ final class WebSocketResponseCollection
     public function __construct(
         private readonly WebSocketSchema $webSocketSchema,
         private readonly TranslationService $translation
-    ) {}
+    ) {
+    }
 
     public function setLocale(string $locale): self
     {

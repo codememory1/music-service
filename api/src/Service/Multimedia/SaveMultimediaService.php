@@ -37,7 +37,8 @@ class SaveMultimediaService
         private readonly SubtitlesUploader $subtitlesUploader,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly MessageBusInterface $bus,
-    ) {}
+    ) {
+    }
 
     public function make(MultimediaDto $multimediaDto, Multimedia $multimedia): void
     {
@@ -60,7 +61,7 @@ class SaveMultimediaService
         $this->checkSubtitles($multimediaDto);
 
         $stream = $this->multimediaMetadataValidation->initMultimedia($multimediaDto->multimedia, $multimedia);
-        
+
         $this->multimediaMetadataValidation->validateDuration($multimedia, $stream);
     }
 

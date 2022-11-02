@@ -15,8 +15,9 @@ class SendOnAppealService
     public function __construct(
         private readonly HttpResponseCollection $responseCollection,
         private readonly EventDispatcherInterface $eventDispatcher
-    ) {}
-    
+    ) {
+    }
+
     public function sendOnAppeal(Multimedia $multimedia): Multimedia
     {
         if (false === $multimedia->isUnpublished() && false === $multimedia->isAppealCanceled()) {

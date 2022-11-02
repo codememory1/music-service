@@ -13,7 +13,8 @@ class DeleteTranslationService
     public function __construct(
         private readonly FlusherService $flusherService,
         private readonly HttpResponseCollection $responseCollection
-    ) {}
+    ) {
+    }
 
     public function delete(DeleteTranslationDto $deleteTranslationDto, Translation $translation): Translation
     {

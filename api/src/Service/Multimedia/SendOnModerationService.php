@@ -15,7 +15,8 @@ class SendOnModerationService
     public function __construct(
         private readonly HttpResponseCollection $responseCollection,
         private readonly EventDispatcherInterface $eventDispatcher
-    ) {}
+    ) {
+    }
 
     public function sendOnModeration(Multimedia $multimedia): Multimedia
     {

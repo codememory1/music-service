@@ -14,7 +14,8 @@ class SchemaValidatorService
 {
     public function __construct(
         private readonly ParameterBagInterface $parameterBag
-    ) {}
+    ) {
+    }
 
     public function validate(string $schemaName, array|string $data): bool
     {

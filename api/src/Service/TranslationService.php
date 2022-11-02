@@ -16,7 +16,8 @@ class TranslationService
         private readonly LanguageRepository $languageRepository,
         private readonly TranslationKeyRepository $translationKeyRepository,
         private readonly TranslationRepository $translationRepository,
-    ) {}
+    ) {
+    }
 
     public function setLocale(string $locale): self
     {

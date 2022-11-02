@@ -12,7 +12,8 @@ final class DeleteListenService
     public function __construct(
         private readonly FlusherService $flusherService,
         private readonly HttpResponseCollection $responseCollection
-    ) {}
+    ) {
+    }
 
     public function delete(MultimediaListeningHistory $multimediaListeningHistory): MultimediaListeningHistory
     {

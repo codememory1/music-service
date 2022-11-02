@@ -12,7 +12,8 @@ final class CreateAccountActivationCodeListener
 {
     public function __construct(
         private readonly FlusherService $flusherService
-    ) {}
+    ) {
+    }
 
     public function onUserRegistration(UserRegistrationEvent $event): void
     {

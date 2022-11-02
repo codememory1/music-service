@@ -16,7 +16,8 @@ class MultimediaMetadataValidationService
 {
     public function __construct(
         private readonly PlatformSettingService $platformSetting
-    ) {}
+    ) {
+    }
 
     public function initMultimedia(UploadedFile $file, Multimedia $multimedia): ?Stream
     {

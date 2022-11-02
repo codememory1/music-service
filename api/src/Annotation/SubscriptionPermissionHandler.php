@@ -11,7 +11,8 @@ final class SubscriptionPermissionHandler implements MethodAnnotationHandlerInte
 {
     public function __construct(
         private readonly AuthorizedUser $authorizedUser
-    ) {}
+    ) {
+    }
 
     /**
      * @param SubscriptionPermission $annotation

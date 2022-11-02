@@ -10,7 +10,8 @@ final class ToEnumConstraint implements DataTransferConstraintInterface
 {
     public function __construct(
         public readonly string $enum
-    ) {}
+    ) {
+    }
 
     public function getHandler(): ?string
     {

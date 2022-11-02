@@ -15,8 +15,9 @@ class AppealCanceledService
     public function __construct(
         private readonly HttpResponseCollection $responseCollection,
         private readonly EventDispatcherInterface $eventDispatcher
-    ) {}
-    
+    ) {
+    }
+
     public function appeal(Multimedia $multimedia): Multimedia
     {
         if (false === $multimedia->isAppeal()) {

@@ -10,5 +10,6 @@ final class UserAuthorizationEvent
     public function __construct(
         public readonly User $authorizedUser,
         public readonly AuthorizationToken $authorizationToken
-    ) {}
+    ) {
+    }
 }

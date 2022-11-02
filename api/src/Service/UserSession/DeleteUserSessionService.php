@@ -16,7 +16,8 @@ class DeleteUserSessionService
         private readonly FlusherService $flusherService,
         private readonly HttpResponseCollection $responseCollection,
         private readonly UserSessionRepository $userSessionRepository
-    ) {}
+    ) {
+    }
 
     public function delete(UserSession $userSession): UserSession
     {

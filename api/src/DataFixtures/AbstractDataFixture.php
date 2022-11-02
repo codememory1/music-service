@@ -16,7 +16,8 @@ abstract class AbstractDataFixture extends Fixture
      */
     public function __construct(
         protected readonly array $factories
-    ) {}
+    ) {
+    }
 
     abstract public function load(ObjectManager $manager): void;
 

@@ -8,5 +8,6 @@ final class SaveMultimediaEvent
 {
     public function __construct(
         public readonly Multimedia $multimedia
-    ) {}
+    ) {
+    }
 }

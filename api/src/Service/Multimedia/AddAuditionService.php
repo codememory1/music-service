@@ -11,9 +11,10 @@ use App\Service\FlusherService;
 final class AddAuditionService
 {
     public function __construct(
-        private readonly  FlusherService $flusherService,
+        private readonly FlusherService $flusherService,
         private readonly MultimediaAuditionRepository $multimediaAuditionRepository
-    ) {}
+    ) {
+    }
 
     public function add(Multimedia $multimedia, User $listen): Multimedia
     {

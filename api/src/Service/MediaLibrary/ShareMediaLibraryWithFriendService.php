@@ -13,7 +13,8 @@ class ShareMediaLibraryWithFriendService
     public function __construct(
         private readonly ShareMultimediaMediaLibraryWithFriendService $shareMultimediaMediaLibraryWithFriendService,
         private readonly HttpResponseCollection $responseCollection
-    ) {}
+    ) {
+    }
 
     public function share(MediaLibrary $mediaLibraryForShare, User $from, User $friend): MediaLibrary
     {

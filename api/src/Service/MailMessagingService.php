@@ -17,10 +17,11 @@ use Twig\Error\SyntaxError;
 class MailMessagingService
 {
     public function __construct(
-        private readonly MailerInterface $mailer, 
-        private readonly Environment $environment, 
+        private readonly MailerInterface $mailer,
+        private readonly Environment $environment,
         private readonly TranslationService $translation
-    ) {}
+    ) {
+    }
 
     /**
      * @throws SyntaxError

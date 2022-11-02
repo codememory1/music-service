@@ -16,7 +16,8 @@ abstract class AbstractValidator implements ValidatorInterface
 
     public function __construct(
         private readonly SymfonyValidatorInterface $validator
-    ) {}
+    ) {
+    }
 
     protected function constraintViolation(?callable $handleConstraintInfo = null): void
     {

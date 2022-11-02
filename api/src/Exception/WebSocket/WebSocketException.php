@@ -12,7 +12,7 @@ class WebSocketException extends RuntimeException implements WebSocketExceptionI
     #[Pure]
     public function __construct(
         private readonly WebSocketClientMessageTypeEnum $clientMessageType,
-        private readonly string $messageTranslationKey, 
+        private readonly string $messageTranslationKey,
         private readonly array $parameters = []
     ) {
         parent::__construct($messageTranslationKey);

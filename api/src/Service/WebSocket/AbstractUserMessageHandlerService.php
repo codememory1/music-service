@@ -28,7 +28,8 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         protected readonly TranslationService $translation,
         protected readonly WebSocketValidator $webSocketValidator,
         protected readonly WebSocketResponseCollection $responseCollection
-    ) {}
+    ) {
+    }
 
     #[Pure]
     protected function getLocale(): ?string

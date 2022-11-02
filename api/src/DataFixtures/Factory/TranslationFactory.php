@@ -17,7 +17,8 @@ final class TranslationFactory implements DataFixtureFactoryInterface
         private readonly string $language,
         private readonly string $translationKey,
         private readonly string $translation
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

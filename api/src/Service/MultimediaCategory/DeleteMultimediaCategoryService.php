@@ -12,7 +12,8 @@ class DeleteMultimediaCategoryService
     public function __construct(
         private readonly FlusherService $flusherService,
         private readonly HttpResponseCollection $responseCollection
-    ) {}
+    ) {
+    }
 
     public function delete(MultimediaCategory $multimediaCategory): MultimediaCategory
     {

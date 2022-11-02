@@ -8,5 +8,6 @@ final class WebSocketConnectionCloseEvent
 {
     public function __construct(
         public readonly WebSocketConnectionCloseMessage $message
-    ) {}
+    ) {
+    }
 }

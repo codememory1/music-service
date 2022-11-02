@@ -11,7 +11,8 @@ final class SubscriptionPermission implements MethodAnnotationInterface
 {
     public function __construct(
         public readonly SubscriptionPermissionEnum $subscriptionPermission
-    ) {}
+    ) {
+    }
 
     public function getHandler(): string
     {

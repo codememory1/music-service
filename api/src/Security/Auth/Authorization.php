@@ -14,7 +14,8 @@ class Authorization
         private readonly AuthorizationToken $authorizationToken,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly HttpResponseCollection $responseCollection
-    ) {}
+    ) {
+    }
 
     public function auth(User $authenticatedUser): JsonResponse
     {

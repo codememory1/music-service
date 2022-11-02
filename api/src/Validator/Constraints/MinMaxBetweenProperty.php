@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
 final class MinMaxBetweenProperty extends Constraint
 {
     public readonly ?string $message;
-    
+
     public function __construct(
         public readonly string $property,
         public readonly bool $min = false,

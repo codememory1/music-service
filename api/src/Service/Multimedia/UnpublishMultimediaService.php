@@ -3,7 +3,6 @@
 namespace App\Service\Multimedia;
 
 use App\Entity\Multimedia;
-use App\Enum\EventEnum;
 use App\Enum\MultimediaStatusEnum;
 use App\Event\MultimediaStatusChangeEvent;
 use App\Exception\Http\MultimediaException;
@@ -16,7 +15,8 @@ class UnpublishMultimediaService
     public function __construct(
         private readonly HttpResponseCollection $responseCollection,
         private readonly EventDispatcherInterface $eventDispatcher
-    ) {}
+    ) {
+    }
 
     public function unpublish(Multimedia $multimedia): Multimedia
     {

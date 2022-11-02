@@ -8,5 +8,6 @@ final class AccountActivationEvent
 {
     public function __construct(
         public readonly AccountActivationCode $accountActivationCode
-    ) {}
+    ) {
+    }
 }

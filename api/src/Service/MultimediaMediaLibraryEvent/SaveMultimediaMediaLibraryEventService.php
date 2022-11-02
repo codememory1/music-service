@@ -9,12 +9,13 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class SaveMultimediaMediaLibraryEventService
 {
-    public function __construct(
-        private readonly FlusherService $flusherService
-    ) {}
-
     #[Required]
     public ?EventPayloadHandlerService $eventPayloadHandlerService = null;
+
+    public function __construct(
+        private readonly FlusherService $flusherService
+    ) {
+    }
 
     public function make(MultimediaMediaLibraryEventDto $multimediaMediaLibraryEventDto, MultimediaMediaLibrary $multimediaMediaLibrary): void
     {

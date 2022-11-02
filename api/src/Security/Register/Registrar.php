@@ -17,7 +17,8 @@ class Registrar
         private readonly RoleRepository $roleRepository,
         private readonly ReRegister $reRegister,
         private readonly AddUserDefaultSettingService $addUserDefaultSetting,
-    ) {}
+    ) {
+    }
 
     public function make(RegistrationDto $registrationDto, ?User $userByEmail): User
     {

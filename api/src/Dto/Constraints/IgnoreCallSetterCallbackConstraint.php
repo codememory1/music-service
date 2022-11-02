@@ -10,7 +10,8 @@ final class IgnoreCallSetterCallbackConstraint implements DataTransferConstraint
 {
     public function __construct(
         public readonly string $methodName
-    ) {}
+    ) {
+    }
 
     public function getHandler(): ?string
     {

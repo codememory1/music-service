@@ -20,7 +20,8 @@ final class CreateTempSessionListener
     public function __construct(
         private readonly UpdateSessionService $updateSession,
         private readonly UserTransformer $userTransformer
-    ) {}
+    ) {
+    }
 
     /**
      * @throws TransportExceptionInterface

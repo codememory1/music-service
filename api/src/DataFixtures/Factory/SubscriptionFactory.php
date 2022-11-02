@@ -19,7 +19,8 @@ final class SubscriptionFactory implements DataFixtureFactoryInterface
         private readonly SubscriptionStatusEnum $status,
         private readonly ?int $oldPrice = null,
         private readonly bool $isRecommend = false
-    ) {}
+    ) {
+    }
 
     public function factoryMethod(): EntityInterface
     {

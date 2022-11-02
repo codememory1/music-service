@@ -10,5 +10,6 @@ final class AlbumStatusChangeEvent
     public function __construct(
         public readonly Album $album,
         public readonly AlbumStatusEnum $onStatus
-    ) {}
+    ) {
+    }
 }

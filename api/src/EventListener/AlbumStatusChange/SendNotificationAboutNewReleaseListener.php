@@ -12,7 +12,8 @@ final class SendNotificationAboutNewReleaseListener
 {
     public function __construct(
         private readonly NotificationCollection $notificationCollection
-    ) {}
+    ) {
+    }
 
     public function onAlbumStatusChange(AlbumStatusChangeEvent $event): void
     {

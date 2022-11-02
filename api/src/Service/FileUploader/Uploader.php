@@ -14,8 +14,7 @@ class Uploader
         UploadedFile $uploadedFile,
         string $propertyName,
         EntityS3SettingInterface $entityS3Setting
-    ): ?string
-    {
+    ): ?string {
         $s3Uploader->save($oldPath, $uploadedFile, $propertyName, $entityS3Setting);
 
         return $s3Uploader->getUploadedFile()->first();

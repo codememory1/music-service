@@ -2,6 +2,8 @@
 
 namespace App\Infrastructure\Reflection;
 
+use function call_user_func;
+use function is_object;
 use ReflectionProperty;
 
 class Reflection

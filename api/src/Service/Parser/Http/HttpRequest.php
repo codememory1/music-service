@@ -21,7 +21,8 @@ class HttpRequest
 
     public function __construct(
         public readonly HttpClientInterface $client
-    ) {}
+    ) {
+    }
 
     public function setConsoleLogger(ConsoleLogger $consoleLogger): self
     {

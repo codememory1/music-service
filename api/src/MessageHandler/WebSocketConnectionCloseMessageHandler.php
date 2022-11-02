@@ -12,7 +12,8 @@ final class WebSocketConnectionCloseMessageHandler
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher
-    ) {}
+    ) {
+    }
 
     public function __invoke(WebSocketConnectionCloseMessage $message): void
     {

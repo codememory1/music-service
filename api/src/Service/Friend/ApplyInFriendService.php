@@ -18,7 +18,8 @@ class ApplyInFriendService
         private readonly EntityManagerInterface $em,
         private readonly FlusherService $flusherService,
         private readonly HttpResponseCollection $responseCollection
-    ) {}
+    ) {
+    }
 
     public function apply(User $user, User $friend): Friend
     {

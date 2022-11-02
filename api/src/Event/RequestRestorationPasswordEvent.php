@@ -8,5 +8,6 @@ class RequestRestorationPasswordEvent
 {
     public function __construct(
         public readonly PasswordReset $passwordReset
-    ) {}
+    ) {
+    }
 }

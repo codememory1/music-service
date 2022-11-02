@@ -8,5 +8,6 @@ final class LogoutEvent
 {
     public function __construct(
         public readonly UserSession $userSession
-    ) {}
+    ) {
+    }
 }

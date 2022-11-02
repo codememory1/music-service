@@ -5,7 +5,6 @@ namespace App\Service\Album;
 use App\Entity\Album;
 use App\Entity\Multimedia;
 use App\Enum\AlbumStatusEnum;
-use App\Enum\EventEnum;
 use App\Event\AlbumStatusChangeEvent;
 use App\Exception\Http\AlbumException;
 use App\Service\AbstractService;

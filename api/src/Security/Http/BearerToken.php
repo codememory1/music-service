@@ -8,7 +8,8 @@ class BearerToken
 {
     public function __construct(
         private readonly Request $request
-    ) {}
+    ) {
+    }
 
     public function getToken(): ?string
     {

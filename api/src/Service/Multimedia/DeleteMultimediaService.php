@@ -20,7 +20,8 @@ class DeleteMultimediaService
         private readonly TrackUploader $trackUploader,
         private readonly ClipUploader $clipUploader,
         private readonly SubtitlesUploader $subtitlesUploader
-    ) {}
+    ) {
+    }
 
     public function delete(Multimedia $multimedia): Multimedia
     {

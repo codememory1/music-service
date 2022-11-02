@@ -9,7 +9,8 @@ class Request
 {
     public function __construct(
         private readonly RequestStack $requestStack
-    ) {}
+    ) {
+    }
 
     public function getRequest(): ?SymfonyRequest
     {

@@ -2,13 +2,13 @@
 
 namespace App\Dto\Transformer;
 
-use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\TranslationKeyDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\TranslationKey;
+use App\Infrastucture\Dto\AbstractDataTransformer;
+use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
-use App\Infrastucture\Dto\AbstractDataTransformer;
 
 /**
  * @template-extends AbstractDataTransformer<TranslationKeyDto>

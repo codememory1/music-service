@@ -18,7 +18,8 @@ class UpdateSessionService
     public function __construct(
         private readonly FlusherService $flusherService,
         private readonly CollectorSessionService $collectorSession
-    ) {}
+    ) {
+    }
 
     /**
      * @throws TransportExceptionInterface
