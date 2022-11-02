@@ -14,19 +14,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MultimediaMetadataValidationService
 {
-    private PlatformSettingService $platformSetting;
-    private Multimedia $multimedia;
-    private ?Stream $stream = null;
+    public function __construct(
+        private readonly PlatformSettingService $platformSetting
+    ) {}
 
-    public function __construct(PlatformSettingService $platformSettingService)
-    {
-        $this->platformSetting = $platformSettingService;
-    }
-
-    public function initMultimedia(UploadedFile $file, Multimedia $multimedia): self
+    public function initMultimedia(UploadedFile $file, Multimedia $multimedia): ?Stream
     {
         $FFProbe = FFProbe::create();
-        $this->multimedia = $multimedia;
 
         if (false === $FFProbe->isValid($file->getRealPath())) {
             throw InvalidException::invalidMultimedia();
@@ -35,28 +29,28 @@ class MultimediaMetadataValidationService
         $streamCollection = $FFProbe->streams($file->getRealPath());
 
         if ($multimedia->isTrack()) {
-            $this->stream = $streamCollection->audios()->first();
+            return $streamCollection->audios()->first();
         }
 
         if ($multimedia->isClip()) {
-            $this->stream = $streamCollection->videos()->first();
+            return $streamCollection->videos()->first();
         }
 
-        return $this;
+        return null;
     }
 
-    public function validateDuration(): void
+    public function validateDuration(Multimedia $multimedia, Stream $stream): void
     {
         $maxDurationTrack = $this->platformSetting->get(PlatformSettingEnum::MULTIMEDIA_DURATION_TRACK_KEY);
         $maxDurationClip = $this->platformSetting->get(PlatformSettingEnum::MULTIMEDIA_DURATION_CLIP_KEY);
 
-        $allowedDuration = match ($this->multimedia->getType()) {
+        $allowedDuration = match ($multimedia->getType()) {
             MultimediaTypeEnum::TRACK->name => $maxDurationTrack,
             MultimediaTypeEnum::CLIP->name => $maxDurationClip,
             default => null
         };
 
-        if ($this->stream->get('duration') > $allowedDuration) {
+        if ($stream->get('duration') > $allowedDuration) {
             throw MultimediaException::badDuration($allowedDuration);
         }
     }

@@ -7,22 +7,18 @@ use App\Rest\Http\Request;
 use App\Rest\Response\HttpResponse;
 use App\Rest\Response\HttpSchema;
 use App\Service\TranslationService;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
+#[AsEventListener('kernel.exception')]
 final class ApiExceptionListener
 {
-    private HttpResponse $httpResponse;
-    private HttpSchema $httpSchema;
-    private Request $request;
-    private TranslationService $translationService;
-
-    public function __construct(HttpResponse $httpResponse, HttpSchema $httpSchema, Request $request, TranslationService $translationService)
-    {
-        $this->httpResponse = $httpResponse;
-        $this->httpSchema = $httpSchema;
-        $this->request = $request;
-        $this->translationService = $translationService;
-    }
+    public function __construct(
+        private readonly HttpResponse $httpResponse,
+        private readonly HttpSchema $httpSchema,
+        private readonly Request $request,
+        private readonly TranslationService $translation
+    ) {}
 
     public function onKernelException(ExceptionEvent $event): void
     {
@@ -49,8 +45,8 @@ final class ApiExceptionListener
 
     private function getTranslationMessage(string $locale, string $translationKey): ?string
     {
-        $this->translationService->setLocale($locale);
+        $this->translation->setLocale($locale);
 
-        return $this->translationService->getTranslation($translationKey);
+        return $this->translation->getTranslation($translationKey);
     }
 }

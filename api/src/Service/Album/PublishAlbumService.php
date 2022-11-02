@@ -36,10 +36,7 @@ class PublishAlbumService extends AbstractService
 
         $this->flusherService->save();
 
-        $this->eventDispatcher->dispatch(
-            new AlbumStatusChangeEvent($album, AlbumStatusEnum::PUBLISHED),
-            EventEnum::ALBUM_STATUS_CHANGE->value
-        );
+        $this->eventDispatcher->dispatch(new AlbumStatusChangeEvent($album, AlbumStatusEnum::PUBLISHED));
 
         return $album;
     }

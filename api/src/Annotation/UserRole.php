@@ -9,12 +9,9 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 final class UserRole implements MethodAnnotationInterface
 {
-    public readonly RoleEnum $role;
-
-    public function __construct(RoleEnum $role)
-    {
-        $this->role = $role;
-    }
+    public function __construct(
+        public readonly RoleEnum $role
+    ) {}
 
     public function getHandler(): string
     {

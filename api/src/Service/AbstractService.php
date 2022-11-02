@@ -4,12 +4,9 @@ namespace App\Service;
 
 use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
-use App\Entity\Interfaces\EntityS3SettingInterface;
 use App\Rest\Response\HttpResponseCollection;
-use App\Rest\S3\Interfaces\S3UploaderInterface;
 use App\Rest\Validator\HttpValidator;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 abstract class AbstractService
 {
@@ -39,17 +36,5 @@ abstract class AbstractService
     {
         $this->validate($dataTransfer);
         $this->validate($dataTransfer->getEntity());
-    }
-
-    protected function simpleFileUpload(
-        S3UploaderInterface $s3Uploader,
-        ?string $oldPath,
-        UploadedFile $uploadedFile,
-        string $propertyName,
-        EntityS3SettingInterface $entityS3Setting
-    ): ?string {
-        $s3Uploader->save($oldPath, $uploadedFile, $propertyName, $entityS3Setting);
-
-        return $s3Uploader->getUploadedFile()->first();
     }
 }

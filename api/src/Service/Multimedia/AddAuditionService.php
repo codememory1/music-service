@@ -10,14 +10,10 @@ use App\Service\FlusherService;
 
 final class AddAuditionService
 {
-    private FlusherService $flusherService;
-    private MultimediaAuditionRepository $multimediaAuditionRepository;
-
-    public function __construct(FlusherService $flusherService, MultimediaAuditionRepository $multimediaAuditionRepository)
-    {
-        $this->flusherService = $flusherService;
-        $this->multimediaAuditionRepository = $multimediaAuditionRepository;
-    }
+    public function __construct(
+        private readonly  FlusherService $flusherService,
+        private readonly MultimediaAuditionRepository $multimediaAuditionRepository
+    ) {}
 
     public function add(Multimedia $multimedia, User $listen): Multimedia
     {

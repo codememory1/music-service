@@ -7,12 +7,8 @@ use App\Enum\MultimediaStatusEnum;
 
 final class MultimediaStatusChangeEvent
 {
-    public readonly Multimedia $multimedia;
-    public readonly MultimediaStatusEnum $onStatus;
-
-    public function __construct(Multimedia $multimedia, MultimediaStatusEnum $onStatus)
-    {
-        $this->multimedia = $multimedia;
-        $this->onStatus = $onStatus;
-    }
+    public function __construct(
+        public readonly Multimedia $multimedia,
+        public readonly MultimediaStatusEnum $onStatus
+    ) {}
 }

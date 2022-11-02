@@ -14,16 +14,12 @@ use Predis\Client;
 class MessageQueueToClient
 {
     public const KEY = 'websocket:prepared_message_for_client#%s';
-    private Client $redisClient;
-    private UserRepository $userRepository;
-    private UserSessionRepository $userSessionRepository;
 
-    public function __construct(Client $redisClient, UserRepository $userRepository, UserSessionRepository $userSessionRepository)
-    {
-        $this->redisClient = $redisClient;
-        $this->userRepository = $userRepository;
-        $this->userSessionRepository = $userSessionRepository;
-    }
+    public function __construct(
+        private readonly Client $redisClient,
+        private readonly UserRepository $userRepository,
+        private readonly UserSessionRepository $userSessionRepository
+    ) {}
 
     public function sendMessage(WebSocketSchema $webSocketSchema, ?User $toUser = null, ?UserSession $toUserSession = null): self
     {

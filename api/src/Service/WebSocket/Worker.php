@@ -14,26 +14,15 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class Worker
 {
-    public WorkerConnectionManager $workerConnectionManager;
-    private UserSessionRepository $userSessionRepository;
-    private MessageBusInterface $bus;
-    private string $host;
-    private int $port;
     private ?Server $server = null;
 
     public function __construct(
-        WorkerConnectionManager $workerConnectionManager,
-        UserSessionRepository $userSessionRepository,
-        MessageBusInterface $bus,
-        string $host,
-        int $port
-    ) {
-        $this->workerConnectionManager = $workerConnectionManager;
-        $this->userSessionRepository = $userSessionRepository;
-        $this->bus = $bus;
-        $this->host = $host;
-        $this->port = $port;
-    }
+        private readonly WorkerConnectionManager $workerConnectionManager,
+        private readonly UserSessionRepository $userSessionRepository,
+        private readonly MessageBusInterface $bus,
+        private readonly string $host,
+        private readonly int $port
+    ) {}
 
     public function initServer(): void
     {

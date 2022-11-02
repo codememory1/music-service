@@ -4,11 +4,15 @@ namespace App\Service\MultimediaMediaLibraryEvent;
 
 use App\Dto\Transfer\MultimediaMediaLibraryEventDto;
 use App\Entity\MultimediaMediaLibrary;
-use App\Service\AbstractService;
+use App\Service\FlusherService;
 use Symfony\Contracts\Service\Attribute\Required;
 
-class SaveMultimediaMediaLibraryEventService extends AbstractService
+class SaveMultimediaMediaLibraryEventService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService
+    ) {}
+
     #[Required]
     public ?EventPayloadHandlerService $eventPayloadHandlerService = null;
 

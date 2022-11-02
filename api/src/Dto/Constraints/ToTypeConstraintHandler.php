@@ -2,7 +2,7 @@
 
 namespace App\Dto\Constraints;
 
-use App\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
 use App\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
 use DateTimeImmutable;
 use DateTimeInterface;

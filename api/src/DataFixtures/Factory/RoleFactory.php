@@ -10,16 +10,11 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class RoleFactory implements DataFixtureFactoryInterface
 {
-    private RoleEnum $key;
-    private string $titleTranslationKey;
-    private string $shortDescriptionTranslationKey;
-
-    public function __construct(RoleEnum $key, string $titleTranslationKey, string $shortDescriptionTranslationKey)
-    {
-        $this->key = $key;
-        $this->titleTranslationKey = $titleTranslationKey;
-        $this->shortDescriptionTranslationKey = $shortDescriptionTranslationKey;
-    }
+    public function __construct(
+        private readonly RoleEnum $key,
+        private readonly string $titleTranslationKey,
+        private readonly string $shortDescriptionTranslationKey
+    ) {}
 
     public function factoryMethod(): EntityInterface
     {

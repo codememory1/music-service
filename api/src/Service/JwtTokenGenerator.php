@@ -12,14 +12,12 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class JwtTokenGenerator
 {
-    private ParseCronTimeService $parseCronTime;
-    private ParameterBagInterface $parameterBag;
-    private DateTimeImmutable $datetime;
+    private readonly DateTimeImmutable $datetime;
 
-    public function __construct(ParseCronTimeService $parseCronTimeService, ParameterBagInterface $parameterBag)
-    {
-        $this->parseCronTime = $parseCronTimeService;
-        $this->parameterBag = $parameterBag;
+    public function __construct(
+        private readonly ParseCronTimeService $parseCronTime,
+        private readonly ParameterBagInterface $parameterBag
+    ) {
         $this->datetime = new DateTimeImmutable();
     }
 

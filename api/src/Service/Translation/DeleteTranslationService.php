@@ -4,11 +4,17 @@ namespace App\Service\Translation;
 
 use App\Dto\Transfer\DeleteTranslationDto;
 use App\Entity\Translation;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DeleteTranslationService extends AbstractService
+class DeleteTranslationService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function delete(DeleteTranslationDto $deleteTranslationDto, Translation $translation): Translation
     {
         $this->flusherService->addRemove($translation);

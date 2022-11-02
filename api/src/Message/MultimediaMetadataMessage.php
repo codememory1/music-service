@@ -4,10 +4,7 @@ namespace App\Message;
 
 final class MultimediaMetadataMessage
 {
-    public readonly int $multimediaId;
-
-    public function __construct(int $multimediaId)
-    {
-        $this->multimediaId = $multimediaId;
-    }
+    public function __construct(
+        public readonly int $multimediaId
+    ) {}
 }

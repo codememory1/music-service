@@ -4,7 +4,6 @@ namespace App\Security\AccountActivation;
 
 use App\Dto\Transfer\AccountActivationDto;
 use App\Entity\AccountActivationCode;
-use App\Enum\EventEnum;
 use App\Event\AccountActivationEvent;
 use App\Exception\Http\InvalidException;
 use App\Service\AbstractService;
@@ -34,10 +33,7 @@ class AccountActivation extends AbstractService
 
         $this->flusherService->addRemove($finedAccountActivationCode)->save();
 
-        $this->eventDispatcher->dispatch(
-            new AccountActivationEvent($finedAccountActivationCode),
-            EventEnum::ACCOUNT_ACTIVATION->value
-        );
+        $this->eventDispatcher->dispatch(new AccountActivationEvent($finedAccountActivationCode));
 
         return $this->responseCollection->successUpdate('accountActivation@successActivate');
     }

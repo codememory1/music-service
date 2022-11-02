@@ -4,7 +4,6 @@ namespace App\Security\Register;
 
 use App\Dto\Transfer\RegistrationDto;
 use App\Entity\User;
-use App\Enum\EventEnum;
 use App\Enum\ResponseTypeEnum;
 use App\Event\UserRegistrationEvent;
 use App\Exception\Http\HttpException;
@@ -40,10 +39,7 @@ class Registration extends AbstractService
     {
         $registeredUser = $this->registrar->make($registrationDTO, $userByEmail);
 
-        $this->eventDispatcher->dispatch(
-            new UserRegistrationEvent($registeredUser),
-            EventEnum::REGISTER->value
-        );
+        $this->eventDispatcher->dispatch(new UserRegistrationEvent($registeredUser));
 
         $this->flusherService->save();
     }

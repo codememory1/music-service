@@ -184,6 +184,18 @@ services:
       resource: '../src/Infrastructure/ResponseData/Constraints/Value/*Handler.php'
       public: true
 
+    App\Infrastructure\CronTime\Parser:
+      public: true
+
+    App\Infrastructure\Doctrine\Flusher:
+      public: true
+
+    App\Infrastructure\File\MimeTypeConverter:
+      public: true
+
+    App\Infrastructure\JwtToken\Generator:
+      public: true
+
     App\ResponseData\:
       resource: '../src/ResponseData/*ResponseData.php'
       public: true

@@ -7,11 +7,19 @@ use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityExistException;
 use App\Exception\Http\FailedException;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ApplyInFriendService extends AbstractService
+class ApplyInFriendService
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function apply(User $user, User $friend): Friend
     {
         $friendRepository = $this->em->getRepository(Friend::class);

@@ -3,19 +3,19 @@
 namespace App\Service\Multimedia;
 
 use App\Entity\Multimedia;
-use App\Enum\EventEnum;
 use App\Enum\MultimediaStatusEnum;
 use App\Event\MultimediaStatusChangeEvent;
 use App\Exception\Http\MultimediaException;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class PublishMultimediaService extends AbstractService
+class PublishMultimediaService
 {
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
+    public function __construct(
+        private readonly HttpResponseCollection $responseCollection,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {}
 
     public function publish(Multimedia $multimedia): Multimedia
     {
@@ -23,10 +23,7 @@ class PublishMultimediaService extends AbstractService
             throw MultimediaException::badPublish();
         }
 
-        $this->eventDispatcher->dispatch(
-            new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::PUBLISHED),
-            EventEnum::MULTIMEDIA_STATUS_CHANGE->value
-        );
+        $this->eventDispatcher->dispatch(new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::PUBLISHED));
 
         return $multimedia;
     }

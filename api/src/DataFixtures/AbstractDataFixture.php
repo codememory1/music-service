@@ -12,17 +12,11 @@ use Doctrine\Persistence\ObjectManager;
 abstract class AbstractDataFixture extends Fixture
 {
     /**
-     * @var array<DataFixtureFactoryInterface>
-     */
-    protected array $factories;
-
-    /**
      * @param array<DataFixtureFactoryInterface> $factories
      */
-    public function __construct(array $factories)
-    {
-        $this->factories = $factories;
-    }
+    public function __construct(
+        protected readonly array $factories
+    ) {}
 
     abstract public function load(ObjectManager $manager): void;
 

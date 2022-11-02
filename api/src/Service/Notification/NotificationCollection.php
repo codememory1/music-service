@@ -15,14 +15,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class NotificationCollection
 {
-    private EntityManagerInterface $em;
-    private TranslationService $translationService;
-
-    public function __construct(EntityManagerInterface $manager, TranslationService $translationService)
-    {
-        $this->em = $manager;
-        $this->translationService = $translationService;
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly TranslationService $translationService
+    ) {}
 
     final public function authFromUnknownDevice(User $from, User $to, ?string $device, ?string $ip): self
     {

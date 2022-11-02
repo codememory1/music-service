@@ -7,12 +7,8 @@ use App\Security\Auth\AuthorizationToken;
 
 final class UserAuthorizationEvent
 {
-    public readonly User $authorizedUser;
-    public readonly AuthorizationToken $authorizationToken;
-
-    public function __construct(User $authorizedUser, AuthorizationToken $authorizationToken)
-    {
-        $this->authorizedUser = $authorizedUser;
-        $this->authorizationToken = $authorizationToken;
-    }
+    public function __construct(
+        public readonly User $authorizedUser,
+        public readonly AuthorizationToken $authorizationToken
+    ) {}
 }

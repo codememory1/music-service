@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Interfaces;
+namespace App\Infrastucture\Dto\Interfaces;
 
 interface DataTransferCallSetterConstraintHandlerInterface
 {

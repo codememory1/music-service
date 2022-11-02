@@ -17,29 +17,18 @@ use JetBrains\PhpStorm\Pure;
 
 abstract class AbstractUserMessageHandlerService implements UserMessageHandlerInterface
 {
-    protected EntityManagerInterface $em;
-    protected AuthorizedUser $authorizedUser;
-    protected TranslationService $translationService;
-    protected WebSocketValidator $webSocketValidator;
-    protected WebSocketResponseCollection $responseCollection;
     protected ?Worker $worker = null;
     private ?int $connectionId = null;
     private array $messageHeaders = [];
     private array $messageData = [];
 
     public function __construct(
-        EntityManagerInterface $manager,
-        AuthorizedUser $authorizedUser,
-        TranslationService $translationService,
-        WebSocketValidator $webSocketValidator,
-        WebSocketResponseCollection $webSocketResponseCollection
-    ) {
-        $this->em = $manager;
-        $this->authorizedUser = $authorizedUser;
-        $this->translationService = $translationService;
-        $this->webSocketValidator = $webSocketValidator;
-        $this->responseCollection = $webSocketResponseCollection;
-    }
+        protected readonly EntityManagerInterface $em,
+        protected readonly AuthorizedUser $authorizedUser,
+        protected readonly TranslationService $translation,
+        protected readonly WebSocketValidator $webSocketValidator,
+        protected readonly WebSocketResponseCollection $responseCollection
+    ) {}
 
     #[Pure]
     protected function getLocale(): ?string
@@ -53,9 +42,9 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
             return null;
         }
 
-        $this->translationService->setLocale($this->getLocale());
+        $this->translation->setLocale($this->getLocale());
 
-        return $this->translationService->get($translationKey, $parameters);
+        return $this->translation->get($translationKey, $parameters);
     }
 
     protected function validate(EntityInterface|DataTransferInterface $object, ?callable $customResponse = null): void

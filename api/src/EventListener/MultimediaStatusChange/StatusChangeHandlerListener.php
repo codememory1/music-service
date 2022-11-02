@@ -8,15 +8,12 @@ use App\Event\MultimediaStatusChangeEvent;
 use App\Service\FlusherService;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener('app.multimedia.status-change', 'onMultimediaStatusChange')]
+#[AsEventListener(MultimediaStatusChangeEvent::class, 'onMultimediaStatusChange')]
 final class StatusChangeHandlerListener
 {
-    private FlusherService $flusherService;
-
-    public function __construct(FlusherService $flusherService)
-    {
-        $this->flusherService = $flusherService;
-    }
+    public function __construct(
+        private readonly FlusherService $flusherService
+    ) {}
 
     public function onMultimediaStatusChange(MultimediaStatusChangeEvent $event): void
     {

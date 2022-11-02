@@ -16,7 +16,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-#[AsEventListener('app.auth', 'onAuth', 0)]
+#[AsEventListener(UserAuthorizationEvent::class, 'onAuth', 0)]
 final class NotifyNewAuthorizationListener
 {
     private EntityManagerInterface $em;

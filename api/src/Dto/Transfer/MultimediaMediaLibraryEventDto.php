@@ -3,10 +3,11 @@
 namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
-use App\Dto\Traits\EventPayloadTrait;
+use App\Dto\Trasfer\Traits\EventPayloadTrait;
 use App\Entity\MultimediaMediaLibraryEvent;
 use App\Enum\Interfaces\EventInterface;
 use App\Enum\MultimediaMediaLibraryEventEnum;
+use App\Infrastucture\Dto\AbstractDataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

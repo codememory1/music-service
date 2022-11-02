@@ -7,6 +7,7 @@ use App\Entity\Album;
 use App\Entity\AlbumType;
 use App\Enum\AlbumStatusEnum;
 use App\Enum\RequestTypeEnum;
+use App\Infrastucture\Dto\AbstractDataTransfer;
 use App\Rest\Http\Request;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\DependencyInjection\ReverseContainer;

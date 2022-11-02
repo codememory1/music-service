@@ -10,15 +10,12 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-#[AsEventListener('app.password-reset.request', 'onRequestRestorationPassword')]
+#[AsEventListener(RequestRestorationPasswordEvent::class, 'onRequestRestorationPassword')]
 final class SendCodeListener
 {
-    private MailMessagingService $mailMessagingService;
-
-    public function __construct(MailMessagingService $mailMessagingService)
-    {
-        $this->mailMessagingService = $mailMessagingService;
-    }
+    public function __construct(
+        private readonly MailMessagingService $mailMessagingService
+    ) {}
 
     /**
      * @throws SyntaxError

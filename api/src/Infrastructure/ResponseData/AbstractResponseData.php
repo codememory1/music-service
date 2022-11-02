@@ -14,6 +14,7 @@ use App\Infrastructure\ResponseData\Repository\PropertyInterceptorRepository;
 use App\Infrastructure\ResponseData\Repository\PropertyMethodRepository;
 use App\Service\Reflection;
 use Doctrine\Common\Collections\Collection;
+use JetBrains\PhpStorm\Pure;
 use ReflectionProperty;
 use Symfony\Component\DependencyInjection\ReverseContainer;
 
@@ -26,6 +27,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
     protected array $onlyProperties = [];
     protected array $response = [];
 
+    #[Pure] 
     public function __construct(
         protected ReverseContainer $container
     ) {

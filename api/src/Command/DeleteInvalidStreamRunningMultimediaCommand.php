@@ -19,14 +19,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class DeleteInvalidStreamRunningMultimediaCommand extends Command
 {
-    private EntityManagerInterface $em;
-    private PlatformSettingService $platformSettingService;
-
-    public function __construct(EntityManagerInterface $manager, PlatformSettingService $platformSettingService)
-    {
-        $this->em = $manager;
-        $this->platformSettingService = $platformSettingService;
-
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly PlatformSettingService $platformSettingService
+    ) {
         parent::__construct();
     }
 

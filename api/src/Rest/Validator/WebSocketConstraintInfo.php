@@ -8,12 +8,9 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class WebSocketConstraintInfo
 {
-    private ConstraintViolationInterface $constraintViolation;
-
-    public function __construct(ConstraintViolationInterface $constraintViolation)
-    {
-        $this->constraintViolation = $constraintViolation;
-    }
+    public function __construct(
+        private readonly ConstraintViolationInterface $constraintViolation
+    ) {}
 
     public function getMessage(): ?string
     {

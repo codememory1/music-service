@@ -7,15 +7,18 @@ use App\Entity\MultimediaPlaylistDirectory;
 use App\Entity\PlaylistDirectory;
 use App\Exception\Http\EntityExistException;
 use App\Repository\MultimediaPlaylistRepository;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use App\Service\Playlist\CheckExistMultimediaToPlaylistDirectoriesService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class AddMultimediaToPlaylistDirectoryService extends AbstractService
+class AddMultimediaToPlaylistDirectoryService
 {
-    #[Required]
-    public ?MultimediaPlaylistRepository $multimediaPlaylistRepository = null;
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection,
+        private readonly MultimediaPlaylistRepository $multimediaPlaylistRepository
+    ){}
 
     public function add(PlaylistDirectory $playlistDirectory, MultimediaMediaLibrary $multimediaMediaLibrary): MultimediaPlaylistDirectory
     {

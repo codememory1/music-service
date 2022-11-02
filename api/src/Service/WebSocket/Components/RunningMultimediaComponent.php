@@ -10,12 +10,9 @@ use App\Repository\RunningMultimediaRepository;
 
 final class RunningMultimediaComponent
 {
-    private RunningMultimediaRepository $runningMultimediaRepository;
-
-    public function __construct(RunningMultimediaRepository $runningMultimediaRepository)
-    {
-        $this->runningMultimediaRepository = $runningMultimediaRepository;
-    }
+    public function __construct(
+        private readonly RunningMultimediaRepository $runningMultimediaRepository
+    ) {}
 
     public function getRunningMultimedia(int $id, UserSession $userSession, WebSocketClientMessageTypeEnum $clientMessageType): RunningMultimedia
     {

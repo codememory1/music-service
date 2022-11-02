@@ -10,12 +10,10 @@ abstract class AbstractJwtToken
     protected ?string $parameterNameWithPublicKeyPath = null;
     protected ?string $token = null;
     protected bool|array $tokenData = false;
-    private JwtTokenGenerator $jwtTokenGenerator;
 
-    public function __construct(JwtTokenGenerator $jwtTokenGenerator)
-    {
-        $this->jwtTokenGenerator = $jwtTokenGenerator;
-    }
+    public function __construct(
+        private readonly JwtTokenGenerator $jwtTokenGenerator
+    ) {}
 
     public function getToken(): ?string
     {

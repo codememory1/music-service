@@ -8,7 +8,7 @@ use App\Service\WebSocket\WorkerConnectionManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener('app.ws.connection.close', 'onConnectionClose')]
+#[AsEventListener(WebSocketConnectionCloseEvent::class, 'onConnectionClose')]
 final class PauseRunningMultimediaEventListener
 {
     private EntityManagerInterface $em;

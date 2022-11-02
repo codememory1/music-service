@@ -7,15 +7,12 @@ use App\Event\AlbumStatusChangeEvent;
 use App\Service\Notification\NotificationCollection;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener('app.album.status-change', 'onAlbumStatusChange', 1)]
+#[AsEventListener(AlbumStatusChangeEvent::class, 'onAlbumStatusChange', 1)]
 final class SendNotificationAboutNewReleaseListener
 {
-    private NotificationCollection $notificationCollection;
-
-    public function __construct(NotificationCollection $notificationCollection)
-    {
-        $this->notificationCollection = $notificationCollection;
-    }
+    public function __construct(
+        private readonly NotificationCollection $notificationCollection
+    ) {}
 
     public function onAlbumStatusChange(AlbumStatusChangeEvent $event): void
     {

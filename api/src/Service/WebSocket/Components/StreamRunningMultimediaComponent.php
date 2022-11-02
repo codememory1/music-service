@@ -9,12 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class StreamRunningMultimediaComponent
 {
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->em = $manager;
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {}
 
     public function createStreamRunningMultimedia(RunningMultimedia $runningMultimedia, UserSession $from, UserSession $to): StreamRunningMultimedia
     {

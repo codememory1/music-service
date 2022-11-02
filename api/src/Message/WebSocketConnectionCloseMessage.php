@@ -4,10 +4,7 @@ namespace App\Message;
 
 final class WebSocketConnectionCloseMessage
 {
-    public readonly int $connectionId;
-
-    public function __construct(int $connectionId)
-    {
-        $this->connectionId = $connectionId;
-    }
+    public function __construct(
+        public readonly int $connectionId
+    ){}
 }

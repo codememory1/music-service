@@ -19,15 +19,13 @@ abstract class AbstractRepository extends ServiceEntityRepository
     protected ?string $entity = null;
     protected ?string $alias = null;
     protected readonly QueryBuilder $qb;
-    protected readonly FilterService $filterService;
-    protected readonly SortService $sortService;
 
-    public function __construct(ManagerRegistry $registry, FilterService $filterService, SortService $sortService)
-    {
+    public function __construct(
+        ManagerRegistry $registry, 
+        protected readonly FilterService $filterService, 
+        protected readonly SortService $sortService
+    ) {
         parent::__construct($registry, $this->entity);
-
-        $this->filterService = $filterService;
-        $this->sortService = $sortService;
 
         $this->qb = $this->createQueryBuilder($this->alias);
     }

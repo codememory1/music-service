@@ -7,12 +7,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class Request
 {
-    private RequestStack $requestStack;
-
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
-    }
+    public function __construct(
+        private readonly RequestStack $requestStack
+    ) {}
 
     public function getRequest(): ?SymfonyRequest
     {

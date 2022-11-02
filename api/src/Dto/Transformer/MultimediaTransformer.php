@@ -2,26 +2,25 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\MultimediaDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Multimedia;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
+use App\Infrastucture\Dto\AbstractDataTransformer;
 
 /**
  * @template-extends AbstractDataTransformer<MultimediaDto>
  */
 final class MultimediaTransformer extends AbstractDataTransformer
 {
-    private MultimediaDto $multimediaDto;
-
     #[Pure]
-    public function __construct(Request $request, MultimediaDto $multimediaDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly MultimediaDto $multimediaDto
+    ) {
         parent::__construct($request);
-
-        $this->multimediaDto = $multimediaDto;
     }
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface

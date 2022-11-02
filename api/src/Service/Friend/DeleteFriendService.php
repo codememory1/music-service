@@ -3,11 +3,17 @@
 namespace App\Service\Friend;
 
 use App\Entity\Friend;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DeleteFriendService extends AbstractService
+class DeleteFriendService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function delete(Friend $friendship): Friend
     {
         $this->flusherService->remove($friendship);

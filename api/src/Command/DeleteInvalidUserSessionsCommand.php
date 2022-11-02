@@ -17,14 +17,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class DeleteInvalidUserSessionsCommand extends Command
 {
-    private EntityManagerInterface $em;
-    private JwtTokenGenerator $jwtTokenGenerator;
-
-    public function __construct(EntityManagerInterface $manager, JwtTokenGenerator $jwtTokenGenerator)
-    {
-        $this->em = $manager;
-        $this->jwtTokenGenerator = $jwtTokenGenerator;
-
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly JwtTokenGenerator $jwtTokenGenerator
+    ) {
         parent::__construct();
     }
 
@@ -35,6 +31,8 @@ class DeleteInvalidUserSessionsCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $userSessionRepository = $this->em->getRepository(UserSession::class);
+
+        $io->info('Worker started successfully');
 
         while (true) {
             sleep(1);

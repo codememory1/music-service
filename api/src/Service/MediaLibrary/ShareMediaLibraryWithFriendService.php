@@ -4,15 +4,16 @@ namespace App\Service\MediaLibrary;
 
 use App\Entity\MediaLibrary;
 use App\Entity\User;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
 use App\Service\MultimediaMediaLibrary\ShareMultimediaMediaLibraryWithFriendService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class ShareMediaLibraryWithFriendService extends AbstractService
+class ShareMediaLibraryWithFriendService
 {
-    #[Required]
-    public ?ShareMultimediaMediaLibraryWithFriendService $shareMultimediaMediaLibraryWithFriendService = null;
+    public function __construct(
+        private readonly ShareMultimediaMediaLibraryWithFriendService $shareMultimediaMediaLibraryWithFriendService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
 
     public function share(MediaLibrary $mediaLibraryForShare, User $from, User $friend): MediaLibrary
     {

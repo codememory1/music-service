@@ -3,11 +3,17 @@
 namespace App\Service\MultimediaListeningHistory;
 
 use App\Entity\MultimediaListeningHistory;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-final class DeleteListenService extends AbstractService
+final class DeleteListenService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function delete(MultimediaListeningHistory $multimediaListeningHistory): MultimediaListeningHistory
     {
         $this->flusherService->remove($multimediaListeningHistory);

@@ -3,11 +3,17 @@
 namespace App\Service\PlaylistDirectory;
 
 use App\Entity\MultimediaPlaylistDirectory;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DeleteMultimediaFromPlaylistDirectoryService extends AbstractService
+class DeleteMultimediaFromPlaylistDirectoryService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function delete(MultimediaPlaylistDirectory $multimediaPlaylistDirectory): MultimediaPlaylistDirectory
     {
         $this->flusherService->remove($multimediaPlaylistDirectory);

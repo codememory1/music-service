@@ -11,16 +11,11 @@ use App\Service\FlusherService;
 
 final class UpsertListenService
 {
-    private FlusherService $flusher;
-    private MultimediaMediaLibraryRepository $multimediaMediaLibraryRepository;
-    private MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository;
-
-    public function __construct(FlusherService $flusherService, MultimediaMediaLibraryRepository $multimediaMediaLibraryRepository, MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository)
-    {
-        $this->flusher = $flusherService;
-        $this->multimediaMediaLibraryRepository = $multimediaMediaLibraryRepository;
-        $this->multimediaListeningHistoryRepository = $multimediaListeningHistoryRepository;
-    }
+    public function __construct(
+        private readonly FlusherService $flusher,
+        private readonly MultimediaMediaLibraryRepository $multimediaMediaLibraryRepository,
+        private readonly MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository
+    ) {}
 
     public function upsert(Multimedia $multimedia, User $toUser, float $currentTime): ?MultimediaListeningHistory
     {

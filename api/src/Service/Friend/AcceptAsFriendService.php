@@ -3,11 +3,17 @@
 namespace App\Service\Friend;
 
 use App\Entity\Friend;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class AcceptAsFriendService extends AbstractService
+class AcceptAsFriendService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function accept(Friend $friend): Friend
     {
         $friend->setConfirmed();

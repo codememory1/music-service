@@ -9,16 +9,11 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class LanguageCodeFactory implements DataFixtureFactoryInterface
 {
-    private string $twoLetterCode;
-    private string $threeLetterCode;
-    private string $title;
-
-    public function __construct(string $twoLetterCode, string $threeLetterCode, string $title)
-    {
-        $this->twoLetterCode = $twoLetterCode;
-        $this->threeLetterCode = $threeLetterCode;
-        $this->title = $title;
-    }
+    public function __construct(
+        private readonly string $twoLetterCode,
+        private readonly string $threeLetterCode,
+        private readonly string $title
+    ) {}
 
     public function factoryMethod(): EntityInterface
     {

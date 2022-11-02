@@ -9,14 +9,10 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class LanguageFactory implements DataFixtureFactoryInterface
 {
-    private string $code;
-    private string $originalTitle;
-
-    public function __construct(string $code, string $originalTitle)
-    {
-        $this->code = $code;
-        $this->originalTitle = $originalTitle;
-    }
+    public function __construct(
+        private readonly string $code, 
+        private readonly string $originalTitle
+    ) {}
 
     public function factoryMethod(): EntityInterface
     {

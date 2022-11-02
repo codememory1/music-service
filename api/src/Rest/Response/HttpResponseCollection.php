@@ -9,18 +9,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HttpResponseCollection
 {
-    private HttpSchema $httpResponseSchema;
-    private HttpResponse $httpResponse;
-    private Request $request;
-    private TranslationService $translationService;
-
-    public function __construct(HttpSchema $httpResponseSchema, HttpResponse $httpResponse, Request $request, TranslationService $translationService)
-    {
-        $this->httpResponseSchema = $httpResponseSchema;
-        $this->httpResponse = $httpResponse;
-        $this->request = $request;
-        $this->translationService = $translationService;
-    }
+    public function __construct(
+        private readonly HttpSchema $httpResponseSchema, 
+        private readonly HttpResponse $httpResponse, 
+        private readonly Request $request, 
+        private readonly TranslationService $translation
+    ) {}
 
     final public function successCreate(string $translationKey, array $data = [], array $headers = []): JsonResponse
     {
@@ -80,11 +74,11 @@ class HttpResponseCollection
 
     private function initResponseSchema(int $statusCode, ResponseTypeEnum $responseTypeEnum, array|string $translationKey, array $parameters = [], array $data = []): void
     {
-        $this->translationService->setLocale($this->request->getRequest()->getLocale());
+        $this->translation->setLocale($this->request->getRequest()->getLocale());
 
         $this->httpResponseSchema->setStatusCode($statusCode);
         $this->httpResponseSchema->setType($responseTypeEnum);
-        $this->httpResponseSchema->setMessage($this->translationService->getTranslation($translationKey));
+        $this->httpResponseSchema->setMessage($this->translation->getTranslation($translationKey));
         $this->httpResponseSchema->setData($data);
         $this->httpResponseSchema->setParameters($parameters);
     }

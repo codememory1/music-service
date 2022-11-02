@@ -12,12 +12,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class SchemaValidatorService
 {
-    private ParameterBagInterface $parameterBag;
-
-    public function __construct(ParameterBagInterface $parameterBag)
-    {
-        $this->parameterBag = $parameterBag;
-    }
+    public function __construct(
+        private readonly ParameterBagInterface $parameterBag
+    ) {}
 
     public function validate(string $schemaName, array|string $data): bool
     {

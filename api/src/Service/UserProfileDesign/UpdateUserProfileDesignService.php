@@ -6,6 +6,7 @@ use App\Dto\Transfer\UserProfileDesignDto;
 use App\Entity\UserProfileDesign;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Service\AbstractService;
+use App\Service\FileUploader\Uploader;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -14,6 +15,9 @@ class UpdateUserProfileDesignService extends AbstractService
 {
     #[Required]
     public ?ImageUploader $imageUploader = null;
+    
+    #[Required]
+    public ?Uploader $fileUploader = null;
 
     public function update(UserProfileDesignDto $userProfileDesignDto): UserProfileDesign
     {
@@ -38,7 +42,7 @@ class UpdateUserProfileDesignService extends AbstractService
 
     private function uploadImage(UploadedFile $image, UserProfileDesign $userProfileDesign): ?string
     {
-        return $this->simpleFileUpload(
+        return $this->fileUploader->simpleUpload(
             $this->imageUploader,
             $userProfileDesign->getCoverImage(),
             $image,

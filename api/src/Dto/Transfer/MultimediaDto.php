@@ -10,6 +10,7 @@ use App\Entity\MultimediaPerformer;
 use App\Entity\User;
 use App\Enum\MultimediaTypeEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\Infrastucture\Dto\AbstractDataTransfer;
 use App\Repository\LanguageCodeRepository;
 use App\Security\AuthorizedUser;
 use Doctrine\ORM\EntityManagerInterface;

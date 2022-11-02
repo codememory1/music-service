@@ -5,18 +5,19 @@ namespace App\Service\Multimedia;
 use App\Entity\Multimedia;
 use App\Entity\User;
 use App\Enum\MultimediaRatingTypeEnum;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class SetDisLikeMultimediaService extends AbstractService
+class SetDisLikeMultimediaService
 {
-    #[Required]
-    public ?SaveMultimediaRatingService $saveMultimediaRatingService = null;
+    public function __construct(
+        private readonly HttpResponseCollection $responseCollection,
+        private readonly SaveMultimediaRatingService $multimediaRating
+    ) {}
 
     public function setOrRemoveDislike(Multimedia $multimedia, User $fromUser, ?callable $callbackRemove = null): Multimedia
     {
-        $this->saveMultimediaRatingService->make(
+        $this->multimediaRating->make(
             $multimedia,
             $fromUser,
             MultimediaRatingTypeEnum::DISLIKE,

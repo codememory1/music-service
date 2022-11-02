@@ -4,32 +4,28 @@ namespace App\Security\Auth;
 
 use App\Dto\Transfer\AuthorizationDto;
 use App\Entity\User;
-use App\Enum\EventEnum;
 use App\Event\UserIdentificationInAuthEvent;
 use App\Exception\Http\AuthorizationException;
-use App\Service\AbstractService;
+use App\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class Identification extends AbstractService
+class Identification
 {
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
-
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly EventDispatcherInterface $eventDispatcher
+    )
+    {}
+    
     public function identify(AuthorizationDto $authorizationDto): ?User
     {
-        $identifiedUser = $this->em->getRepository(User::class)->findOneBy([
-            'email' => $authorizationDto->email
-        ]);
+        $identifiedUser = $this->userRepository->findByEmail($authorizationDto->email);
 
         if (null === $identifiedUser) {
             throw AuthorizationException::failedToIdentify();
         }
 
-        $this->eventDispatcher->dispatch(new UserIdentificationInAuthEvent(
-            $authorizationDto,
-            $identifiedUser
-        ), EventEnum::IDENTIFICATION_IN_AUTH->value);
+        $this->eventDispatcher->dispatch(new UserIdentificationInAuthEvent($authorizationDto, $identifiedUser));
 
         return $identifiedUser;
     }

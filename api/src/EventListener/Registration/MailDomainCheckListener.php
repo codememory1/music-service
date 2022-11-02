@@ -10,15 +10,12 @@ use App\Exception\Http\HttpException;
 use App\Service\PlatformSettingService;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 
-#[AsEntityListener('app.registration', 'onUserRegistration', 2)]
+#[AsEntityListener(UserRegistrationEvent::class, 'onUserRegistration', 2)]
 final class MailDomainCheckListener
 {
-    private PlatformSettingService $platformSettingService;
-
-    public function __construct(PlatformSettingService $platformSettingService)
-    {
-        $this->platformSettingService = $platformSettingService;
-    }
+    public function __construct(
+        private readonly PlatformSettingService $platformSettingService
+    ) {}
 
     public function onUserRegistration(UserRegistrationEvent $event): void
     {

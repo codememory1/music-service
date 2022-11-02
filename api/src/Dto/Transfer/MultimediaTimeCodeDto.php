@@ -4,6 +4,7 @@ namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
 use App\Entity\MultimediaTimeCode;
+use App\Infrastucture\Dto\AbstractDataTransfer;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 

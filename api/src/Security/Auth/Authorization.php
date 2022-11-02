@@ -3,20 +3,18 @@
 namespace App\Security\Auth;
 
 use App\Entity\User;
-use App\Enum\EventEnum;
 use App\Event\UserAuthorizationEvent;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class Authorization extends AbstractService
+class Authorization
 {
-    #[Required]
-    public ?AuthorizationToken $authorizationToken = null;
-
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
+    public function __construct(
+        private readonly AuthorizationToken $authorizationToken,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
 
     public function auth(User $authenticatedUser): JsonResponse
     {
@@ -26,7 +24,7 @@ class Authorization extends AbstractService
         $this->eventDispatcher->dispatch(new UserAuthorizationEvent(
             $authenticatedUser,
             $this->authorizationToken
-        ), EventEnum::AUTHORIZATION->value);
+        ));
 
         return $this->responseCollection->successAuthorization([
             'access_token' => $accessToken,

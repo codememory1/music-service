@@ -3,11 +3,17 @@
 namespace App\Service\Subscription;
 
 use App\Entity\Subscription;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DeleteSubscriptionService extends AbstractService
+class DeleteSubscriptionService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function delete(Subscription $subscription): Subscription
     {
         $this->flusherService->remove($subscription);

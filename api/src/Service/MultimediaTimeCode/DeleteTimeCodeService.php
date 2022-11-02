@@ -3,11 +3,17 @@
 namespace App\Service\MultimediaTimeCode;
 
 use App\Entity\MultimediaTimeCode;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-final class DeleteTimeCodeService extends AbstractService
+final class DeleteTimeCodeService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function delete(MultimediaTimeCode $multimediaTimeCode): MultimediaTimeCode
     {
         $this->flusherService->remove($multimediaTimeCode);

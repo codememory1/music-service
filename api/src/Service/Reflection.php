@@ -4,22 +4,16 @@ namespace App\Service;
 
 use function call_user_func;
 use function is_object;
-use ReflectionClass;
-use ReflectionException;
 use ReflectionProperty;
 
 class Reflection
 {
-    public readonly ReflectionClass $reflectionClass;
     public readonly string $namespaceClass;
 
-    /**
-     * @throws ReflectionException
-     */
-    public function __construct(string|object $class)
-    {
-        $this->reflectionClass = new ReflectionClass($class);
-        $this->namespaceClass = is_object($class) ? $class::class : $class;
+    public function __construct(
+        public readonly string|object $reflectionClass
+    ) {
+        $this->namespaceClass = is_object($this->reflectionClass) ? $this->reflectionClass::class : $this->reflectionClass;
     }
 
     public function getStrictlyClassProperties(?callable $filter = null): array

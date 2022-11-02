@@ -6,7 +6,7 @@ use App\Event\WebSocketConnectionCloseEvent;
 use App\Service\WebSocket\WorkerConnectionManager;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener('app.ws.connection.close', 'onConnectionClose', priority: -256)]
+#[AsEventListener(WebSocketConnectionCloseEvent::class, 'onConnectionClose', priority: -256)]
 final class DeleteConnectionFromRedisEventListener
 {
     private WorkerConnectionManager $workerConnectionManager;

@@ -5,18 +5,20 @@ namespace App\Service\Multimedia;
 use App\Entity\Multimedia;
 use App\Entity\MultimediaRating;
 use App\Entity\User;
-use App\Enum\EventEnum;
 use App\Enum\MultimediaRatingTypeEnum;
 use App\Event\SetRatingMultimediaEvent;
-use App\Service\AbstractService;
+use App\Service\FlusherService;
+use Doctrine\ORM\EntityManagerInterface;
 use function call_user_func;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class SaveMultimediaRatingService extends AbstractService
+class SaveMultimediaRatingService
 {
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly FlusherService $flusherService,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {}
 
     public function make(
         Multimedia $multimedia,
@@ -36,10 +38,7 @@ class SaveMultimediaRatingService extends AbstractService
 
         $this->flusherService->save();
 
-        $this->eventDispatcher->dispatch(
-            new SetRatingMultimediaEvent($multimediaRating),
-            EventEnum::SET_RATING_MULTIMEDIA->value
-        );
+        $this->eventDispatcher->dispatch(new SetRatingMultimediaEvent($multimediaRating));
     }
 
     private function addRating(Multimedia $multimedia, User $fromUser, MultimediaRatingTypeEnum $typeEnum): MultimediaRating

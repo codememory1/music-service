@@ -13,15 +13,12 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class SystemUserFactory implements DataFixtureFactoryInterface
 {
-    private string $pseudonym;
-    private string $email;
     private ?ReferenceRepository $referenceRepository = null;
 
-    public function __construct(string $pseudonym, SystemUserEnum $email)
-    {
-        $this->pseudonym = $pseudonym;
-        $this->email = $email->value;
-    }
+    public function __construct(
+        private readonly string $pseudonym,
+        private readonly SystemUserEnum $email
+    ) {}
 
     public function factoryMethod(): EntityInterface
     {
@@ -34,7 +31,7 @@ final class SystemUserFactory implements DataFixtureFactoryInterface
         $userProfile->setPseudonym($this->pseudonym);
         $userProfile->setHideStatus();
 
-        $user->setEmail($this->email);
+        $user->setEmail($this->email->value);
         $user->setNotActiveStatus();
         $user->setProfile($userProfile);
         $user->setRole($role);

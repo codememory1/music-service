@@ -18,23 +18,16 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class UserFactory implements DataFixtureFactoryInterface
 {
-    private string $pseudonym;
-    private string $email;
-    private string $password;
-    private string $role;
     private ?ReferenceRepository $referenceRepository = null;
-    private ?SubscriptionEnum $subscription;
-    private ?Closure $callbackEntity;
 
-    public function __construct(string $pseudonym, string $email, string $password, RoleEnum $role, ?SubscriptionEnum $subscription = null, ?callable $callbackEntity = null)
-    {
-        $this->pseudonym = $pseudonym;
-        $this->email = $email;
-        $this->password = $password;
-        $this->role = $role->name;
-        $this->subscription = $subscription;
-        $this->callbackEntity = $callbackEntity;
-    }
+    public function __construct(
+        private readonly string $pseudonym,
+        private readonly string $email,
+        private readonly string $password,
+        private readonly RoleEnum $role,
+        private readonly ?SubscriptionEnum $subscription = null,
+        private readonly ?Closure $callbackEntity = null
+    ) {}
 
     public function factoryMethod(): EntityInterface
     {

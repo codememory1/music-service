@@ -20,17 +20,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class SendNotificationsToUsersCommand extends Command
 {
-    private EntityManagerInterface $em;
-    private WebSocketResponseCollection $webSocketResponseCollection;
-    private MessageQueueToClient $messageQueueToClient;
-
-    public function __construct(EntityManagerInterface $manager, WebSocketResponseCollection $webSocketResponseCollection, MessageQueueToClient $messageQueueToClient)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly WebSocketResponseCollection $webSocketResponseCollection,
+        private readonly MessageQueueToClient $messageQueueToClient
+    ) {
         parent::__construct();
-
-        $this->em = $manager;
-        $this->webSocketResponseCollection = $webSocketResponseCollection;
-        $this->messageQueueToClient = $messageQueueToClient;
     }
 
     /**
@@ -41,6 +36,8 @@ class SendNotificationsToUsersCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $notificationRepository = $this->em->getRepository(Notification::class);
         $userRepository = $this->em->getRepository(User::class);
+
+        $io->info('Worker started successfully');
 
         while (true) {
             sleep(1);

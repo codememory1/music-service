@@ -4,6 +4,7 @@ namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Infrastucture\Dto\AbstractDataTransfer;
 
 final class AuthorizationDto extends AbstractDataTransfer
 {

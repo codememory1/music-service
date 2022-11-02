@@ -2,20 +2,16 @@
 
 namespace App\Validator\Constraints;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class NotExistValidator extends ConstraintValidator
 {
-    private ObjectManager $em;
-
-    public function __construct(ManagerRegistry $managerRegistry)
-    {
-        $this->em = $managerRegistry->getManager();
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {}
 
     /**
      * @inheritDoc

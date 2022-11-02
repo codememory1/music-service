@@ -3,11 +3,17 @@
 namespace App\Service\UserRole;
 
 use App\Entity\Role;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DeleteUserRoleService extends AbstractService
+class DeleteUserRoleService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function delete(Role $role): Role
     {
         $this->flusherService->remove($role);

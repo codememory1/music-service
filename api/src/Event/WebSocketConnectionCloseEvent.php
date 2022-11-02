@@ -6,10 +6,7 @@ use App\Message\WebSocketConnectionCloseMessage;
 
 final class WebSocketConnectionCloseEvent
 {
-    public readonly WebSocketConnectionCloseMessage $message;
-
-    public function __construct(WebSocketConnectionCloseMessage $message)
-    {
-        $this->message = $message;
-    }
+    public function __construct(
+        public readonly WebSocketConnectionCloseMessage $message
+    ) {}
 }

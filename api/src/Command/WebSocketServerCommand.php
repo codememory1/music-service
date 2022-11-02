@@ -33,32 +33,16 @@ use Symfony\Component\DependencyInjection\ReverseContainer;
 )]
 class WebSocketServerCommand extends Command
 {
-    private ReverseContainer $container;
-    private SchemaValidatorService $schemaValidatorService;
-    private Worker $worker;
-    private WebSocketSchema $webSocketSchema;
-    private TranslationService $translationService;
-    private MessageQueueToClient $messageQueueToClient;
-    private LoggerInterface $logger;
-
     public function __construct(
-        ReverseContainer $container,
-        SchemaValidatorService $schemaValidatorService,
-        Worker $worker,
-        WebSocketSchema $webSocketSchema,
-        TranslationService $translationService,
-        MessageQueueToClient $messageQueueToClient,
-        LoggerInterface $logger
+        private readonly ReverseContainer $container,
+        private readonly SchemaValidatorService $schemaValidatorService,
+        private readonly Worker $worker,
+        private readonly WebSocketSchema $webSocketSchema,
+        private readonly TranslationService $translationService,
+        private readonly MessageQueueToClient $messageQueueToClient,
+        private readonly LoggerInterface $logger
     ) {
         parent::__construct();
-
-        $this->container = $container;
-        $this->schemaValidatorService = $schemaValidatorService;
-        $this->worker = $worker;
-        $this->webSocketSchema = $webSocketSchema;
-        $this->translationService = $translationService;
-        $this->messageQueueToClient = $messageQueueToClient;
-        $this->logger = $logger;
     }
 
     /**

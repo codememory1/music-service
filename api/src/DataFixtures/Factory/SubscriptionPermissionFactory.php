@@ -13,22 +13,19 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class SubscriptionPermissionFactory implements DataFixtureFactoryInterface
 {
-    private string $subscription;
-    private SubscriptionPermissionEnum $subscriptionPermission;
-    private ReferenceRepository $referenceRepository;
+    private ?ReferenceRepository $referenceRepository = null;
 
-    public function __construct(SubscriptionEnum $subscriptionEnum, SubscriptionPermissionEnum $subscriptionPermission)
-    {
-        $this->subscription = $subscriptionEnum->name;
-        $this->subscriptionPermission = $subscriptionPermission;
-    }
+    public function __construct(
+        private readonly SubscriptionEnum $subscription,
+        private readonly SubscriptionPermissionEnum $subscriptionPermission
+    ) {}
 
     public function factoryMethod(): EntityInterface
     {
         $subscriptionPermission = new SubscriptionPermission();
 
         /** @var Subscription $subscription */
-        $subscription = $this->referenceRepository->getReference("s-{$this->subscription}");
+        $subscription = $this->referenceRepository->getReference("s-{$this->subscription->name}");
 
         /** @var SubscriptionPermissionKey $subscriptionPermissionKey */
         $subscriptionPermissionKey = $this->referenceRepository->getReference("spk-{$this->subscriptionPermission->name}");

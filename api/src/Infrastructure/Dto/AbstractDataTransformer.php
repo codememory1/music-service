@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Dto\Transformer;
+namespace App\Infrastucture\Dto;
 
-use App\Dto\Interfaces\DataTransferInterface;
-use App\Dto\Interfaces\DataTransformerInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransformerInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Rest\Http\Request;
 use LogicException;
@@ -13,12 +13,9 @@ use LogicException;
  */
 abstract class AbstractDataTransformer implements DataTransformerInterface
 {
-    protected Request $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
+    public function __construct(
+        protected readonly Request $request
+    ) {}
 
     protected function baseTransformFromRequest(DataTransferInterface $dataTransfer, ?EntityInterface $entity = null): DataTransferInterface
     {

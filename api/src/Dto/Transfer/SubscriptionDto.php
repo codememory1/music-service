@@ -9,6 +9,7 @@ use App\Entity\TranslationKey;
 use App\Enum\ResponseTypeEnum;
 use App\Enum\SubscriptionStatusEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\Infrastucture\Dto\AbstractDataTransfer;
 use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;

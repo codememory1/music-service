@@ -9,12 +9,10 @@ class WorkerConnectionManager
 {
     private const FORMAT_KEY_CONNECTION = 'websocket:connection#%s.user_session_id';
     private const FORMAT_KEY_CONNECTION_USER_SESSION = 'websocket:connection:user#%s:session#%s.connection_id';
-    private Client $redisClient;
 
-    public function __construct(Client $redisClient)
-    {
-        $this->redisClient = $redisClient;
-    }
+    public function __construct(
+        private readonly Client $redisClient
+    ){}
 
     public function addConnectionUserSession(int $connectionId, UserSession $userSession): self
     {

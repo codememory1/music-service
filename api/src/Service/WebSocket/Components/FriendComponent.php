@@ -9,12 +9,9 @@ use App\Repository\UserRepository;
 
 final class FriendComponent
 {
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
+    public function __construct(
+        private readonly UserRepository $userRepository
+    ) {}
 
     public function getFriend(int $id, User $with, WebSocketClientMessageTypeEnum $clientMessageType): User
     {

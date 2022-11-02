@@ -3,11 +3,17 @@
 namespace App\Service\MultimediaMediaLibraryEvent;
 
 use App\Entity\MultimediaMediaLibraryEvent;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DeleteMultimediaMediaLibraryEventService extends AbstractService
+class DeleteMultimediaMediaLibraryEventService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function delete(MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent): MultimediaMediaLibraryEvent
     {
         $this->flusherService->save($multimediaMediaLibraryEvent);

@@ -5,21 +5,22 @@ namespace App\Service\Playlist;
 use App\Dto\Transfer\PlaylistDto;
 use App\Entity\Playlist;
 use App\Rest\S3\Uploader\ImageUploader;
-use App\Service\AbstractService;
+use App\Service\FileUploader\Uploader;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class SavePlaylistService extends AbstractService
+class SavePlaylistService
 {
-    #[Required]
-    public ?SetMultimediaToPlaylistService $setMultimediaToPlaylistService = null;
-
-    #[Required]
-    public ?ImageUploader $imageUploader = null;
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly Uploader $fileUploader,
+        private readonly SetMultimediaToPlaylistService $setMultimediaToPlaylist,
+        private readonly ImageUploader $imageUploader,
+    ) {}
 
     public function make(PlaylistDto $playlistDto, Playlist $playlist): void
     {
-        $this->setMultimediaToPlaylistService->set($playlistDto->multimedia, $playlist);
+        $this->setMultimediaToPlaylist->set($playlistDto->multimedia, $playlist);
 
         $playlist->setImage($this->uploadImage($playlistDto->image, $playlist));
 
@@ -28,6 +29,6 @@ class SavePlaylistService extends AbstractService
 
     private function uploadImage(UploadedFile $image, Playlist $playlist): ?string
     {
-        return $this->simpleFileUpload($this->imageUploader, $playlist->getImage(), $image, 'image', $playlist);
+        return $this->fileUploader->simpleUpload($this->imageUploader, $playlist->getImage(), $image, 'image', $playlist);
     }
 }

@@ -17,14 +17,12 @@ use function Symfony\Component\String\u;
 
 final class EntityFromRouteParameterResolver implements ArgumentValueResolverInterface
 {
-    private EntityManagerInterface $em;
     private array $routeParameters = [];
     private ?ReflectionClass $reflection = null;
 
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->em = $manager;
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {}
 
     /**
      * @inheritDoc

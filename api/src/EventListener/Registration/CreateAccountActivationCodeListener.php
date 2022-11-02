@@ -7,15 +7,12 @@ use App\Event\UserRegistrationEvent;
 use App\Service\FlusherService;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener('app.registration', 'onUserRegistration', 1)]
+#[AsEventListener(UserRegistrationEvent::class, 'onUserRegistration', 1)]
 final class CreateAccountActivationCodeListener
 {
-    private FlusherService $flusherService;
-
-    public function __construct(FlusherService $flusherService)
-    {
-        $this->flusherService = $flusherService;
-    }
+    public function __construct(
+        private readonly FlusherService $flusherService
+    ) {}
 
     public function onUserRegistration(UserRegistrationEvent $event): void
     {

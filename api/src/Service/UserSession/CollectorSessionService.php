@@ -16,12 +16,9 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class CollectorSessionService
 {
-    private Client $client;
-
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
-    }
+    public function __construct(
+        private readonly Client $client
+    ) {}
 
     /**
      * @throws TransportExceptionInterface

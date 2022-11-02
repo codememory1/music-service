@@ -2,18 +2,15 @@
 
 namespace App\Dto\Constraints;
 
-use App\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class ToEntityConstraint implements DataTransferConstraintInterface
 {
-    public readonly string $byProperty;
-
-    public function __construct(string $byProperty)
-    {
-        $this->byProperty = $byProperty;
-    }
+    public function __construct(
+        public readonly string $byProperty
+    ) {}
 
     public function getHandler(): ?string
     {

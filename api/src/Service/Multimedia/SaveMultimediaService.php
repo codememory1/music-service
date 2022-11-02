@@ -5,7 +5,6 @@ namespace App\Service\Multimedia;
 use App\Dto\Transfer\MultimediaDto;
 use App\Entity\Multimedia;
 use App\Enum\AlbumTypeEnum;
-use App\Enum\EventEnum;
 use App\Enum\MultimediaMimeTypeEnum;
 use App\Event\SaveMultimediaEvent;
 use App\Exception\Http\AlbumException;
@@ -16,36 +15,29 @@ use App\Rest\S3\Uploader\ClipUploader;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Rest\S3\Uploader\SubtitlesUploader;
 use App\Rest\S3\Uploader\TrackUploader;
-use App\Service\AbstractService;
+use App\Service\FileUploader\Uploader;
+use App\Service\FlusherService;
 use Captioning\Format\SubripFile;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class SaveMultimediaService extends AbstractService
+class SaveMultimediaService
 {
-    #[Required]
-    public ?MultimediaMetadataValidationService $multimediaMetadataValidationService = null;
-
-    #[Required]
-    public ?ImageUploader $imageUploader = null;
-
-    #[Required]
-    public ?TrackUploader $trackUploader = null;
-
-    #[Required]
-    public ?ClipUploader $clipUploader = null;
-
-    #[Required]
-    public ?SubtitlesUploader $subtitlesUploader = null;
-
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
-
-    #[Required]
-    public ?MessageBusInterface $bus = null;
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly EntityManagerInterface $em,
+        private readonly Uploader $fileUploader,
+        private readonly MultimediaMetadataValidationService $multimediaMetadataValidation,
+        private readonly ImageUploader $imageUploader,
+        private readonly TrackUploader $trackUploader,
+        private readonly ClipUploader $clipUploader,
+        private readonly SubtitlesUploader $subtitlesUploader,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly MessageBusInterface $bus,
+    ) {}
 
     public function make(MultimediaDto $multimediaDto, Multimedia $multimedia): void
     {
@@ -58,10 +50,7 @@ class SaveMultimediaService extends AbstractService
         $this->flusherService->save($multimedia);
 
         $this->bus->dispatch(new MultimediaMetadataMessage($multimedia->getId()));
-        $this->eventDispatcher->dispatch(
-            new SaveMultimediaEvent($multimedia),
-            EventEnum::AFTER_SAVE_MULTIMEDIA->value
-        );
+        $this->eventDispatcher->dispatch(new SaveMultimediaEvent($multimedia));
     }
 
     private function fileValidationWrapper(MultimediaDto $multimediaDto, Multimedia $multimedia): void
@@ -70,8 +59,9 @@ class SaveMultimediaService extends AbstractService
         $this->checkMultimediaMimeType($multimediaDto, $multimedia);
         $this->checkSubtitles($multimediaDto);
 
-        $this->multimediaMetadataValidationService->initMultimedia($multimediaDto->multimedia, $multimedia);
-        $this->multimediaMetadataValidationService->validateDuration();
+        $stream = $this->multimediaMetadataValidation->initMultimedia($multimediaDto->multimedia, $multimedia);
+        
+        $this->multimediaMetadataValidation->validateDuration($multimedia, $stream);
     }
 
     private function getMultimedia(Multimedia $multimedia): ?Multimedia
@@ -122,13 +112,13 @@ class SaveMultimediaService extends AbstractService
 
     private function uploadImage(UploadedFile $image, Multimedia $multimedia): ?string
     {
-        return $this->simpleFileUpload($this->imageUploader, $multimedia->getImage(), $image, 'image', $multimedia);
+        return $this->fileUploader->simpleUpload($this->imageUploader, $multimedia->getImage(), $image, 'image', $multimedia);
     }
 
     private function uploadMultimedia(UploadedFile $multimediaFile, Multimedia $multimedia): ?string
     {
         if ($multimedia->isTrack()) {
-            return $this->simpleFileUpload(
+            return $this->fileUploader->simpleUpload(
                 $this->trackUploader,
                 $multimedia->getMultimedia(),
                 $multimediaFile,
@@ -138,7 +128,7 @@ class SaveMultimediaService extends AbstractService
         }
 
         if ($multimedia->isClip()) {
-            return $this->simpleFileUpload(
+            return $this->fileUploader->simpleUpload(
                 $this->clipUploader,
                 $multimedia->getMultimedia(),
                 $multimediaFile,
@@ -156,7 +146,7 @@ class SaveMultimediaService extends AbstractService
             return null;
         }
 
-        return $this->simpleFileUpload(
+        return $this->fileUploader->simpleUpload(
             $this->subtitlesUploader,
             $multimedia->getSubtitles(),
             $subtitles,

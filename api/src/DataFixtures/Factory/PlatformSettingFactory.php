@@ -10,14 +10,10 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class PlatformSettingFactory implements DataFixtureFactoryInterface
 {
-    private PlatformSettingEnum $platformSetting;
-    private array|string|int|float $value;
-
-    public function __construct(PlatformSettingEnum $platformSetting, array|string|int|float $value = [])
-    {
-        $this->platformSetting = $platformSetting;
-        $this->value = $value;
-    }
+    public function __construct(
+        private readonly PlatformSettingEnum $platformSetting,
+        private readonly array|string|int|float $value = []
+    ) {}
 
     public function factoryMethod(): EntityInterface
     {

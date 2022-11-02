@@ -2,19 +2,16 @@
 
 namespace App\Dto\Constraints;
 
-use App\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
 use App\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mime\Exception\LogicException;
 
 final class ToEntityCallbackConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferValueInterceptorConstraintHandlerInterface
 {
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->em = $manager;
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {}
 
     /**
      * @param ToEntityCallbackConstraint $constraint

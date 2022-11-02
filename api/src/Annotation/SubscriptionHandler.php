@@ -9,12 +9,9 @@ use App\Security\AuthorizedUser;
 
 final class SubscriptionHandler implements MethodAnnotationHandlerInterface
 {
-    private AuthorizedUser $authorizedUser;
-
-    public function __construct(AuthorizedUser $authorizedUser)
-    {
-        $this->authorizedUser = $authorizedUser;
-    }
+    public function __construct(
+        private readonly AuthorizedUser $authorizedUser
+    ) {}
 
     /**
      * @param Subscription $annotation

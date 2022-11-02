@@ -7,19 +7,16 @@ use App\Entity\TranslationKey;
 use App\Repository\LanguageRepository;
 use App\Repository\TranslationKeyRepository;
 use App\Repository\TranslationRepository;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class TranslationService
 {
-    #[Required]
-    public ?LanguageRepository $languageRepository = null;
-
-    #[Required]
-    public ?TranslationKeyRepository $translationKeyRepository = null;
-
-    #[Required]
-    public ?TranslationRepository $translationRepository = null;
     private ?string $locale = null;
+
+    public function __construct(
+        private readonly LanguageRepository $languageRepository,
+        private readonly TranslationKeyRepository $translationKeyRepository,
+        private readonly TranslationRepository $translationRepository,
+    ) {}
 
     public function setLocale(string $locale): self
     {

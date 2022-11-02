@@ -8,14 +8,10 @@ use GuzzleHttp\Psr7\Stream;
 
 class UploadedObject
 {
-    private Client $client;
-    private ObjectPath $objectPath;
-
-    public function __construct(Client $client, ObjectPath $objectPath)
-    {
-        $this->client = $client;
-        $this->objectPath = $objectPath;
-    }
+    public function __construct(
+        private readonly Client $client, 
+        private readonly ObjectPath $objectPath
+    ) {}
 
     public function getObject(string $path, bool $asStream = false): null|Result|Stream
     {

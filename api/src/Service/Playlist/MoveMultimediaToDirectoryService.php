@@ -5,11 +5,17 @@ namespace App\Service\Playlist;
 use App\Entity\MultimediaPlaylist;
 use App\Entity\MultimediaPlaylistDirectory;
 use App\Entity\PlaylistDirectory;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class MoveMultimediaToDirectoryService extends AbstractService
+class MoveMultimediaToDirectoryService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function move(MultimediaPlaylist $multimediaPlaylist, PlaylistDirectory $toDirectory): MultimediaPlaylist
     {
         $multimediaPlaylistDirectory = new MultimediaPlaylistDirectory();

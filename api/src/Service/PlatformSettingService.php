@@ -9,13 +9,11 @@ use function is_array;
 
 class PlatformSettingService
 {
-    public PlatformSettingRepository $platformSettingRepository;
     private string|array|null $setting = null;
 
-    public function __construct(PlatformSettingRepository $platformSettingRepository)
-    {
-        $this->platformSettingRepository = $platformSettingRepository;
-    }
+    public function __construct(
+        private readonly PlatformSettingRepository $platformSettingRepository
+    ) {}
 
     public function get(PlatformSettingEnum $platformSettingEnum): string|array|null
     {

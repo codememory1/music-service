@@ -3,27 +3,24 @@
 namespace App\Service\Multimedia;
 
 use App\Entity\Multimedia;
+use App\Rest\Response\HttpResponseCollection;
 use App\Rest\S3\Uploader\ClipUploader;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Rest\S3\Uploader\SubtitlesUploader;
 use App\Rest\S3\Uploader\TrackUploader;
-use App\Service\AbstractService;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class DeleteMultimediaService extends AbstractService
+class DeleteMultimediaService
 {
-    #[Required]
-    public ?ImageUploader $imageUploader = null;
-
-    #[Required]
-    public ?TrackUploader $trackUploader = null;
-
-    #[Required]
-    public ?ClipUploader $clipUploader = null;
-
-    #[Required]
-    public ?SubtitlesUploader $subtitlesUploader = null;
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection,
+        private readonly ImageUploader $imageUploader,
+        private readonly TrackUploader $trackUploader,
+        private readonly ClipUploader $clipUploader,
+        private readonly SubtitlesUploader $subtitlesUploader
+    ) {}
 
     public function delete(Multimedia $multimedia): Multimedia
     {

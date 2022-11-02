@@ -11,17 +11,13 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class TranslationFactory implements DataFixtureFactoryInterface
 {
-    private string $language;
-    private string $translationKey;
-    private string $translation;
     private ?ReferenceRepository $referenceRepository = null;
 
-    public function __construct(string $language, string $translationKey, string $translation)
-    {
-        $this->language = $language;
-        $this->translationKey = $translationKey;
-        $this->translation = $translation;
-    }
+    public function __construct(
+        private readonly string $language,
+        private readonly string $translationKey,
+        private readonly string $translation
+    ) {}
 
     public function factoryMethod(): EntityInterface
     {

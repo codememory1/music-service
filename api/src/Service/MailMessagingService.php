@@ -16,16 +16,11 @@ use Twig\Error\SyntaxError;
 
 class MailMessagingService
 {
-    private MailerInterface $mailer;
-    private Environment $environment;
-    private TranslationService $translationService;
-
-    public function __construct(MailerInterface $mailer, Environment $environment, TranslationService $translationService)
-    {
-        $this->mailer = $mailer;
-        $this->environment = $environment;
-        $this->translationService = $translationService;
-    }
+    public function __construct(
+        private readonly MailerInterface $mailer, 
+        private readonly Environment $environment, 
+        private readonly TranslationService $translation
+    ) {}
 
     /**
      * @throws SyntaxError
@@ -75,7 +70,7 @@ class MailMessagingService
 
         $email->from('kostynd1@gmail.com');
         $email->to($user->getEmail());
-        $email->subject($this->translationService->get('common@authFromUnknownDevice'));
+        $email->subject($this->translation->get('common@authFromUnknownDevice'));
         $email->html($this->getTemplate('auth-from-unknown-device', [
             'user' => $user,
             'userSession' => $userSession,
@@ -91,7 +86,7 @@ class MailMessagingService
      */
     private function getTemplate(string $name, array $params = []): string
     {
-        $params['translationService'] = $this->translationService;
+        $params['translation'] = $this->translation;
 
         return $this->environment->render(
             sprintf('mail/output/%s.html', $name),

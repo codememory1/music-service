@@ -2,18 +2,15 @@
 
 namespace App\Dto\Constraints;
 
-use App\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class ToTypeConstraint implements DataTransferConstraintInterface
 {
-    public readonly ?string $type;
-
-    public function __construct(?string $type = null)
-    {
-        $this->type = $type;
-    }
+    public function __construct(
+        public readonly ?string $type = null
+    ) {}
 
     public function getHandler(): ?string
     {

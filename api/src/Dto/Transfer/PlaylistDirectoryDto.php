@@ -4,6 +4,7 @@ namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
 use App\Entity\PlaylistDirectory;
+use App\Infrastucture\Dto\AbstractDataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

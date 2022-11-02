@@ -8,23 +8,24 @@ use App\Entity\MultimediaMediaLibrary;
 use App\Enum\MultimediaMediaLibraryEventEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Exception\Http\EventException;
-use App\Service\AbstractService;
 use App\Service\Event\MultimediaMediaLibrary\NextMultimediaAfterEndEventService;
 use App\Service\Event\MultimediaMediaLibrary\RangeTimeEventService;
+use Doctrine\ORM\EntityManagerInterface;
 
-class EventPayloadHandlerService extends AbstractService
+class EventPayloadHandlerService
 {
-    private ?MediaLibrary $mediaLibrary;
-
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {}
+    
     public function handler(MultimediaMediaLibraryEventDto $multimediaMediaLibraryEventDto, MultimediaMediaLibrary $multimediaMediaLibrary): void
     {
-        $this->mediaLibrary = $multimediaMediaLibrary->getMediaLibrary();
-
+        $mediaLibrary = $multimediaMediaLibrary->getMediaLibrary();
         $schema = new ($multimediaMediaLibraryEventDto->key->getNamespaceSchema())($multimediaMediaLibraryEventDto->payload);
 
         match ($multimediaMediaLibraryEventDto->key) {
             MultimediaMediaLibraryEventEnum::RANGE_TIME => $this->rangeTime($schema),
-            MultimediaMediaLibraryEventEnum::NEXT_MULTIMEDIA_AFTER_END => $this->nextMultimediaAfterEnd($schema),
+            MultimediaMediaLibraryEventEnum::NEXT_MULTIMEDIA_AFTER_END => $this->nextMultimediaAfterEnd($schema, $mediaLibrary),
         };
     }
 
@@ -38,12 +39,12 @@ class EventPayloadHandlerService extends AbstractService
         }
     }
 
-    private function nextMultimediaAfterEnd(NextMultimediaAfterEndEventService $eventSchema): void
+    private function nextMultimediaAfterEnd(NextMultimediaAfterEndEventService $eventSchema, MediaLibrary $mediaLibrary): void
     {
         $multimediaMediaLibraryRepository = $this->em->getRepository(MultimediaMediaLibrary::class);
         $finedMultimediaMediaLibrary = $multimediaMediaLibraryRepository->find($eventSchema->getMultimediaId());
 
-        if (null === $finedMultimediaMediaLibrary || false === $this->mediaLibrary->isMultimediaBelongsToMediaLibrary($finedMultimediaMediaLibrary)) {
+        if (null === $finedMultimediaMediaLibrary || false === $mediaLibrary->isMultimediaBelongsToMediaLibrary($finedMultimediaMediaLibrary)) {
             throw EntityNotFoundException::multimedia();
         }
     }

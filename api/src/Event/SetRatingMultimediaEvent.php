@@ -6,10 +6,7 @@ use App\Entity\MultimediaRating;
 
 final class SetRatingMultimediaEvent
 {
-    public readonly MultimediaRating $multimediaRating;
-
-    public function __construct(MultimediaRating $multimediaRating)
-    {
-        $this->multimediaRating = $multimediaRating;
-    }
+    public function __construct(
+        public readonly MultimediaRating $multimediaRating
+    ) {}
 }

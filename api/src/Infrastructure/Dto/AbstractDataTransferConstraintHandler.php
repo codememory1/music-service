@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Dto\Constraints;
+namespace App\Infrastucture\Dto;
 
-use App\Dto\Interfaces\DataTransferConstraintHandlerInterface;
-use App\Dto\Interfaces\DataTransferInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferConstraintHandlerInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
 use JetBrains\PhpStorm\Pure;
 use ReflectionProperty;
 use ReflectionType;

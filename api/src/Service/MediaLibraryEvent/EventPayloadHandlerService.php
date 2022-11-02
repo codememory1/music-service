@@ -7,25 +7,25 @@ use App\Entity\MediaLibrary;
 use App\Entity\User;
 use App\Enum\MediaLibraryEventEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\Service\AbstractService;
 use App\Service\Event\MediaLibrary\ShareWithFriendsAfterAddEventService;
+use Doctrine\ORM\EntityManagerInterface;
 
-class EventPayloadHandlerService extends AbstractService
+class EventPayloadHandlerService
 {
-    private MediaLibrary $mediaLibrary;
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {}
 
     public function handler(MediaLibraryEventDto $mediaLibraryEventDto, MediaLibrary $mediaLibrary): void
     {
-        $this->mediaLibrary = $mediaLibrary;
-
         $schema = new ($mediaLibraryEventDto->key->getNamespaceSchema())($mediaLibraryEventDto->payload);
 
         match ($mediaLibraryEventDto->key) {
-            MediaLibraryEventEnum::SHARE_WITH_FRIENDS_AFTER_ADD => $this->shareWithFriendsAfterAdd($schema)
+            MediaLibraryEventEnum::SHARE_WITH_FRIENDS_AFTER_ADD => $this->shareWithFriendsAfterAdd($schema, $mediaLibrary)
         };
     }
 
-    private function shareWithFriendsAfterAdd(ShareWithFriendsAfterAddEventService $eventSchema): void
+    private function shareWithFriendsAfterAdd(ShareWithFriendsAfterAddEventService $eventSchema, MediaLibrary $mediaLibrary): void
     {
         if ([] !== $eventSchema->getWithSelectedFriends()) {
             $userRepository = $this->em->getRepository(User::class);
@@ -33,7 +33,7 @@ class EventPayloadHandlerService extends AbstractService
             foreach ($eventSchema->getWithSelectedFriends() as $friendId) {
                 $finedFriend = $userRepository->find($friendId);
 
-                if (null === $finedFriend || false === $this->mediaLibrary->getUser()->isFriend($finedFriend)) {
+                if (null === $finedFriend || false === $mediaLibrary->getUser()->isFriend($finedFriend)) {
                     throw EntityNotFoundException::friend();
                 }
             }

@@ -35,6 +35,8 @@ class DeleteInvalidAccountActivationCodeCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $accountActivationCodeRepository = $this->em->getRepository(AccountActivationCode::class);
 
+        $io->info('Worker started successfully');
+
         while (true) {
             sleep(1);
 

@@ -5,18 +5,21 @@ namespace App\Service\Multimedia;
 use App\Entity\Multimedia;
 use App\Entity\RunningMultimedia;
 use App\Entity\UserSession;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use App\Service\MultimediaListeningHistory\UpsertListenService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class PlayPauseMultimediaService extends AbstractService
+class PlayPauseMultimediaService
 {
-    #[Required]
-    public ?UpsertListenService $upsertListenHistoryService = null;
-
-    #[Required]
-    public ?AddAuditionService $addAuditionService = null;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection,
+        private readonly UpsertListenService $upsertListenHistoryService,
+        private readonly AddAuditionService $addAuditionService
+    ) {}
 
     public function playPause(Multimedia $multimedia, UserSession $userSession): RunningMultimedia
     {

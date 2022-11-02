@@ -3,7 +3,7 @@
 namespace App\Dto\Constraints;
 
 use App\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
-use App\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
 
 final class IgnoreCallSetterConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferCallSetterConstraintHandlerInterface
 {

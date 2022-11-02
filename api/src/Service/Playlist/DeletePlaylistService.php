@@ -3,11 +3,17 @@
 namespace App\Service\Playlist;
 
 use App\Entity\Playlist;
-use App\Service\AbstractService;
+use App\Rest\Response\HttpResponseCollection;
+use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class DeletePlaylistService extends AbstractService
+class DeletePlaylistService
 {
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly HttpResponseCollection $responseCollection
+    ) {}
+
     public function delete(Playlist $playlist): Playlist
     {
         $this->flusherService->remove($playlist);

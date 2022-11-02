@@ -13,16 +13,11 @@ use Doctrine\ORM\NoResultException;
 
 class ArtistIncome
 {
-    private readonly PlatformSettingService $platformSettingService;
-    private readonly MultimediaAuditionRepository $multimediaAuditionRepository;
-    private readonly TransactionRepository $transactionRepository;
-
-    public function __construct(PlatformSettingService $platformSettingService, MultimediaAuditionRepository $multimediaAuditionRepository, TransactionRepository $transactionRepository)
-    {
-        $this->platformSettingService = $platformSettingService;
-        $this->multimediaAuditionRepository = $multimediaAuditionRepository;
-        $this->transactionRepository = $transactionRepository;
-    }
+    public function __construct(
+        private readonly PlatformSettingService $platformSettingService,
+        private readonly MultimediaAuditionRepository $multimediaAuditionRepository,
+        private readonly TransactionRepository $transactionRepository
+    ) {}
 
     /**
      * @throws NonUniqueResultException

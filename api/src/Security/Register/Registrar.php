@@ -3,21 +3,21 @@
 namespace App\Security\Register;
 
 use App\Dto\Transfer\RegistrationDto;
-use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\UserProfile;
 use App\Enum\RoleEnum;
-use App\Service\AbstractService;
+use App\Repository\RoleRepository;
+use App\Service\FlusherService;
 use App\Service\UserSetting\AddUserDefaultSettingService;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class Registrar extends AbstractService
+class Registrar
 {
-    #[Required]
-    public ?ReRegister $reRegister = null;
-
-    #[Required]
-    public ?AddUserDefaultSettingService $addUserDefaultSettingService = null;
+    public function __construct(
+        private readonly FlusherService $flusherService,
+        private readonly RoleRepository $roleRepository,
+        private readonly ReRegister $reRegister,
+        private readonly AddUserDefaultSettingService $addUserDefaultSetting,
+    ) {}
 
     public function make(RegistrationDto $registrationDto, ?User $userByEmail): User
     {
@@ -29,7 +29,7 @@ class Registrar extends AbstractService
             $user = $this->collectUserEntity(new User(), $registrationDto);
             $user->setProfile($this->collectUserProfileEntity($registrationDto));
 
-            $this->addUserDefaultSettingService->add($user);
+            $this->addUserDefaultSetting->add($user);
 
             $this->flusherService->addPersist($user);
         }
@@ -41,7 +41,7 @@ class Registrar extends AbstractService
     {
         $userEntity->setEmail($registrationDTO->email);
         $userEntity->setPassword($registrationDTO->password);
-        $userEntity->setRole($this->em->getRepository(Role::class)->findOneBy([
+        $userEntity->setRole($this->roleRepository->findOneBy([
             'key' => RoleEnum::USER->name
         ]));
         $userEntity->setNotActiveStatus();

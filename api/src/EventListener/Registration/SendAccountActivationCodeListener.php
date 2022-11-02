@@ -12,17 +12,13 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-#[AsEventListener('app.registration', 'onUserRegistration', 0)]
+#[AsEventListener(UserRegistrationEvent::class, 'onUserRegistration', 0)]
 final class SendAccountActivationCodeListener
 {
-    private EntityManagerInterface $em;
-    private MailMessagingService $mailMessagingService;
-
-    public function __construct(EntityManagerInterface $manager, MailMessagingService $mailMessagingService)
-    {
-        $this->em = $manager;
-        $this->mailMessagingService = $mailMessagingService;
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly MailMessagingService $mailMessagingService
+    ) {}
 
     /**
      * @throws TransportExceptionInterface

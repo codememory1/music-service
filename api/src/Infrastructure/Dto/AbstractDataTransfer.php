@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Dto\Transfer;
+namespace App\Infrastucture\Dto;
 
 use App\Collection\DtoConstraintCollection;
-use App\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
-use App\Dto\Interfaces\DataTransferConstraintHandlerInterface;
-use App\Dto\Interfaces\DataTransferConstraintInterface;
-use App\Dto\Interfaces\DataTransferInterface;
-use App\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferConstraintHandlerInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
+use App\Infrastucture\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
 use App\Entity\Interfaces\EntityInterface;
 use JetBrains\PhpStorm\Pure;
 use LogicException;
@@ -23,12 +23,11 @@ abstract class AbstractDataTransfer implements DataTransferInterface
 {
     protected array $propertyNameToData = [];
     protected ReflectionClass $reflectionClass;
-    private ReverseContainer $container;
     private ?EntityInterface $entity = null;
 
-    public function __construct(ReverseContainer $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        private readonly ReverseContainer $container
+    ) {
         $this->reflectionClass = new ReflectionClass(static::class);
     }
 

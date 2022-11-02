@@ -12,13 +12,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface as SymfonyValidator
 
 abstract class AbstractValidator implements ValidatorInterface
 {
-    private SymfonyValidatorInterface $validator;
     private ?ConstraintViolationListInterface $constraintViolation = null;
 
-    public function __construct(SymfonyValidatorInterface $validator)
-    {
-        $this->validator = $validator;
-    }
+    public function __construct(
+        private readonly SymfonyValidatorInterface $validator
+    ) {}
 
     protected function constraintViolation(?callable $handleConstraintInfo = null): void
     {

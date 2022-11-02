@@ -6,6 +6,7 @@ use App\Dto\Constraints as DtoConstraints;
 use App\Entity\Notification;
 use App\Entity\User;
 use App\Enum\NotificationTypeEnum;
+use App\Infrastucture\Dto\AbstractDataTransfer;
 use App\Validator\Constraints as AppAssert;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;

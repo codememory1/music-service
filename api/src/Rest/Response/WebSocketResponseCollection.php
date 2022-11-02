@@ -9,18 +9,14 @@ use App\Service\TranslationService;
 
 final class WebSocketResponseCollection
 {
-    private WebSocketSchema $webSocketSchema;
-    private TranslationService $translationService;
-
-    public function __construct(WebSocketSchema $webSocketSchema, TranslationService $translationService)
-    {
-        $this->webSocketSchema = $webSocketSchema;
-        $this->translationService = $translationService;
-    }
+    public function __construct(
+        private readonly WebSocketSchema $webSocketSchema,
+        private readonly TranslationService $translation
+    ) {}
 
     public function setLocale(string $locale): self
     {
-        $this->translationService->setLocale($locale);
+        $this->translation->setLocale($locale);
 
         return $this;
     }

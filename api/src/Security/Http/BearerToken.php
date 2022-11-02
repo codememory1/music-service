@@ -6,12 +6,9 @@ use App\Rest\Http\Request;
 
 class BearerToken
 {
-    private Request $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
+    public function __construct(
+        private readonly Request $request
+    ) {}
 
     public function getToken(): ?string
     {

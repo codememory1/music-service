@@ -5,7 +5,6 @@ namespace App\Service\MediaLibrary;
 use App\Dto\Transfer\MediaLibraryDto;
 use App\Entity\MediaLibrary;
 use App\Entity\User;
-use App\Enum\EventEnum;
 use App\Event\CreateMediaLibraryEvent;
 use App\Exception\Http\EntityExistException;
 use App\Service\AbstractService;
@@ -32,10 +31,7 @@ class CreateMediaLibraryService extends AbstractService
 
         $this->flusherService->save($mediaLibrary);
 
-        $this->eventDispatcher->dispatch(
-            new CreateMediaLibraryEvent($mediaLibrary),
-            EventEnum::CREATE_MEDIA_LIBRARY->value
-        );
+        $this->eventDispatcher->dispatch(new CreateMediaLibraryEvent($mediaLibrary));
 
         return $mediaLibrary;
     }
