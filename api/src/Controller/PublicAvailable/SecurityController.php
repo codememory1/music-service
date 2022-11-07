@@ -42,7 +42,7 @@ class SecurityController extends AbstractRestController
         $identifiedUser = $identification->identify($authorizationDto);
         $authenticatedUser = $authentication->authenticate($authorizationDto, $identifiedUser);
 
-        return $authorization->auth($authenticatedUser);
+        return $this->response($authorization->auth($authenticatedUser));
     }
 
     #[Route('/access-token/update', methods: 'PUT')]

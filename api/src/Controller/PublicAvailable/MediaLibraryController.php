@@ -31,7 +31,7 @@ class MediaLibraryController extends AbstractRestController
             $this->getAuthorizedUser()->getMediaLibrary()?->getMultimedia() ?: []
         );
 
-        return $this->responseCollection->dataOutput($multimediaMediaLibraryResponseData->getResponse());
+        return $this->responseData($multimediaMediaLibraryResponseData);
     }
 
     #[Route('/share/with-friend/{user_id<\d+>}', methods: 'PATCH')]
@@ -62,6 +62,6 @@ class MediaLibraryController extends AbstractRestController
 
         $mediaLibraryStatisticResponseData->setEntities($mediaLibrary?->getStatistic() ?: []);
 
-        return $this->responseCollection->dataOutput($mediaLibraryStatisticResponseData->getResponse(true));
+        return $this->responseData($mediaLibraryStatisticResponseData);
     }
 }

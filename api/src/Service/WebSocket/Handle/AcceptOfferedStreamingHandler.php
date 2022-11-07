@@ -11,21 +11,24 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 final class AcceptOfferedStreamingHandler extends AbstractUserMessageHandlerService
 {
-    protected ?WebSocketClientMessageTypeEnum $clientMessageType = WebSocketClientMessageTypeEnum::ACCEPT_OFFERED_STREAMING;
-
     #[Required]
     public ?AcceptOfferedStreamingTransformer $transformer = null;
 
+    public function getClientMessageType(): WebSocketClientMessageTypeEnum
+    {
+        return WebSocketClientMessageTypeEnum::ACCEPT_OFFERED_STREAMING;
+    }
+
     public function handler(): void
     {
-        $this->throwIfNotAuthorized($this->clientMessageType);
+        $this->throwIfNotAuthorized();
 
         $dto = $this->transformer->transformFromArray($this->getMessageData());
 
         $this->validate($dto);
 
         if (false === $this->streamingOfferedToMe($dto->streamRunningMultimedia) && $dto->streamRunningMultimedia->isPending()) {
-            throw EntityNotFoundException::streamRunningMultimedia($this->clientMessageType);
+            throw EntityNotFoundException::streamRunningMultimedia();
         }
 
         $this->accept($dto->streamRunningMultimedia);

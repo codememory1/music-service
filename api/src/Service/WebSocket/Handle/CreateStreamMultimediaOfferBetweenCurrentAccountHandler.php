@@ -16,8 +16,6 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends AbstractUserMessageHandlerService
 {
-    protected ?WebSocketClientMessageTypeEnum $clientMessageType = WebSocketClientMessageTypeEnum::CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_CURRENT_ACCOUNT;
-
     #[Required]
     public ?RunningMultimediaComponent $runningMultimediaComponent = null;
 
@@ -30,9 +28,14 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
     #[Required]
     public ?CreateStreamMultimediaOfferBetweenCurrentAccountTransformer $transformer = null;
 
+    public function getClientMessageType(): WebSocketClientMessageTypeEnum
+    {
+        return WebSocketClientMessageTypeEnum::CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_CURRENT_ACCOUNT;
+    }
+
     public function handler(): void
     {
-        $this->throwIfNotAuthorized($this->clientMessageType);
+        $this->throwIfNotAuthorized();
 
         $dto = $this->transformer->transformFromArray($this->getMessageData());
 
@@ -40,11 +43,7 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
 
         $authorizedUserSession = $this->getAuthorizedUser()->getUserSession();
         $toUserSession = $this->getToUserSession($dto);
-        $runningMultimedia = $this->runningMultimediaComponent->getRunningMultimedia(
-            $dto->runningMultimedia,
-            $authorizedUserSession,
-            $this->clientMessageType
-        );
+        $runningMultimedia = $this->runningMultimediaComponent->getRunningMultimedia($dto->runningMultimedia, $authorizedUserSession);
         $this->createStreamAcceptRequestResponse($runningMultimedia, $authorizedUserSession, $toUserSession);
     }
 
@@ -59,7 +58,7 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
         $this->accessToken->setToken($userSession->getAccessToken());
 
         if (false === $this->accessToken->isValid()) {
-            throw EntityNotFoundException::userSession($this->clientMessageType);
+            throw EntityNotFoundException::userSession();
         }
 
         return $userSession;
@@ -70,7 +69,7 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
         if (null === $userSession
             || false === $userSession->isActive()
             || $userSession->isCompare($this->getAuthorizedUser()->getUserSession())) {
-            throw EntityNotFoundException::userSession($this->clientMessageType);
+            throw EntityNotFoundException::userSession();
         }
     }
 

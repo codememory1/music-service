@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Infrastucture\Dto;
+namespace App\Infrastructure\Dto;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
-use App\Infrastucture\Dto\Interfaces\DataTransformerInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransformerInterface;
 use App\Rest\Http\Request;
 use LogicException;
 

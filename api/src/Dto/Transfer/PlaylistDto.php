@@ -6,7 +6,7 @@ use App\Dto\Constraints as DtoConstraints;
 use App\Entity\Playlist;
 use App\Enum\PlaylistStatusEnum;
 use App\Enum\RequestTypeEnum;
-use App\Infrastucture\Dto\AbstractDataTransfer;
+use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Rest\Http\Request;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\DependencyInjection\ReverseContainer;

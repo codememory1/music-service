@@ -2,8 +2,8 @@
 
 namespace App\Rest\Validator\Interfaces;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 
 interface ValidatorInterface
 {

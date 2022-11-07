@@ -2,8 +2,9 @@
 
 namespace App\Dto\Constraints;
 
-use App\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
-use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastructure\Dto\AbstractDataTransferConstraintHandler;
+use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class ToEntityConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferValueInterceptorConstraintHandlerInterface

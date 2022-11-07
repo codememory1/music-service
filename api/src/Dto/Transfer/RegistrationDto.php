@@ -3,8 +3,8 @@
 namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
-use App\Dto\Trasfer\Traits\SetPasswordTrait;
-use App\Infrastucture\Dto\AbstractDataTransfer;
+use App\Dto\Transfer\Traits\SetPasswordTrait;
+use App\Infrastructure\Dto\AbstractDataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class RegistrationDto extends AbstractDataTransfer

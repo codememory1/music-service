@@ -22,7 +22,7 @@ class Request
         if ($this->exist($key)) {
             $value = $this->all()[$key];
 
-            return empty($value) ? null : $value;
+            return empty($value) ? $default : $value;
         }
 
         return $default;

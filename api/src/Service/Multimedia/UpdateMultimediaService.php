@@ -4,6 +4,7 @@ namespace App\Service\Multimedia;
 
 use App\Dto\Transfer\MultimediaDto;
 use App\Entity\Multimedia;
+use App\Enum\MultimediaStatusEnum;
 use App\Exception\Http\MultimediaException;
 use App\Service\AbstractService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +22,7 @@ class UpdateMultimediaService extends AbstractService
         $multimedia = $multimediaDto->getEntity();
 
         if ($multimedia->isPublished() || $multimedia->isModeration() || $multimedia->isAppeal()) {
-            throw MultimediaException::badUpdateInStatus($multimedia->getStatus());
+            throw MultimediaException::badUpdateInStatus(['status' => MultimediaStatusEnum::getValueByName($multimedia->getStatus())]);
         }
 
         $this->saveMultimediaService->make($multimediaDto, $multimedia);

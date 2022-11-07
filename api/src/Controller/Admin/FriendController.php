@@ -28,7 +28,7 @@ class FriendController extends AbstractRestController
     ): JsonResponse {
         $friendResponseData->setEntities($friendRepository->findByUser($user));
 
-        return $this->responseCollection->dataOutput($friendResponseData->getResponse());
+        return $this->responseData($friendResponseData);
     }
 
     #[Route('/friend/{friend_id<\d+>}/terminate-friendship', methods: 'DELETE')]

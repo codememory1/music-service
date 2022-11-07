@@ -16,6 +16,6 @@ class SubscriptionController extends AbstractRestController
     {
         $subscriptionResponseData->setEntities($subscriptionRepository->findAll());
 
-        return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse());
+        return $this->responseData($subscriptionResponseData);
     }
 }

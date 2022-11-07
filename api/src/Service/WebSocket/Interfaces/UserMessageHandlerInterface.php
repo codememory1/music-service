@@ -2,6 +2,7 @@
 
 namespace App\Service\WebSocket\Interfaces;
 
+use App\Enum\WebSocketClientMessageTypeEnum;
 use App\Service\WebSocket\Worker;
 
 interface UserMessageHandlerInterface
@@ -17,6 +18,8 @@ interface UserMessageHandlerInterface
     public function getMessageData(): array;
 
     public function setWorker(Worker $worker): self;
+
+    public function getClientMessageType(): WebSocketClientMessageTypeEnum;
 
     public function handler(): void;
 }

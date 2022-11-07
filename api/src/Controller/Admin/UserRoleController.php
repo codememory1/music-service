@@ -28,7 +28,7 @@ class UserRoleController extends AbstractRestController
     {
         $userRoleResponseData->setEntities($roleRepository->findAll());
 
-        return $this->responseCollection->dataOutput($userRoleResponseData->getResponse());
+        return $this->responseData($userRoleResponseData);
     }
 
     #[Route('/{role_id<\d+>}/read', methods: 'GET')]
@@ -39,7 +39,7 @@ class UserRoleController extends AbstractRestController
     ): JsonResponse {
         $userRoleResponseData->setEntities($role);
 
-        return $this->responseCollection->dataOutput($userRoleResponseData->getResponse());
+        return $this->responseData($userRoleResponseData);
     }
 
     #[Route('/create', methods: 'POST')]

@@ -33,7 +33,7 @@ class MediaLibraryController extends AbstractRestController
 
         $multimediaMediaLibraryResponseData->setEntities($user->getMediaLibrary()->getMultimedia());
 
-        return $this->responseCollection->dataOutput($multimediaMediaLibraryResponseData->getResponse());
+        return $this->responseData($multimediaMediaLibraryResponseData);
     }
 
     #[Route('/{user_id<\d+>}/media-library/create', methods: 'POST')]

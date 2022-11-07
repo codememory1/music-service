@@ -6,7 +6,7 @@ use App\Dto\Constraints as DtoConstraints;
 use App\Entity\MultimediaCategory;
 use App\Entity\TranslationKey;
 use App\Enum\ResponseTypeEnum;
-use App\Infrastucture\Dto\AbstractDataTransfer;
+use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 

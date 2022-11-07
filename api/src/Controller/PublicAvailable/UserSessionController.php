@@ -22,7 +22,7 @@ class UserSessionController extends AbstractRestController
     {
         $userSessionResponseData->setEntities($userSessionRepository->authorizedUserSessions());
 
-        return $this->responseCollection->dataOutput($userSessionResponseData->getResponse());
+        return $this->responseData($userSessionResponseData);
     }
 
     #[Route('/{userSession_id<\d+>}/delete', methods: 'DELETE')]

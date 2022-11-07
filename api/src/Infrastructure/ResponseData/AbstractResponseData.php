@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ReverseContainer;
 
 abstract class AbstractResponseData implements ResponseDataInterface
 {
-    protected null|array|EntityInterface|Collection $entities = null;
+    protected array $entities = [];
     protected bool $asFirstResponse = false;
     protected Reflection $reflection;
     protected array $ignoredProperties = [];
@@ -29,7 +29,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
 
     #[Pure]
     public function __construct(
-        protected ReverseContainer $container
+        protected readonly ReverseContainer $container
     ) {
         $this->reflection = new Reflection(static::class);
     }
@@ -37,16 +37,16 @@ abstract class AbstractResponseData implements ResponseDataInterface
     public function setEntities(EntityInterface|Collection|array $entities): self
     {
         if ($entities instanceof EntityInterface) {
-            $entities = [$entities];
+            $this->entities = [$entities];
 
             $this->asFirstResponse = true;
+        } else {
+            if ($entities instanceof Collection) {
+                $this->entities = $entities->toArray();
+            } else {
+                $this->entities = $entities;
+            }
         }
-
-        if ($entities instanceof Collection) {
-            $entities = $entities->toArray();
-        }
-
-        $this->entities = $entities;
 
         return $this;
     }

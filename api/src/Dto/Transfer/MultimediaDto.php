@@ -10,7 +10,7 @@ use App\Entity\MultimediaPerformer;
 use App\Entity\User;
 use App\Enum\MultimediaTypeEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\Infrastucture\Dto\AbstractDataTransfer;
+use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Repository\LanguageCodeRepository;
 use App\Security\AuthorizedUser;
 use Doctrine\ORM\EntityManagerInterface;
@@ -109,7 +109,7 @@ final class MultimediaDto extends AbstractDataTransfer
             $performer = $userRepository->findByEmail($performerEmail);
 
             if (null === $performer) {
-                throw EntityNotFoundException::performer($performerEmail);
+                throw EntityNotFoundException::performer(['performer' => $performerEmail]);
             }
 
             $multimediaPerformer = new MultimediaPerformer();
@@ -138,7 +138,7 @@ final class MultimediaDto extends AbstractDataTransfer
             }
 
             if (null === $this->languageCodeRepository->findByCode($code)) {
-                throw EntityNotFoundException::languageCode($code);
+                throw EntityNotFoundException::languageCode(['language_iso' => $code]);
             }
         }
     }

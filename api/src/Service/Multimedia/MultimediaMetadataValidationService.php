@@ -52,7 +52,7 @@ class MultimediaMetadataValidationService
         };
 
         if ($stream->get('duration') > $allowedDuration) {
-            throw MultimediaException::badDuration($allowedDuration);
+            throw MultimediaException::badDuration(['duration' => $allowedDuration]);
         }
     }
 }

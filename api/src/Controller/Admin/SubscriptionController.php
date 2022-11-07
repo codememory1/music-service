@@ -28,7 +28,7 @@ class SubscriptionController extends AbstractRestController
     {
         $subscriptionResponseData->setEntities($subscriptionRepository->findAll());
 
-        return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse());
+        return $this->responseData($subscriptionResponseData);
     }
 
     #[Route('/{subscription_id<\d+>}/read', methods: 'GET')]
@@ -39,7 +39,7 @@ class SubscriptionController extends AbstractRestController
     ): JsonResponse {
         $subscriptionResponseData->setEntities($subscription);
 
-        return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse(true));
+        return $this->responseData($subscriptionResponseData);
     }
 
     #[Route('/create', methods: 'POST')]

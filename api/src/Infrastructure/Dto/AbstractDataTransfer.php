@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Infrastucture\Dto;
+namespace App\Infrastructure\Dto;
 
 use App\Collection\DtoConstraintCollection;
 use App\Entity\Interfaces\EntityInterface;
-use App\Infrastucture\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
-use App\Infrastucture\Dto\Interfaces\DataTransferConstraintHandlerInterface;
-use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
-use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
-use App\Infrastucture\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferConstraintHandlerInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
 use JetBrains\PhpStorm\Pure;
 use LogicException;
 use ReflectionClass;

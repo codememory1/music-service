@@ -16,6 +16,6 @@ class LanguageController extends AbstractRestController
     {
         $languageResponseData->setEntities($languageRepository->findAll());
 
-        return $this->responseCollection->dataOutput($languageResponseData->getResponse());
+        return $this->responseData($languageResponseData);
     }
 }

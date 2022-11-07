@@ -22,7 +22,7 @@ class MultimediaListeningHistoryController extends AbstractRestController
     {
         $multimediaListeningHistoryResponseData->setEntities($multimediaListeningHistoryRepository->findAllByUser($this->getAuthorizedUser()));
 
-        return $this->responseCollection->dataOutput($multimediaListeningHistoryResponseData->getResponse());
+        return $this->responseData($multimediaListeningHistoryResponseData);
     }
 
     #[Route('/listen/{multimediaListeningHistory_id<\d+>}/delete', methods: 'DELETE')]

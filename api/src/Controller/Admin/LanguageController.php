@@ -28,7 +28,7 @@ class LanguageController extends AbstractRestController
     {
         $languageResponseData->setEntities($languageRepository->findAll());
 
-        return $this->responseCollection->dataOutput($languageResponseData->getResponse());
+        return $this->responseData($languageResponseData);
     }
 
     #[Route('/{language_code<[a-z]+>}/read', methods: 'GET')]
@@ -39,7 +39,7 @@ class LanguageController extends AbstractRestController
     ): JsonResponse {
         $languageResponseData->setEntities($language);
 
-        return $this->responseCollection->dataOutput($languageResponseData->getResponse(true));
+        return $this->responseData($languageResponseData);
     }
 
     #[Route('/create', methods: 'POST')]

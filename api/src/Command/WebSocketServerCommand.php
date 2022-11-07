@@ -6,9 +6,9 @@ use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\WebSocketUserMessageTypeHandlerEnum;
 use App\Exception\Interfaces\WebSocketExceptionInterface;
-use App\Rest\Response\WebSocketSchema;
+use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
+use App\Rest\Response\Scheme\WebSocketErrorScheme;
 use App\Service\SchemaValidatorService;
-use App\Service\TranslationService;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use App\Service\WebSocket\MessageQueueToClient;
 use App\Service\WebSocket\Worker;
@@ -37,8 +37,6 @@ class WebSocketServerCommand extends Command
         private readonly ReverseContainer $container,
         private readonly SchemaValidatorService $schemaValidatorService,
         private readonly Worker $worker,
-        private readonly WebSocketSchema $webSocketSchema,
-        private readonly TranslationService $translationService,
         private readonly MessageQueueToClient $messageQueueToClient,
         private readonly LoggerInterface $logger
     ) {
@@ -73,10 +71,10 @@ class WebSocketServerCommand extends Command
         });
 
         $this->worker->getServer()->addProcess(new Process(static function() use ($worker, $messageQueueToClient): void {
-            $messageQueueToClient->pickMessage(static function(User|UserSession $to, WebSocketSchema $webSocketSchema) use ($worker): void {
+            $messageQueueToClient->pickMessage(static function(User|UserSession $to, WebSocketSchemeInterface $scheme) use ($worker): void {
                 match ($to::class) {
-                    User::class => $worker->sendToUser($to, $webSocketSchema),
-                    UserSession::class => $worker->sendToSession($to, $webSocketSchema)
+                    User::class => $worker->sendToUser($to, $scheme),
+                    UserSession::class => $worker->sendToSession($to, $scheme)
                 };
             });
         }));
@@ -119,7 +117,7 @@ class WebSocketServerCommand extends Command
                 $handler->handler();
             } catch (Exception $exception) {
                 if ($exception instanceof WebSocketExceptionInterface) {
-                    $this->throwHandler($exception, $connectionId, $message);
+                    $this->throwHandler($handler, $exception, $connectionId);
                 } else {
                     $this->logger->critical($exception->getMessage());
                 }
@@ -127,22 +125,15 @@ class WebSocketServerCommand extends Command
         }
     }
 
-    private function throwHandler(WebSocketExceptionInterface $exception, int $connectionId, array $message): void
+    private function throwHandler(UserMessageHandlerInterface $handler, WebSocketExceptionInterface $exception, int $connectionId): void
     {
-        $this->webSocketSchema->setType($exception->getClientMessageType());
-        $this->webSocketSchema->setError($this->getTranslationMessage(
-            $message['headers']['language'],
-            $exception->getMessageTranslationKey()
-        ));
-        $this->webSocketSchema->setParameters($exception->getParameters());
+        $scheme = new WebSocketErrorScheme(
+            $exception->getPlatformCode(),
+            $handler->getClientMessageType(),
+            $exception->getMessage(),
+            $exception->getParameters()
+        );
 
-        $this->worker->sendToConnection($connectionId, $this->webSocketSchema);
-    }
-
-    private function getTranslationMessage(string $locale, string $translationKey): ?string
-    {
-        $this->translationService->setLocale($locale);
-
-        return $this->translationService->getTranslation($translationKey);
+        $this->worker->sendToConnection($connectionId, $scheme);
     }
 }

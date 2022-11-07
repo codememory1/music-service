@@ -14,7 +14,7 @@ final class Between extends Constraint
         public readonly string $message = 'The {{ current }} property does not match the {{ with }} property',
         mixed $options = null,
         ?array $groups = null,
-        public readonly mixed $payload = null
+        mixed $payload = null
     ) {
         parent::__construct($options, $groups, $payload);
     }

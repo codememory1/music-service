@@ -2,14 +2,15 @@
 
 namespace App\Exception\WebSocket;
 
-use App\Enum\WebSocketClientMessageTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Exception\WebSocketException;
 use JetBrains\PhpStorm\Pure;
 
 class AuthorizationException extends WebSocketException
 {
     #[Pure]
-    final public static function authorizationIsRequired(WebSocketClientMessageTypeEnum $clientMessageType): self
+    final public static function authorizationIsRequired(): self
     {
-        return new self($clientMessageType, 'auth@authRequired');
+        return new self(PlatformCodeEnum::AUTHORIZATION_REQUIRED, 'auth@authRequired');
     }
 }

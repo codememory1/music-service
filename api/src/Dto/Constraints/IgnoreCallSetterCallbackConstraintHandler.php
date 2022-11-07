@@ -2,8 +2,9 @@
 
 namespace App\Dto\Constraints;
 
-use App\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
-use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastructure\Dto\AbstractDataTransferConstraintHandler;
+use App\Infrastructure\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
 use LogicException;
 
 final class IgnoreCallSetterCallbackConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferCallSetterConstraintHandlerInterface

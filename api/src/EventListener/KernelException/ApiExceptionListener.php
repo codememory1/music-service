@@ -2,11 +2,9 @@
 
 namespace App\EventListener\KernelException;
 
-use App\Exception\Interfaces\HttpExceptionInterface;
-use App\Rest\Http\Request;
+use App\Exception\HttpExceptionInterface;
 use App\Rest\Response\HttpResponse;
-use App\Rest\Response\HttpSchema;
-use App\Service\TranslationService;
+use App\Rest\Response\Scheme\HttpErrorScheme;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
@@ -14,10 +12,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 final class ApiExceptionListener
 {
     public function __construct(
-        private readonly HttpResponse $httpResponse,
-        private readonly HttpSchema $httpSchema,
-        private readonly Request $request,
-        private readonly TranslationService $translation
+        private readonly HttpResponse $httpResponse
     ) {
     }
 
@@ -32,22 +27,13 @@ final class ApiExceptionListener
 
     private function httpException(HttpExceptionInterface $exception): void
     {
-        $this->httpSchema->setStatusCode($exception->getStatusCode());
-        $this->httpSchema->setType($exception->getResponseType());
-        $this->httpSchema->setData($exception->getData());
-        $this->httpSchema->setParameters($exception->getParameters());
-        $this->httpSchema->setMessage($this->getTranslationMessage(
-            $this->request->getRequest()->getLocale(),
-            $exception->getMessageTranslationKey()
-        ));
+        $httpScheme = new HttpErrorScheme(
+            $exception->getHttpCode(),
+            $exception->getPlatformCode(),
+            $exception->getMessage(),
+            $exception->getParameters()
+        );
 
-        $this->httpResponse->getResponse($this->httpSchema)->send();
-    }
-
-    private function getTranslationMessage(string $locale, string $translationKey): ?string
-    {
-        $this->translation->setLocale($locale);
-
-        return $this->translation->getTranslation($translationKey);
+        $this->httpResponse->getResponse($httpScheme, $exception->getHeaders())->send();
     }
 }

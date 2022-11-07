@@ -18,7 +18,7 @@ class GoogleAuthController extends AbstractRestController
     #[Route('/authorization-url', methods: 'GET')]
     public function authorizationUrl(GoogleClient $client): JsonResponse
     {
-        return $this->responseCollection->dataOutput([
+        return $this->response([
             'url' => $client->createAuthorizationUrl()
         ]);
     }

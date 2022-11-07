@@ -5,8 +5,8 @@ namespace App\Dto\Transformer;
 use App\Dto\Transfer\MultimediaMediaLibraryDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\MultimediaMediaLibrary;
-use App\Infrastucture\Dto\AbstractDataTransformer;
-use App\Infrastucture\Dto\Interfaces\DataTransferInterface;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 

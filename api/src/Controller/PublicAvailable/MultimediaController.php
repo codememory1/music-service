@@ -32,7 +32,7 @@ class MultimediaController extends AbstractRestController
     {
         $multimediaResponseData->setEntities($multimediaRepository->findAllByUser($this->getAuthorizedUser()));
 
-        return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
+        return $this->responseData($multimediaResponseData);
     }
 
     #[Route('/{user_id<\d+>}/multimedia/all', methods: 'GET')]
@@ -43,7 +43,7 @@ class MultimediaController extends AbstractRestController
     ): JsonResponse {
         $multimediaResponseData->setEntities($multimediaRepository->findAnother($user));
 
-        return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
+        return $this->responseData($multimediaResponseData);
     }
 
     #[Route('/multimedia/add', methods: 'POST')]
@@ -95,6 +95,6 @@ class MultimediaController extends AbstractRestController
 
         $multimediaStatistics->setEntities($multimedia->getStatistic());
 
-        return $this->responseCollection->dataOutput($multimediaStatistics->getResponse());
+        return $this->responseData($multimediaStatistics);
     }
 }

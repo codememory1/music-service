@@ -8,41 +8,29 @@ use App\Rest\S3\Uploader\ClipUploader;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Rest\S3\Uploader\SubtitlesUploader;
 use App\Rest\S3\Uploader\TrackUploader;
-use App\Service\AbstractService;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
+use App\Service\FlusherService;
 
-class DeleteAlbumService extends AbstractService
+class DeleteAlbum
 {
-    #[Required]
-    public ?ImageUploader $imageUploader = null;
-
-    #[Required]
-    public ?TrackUploader $trackUploader = null;
-
-    #[Required]
-    public ?ClipUploader $clipUploader = null;
-
-    #[Required]
-    public ?SubtitlesUploader $subtitlesUploader = null;
+    public function __construct(
+        private readonly FlusherService $flusher,
+        private readonly ImageUploader $imageUploader,
+        private readonly TrackUploader $trackUploader,
+        private readonly ClipUploader $clipUploader,
+        private readonly SubtitlesUploader $subtitlesUploader
+    ) {
+    }
 
     public function delete(Album $album): Album
     {
         $this->imageUploader->delete($album->getImage());
-        $this->flusherService->remove($album);
+        $this->flusher->remove($album);
 
         foreach ($album->getMultimedia() as $multimedia) {
             $this->deleteMultimediaFiles($multimedia);
         }
 
         return $album;
-    }
-
-    public function request(Album $album): JsonResponse
-    {
-        $this->delete($album);
-
-        return $this->responseCollection->successDelete('album@successDelete');
     }
 
     private function deleteMultimediaFiles(Multimedia $multimedia): void

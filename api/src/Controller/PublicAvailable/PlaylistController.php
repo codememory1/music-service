@@ -31,7 +31,7 @@ class PlaylistController extends AbstractRestController
     {
         $playlistResponseData->setEntities($playlistRepository->findByUser($this->getAuthorizedUser()));
 
-        return $this->responseCollection->dataOutput($playlistResponseData->getResponse());
+        return $this->responseData($playlistResponseData);
     }
 
     #[Route('/playlist/{playlist_id}/read', methods: 'GET')]
@@ -44,7 +44,7 @@ class PlaylistController extends AbstractRestController
 
         $playlistResponseData->setEntities($playlist);
 
-        return $this->responseCollection->dataOutput($playlistResponseData->getResponse(true));
+        return $this->responseData($playlistResponseData);
     }
 
     #[Route('/playlist/create', methods: 'POST')]

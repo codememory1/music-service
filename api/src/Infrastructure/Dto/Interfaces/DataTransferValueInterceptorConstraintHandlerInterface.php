@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastucture\Dto\Interfaces;
+namespace App\Infrastructure\Dto\Interfaces;
 
 interface DataTransferValueInterceptorConstraintHandlerInterface
 {

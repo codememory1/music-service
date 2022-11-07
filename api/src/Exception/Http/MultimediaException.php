@@ -2,84 +2,75 @@
 
 namespace App\Exception\Http;
 
-use App\Enum\MultimediaStatusEnum;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Exception\HttpException;
 use JetBrains\PhpStorm\Pure;
 
 class MultimediaException extends HttpException
 {
     #[Pure]
-    final public static function badTrackMimeType(array $data = [], array $headers = []): self
+    final public static function badTrackMimeType(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::CHECK_VALID, 'multimedia@invalidTrackMimeType', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::MIME_TYPE_ERROR, 'multimedia@invalidTrackMimeType', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function badClipMimeType(array $data = [], array $headers = []): self
+    final public static function badClipMimeType(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::CHECK_VALID, 'multimedia@invalidClipMimeType', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::MIME_TYPE_ERROR, 'multimedia@invalidClipMimeType', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function badSendOnModeration(array $data = [], array $headers = []): self
+    final public static function badSendOnModeration(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badSendOnModeration', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'multimedia@badSendOnModeration', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function badUnpublish(array $data = [], array $headers = []): self
+    final public static function badUnpublish(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badUnpublish', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'multimedia@badUnpublish', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function badPublish(array $data = [], array $headers = []): self
+    final public static function badPublish(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badPublish', data: $data, headers: $headers);
-    }
-
-    final public static function badUpdateInStatus(string $status, array $data = [], array $headers = []): self
-    {
-        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badUpdateInStatus', [
-            '@status' => MultimediaStatusEnum::getValueByName($status)
-        ], data: $data, headers: $headers);
-    }
-
-    final public static function badSendOnAppeal(string $status, array $data = [], array $headers = []): self
-    {
-        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badSendOnAppeal', [
-            '@status' => MultimediaStatusEnum::getValueByName($status)
-        ], data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'multimedia@badPublish', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function badAppealCanceled(array $data = [], array $headers = []): self
+    final public static function badUpdateInStatus(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'multimedia@badAppealCanceled', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'multimedia@badUpdateInStatus', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function badAddMultimediaToUserInvalid(array $data = [], array $headers = []): self
+    final public static function badSendOnAppeal(array $parameters = [], array $headers = []): self
+    {
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'multimedia@badSendOnAppeal', $parameters, $headers);
+    }
+
+    #[Pure]
+    final public static function badAppealCanceled(array $parameters = [], array $headers = []): self
+    {
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'multimedia@badAppealCanceled', $parameters, $headers);
+    }
+
+    #[Pure]
+    final public static function badAddMultimediaToUserInvalid(array $parameters = [], array $headers = []): self
     {
         return new self(
             400,
-            ResponseTypeEnum::CHECK_CORRECTNESS,
+            PlatformCodeEnum::DO_NOT_HAVE_PERMISSION,
             'multimedia@badAddMultimediaToUserInvalidSubscription',
-            data: $data,
-            headers: $headers
-        );
-    }
-
-    #[Pure]
-    final public static function badDuration(int $allowedDuration, array $data = [], array $headers = []): self
-    {
-        return new self(
-            400,
-            ResponseTypeEnum::FAILED,
-            'multimedia@badDuration',
-            ['allowed_duration' => $allowedDuration],
-            $data,
+            $parameters,
             $headers
         );
+    }
+
+    #[Pure]
+    final public static function badDuration(array $parameters = [], array $headers = []): self
+    {
+        return new self(400, PlatformCodeEnum::INVALID_META_DATA_IN_FILE, 'multimedia@badDuration', $parameters, $headers);
     }
 }

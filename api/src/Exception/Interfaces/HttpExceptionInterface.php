@@ -2,19 +2,17 @@
 
 namespace App\Exception\Interfaces;
 
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
 
 interface HttpExceptionInterface
 {
-    public function getStatusCode(): int;
+    public function getHttpCode(): int;
 
-    public function getResponseType(): ResponseTypeEnum;
+    public function getPlatformCode(): PlatformCodeEnum;
 
-    public function getMessageTranslationKey(): string;
+    public function getMessage(): string;
 
     public function getParameters(): array;
-
-    public function getData(): array;
 
     public function getHeaders(): array;
 }

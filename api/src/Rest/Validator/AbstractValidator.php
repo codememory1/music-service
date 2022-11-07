@@ -2,8 +2,8 @@
 
 namespace App\Rest\Validator;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Validator\Interfaces\ValidatorInterface;
 use function call_user_func;
 use Symfony\Component\Validator\ConstraintViolationInterface;

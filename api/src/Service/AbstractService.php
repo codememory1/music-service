@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Response\HttpResponseCollection;
 use App\Rest\Validator\HttpValidator;
 use Doctrine\ORM\EntityManagerInterface;

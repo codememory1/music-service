@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Trasfer\Traits;
+namespace App\Dto\Transfer\Traits;
 
 use App\Dto\Constraints as DtoConstraints;
 use App\Enum\ValidationRuleEnum;

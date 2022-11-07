@@ -27,7 +27,7 @@ class MultimediaCategoryController extends AbstractRestController
     {
         $multimediaCategoryResponseData->setEntities($multimediaCategoryRepository->findAll());
 
-        return $this->responseCollection->dataOutput($multimediaCategoryResponseData->getResponse());
+        return $this->responseData($multimediaCategoryResponseData);
     }
 
     #[Route('/create', methods: 'POST')]

@@ -2,14 +2,15 @@
 
 namespace App\Exception\Http;
 
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Exception\HttpException;
 use JetBrains\PhpStorm\Pure;
 
 class EventException extends HttpException
 {
     #[Pure]
-    final public static function invalidRangeFromTime(array $data = [], array $headers = []): self
+    final public static function invalidRangeFromTime(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::CHECK_CORRECTNESS, 'event@invalidRangeFromTime', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::TEXT_ENTRY_VALIDATION_ERROR, 'event@invalidRangeFromTime', $parameters, $headers);
     }
 }

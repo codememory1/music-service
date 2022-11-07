@@ -3,7 +3,7 @@
 namespace App\Dto\Transfer;
 
 use App\Entity\TranslationKey;
-use App\Infrastucture\Dto\AbstractDataTransfer;
+use App\Infrastructure\Dto\AbstractDataTransfer;
 
 /**
  * @template-extends AbstractDataTransfer<TranslationKey>

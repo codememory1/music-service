@@ -4,7 +4,7 @@ namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
 use App\Entity\Language;
-use App\Infrastucture\Dto\AbstractDataTransfer;
+use App\Infrastructure\Dto\AbstractDataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

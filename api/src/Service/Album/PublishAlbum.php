@@ -7,15 +7,16 @@ use App\Entity\Multimedia;
 use App\Enum\AlbumStatusEnum;
 use App\Event\AlbumStatusChangeEvent;
 use App\Exception\Http\AlbumException;
-use App\Service\AbstractService;
+use App\Service\FlusherService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class PublishAlbumService extends AbstractService
+class PublishAlbum
 {
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
+    public function __construct(
+        private readonly FlusherService $flusher,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
 
     public function publish(Album $album): Album
     {
@@ -33,17 +34,10 @@ class PublishAlbumService extends AbstractService
 
         $album->setPublishStatus();
 
-        $this->flusherService->save();
+        $this->flusher->save();
 
         $this->eventDispatcher->dispatch(new AlbumStatusChangeEvent($album, AlbumStatusEnum::PUBLISHED));
 
         return $album;
-    }
-
-    public function request(Album $album): JsonResponse
-    {
-        $this->publish($album);
-
-        return $this->responseCollection->successUpdate('album@successPublication');
     }
 }

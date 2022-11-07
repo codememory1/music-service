@@ -2,13 +2,13 @@
 
 namespace App\Exception\Interfaces;
 
-use App\Enum\WebSocketClientMessageTypeEnum;
+use App\Enum\PlatformCodeEnum;
 
 interface WebSocketExceptionInterface
 {
-    public function getClientMessageType(): WebSocketClientMessageTypeEnum;
+    public function getPlatformCode(): PlatformCodeEnum;
 
-    public function getMessageTranslationKey(): string;
+    public function getMessage(): string;
 
     public function getParameters(): array;
 }

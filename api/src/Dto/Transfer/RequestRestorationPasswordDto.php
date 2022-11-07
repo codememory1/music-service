@@ -5,7 +5,7 @@ namespace App\Dto\Transfer;
 use App\Dto\Constraints as DtoConstraints;
 use App\Entity\PasswordReset;
 use App\Entity\User;
-use App\Infrastucture\Dto\AbstractDataTransfer;
+use App\Infrastructure\Dto\AbstractDataTransfer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 

@@ -28,7 +28,7 @@ class FriendController extends AbstractRestController
     {
         $friendResponseData->setEntities($friendRepository->findByUser($this->getAuthorizedUser()));
 
-        return $this->responseCollection->dataOutput($friendResponseData->getResponse());
+        return $this->responseData($friendResponseData);
     }
 
     #[Route('/{user_id<\d+>}/add-as-friend', methods: 'PATCH')]

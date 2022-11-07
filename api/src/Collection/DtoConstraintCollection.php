@@ -2,7 +2,7 @@
 
 namespace App\Collection;
 
-use App\Infrastucture\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
 use ReflectionAttribute;
 
 final class DtoConstraintCollection

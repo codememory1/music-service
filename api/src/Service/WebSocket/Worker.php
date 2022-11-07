@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Entity\UserSession;
 use App\Message\WebSocketConnectionCloseMessage;
 use App\Repository\UserSessionRepository;
-use App\Rest\Response\WebSocketSchema;
+use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
 use function call_user_func;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Server;
@@ -71,19 +71,19 @@ class Worker
         return $this->server->start();
     }
 
-    public function sendToConnection(string $connectionId, WebSocketSchema $webSocketSchema): void
+    public function sendToConnection(string $connectionId, WebSocketSchemeInterface $scheme): void
     {
         if ($this->server->exist($connectionId)) {
-            $this->server->push($connectionId, json_encode($webSocketSchema->getSchema()));
+            $this->server->push($connectionId, json_encode($scheme->use()));
         }
     }
 
-    public function sendToUser(User $user, WebSocketSchema $webSocketSchema): self
+    public function sendToUser(User $user, WebSocketSchemeInterface $scheme): self
     {
         $connectionIds = $this->workerConnectionManager->getAllUserConnectionIds($user->getId());
 
         foreach ($connectionIds as $connectionId) {
-            $this->sendToConnection($connectionId, $webSocketSchema);
+            $this->sendToConnection($connectionId, $scheme);
         }
 
         return $this;
@@ -102,12 +102,12 @@ class Worker
         return $this;
     }
 
-    public function sendToSession(UserSession $userSession, WebSocketSchema $webSocketSchema): self
+    public function sendToSession(UserSession $userSession, WebSocketSchemeInterface $scheme): self
     {
         $connectionId = $this->workerConnectionManager->getConnectionIdByUserSession($userSession->getId());
 
         if (null !== $connectionId) {
-            $this->sendToConnection($connectionId, $webSocketSchema);
+            $this->sendToConnection($connectionId, $scheme);
         }
 
         return $this;

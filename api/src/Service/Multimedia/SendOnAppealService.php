@@ -21,7 +21,7 @@ class SendOnAppealService
     public function sendOnAppeal(Multimedia $multimedia): Multimedia
     {
         if (false === $multimedia->isUnpublished() && false === $multimedia->isAppealCanceled()) {
-            throw MultimediaException::badSendOnAppeal($multimedia->getStatus());
+            throw MultimediaException::badSendOnAppeal(['status' => MultimediaStatusEnum::getValueByName($multimedia->getStatus())]);
         }
 
         $this->eventDispatcher->dispatch(new MultimediaStatusChangeEvent($multimedia, MultimediaStatusEnum::APPEAL));
