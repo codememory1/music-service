@@ -4,14 +4,16 @@ namespace App\Security\Auth;
 
 use App\Entity\User;
 use App\Service\JwtTokenGenerator;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class AuthorizationToken
+final class AuthorizationToken
 {
-    #[Required]
-    public ?JwtTokenGenerator $jwtTokenGenerator = null;
     private ?string $accessToken = null;
     private ?string $refreshToken = null;
+
+    public function __construct(
+        private readonly JwtTokenGenerator $jwtTokenGenerator
+    ) {
+    }
 
     public function generateAccessToken(User $user): self
     {

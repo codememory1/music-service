@@ -14,10 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class MultimediaCategoryController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    public function all(MultimediaCategoryResponseData $multimediaCategoryResponseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
+    public function all(MultimediaCategoryResponseData $responseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
     {
-        $multimediaCategoryResponseData->setEntities($multimediaCategoryRepository->findAll());
+        $responseData->setEntities($multimediaCategoryRepository->findAll());
 
-        return $this->responseData($multimediaCategoryResponseData);
+        return $this->responseData($responseData);
     }
 }

@@ -9,7 +9,7 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\UserSessionRepository;
 use App\ResponseData\User\UserSessionResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\UserSession\DeleteUserSessionService;
+use App\Service\UserSession\DeleteUserSession;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,7 +28,7 @@ class UserSessionController extends AbstractRestController
     #[Route('/{userSession_id<\d+>}/delete', methods: 'DELETE')]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
-        DeleteUserSessionService $deleteUserSessionService
+        DeleteUserSession $deleteUserSessionService
     ): JsonResponse {
         if (false === $this->getAuthorizedUser()->isCompare($userSession->getUser())) {
             throw EntityNotFoundException::userSession();
@@ -38,7 +38,7 @@ class UserSessionController extends AbstractRestController
     }
 
     #[Route('/all/delete', methods: 'DELETE')]
-    public function deleteAll(DeleteUserSessionService $deleteUserSessionService): JsonResponse
+    public function deleteAll(DeleteUserSession $deleteUserSessionService): JsonResponse
     {
         return $deleteUserSessionService->requestDeleteAll($this->getAuthorizedUser());
     }

@@ -6,8 +6,8 @@ use App\Dto\Transformer\UserTransformer;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
 use App\Event\UserRegistrationEvent;
-use App\Service\UserSession\CreateSessionService;
-use App\Service\UserSession\UpdateSessionService;
+use App\Service\UserSession\CreateSession;
+use App\Service\UserSession\UpdateSession;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -21,8 +21,8 @@ final class CreateRegistrationSessionListener
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly CreateSessionService $createSession,
-        private readonly UpdateSessionService $updateSession,
+        private readonly CreateSession $createSession,
+        private readonly UpdateSession $updateSession,
         private readonly UserTransformer $userTransformer
     ) {
     }

@@ -17,15 +17,15 @@ class Identification
     ) {
     }
 
-    public function identify(AuthorizationDto $authorizationDto): ?User
+    public function identify(AuthorizationDto $dto): ?User
     {
-        $identifiedUser = $this->userRepository->findByEmail($authorizationDto->email);
+        $identifiedUser = $this->userRepository->findByEmail($dto->email);
 
         if (null === $identifiedUser) {
             throw AuthorizationException::failedToIdentify();
         }
 
-        $this->eventDispatcher->dispatch(new UserIdentificationInAuthEvent($authorizationDto, $identifiedUser));
+        $this->eventDispatcher->dispatch(new UserIdentificationInAuthEvent($dto, $identifiedUser));
 
         return $identifiedUser;
     }

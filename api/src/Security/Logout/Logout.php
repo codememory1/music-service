@@ -6,30 +6,35 @@ use App\Dto\Transfer\RefreshTokenDto;
 use App\Entity\UserSession;
 use App\Event\LogoutEvent;
 use App\Exception\Http\FailedException;
-use App\Service\AbstractService;
+use App\Infrastructure\Validator\Validator;
+use App\Repository\UserSessionRepository;
+use App\Service\FlusherService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class Logout extends AbstractService
+final class Logout
 {
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
+    public function __construct(
+        private readonly FlusherService $flusher,
+        private readonly Validator $validator,
+        private readonly UserSessionRepository $userSessionRepository,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
 
-    public function logout(RefreshTokenDto $refreshTokenDto): JsonResponse
+    public function logout(RefreshTokenDto $dto): UserSession
     {
-        $this->validate($refreshTokenDto);
+        $this->validator->validate($dto);
 
-        $userSessionRepository = $this->em->getRepository(UserSession::class);
-        $finedUserSession = $userSessionRepository->findByRefreshToken($refreshTokenDto->refreshToken);
+        $userSession = $this->userSessionRepository->findByRefreshToken($dto->refreshToken);
 
-        if (null === $finedUserSession) {
+        if (null === $userSession) {
             throw FailedException::failedToLogout();
         }
 
-        $this->flusherService->remove($finedUserSession);
-        $this->eventDispatcher->dispatch(new LogoutEvent($finedUserSession));
+        $this->flusher->remove($userSession);
 
-        return $this->responseCollection->successLogout();
+        $this->eventDispatcher->dispatch(new LogoutEvent($userSession));
+
+        return $userSession;
     }
 }

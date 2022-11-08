@@ -4,33 +4,36 @@ namespace App\Security\PasswordReset;
 
 use App\Dto\Transfer\RestorePasswordDto;
 use App\Entity\PasswordReset;
-use App\Enum\PasswordResetStatusEnum;
 use App\Exception\Http\InvalidException;
-use App\Service\AbstractService;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Infrastructure\Validator\Validator;
+use App\Repository\PasswordResetRepository;
+use App\Service\FlusherService;
 
-class RestorePassword extends AbstractService
+final class RestorePassword
 {
-    public function restore(RestorePasswordDto $restorePasswordDto): JsonResponse
+    public function __construct(
+        private readonly FlusherService $flusher,
+        private readonly Validator $validator,
+        private readonly PasswordResetRepository $passwordResetRepository
+    ) {
+    }
+
+    public function restore(RestorePasswordDto $dto): PasswordReset
     {
-        $this->validate($restorePasswordDto);
+        $this->validator->validate($dto);
 
-        $finedPasswordReset = $this->em->getRepository(PasswordReset::class)->findOneBy([
-            'user' => $restorePasswordDto->user,
-            'code' => $restorePasswordDto->code,
-            'status' => PasswordResetStatusEnum::IN_PROCESS->name
-        ]);
+        $passwordReset = $this->passwordResetRepository->findByCodeAndUserInProcess($dto->user, $dto->code);
 
-        if (null === $finedPasswordReset || false === $finedPasswordReset->isValidTtlByCreatedAt()) {
+        if (null === $passwordReset || false === $passwordReset->isValidTtlByCreatedAt()) {
             throw InvalidException::invalidCode();
         }
 
-        $restorePasswordDto->user->setPassword($restorePasswordDto->password);
+        $dto->user->setPassword($dto->password);
 
-        $finedPasswordReset->setCompletedStatus();
+        $passwordReset->setCompletedStatus();
 
-        $this->flusherService->save();
+        $this->flusher->save();
 
-        return $this->responseCollection->successUpdate('passwordReset@successRestorePassword');
+        return $passwordReset;
     }
 }

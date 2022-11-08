@@ -15,15 +15,15 @@ class CreateAlbum
     ) {
     }
 
-    public function create(AlbumDto $albumDto, User $toUser): Album
+    public function create(AlbumDto $dto, User $toUser): Album
     {
-        $this->validator->validate($albumDto);
+        $this->validator->validate($dto);
 
-        $album = $albumDto->getEntity();
+        $album = $dto->getEntity();
 
         $album->setUser($toUser);
 
-        $this->upsertAlbum->save($albumDto, $album);
+        $this->upsertAlbum->save($dto, $album);
 
         return $album;
     }

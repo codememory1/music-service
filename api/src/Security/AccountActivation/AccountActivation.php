@@ -3,38 +3,40 @@
 namespace App\Security\AccountActivation;
 
 use App\Dto\Transfer\AccountActivationDto;
-use App\Entity\AccountActivationCode;
+use App\Entity\User;
 use App\Event\AccountActivationEvent;
 use App\Exception\Http\InvalidException;
-use App\Service\AbstractService;
+use App\Infrastructure\Validator\Validator;
+use App\Repository\AccountActivationCodeRepository;
+use App\Service\FlusherService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class AccountActivation extends AbstractService
+final class AccountActivation
 {
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
+    public function __construct(
+        private readonly FlusherService $flusher,
+        private readonly Validator $validator,
+        private readonly AccountActivationCodeRepository $accountActivationCodeRepository,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
 
-    public function activate(AccountActivationDto $accountActivationDto): JsonResponse
+    public function activate(AccountActivationDto $dto): User
     {
-        $this->validate($accountActivationDto);
+        $this->validator->validate($dto);
 
-        $finedAccountActivationCode = $this->em->getRepository(AccountActivationCode::class)->findOneBy([
-            'user' => $accountActivationDto->user,
-            'code' => $accountActivationDto->code
-        ]);
+        $finedAccountActivationCode = $this->accountActivationCodeRepository->findByCodeAndUser($dto->user, $dto->code);
 
         if (null === $finedAccountActivationCode || false === $finedAccountActivationCode->isValidTtlByCreatedAt()) {
             throw InvalidException::invalidCode();
         }
 
-        $accountActivationDto->user->setActiveStatus();
+        $dto->user->setActiveStatus();
 
-        $this->flusherService->addRemove($finedAccountActivationCode)->save();
+        $this->flusher->addRemove($finedAccountActivationCode)->save();
 
         $this->eventDispatcher->dispatch(new AccountActivationEvent($finedAccountActivationCode));
 
-        return $this->responseCollection->successUpdate('accountActivation@successActivate');
+        return $dto->user;
     }
 }

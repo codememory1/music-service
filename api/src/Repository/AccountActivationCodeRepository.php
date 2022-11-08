@@ -24,4 +24,12 @@ final class AccountActivationCodeRepository extends AbstractRepository
     {
         return $this->findBy(['user' => $user]);
     }
+
+    public function findByCodeAndUser(User $user, string $code): ?AccountActivationCode
+    {
+        return $this->findOneBy([
+            'user' => $user,
+            'code' => $code
+        ]);
+    }
 }

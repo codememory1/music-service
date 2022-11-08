@@ -15,10 +15,10 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\PlaylistRepository;
 use App\ResponseData\PlaylistResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Playlist\CreatePlaylistService;
-use App\Service\Playlist\DeletePlaylistService;
-use App\Service\Playlist\MoveMultimediaToDirectoryService;
-use App\Service\Playlist\UpdatePlaylistService;
+use App\Service\Playlist\CreatePlaylist;
+use App\Service\Playlist\DeletePlaylist;
+use App\Service\Playlist\MoveMultimediaToDirectory;
+use App\Service\Playlist\UpdatePlaylist;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -54,7 +54,7 @@ class PlaylistController extends AbstractRestController
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         PlaylistTransformer $playlistTransformer,
-        CreatePlaylistService $createPlaylistService
+        CreatePlaylist $createPlaylistService
     ): JsonResponse {
         return $createPlaylistService->request($playlistTransformer->transformFromRequest(), $user);
     }
@@ -64,7 +64,7 @@ class PlaylistController extends AbstractRestController
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         PlaylistTransformer $playlistTransformer,
-        UpdatePlaylistService $updatePlaylistService
+        UpdatePlaylist $updatePlaylistService
     ): JsonResponse {
         return $updatePlaylistService->request($playlistTransformer->transformFromRequest($playlist));
     }
@@ -73,7 +73,7 @@ class PlaylistController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::DELETE_PLAYLIST_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
-        DeletePlaylistService $deletePlaylistService
+        DeletePlaylist $deletePlaylistService
     ): JsonResponse {
         return $deletePlaylistService->request($playlist);
     }
@@ -83,7 +83,7 @@ class PlaylistController extends AbstractRestController
     public function moveMultimediaToDirectory(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylist $multimediaPlaylist,
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
-        MoveMultimediaToDirectoryService $moveMultimediaToDirectoryService
+        MoveMultimediaToDirectory $moveMultimediaToDirectoryService
     ): JsonResponse {
         return $moveMultimediaToDirectoryService->make($multimediaPlaylist, $playlistDirectory);
     }

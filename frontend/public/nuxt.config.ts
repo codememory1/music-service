@@ -106,7 +106,7 @@ const config: NuxtConfig = {
 
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/pwa'],
 
-  modules: ['@nuxtjs/i18n', '@nuxtjs/sentry', '@nuxtjs/axios'],
+  modules: ['@nuxtjs/i18n', '@nuxtjs/sentry', '@nuxtjs/axios', 'portal-vue/nuxt'],
 
   i18n: {
     langDir: 'i18n/',

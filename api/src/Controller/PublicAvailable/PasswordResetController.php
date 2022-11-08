@@ -16,14 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class PasswordResetController extends AbstractRestController
 {
     #[Route('/request-restoration', methods: 'POST')]
-    public function requestRestoration(RequestRestorationPasswordTransformer $requestRestorationPasswordTransformer, RequestRestoration $requestRestoration): JsonResponse
+    public function requestRestoration(RequestRestorationPasswordTransformer $transformer, RequestRestoration $requestRestoration): JsonResponse
     {
-        return $requestRestoration->send($requestRestorationPasswordTransformer->transformFromRequest());
+        return $requestRestoration->send($transformer->transformFromRequest());
     }
 
     #[Route('/restore-password', methods: 'POST')]
-    public function restorePassword(RestorePasswordTransformer $restorePasswordTransformer, RestorePassword $restorePassword): JsonResponse
+    public function restorePassword(RestorePasswordTransformer $transformer, RestorePassword $restorePassword): JsonResponse
     {
-        return $restorePassword->restore($restorePasswordTransformer->transformFromRequest());
+        return $restorePassword->restore($transformer->transformFromRequest());
     }
 }

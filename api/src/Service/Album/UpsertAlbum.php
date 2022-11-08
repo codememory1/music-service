@@ -18,9 +18,9 @@ class UpsertAlbum
     ) {
     }
 
-    public function save(AlbumDto $albumDto, Album $album): Album
+    public function save(AlbumDto $dto, Album $album): Album
     {
-        $album->setImage($this->uploadImage($albumDto->image, $album));
+        $album->setImage($this->uploadImage($dto->image, $album));
 
         $this->flusherService->save($album);
 

@@ -10,7 +10,7 @@ use App\Entity\UserProfile;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\UserProfileDesign\UpdateUserProfileDesignService;
+use App\Service\UserProfileDesign\UpdateUserProfileDesign;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,7 +23,7 @@ class UserProfileController extends AbstractRestController
     public function editDesignProfile(
         #[EntityNotFound(EntityNotFoundException::class, 'userProfile')] UserProfile $userProfile,
         UserProfileDesignTransformer $userProfileDesignTransformer,
-        UpdateUserProfileDesignService $updateUserProfileDesignService
+        UpdateUserProfileDesign $updateUserProfileDesignService
     ): JsonResponse {
         return $updateUserProfileDesignService->request(
             $userProfileDesignTransformer->transformFromRequest($userProfile->getDesign())

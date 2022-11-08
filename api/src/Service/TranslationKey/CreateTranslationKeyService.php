@@ -4,17 +4,24 @@ namespace App\Service\TranslationKey;
 
 use App\Dto\Transfer\TranslationKeyDto;
 use App\Entity\TranslationKey;
-use App\Service\AbstractService;
+use App\Infrastructure\Validator\Validator;
+use App\Service\FlusherService;
 
-class CreateTranslationKeyService extends AbstractService
+final class CreateTranslationKeyService
 {
-    public function create(TranslationKeyDto $translationKeyDto): TranslationKey
+    public function __construct(
+        private readonly FlusherService $flusher,
+        private readonly Validator $validator
+    ) {
+    }
+
+    public function create(TranslationKeyDto $dto): TranslationKey
     {
-        $this->validate($translationKeyDto);
+        $this->validator->validate($dto);
 
-        $translationKey = $translationKeyDto->getEntity();
+        $translationKey = $dto->getEntity();
 
-        $this->flusherService->save($translationKey);
+        $this->flusher->save($translationKey);
 
         return $translationKey;
     }

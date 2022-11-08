@@ -16,9 +16,9 @@ use App\Repository\MultimediaRepository;
 use App\ResponseData\Admin\MultimediaStatistics;
 use App\ResponseData\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Multimedia\AddMultimediaService;
-use App\Service\Multimedia\DeleteMultimediaService;
-use App\Service\Multimedia\UpdateMultimediaService;
+use App\Service\Multimedia\AddMultimedia;
+use App\Service\Multimedia\DeleteMultimedia;
+use App\Service\Multimedia\UpdateMultimedia;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,7 +52,7 @@ class MultimediaController extends AbstractRestController
     public function add(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         MultimediaTransformer $multimediaTransformer,
-        AddMultimediaService $addMultimediaService
+        AddMultimedia $addMultimediaService
     ): JsonResponse {
         if (false === $user->isSubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)) {
             throw MultimediaException::badAddMultimediaToUserInvalid();
@@ -66,7 +66,7 @@ class MultimediaController extends AbstractRestController
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         MultimediaTransformer $multimediaTransformer,
-        UpdateMultimediaService $updateMultimediaService
+        UpdateMultimedia $updateMultimediaService
     ): JsonResponse {
         return $updateMultimediaService->request($multimediaTransformer->transformFromRequest($multimedia));
     }
@@ -75,7 +75,7 @@ class MultimediaController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        DeleteMultimediaService $deleteMultimediaService
+        DeleteMultimedia $deleteMultimediaService
     ): JsonResponse {
         return $deleteMultimediaService->request($multimedia);
     }

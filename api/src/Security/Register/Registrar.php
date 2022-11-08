@@ -8,55 +8,53 @@ use App\Entity\UserProfile;
 use App\Enum\RoleEnum;
 use App\Repository\RoleRepository;
 use App\Service\FlusherService;
-use App\Service\UserSetting\AddUserDefaultSettingService;
+use App\Service\UserSetting\AddUserDefaultSetting;
 
-class Registrar
+final class Registrar
 {
     public function __construct(
-        private readonly FlusherService $flusherService,
+        private readonly FlusherService $flusher,
         private readonly RoleRepository $roleRepository,
         private readonly ReRegister $reRegister,
-        private readonly AddUserDefaultSettingService $addUserDefaultSetting,
+        private readonly AddUserDefaultSetting $addUserDefaultSetting,
     ) {
     }
 
-    public function make(RegistrationDto $registrationDto, ?User $userByEmail): User
+    public function make(RegistrationDto $dto, ?User $user): User
     {
-        if ($userByEmail?->isNotActive()) {
-            $user = $this->collectUserEntity($userByEmail, $registrationDto);
+        if ($user?->isNotActive()) {
+            $user = $this->collectUserEntity($user, $dto);
 
-            $this->reRegister->make($registrationDto, $user);
+            $this->reRegister->make($dto, $user);
         } else {
-            $user = $this->collectUserEntity(new User(), $registrationDto);
-            $user->setProfile($this->collectUserProfileEntity($registrationDto));
+            $user = $this->collectUserEntity(new User(), $dto);
+            $user->setProfile($this->collectUserProfileEntity($dto));
 
             $this->addUserDefaultSetting->add($user);
 
-            $this->flusherService->addPersist($user);
+            $this->flusher->addPersist($user);
         }
 
         return $user;
     }
 
-    private function collectUserEntity(User $userEntity, RegistrationDto $registrationDTO): User
+    private function collectUserEntity(User $user, RegistrationDto $dto): User
     {
-        $userEntity->setEmail($registrationDTO->email);
-        $userEntity->setPassword($registrationDTO->password);
-        $userEntity->setRole($this->roleRepository->findOneBy([
-            'key' => RoleEnum::USER->name
-        ]));
-        $userEntity->setNotActiveStatus();
+        $user->setEmail($dto->email);
+        $user->setPassword($dto->password);
+        $user->setRole($this->roleRepository->findByKey(RoleEnum::USER));
+        $user->setNotActiveStatus();
 
-        return $userEntity;
+        return $user;
     }
 
-    private function collectUserProfileEntity(RegistrationDto $registrationDTO): UserProfile
+    private function collectUserProfileEntity(RegistrationDto $dto): UserProfile
     {
-        $userProfileEntity = new UserProfile();
+        $userProfile = new UserProfile();
 
-        $userProfileEntity->setPseudonym($registrationDTO->pseudonym);
-        $userProfileEntity->setHideStatus();
+        $userProfile->setPseudonym($dto->pseudonym);
+        $userProfile->setHideStatus();
 
-        return $userProfileEntity;
+        return $userProfile;
     }
 }

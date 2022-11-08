@@ -10,8 +10,8 @@ use App\Entity\MultimediaMediaLibrary;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MediaLibrary\DeleteMultimediaMediaLibraryService;
-use App\Service\MultimediaMediaLibrary\UpdateMultimediaMediaLibraryService;
+use App\Service\MediaLibrary\DeleteMultimediaMediaLibrary;
+use App\Service\MultimediaMediaLibrary\UpdateMultimediaMediaLibrary;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,7 +24,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         MultimediaMediaLibraryTransformer $multimediaMediaLibraryTransformer,
-        UpdateMultimediaMediaLibraryService $updateMultimediaMediaLibraryService
+        UpdateMultimediaMediaLibrary $updateMultimediaMediaLibraryService
     ): JsonResponse {
         return $updateMultimediaMediaLibraryService->request(
             $multimediaMediaLibraryTransformer->transformFromRequest($multimediaMediaLibrary)
@@ -35,7 +35,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_MEDIA_LIBRARY_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
-        DeleteMultimediaMediaLibraryService $deleteMultimediaMediaLibraryService
+        DeleteMultimediaMediaLibrary $deleteMultimediaMediaLibraryService
     ): JsonResponse {
         return $deleteMultimediaMediaLibraryService->request($multimediaMediaLibrary);
     }

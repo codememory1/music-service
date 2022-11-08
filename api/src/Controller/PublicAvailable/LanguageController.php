@@ -12,10 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class LanguageController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    public function all(LanguageResponseData $languageResponseData, LanguageRepository $languageRepository): JsonResponse
+    public function all(LanguageResponseData $responseData, LanguageRepository $languageRepository): JsonResponse
     {
-        $languageResponseData->setEntities($languageRepository->findAll());
+        $responseData->setEntities($languageRepository->findAll());
 
-        return $this->responseData($languageResponseData);
+        return $this->responseData($responseData);
     }
 }

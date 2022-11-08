@@ -14,10 +14,10 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\PlaylistRepository;
 use App\ResponseData\PlaylistResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Playlist\CreatePlaylistService;
-use App\Service\Playlist\DeletePlaylistService;
-use App\Service\Playlist\MoveMultimediaToDirectoryService;
-use App\Service\Playlist\UpdatePlaylistService;
+use App\Service\Playlist\CreatePlaylist;
+use App\Service\Playlist\DeletePlaylist;
+use App\Service\Playlist\MoveMultimediaToDirectory;
+use App\Service\Playlist\UpdatePlaylist;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -49,7 +49,7 @@ class PlaylistController extends AbstractRestController
 
     #[Route('/playlist/create', methods: 'POST')]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_PLAYLIST)]
-    public function create(PlaylistTransformer $playlistTransformer, CreatePlaylistService $createPlaylistService): JsonResponse
+    public function create(PlaylistTransformer $playlistTransformer, CreatePlaylist $createPlaylistService): JsonResponse
     {
         return $createPlaylistService->request($playlistTransformer->transformFromRequest(), $this->getAuthorizedUser());
     }
@@ -59,7 +59,7 @@ class PlaylistController extends AbstractRestController
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         PlaylistTransformer $playlistTransformer,
-        UpdatePlaylistService $updatePlaylistService
+        UpdatePlaylist $updatePlaylistService
     ): JsonResponse {
         $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
@@ -70,7 +70,7 @@ class PlaylistController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_PLAYLIST)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
-        DeletePlaylistService $deletePlaylistService
+        DeletePlaylist $deletePlaylistService
     ): JsonResponse {
         $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
@@ -82,7 +82,7 @@ class PlaylistController extends AbstractRestController
     public function moveMultimediaToDirectory(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylist $multimediaPlaylist,
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
-        MoveMultimediaToDirectoryService $moveMultimediaToDirectoryService
+        MoveMultimediaToDirectory $moveMultimediaToDirectoryService
     ): JsonResponse {
         if (false === $this->getAuthorizedUser()->isMultimediaPlaylistBelongs($multimediaPlaylist)) {
             throw EntityNotFoundException::multimedia();

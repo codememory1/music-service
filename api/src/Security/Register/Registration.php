@@ -4,43 +4,46 @@ namespace App\Security\Register;
 
 use App\Dto\Transfer\RegistrationDto;
 use App\Entity\User;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
 use App\Event\UserRegistrationEvent;
-use App\Exception\Http\HttpException;
-use App\Service\AbstractService;
+use App\Exception\HttpException;
+use App\Infrastructure\Validator\Validator;
+use App\Repository\UserRepository;
+use App\Service\FlusherService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class Registration extends AbstractService
+final class Registration
 {
-    #[Required]
-    public ?Registrar $registrar = null;
-
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
-
-    public function handle(RegistrationDto $registrationDto): JsonResponse
-    {
-        $this->validate($registrationDto);
-
-        $userByEmail = $this->em->getRepository(User::class)->findByEmail($registrationDto->email);
-
-        if (null !== $userByEmail && false === $userByEmail->isNotActive()) {
-            throw new HttpException(409, ResponseTypeEnum::EXIST, 'user@existByEmail');
-        }
-
-        $this->register($registrationDto, $userByEmail);
-
-        return $this->responseCollection->successRegistration();
+    public function __construct(
+        private readonly FlusherService $flusher,
+        private readonly Validator $validator,
+        private readonly UserRepository $userRepository,
+        private readonly Registrar $registrar,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
-    public function register(RegistrationDto $registrationDTO, ?User $userByEmail): void
+    public function handle(RegistrationDto $dto): User
     {
-        $registeredUser = $this->registrar->make($registrationDTO, $userByEmail);
+        $this->validator->validate($dto);
+
+        $user = $this->userRepository->findByEmail($dto->email);
+
+        if (null !== $user && false === $user->isNotActive()) {
+            throw new HttpException(409, PlatformCodeEnum::ENTITY_FOUND, 'user@existByEmail');
+        }
+
+        $this->register($dto, $user);
+
+        return $user;
+    }
+
+    public function register(RegistrationDto $dto, ?User $user): void
+    {
+        $registeredUser = $this->registrar->make($dto, $user);
 
         $this->eventDispatcher->dispatch(new UserRegistrationEvent($registeredUser));
 
-        $this->flusherService->save();
+        $this->flusher->save();
     }
 }

@@ -11,9 +11,9 @@ use App\Entity\Translation;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Translation\CreateTranslationService;
-use App\Service\Translation\DeleteTranslationService;
-use App\Service\Translation\UpdateTranslationService;
+use App\Service\Translation\CreateTranslation;
+use App\Service\Translation\DeleteTranslation;
+use App\Service\Translation\UpdateTranslation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,7 +23,7 @@ class TranslationController extends AbstractRestController
 {
     #[Route('/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_TRANSLATION)]
-    public function create(TranslationTransformer $translationTransformer, CreateTranslationService $createTranslationService): JsonResponse
+    public function create(TranslationTransformer $translationTransformer, CreateTranslation $createTranslationService): JsonResponse
     {
         return $createTranslationService->request($translationTransformer->transformFromRequest());
     }
@@ -33,7 +33,7 @@ class TranslationController extends AbstractRestController
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'translation')] Translation $translation,
         TranslationTransformer $translationTransformer,
-        UpdateTranslationService $updateTranslationService
+        UpdateTranslation $updateTranslationService
     ): JsonResponse {
         return $updateTranslationService->request($translationTransformer->transformFromRequest($translation));
     }
@@ -43,7 +43,7 @@ class TranslationController extends AbstractRestController
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'translation')] Translation $translation,
         DeleteTranslationTransformer $deleteTranslationTransformer,
-        DeleteTranslationService $deleteTranslationService
+        DeleteTranslation $deleteTranslationService
     ): JsonResponse {
         return $deleteTranslationService->request($deleteTranslationTransformer->transformFromRequest(), $translation);
     }

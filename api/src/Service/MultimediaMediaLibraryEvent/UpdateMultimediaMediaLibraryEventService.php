@@ -12,13 +12,13 @@ use Symfony\Contracts\Service\Attribute\Required;
 class UpdateMultimediaMediaLibraryEventService extends AbstractService
 {
     #[Required]
-    public ?SaveMultimediaMediaLibraryEventService $saveMultimediaMediaLibraryEventService = null;
+    public ?UpsertMultimediaMediaLibraryEvent $saveMultimediaMediaLibraryEventService = null;
 
     public function update(MultimediaMediaLibraryEventDto $multimediaMediaLibraryEventDto, MultimediaMediaLibrary $multimediaMediaLibrary): MultimediaMediaLibraryEvent
     {
         $this->validateWithEntity($multimediaMediaLibraryEventDto);
 
-        $this->saveMultimediaMediaLibraryEventService->make($multimediaMediaLibraryEventDto, $multimediaMediaLibrary);
+        $this->saveMultimediaMediaLibraryEventService->save($multimediaMediaLibraryEventDto, $multimediaMediaLibrary);
 
         return $multimediaMediaLibraryEventDto->getEntity();
     }

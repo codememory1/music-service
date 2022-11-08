@@ -81,17 +81,17 @@ class NotificationCollection
         NotificationTypeEnum $type = NotificationTypeEnum::INFORMATIONAL,
         array ...$actions
     ): self {
-        $notificationEntity = new Notification();
+        $notification = new Notification();
 
-        $notificationEntity->setFrom($from);
-        $notificationEntity->setTitle($this->translationService->get($titleTranslationKey));
-        $notificationEntity->setMessage($this->translationService->get($messageTranslationKey, $messageParameters));
-        $notificationEntity->setType($type);
-        $notificationEntity->setAction(...$actions);
-        $notificationEntity->setToUser($to->getEmail());
-        $notificationEntity->setStatus(NotificationStatusEnum::PENDING);
+        $notification->setFrom($from);
+        $notification->setTitle($this->translationService->get($titleTranslationKey));
+        $notification->setMessage($this->translationService->get($messageTranslationKey, $messageParameters));
+        $notification->setType($type);
+        $notification->setAction(...$actions);
+        $notification->setToUser($to->getEmail());
+        $notification->setStatus(NotificationStatusEnum::PENDING);
 
-        $this->em->persist($notificationEntity);
+        $this->em->persist($notification);
         $this->em->flush();
 
         return $this;

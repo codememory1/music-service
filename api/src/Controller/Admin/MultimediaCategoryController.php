@@ -12,9 +12,9 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaCategoryRepository;
 use App\ResponseData\MultimediaCategoryResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MultimediaCategory\CreateMultimediaCategoryService;
-use App\Service\MultimediaCategory\DeleteMultimediaCategoryService;
-use App\Service\MultimediaCategory\UpdateMultimediaCategoryService;
+use App\Service\MultimediaCategory\CreateMultimediaCategory;
+use App\Service\MultimediaCategory\DeleteMultimediaCategory;
+use App\Service\MultimediaCategory\UpdateMultimediaCategory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -32,7 +32,7 @@ class MultimediaCategoryController extends AbstractRestController
 
     #[Route('/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_MULTIMEDIA_CATEGORY)]
-    public function create(MultimediaCategoryTransformer $multimediaCategoryTransformer, CreateMultimediaCategoryService $createMultimediaCategoryService): JsonResponse
+    public function create(MultimediaCategoryTransformer $multimediaCategoryTransformer, CreateMultimediaCategory $createMultimediaCategoryService): JsonResponse
     {
         return $createMultimediaCategoryService->request($multimediaCategoryTransformer->transformFromRequest());
     }
@@ -42,7 +42,7 @@ class MultimediaCategoryController extends AbstractRestController
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaCategory')] MultimediaCategory $multimediaCategory,
         MultimediaCategoryTransformer $multimediaCategoryTransformer,
-        UpdateMultimediaCategoryService $updateMultimediaCategoryService
+        UpdateMultimediaCategory $updateMultimediaCategoryService
     ): JsonResponse {
         return $updateMultimediaCategoryService->request($multimediaCategoryTransformer->transformFromRequest($multimediaCategory));
     }
@@ -51,7 +51,7 @@ class MultimediaCategoryController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_CATEGORY)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaCategory')] MultimediaCategory $multimediaCategory,
-        DeleteMultimediaCategoryService $deleteMultimediaCategoryService
+        DeleteMultimediaCategory $deleteMultimediaCategoryService
     ): JsonResponse {
         return $deleteMultimediaCategoryService->request($multimediaCategory);
     }

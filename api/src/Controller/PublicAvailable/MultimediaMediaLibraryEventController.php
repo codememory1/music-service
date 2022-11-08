@@ -11,8 +11,8 @@ use App\Entity\MultimediaMediaLibraryEvent;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MultimediaMediaLibraryEvent\AddMultimediaMediaLibraryEventService;
-use App\Service\MultimediaMediaLibraryEvent\DeleteMultimediaMediaLibraryEventService;
+use App\Service\MultimediaMediaLibraryEvent\AddMultimediaMediaLibraryEvent;
+use App\Service\MultimediaMediaLibraryEvent\DeleteMultimediaMediaLibraryEvent;
 use App\Service\MultimediaMediaLibraryEvent\UpdateMultimediaMediaLibraryEventService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +26,7 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
     public function add(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         MultimediaMediaLibraryEventTransformer $multimediaMediaLibraryEventTransformer,
-        AddMultimediaMediaLibraryEventService $addMultimediaMediaLibraryEventService
+        AddMultimediaMediaLibraryEvent $addMultimediaMediaLibraryEventService
     ): JsonResponse {
         if (false === $this->getAuthorizedUser()->isMultimediaMediaLibraryBelongs($multimediaMediaLibrary)) {
             throw EntityNotFoundException::multimedia();
@@ -55,7 +55,7 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
     #[Route('/event/{multimediaMediaLibraryEvent_id}/delete', methods: 'DELETE')]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaEvent')] MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent,
-        DeleteMultimediaMediaLibraryEventService $deleteMultimediaMediaLibraryEventService
+        DeleteMultimediaMediaLibraryEvent $deleteMultimediaMediaLibraryEventService
     ): JsonResponse {
         $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 

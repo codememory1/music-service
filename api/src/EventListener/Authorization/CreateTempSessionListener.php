@@ -5,7 +5,7 @@ namespace App\EventListener\Authorization;
 use App\Dto\Transformer\UserTransformer;
 use App\Entity\UserSession;
 use App\Event\UserAuthorizationEvent;
-use App\Service\UserSession\UpdateSessionService;
+use App\Service\UserSession\UpdateSession;
 use DateTimeImmutable;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -18,7 +18,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 final class CreateTempSessionListener
 {
     public function __construct(
-        private readonly UpdateSessionService $updateSession,
+        private readonly UpdateSession $updateSession,
         private readonly UserTransformer $userTransformer
     ) {
     }

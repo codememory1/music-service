@@ -10,51 +10,47 @@ use App\Enum\EventEnum;
 use App\Enum\RoleEnum;
 use App\Event\UserRegistrationEvent;
 use App\Exception\Http\AuthorizationException;
-use App\Repository\UserRepository;
+use App\Infrastructure\Validator\Validator;
 use App\Security\Auth\Authorization;
-use App\Service\AbstractService;
+use App\Service\FlusherService;
 use App\Service\Platform\Interfaces\ClientInterface;
 use App\Service\Platform\Interfaces\UserDataInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-abstract class AbstractServiceAuthorization extends AbstractService
+abstract class AbstractServiceAuthorization
 {
     protected ?string $serviceType = null;
 
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
+    public function __construct(
+        protected readonly FlusherService $flusherService,
+        protected readonly Validator $validator,
+        protected readonly EntityManagerInterface $em,
+        protected readonly Authorization $authorization,
+        protected readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
 
-    #[Required]
-    public ?UserRepository $userRepository = null;
+    abstract public function make(ClientInterface $client, ServiceAuthorizationDtoInterface $dto): array;
 
-    #[Required]
-    public ?Authorization $authorization = null;
-
-    abstract public function make(ClientInterface $client, ServiceAuthorizationDtoInterface $serviceAuthorizationDto): JsonResponse;
-
-    protected function authorizationHandler(ClientInterface $client, ServiceAuthorizationDtoInterface $serviceAuthorizationDto): JsonResponse
+    protected function authorizationHandler(ClientInterface $client, ServiceAuthorizationDtoInterface $dto): User
     {
-        $this->validate($serviceAuthorizationDto);
+        $this->validator->validate($dto);
 
-        $client->authenticate($serviceAuthorizationDto);
+        $client->authenticate($dto);
 
+        $userRepository = $this->em->getRepository(User::class);
         $userData = $client->getUserData();
+        $user = $userRepository->findByAuthService($userData->getUniqueId(), $this->serviceType);
 
-        $finedUserByAuthService = $this->userRepository->findOneBy([
-            'idInAuthService' => $userData->getUniqueId(),
-            'authServiceType' => $this->serviceType
-        ]);
-
-        if (null === $finedUserByAuthService) {
+        if (null === $user) {
             return $this->register($userData);
         }
 
-        return $this->auth($finedUserByAuthService);
+        return $user;
     }
 
-    protected function register(UserDataInterface $userData): JsonResponse
+    protected function register(UserDataInterface $userData): User
     {
         if (empty($userData->getUniqueId()) || empty($userData->getEmail()) || empty($userData->getName())) {
             throw AuthorizationException::didNotProvideData();
@@ -67,14 +63,14 @@ abstract class AbstractServiceAuthorization extends AbstractService
         $userProfile->setPseudonym($userData->getName());
         $userProfile->setHideStatus();
 
-        $user->setRole($roleRepository->findOneBy(['key' => RoleEnum::USER->name]));
+        $user->setRole($roleRepository->findByKey(RoleEnum::USER));
         $user->setEmail($userData->getEmail());
         $user->setIdInAuthService($userData->getUniqueId());
         $user->setAuthServiceType($this->serviceType);
         $user->setNotActiveStatus();
         $user->setProfile($userProfile);
 
-        $this->validate($user);
+        $this->validator->validate($user);
 
         $this->flusherService->addPersist($user);
 
@@ -85,11 +81,11 @@ abstract class AbstractServiceAuthorization extends AbstractService
 
         $this->em->flush();
 
-        return $this->responseCollection->successRegistration();
+        return $user;
     }
 
-    protected function auth(User $authorizedUser): JsonResponse
+    protected function auth(User $user): array
     {
-        return $this->authorization->auth($authorizedUser);
+        return $this->authorization->auth($user);
     }
 }

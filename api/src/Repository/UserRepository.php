@@ -33,4 +33,12 @@ final class UserRepository extends AbstractRepository
             'status' => UserStatusEnum::ACTIVE->name
         ]);
     }
+
+    public function findByAuthService(string $idInAuthService, string $serviceType): ?User
+    {
+        return $this->findOneBy([
+            'idInAuthService' => $idInAuthService,
+            'authServiceType' => $serviceType
+        ]);
+    }
 }

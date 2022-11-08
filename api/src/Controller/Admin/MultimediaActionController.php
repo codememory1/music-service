@@ -9,10 +9,10 @@ use App\Entity\Multimedia;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Multimedia\AppealCanceledService;
-use App\Service\Multimedia\PublishMultimediaService;
-use App\Service\Multimedia\SendOnModerationService;
-use App\Service\Multimedia\UnpublishMultimediaService;
+use App\Service\Multimedia\AppealCanceled;
+use App\Service\Multimedia\PublishMultimedia;
+use App\Service\Multimedia\SendOnModeration;
+use App\Service\Multimedia\UnpublishMultimedia;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,7 +24,7 @@ class MultimediaActionController extends AbstractRestController
     #[Route('/send-on-moderation', methods: 'PATCH')]
     public function sendOnModeration(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        SendOnModerationService $sendOnModerationService
+        SendOnModeration $sendOnModerationService
     ): JsonResponse {
         return $sendOnModerationService->make($multimedia);
     }
@@ -32,7 +32,7 @@ class MultimediaActionController extends AbstractRestController
     #[Route('/publish', methods: 'PATCH')]
     public function publish(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        PublishMultimediaService $publishMultimediaService
+        PublishMultimedia $publishMultimediaService
     ): JsonResponse {
         return $publishMultimediaService->request($multimedia);
     }
@@ -40,7 +40,7 @@ class MultimediaActionController extends AbstractRestController
     #[Route('/unpublish', methods: 'PATCH')]
     public function unpublish(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        UnpublishMultimediaService $unpublishMultimediaService
+        UnpublishMultimedia $unpublishMultimediaService
     ): JsonResponse {
         return $unpublishMultimediaService->request($multimedia);
     }
@@ -48,7 +48,7 @@ class MultimediaActionController extends AbstractRestController
     #[Route('/appeal-canceled', methods: 'PATCH')]
     public function appealCanceled(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        AppealCanceledService $appealCanceledService
+        AppealCanceled $appealCanceledService
     ): JsonResponse {
         return $appealCanceledService->request($multimedia);
     }

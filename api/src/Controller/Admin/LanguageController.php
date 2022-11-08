@@ -12,9 +12,9 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\LanguageRepository;
 use App\ResponseData\LanguageResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Language\CreateLanguageService;
-use App\Service\Language\DeleteLanguageService;
-use App\Service\Language\UpdateLanguageService;
+use App\Service\Language\CreateLanguage;
+use App\Service\Language\DeleteLanguage;
+use App\Service\Language\UpdateLanguage;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -44,7 +44,7 @@ class LanguageController extends AbstractRestController
 
     #[Route('/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_LANGUAGE)]
-    public function create(LanguageTransformer $languageTransformer, CreateLanguageService $createLanguageService): JsonResponse
+    public function create(LanguageTransformer $languageTransformer, CreateLanguage $createLanguageService): JsonResponse
     {
         return $createLanguageService->request($languageTransformer->transformFromRequest());
     }
@@ -54,7 +54,7 @@ class LanguageController extends AbstractRestController
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
         LanguageTransformer $languageTransformer,
-        UpdateLanguageService $updateLanguageService
+        UpdateLanguage $updateLanguageService
     ): JsonResponse {
         return $updateLanguageService->request($languageTransformer->transformFromRequest($language));
     }
@@ -63,7 +63,7 @@ class LanguageController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::DELETE_LANGUAGE)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
-        DeleteLanguageService $deleteLanguageService
+        DeleteLanguage $deleteLanguageService
     ): JsonResponse {
         return $deleteLanguageService->request($language);
     }
