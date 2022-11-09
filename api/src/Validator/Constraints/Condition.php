@@ -10,7 +10,7 @@ final class Condition extends Composite
 {
     public function __construct(
         public readonly string $callbackCondition,
-        public readonly array $constraints,
+        public array $constraints,
         mixed $options = null,
         ?array $groups = null,
         mixed $payload = null

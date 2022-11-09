@@ -20,25 +20,37 @@ final class UpsertListen
 
     public function save(Multimedia $multimedia, User $owner, float $currentTime): ?MultimediaListeningHistory
     {
-        $multimediaToMediaLibrary = $this->multimediaMediaLibraryRepository->findOneByMultimedia($multimedia, $owner->getMediaLibrary());
+        if (null === $owner->getMediaLibrary()) {
+            return $this->createListen($multimedia, $owner, $currentTime);
+        }
+
+        $multimediaToMediaLibrary = $this->multimediaMediaLibraryRepository->findOneByMultimediaInMediaLibrary(
+            $multimedia,
+            $owner->getMediaLibrary()
+        );
 
         if (null === $multimediaToMediaLibrary) {
-            $multimediaListeningHistory = $this->multimediaListeningHistoryRepository->findByUserAndMultimedia($owner, $multimedia);
-
-            if (null === $multimediaListeningHistory) {
-                $multimediaListeningHistory = new MultimediaListeningHistory();
-
-                $multimediaListeningHistory->setUser($owner);
-                $multimediaListeningHistory->setMultimedia($multimedia);
-            }
-
-            $multimediaListeningHistory->setCurrentTime($currentTime);
-
-            $this->flusher->save($multimediaListeningHistory);
-
-            return $multimediaListeningHistory;
+            $this->createListen($multimedia, $owner, $currentTime);
         }
 
         return null;
+    }
+
+    public function createListen(Multimedia $multimedia, User $owner, float $currentTime): MultimediaListeningHistory
+    {
+        $multimediaListeningHistory = $this->multimediaListeningHistoryRepository->findByUserAndMultimedia($owner, $multimedia);
+
+        if (null === $multimediaListeningHistory) {
+            $multimediaListeningHistory = new MultimediaListeningHistory();
+
+            $multimediaListeningHistory->setUser($owner);
+            $multimediaListeningHistory->setMultimedia($multimedia);
+        }
+
+        $multimediaListeningHistory->setCurrentTime($currentTime);
+
+        $this->flusher->save($multimediaListeningHistory);
+
+        return $multimediaListeningHistory;
     }
 }

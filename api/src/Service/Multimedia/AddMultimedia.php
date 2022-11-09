@@ -12,7 +12,7 @@ final class AddMultimedia
 {
     public function __construct(
         private readonly Validator $validator,
-        private readonly ToggleRatingMultimedia $upsertMultimedia
+        private readonly UpsertMultimedia $upsertMultimedia
     ) {
     }
 

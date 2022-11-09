@@ -15,7 +15,7 @@ final class ToggleDislikeMultimedia
 
     public function toggle(Multimedia $multimedia, User $from, ?callable $callbackRemove = null): Multimedia
     {
-        $this->upsertMultimediaRating->save(
+        $this->upsertMultimediaRating->toggle(
             $multimedia,
             $from,
             MultimediaRatingTypeEnum::DISLIKE,

@@ -13,6 +13,7 @@ use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaRepository;
 use App\ResponseData\General\Multimedia\MultimediaResponseData;
+use App\ResponseData\General\Multimedia\RunningMultimediaResponseData;
 use App\ResponseData\Public\Multimedia\MultimediaStatisticsResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\Multimedia\AddMultimedia;
@@ -95,7 +96,7 @@ class MultimediaController extends AbstractRestController
     public function playPause(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         PlayPauseMultimedia $playPauseMultimedia,
-        MultimediaResponseData $responseData
+        RunningMultimediaResponseData $responseData
     ): JsonResponse {
         $responseData->setEntities($playPauseMultimedia->playPause($multimedia, $this->authorizedUser->getUserSession()));
 

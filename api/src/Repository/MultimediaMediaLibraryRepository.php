@@ -14,7 +14,7 @@ final class MultimediaMediaLibraryRepository extends AbstractRepository
     protected ?string $entity = MultimediaMediaLibrary::class;
     protected ?string $alias = 'mml';
 
-    public function findOneByMultimedia(Multimedia $multimedia, MediaLibrary $mediaLibrary): ?MultimediaMediaLibrary
+    public function findOneByMultimediaInMediaLibrary(Multimedia $multimedia, MediaLibrary $mediaLibrary): ?MultimediaMediaLibrary
     {
         return $this->findOneBy([
             'multimedia' => $multimedia,
