@@ -5,11 +5,11 @@ namespace App\Service\WebSocket;
 use App\Entity\Interfaces\EntityInterface;
 use App\Exception\WebSocket\AuthorizationException;
 use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
+use App\Infrastructure\Validator\Validator;
+use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
 use App\Rest\Response\WebSocketResponseCollection;
-use App\Rest\Response\WebSocketSchema;
-use App\Rest\Validator\WebSocketValidator;
 use App\Security\AuthorizedUser;
-use App\Service\TranslationService;
+use App\Service\Translation;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
@@ -24,8 +24,8 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
     public function __construct(
         protected readonly EntityManagerInterface $em,
         protected readonly AuthorizedUser $authorizedUser,
-        protected readonly TranslationService $translation,
-        protected readonly WebSocketValidator $webSocketValidator,
+        protected readonly Translation $translation,
+        protected readonly Validator $validator,
         protected readonly WebSocketResponseCollection $responseCollection
     ) {
     }
@@ -47,9 +47,9 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         return $this->translation->get($translationKey, $parameters);
     }
 
-    protected function validate(EntityInterface|DataTransferInterface $object, ?callable $customResponse = null): void
+    protected function validate(EntityInterface|DataTransferInterface $object, ?callable $throw = null): void
     {
-        $this->webSocketValidator->validate($object, $customResponse);
+        $this->validator->validate($object, $throw);
     }
 
     protected function validateWithEntity(DataTransferInterface $dataTransfer): void
@@ -58,9 +58,9 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         $this->validate($dataTransfer->getEntity());
     }
 
-    protected function sendToClient(WebSocketSchema $webSocketSchema): self
+    protected function sendToClient(WebSocketSchemeInterface $scheme): self
     {
-        $this->worker->sendToConnection($this->connectionId, $webSocketSchema);
+        $this->worker->sendToConnection($this->connectionId, $scheme);
 
         return $this;
     }

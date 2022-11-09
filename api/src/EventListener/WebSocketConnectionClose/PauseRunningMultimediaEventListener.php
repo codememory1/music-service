@@ -11,13 +11,10 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 #[AsEventListener(WebSocketConnectionCloseEvent::class, 'onConnectionClose')]
 final class PauseRunningMultimediaEventListener
 {
-    private EntityManagerInterface $em;
-    private WorkerConnectionManager $workerConnectionManager;
-
-    public function __construct(EntityManagerInterface $manager, WorkerConnectionManager $workerConnectionManager)
-    {
-        $this->em = $manager;
-        $this->workerConnectionManager = $workerConnectionManager;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly WorkerConnectionManager $workerConnectionManager
+    ) {
     }
 
     public function onConnectionClose(WebSocketConnectionCloseEvent $event): void

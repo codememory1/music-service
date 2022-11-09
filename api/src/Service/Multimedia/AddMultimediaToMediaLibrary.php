@@ -6,13 +6,13 @@ use App\Entity\Multimedia;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\User;
 use App\Exception\Http\EntityNotFoundException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\FlusherService;
 
-class AddMultimediaToMediaLibrary
+final class AddMultimediaToMediaLibrary
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator
     ) {
     }

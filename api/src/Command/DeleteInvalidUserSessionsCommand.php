@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\UserSession;
-use App\Service\JwtTokenGenerator;
+use App\Infrastructure\JwtToken\Generator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +19,7 @@ class DeleteInvalidUserSessionsCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly JwtTokenGenerator $jwtTokenGenerator
+        private readonly Generator $jwtGenerator
     ) {
         parent::__construct();
     }
@@ -38,7 +38,7 @@ class DeleteInvalidUserSessionsCommand extends Command
             sleep(1);
 
             foreach ($userSessionRepository->findAll() as $userSession) {
-                $decodedRefreshToken = $this->jwtTokenGenerator->decode($userSession->getRefreshToken(), 'jwt.refresh_public_key');
+                $decodedRefreshToken = $this->jwtGenerator->decode($userSession->getRefreshToken(), 'jwt.refresh_public_key');
 
                 if (false === $decodedRefreshToken) {
                     $io->writeln("<fg=green>[INFO] Removed session with id: <fg=white>{$userSession->getId()}</> for user with id: <fg=white>{$userSession->getUser()->getId()}</></>");

@@ -9,7 +9,7 @@ use App\Exception\Http\AuthorizationException;
 use App\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class Identification
+final class Identification
 {
     public function __construct(
         private readonly UserRepository $userRepository,

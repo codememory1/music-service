@@ -6,30 +6,27 @@ use App\Dto\Transfer\AuthorizationDto;
 use App\Entity\User;
 use App\Event\UserAuthenticationInAuthEvent;
 use App\Exception\Http\AuthorizationException;
-use App\Service\HashingService;
+use App\Infrastructure\Hashing\Password as PasswordHashing;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class Authentication
+final class Authentication
 {
     public function __construct(
-        private readonly HashingService $hashing,
+        private readonly PasswordHashing $passwordHashing,
         private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
-    public function authenticate(AuthorizationDto $authorizationDto, User $identifiedUser): User
+    public function authenticate(AuthorizationDto $dto, User $identifiedUser): User
     {
-        $realPassword = $authorizationDto->password;
+        $realPassword = $dto->password;
         $hashPassword = $identifiedUser->getPassword();
 
-        if (false === $this->hashing->compare($realPassword, $hashPassword)) {
+        if (false === $this->passwordHashing->compare($realPassword, $hashPassword)) {
             throw AuthorizationException::incorrectPassword();
         }
 
-        $this->eventDispatcher->dispatch(new UserAuthenticationInAuthEvent(
-            $authorizationDto,
-            $identifiedUser
-        ));
+        $this->eventDispatcher->dispatch(new UserAuthenticationInAuthEvent($dto, $identifiedUser));
 
         return $identifiedUser;
     }

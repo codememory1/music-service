@@ -4,13 +4,13 @@ namespace App\Service\TranslationKey;
 
 use App\Dto\Transfer\TranslationKeyDto;
 use App\Entity\TranslationKey;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\FlusherService;
 
 final class CreateTranslationKeyService
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator
     ) {
     }

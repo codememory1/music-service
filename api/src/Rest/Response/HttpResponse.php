@@ -5,7 +5,7 @@ namespace App\Rest\Response;
 use App\Rest\Response\Interfaces\HttpSchemeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class HttpResponse
+final class HttpResponse
 {
     public function getResponse(HttpSchemeInterface $scheme, array $headers = []): JsonResponse
     {

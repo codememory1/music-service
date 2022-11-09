@@ -3,12 +3,12 @@
 namespace App\Service\Subscription;
 
 use App\Entity\Subscription;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
 final class DeleteSubscription
 {
     public function __construct(
-        private readonly FlusherService $flusher
+        private readonly Flusher $flusher
     ) {
     }
 

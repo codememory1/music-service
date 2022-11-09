@@ -10,18 +10,18 @@ use App\Enum\FrontendRouteEnum;
 use App\Enum\NotificationStatusEnum;
 use App\Enum\NotificationTypeEnum;
 use App\Service\Notification\Action\RedirectNotificationAction;
-use App\Service\TranslationService;
+use App\Service\Translation;
 use Doctrine\ORM\EntityManagerInterface;
 
-class NotificationCollection
+final class NotificationCollection
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly TranslationService $translationService
+        private readonly Translation $translationService
     ) {
     }
 
-    final public function authFromUnknownDevice(User $from, User $to, ?string $device, ?string $ip): self
+    public function authFromUnknownDevice(User $from, User $to, ?string $device, ?string $ip): self
     {
         return $this->init(
             $from,

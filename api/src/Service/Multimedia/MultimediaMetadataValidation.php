@@ -7,15 +7,15 @@ use App\Enum\MultimediaTypeEnum;
 use App\Enum\PlatformSettingEnum;
 use App\Exception\Http\InvalidException;
 use App\Exception\Http\MultimediaException;
-use App\Service\PlatformSettingService;
+use App\Service\PlatformSetting;
 use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class MultimediaMetadataValidation
+final class MultimediaMetadataValidation
 {
     public function __construct(
-        private readonly PlatformSettingService $platformSetting
+        private readonly PlatformSetting $platformSetting
     ) {
     }
 

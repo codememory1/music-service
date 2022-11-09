@@ -10,10 +10,11 @@ use App\Entity\MultimediaPlaylist;
 use App\Entity\Playlist;
 use App\Entity\PlaylistDirectory;
 use App\Entity\User;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\PlaylistRepository;
-use App\ResponseData\PlaylistResponseData;
+use App\ResponseData\General\Playlist\PlaylistResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\Playlist\CreatePlaylist;
 use App\Service\Playlist\DeletePlaylist;
@@ -30,52 +31,61 @@ class PlaylistController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::SHOW_USER_PLAYLISTS)]
     public function all(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        PlaylistResponseData $playlistResponseData,
+        PlaylistResponseData $responseData,
         PlaylistRepository $playlistRepository
     ): JsonResponse {
-        $playlistResponseData->setEntities($playlistRepository->findByUser($user));
+        $responseData->setEntities($playlistRepository->findByUser($user));
 
-        return $this->responseData($playlistResponseData);
+        return $this->responseData($responseData);
     }
 
     #[Route('/media-library/playlist/{playlist_id}/read', methods: 'GET')]
     #[UserRolePermission(RolePermissionEnum::SHOW_USER_PLAYLISTS)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
-        PlaylistResponseData $playlistResponseData
+        PlaylistResponseData $responseData
     ): JsonResponse {
-        $playlistResponseData->setEntities($playlist);
+        $responseData->setEntities($playlist);
 
-        return $this->responseData($playlistResponseData);
+        return $this->responseData($responseData);
     }
 
     #[Route('/{user_id<\d+>}/media-library/playlist/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_USER_PLAYLISTS)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        PlaylistTransformer $playlistTransformer,
-        CreatePlaylist $createPlaylistService
+        PlaylistTransformer $transformer,
+        CreatePlaylist $createPlaylist,
+        PlaylistResponseData $responseData
     ): JsonResponse {
-        return $createPlaylistService->request($playlistTransformer->transformFromRequest(), $user);
+        $responseData->setEntities($createPlaylist->create($transformer->transformFromRequest(), $user));
+
+        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
 
     #[Route('/media-library/playlist/{playlist_id<\d+>}/edit', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_PLAYLIST_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
-        PlaylistTransformer $playlistTransformer,
-        UpdatePlaylist $updatePlaylistService
+        PlaylistTransformer $transformer,
+        UpdatePlaylist $updatePlaylist,
+        PlaylistResponseData $responseData
     ): JsonResponse {
-        return $updatePlaylistService->request($playlistTransformer->transformFromRequest($playlist));
+        $responseData->setEntities($updatePlaylist->update($transformer->transformFromRequest($playlist)));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/media-library/playlist/{playlist_id<\d+>}/delete', methods: 'DELETE')]
     #[UserRolePermission(RolePermissionEnum::DELETE_PLAYLIST_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
-        DeletePlaylist $deletePlaylistService
+        DeletePlaylist $deletePlaylist,
+        PlaylistResponseData $responseData
     ): JsonResponse {
-        return $deletePlaylistService->request($playlist);
+        $responseData->setEntities($deletePlaylist->delete($playlist));
+
+        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
 
     #[Route('/media-library/playlist/multimedia/{multimediaPlaylist_id<\d+>}/move/directory/{playlistDirectory_id<\d+>}', methods: 'PUT')]
@@ -83,8 +93,11 @@ class PlaylistController extends AbstractRestController
     public function moveMultimediaToDirectory(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylist $multimediaPlaylist,
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
-        MoveMultimediaToDirectory $moveMultimediaToDirectoryService
+        MoveMultimediaToDirectory $moveMultimediaToDirectory,
+        PlaylistResponseData $responseData
     ): JsonResponse {
-        return $moveMultimediaToDirectoryService->make($multimediaPlaylist, $playlistDirectory);
+        $responseData->setEntities($moveMultimediaToDirectory->move($multimediaPlaylist, $playlistDirectory));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 }

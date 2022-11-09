@@ -6,7 +6,7 @@ use App\Entity\MediaLibrary;
 use App\Entity\User;
 use App\Service\MultimediaMediaLibrary\ShareMultimediaMediaLibraryWithFriend;
 
-class ShareMediaLibraryWithFriend
+final class ShareMediaLibraryWithFriend
 {
     public function __construct(
         private readonly ShareMultimediaMediaLibraryWithFriend $shareMultimediaMediaLibraryWithFriend

@@ -4,13 +4,13 @@ namespace App\Service\MultimediaCategory;
 
 use App\Dto\Transfer\MultimediaCategoryDto;
 use App\Entity\MultimediaCategory;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\FlusherService;
 
-class CreateMultimediaCategory
+final class CreateMultimediaCategory
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator
     ) {
     }

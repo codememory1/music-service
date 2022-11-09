@@ -12,7 +12,7 @@ use Swoole\Http\Request;
 use Swoole\WebSocket\Server;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class Worker
+final class Worker
 {
     private ?Server $server = null;
 

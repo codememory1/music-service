@@ -3,7 +3,7 @@
 namespace App\Controller\PublicAvailable;
 
 use App\Repository\SubscriptionRepository;
-use App\ResponseData\SubscriptionResponseData;
+use App\ResponseData\General\Subscription\SubscriptionResponseData;
 use App\Rest\Controller\AbstractRestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,10 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class SubscriptionController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    public function all(SubscriptionResponseData $subscriptionResponseData, SubscriptionRepository $subscriptionRepository): JsonResponse
+    public function all(SubscriptionResponseData $responseData, SubscriptionRepository $subscriptionRepository): JsonResponse
     {
-        $subscriptionResponseData->setEntities($subscriptionRepository->findAll());
+        $responseData->setEntities($subscriptionRepository->findAll());
 
-        return $this->responseData($subscriptionResponseData);
+        return $this->responseData($responseData);
     }
 }

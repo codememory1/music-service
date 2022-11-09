@@ -3,12 +3,12 @@
 namespace App\Service\UserRole;
 
 use App\Entity\Role;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
 final class DeleteUserRole
 {
     public function __construct(
-        private readonly FlusherService $flusher
+        private readonly Flusher $flusher
     ) {
     }
 

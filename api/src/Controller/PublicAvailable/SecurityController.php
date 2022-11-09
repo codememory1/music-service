@@ -6,8 +6,11 @@ use App\Dto\Transformer\AccountActivationTransformer;
 use App\Dto\Transformer\AuthorizationTransformer;
 use App\Dto\Transformer\RefreshTokenTransformer;
 use App\Dto\Transformer\RegistrationTransformer;
+use App\Enum\PlatformCodeEnum;
+use App\Infrastructure\Validator\Validator;
+use App\ResponseData\General\User\UserResponseData;
+use App\ResponseData\Public\User\Session\UserSessionResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Validator\HttpValidator;
 use App\Security\AccountActivation\AccountActivation;
 use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
@@ -22,44 +25,50 @@ use Symfony\Component\Routing\Annotation\Route;
 class SecurityController extends AbstractRestController
 {
     #[Route('/register', methods: 'POST')]
-    public function registration(RegistrationTransformer $registrationTransformer, Registration $register): JsonResponse
+    public function registration(RegistrationTransformer $transformer, Registration $register, UserResponseData $responseData): JsonResponse
     {
-        return $register->handle($registrationTransformer->transformFromRequest());
+        $responseData->setEntities($register->handle($transformer->transformFromRequest()));
+
+        return $this->responseData($responseData, PlatformCodeEnum::CREATED_PENDING);
     }
 
     #[Route('/auth', methods: 'POST')]
     public function auth(
-        AuthorizationTransformer $authorizationTransformer,
-        HttpValidator $validator,
+        AuthorizationTransformer $transformer,
+        Validator $validator,
         Identification $identification,
         Authentication $authentication,
         Authorization $authorization
     ): JsonResponse {
-        $authorizationDto = $authorizationTransformer->transformFromRequest();
+        $dto = $transformer->transformFromRequest();
 
-        $validator->validate($authorizationDto);
+        $validator->validate($dto);
 
-        $identifiedUser = $identification->identify($authorizationDto);
-        $authenticatedUser = $authentication->authenticate($authorizationDto, $identifiedUser);
+        $identifiedUser = $identification->identify($dto);
+        $authenticatedUser = $authentication->authenticate($dto, $identifiedUser);
 
         return $this->response($authorization->auth($authenticatedUser));
     }
 
     #[Route('/access-token/update', methods: 'PUT')]
-    public function updateAccessToken(RefreshTokenTransformer $refreshTokenTransformer, UpdateAccessToken $updateAccessTokenService): JsonResponse
+    public function updateAccessToken(RefreshTokenTransformer $transformer, UpdateAccessToken $updateAccessToken): JsonResponse
     {
-        return $updateAccessTokenService->request($refreshTokenTransformer->transformFromRequest());
+        return $this->response($updateAccessToken->update($transformer->transformFromRequest()));
     }
 
     #[Route('/logout', methods: 'GET')]
-    public function logout(RefreshTokenTransformer $refreshTokenTransformer, Logout $logout): JsonResponse
+    public function logout(RefreshTokenTransformer $transformer, Logout $logout, UserSessionResponseData $responseData): JsonResponse
     {
-        return $logout->logout($refreshTokenTransformer->transformFromRequest());
+        $responseData->setEntities($logout->logout($transformer->transformFromRequest()));
+
+        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
 
     #[Route('/account-activation', methods: 'POST')]
-    public function activationAccount(AccountActivationTransformer $accountActivationTransformer, AccountActivation $accountActivation): JsonResponse
+    public function activationAccount(AccountActivationTransformer $transformer, AccountActivation $accountActivation, UserResponseData $responseData): JsonResponse
     {
-        return $accountActivation->activate($accountActivationTransformer->transformFromRequest());
+        $responseData->setEntities($accountActivation->activate($transformer->transformFromRequest()));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 }

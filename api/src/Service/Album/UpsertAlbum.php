@@ -4,15 +4,15 @@ namespace App\Service\Album;
 
 use App\Dto\Transfer\AlbumDto;
 use App\Entity\Album;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Service\FileUploader\Uploader;
-use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class UpsertAlbum
+final class UpsertAlbum
 {
     public function __construct(
-        private readonly FlusherService $flusherService,
+        private readonly Flusher $flusher,
         private readonly Uploader $fileUploader,
         private readonly ImageUploader $imageUploader,
     ) {
@@ -22,7 +22,7 @@ class UpsertAlbum
     {
         $album->setImage($this->uploadImage($dto->image, $album));
 
-        $this->flusherService->save($album);
+        $this->flusher->save($album);
 
         return $album;
     }

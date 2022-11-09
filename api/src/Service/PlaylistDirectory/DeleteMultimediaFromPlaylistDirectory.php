@@ -3,12 +3,12 @@
 namespace App\Service\PlaylistDirectory;
 
 use App\Entity\MultimediaPlaylistDirectory;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
 final class DeleteMultimediaFromPlaylistDirectory
 {
     public function __construct(
-        private readonly FlusherService $flusher
+        private readonly Flusher $flusher
     ) {
     }
 

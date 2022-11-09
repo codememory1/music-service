@@ -7,7 +7,7 @@ use Google\Service\Oauth2;
 use Google\Service\Oauth2\Userinfo;
 use JetBrains\PhpStorm\Pure;
 
-class UserData implements UserDataInterface
+final class UserData implements UserDataInterface
 {
     private readonly Userinfo $data;
 

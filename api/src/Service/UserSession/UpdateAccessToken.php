@@ -5,17 +5,17 @@ namespace App\Service\UserSession;
 use App\Dto\Transfer\RefreshTokenDto;
 use App\Entity\UserSession;
 use App\Exception\Http\FailedException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
 use App\Repository\UserSessionRepository;
 use App\Security\Auth\AuthorizationToken;
-use App\Service\FlusherService;
 use DateTimeImmutable;
 use JetBrains\PhpStorm\ArrayShape;
 
 final class UpdateAccessToken
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator,
         private readonly UserSessionRepository $userSessionRepository,
         private readonly AuthorizationToken $authorizationToken

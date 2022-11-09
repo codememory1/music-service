@@ -5,15 +5,15 @@ namespace App\Service\Multimedia;
 use App\Entity\Multimedia;
 use App\Entity\RunningMultimedia;
 use App\Entity\UserSession;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Repository\RunningMultimediaRepository;
-use App\Service\FlusherService;
 use App\Service\MultimediaListeningHistory\UpsertListen;
 
-class PlayPauseMultimedia
+final class PlayPauseMultimedia
 {
     public function __construct(
         private readonly RunningMultimediaRepository $runningMultimediaRepository,
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly UpsertListen $upsertListenHistory,
         private readonly AddAudition $addAudition
     ) {

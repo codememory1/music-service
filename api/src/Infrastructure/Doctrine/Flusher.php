@@ -5,7 +5,7 @@ namespace App\Infrastructure\Doctrine;
 use App\Entity\Interfaces\EntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-class Flusher
+final class Flusher
 {
     public function __construct(
         private readonly EntityManagerInterface $em

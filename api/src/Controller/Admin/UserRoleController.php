@@ -7,10 +7,11 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\UserRoleTransformer;
 use App\Entity\Role;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\RoleRepository;
-use App\ResponseData\UserRoleResponseData;
+use App\ResponseData\General\UserRole\UserRoleResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\UserRole\CreateUserRole;
 use App\Service\UserRole\DeleteUserRole;
@@ -24,47 +25,55 @@ class UserRoleController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
     #[UserRolePermission(RolePermissionEnum::SHOW_ROLES)]
-    public function all(UserRoleResponseData $userRoleResponseData, RoleRepository $roleRepository): JsonResponse
+    public function all(UserRoleResponseData $responseData, RoleRepository $roleRepository): JsonResponse
     {
-        $userRoleResponseData->setEntities($roleRepository->findAll());
+        $responseData->setEntities($roleRepository->findAll());
 
-        return $this->responseData($userRoleResponseData);
+        return $this->responseData($responseData);
     }
 
     #[Route('/{role_id<\d+>}/read', methods: 'GET')]
     #[UserRolePermission(RolePermissionEnum::SHOW_ROLES)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'role')] Role $role,
-        UserRoleResponseData $userRoleResponseData
+        UserRoleResponseData $responseData
     ): JsonResponse {
-        $userRoleResponseData->setEntities($role);
+        $responseData->setEntities($role);
 
-        return $this->responseData($userRoleResponseData);
+        return $this->responseData($responseData);
     }
 
     #[Route('/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_USER_ROLE)]
-    public function create(UserRoleTransformer $userRoleTransformer, CreateUserRole $createUserRoleService): JsonResponse
+    public function create(UserRoleTransformer $transformer, CreateUserRole $createUserRole, UserRoleResponseData $responseData): JsonResponse
     {
-        return $createUserRoleService->request($userRoleTransformer->transformFromRequest());
+        $responseData->setEntities($createUserRole->create($transformer->transformFromRequest()));
+
+        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
 
     #[Route('/{role_id<\d+>}/edit', methods: 'PUT')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_USER_ROLE)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'role')] Role $role,
-        UserRoleTransformer $userRoleTransformer,
-        UpdateUserRole $updateUserRoleService
+        UserRoleTransformer $transformer,
+        UpdateUserRole $updateUserRole,
+        UserRoleResponseData $responseData
     ): JsonResponse {
-        return $updateUserRoleService->request($userRoleTransformer->transformFromRequest($role));
+        $responseData->setEntities($updateUserRole->update($transformer->transformFromRequest($role)));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/{role_id<\d+>}/delete', methods: 'DELETE')]
     #[UserRolePermission(RolePermissionEnum::DELETE_USER_ROLE)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'role')] Role $role,
-        DeleteUserRole $deleteUserRoleService
+        DeleteUserRole $deleteUserRole,
+        UserRoleResponseData $responseData
     ): JsonResponse {
-        return $deleteUserRoleService->request($role);
+        $responseData->setEntities($deleteUserRole->delete($role));
+
+        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
 }

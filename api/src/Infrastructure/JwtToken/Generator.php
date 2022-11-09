@@ -11,7 +11,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-class Generator
+final class Generator
 {
     private readonly DateTimeImmutable $datetime;
 

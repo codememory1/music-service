@@ -11,7 +11,7 @@ use App\Entity\MultimediaTimeCode;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\ResponseData\MultimediaTimeCodeResponseData;
+use App\ResponseData\General\Multimedia\MultimediaTimeCodeResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\MultimediaTimeCode\AddTimeCode;
 use App\Service\MultimediaTimeCode\DeleteTimeCode;

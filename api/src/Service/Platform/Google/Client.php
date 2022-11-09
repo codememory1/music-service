@@ -10,7 +10,7 @@ use App\Service\Platform\Interfaces\UserDataInterface;
 use Google\Client as GoogleClient;
 use JetBrains\PhpStorm\NoReturn;
 
-class Client implements ClientInterface
+final class Client implements ClientInterface
 {
     public readonly GoogleClient $googleClient;
     private ?string $accessToken = null;

@@ -3,12 +3,12 @@
 namespace App\Service\Friend;
 
 use App\Entity\Friend;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
-class AcceptAsFriend
+final class AcceptAsFriend
 {
     public function __construct(
-        private readonly FlusherService $flusherService
+        private readonly Flusher $flusher
     ) {
     }
 
@@ -16,7 +16,7 @@ class AcceptAsFriend
     {
         $friend->setConfirmed();
 
-        $this->flusherService->save();
+        $this->flusher->save();
 
         return $friend;
     }

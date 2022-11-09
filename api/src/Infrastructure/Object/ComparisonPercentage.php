@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Object;
 
-class ComparisonPercentage
+final class ComparisonPercentage
 {
     public function __construct(
         private readonly object $forCompare,

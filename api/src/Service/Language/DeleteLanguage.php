@@ -3,12 +3,12 @@
 namespace App\Service\Language;
 
 use App\Entity\Language;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
-class DeleteLanguage
+final class DeleteLanguage
 {
     public function __construct(
-        private readonly FlusherService $flusher
+        private readonly Flusher $flusher
     ) {
     }
 

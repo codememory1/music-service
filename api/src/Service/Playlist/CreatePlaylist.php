@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Exception\Http\EntityNotFoundException;
 use App\Infrastructure\Validator\Validator;
 
-class CreatePlaylist
+final class CreatePlaylist
 {
     public function __construct(
         private readonly Validator $validator,

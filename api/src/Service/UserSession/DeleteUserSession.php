@@ -5,13 +5,13 @@ namespace App\Service\UserSession;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Exception\Http\EntityNotFoundException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Repository\UserSessionRepository;
-use App\Service\FlusherService;
 
 final class DeleteUserSession
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly UserSessionRepository $userSessionRepository
     ) {
     }

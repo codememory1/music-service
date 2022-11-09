@@ -7,16 +7,16 @@ use App\Entity\MultimediaRating;
 use App\Entity\User;
 use App\Enum\MultimediaRatingTypeEnum;
 use App\Event\SetRatingMultimediaEvent;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Repository\MultimediaRatingRepository;
-use App\Service\FlusherService;
 use function call_user_func;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ToggleRatingMultimedia
+final class ToggleRatingMultimedia
 {
     public function __construct(
         private readonly MultimediaRatingRepository $multimediaRatingRepository,
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }

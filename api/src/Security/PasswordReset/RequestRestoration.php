@@ -4,17 +4,20 @@ namespace App\Security\PasswordReset;
 
 use App\Dto\Transfer\RequestRestorationPasswordDto;
 use App\Entity\PasswordReset;
+use App\Enum\PlatformSettingEnum;
 use App\Event\AfterRequestRestorationPasswordEvent;
 use App\Event\RequestRestorationPasswordEvent;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\FlusherService;
+use App\Service\PlatformSetting;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class RequestRestoration
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator,
+        private readonly PlatformSetting $platformSetting,
         private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
@@ -25,7 +28,7 @@ final class RequestRestoration
 
         $passwordReset = $dto->getEntity();
 
-        $passwordReset->setTtl('10m');
+        $passwordReset->setTtl($this->platformSetting->get(PlatformSettingEnum::PASSWORD_RESET_TTL_CODE));
         $passwordReset->setInProcessStatus();
 
         $this->eventDispatcher->dispatch(new RequestRestorationPasswordEvent($passwordReset));

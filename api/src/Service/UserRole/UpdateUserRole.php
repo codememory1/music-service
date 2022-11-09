@@ -4,13 +4,13 @@ namespace App\Service\UserRole;
 
 use App\Dto\Transfer\UserRoleDto;
 use App\Entity\Role;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\FlusherService;
 
 final class UpdateUserRole
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator
     ) {
     }

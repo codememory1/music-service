@@ -8,7 +8,7 @@ use App\Entity\Playlist;
 use App\Exception\Http\EntityNotFoundException;
 use Doctrine\Common\Collections\Criteria;
 
-class SetMultimediaToPlaylist
+final class SetMultimediaToPlaylist
 {
     public function set(array $multimediaMediaLibrary, Playlist $playlist): void
     {

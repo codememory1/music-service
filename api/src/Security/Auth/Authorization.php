@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Event\UserAuthorizationEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class Authorization
+final class Authorization
 {
     public function __construct(
         private readonly AuthorizationToken $authorizationToken,

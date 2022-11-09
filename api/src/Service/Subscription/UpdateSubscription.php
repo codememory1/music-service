@@ -4,13 +4,13 @@ namespace App\Service\Subscription;
 
 use App\Dto\Transfer\SubscriptionDto;
 use App\Entity\Subscription;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\FlusherService;
 
 final class UpdateSubscription
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator
     ) {
     }

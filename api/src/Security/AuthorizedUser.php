@@ -9,7 +9,7 @@ use App\Repository\UserSessionRepository;
 use App\Rest\Jwt\AccessToken;
 use App\Security\Http\BearerToken;
 
-class AuthorizedUser
+final class AuthorizedUser
 {
     private ?User $user = null;
     private ?UserSession $userSession = null;

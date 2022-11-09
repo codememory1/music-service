@@ -6,14 +6,14 @@ use App\Dto\Transfer\TranslationDto;
 use App\Dto\Transformer\TranslationKeyTransformer;
 use App\Entity\Translation;
 use App\Entity\TranslationKey;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\FlusherService;
 use App\Service\TranslationKey\CreateTranslationKeyService;
 
 final class CreateTranslation
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator,
         private readonly TranslationKeyTransformer $translationKeyTransformer,
         private readonly CreateTranslationKeyService $createTranslationKey

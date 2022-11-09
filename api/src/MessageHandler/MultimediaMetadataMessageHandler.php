@@ -4,9 +4,9 @@ namespace App\MessageHandler;
 
 use App\Entity\Multimedia;
 use App\Entity\MultimediaMetadata;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Message\MultimediaMetadataMessage;
 use App\Rest\S3\UploadedObject;
-use App\Service\FlusherService;
 use Doctrine\ORM\EntityManagerInterface;
 use FFMpeg\FFProbe;
 use FFMpeg\FFProbe\DataMapping\Stream;
@@ -18,7 +18,7 @@ final class MultimediaMetadataMessageHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly FlusherService $flusherService,
+        private readonly Flusher $flusher,
         private readonly UploadedObject $uploadedObject
     ) {
     }
@@ -79,6 +79,6 @@ final class MultimediaMetadataMessageHandler
             $this->handlerTypes($multimedia, $streamCollection);
         }
 
-        $this->flusherService->save();
+        $this->flusher->save();
     }
 }

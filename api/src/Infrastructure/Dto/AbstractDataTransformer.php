@@ -18,13 +18,13 @@ abstract class AbstractDataTransformer implements DataTransformerInterface
     ) {
     }
 
-    protected function baseTransformFromRequest(DataTransferInterface $dataTransfer, ?EntityInterface $entity = null): DataTransferInterface
+    protected function baseTransformFromRequest(DataTransferInterface $transfer, ?EntityInterface $entity = null): DataTransferInterface
     {
         if (null !== $entity) {
-            $dataTransfer->setEntity($entity);
+            $transfer->setEntity($entity);
         }
 
-        return $dataTransfer->collect($this->request->all());
+        return $transfer->collect($this->request->all());
     }
 
     /**

@@ -10,6 +10,7 @@ use App\Event\SaveMultimediaEvent;
 use App\Exception\Http\AlbumException;
 use App\Exception\Http\InvalidException;
 use App\Exception\Http\MultimediaException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Message\MultimediaMetadataMessage;
 use App\Repository\MultimediaRepository;
 use App\Rest\S3\Uploader\ClipUploader;
@@ -17,17 +18,16 @@ use App\Rest\S3\Uploader\ImageUploader;
 use App\Rest\S3\Uploader\SubtitlesUploader;
 use App\Rest\S3\Uploader\TrackUploader;
 use App\Service\FileUploader\Uploader;
-use App\Service\FlusherService;
 use Captioning\Format\SubripFile;
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class UpsertMultimedia
+final class UpsertMultimedia
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly MultimediaRepository $multimediaRepository,
         private readonly Uploader $fileUploader,
         private readonly MultimediaMetadataValidation $multimediaMetadataValidation,

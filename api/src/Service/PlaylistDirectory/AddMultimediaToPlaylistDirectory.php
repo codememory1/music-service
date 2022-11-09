@@ -6,14 +6,14 @@ use App\Entity\MultimediaMediaLibrary;
 use App\Entity\MultimediaPlaylistDirectory;
 use App\Entity\PlaylistDirectory;
 use App\Exception\Http\EntityExistException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Repository\MultimediaPlaylistRepository;
-use App\Service\FlusherService;
 use App\Service\Playlist\CheckExistMultimediaToPlaylistDirectories;
 
 final class AddMultimediaToPlaylistDirectory
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly MultimediaPlaylistRepository $multimediaPlaylistRepository
     ) {
     }

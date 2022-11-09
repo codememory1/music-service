@@ -8,7 +8,7 @@ use App\Entity\MultimediaStatistic;
 use App\Entity\User;
 use App\Infrastructure\Validator\Validator;
 
-class AddMultimedia
+final class AddMultimedia
 {
     public function __construct(
         private readonly Validator $validator,

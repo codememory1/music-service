@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\CronTime;
 
-class Parser
+final class Parser
 {
     private const REGEX_TIME = '/^(?<time>\d+)(?<format>\w)$/';
     private const SECOND = 's';

@@ -7,14 +7,14 @@ use App\Entity\MediaLibrary;
 use App\Entity\User;
 use App\Event\CreateMediaLibraryEvent;
 use App\Exception\Http\EntityExistException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\FlusherService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class CreateMediaLibrary
+final class CreateMediaLibrary
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator,
         private readonly EventDispatcherInterface $eventDispatcher
     ) {

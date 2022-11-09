@@ -3,18 +3,18 @@
 namespace App\Service\Friend;
 
 use App\Entity\Friend;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
-class DeleteFriend
+final class DeleteFriend
 {
     public function __construct(
-        private readonly FlusherService $flusherService
+        private readonly Flusher $flusher
     ) {
     }
 
     public function delete(Friend $friendship): Friend
     {
-        $this->flusherService->remove($friendship);
+        $this->flusher->remove($friendship);
 
         return $friendship;
     }

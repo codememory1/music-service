@@ -8,7 +8,7 @@ use App\Enum\WebSocketUserMessageTypeHandlerEnum;
 use App\Exception\Interfaces\WebSocketExceptionInterface;
 use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
 use App\Rest\Response\Scheme\WebSocketErrorScheme;
-use App\Service\SchemaValidatorService;
+use App\Service\SchemaValidator;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use App\Service\WebSocket\MessageQueueToClient;
 use App\Service\WebSocket\Worker;
@@ -35,7 +35,7 @@ class WebSocketServerCommand extends Command
 {
     public function __construct(
         private readonly ReverseContainer $container,
-        private readonly SchemaValidatorService $schemaValidatorService,
+        private readonly SchemaValidator $schemaValidatorService,
         private readonly Worker $worker,
         private readonly MessageQueueToClient $messageQueueToClient,
         private readonly LoggerInterface $logger

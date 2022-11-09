@@ -11,7 +11,7 @@ use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\AlbumRepository;
-use App\ResponseData\AlbumResponseData;
+use App\ResponseData\General\Album\AlbumResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\Album\CreateAlbum;
 use App\Service\Album\DeleteAlbum;

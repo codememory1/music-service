@@ -3,12 +3,12 @@
 namespace App\Service\MediaLibrary;
 
 use App\Entity\MultimediaMediaLibrary;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
-class DeleteMultimediaMediaLibrary
+final class DeleteMultimediaMediaLibrary
 {
     public function __construct(
-        private readonly FlusherService $flusher
+        private readonly Flusher $flusher
     ) {
     }
 

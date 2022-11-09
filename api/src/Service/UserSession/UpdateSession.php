@@ -6,7 +6,7 @@ use App\Dto\Transfer\UserDto;
 use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -16,7 +16,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 final class UpdateSession
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly CollectorSession $collectorSession
     ) {
     }

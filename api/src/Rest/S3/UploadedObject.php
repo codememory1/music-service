@@ -6,7 +6,7 @@ use Aws\Result;
 use Exception;
 use GuzzleHttp\Psr7\Stream;
 
-class UploadedObject
+final class UploadedObject
 {
     public function __construct(
         private readonly Client $client,

@@ -8,7 +8,7 @@ use App\Entity\PlaylistDirectory;
 use App\Exception\Http\EntityExistException;
 use Doctrine\Common\Collections\Collection;
 
-class CheckExistMultimediaToPlaylistDirectories
+final class CheckExistMultimediaToPlaylistDirectories
 {
     public function throwIfExist(Collection $directories, MultimediaMediaLibrary $multimediaMediaLibrary): void
     {

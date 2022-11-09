@@ -4,13 +4,13 @@ namespace App\Service\Translation;
 
 use App\Dto\Transfer\TranslationDto;
 use App\Entity\Translation;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\FlusherService;
 
 final class UpdateTranslation
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator
     ) {
     }

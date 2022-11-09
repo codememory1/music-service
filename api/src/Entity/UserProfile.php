@@ -9,7 +9,9 @@ use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
 use App\Enum\EntityS3SettingEnum;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\UserProfileStatusEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\UserProfileRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -21,7 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: UserProfileRepository::class)]
 #[ORM\Table('user_profiles')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('user', message: 'userProfile@existByUser')]
+#[UniqueEntity('user', message: 'userProfile@existByUser', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class UserProfile implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;

@@ -8,12 +8,13 @@ use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\FriendStatusEnum;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RoleEnum;
 use App\Enum\RolePermissionEnum;
 use App\Enum\SubscriptionEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Enum\UserStatusEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,7 +27,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('email', message: 'user@existByEmail', payload: [ResponseTypeEnum::EXIST, 409])]
+#[UniqueEntity('email', message: 'user@existByEmail', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class User implements EntityInterface
 {
     use IdentifierTrait;

@@ -3,7 +3,7 @@
 namespace App\Security\Auth;
 
 use App\Entity\User;
-use App\Service\JwtTokenGenerator;
+use App\Infrastructure\JwtToken\Generator as JwtGenerator;
 
 final class AuthorizationToken
 {
@@ -11,13 +11,13 @@ final class AuthorizationToken
     private ?string $refreshToken = null;
 
     public function __construct(
-        private readonly JwtTokenGenerator $jwtTokenGenerator
+        private readonly JwtGenerator $jwtGenerator
     ) {
     }
 
     public function generateAccessToken(User $user): self
     {
-        $this->accessToken = $this->jwtTokenGenerator->encode(
+        $this->accessToken = $this->jwtGenerator->encode(
             ['id' => $user->getId()],
             'jwt.access_private_key',
             'jwt.access_ttl'
@@ -33,7 +33,7 @@ final class AuthorizationToken
 
     public function generateRefreshToken(User $user): self
     {
-        $this->refreshToken = $this->jwtTokenGenerator->encode(
+        $this->refreshToken = $this->jwtGenerator->encode(
             ['id' => $user->getId()],
             'jwt.refresh_private_key',
             'jwt.refresh_ttl'

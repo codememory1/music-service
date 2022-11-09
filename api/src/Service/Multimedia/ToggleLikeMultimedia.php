@@ -6,7 +6,7 @@ use App\Entity\Multimedia;
 use App\Entity\User;
 use App\Enum\MultimediaRatingTypeEnum;
 
-class ToggleLikeMultimedia
+final class ToggleLikeMultimedia
 {
     public function __construct(
         private readonly ToggleRatingMultimedia $toggleRatingMultimedia

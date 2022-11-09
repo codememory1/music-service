@@ -4,15 +4,15 @@ namespace App\Service\Playlist;
 
 use App\Dto\Transfer\PlaylistDto;
 use App\Entity\Playlist;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Service\FileUploader\Uploader;
-use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class UpsertPlaylist
+final class UpsertPlaylist
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Uploader $fileUploader,
         private readonly SetMultimediaToPlaylist $setMultimediaToPlaylist,
         private readonly ImageUploader $imageUploader,

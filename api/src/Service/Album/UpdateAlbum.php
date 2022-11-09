@@ -7,7 +7,7 @@ use App\Entity\Album;
 use App\Entity\User;
 use App\Infrastructure\Validator\Validator;
 
-class UpdateAlbum
+final class UpdateAlbum
 {
     public function __construct(
         private readonly Validator $validator,

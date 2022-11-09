@@ -8,8 +8,8 @@ use App\Annotation\SubscriptionPermission;
 use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\ResponseData\MediaLibraryStatisticResponseData;
-use App\ResponseData\MultimediaMediaLibraryResponseData;
+use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
+use App\ResponseData\General\MediaLibrary\MediaLibraryStatisticResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\MediaLibrary\ShareMediaLibraryWithFriend;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MediaLibraryController extends AbstractRestController
 {
     #[Route('/multimedia/all', methods: 'GET')]
-    public function allMultimedia(MultimediaMediaLibraryResponseData $responseData): JsonResponse
+    public function allMultimedia(MediaLibraryMultimediaResponseData $responseData): JsonResponse
     {
         $responseData->setEntities(
             $this->getAuthorizedUser()->getMediaLibrary()?->getMultimedia() ?: []

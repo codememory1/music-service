@@ -4,7 +4,7 @@ namespace App\Security\Http;
 
 use App\Rest\Http\Request;
 
-class BearerToken
+final class BearerToken
 {
     public function __construct(
         private readonly Request $request

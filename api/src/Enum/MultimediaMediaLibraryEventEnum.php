@@ -3,8 +3,8 @@
 namespace App\Enum;
 
 use App\Enum\Interfaces\EventInterface;
-use App\Service\Event\MultimediaMediaLibrary\NextMultimediaAfterEndEventService;
-use App\Service\Event\MultimediaMediaLibrary\RangeTimeEventService;
+use App\Service\Event\MultimediaMediaLibrary\NextMultimediaAfterEndEvent;
+use App\Service\Event\MultimediaMediaLibrary\RangeTimeEvent;
 use App\Service\MultimediaMediaLibraryEvent\DeleteMultimediaMediaLibraryEvent;
 
 enum MultimediaMediaLibraryEventEnum : string implements EventInterface
@@ -16,8 +16,8 @@ enum MultimediaMediaLibraryEventEnum : string implements EventInterface
     public function getNamespaceSchema(): ?string
     {
         return match ($this) {
-            self::RANGE_TIME => RangeTimeEventService::class,
-            self::NEXT_MULTIMEDIA_AFTER_END => NextMultimediaAfterEndEventService::class,
+            self::RANGE_TIME => RangeTimeEvent::class,
+            self::NEXT_MULTIMEDIA_AFTER_END => NextMultimediaAfterEndEvent::class,
             self::DELETE_MULTIMEDIA_AFTER_NUMBER_PLAYS => DeleteMultimediaMediaLibraryEvent::class
         };
     }

@@ -4,13 +4,13 @@ namespace App\Service\PlaylistDirectory;
 
 use App\Dto\Transfer\PlaylistDirectoryDto;
 use App\Entity\PlaylistDirectory;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\FlusherService;
 
 final class UpdatePlaylistDirectory
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator
     ) {
     }

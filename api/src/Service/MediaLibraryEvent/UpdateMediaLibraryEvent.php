@@ -7,7 +7,7 @@ use App\Entity\MediaLibrary;
 use App\Entity\MediaLibraryEvent;
 use App\Infrastructure\Validator\Validator;
 
-class UpdateMediaLibraryEvent
+final class UpdateMediaLibraryEvent
 {
     public function __construct(
         private readonly Validator $validator,

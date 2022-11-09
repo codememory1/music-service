@@ -6,8 +6,9 @@ use App\Dto\Constraints as DtoConstraints;
 use App\Entity\Language;
 use App\Entity\Translation;
 use App\Entity\TranslationKey;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
 use App\Infrastructure\Dto\AbstractDataTransfer;
+use App\Infrastructure\Validator\Validator;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -25,7 +26,7 @@ final class TranslationDto extends AbstractDataTransfer
         TranslationKey::class,
         'key',
         'entityExist@translationKey',
-        payload: [ResponseTypeEnum::EXIST, 409]
+        payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND]
     )]
     #[DtoConstraints\ToTypeConstraint]
     #[DtoConstraints\IgnoreCallSetterConstraint]

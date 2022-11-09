@@ -3,16 +3,16 @@
 namespace App\Service\Multimedia;
 
 use App\Entity\Multimedia;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Rest\S3\Uploader\ClipUploader;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Rest\S3\Uploader\SubtitlesUploader;
 use App\Rest\S3\Uploader\TrackUploader;
-use App\Service\FlusherService;
 
-class DeleteMultimedia
+final class DeleteMultimedia
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly ImageUploader $imageUploader,
         private readonly TrackUploader $trackUploader,
         private readonly ClipUploader $clipUploader,

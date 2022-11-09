@@ -8,9 +8,10 @@ use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\MediaLibraryTransformer;
 use App\Entity\MediaLibrary;
 use App\Entity\User;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\ResponseData\MultimediaMediaLibraryResponseData;
+use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\MediaLibrary\CreateMediaLibrary;
 use App\Service\MediaLibrary\UpdateMediaLibrary;
@@ -25,34 +26,45 @@ class MediaLibraryController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::SHOW_MEDIA_LIBRARY_TO_USER)]
     public function allMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        MultimediaMediaLibraryResponseData $multimediaMediaLibraryResponseData
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
         if (null === $user->getMediaLibrary()) {
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
 
-        $multimediaMediaLibraryResponseData->setEntities($user->getMediaLibrary()->getMultimedia());
+        $responseData->setEntities($user->getMediaLibrary()->getMultimedia());
 
-        return $this->responseData($multimediaMediaLibraryResponseData);
+        return $this->responseData($responseData);
     }
 
     #[Route('/{user_id<\d+>}/media-library/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_MEDIA_LIBRARY_TO_USER)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        MediaLibraryTransformer $mediaLibraryTransformer,
-        CreateMediaLibrary $createMediaLibraryService
+        MediaLibraryTransformer $transformer,
+        CreateMediaLibrary $createMediaLibrary,
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
-        return $createMediaLibraryService->request($mediaLibraryTransformer->transformFromRequest(), $user);
+        $responseData->setEntities($createMediaLibrary->create(
+            $transformer->transformFromRequest(),
+            $user
+        ));
+
+        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
 
     #[Route('/media-library/{mediaLibrary_id<\d+>}/edit', methods: 'PUT')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MEDIA_LIBRARY_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'mediaLibrary')] MediaLibrary $mediaLibrary,
-        MediaLibraryTransformer $mediaLibraryTransformer,
-        UpdateMediaLibrary $updateMediaLibraryService
+        MediaLibraryTransformer $transformer,
+        UpdateMediaLibrary $updateMediaLibrary,
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
-        return $updateMediaLibraryService->request($mediaLibraryTransformer->transformFromRequest($mediaLibrary));
+        $responseData->setEntities($updateMediaLibrary->update(
+            $transformer->transformFromRequest($mediaLibrary)
+        ));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 }

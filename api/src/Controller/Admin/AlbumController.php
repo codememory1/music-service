@@ -8,10 +8,11 @@ use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\AlbumTransformer;
 use App\Entity\Album;
 use App\Entity\User;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\AlbumRepository;
-use App\ResponseData\AlbumResponseData;
+use App\ResponseData\General\Album\AlbumResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\Album\CreateAlbum;
 use App\Service\Album\DeleteAlbum;
@@ -28,49 +29,67 @@ class AlbumController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_ALBUMS)]
     public function all(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        AlbumResponseData $albumResponseData,
+        AlbumResponseData $responseData,
         AlbumRepository $albumRepository
     ): JsonResponse {
-        $albumResponseData->setEntities($albumRepository->findAllByUser($user));
+        $responseData->setEntities($albumRepository->findAllByUser($user));
 
-        return $this->responseData($albumResponseData);
+        return $this->responseData($responseData);
     }
 
     #[Route('/{user_id<\d+>}/album/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_ALBUM_TO_USER)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        AlbumTransformer $albumTransformer,
-        CreateAlbum $createAlbumService
+        AlbumTransformer $transformer,
+        CreateAlbum $createAlbum,
+        AlbumResponseData $responseData
     ): JsonResponse {
-        return $createAlbumService->request($albumTransformer->transformFromRequest(), $user);
+        $responseData->setEntities($createAlbum->create(
+            $transformer->transformFromRequest(),
+            $user
+        ));
+
+        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
 
     #[Route('/album/{album_id<\d+>}/edit', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_ALBUM_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
-        AlbumTransformer $albumTransformer,
-        UpdateAlbum $updateAlbumService
+        AlbumTransformer $transformer,
+        UpdateAlbum $updateAlbum,
+        AlbumResponseData $responseData
     ): JsonResponse {
-        return $updateAlbumService->request($albumTransformer->transformFromRequest($album), $album->getUser());
+        $responseData->setEntities($updateAlbum->update(
+            $transformer->transformFromRequest($album),
+            $album->getUser()
+        ));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/album/{album_id<\d+>}/delete', methods: 'DELETE')]
     #[UserRolePermission(RolePermissionEnum::DELETE_ALBUM_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
-        DeleteAlbum $deleteAlbumService
+        DeleteAlbum $deleteAlbum,
+        AlbumResponseData $responseData
     ): JsonResponse {
-        return $deleteAlbumService->request($album);
+        $responseData->setEntities($deleteAlbum->delete($album));
+
+        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
 
     #[Route('/album/{album_id<\d+>}/publish', methods: 'PATCH')]
     #[UserRolePermission(RolePermissionEnum::ALBUM_STATUS_CONTROL_TO_USER)]
     public function publish(
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
-        PublishAlbum $publishAlbumService
+        PublishAlbum $publishAlbum,
+        AlbumResponseData $responseData
     ): JsonResponse {
-        return $publishAlbumService->request($album);
+        $responseData->setEntities($publishAlbum->publish($album));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 }

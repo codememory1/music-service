@@ -3,12 +3,12 @@
 namespace App\Service\Playlist;
 
 use App\Entity\Playlist;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
-class DeletePlaylist
+final class DeletePlaylist
 {
     public function __construct(
-        private readonly FlusherService $flusher
+        private readonly Flusher $flusher
     ) {
     }
 

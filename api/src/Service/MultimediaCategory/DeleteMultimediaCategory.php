@@ -3,12 +3,12 @@
 namespace App\Service\MultimediaCategory;
 
 use App\Entity\MultimediaCategory;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
-class DeleteMultimediaCategory
+final class DeleteMultimediaCategory
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
     ) {
     }
 

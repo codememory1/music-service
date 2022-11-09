@@ -6,7 +6,8 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
 #[ORM\Table('roles')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('key', message: 'role@exist', payload: [ResponseTypeEnum::EXIST, 409])]
+#[UniqueEntity('key', message: 'role@exist', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class Role implements EntityInterface
 {
     use IdentifierTrait;

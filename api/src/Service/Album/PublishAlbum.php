@@ -7,13 +7,13 @@ use App\Entity\Multimedia;
 use App\Enum\AlbumStatusEnum;
 use App\Event\AlbumStatusChangeEvent;
 use App\Exception\Http\AlbumException;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class PublishAlbum
+final class PublishAlbum
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }

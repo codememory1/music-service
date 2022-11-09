@@ -7,10 +7,11 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\MultimediaCategoryTransformer;
 use App\Entity\MultimediaCategory;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaCategoryRepository;
-use App\ResponseData\MultimediaCategoryResponseData;
+use App\ResponseData\General\Multimedia\MultimediaCategoryResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\MultimediaCategory\CreateMultimediaCategory;
 use App\Service\MultimediaCategory\DeleteMultimediaCategory;
@@ -23,36 +24,49 @@ use Symfony\Component\Routing\Annotation\Route;
 class MultimediaCategoryController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    public function all(MultimediaCategoryResponseData $multimediaCategoryResponseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
+    public function all(MultimediaCategoryResponseData $responseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
     {
-        $multimediaCategoryResponseData->setEntities($multimediaCategoryRepository->findAll());
+        $responseData->setEntities($multimediaCategoryRepository->findAll());
 
-        return $this->responseData($multimediaCategoryResponseData);
+        return $this->responseData($responseData);
     }
 
     #[Route('/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_MULTIMEDIA_CATEGORY)]
-    public function create(MultimediaCategoryTransformer $multimediaCategoryTransformer, CreateMultimediaCategory $createMultimediaCategoryService): JsonResponse
-    {
-        return $createMultimediaCategoryService->request($multimediaCategoryTransformer->transformFromRequest());
+    public function create(
+        MultimediaCategoryTransformer $transformer,
+        CreateMultimediaCategory $createMultimediaCategory,
+        MultimediaCategoryResponseData $responseData
+    ): JsonResponse {
+        $responseData->setEntities($createMultimediaCategory->create($transformer->transformFromRequest()));
+
+        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
 
     #[Route('/{multimediaCategory_id<\d+>}/edit', methods: 'PUT')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_CATEGORY)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaCategory')] MultimediaCategory $multimediaCategory,
-        MultimediaCategoryTransformer $multimediaCategoryTransformer,
-        UpdateMultimediaCategory $updateMultimediaCategoryService
+        MultimediaCategoryTransformer $transformer,
+        UpdateMultimediaCategory $updateMultimediaCategory,
+        MultimediaCategoryResponseData $responseData
     ): JsonResponse {
-        return $updateMultimediaCategoryService->request($multimediaCategoryTransformer->transformFromRequest($multimediaCategory));
+        $responseData->setEntities($updateMultimediaCategory->update(
+            $transformer->transformFromRequest($multimediaCategory)
+        ));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/{multimediaCategory_id<\d+>}/delete', methods: 'DELETE')]
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_CATEGORY)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaCategory')] MultimediaCategory $multimediaCategory,
-        DeleteMultimediaCategory $deleteMultimediaCategoryService
+        DeleteMultimediaCategory $deleteMultimediaCategory,
+        MultimediaCategoryResponseData $responseData
     ): JsonResponse {
-        return $deleteMultimediaCategoryService->request($multimediaCategory);
+        $responseData->setEntities($deleteMultimediaCategory->delete($multimediaCategory));
+
+        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
 }

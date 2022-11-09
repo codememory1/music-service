@@ -7,9 +7,9 @@ use App\Entity\MediaLibrary;
 use App\Enum\MediaLibraryEventEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\UserRepository;
-use App\Service\Event\MediaLibrary\ShareWithFriendsAfterAddEventService;
+use App\Service\Event\MediaLibrary\ShareWithFriendsAfterAddEvent;
 
-class EventPayloadHandler
+final class EventPayloadHandler
 {
     public function __construct(
         private readonly UserRepository $userRepository
@@ -25,7 +25,7 @@ class EventPayloadHandler
         };
     }
 
-    private function shareWithFriendsAfterAdd(ShareWithFriendsAfterAddEventService $eventSchema, MediaLibrary $mediaLibrary): void
+    private function shareWithFriendsAfterAdd(ShareWithFriendsAfterAddEvent $eventSchema, MediaLibrary $mediaLibrary): void
     {
         if ([] !== $eventSchema->getWithSelectedFriends()) {
             foreach ($eventSchema->getWithSelectedFriends() as $friendId) {

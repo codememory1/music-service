@@ -3,18 +3,18 @@
 namespace App\Service\MediaLibraryEvent;
 
 use App\Entity\MediaLibraryEvent;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
-class DeleteMediaLibraryEvent
+final class DeleteMediaLibraryEvent
 {
     public function __construct(
-        private readonly FlusherService $flusherService
+        private readonly Flusher $flusher
     ) {
     }
 
     public function delete(MediaLibraryEvent $mediaLibraryEvent): MediaLibraryEvent
     {
-        $this->flusherService->remove($mediaLibraryEvent);
+        $this->flusher->remove($mediaLibraryEvent);
 
         return $mediaLibraryEvent;
     }

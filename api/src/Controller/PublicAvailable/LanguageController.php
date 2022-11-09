@@ -3,7 +3,7 @@
 namespace App\Controller\PublicAvailable;
 
 use App\Repository\LanguageRepository;
-use App\ResponseData\LanguageResponseData;
+use App\ResponseData\General\Language\LanguageResponseData;
 use App\Rest\Controller\AbstractRestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;

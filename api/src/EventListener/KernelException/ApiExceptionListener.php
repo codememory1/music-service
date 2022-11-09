@@ -2,7 +2,7 @@
 
 namespace App\EventListener\KernelException;
 
-use App\Exception\HttpExceptionInterface;
+use App\Exception\Interfaces\HttpExceptionInterface;
 use App\Rest\Response\HttpResponse;
 use App\Rest\Response\Scheme\HttpErrorScheme;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;

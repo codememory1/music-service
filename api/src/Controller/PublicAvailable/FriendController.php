@@ -11,7 +11,7 @@ use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\FriendRepository;
-use App\ResponseData\FriendResponseData;
+use App\ResponseData\General\Friendship\FriendResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\Friend\AcceptAsFriend;
 use App\Service\Friend\ApplyInFriend;

@@ -8,7 +8,7 @@ use App\Event\MultimediaStatusChangeEvent;
 use App\Exception\Http\MultimediaException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class SendOnModeration
+final class SendOnModeration
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher

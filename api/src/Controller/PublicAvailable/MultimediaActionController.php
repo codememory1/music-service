@@ -9,7 +9,7 @@ use App\Entity\Multimedia;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\ResponseData\MultimediaResponseData;
+use App\ResponseData\General\Multimedia\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\Multimedia\AddMultimediaToMediaLibrary;
 use App\Service\Multimedia\SendOnAppeal;

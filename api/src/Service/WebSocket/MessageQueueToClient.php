@@ -11,7 +11,7 @@ use function call_user_func;
 use LogicException;
 use Predis\Client;
 
-class MessageQueueToClient
+final class MessageQueueToClient
 {
     public const KEY = 'websocket:prepared_message_for_client#%s';
 
@@ -22,14 +22,14 @@ class MessageQueueToClient
     ) {
     }
 
-    public function sendMessage(WebSocketSchemeInterface $scheme, ?User $toUser = null, ?UserSession $toUserSession = null): self
+    public function sendMessage(WebSocketSchemeInterface $scheme, ?User $to = null, ?UserSession $toUserSession = null): self
     {
-        if ((null !== $toUser && null !== $toUserSession) || (null === $toUser && null === $toUserSession)) {
+        if ((null !== $to && null !== $toUserSession) || (null === $to && null === $toUserSession)) {
             throw new LogicException('Specify one of the $toUser or $toUserSession parameters');
         }
 
         $this->redisClient->set($this->getNextKey(), json_encode([
-            'to_user' => $toUser?->getId(),
+            'to_user' => $to?->getId(),
             'to_user_session' => $toUserSession?->getId(),
             'scheme' => serialize($scheme->use())
         ]));

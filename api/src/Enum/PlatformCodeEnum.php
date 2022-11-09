@@ -26,4 +26,7 @@ enum PlatformCodeEnum: int
     case INVALID_DATA_FORMAT_IN_FILE = 6070;
     case INVALID_META_DATA_IN_FILE = 6071;
     case OUTPUT = 6072;
+    case CREATED_PENDING = 6073; // Создан и ожидает дальнейших действий для полной работоспособности созданного действия
+    case INPUT_ERROR = 6074; // Ошибка входных данных
+    case INACCESSIBLE_DATA = 6075; // Недоступные данные
 }

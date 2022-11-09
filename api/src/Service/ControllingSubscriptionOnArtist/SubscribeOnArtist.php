@@ -5,13 +5,13 @@ namespace App\Service\ControllingSubscriptionOnArtist;
 use App\Entity\ArtistSubscriber;
 use App\Entity\User;
 use App\Exception\Http\FailedException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Repository\ArtistSubscriberRepository;
-use App\Service\FlusherService;
 
-class SubscribeOnArtist
+final class SubscribeOnArtist
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly ArtistSubscriberRepository $artistSubscriberRepository
     ) {
     }

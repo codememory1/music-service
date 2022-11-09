@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\File;
 
-class MimeTypeConverter
+final class MimeTypeConverter
 {
     public const MIME_TYPES_TO_EXTENSION = [
         'video/3gpp2' => '3g2',

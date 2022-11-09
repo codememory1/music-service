@@ -3,6 +3,7 @@
 namespace App\Infrastructure\ResponseData;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Reflection\Reflection;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintAvailabilityHandlerInterface;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintInterface;
@@ -12,9 +13,7 @@ use App\Infrastructure\ResponseData\Interfaces\ResponseDataInterface;
 use App\Infrastructure\ResponseData\Repository\AllowedPropertyRepository;
 use App\Infrastructure\ResponseData\Repository\PropertyInterceptorRepository;
 use App\Infrastructure\ResponseData\Repository\PropertyMethodRepository;
-use App\Service\Reflection;
 use Doctrine\Common\Collections\Collection;
-use JetBrains\PhpStorm\Pure;
 use ReflectionProperty;
 use Symfony\Component\DependencyInjection\ReverseContainer;
 
@@ -27,7 +26,6 @@ abstract class AbstractResponseData implements ResponseDataInterface
     protected array $onlyProperties = [];
     protected array $response = [];
 
-    #[Pure]
     public function __construct(
         protected readonly ReverseContainer $container
     ) {

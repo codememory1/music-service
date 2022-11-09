@@ -11,7 +11,7 @@ use App\Entity\User;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\ResponseData\MultimediaMediaLibraryResponseData;
+use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\MediaLibrary\DeleteMultimediaMediaLibrary;
 use App\Service\MultimediaMediaLibrary\ShareMultimediaMediaLibraryWithFriend;
@@ -29,7 +29,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         MultimediaMediaLibraryTransformer $transformer,
         UpdateMultimediaMediaLibrary $updateMultimediaMediaLibrary,
-        MultimediaMediaLibraryResponseData $responseData
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
@@ -45,7 +45,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         DeleteMultimediaMediaLibrary $deleteMultimediaMediaLibrary,
-        MultimediaMediaLibraryResponseData $responseData
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
@@ -60,7 +60,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
         ShareMultimediaMediaLibraryWithFriend $shareMultimediaMediaLibraryWithFriend,
-        MultimediaMediaLibraryResponseData $responseData
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 

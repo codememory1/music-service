@@ -5,14 +5,14 @@ namespace App\Security\PasswordReset;
 use App\Dto\Transfer\RestorePasswordDto;
 use App\Entity\PasswordReset;
 use App\Exception\Http\InvalidException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
 use App\Repository\PasswordResetRepository;
-use App\Service\FlusherService;
 
 final class RestorePassword
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator,
         private readonly PasswordResetRepository $passwordResetRepository
     ) {

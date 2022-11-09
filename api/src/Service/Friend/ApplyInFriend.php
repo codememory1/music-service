@@ -7,13 +7,13 @@ use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityExistException;
 use App\Exception\Http\FailedException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Repository\FriendRepository;
-use App\Service\FlusherService;
 
-class ApplyInFriend
+final class ApplyInFriend
 {
     public function __construct(
-        private readonly FlusherService $flusherService,
+        private readonly Flusher $flusher,
         private readonly FriendRepository $friendRepository
     ) {
     }
@@ -33,7 +33,7 @@ class ApplyInFriend
         $friendship->setAwaitingConfirmation();
         $friendship->setUser($user);
 
-        $this->flusherService->save($friendship);
+        $this->flusher->save($friendship);
 
         return $friendship;
     }

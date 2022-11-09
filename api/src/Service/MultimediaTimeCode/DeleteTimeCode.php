@@ -3,12 +3,12 @@
 namespace App\Service\MultimediaTimeCode;
 
 use App\Entity\MultimediaTimeCode;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
 final class DeleteTimeCode
 {
     public function __construct(
-        private readonly FlusherService $flusher
+        private readonly Flusher $flusher
     ) {
     }
 

@@ -5,12 +5,12 @@ namespace App\Service\MediaLibraryEvent;
 use App\Dto\Transfer\MediaLibraryEventDto;
 use App\Entity\MediaLibrary;
 use App\Entity\MediaLibraryEvent;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
-class UpsertMediaLibrary
+final class UpsertMediaLibrary
 {
     public function __construct(
-        private readonly FlusherService $flusherService,
+        private readonly Flusher $flusher,
         private readonly EventPayloadHandler $eventPayloadHandler
     ) {
     }
@@ -19,6 +19,6 @@ class UpsertMediaLibrary
     {
         $this->eventPayloadHandler->handler($dto, $mediaLibrary);
 
-        $this->flusherService->save($mediaLibraryEvent);
+        $this->flusher->save($mediaLibraryEvent);
     }
 }

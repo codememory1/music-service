@@ -5,13 +5,13 @@ namespace App\Service\Multimedia;
 use App\Entity\Multimedia;
 use App\Entity\MultimediaAudition;
 use App\Entity\User;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Repository\MultimediaAuditionRepository;
-use App\Service\FlusherService;
 
 final class AddAudition
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly MultimediaAuditionRepository $multimediaAuditionRepository
     ) {
     }

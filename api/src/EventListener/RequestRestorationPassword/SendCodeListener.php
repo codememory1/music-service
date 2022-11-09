@@ -3,7 +3,7 @@
 namespace App\EventListener\RequestRestorationPassword;
 
 use App\Event\RequestRestorationPasswordEvent;
-use App\Service\MailMessagingService;
+use App\Service\MailMessaging;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Twig\Error\LoaderError;
@@ -14,7 +14,7 @@ use Twig\Error\SyntaxError;
 final class SendCodeListener
 {
     public function __construct(
-        private readonly MailMessagingService $mailMessagingService
+        private readonly MailMessaging $mailMessagingService
     ) {
     }
 

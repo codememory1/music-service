@@ -5,12 +5,12 @@ namespace App\Service\Playlist;
 use App\Entity\MultimediaPlaylist;
 use App\Entity\MultimediaPlaylistDirectory;
 use App\Entity\PlaylistDirectory;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
-class MoveMultimediaToDirectory
+final class MoveMultimediaToDirectory
 {
     public function __construct(
-        private readonly FlusherService $flusher
+        private readonly Flusher $flusher
     ) {
     }
 

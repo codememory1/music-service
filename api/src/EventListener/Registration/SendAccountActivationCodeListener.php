@@ -4,7 +4,7 @@ namespace App\EventListener\Registration;
 
 use App\Entity\AccountActivationCode;
 use App\Event\UserRegistrationEvent;
-use App\Service\MailMessagingService;
+use App\Service\MailMessaging;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -17,7 +17,7 @@ final class SendAccountActivationCodeListener
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly MailMessagingService $mailMessagingService
+        private readonly MailMessaging $mailMessagingService
     ) {
     }
 

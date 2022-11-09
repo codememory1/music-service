@@ -11,7 +11,7 @@ use App\Entity\MediaLibraryEvent;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\ResponseData\MediaLibraryEventResponseData;
+use App\ResponseData\General\MediaLibrary\MediaLibraryEventResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\MediaLibraryEvent\AddMediaLibraryEvent;
 use App\Service\MediaLibraryEvent\DeleteMediaLibraryEvent;

@@ -8,7 +8,7 @@ use App\Enum\MultimediaStatusEnum;
 use App\Exception\Http\MultimediaException;
 use App\Infrastructure\Validator\Validator;
 
-class UpdateMultimedia
+final class UpdateMultimedia
 {
     public function __construct(
         private readonly Validator $validator,

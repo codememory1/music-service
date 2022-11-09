@@ -6,7 +6,7 @@ use App\Enum\PlatformCodeEnum;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
-class ConstraintInfo
+final class ConstraintInfo
 {
     public function __construct(
         private readonly ConstraintViolationInterface $constraintViolation

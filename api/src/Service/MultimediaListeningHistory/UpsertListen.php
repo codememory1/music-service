@@ -5,14 +5,14 @@ namespace App\Service\MultimediaListeningHistory;
 use App\Entity\Multimedia;
 use App\Entity\MultimediaListeningHistory;
 use App\Entity\User;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Repository\MultimediaListeningHistoryRepository;
 use App\Repository\MultimediaMediaLibraryRepository;
-use App\Service\FlusherService;
 
 final class UpsertListen
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly MultimediaMediaLibraryRepository $multimediaMediaLibraryRepository,
         private readonly MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository
     ) {

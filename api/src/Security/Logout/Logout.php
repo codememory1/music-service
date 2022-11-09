@@ -6,15 +6,15 @@ use App\Dto\Transfer\RefreshTokenDto;
 use App\Entity\UserSession;
 use App\Event\LogoutEvent;
 use App\Exception\Http\FailedException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
 use App\Repository\UserSessionRepository;
-use App\Service\FlusherService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Logout
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator,
         private readonly UserSessionRepository $userSessionRepository,
         private readonly EventDispatcherInterface $eventDispatcher

@@ -9,7 +9,7 @@ use App\Entity\User;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\ResponseData\ArtistSubscriberResponseData;
+use App\ResponseData\General\Artist\ArtistSubscriberResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\ControllingSubscriptionOnArtist\SubscribeOnArtist;
 use App\Service\ControllingSubscriptionOnArtist\UnsubscribeOnArtist;

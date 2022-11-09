@@ -4,12 +4,12 @@ namespace App\Service\Translation;
 
 use App\Dto\Transfer\DeleteTranslationDto;
 use App\Entity\Translation;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
 final class DeleteTranslation
 {
     public function __construct(
-        private readonly FlusherService $flusher
+        private readonly Flusher $flusher
     ) {
     }
 

@@ -8,7 +8,7 @@ use App\Entity\MultimediaListeningHistory;
 use App\Enum\PlatformCodeEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaListeningHistoryRepository;
-use App\ResponseData\MultimediaListeningHistoryResponseData;
+use App\ResponseData\General\History\HistoryMultimediaListeningResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\MultimediaListeningHistory\DeleteListen;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MultimediaListeningHistoryController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    public function all(MultimediaListeningHistoryResponseData $responseData, MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository): JsonResponse
+    public function all(HistoryMultimediaListeningResponseData $responseData, MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository): JsonResponse
     {
         $responseData->setEntities($multimediaListeningHistoryRepository->findAllByUser($this->getAuthorizedUser()));
 
@@ -30,7 +30,7 @@ class MultimediaListeningHistoryController extends AbstractRestController
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'listenToHistory')] MultimediaListeningHistory $multimediaListeningHistory,
         DeleteListen $deleteListen,
-        MultimediaListeningHistoryResponseData $responseData
+        HistoryMultimediaListeningResponseData $responseData
     ): JsonResponse {
         if (false === $multimediaListeningHistory->getUser()->isCompare($this->getAuthorizedUser())) {
             throw EntityNotFoundException::listenToHistory();

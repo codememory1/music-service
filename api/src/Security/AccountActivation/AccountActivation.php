@@ -6,15 +6,15 @@ use App\Dto\Transfer\AccountActivationDto;
 use App\Entity\User;
 use App\Event\AccountActivationEvent;
 use App\Exception\Http\InvalidException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
 use App\Repository\AccountActivationCodeRepository;
-use App\Service\FlusherService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class AccountActivation
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator,
         private readonly AccountActivationCodeRepository $accountActivationCodeRepository,
         private readonly EventDispatcherInterface $eventDispatcher

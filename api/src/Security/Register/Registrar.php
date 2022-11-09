@@ -6,14 +6,14 @@ use App\Dto\Transfer\RegistrationDto;
 use App\Entity\User;
 use App\Entity\UserProfile;
 use App\Enum\RoleEnum;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Repository\RoleRepository;
-use App\Service\FlusherService;
 use App\Service\UserSetting\AddUserDefaultSetting;
 
 final class Registrar
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly RoleRepository $roleRepository,
         private readonly ReRegister $reRegister,
         private readonly AddUserDefaultSetting $addUserDefaultSetting,

@@ -9,10 +9,10 @@ use App\Enum\MultimediaMediaLibraryEventEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Exception\Http\EventException;
 use App\Repository\MultimediaMediaLibraryRepository;
-use App\Service\Event\MultimediaMediaLibrary\NextMultimediaAfterEndEventService;
-use App\Service\Event\MultimediaMediaLibrary\RangeTimeEventService;
+use App\Service\Event\MultimediaMediaLibrary\NextMultimediaAfterEndEvent;
+use App\Service\Event\MultimediaMediaLibrary\RangeTimeEvent;
 
-class EventPayloadHandler
+final class EventPayloadHandler
 {
     public function __construct(
         private readonly MultimediaMediaLibraryRepository $multimediaMediaLibraryRepository
@@ -30,7 +30,7 @@ class EventPayloadHandler
         };
     }
 
-    private function rangeTime(RangeTimeEventService $eventSchema): void
+    private function rangeTime(RangeTimeEvent $eventSchema): void
     {
         $from = $eventSchema->getFromTime();
         $to = $eventSchema->getToTime();
@@ -40,7 +40,7 @@ class EventPayloadHandler
         }
     }
 
-    private function nextMultimediaAfterEnd(NextMultimediaAfterEndEventService $eventSchema, MediaLibrary $mediaLibrary): void
+    private function nextMultimediaAfterEnd(NextMultimediaAfterEndEvent $eventSchema, MediaLibrary $mediaLibrary): void
     {
         $finedMultimediaMediaLibrary = $this->multimediaMediaLibraryRepository->find($eventSchema->getMultimediaId());
 

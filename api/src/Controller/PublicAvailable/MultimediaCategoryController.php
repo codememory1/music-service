@@ -4,7 +4,7 @@ namespace App\Controller\PublicAvailable;
 
 use App\Annotation\Authorization;
 use App\Repository\MultimediaCategoryRepository;
-use App\ResponseData\MultimediaCategoryResponseData;
+use App\ResponseData\General\Multimedia\MultimediaCategoryResponseData;
 use App\Rest\Controller\AbstractRestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;

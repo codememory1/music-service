@@ -5,15 +5,15 @@ namespace App\Service\MultimediaTimeCode;
 use App\Dto\Transfer\MultimediaTimeCodeDto;
 use App\Entity\Multimedia;
 use App\Exception\Http\InvalidInputValidationException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
 use App\Repository\MultimediaTimeCodeRepository;
-use App\Service\FlusherService;
 use Doctrine\Common\Collections\Collection;
 
 final class AddTimeCode
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator,
         private readonly MultimediaTimeCodeRepository $multimediaTimeCodeRepository
     ) {

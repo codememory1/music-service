@@ -6,7 +6,7 @@ use App\Dto\Transfer\PlaylistDto;
 use App\Entity\Playlist;
 use App\Infrastructure\Validator\Validator;
 
-class UpdatePlaylist
+final class UpdatePlaylist
 {
     public function __construct(
         private readonly Validator $validator,

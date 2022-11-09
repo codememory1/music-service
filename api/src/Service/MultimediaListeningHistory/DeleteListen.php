@@ -3,12 +3,12 @@
 namespace App\Service\MultimediaListeningHistory;
 
 use App\Entity\MultimediaListeningHistory;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
 final class DeleteListen
 {
     public function __construct(
-        private readonly FlusherService $flusher
+        private readonly Flusher $flusher
     ) {
     }
 

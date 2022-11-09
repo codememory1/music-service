@@ -7,8 +7,10 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\UserProfileDesignTransformer;
 use App\Entity\UserProfile;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\ResponseData\General\User\Profile\UserProfileResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Service\UserProfileDesign\UpdateUserProfileDesign;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,11 +24,14 @@ class UserProfileController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::UPDATE_USER_PROFILE_DESIGN)]
     public function editDesignProfile(
         #[EntityNotFound(EntityNotFoundException::class, 'userProfile')] UserProfile $userProfile,
-        UserProfileDesignTransformer $userProfileDesignTransformer,
-        UpdateUserProfileDesign $updateUserProfileDesignService
+        UserProfileDesignTransformer $transformer,
+        UpdateUserProfileDesign $updateUserProfileDesign,
+        UserProfileResponseData $responseData
     ): JsonResponse {
-        return $updateUserProfileDesignService->request(
-            $userProfileDesignTransformer->transformFromRequest($userProfile->getDesign())
-        );
+        $responseData->setEntities($updateUserProfileDesign->update(
+            $transformer->transformFromRequest($userProfile->getDesign())
+        ));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 }

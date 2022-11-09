@@ -4,12 +4,12 @@ namespace App\Service\MultimediaMediaLibraryEvent;
 
 use App\Dto\Transfer\MultimediaMediaLibraryEventDto;
 use App\Entity\MultimediaMediaLibrary;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 
-class UpsertMultimediaMediaLibraryEvent
+final class UpsertMultimediaMediaLibraryEvent
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly EventPayloadHandler $eventPayloadHandler
     ) {
     }

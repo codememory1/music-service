@@ -7,15 +7,15 @@ use App\Entity\User;
 use App\Enum\PlatformCodeEnum;
 use App\Event\UserRegistrationEvent;
 use App\Exception\HttpException;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
 use App\Repository\UserRepository;
-use App\Service\FlusherService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Registration
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator,
         private readonly UserRepository $userRepository,
         private readonly Registrar $registrar,

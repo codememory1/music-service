@@ -4,16 +4,16 @@ namespace App\Service\UserProfileDesign;
 
 use App\Dto\Transfer\UserProfileDesignDto;
 use App\Entity\UserProfileDesign;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
 use App\Rest\S3\Uploader\ImageUploader;
 use App\Service\FileUploader\Uploader;
-use App\Service\FlusherService;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 final class UpdateUserProfileDesign
 {
     public function __construct(
-        private readonly FlusherService $flusher,
+        private readonly Flusher $flusher,
         private readonly Validator $validator,
         private readonly Uploader $fileUploader,
         private readonly ImageUploader $imageUploader

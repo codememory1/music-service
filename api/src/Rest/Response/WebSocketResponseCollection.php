@@ -8,13 +8,13 @@ use App\Enum\PlatformCodeEnum;
 use App\Enum\WebSocketClientMessageTypeEnum;
 use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
 use App\Rest\Response\Scheme\WebSocketSuccessScheme;
-use App\Service\TranslationService;
+use App\Service\Translation;
 use JetBrains\PhpStorm\Pure;
 
 final class WebSocketResponseCollection
 {
     public function __construct(
-        private readonly TranslationService $translation
+        private readonly Translation $translation
     ) {
     }
 
@@ -37,7 +37,6 @@ final class WebSocketResponseCollection
         );
     }
 
-    #[Pure]
     public function userNotification(Notification $notification): WebSocketSchemeInterface
     {
         return new WebSocketSuccessScheme(
