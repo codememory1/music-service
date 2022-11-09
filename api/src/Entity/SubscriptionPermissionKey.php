@@ -6,8 +6,9 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\SubscriptionPermissionKeyRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: SubscriptionPermissionKeyRepository::class)]
 #[ORM\Table('subscription_permission_keys')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('key', 'entityExist@subscriptionPermissionKey', payload: [ResponseTypeEnum::EXIST, 409])]
+#[UniqueEntity('key', 'entityExist@subscriptionPermissionKey', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class SubscriptionPermissionKey implements EntityInterface
 {
     use IdentifierTrait;

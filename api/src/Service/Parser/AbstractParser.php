@@ -15,8 +15,8 @@ abstract class AbstractParser
     protected readonly ConsoleOutput $consoleOutput;
     protected readonly ConsoleLogger $consoleLogger;
 
-    public function __construct(    
-        protected readonly HttpRequest $http, 
+    public function __construct(
+        protected readonly HttpRequest $http,
         protected readonly PreparedRoute $preparedRoute
     ) {
         $this->consoleOutput = new ConsoleOutput();

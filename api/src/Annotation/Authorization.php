@@ -6,13 +6,11 @@ use App\Annotation\Interfaces\MethodAnnotationInterface;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
-class Authorization implements MethodAnnotationInterface
+final class Authorization implements MethodAnnotationInterface
 {
-    public readonly bool $required;
-
-    public function __construct(bool $required = true)
-    {
-        $this->required = $required;
+    public function __construct(
+        public readonly bool $required = true
+    ) {
     }
 
     public function getHandler(): string

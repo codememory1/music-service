@@ -2,13 +2,12 @@
 
 namespace App\EventListener\Registration;
 
-use App\Dto\Transfer\UserDto;
 use App\Dto\Transformer\UserTransformer;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
 use App\Event\UserRegistrationEvent;
-use App\Service\UserSession\CreateSessionService;
-use App\Service\UserSession\UpdateSessionService;
+use App\Service\UserSession\CreateSession;
+use App\Service\UserSession\UpdateSession;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -17,24 +16,15 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-#[AsEventListener('app.registration', 'onUserRegistration', -1)]
+#[AsEventListener(UserRegistrationEvent::class, 'onUserRegistration', -1)]
 final class CreateRegistrationSessionListener
 {
-    private EntityManagerInterface $em;
-    private CreateSessionService $createUserSessionService;
-    private UpdateSessionService $updateUserSessionService;
-    private UserDto $userDto;
-
     public function __construct(
-        EntityManagerInterface $manager,
-        CreateSessionService $createSessionService,
-        UpdateSessionService $updateSessionService,
-        UserTransformer $userTransformer
+        private readonly EntityManagerInterface $em,
+        private readonly CreateSession $createSession,
+        private readonly UpdateSession $updateSession,
+        private readonly UserTransformer $userTransformer
     ) {
-        $this->em = $manager;
-        $this->createUserSessionService = $createSessionService;
-        $this->updateUserSessionService = $updateSessionService;
-        $this->userDto = $userTransformer->transformFromRequest();
     }
 
     /**
@@ -50,9 +40,18 @@ final class CreateRegistrationSessionListener
         $finedUserSession = $userSessionRepository->findRegistered($event->user);
 
         if (null !== $finedUserSession) {
-            $this->updateUserSessionService->make($this->userDto, $event->user, $finedUserSession, UserSessionTypeEnum::REGISTRATION);
+            $this->updateSession->make(
+                $this->userTransformer->transformFromRequest(),
+                $event->user,
+                $finedUserSession,
+                UserSessionTypeEnum::REGISTRATION
+            );
         } else {
-            $this->createUserSessionService->make($this->userDto, $event->user, type: UserSessionTypeEnum::REGISTRATION);
+            $this->createSession->make(
+                $this->userTransformer->transformFromRequest(),
+                $event->user,
+                type: UserSessionTypeEnum::REGISTRATION
+            );
         }
     }
 }

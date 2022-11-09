@@ -2,7 +2,7 @@
 
 namespace App\Rest\Jwt;
 
-use App\Service\JwtTokenGenerator;
+use App\Infrastructure\JwtToken\Generator;
 use JetBrains\PhpStorm\Pure;
 
 abstract class AbstractJwtToken
@@ -10,11 +10,10 @@ abstract class AbstractJwtToken
     protected ?string $parameterNameWithPublicKeyPath = null;
     protected ?string $token = null;
     protected bool|array $tokenData = false;
-    private JwtTokenGenerator $jwtTokenGenerator;
 
-    public function __construct(JwtTokenGenerator $jwtTokenGenerator)
-    {
-        $this->jwtTokenGenerator = $jwtTokenGenerator;
+    public function __construct(
+        private readonly Generator $jwtGenerator
+    ) {
     }
 
     public function getToken(): ?string
@@ -26,7 +25,7 @@ abstract class AbstractJwtToken
     {
         $this->token = $token;
 
-        $tokenData = $this->jwtTokenGenerator->decode($token, $this->parameterNameWithPublicKeyPath);
+        $tokenData = $this->jwtGenerator->decode($token, $this->parameterNameWithPublicKeyPath);
 
         if (false !== $tokenData) {
             $this->tokenData = (array) $tokenData;

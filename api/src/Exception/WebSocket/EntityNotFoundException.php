@@ -2,32 +2,33 @@
 
 namespace App\Exception\WebSocket;
 
-use App\Enum\WebSocketClientMessageTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Exception\WebSocketException;
 use JetBrains\PhpStorm\Pure;
 
 class EntityNotFoundException extends WebSocketException
 {
     #[Pure]
-    final public static function userSession(WebSocketClientMessageTypeEnum $clientMessageType): self
+    final public static function userSession(): self
     {
-        return new self($clientMessageType, 'entityNotFound@userSession');
+        return new self(PlatformCodeEnum::ENTITY_NOT_FOUND, 'entityNotFound@userSession');
     }
 
     #[Pure]
-    final public static function runningMultimedia(WebSocketClientMessageTypeEnum $clientMessageType): self
+    final public static function runningMultimedia(): self
     {
-        return new self($clientMessageType, 'entityNotFound@runningMultimedia');
+        return new self(PlatformCodeEnum::ENTITY_NOT_FOUND, 'entityNotFound@runningMultimedia');
     }
 
     #[Pure]
-    final public static function streamRunningMultimedia(WebSocketClientMessageTypeEnum $clientMessageType): self
+    final public static function streamRunningMultimedia(): self
     {
-        return new self($clientMessageType, 'entityNotFound@streamRunningMultimedia');
+        return new self(PlatformCodeEnum::ENTITY_NOT_FOUND, 'entityNotFound@streamRunningMultimedia');
     }
 
     #[Pure]
-    final public static function friend(WebSocketClientMessageTypeEnum $clientMessageType): self
+    final public static function friend(): self
     {
-        return new self($clientMessageType, 'entityNotFound@friend');
+        return new self(PlatformCodeEnum::ENTITY_NOT_FOUND, 'entityNotFound@friend');
     }
 }

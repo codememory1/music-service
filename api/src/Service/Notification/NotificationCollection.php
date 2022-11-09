@@ -10,21 +10,18 @@ use App\Enum\FrontendRouteEnum;
 use App\Enum\NotificationStatusEnum;
 use App\Enum\NotificationTypeEnum;
 use App\Service\Notification\Action\RedirectNotificationAction;
-use App\Service\TranslationService;
+use App\Service\Translation;
 use Doctrine\ORM\EntityManagerInterface;
 
-class NotificationCollection
+final class NotificationCollection
 {
-    private EntityManagerInterface $em;
-    private TranslationService $translationService;
-
-    public function __construct(EntityManagerInterface $manager, TranslationService $translationService)
-    {
-        $this->em = $manager;
-        $this->translationService = $translationService;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly Translation $translationService
+    ) {
     }
 
-    final public function authFromUnknownDevice(User $from, User $to, ?string $device, ?string $ip): self
+    public function authFromUnknownDevice(User $from, User $to, ?string $device, ?string $ip): self
     {
         return $this->init(
             $from,
@@ -84,17 +81,17 @@ class NotificationCollection
         NotificationTypeEnum $type = NotificationTypeEnum::INFORMATIONAL,
         array ...$actions
     ): self {
-        $notificationEntity = new Notification();
+        $notification = new Notification();
 
-        $notificationEntity->setFrom($from);
-        $notificationEntity->setTitle($this->translationService->get($titleTranslationKey));
-        $notificationEntity->setMessage($this->translationService->get($messageTranslationKey, $messageParameters));
-        $notificationEntity->setType($type);
-        $notificationEntity->setAction(...$actions);
-        $notificationEntity->setToUser($to->getEmail());
-        $notificationEntity->setStatus(NotificationStatusEnum::PENDING);
+        $notification->setFrom($from);
+        $notification->setTitle($this->translationService->get($titleTranslationKey));
+        $notification->setMessage($this->translationService->get($messageTranslationKey, $messageParameters));
+        $notification->setType($type);
+        $notification->setAction(...$actions);
+        $notification->setToUser($to->getEmail());
+        $notification->setStatus(NotificationStatusEnum::PENDING);
 
-        $this->em->persist($notificationEntity);
+        $this->em->persist($notification);
         $this->em->flush();
 
         return $this;

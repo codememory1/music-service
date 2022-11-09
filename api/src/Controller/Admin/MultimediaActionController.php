@@ -6,13 +6,15 @@ use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
 use App\Entity\Multimedia;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\ResponseData\General\Multimedia\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Multimedia\AppealCanceledService;
-use App\Service\Multimedia\PublishMultimediaService;
-use App\Service\Multimedia\SendOnModerationService;
-use App\Service\Multimedia\UnpublishMultimediaService;
+use App\Service\Multimedia\AppealCanceled;
+use App\Service\Multimedia\PublishMultimedia;
+use App\Service\Multimedia\SendOnModeration;
+use App\Service\Multimedia\UnpublishMultimedia;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,32 +26,44 @@ class MultimediaActionController extends AbstractRestController
     #[Route('/send-on-moderation', methods: 'PATCH')]
     public function sendOnModeration(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        SendOnModerationService $sendOnModerationService
+        SendOnModeration $sendOnModeration,
+        MultimediaResponseData $responseData
     ): JsonResponse {
-        return $sendOnModerationService->make($multimedia);
+        $responseData->setEntities($sendOnModeration->sendOnModeration($multimedia));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/publish', methods: 'PATCH')]
     public function publish(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        PublishMultimediaService $publishMultimediaService
+        PublishMultimedia $publishMultimedia,
+        MultimediaResponseData $responseData
     ): JsonResponse {
-        return $publishMultimediaService->request($multimedia);
+        $responseData->setEntities($publishMultimedia->publish($multimedia));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/unpublish', methods: 'PATCH')]
     public function unpublish(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        UnpublishMultimediaService $unpublishMultimediaService
+        UnpublishMultimedia $unpublishMultimedia,
+        MultimediaResponseData $responseData
     ): JsonResponse {
-        return $unpublishMultimediaService->request($multimedia);
+        $responseData->setEntities($unpublishMultimedia->unpublish($multimedia));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/appeal-canceled', methods: 'PATCH')]
     public function appealCanceled(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        AppealCanceledService $appealCanceledService
+        AppealCanceled $appealCanceled,
+        MultimediaResponseData $responseData
     ): JsonResponse {
-        return $appealCanceledService->request($multimedia);
+        $responseData->setEntities($appealCanceled->appeal($multimedia));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 }

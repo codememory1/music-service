@@ -2,7 +2,7 @@
 
 namespace App\Validator\Constraints;
 
-use App\Service\ParseCronTimeService;
+use App\Infrastructure\CronTime\Parser;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -18,13 +18,13 @@ final class CronTimeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, CronTime::class);
         }
 
-        $parserCronTimeService = new ParseCronTimeService();
+        $parserCronTime = new Parser();
 
-        $parserCronTimeService->setTime($value);
+        $parserCronTime->setTime($value);
 
-        if (!$parserCronTimeService->isIncorrect()) {
+        if (!$parserCronTime->isIncorrect()) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ formats }}', implode(', ', $parserCronTimeService->getFormats()))
+                ->setParameter('{{ formats }}', implode(', ', $parserCronTime->getFormats()))
                 ->addViolation();
         }
     }

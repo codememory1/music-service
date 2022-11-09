@@ -59,12 +59,6 @@ services:
       exclude:
         - '../src/Rest/Response/Interfaces'
 
-    App\Rest\Validator\HttpValidator:
-      public: false
-
-    App\Rest\Validator\WebSocketValidator:
-      public: false
-
     App\Rest\S3\:
       resource: '../src/Rest/S3/'
       public: true
@@ -183,6 +177,25 @@ services:
     App\Infrastructure\ResponseData\Constraints\Value\:
       resource: '../src/Infrastructure/ResponseData/Constraints/Value/*Handler.php'
       public: true
+
+    App\Infrastructure\CronTime\Parser:
+      public: false
+
+    App\Infrastructure\Doctrine\Flusher:
+      public: false
+
+    App\Infrastructure\File\MimeTypeConverter:
+      public: false
+
+    App\Infrastructure\JwtToken\Generator:
+      public: false
+
+    App\Infrastructure\Validator\Validator:
+      public: false
+
+    App\Infrastructure\Hashing\:
+      resource: '../src/Infrastructure/Hashing/*.php'
+      public: false
 
     App\ResponseData\:
       resource: '../src/ResponseData/*ResponseData.php'

@@ -6,35 +6,32 @@ use App\Entity\User;
 use App\Entity\UserSession;
 use App\Repository\UserRepository;
 use App\Repository\UserSessionRepository;
-use App\Rest\Response\WebSocketSchema;
+use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
 use function call_user_func;
 use LogicException;
 use Predis\Client;
 
-class MessageQueueToClient
+final class MessageQueueToClient
 {
     public const KEY = 'websocket:prepared_message_for_client#%s';
-    private Client $redisClient;
-    private UserRepository $userRepository;
-    private UserSessionRepository $userSessionRepository;
 
-    public function __construct(Client $redisClient, UserRepository $userRepository, UserSessionRepository $userSessionRepository)
-    {
-        $this->redisClient = $redisClient;
-        $this->userRepository = $userRepository;
-        $this->userSessionRepository = $userSessionRepository;
+    public function __construct(
+        private readonly Client $redisClient,
+        private readonly UserRepository $userRepository,
+        private readonly UserSessionRepository $userSessionRepository
+    ) {
     }
 
-    public function sendMessage(WebSocketSchema $webSocketSchema, ?User $toUser = null, ?UserSession $toUserSession = null): self
+    public function sendMessage(WebSocketSchemeInterface $scheme, ?User $to = null, ?UserSession $toUserSession = null): self
     {
-        if ((null !== $toUser && null !== $toUserSession) || (null === $toUser && null === $toUserSession)) {
+        if ((null !== $to && null !== $toUserSession) || (null === $to && null === $toUserSession)) {
             throw new LogicException('Specify one of the $toUser or $toUserSession parameters');
         }
 
         $this->redisClient->set($this->getNextKey(), json_encode([
-            'to_user' => $toUser?->getId(),
+            'to_user' => $to?->getId(),
             'to_user_session' => $toUserSession?->getId(),
-            'schema' => serialize($webSocketSchema)
+            'scheme' => serialize($scheme->use())
         ]));
 
         return $this;
@@ -68,7 +65,7 @@ class MessageQueueToClient
                 }
 
                 if (null !== $to) {
-                    call_user_func($pick, $to, unserialize($data['schema']));
+                    call_user_func($pick, $to, unserialize($data['scheme']));
                 }
 
                 $this->redisClient->del($key);

@@ -4,6 +4,7 @@ namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
 use App\Entity\AlbumType;
+use App\Infrastructure\Dto\AbstractDataTransfer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 

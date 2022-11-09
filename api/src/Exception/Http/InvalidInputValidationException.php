@@ -2,20 +2,21 @@
 
 namespace App\Exception\Http;
 
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Exception\HttpException;
 use JetBrains\PhpStorm\Pure;
 
 class InvalidInputValidationException extends HttpException
 {
     #[Pure]
-    public static function multimediaTimeCodeAlreadyAdded(array $data = [], array $headers = []): self
+    public static function multimediaTimeCodeAlreadyAdded(array $parameters = [], array $headers = []): self
     {
-        return new self(422, ResponseTypeEnum::INPUT_VALIDATION, 'multimediaTimeCode@timeCodeAlreadyAdded', data: $data, headers: $headers);
+        return new self(422, PlatformCodeEnum::UNEXPECTED_ERROR, 'multimediaTimeCode@timeCodeAlreadyAdded', $parameters, $headers);
     }
 
     #[Pure]
-    public static function multimediaTimeCodeToMoreDuration(array $data = [], array $headers = []): self
+    public static function multimediaTimeCodeToMoreDuration(array $parameters = [], array $headers = []): self
     {
-        return new self(422, ResponseTypeEnum::INPUT_VALIDATION, 'multimediaTimeCode@toTimeMoreDuration', data: $data, headers: $headers);
+        return new self(422, PlatformCodeEnum::TEXT_ENTRY_VALIDATION_ERROR, 'multimediaTimeCode@toTimeMoreDuration', $parameters, $headers);
     }
 }

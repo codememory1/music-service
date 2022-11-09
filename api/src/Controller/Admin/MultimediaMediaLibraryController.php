@@ -7,11 +7,13 @@ use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\MultimediaMediaLibraryTransformer;
 use App\Entity\MultimediaMediaLibrary;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MediaLibrary\DeleteMultimediaMediaLibraryService;
-use App\Service\MultimediaMediaLibrary\UpdateMultimediaMediaLibraryService;
+use App\Service\MediaLibrary\DeleteMultimediaMediaLibrary;
+use App\Service\MultimediaMediaLibrary\UpdateMultimediaMediaLibrary;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,20 +25,26 @@ class MultimediaMediaLibraryController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_MEDIA_LIBRARY_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
-        MultimediaMediaLibraryTransformer $multimediaMediaLibraryTransformer,
-        UpdateMultimediaMediaLibraryService $updateMultimediaMediaLibraryService
+        MultimediaMediaLibraryTransformer $transformer,
+        UpdateMultimediaMediaLibrary $updateMultimediaMediaLibrary,
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
-        return $updateMultimediaMediaLibraryService->request(
-            $multimediaMediaLibraryTransformer->transformFromRequest($multimediaMediaLibrary)
-        );
+        $responseData->setEntities($updateMultimediaMediaLibrary->update(
+            $transformer->transformFromRequest($multimediaMediaLibrary)
+        ));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/media-library/multimedia/{multimediaMediaLibrary_id<\d+>}/delete', methods: 'DELETE')]
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_MEDIA_LIBRARY_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
-        DeleteMultimediaMediaLibraryService $deleteMultimediaMediaLibraryService
+        DeleteMultimediaMediaLibrary $deleteMultimediaMediaLibrary,
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
-        return $deleteMultimediaMediaLibraryService->request($multimediaMediaLibrary);
+        $responseData->setEntities($deleteMultimediaMediaLibrary->delete($multimediaMediaLibrary));
+
+        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
 }

@@ -19,12 +19,13 @@ final class ConditionValidator extends ConstraintValidator
 
         $object = $this->context->getObject();
         $callbackName = $constraint->callbackCondition;
+        $constraints = $constraint->constraints;
 
         if ($object->$callbackName($value)) {
             $this->context
                 ->getValidator()
                 ->inContext($this->context)
-                ->validate($value, $constraint->constraints);
+                ->validate($value, $constraints);
         }
     }
 }

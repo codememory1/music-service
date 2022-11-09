@@ -4,7 +4,7 @@ namespace App\Service\Notification\Action;
 
 use App\Service\Notification\Interfaces\NotificationActionInterface;
 
-class RedirectNotificationAction implements NotificationActionInterface
+final class RedirectNotificationAction implements NotificationActionInterface
 {
     private array $action = [
         'redirect' => []

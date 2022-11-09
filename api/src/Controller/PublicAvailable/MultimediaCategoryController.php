@@ -4,7 +4,7 @@ namespace App\Controller\PublicAvailable;
 
 use App\Annotation\Authorization;
 use App\Repository\MultimediaCategoryRepository;
-use App\ResponseData\MultimediaCategoryResponseData;
+use App\ResponseData\General\Multimedia\MultimediaCategoryResponseData;
 use App\Rest\Controller\AbstractRestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,10 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class MultimediaCategoryController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    public function all(MultimediaCategoryResponseData $multimediaCategoryResponseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
+    public function all(MultimediaCategoryResponseData $responseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
     {
-        $multimediaCategoryResponseData->setEntities($multimediaCategoryRepository->findAll());
+        $responseData->setEntities($multimediaCategoryRepository->findAll());
 
-        return $this->responseCollection->dataOutput($multimediaCategoryResponseData->getResponse());
+        return $this->responseData($responseData);
     }
 }

@@ -2,18 +2,16 @@
 
 namespace App\Dto\Constraints;
 
-use App\Dto\Interfaces\DataTransferConstraintInterface;
 use App\Enum\RequestTypeEnum;
+use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class AllowedCallSetterByRequestTypeConstraint implements DataTransferConstraintInterface
 {
-    public readonly RequestTypeEnum $requestType;
-
-    public function __construct(RequestTypeEnum $requestType)
-    {
-        $this->requestType = $requestType;
+    public function __construct(
+        public readonly RequestTypeEnum $requestType
+    ) {
     }
 
     public function getHandler(): ?string

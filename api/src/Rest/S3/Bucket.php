@@ -7,12 +7,11 @@ use Aws\S3\S3Client as AwsS3Client;
 
 class Bucket
 {
-    public readonly AwsS3Client $awsS3Client;
     private ?Result $listBuckets = null;
 
-    public function __construct(AwsS3Client $awsS3Client)
-    {
-        $this->awsS3Client = $awsS3Client;
+    public function __construct(
+        public readonly AwsS3Client $awsS3Client
+    ) {
     }
 
     public function create(string $name, string $acl = 'private-read-write', array $args = []): Result|bool

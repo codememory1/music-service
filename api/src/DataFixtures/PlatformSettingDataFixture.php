@@ -24,7 +24,8 @@ final class PlatformSettingDataFixture extends AbstractDataFixture
             new PlatformSettingFactory(PlatformSettingEnum::MULTIMEDIA_DURATION_CLIP_KEY, 240),
             new PlatformSettingFactory(PlatformSettingEnum::AUTO_REJECT_OFFERED_STREAMING, 30),
             new PlatformSettingFactory(PlatformSettingEnum::PERCENT_ARTIST_INCOME_FROM_TURNOVER, 45),
-            new PlatformSettingFactory(PlatformSettingEnum::MONTHLY_EXPENSES, 2000)
+            new PlatformSettingFactory(PlatformSettingEnum::MONTHLY_EXPENSES, 2000),
+            new PlatformSettingFactory(PlatformSettingEnum::PASSWORD_RESET_TTL_CODE, '10m'),
         ]);
     }
 

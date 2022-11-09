@@ -4,6 +4,7 @@ namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
 use App\Entity\RolePermission;
+use App\Infrastructure\Dto\AbstractDataTransfer;
 
 /**
  * @template-extends AbstractDataTransfer<RolePermission>

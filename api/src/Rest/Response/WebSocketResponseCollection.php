@@ -4,63 +4,50 @@ namespace App\Rest\Response;
 
 use App\Entity\Notification;
 use App\Entity\StreamRunningMultimedia;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\WebSocketClientMessageTypeEnum;
-use App\Service\TranslationService;
+use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
+use App\Rest\Response\Scheme\WebSocketSuccessScheme;
+use App\Service\Translation;
+use JetBrains\PhpStorm\Pure;
 
 final class WebSocketResponseCollection
 {
-    private WebSocketSchema $webSocketSchema;
-    private TranslationService $translationService;
-
-    public function __construct(WebSocketSchema $webSocketSchema, TranslationService $translationService)
-    {
-        $this->webSocketSchema = $webSocketSchema;
-        $this->translationService = $translationService;
+    public function __construct(
+        private readonly Translation $translation
+    ) {
     }
 
     public function setLocale(string $locale): self
     {
-        $this->translationService->setLocale($locale);
+        $this->translation->setLocale($locale);
 
         return $this;
     }
 
-    public function multimediaStreamAcceptRequest(StreamRunningMultimedia $streamRunningMultimedia): WebSocketSchema
+    #[Pure]
+    public function multimediaStreamAcceptRequest(StreamRunningMultimedia $streamRunningMultimedia): WebSocketSchemeInterface
     {
-        $schema = clone $this->webSocketSchema;
-
-        $schema->setType(WebSocketClientMessageTypeEnum::MULTIMEDIA_STREAM_OFFER);
-        $schema->setResult([
-            'stream_running_multimedia' => $streamRunningMultimedia->getId()
-        ]);
-
-        return $schema;
+        return new WebSocketSuccessScheme(
+            PlatformCodeEnum::PENDING,
+            WebSocketClientMessageTypeEnum::MULTIMEDIA_STREAM_OFFER,
+            [
+                'stream_running_multimedia' => $streamRunningMultimedia->getId()
+            ]
+        );
     }
 
-    public function userNotification(Notification $notification): WebSocketSchema
+    public function userNotification(Notification $notification): WebSocketSchemeInterface
     {
-        $schema = clone $this->webSocketSchema;
-
-        $schema->setType(WebSocketClientMessageTypeEnum::USER_NOTIFICATION);
-        $schema->setResult([
-            'type' => $notification->getType(),
-            'title' => $notification->getTitle(),
-            'message' => $notification->getMessage(),
-            'action' => $notification->getAction()
-        ]);
-
-        return $schema;
-    }
-
-    public function test(): WebSocketSchema
-    {
-        $schema = clone $this->webSocketSchema;
-
-        $schema->setType(WebSocketClientMessageTypeEnum::USER_NOTIFICATION);
-        $schema->setResult([
-            'cd' => 123
-        ]);
-
-        return $schema;
+        return new WebSocketSuccessScheme(
+            PlatformCodeEnum::PENDING,
+            WebSocketClientMessageTypeEnum::MULTIMEDIA_STREAM_OFFER,
+            [
+                'type' => $notification->getType(),
+                'title' => $notification->getTitle(),
+                'message' => $notification->getMessage(),
+                'action' => $notification->getAction()
+            ]
+        );
     }
 }

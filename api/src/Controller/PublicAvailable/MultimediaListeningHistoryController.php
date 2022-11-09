@@ -5,11 +5,12 @@ namespace App\Controller\PublicAvailable;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Entity\MultimediaListeningHistory;
+use App\Enum\PlatformCodeEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaListeningHistoryRepository;
-use App\ResponseData\MultimediaListeningHistoryResponseData;
+use App\ResponseData\General\History\HistoryMultimediaListeningResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MultimediaListeningHistory\DeleteListenService;
+use App\Service\MultimediaListeningHistory\DeleteListen;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,22 +19,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class MultimediaListeningHistoryController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    public function all(MultimediaListeningHistoryResponseData $multimediaListeningHistoryResponseData, MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository): JsonResponse
+    public function all(HistoryMultimediaListeningResponseData $responseData, MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository): JsonResponse
     {
-        $multimediaListeningHistoryResponseData->setEntities($multimediaListeningHistoryRepository->findAllByUser($this->getAuthorizedUser()));
+        $responseData->setEntities($multimediaListeningHistoryRepository->findAllByUser($this->getAuthorizedUser()));
 
-        return $this->responseCollection->dataOutput($multimediaListeningHistoryResponseData->getResponse());
+        return $this->responseData($responseData);
     }
 
     #[Route('/listen/{multimediaListeningHistory_id<\d+>}/delete', methods: 'DELETE')]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'listenToHistory')] MultimediaListeningHistory $multimediaListeningHistory,
-        DeleteListenService $deleteListenService
+        DeleteListen $deleteListen,
+        HistoryMultimediaListeningResponseData $responseData
     ): JsonResponse {
         if (false === $multimediaListeningHistory->getUser()->isCompare($this->getAuthorizedUser())) {
             throw EntityNotFoundException::listenToHistory();
         }
 
-        return $deleteListenService->request($multimediaListeningHistory);
+        $responseData->setEntities($deleteListen->delete($multimediaListeningHistory));
+
+        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
 }

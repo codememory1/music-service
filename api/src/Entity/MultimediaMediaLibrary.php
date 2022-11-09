@@ -11,7 +11,8 @@ use App\Entity\Traits\TimestampTrait;
 use App\Entity\Traits\UpdateNumberMultimediaMediaLibraryStatisticTrait;
 use App\Entity\Traits\UuidIdentifierTrait;
 use App\Enum\EntityS3SettingEnum;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\MultimediaMediaLibraryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,7 +26,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity(
     ['mediaLibrary', 'multimedia'],
     message: 'multimediaMediaLibrary@multimediaAlreadyAdd',
-    payload: [ResponseTypeEnum::EXIST, 409]
+    payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND]
 )]
 class MultimediaMediaLibrary implements EntityInterface, EntityS3SettingInterface
 {

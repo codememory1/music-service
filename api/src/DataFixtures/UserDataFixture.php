@@ -8,12 +8,14 @@ use App\Enum\RoleEnum;
 use App\Enum\SubscriptionEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * @template-extends AbstractDataFixture<User>
  */
 final class UserDataFixture extends AbstractDataFixture implements DependentFixtureInterface
 {
+    #[Pure]
     public function __construct()
     {
         parent::__construct([

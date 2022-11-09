@@ -3,6 +3,7 @@
 namespace App\Infrastructure\ResponseData;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Reflection\Reflection;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintAvailabilityHandlerInterface;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintHandlerInterface;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintInterface;
@@ -12,14 +13,13 @@ use App\Infrastructure\ResponseData\Interfaces\ResponseDataInterface;
 use App\Infrastructure\ResponseData\Repository\AllowedPropertyRepository;
 use App\Infrastructure\ResponseData\Repository\PropertyInterceptorRepository;
 use App\Infrastructure\ResponseData\Repository\PropertyMethodRepository;
-use App\Service\Reflection;
 use Doctrine\Common\Collections\Collection;
 use ReflectionProperty;
 use Symfony\Component\DependencyInjection\ReverseContainer;
 
 abstract class AbstractResponseData implements ResponseDataInterface
 {
-    protected null|array|EntityInterface|Collection $entities = null;
+    protected array $entities = [];
     protected bool $asFirstResponse = false;
     protected Reflection $reflection;
     protected array $ignoredProperties = [];
@@ -27,7 +27,7 @@ abstract class AbstractResponseData implements ResponseDataInterface
     protected array $response = [];
 
     public function __construct(
-        protected ReverseContainer $container
+        protected readonly ReverseContainer $container
     ) {
         $this->reflection = new Reflection(static::class);
     }
@@ -35,16 +35,16 @@ abstract class AbstractResponseData implements ResponseDataInterface
     public function setEntities(EntityInterface|Collection|array $entities): self
     {
         if ($entities instanceof EntityInterface) {
-            $entities = [$entities];
+            $this->entities = [$entities];
 
             $this->asFirstResponse = true;
+        } else {
+            if ($entities instanceof Collection) {
+                $this->entities = $entities->toArray();
+            } else {
+                $this->entities = $entities;
+            }
         }
-
-        if ($entities instanceof Collection) {
-            $entities = $entities->toArray();
-        }
-
-        $this->entities = $entities;
 
         return $this;
     }

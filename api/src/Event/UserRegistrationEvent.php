@@ -7,10 +7,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class UserRegistrationEvent extends Event
 {
-    public readonly User $user;
-
-    public function __construct(User $user)
-    {
-        $this->user = $user;
+    public function __construct(
+        public readonly User $user
+    ) {
     }
 }

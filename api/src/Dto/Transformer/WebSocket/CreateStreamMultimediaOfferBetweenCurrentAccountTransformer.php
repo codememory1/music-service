@@ -2,10 +2,10 @@
 
 namespace App\Dto\Transformer\WebSocket;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\WebSocket\CreateStreamMultimediaOfferBetweenCurrentAccountDto;
-use App\Dto\Transformer\AbstractDataTransformer;
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -14,14 +14,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class CreateStreamMultimediaOfferBetweenCurrentAccountTransformer extends AbstractDataTransformer
 {
-    private CreateStreamMultimediaOfferBetweenCurrentAccountDto $streamMultimediaBetweenCurrentAccountDto;
-
     #[Pure]
-    public function __construct(Request $request, CreateStreamMultimediaOfferBetweenCurrentAccountDto $streamMultimediaBetweenCurrentAccountDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly CreateStreamMultimediaOfferBetweenCurrentAccountDto $streamMultimediaBetweenCurrentAccountDto
+    ) {
         parent::__construct($request);
-
-        $this->streamMultimediaBetweenCurrentAccountDto = $streamMultimediaBetweenCurrentAccountDto;
     }
 
     public function transformFromArray(array $data, ?EntityInterface $entity = null): DataTransferInterface

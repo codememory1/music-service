@@ -10,23 +10,20 @@ use App\Service\Platform\Interfaces\UserDataInterface;
 use Google\Client as GoogleClient;
 use JetBrains\PhpStorm\NoReturn;
 
-class Client implements ClientInterface
+final class Client implements ClientInterface
 {
-    public readonly string $clientId;
-    public readonly string $secretKey;
-    public readonly string $redirectUrl;
-    public readonly array $scopes;
     public readonly GoogleClient $googleClient;
     private ?string $accessToken = null;
     private array $authenticateResponse = [];
 
     #[NoReturn]
-    public function __construct(string $clientId, string $secretKey, string $redirectUrl, array $scopes = [])
-    {
-        $this->clientId = $clientId;
-        $this->secretKey = $secretKey;
-        $this->redirectUrl = $redirectUrl;
-        $this->scopes = array_map(static fn(GoogleScopeEnum $googleScopeEnum) => $googleScopeEnum->value, $scopes);
+    public function __construct(
+        private readonly string $clientId,
+        private readonly string $secretKey,
+        private readonly string $redirectUrl,
+        private array $scopes = []
+    ) {
+        $this->scopes = array_map(static fn(GoogleScopeEnum $googleScopeEnum) => $googleScopeEnum->value, $this->scopes);
 
         $this->googleClient = new GoogleClient();
 

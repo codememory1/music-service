@@ -9,21 +9,17 @@ use App\Repository\UserSessionRepository;
 use App\Rest\Jwt\AccessToken;
 use App\Security\Http\BearerToken;
 
-class AuthorizedUser
+final class AuthorizedUser
 {
-    public BearerToken $bearerToken;
-    private UserRepository $userRepository;
-    private UserSessionRepository $userSessionRepository;
-    private AccessToken $accessToken;
     private ?User $user = null;
     private ?UserSession $userSession = null;
 
-    public function __construct(UserRepository $userRepository, UserSessionRepository $userSessionRepository, AccessToken $accessToken, BearerToken $bearerToken)
-    {
-        $this->userRepository = $userRepository;
-        $this->userSessionRepository = $userSessionRepository;
-        $this->accessToken = $accessToken;
-        $this->bearerToken = $bearerToken;
+    public function __construct(
+        private readonly UserRepository $userRepository,
+        private readonly UserSessionRepository $userSessionRepository,
+        private readonly AccessToken $accessToken,
+        public readonly BearerToken $bearerToken
+    ) {
     }
 
     public function setAccessToken(string $token): self

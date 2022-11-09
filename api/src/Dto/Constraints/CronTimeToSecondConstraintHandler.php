@@ -2,17 +2,16 @@
 
 namespace App\Dto\Constraints;
 
-use App\Dto\Interfaces\DataTransferConstraintInterface;
-use App\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
-use App\Service\ParseCronTimeService;
+use App\Infrastructure\CronTime\Parser;
+use App\Infrastructure\Dto\AbstractDataTransferConstraintHandler;
+use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
 
 final class CronTimeToSecondConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferValueInterceptorConstraintHandlerInterface
 {
-    private ParseCronTimeService $parseCronTimeService;
-
-    public function __construct(ParseCronTimeService $parseCronTimeService)
-    {
-        $this->parseCronTimeService = $parseCronTimeService;
+    public function __construct(
+        private readonly Parser $cronTimeParser
+    ) {
     }
 
     /**
@@ -20,6 +19,6 @@ final class CronTimeToSecondConstraintHandler extends AbstractDataTransferConstr
      */
     public function handle(DataTransferConstraintInterface $constraint, mixed $value): int
     {
-        return $this->parseCronTimeService->setTime($value)->toSecond();
+        return $this->cronTimeParser->setTime($value)->toSecond();
     }
 }

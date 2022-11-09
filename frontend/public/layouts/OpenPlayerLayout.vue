@@ -24,13 +24,13 @@
 
     <div class="content-wrapper">
       <div class="open-player-header" :class="{ active: headerIsActive }">
-        <slot name="header" />
+        <PortalTarget name="header" />
 
         <OpenPlayerHeaderUserInfo />
       </div>
 
       <div ref="content" class="content-scroll" @scroll="scrollContent">
-        <slot />
+        <Nuxt />
       </div>
 
       <DesktopPlayer />

@@ -6,8 +6,10 @@ use App\Dto\Constraints as DtoConstraints;
 use App\Entity\Role;
 use App\Entity\RolePermissionKey;
 use App\Entity\TranslationKey;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\Infrastructure\Dto\AbstractDataTransfer;
+use App\Infrastructure\Validator\Validator;
 use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,7 +28,7 @@ final class UserRoleDto extends AbstractDataTransfer
         TranslationKey::class,
         'key',
         'common@titleTranslationKeyNotExist',
-        payload: [ResponseTypeEnum::NOT_EXIST, 409]
+        payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND]
     )]
     #[DtoConstraints\ToTypeConstraint]
     public ?string $title = null;
@@ -35,7 +37,7 @@ final class UserRoleDto extends AbstractDataTransfer
         TranslationKey::class,
         'key',
         'common@shortDescriptionTranslationKeyNotExist',
-        payload: [ResponseTypeEnum::NOT_EXIST, 409],
+        payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND]
     )]
     #[DtoConstraints\ToTypeConstraint]
     public ?string $shortDescription = null;

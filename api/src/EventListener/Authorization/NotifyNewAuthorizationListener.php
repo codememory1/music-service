@@ -6,9 +6,9 @@ use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\SystemUserEnum;
 use App\Event\UserAuthorizationEvent;
-use App\Service\MailMessagingService;
+use App\Infrastructure\Object\ComparisonPercentage;
+use App\Service\MailMessaging;
 use App\Service\Notification\NotificationCollection;
-use App\Service\ObjectComparisonPercentageService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -16,14 +16,14 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-#[AsEventListener('app.auth', 'onAuth', 0)]
+#[AsEventListener(UserAuthorizationEvent::class, 'onAuth', 0)]
 final class NotifyNewAuthorizationListener
 {
     private EntityManagerInterface $em;
     private NotificationCollection $notificationCollection;
-    private MailMessagingService $mailMessagingService;
+    private MailMessaging $mailMessagingService;
 
-    public function __construct(EntityManagerInterface $manager, NotificationCollection $notificationCollection, MailMessagingService $mailMessagingService)
+    public function __construct(EntityManagerInterface $manager, NotificationCollection $notificationCollection, MailMessaging $mailMessagingService)
     {
         $this->em = $manager;
         $this->notificationCollection = $notificationCollection;
@@ -44,7 +44,7 @@ final class NotifyNewAuthorizationListener
         $registeredSession = $userSessionRepository->findRegistered($userAuthorizationEvent->authorizedUser);
 
         if (null !== $lastTempSession && $registeredSession) {
-            $objectComparisonPercentageService = new ObjectComparisonPercentageService($lastTempSession, $registeredSession, [
+            $objectComparisonPercentage = new ComparisonPercentage($lastTempSession, $registeredSession, [
                 'getIp',
                 'getBrowser',
                 'getDevice',
@@ -56,7 +56,7 @@ final class NotifyNewAuthorizationListener
                 'getRegionName',
             ]);
 
-            if ($objectComparisonPercentageService->compare() < 70) {
+            if ($objectComparisonPercentage->compare() < 70) {
                 $this->notificationCollection->authFromUnknownDevice(
                     $userRepository->findByEmail(SystemUserEnum::BOT->value),
                     $userAuthorizationEvent->authorizedUser,

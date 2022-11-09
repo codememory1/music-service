@@ -15,11 +15,9 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 #[AsEventListener('kernel.controller')]
 final class AnnotationListener
 {
-    private ReverseContainer $container;
-
-    public function __construct(ReverseContainer $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        private readonly ReverseContainer $container
+    ) {
     }
 
     /**

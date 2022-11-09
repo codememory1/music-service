@@ -6,7 +6,8 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\LanguageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
 #[ORM\Table('languages')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('code', 'language@codeExist', payload: [ResponseTypeEnum::EXIST, 409])]
+#[UniqueEntity('code', 'language@codeExist', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class Language implements EntityInterface
 {
     use IdentifierTrait;

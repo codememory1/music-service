@@ -3,8 +3,9 @@
 namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
-use App\Dto\Traits\SetPasswordTrait;
+use App\Dto\Transfer\Traits\SetPasswordTrait;
 use App\Entity\User;
+use App\Infrastructure\Dto\AbstractDataTransfer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 

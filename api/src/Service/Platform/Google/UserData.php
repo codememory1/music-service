@@ -7,9 +7,9 @@ use Google\Service\Oauth2;
 use Google\Service\Oauth2\Userinfo;
 use JetBrains\PhpStorm\Pure;
 
-class UserData implements UserDataInterface
+final class UserData implements UserDataInterface
 {
-    private Userinfo $data;
+    private readonly Userinfo $data;
 
     public function __construct(Client $client)
     {

@@ -7,11 +7,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class Request
 {
-    private RequestStack $requestStack;
-
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private readonly RequestStack $requestStack
+    ) {
     }
 
     public function getRequest(): ?SymfonyRequest
@@ -24,7 +22,7 @@ class Request
         if ($this->exist($key)) {
             $value = $this->all()[$key];
 
-            return empty($value) ? null : $value;
+            return empty($value) ? $default : $value;
         }
 
         return $default;

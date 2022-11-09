@@ -2,10 +2,11 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\RequestRestorationPasswordDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\PasswordReset;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -14,14 +15,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class RequestRestorationPasswordTransformer extends AbstractDataTransformer
 {
-    private RequestRestorationPasswordDto $requestRestorationPasswordDto;
-
     #[Pure]
-    public function __construct(Request $request, RequestRestorationPasswordDto $requestRestorationPasswordDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly RequestRestorationPasswordDto $requestRestorationPasswordDto
+    ) {
         parent::__construct($request);
-
-        $this->requestRestorationPasswordDto = $requestRestorationPasswordDto;
     }
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface

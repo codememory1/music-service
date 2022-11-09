@@ -4,7 +4,7 @@ namespace App\Rest\S3\Uploader;
 
 use ArrayIterator;
 
-class UploadedFile
+final class UploadedFile
 {
     private array $paths;
 

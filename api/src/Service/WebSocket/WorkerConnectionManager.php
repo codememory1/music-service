@@ -5,15 +5,14 @@ namespace App\Service\WebSocket;
 use App\Entity\UserSession;
 use Predis\Client;
 
-class WorkerConnectionManager
+final class WorkerConnectionManager
 {
     private const FORMAT_KEY_CONNECTION = 'websocket:connection#%s.user_session_id';
     private const FORMAT_KEY_CONNECTION_USER_SESSION = 'websocket:connection:user#%s:session#%s.connection_id';
-    private Client $redisClient;
 
-    public function __construct(Client $redisClient)
-    {
-        $this->redisClient = $redisClient;
+    public function __construct(
+        private readonly Client $redisClient
+    ) {
     }
 
     public function addConnectionUserSession(int $connectionId, UserSession $userSession): self
@@ -105,12 +104,12 @@ class WorkerConnectionManager
         return $this;
     }
 
-    final public function generateConnectionKey(string|int $connectionId): string
+    public function generateConnectionKey(string|int $connectionId): string
     {
         return sprintf(self::FORMAT_KEY_CONNECTION, $connectionId);
     }
 
-    final public function generateConnectionUserSessionKey(string|int $userId, string|int $userSessionId): string
+    public function generateConnectionUserSessionKey(string|int $userId, string|int $userSessionId): string
     {
         return sprintf(self::FORMAT_KEY_CONNECTION_USER_SESSION, $userId, $userSessionId);
     }

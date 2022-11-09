@@ -9,7 +9,7 @@ use ReflectionProperty;
 abstract class AbstractConstraintSystemHandler extends AbstractConstraintHandler implements ConstraintSystemHandlerInterface
 {
     protected ?ReflectionProperty $property = null;
-    protected PropertyDataDeterminantInterface $propertyDataDeterminant;
+    protected ?PropertyDataDeterminantInterface $propertyDataDeterminant = null;
 
     public function setReflectionProperty(ReflectionProperty $property): self
     {

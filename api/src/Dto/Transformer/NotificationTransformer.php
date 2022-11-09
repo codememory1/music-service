@@ -2,10 +2,11 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\NotificationDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Notification;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -14,14 +15,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class NotificationTransformer extends AbstractDataTransformer
 {
-    private NotificationDto $notificationDto;
-
     #[Pure]
-    public function __construct(Request $request, NotificationDto $notificationDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly NotificationDto $notificationDto
+    ) {
         parent::__construct($request);
-
-        $this->notificationDto = $notificationDto;
     }
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface

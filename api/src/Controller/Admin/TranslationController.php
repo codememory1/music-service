@@ -8,12 +8,14 @@ use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\DeleteTranslationTransformer;
 use App\Dto\Transformer\TranslationTransformer;
 use App\Entity\Translation;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\ResponseData\General\Translation\TranslationResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Translation\CreateTranslationService;
-use App\Service\Translation\DeleteTranslationService;
-use App\Service\Translation\UpdateTranslationService;
+use App\Service\Translation\CreateTranslation;
+use App\Service\Translation\DeleteTranslation;
+use App\Service\Translation\UpdateTranslation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,28 +25,39 @@ class TranslationController extends AbstractRestController
 {
     #[Route('/create', methods: 'POST')]
     #[UserRolePermission(RolePermissionEnum::CREATE_TRANSLATION)]
-    public function create(TranslationTransformer $translationTransformer, CreateTranslationService $createTranslationService): JsonResponse
+    public function create(TranslationTransformer $transformer, CreateTranslation $createTranslation, TranslationResponseData $responseData): JsonResponse
     {
-        return $createTranslationService->request($translationTransformer->transformFromRequest());
+        $responseData->setEntities($createTranslation->create($transformer->transformFromRequest()));
+
+        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
 
     #[Route('/{translation_id<\d+>}/edit', methods: 'PUT')]
     #[UserRolePermission(RolePermissionEnum::UPDATE_TRANSLATION)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'translation')] Translation $translation,
-        TranslationTransformer $translationTransformer,
-        UpdateTranslationService $updateTranslationService
+        TranslationTransformer $transformer,
+        UpdateTranslation $updateTranslation,
+        TranslationResponseData $responseData
     ): JsonResponse {
-        return $updateTranslationService->request($translationTransformer->transformFromRequest($translation));
+        $responseData->setEntities($updateTranslation->update($transformer->transformFromRequest($translation)));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/{translation_id<\d+>}/delete', methods: 'DELETE')]
     #[UserRolePermission(RolePermissionEnum::DELETE_TRANSLATION)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'translation')] Translation $translation,
-        DeleteTranslationTransformer $deleteTranslationTransformer,
-        DeleteTranslationService $deleteTranslationService
+        DeleteTranslationTransformer $transformer,
+        DeleteTranslation $deleteTranslation,
+        TranslationResponseData $responseData
     ): JsonResponse {
-        return $deleteTranslationService->request($deleteTranslationTransformer->transformFromRequest(), $translation);
+        $responseData->setEntities($deleteTranslation->delete(
+            $transformer->transformFromRequest(),
+            $translation
+        ));
+
+        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
 }

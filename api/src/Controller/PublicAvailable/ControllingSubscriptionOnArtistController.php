@@ -6,11 +6,13 @@ use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
 use App\Entity\User;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\ResponseData\General\Artist\ArtistSubscriberResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\ControllingSubscriptionOnArtist\SubscribeOnArtistService;
-use App\Service\ControllingSubscriptionOnArtist\UnsubscribeOnArtistService;
+use App\Service\ControllingSubscriptionOnArtist\SubscribeOnArtist;
+use App\Service\ControllingSubscriptionOnArtist\UnsubscribeOnArtist;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,21 +24,27 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
     #[Route('/subscribe', methods: 'PATCH')]
     public function subscribe(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
-        SubscribeOnArtistService $subscribeOnArtistService
+        ArtistSubscriberResponseData $responseData,
+        SubscribeOnArtist $subscribeOnArtist
     ): JsonResponse {
         $this->throwIfArtistNotAcceptingSubscribers($artist);
 
-        return $subscribeOnArtistService->request($artist, $this->getAuthorizedUser());
+        $responseData->setEntities($subscribeOnArtist->subscribe($artist, $this->getAuthorizedUser()));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/unsubscribe', methods: 'PATCH')]
     public function unsubscribe(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
-        UnsubscribeOnArtistService $unsubscribeOnArtistService
+        ArtistSubscriberResponseData $responseData,
+        UnsubscribeOnArtist $unsubscribeOnArtist
     ): JsonResponse {
         $this->throwIfArtistNotAcceptingSubscribers($artist);
 
-        return $unsubscribeOnArtistService->request($artist, $this->getAuthorizedUser());
+        $responseData->setEntities($unsubscribeOnArtist->unsubscribe($artist, $this->getAuthorizedUser()));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     private function throwIfArtistNotAcceptingSubscribers(User $artist): void

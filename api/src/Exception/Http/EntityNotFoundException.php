@@ -2,172 +2,171 @@
 
 namespace App\Exception\Http;
 
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Exception\HttpException;
 use JetBrains\PhpStorm\Pure;
 
 class EntityNotFoundException extends HttpException
 {
     #[Pure]
-    final public function __construct(string $translationKey, array $parameters = [], array $data = [], array $headers = [])
+    public function __construct(string $text, array $parameters = [], array $headers = [])
     {
-        parent::__construct(404, ResponseTypeEnum::NOT_EXIST, $translationKey, $parameters, $data, $headers);
+        parent::__construct(404, PlatformCodeEnum::ENTITY_NOT_FOUND, $text, $parameters, $headers);
     }
 
     #[Pure]
-    final public static function page(array $data = [], array $headers = []): self
+    final public static function page(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@page', data: $data, headers: $headers);
+        return new self('entityNotFound@page', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function language(array $data = [], array $headers = []): self
+    final public static function language(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@language', data: $data, headers: $headers);
+        return new self('entityNotFound@language', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function translationKey(array $data = [], array $headers = []): self
+    final public static function translationKey(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@translationKey', data: $data, headers: $headers);
+        return new self('entityNotFound@translationKey', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function translation(array $data = [], array $headers = []): self
+    final public static function translation(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@translation', data: $data, headers: $headers);
+        return new self('entityNotFound@translation', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function rolePermissionKey(array $data = [], array $headers = []): self
+    final public static function rolePermissionKey(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@permissionKey', data: $data, headers: $headers);
+        return new self('entityNotFound@permissionKey', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function role(array $data = [], array $headers = []): self
+    final public static function role(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@role', data: $data, headers: $headers);
+        return new self('entityNotFound@role', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function subscriptionPermissionKey(array $data = [], array $headers = []): self
+    final public static function subscriptionPermissionKey(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@permissionKey', data: $data, headers: $headers);
+        return new self('entityNotFound@permissionKey', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function subscription(array $data = [], array $headers = []): self
+    final public static function subscription(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@subscription', data: $data, headers: $headers);
+        return new self('entityNotFound@subscription', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function albumType(array $data = [], array $headers = []): self
+    final public static function albumType(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@albumType', data: $data, headers: $headers);
+        return new self('entityNotFound@albumType', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function user(array $data = [], array $headers = []): self
+    final public static function user(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@user', data: $data, headers: $headers);
+        return new self('entityNotFound@user', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function album(array $data = [], array $headers = []): self
+    final public static function album(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@album', data: $data, headers: $headers);
+        return new self('entityNotFound@album', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function userSession(array $data = [], array $headers = []): self
+    final public static function userSession(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@userSession', data: $data, headers: $headers);
+        return new self('entityNotFound@userSession', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function multimediaCategory(array $data = [], array $headers = []): self
+    final public static function multimediaCategory(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@multimediaCategory', data: $data, headers: $headers);
+        return new self('entityNotFound@multimediaCategory', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function performer(string $performer, array $data = [], array $headers = []): self
+    final public static function performer(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@performer', parameters: [
-            'performer' => $performer
-        ], data: $data, headers: $headers);
+        return new self('entityNotFound@performer', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function multimedia(array $data = [], array $headers = []): self
+    final public static function multimedia(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@multimedia', data: $data, headers: $headers);
+        return new self('entityNotFound@multimedia', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function mediaLibrary(array $data = [], array $headers = []): self
+    final public static function mediaLibrary(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@mediaLibrary', data: $data, headers: $headers);
+        return new self('entityNotFound@mediaLibrary', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function mediaLibraryNotCreated(array $data = [], array $headers = []): self
+    final public static function mediaLibraryNotCreated(array $parameters = [], array $headers = []): self
     {
-        return new self('mediaLibrary@notCreated', data: $data, headers: $headers);
+        return new self('mediaLibrary@notCreated', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function playlist(array $data = [], array $headers = []): self
+    final public static function playlist(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@playlist', data: $data, headers: $headers);
+        return new self('entityNotFound@playlist', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function playlistDirectory(array $data = [], array $headers = []): self
+    final public static function playlistDirectory(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@playlistDirectory', data: $data, headers: $headers);
+        return new self('entityNotFound@playlistDirectory', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function userProfile(array $data = [], array $headers = []): self
+    final public static function userProfile(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@userProfile', data: $data, headers: $headers);
+        return new self('entityNotFound@userProfile', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function friend(array $data = [], array $headers = []): self
+    final public static function friend(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@friend', data: $data, headers: $headers);
+        return new self('entityNotFound@friend', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function multimediaEvent(array $data = [], array $headers = []): self
+    final public static function multimediaEvent(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@multimediaEvent', data: $data, headers: $headers);
+        return new self('entityNotFound@multimediaEvent', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function mediaLibraryEvent(array $data = [], array $headers = []): self
+    final public static function mediaLibraryEvent(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@mediaLibraryEvent', data: $data, headers: $headers);
+        return new self('entityNotFound@mediaLibraryEvent', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function listenToHistory(array $data = [], array $headers = []): self
+    final public static function listenToHistory(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@listenToHistory', data: $data, headers: $headers);
+        return new self('entityNotFound@listenToHistory', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function languageCode(string $code, array $data = [], array $headers = []): self
+    final public static function languageCode(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@languageCode', ['code' => $code], data: $data, headers: $headers);
+        return new self('entityNotFound@languageCode', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function multimediaTimeCode(array $data = [], array $headers = []): self
+    final public static function multimediaTimeCode(array $parameters = [], array $headers = []): self
     {
-        return new self('entityNotFound@multimediaTimeCode', data: $data, headers: $headers);
+        return new self('entityNotFound@multimediaTimeCode', $parameters, $headers);
     }
 }

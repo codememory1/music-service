@@ -2,32 +2,27 @@
 
 namespace App\Exception\Http;
 
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Exception\HttpException;
 use JetBrains\PhpStorm\Pure;
 
 class InvalidException extends HttpException
 {
     #[Pure]
-    final public static function invalidRefreshToken(array $data = [], array $headers = []): self
+    final public static function invalidCode(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidRefreshToken', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::TEXT_ENTRY_VALIDATION_ERROR, 'common@invalidCode', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function invalidCode(array $data = [], array $headers = []): self
+    final public static function invalidSubtitles(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidCode', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::INVALID_DATA_FORMAT_IN_FILE, 'common@invalidSubtitles', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function invalidSubtitles(array $data = [], array $headers = []): self
+    final public static function invalidMultimedia(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidSubtitles', data: $data, headers: $headers);
-    }
-
-    #[Pure]
-    final public static function invalidMultimedia(array $data = [], array $headers = []): self
-    {
-        return new self(400, ResponseTypeEnum::CHECK_VALID, 'common@invalidMultimediaFile', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::INVALID_DATA_FORMAT_IN_FILE, 'common@invalidMultimediaFile', $parameters, $headers);
     }
 }

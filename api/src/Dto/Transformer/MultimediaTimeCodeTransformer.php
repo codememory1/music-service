@@ -2,10 +2,11 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\MultimediaTimeCodeDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\MultimediaTimeCode;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -14,14 +15,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class MultimediaTimeCodeTransformer extends AbstractDataTransformer
 {
-    private MultimediaTimeCodeDto $multimediaTimeCodeDto;
-
     #[Pure]
-    public function __construct(Request $request, MultimediaTimeCodeDto $multimediaTimeCodeDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly MultimediaTimeCodeDto $multimediaTimeCodeDto
+    ) {
         parent::__construct($request);
-
-        $this->multimediaTimeCodeDto = $multimediaTimeCodeDto;
     }
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface

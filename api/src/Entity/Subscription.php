@@ -6,8 +6,9 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionStatusEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\SubscriptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 #[ORM\Table('subscriptions')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('key', 'entityExist@subscription', payload: [ResponseTypeEnum::EXIST, 409])]
+#[UniqueEntity('key', 'entityExist@subscription', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class Subscription implements EntityInterface
 {
     use IdentifierTrait;

@@ -7,12 +7,12 @@ use App\Infrastructure\ResponseData\Interfaces\ConstraintInterface;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintValueHandlerInterface;
 use App\Infrastructure\ResponseData\Interfaces\ResponseDataInterface;
 use App\Rest\Http\Request;
-use App\Service\TranslationService;
+use App\Service\Translation;
 
 final class AsTranslationHandler extends AbstractConstraintHandler implements ConstraintValueHandlerInterface
 {
     public function __construct(
-        private TranslationService $translationService,
+        private Translation $translation,
         private Request $request
     ) {
     }
@@ -23,8 +23,8 @@ final class AsTranslationHandler extends AbstractConstraintHandler implements Co
             return null;
         }
 
-        $this->translationService->setLocale($this->request->getRequest()->getLocale());
+        $this->translation->setLocale($this->request->getRequest()->getLocale());
 
-        return $this->translationService->get($value);
+        return $this->translation->get($value);
     }
 }

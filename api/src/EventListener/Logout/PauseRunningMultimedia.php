@@ -6,14 +6,12 @@ use App\Event\LogoutEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener(method: 'onLogout')]
+#[AsEventListener(LogoutEvent::class, method: 'onLogout')]
 final class PauseRunningMultimedia
 {
-    private EntityManagerInterface $em;
-
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->em = $manager;
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {
     }
 
     public function onLogout(LogoutEvent $event): void

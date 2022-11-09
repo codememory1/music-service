@@ -10,13 +10,10 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class AlbumTypeFactory implements DataFixtureFactoryInterface
 {
-    private AlbumTypeEnum $albumType;
-    private string $titleTranslationKey;
-
-    public function __construct(AlbumTypeEnum $albumType, string $titleTranslationKey)
-    {
-        $this->albumType = $albumType;
-        $this->titleTranslationKey = $titleTranslationKey;
+    public function __construct(
+        private readonly AlbumTypeEnum $albumType,
+        private readonly string $titleTranslationKey
+    ) {
     }
 
     public function factoryMethod(): EntityInterface

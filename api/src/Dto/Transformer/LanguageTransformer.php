@@ -2,10 +2,11 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\LanguageDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Language;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -14,14 +15,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class LanguageTransformer extends AbstractDataTransformer
 {
-    private LanguageDto $languageDto;
-
     #[Pure]
-    public function __construct(Request $request, LanguageDto $languageDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly LanguageDto $languageDto
+    ) {
         parent::__construct($request);
-
-        $this->languageDto = $languageDto;
     }
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface

@@ -7,21 +7,17 @@ use App\Entity\User;
 use App\Enum\PlatformSettingEnum;
 use App\Repository\MultimediaAuditionRepository;
 use App\Repository\TransactionRepository;
-use App\Service\PlatformSettingService;
+use App\Service\PlatformSetting;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
 class ArtistIncome
 {
-    private readonly PlatformSettingService $platformSettingService;
-    private readonly MultimediaAuditionRepository $multimediaAuditionRepository;
-    private readonly TransactionRepository $transactionRepository;
-
-    public function __construct(PlatformSettingService $platformSettingService, MultimediaAuditionRepository $multimediaAuditionRepository, TransactionRepository $transactionRepository)
-    {
-        $this->platformSettingService = $platformSettingService;
-        $this->multimediaAuditionRepository = $multimediaAuditionRepository;
-        $this->transactionRepository = $transactionRepository;
+    public function __construct(
+        private readonly PlatformSetting $platformSetting,
+        private readonly MultimediaAuditionRepository $multimediaAuditionRepository,
+        private readonly TransactionRepository $transactionRepository
+    ) {
     }
 
     /**
@@ -49,8 +45,8 @@ class ArtistIncome
     public function getIncomeAmountFromPercent(float $percentIncome): float
     {
         $platformTurnover = $this->transactionRepository->getMonthlyTurnover();
-        $monthlyExpenses = $this->platformSettingService->get(PlatformSettingEnum::MONTHLY_EXPENSES);
-        $artistPlatformPercent = (float) $this->platformSettingService->get(PlatformSettingEnum::PERCENT_ARTIST_INCOME_FROM_TURNOVER);
+        $monthlyExpenses = $this->platformSetting->get(PlatformSettingEnum::MONTHLY_EXPENSES);
+        $artistPlatformPercent = (float) $this->platformSetting->get(PlatformSettingEnum::PERCENT_ARTIST_INCOME_FROM_TURNOVER);
         $artistPlatformAmount = (($platformTurnover - $monthlyExpenses) * $artistPlatformPercent) / 100;
 
         if (0.0 === $percentIncome) {

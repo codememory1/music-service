@@ -2,10 +2,11 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\PlaylistDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Playlist;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -14,14 +15,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class PlaylistTransformer extends AbstractDataTransformer
 {
-    private PlaylistDto $playlistDto;
-
     #[Pure]
-    public function __construct(Request $request, PlaylistDto $playlistDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly PlaylistDto $playlistDto
+    ) {
         parent::__construct($request);
-
-        $this->playlistDto = $playlistDto;
     }
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface

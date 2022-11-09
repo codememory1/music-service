@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\StreamRunningMultimedia;
 use App\Enum\PlatformSettingEnum;
-use App\Service\PlatformSettingService;
+use App\Service\PlatformSetting;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -19,14 +19,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class DeleteInvalidStreamRunningMultimediaCommand extends Command
 {
-    private EntityManagerInterface $em;
-    private PlatformSettingService $platformSettingService;
-
-    public function __construct(EntityManagerInterface $manager, PlatformSettingService $platformSettingService)
-    {
-        $this->em = $manager;
-        $this->platformSettingService = $platformSettingService;
-
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly PlatformSetting $platformSetting
+    ) {
         parent::__construct();
     }
 
@@ -34,7 +30,7 @@ final class DeleteInvalidStreamRunningMultimediaCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $streamRunningMultimediaRepository = $this->em->getRepository(StreamRunningMultimedia::class);
-        $autoRejectTime = $this->platformSettingService->get(PlatformSettingEnum::AUTO_REJECT_OFFERED_STREAMING);
+        $autoRejectTime = $this->platformSetting->get(PlatformSettingEnum::AUTO_REJECT_OFFERED_STREAMING);
 
         $io->info('Worker started successfully');
 

@@ -9,11 +9,9 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class MultimediaCategoryFactory implements DataFixtureFactoryInterface
 {
-    private string $titleTranslationKey;
-
-    public function __construct(string $titleTranslationKey)
-    {
-        $this->titleTranslationKey = $titleTranslationKey;
+    public function __construct(
+        private readonly string $titleTranslationKey
+    ) {
     }
 
     public function factoryMethod(): EntityInterface

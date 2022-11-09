@@ -8,12 +8,14 @@ use App\Annotation\SubscriptionPermission;
 use App\Dto\Transformer\MultimediaMediaLibraryTransformer;
 use App\Entity\MultimediaMediaLibrary;
 use App\Entity\User;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MediaLibrary\DeleteMultimediaMediaLibraryService;
-use App\Service\MultimediaMediaLibrary\ShareMultimediaMediaLibraryWithFriendService;
-use App\Service\MultimediaMediaLibrary\UpdateMultimediaMediaLibraryService;
+use App\Service\MediaLibrary\DeleteMultimediaMediaLibrary;
+use App\Service\MultimediaMediaLibrary\ShareMultimediaMediaLibraryWithFriend;
+use App\Service\MultimediaMediaLibrary\UpdateMultimediaMediaLibrary;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,25 +27,31 @@ class MultimediaMediaLibraryController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA_TO_MEDIA_LIBRARY)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
-        MultimediaMediaLibraryTransformer $multimediaMediaLibraryTransformer,
-        UpdateMultimediaMediaLibraryService $updateMultimediaMediaLibraryService
+        MultimediaMediaLibraryTransformer $transformer,
+        UpdateMultimediaMediaLibrary $updateMultimediaMediaLibrary,
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
-        return $updateMultimediaMediaLibraryService->request(
-            $multimediaMediaLibraryTransformer->transformFromRequest($multimediaMediaLibrary)
-        );
+        $responseData->setEntities($updateMultimediaMediaLibrary->update(
+            $transformer->transformFromRequest($multimediaMediaLibrary)
+        ));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/multimedia/{multimediaMediaLibrary_id<\d+>}/delete', methods: 'DELETE')]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_MULTIMEDIA_TO_MEDIA_LIBRARY)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
-        DeleteMultimediaMediaLibraryService $deleteMultimediaMediaLibraryService
+        DeleteMultimediaMediaLibrary $deleteMultimediaMediaLibrary,
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
-        return $deleteMultimediaMediaLibraryService->request($multimediaMediaLibrary);
+        $responseData->setEntities($deleteMultimediaMediaLibrary->delete($multimediaMediaLibrary));
+
+        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
 
     #[Route('/multimedia/{multimediaMediaLibrary_id<\d+>}/share/with-friend/{user_id<\d+>}', methods: 'PATCH')]
@@ -51,7 +59,8 @@ class MultimediaMediaLibraryController extends AbstractRestController
     public function share(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
-        ShareMultimediaMediaLibraryWithFriendService $shareWithFriendMultimediaMediaLibraryService
+        ShareMultimediaMediaLibraryWithFriend $shareMultimediaMediaLibraryWithFriend,
+        MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
@@ -59,11 +68,13 @@ class MultimediaMediaLibraryController extends AbstractRestController
             throw EntityNotFoundException::friend();
         }
 
-        return $shareWithFriendMultimediaMediaLibraryService->request(
+        $responseData->setEntities($shareMultimediaMediaLibraryWithFriend->share(
             $multimediaMediaLibrary,
             $this->getAuthorizedUser(),
             $friend
-        );
+        ));
+
+        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
 
     private function throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser(MultimediaMediaLibrary $multimediaMediaLibrary): void

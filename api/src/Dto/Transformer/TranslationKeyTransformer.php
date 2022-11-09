@@ -2,10 +2,11 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\TranslationKeyDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\TranslationKey;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -14,14 +15,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class TranslationKeyTransformer extends AbstractDataTransformer
 {
-    private TranslationKeyDto $translationKeyDto;
-
     #[Pure]
-    public function __construct(Request $request, TranslationKeyDto $translationKeyDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly TranslationKeyDto $translationKeyDto
+    ) {
         parent::__construct($request);
-
-        $this->translationKeyDto = $translationKeyDto;
     }
 
     public function transformFromArray(array $data, ?EntityInterface $entity = null): DataTransferInterface

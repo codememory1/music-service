@@ -2,8 +2,9 @@
 
 namespace App\Dto\Constraints;
 
-use App\Dto\Interfaces\DataTransferConstraintInterface;
-use App\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
+use App\Infrastructure\Dto\AbstractDataTransferConstraintHandler;
+use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
 use function constant;
 use function defined;
 use function Symfony\Component\String\u;

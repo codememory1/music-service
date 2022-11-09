@@ -1,8 +1,8 @@
 <template>
-  <OpenPlayerLayout>
-    <template #header>
+  <div class="content-inner">
+    <Portal to="header">
       <ArtistHeaderSearch />
-    </template>
+    </Portal>
 
     <ArtistProfileHeader
       :id="2"
@@ -15,12 +15,11 @@
       <TopTracksSection :tracks="tracks()" />
       <SimilarArtistsSection :artists="similarArtists()" />
     </div>
-  </OpenPlayerLayout>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import OpenPlayerLayout from '~/layouts/OpenPlayerLayout.vue';
 import ArtistHeaderSearch from '~/components/Business/Artist/Profile/ArtistProfileHeaderSearch.vue';
 import ArtistProfileHeader from '~/components/Business/Artist/Profile/ArtistProfileHeader.vue';
 import TopAlbumsSection from '~/components/Business/Section/TopAlbumsSection.vue';
@@ -36,13 +35,14 @@ import { ArtistType } from '~/types/ArtistType';
   },
 
   components: {
-    OpenPlayerLayout,
     ArtistHeaderSearch,
     ArtistProfileHeader,
     TopAlbumsSection,
     TopTracksSection,
     SimilarArtistsSection
-  }
+  },
+
+  layout: 'OpenPlayerLayout'
 })
 export default class Artist extends Vue {
   private albums(): AlbumType[] {

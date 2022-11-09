@@ -15,8 +15,6 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 final class CreateStreamMultimediaOfferBetweenFriendHandler extends AbstractUserMessageHandlerService
 {
-    protected ?WebSocketClientMessageTypeEnum $clientMessageType = WebSocketClientMessageTypeEnum::CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_FRIEND;
-
     #[Required]
     public ?RunningMultimediaComponent $runningMultimediaComponent = null;
 
@@ -29,9 +27,14 @@ final class CreateStreamMultimediaOfferBetweenFriendHandler extends AbstractUser
     #[Required]
     public ?CreateStreamMultimediaOfferBetweenFriendTransformer $transformer = null;
 
+    public function getClientMessageType(): WebSocketClientMessageTypeEnum
+    {
+        return WebSocketClientMessageTypeEnum::CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_FRIEND;
+    }
+
     public function handler(): void
     {
-        $this->throwIfNotAuthorized($this->clientMessageType);
+        $this->throwIfNotAuthorized();
 
         $dto = $this->transformer->transformFromArray($this->getMessageData());
 
@@ -39,10 +42,9 @@ final class CreateStreamMultimediaOfferBetweenFriendHandler extends AbstractUser
 
         $runningMultimedia = $this->runningMultimediaComponent->getRunningMultimedia(
             $dto->runningMultimedia,
-            $this->getAuthorizedUser()->getUserSession(),
-            $this->clientMessageType
+            $this->getAuthorizedUser()->getUserSession()
         );
-        $friend = $this->friendComponent->getFriend($dto->toFriend, $this->getAuthorizedUser()->getUser(), $this->clientMessageType);
+        $friend = $this->friendComponent->getFriend($dto->toFriend, $this->getAuthorizedUser()->getUser());
 
         $this->createStreamAcceptRequestResponse($runningMultimedia, $friend);
     }

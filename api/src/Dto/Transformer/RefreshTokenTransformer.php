@@ -2,9 +2,10 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\RefreshTokenDto;
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -13,14 +14,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class RefreshTokenTransformer extends AbstractDataTransformer
 {
-    private RefreshTokenDto $refreshTokenDto;
-
     #[Pure]
-    public function __construct(Request $request, RefreshTokenDto $refreshTokenDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly RefreshTokenDto $refreshTokenDto
+    ) {
         parent::__construct($request);
-
-        $this->refreshTokenDto = $refreshTokenDto;
     }
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface

@@ -9,11 +9,9 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class TranslationKeyFactory implements DataFixtureFactoryInterface
 {
-    private string $key;
-
-    public function __construct(string $key)
-    {
-        $this->key = $key;
+    public function __construct(
+        private readonly string $key
+    ) {
     }
 
     public function factoryMethod(): EntityInterface

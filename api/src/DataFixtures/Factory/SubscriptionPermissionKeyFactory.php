@@ -10,13 +10,10 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 final class SubscriptionPermissionKeyFactory implements DataFixtureFactoryInterface
 {
-    private SubscriptionPermissionEnum $subscriptionPermission;
-    private string $title;
-
-    public function __construct(SubscriptionPermissionEnum $subscriptionPermission, string $title)
-    {
-        $this->subscriptionPermission = $subscriptionPermission;
-        $this->title = $title;
+    public function __construct(
+        private readonly SubscriptionPermissionEnum $subscriptionPermission,
+        private readonly string $title
+    ) {
     }
 
     public function factoryMethod(): EntityInterface

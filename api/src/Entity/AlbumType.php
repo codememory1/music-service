@@ -7,7 +7,8 @@ use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\AlbumTypeEnum;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\AlbumTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: AlbumTypeRepository::class)]
 #[ORM\Table('album_types')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('key', 'entityExist@albumType', payload: [ResponseTypeEnum::EXIST, 409])]
+#[UniqueEntity('key', 'entityExist@albumType', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class AlbumType implements EntityInterface
 {
     use IdentifierTrait;

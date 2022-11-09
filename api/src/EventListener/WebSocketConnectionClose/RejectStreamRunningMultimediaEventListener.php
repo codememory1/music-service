@@ -10,24 +10,15 @@ use App\Service\WebSocket\WorkerConnectionManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener('app.ws.connection.close', 'onConnectionClose')]
+#[AsEventListener(WebSocketConnectionCloseEvent::class, 'onConnectionClose')]
 final class RejectStreamRunningMultimediaEventListener
 {
-    private EntityManagerInterface $em;
-    private UserSessionRepository $userSessionRepository;
-    private StreamRunningMultimediaRepository $streamRunningMultimediaRepository;
-    private WorkerConnectionManager $workerConnectionManager;
-
     public function __construct(
-        EntityManagerInterface $manager,
-        UserSessionRepository $userSessionRepository,
-        StreamRunningMultimediaRepository $streamRunningMultimediaRepository,
-        WorkerConnectionManager $workerConnectionManager
+        private readonly EntityManagerInterface $em,
+        private readonly UserSessionRepository $userSessionRepository,
+        private readonly StreamRunningMultimediaRepository $streamRunningMultimediaRepository,
+        private readonly WorkerConnectionManager $workerConnectionManager
     ) {
-        $this->em = $manager;
-        $this->userSessionRepository = $userSessionRepository;
-        $this->streamRunningMultimediaRepository = $streamRunningMultimediaRepository;
-        $this->workerConnectionManager = $workerConnectionManager;
     }
 
     public function onConnectionClose(WebSocketConnectionCloseEvent $event): void

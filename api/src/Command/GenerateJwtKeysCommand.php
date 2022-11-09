@@ -19,13 +19,10 @@ use function Symfony\Component\String\u;
 )]
 class GenerateJwtKeysCommand extends Command
 {
-    private ParameterBagInterface $parameterBag;
-
-    public function __construct(ParameterBagInterface $parameterBag, ?string $name = null)
-    {
-        parent::__construct($name);
-
-        $this->parameterBag = $parameterBag;
+    public function __construct(
+        private readonly ParameterBagInterface $parameterBag
+    ) {
+        parent::__construct();
     }
 
     protected function configure(): void

@@ -15,13 +15,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final class S3ClearCommand extends Command
 {
-    private Bucket $bucket;
-
-    public function __construct(Bucket $bucket)
-    {
+    public function __construct(
+        private readonly Bucket $bucket
+    ) {
         parent::__construct();
-
-        $this->bucket = $bucket;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

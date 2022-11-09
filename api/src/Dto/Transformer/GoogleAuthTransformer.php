@@ -2,9 +2,10 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\GoogleAuthDto;
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -13,14 +14,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class GoogleAuthTransformer extends AbstractDataTransformer
 {
-    private GoogleAuthDto $googleAuthDto;
-
     #[Pure]
-    public function __construct(Request $request, GoogleAuthDto $googleAuthDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly GoogleAuthDto $googleAuthDto
+    ) {
         parent::__construct($request);
-
-        $this->googleAuthDto = $googleAuthDto;
     }
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface

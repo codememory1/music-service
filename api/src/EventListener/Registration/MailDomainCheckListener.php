@@ -3,21 +3,19 @@
 namespace App\EventListener\Registration;
 
 use App\Entity\User;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\PlatformSettingEnum;
-use App\Enum\ResponseTypeEnum;
 use App\Event\UserRegistrationEvent;
-use App\Exception\Http\HttpException;
-use App\Service\PlatformSettingService;
+use App\Exception\HttpException;
+use App\Service\PlatformSetting;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 
-#[AsEntityListener('app.registration', 'onUserRegistration', 2)]
+#[AsEntityListener(UserRegistrationEvent::class, 'onUserRegistration', 2)]
 final class MailDomainCheckListener
 {
-    private PlatformSettingService $platformSettingService;
-
-    public function __construct(PlatformSettingService $platformSettingService)
-    {
-        $this->platformSettingService = $platformSettingService;
+    public function __construct(
+        private readonly PlatformSetting $platformSettingService
+    ) {
     }
 
     public function onUserRegistration(UserRegistrationEvent $event): void
@@ -39,7 +37,7 @@ final class MailDomainCheckListener
         }
 
         if (false === $isPassed) {
-            throw new HttpException(451, ResponseTypeEnum::UNAVAILABLE, 'common@bannedDomainMail');
+            throw new HttpException(451, PlatformCodeEnum::INACCESSIBLE_DATA, 'common@bannedDomainMail');
         }
     }
 

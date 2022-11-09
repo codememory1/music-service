@@ -9,11 +9,9 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 final class Subscription implements MethodAnnotationInterface
 {
-    public readonly SubscriptionEnum $subscription;
-
-    public function __construct(SubscriptionEnum $subscription)
-    {
-        $this->subscription = $subscription;
+    public function __construct(
+        public readonly SubscriptionEnum $subscription
+    ) {
     }
 
     public function getHandler(): string

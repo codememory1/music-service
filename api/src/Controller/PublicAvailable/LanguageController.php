@@ -3,7 +3,7 @@
 namespace App\Controller\PublicAvailable;
 
 use App\Repository\LanguageRepository;
-use App\ResponseData\LanguageResponseData;
+use App\ResponseData\General\Language\LanguageResponseData;
 use App\Rest\Controller\AbstractRestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,10 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class LanguageController extends AbstractRestController
 {
     #[Route('/all', methods: 'GET')]
-    public function all(LanguageResponseData $languageResponseData, LanguageRepository $languageRepository): JsonResponse
+    public function all(LanguageResponseData $responseData, LanguageRepository $languageRepository): JsonResponse
     {
-        $languageResponseData->setEntities($languageRepository->findAll());
+        $responseData->setEntities($languageRepository->findAll());
 
-        return $this->responseCollection->dataOutput($languageResponseData->getResponse());
+        return $this->responseData($responseData);
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Enum;
 
 use App\Enum\Interfaces\EventInterface;
-use App\Service\Event\MediaLibrary\ShareWithFriendsAfterAddEventService;
-use App\Service\Event\MediaLibrary\ShuffleAfterNumberPlaysEventService;
+use App\Service\Event\MediaLibrary\ShareWithFriendsAfterAddEvent;
+use App\Service\Event\MediaLibrary\ShuffleAfterNumberPlaysEvent;
 
 enum MediaLibraryEventEnum : string implements EventInterface
 {
@@ -14,8 +14,8 @@ enum MediaLibraryEventEnum : string implements EventInterface
     public function getNamespaceSchema(): ?string
     {
         return match ($this) {
-            self::SHARE_WITH_FRIENDS_AFTER_ADD => ShareWithFriendsAfterAddEventService::class,
-            self::SHUFFLE_AFTER_NUMBER_PLAYS => ShuffleAfterNumberPlaysEventService::class
+            self::SHARE_WITH_FRIENDS_AFTER_ADD => ShareWithFriendsAfterAddEvent::class,
+            self::SHUFFLE_AFTER_NUMBER_PLAYS => ShuffleAfterNumberPlaysEvent::class
         };
     }
 }

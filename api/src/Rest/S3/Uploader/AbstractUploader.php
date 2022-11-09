@@ -3,11 +3,11 @@
 namespace App\Rest\S3\Uploader;
 
 use App\Entity\Interfaces\EntityS3SettingInterface;
+use App\Infrastructure\File\MimeTypeConverter;
 use App\Rest\S3\Client;
 use App\Rest\S3\Interfaces\S3UploaderInterface;
 use App\Rest\S3\ObjectPath;
 use App\Rest\S3\Uploader\UploadedFile as S3UploadedFile;
-use App\Service\MimeTypeConverter;
 use Aws\Result;
 use Exception;
 use JetBrains\PhpStorm\Pure;

@@ -5,17 +5,15 @@ namespace App\EventListener\MultimediaStatusChange;
 use App\Entity\MultimediaQueue;
 use App\Enum\MultimediaStatusEnum;
 use App\Event\MultimediaStatusChangeEvent;
-use App\Service\FlusherService;
+use App\Infrastructure\Doctrine\Flusher;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener('app.multimedia.status-change', 'onMultimediaStatusChange')]
+#[AsEventListener(MultimediaStatusChangeEvent::class, 'onMultimediaStatusChange')]
 final class StatusChangeHandlerListener
 {
-    private FlusherService $flusherService;
-
-    public function __construct(FlusherService $flusherService)
-    {
-        $this->flusherService = $flusherService;
+    public function __construct(
+        private readonly Flusher $flusher
+    ) {
     }
 
     public function onMultimediaStatusChange(MultimediaStatusChangeEvent $event): void
@@ -28,7 +26,7 @@ final class StatusChangeHandlerListener
             MultimediaStatusEnum::APPEAL_CANCELED => $this->changeStatus($event),
         };
 
-        $this->flusherService->save();
+        $this->flusher->save();
     }
 
     public function moderationStatusHandler(MultimediaStatusChangeEvent $event): void
@@ -42,7 +40,7 @@ final class StatusChangeHandlerListener
         $event->multimedia->setStatus($event->onStatus);
 
         if (null !== $event->multimedia->getQueue()) {
-            $this->flusherService->addRemove($event->multimedia->getQueue());
+            $this->flusher->addRemove($event->multimedia->getQueue());
         }
     }
 
@@ -51,7 +49,7 @@ final class StatusChangeHandlerListener
         $event->multimedia->setStatus($event->onStatus);
 
         if (null !== $event->multimedia->getQueue()) {
-            $this->flusherService->addRemove($event->multimedia->getQueue());
+            $this->flusher->addRemove($event->multimedia->getQueue());
         }
     }
 

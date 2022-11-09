@@ -8,19 +8,13 @@ use Symfony\Component\Validator\Constraints\Composite;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class Condition extends Composite
 {
-    public readonly string $callbackCondition;
-    public array $constraints;
-
     public function __construct(
-        string $callbackCondition,
-        array $constraints,
+        public readonly string $callbackCondition,
+        public array $constraints,
         mixed $options = null,
         ?array $groups = null,
         mixed $payload = null
     ) {
-        $this->callbackCondition = $callbackCondition;
-        $this->constraints = $constraints;
-
         parent::__construct($options, $groups, $payload);
     }
 

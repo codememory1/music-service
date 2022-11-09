@@ -3,39 +3,40 @@
 namespace App\Security\PasswordReset;
 
 use App\Dto\Transfer\RequestRestorationPasswordDto;
-use App\Enum\EventEnum;
+use App\Entity\PasswordReset;
+use App\Enum\PlatformSettingEnum;
+use App\Event\AfterRequestRestorationPasswordEvent;
 use App\Event\RequestRestorationPasswordEvent;
-use App\Service\AbstractService;
+use App\Infrastructure\Doctrine\Flusher;
+use App\Infrastructure\Validator\Validator;
+use App\Service\PlatformSetting;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-class RequestRestoration extends AbstractService
+final class RequestRestoration
 {
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
+    public function __construct(
+        private readonly Flusher $flusher,
+        private readonly Validator $validator,
+        private readonly PlatformSetting $platformSetting,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
 
-    public function send(RequestRestorationPasswordDto $requestRestorationPasswordDto): JsonResponse
+    public function send(RequestRestorationPasswordDto $dto): PasswordReset
     {
-        $this->validate($requestRestorationPasswordDto);
+        $this->validator->validate($dto);
 
-        $passwordReset = $requestRestorationPasswordDto->getEntity();
+        $passwordReset = $dto->getEntity();
 
-        $passwordReset->setTtl('10m');
+        $passwordReset->setTtl($this->platformSetting->get(PlatformSettingEnum::PASSWORD_RESET_TTL_CODE));
         $passwordReset->setInProcessStatus();
 
-        $this->eventDispatcher->dispatch(
-            new RequestRestorationPasswordEvent($passwordReset),
-            EventEnum::AFTER_REQUEST_RESTORATION_PASSWORD->value
-        );
+        $this->eventDispatcher->dispatch(new RequestRestorationPasswordEvent($passwordReset));
 
-        $this->flusherService->save($passwordReset);
+        $this->flusher->save($passwordReset);
 
-        $this->eventDispatcher->dispatch(
-            new RequestRestorationPasswordEvent($passwordReset),
-            EventEnum::REQUEST_RESTORATION_PASSWORD->value
-        );
+        $this->eventDispatcher->dispatch(new AfterRequestRestorationPasswordEvent($passwordReset));
 
-        return $this->responseCollection->successSendRequestRestorationPassword();
+        return $passwordReset;
     }
 }

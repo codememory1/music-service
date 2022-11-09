@@ -2,7 +2,7 @@
 
 namespace App\Rest\S3\Uploader;
 
-class TrackUploader extends AbstractUploader
+final class TrackUploader extends AbstractUploader
 {
     public function getBucketName(): string
     {

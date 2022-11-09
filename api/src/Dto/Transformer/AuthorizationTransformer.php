@@ -2,9 +2,10 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\AuthorizationDto;
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -13,14 +14,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class AuthorizationTransformer extends AbstractDataTransformer
 {
-    private AuthorizationDto $authorizationDto;
-
     #[Pure]
-    public function __construct(Request $request, AuthorizationDto $authorizationDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly AuthorizationDto $authorizationDto
+    ) {
         parent::__construct($request);
-
-        $this->authorizationDto = $authorizationDto;
     }
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface

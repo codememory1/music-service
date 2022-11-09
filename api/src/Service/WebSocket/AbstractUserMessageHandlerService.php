@@ -2,43 +2,32 @@
 
 namespace App\Service\WebSocket;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Entity\Interfaces\EntityInterface;
-use App\Enum\WebSocketClientMessageTypeEnum;
 use App\Exception\WebSocket\AuthorizationException;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
+use App\Infrastructure\Validator\Validator;
+use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
 use App\Rest\Response\WebSocketResponseCollection;
-use App\Rest\Response\WebSocketSchema;
-use App\Rest\Validator\WebSocketValidator;
 use App\Security\AuthorizedUser;
-use App\Service\TranslationService;
+use App\Service\Translation;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
 
 abstract class AbstractUserMessageHandlerService implements UserMessageHandlerInterface
 {
-    protected EntityManagerInterface $em;
-    protected AuthorizedUser $authorizedUser;
-    protected TranslationService $translationService;
-    protected WebSocketValidator $webSocketValidator;
-    protected WebSocketResponseCollection $responseCollection;
     protected ?Worker $worker = null;
     private ?int $connectionId = null;
     private array $messageHeaders = [];
     private array $messageData = [];
 
     public function __construct(
-        EntityManagerInterface $manager,
-        AuthorizedUser $authorizedUser,
-        TranslationService $translationService,
-        WebSocketValidator $webSocketValidator,
-        WebSocketResponseCollection $webSocketResponseCollection
+        protected readonly EntityManagerInterface $em,
+        protected readonly AuthorizedUser $authorizedUser,
+        protected readonly Translation $translation,
+        protected readonly Validator $validator,
+        protected readonly WebSocketResponseCollection $responseCollection
     ) {
-        $this->em = $manager;
-        $this->authorizedUser = $authorizedUser;
-        $this->translationService = $translationService;
-        $this->webSocketValidator = $webSocketValidator;
-        $this->responseCollection = $webSocketResponseCollection;
     }
 
     #[Pure]
@@ -53,14 +42,14 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
             return null;
         }
 
-        $this->translationService->setLocale($this->getLocale());
+        $this->translation->setLocale($this->getLocale());
 
-        return $this->translationService->get($translationKey, $parameters);
+        return $this->translation->get($translationKey, $parameters);
     }
 
-    protected function validate(EntityInterface|DataTransferInterface $object, ?callable $customResponse = null): void
+    protected function validate(EntityInterface|DataTransferInterface $object, ?callable $throw = null): void
     {
-        $this->webSocketValidator->validate($object, $customResponse);
+        $this->validator->validate($object, $throw);
     }
 
     protected function validateWithEntity(DataTransferInterface $dataTransfer): void
@@ -69,9 +58,9 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         $this->validate($dataTransfer->getEntity());
     }
 
-    protected function sendToClient(WebSocketSchema $webSocketSchema): self
+    protected function sendToClient(WebSocketSchemeInterface $scheme): self
     {
-        $this->worker->sendToConnection($this->connectionId, $webSocketSchema);
+        $this->worker->sendToConnection($this->connectionId, $scheme);
 
         return $this;
     }
@@ -85,12 +74,12 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         return $this->authorizedUser;
     }
 
-    protected function throwIfNotAuthorized(WebSocketClientMessageTypeEnum $clientMessageType): void
+    protected function throwIfNotAuthorized(): void
     {
         $authorizedUser = $this->getAuthorizedUser();
 
         if (null === $authorizedUser->getUser()) {
-            throw AuthorizationException::authorizationIsRequired($clientMessageType);
+            throw AuthorizationException::authorizationIsRequired();
         }
     }
 

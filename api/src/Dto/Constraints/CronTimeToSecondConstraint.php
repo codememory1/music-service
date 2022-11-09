@@ -2,7 +2,7 @@
 
 namespace App\Dto\Constraints;
 
-use App\Dto\Interfaces\DataTransferConstraintInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]

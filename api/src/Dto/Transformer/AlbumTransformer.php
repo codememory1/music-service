@@ -2,10 +2,11 @@
 
 namespace App\Dto\Transformer;
 
-use App\Dto\Interfaces\DataTransferInterface;
 use App\Dto\Transfer\AlbumDto;
 use App\Entity\Album;
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Dto\AbstractDataTransformer;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -14,14 +15,12 @@ use JetBrains\PhpStorm\Pure;
  */
 final class AlbumTransformer extends AbstractDataTransformer
 {
-    private AlbumDto $albumDto;
-
     #[Pure]
-    public function __construct(Request $request, AlbumDto $albumDto)
-    {
+    public function __construct(
+        Request $request,
+        private readonly AlbumDto $albumDto
+    ) {
         parent::__construct($request);
-
-        $this->albumDto = $albumDto;
     }
 
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface

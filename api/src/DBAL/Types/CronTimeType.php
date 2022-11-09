@@ -2,7 +2,7 @@
 
 namespace App\DBAL\Types;
 
-use App\Service\ParseCronTimeService;
+use App\Infrastructure\CronTime\Parser;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
@@ -27,7 +27,7 @@ final class CronTimeType extends StringType
     public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?int
     {
         if (null !== $value) {
-            $cronTimeParser = new ParseCronTimeService();
+            $cronTimeParser = new Parser();
 
             return $cronTimeParser->setTime($value)->toSecond();
         }

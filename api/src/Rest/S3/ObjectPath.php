@@ -2,7 +2,7 @@
 
 namespace App\Rest\S3;
 
-class ObjectPath
+final class ObjectPath
 {
     private ?string $path = null;
 

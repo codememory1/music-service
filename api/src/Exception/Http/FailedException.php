@@ -2,50 +2,51 @@
 
 namespace App\Exception\Http;
 
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Exception\HttpException;
 use JetBrains\PhpStorm\Pure;
 
 class FailedException extends HttpException
 {
     #[Pure]
-    final public static function failedToLogout(array $data = [], array $headers = []): self
+    final public static function failedToLogout(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'logout@failedToLogout', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'logout@failedToLogout', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function failedToUpdateAccessToken(array $data = [], array $headers = []): self
+    final public static function failedToUpdateAccessToken(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'common@failedToUpdateAccessToken', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'common@failedToUpdateAccessToken', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function failedSubscribeOnArtist(array $data = [], array $headers = []): self
+    final public static function failedSubscribeOnArtist(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'artist@failedSubscribeOnArtist', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'artist@failedSubscribeOnArtist', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function failedUnsubscribeOnArtist(array $data = [], array $headers = []): self
+    final public static function failedUnsubscribeOnArtist(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'artist@failedUnsubscribeOnArtist', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'artist@failedUnsubscribeOnArtist', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function failedSendOnRequestRestorationPassword(array $data = [], array $headers = []): self
+    final public static function failedSendOnRequestRestorationPassword(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'passwordReset@blocked', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'passwordReset@blocked', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function failedAddAsFriendNotAccept(array $data = [], array $headers = []): self
+    final public static function failedAddAsFriendNotAccept(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'friend@notAccept', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'friend@notAccept', $parameters, $headers);
     }
 
     #[Pure]
-    final public static function failedAddMyselfAsFriend(array $data = [], array $headers = []): self
+    final public static function failedAddMyselfAsFriend(array $parameters = [], array $headers = []): self
     {
-        return new self(400, ResponseTypeEnum::FAILED, 'friend@addMyselfAsFriend', data: $data, headers: $headers);
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'friend@addMyselfAsFriend', $parameters, $headers);
     }
 }
