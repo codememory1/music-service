@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios';
 import { ApiRoute } from '~/api/ApiRoute';
 
 declare class VueI18n {
@@ -7,17 +8,17 @@ declare class VueI18n {
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $api: (route: ApiRoute) => any;
+    $api: (host: string, route: ApiRoute, data?: any, config?: AxiosRequestConfig) => any;
     $t: typeof VueI18n.prototype.t;
   }
 }
 
 declare module '@nuxt/types' {
   interface Context {
-    $api: (route: ApiRoute) => any;
+    $api: (host: string, route: ApiRoute, data?: any, config?: AxiosRequestConfig) => any;
   }
 
   interface NuxtAppOptions {
-    $api: (route: ApiRoute) => void;
+    $api: (host: string, route: ApiRoute, data?: any, config?: AxiosRequestConfig) => any;
   }
 }

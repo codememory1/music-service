@@ -1,22 +1,23 @@
 import type { NuxtConfig } from '@nuxt/types';
 
-require('dotenv').config({
-  path: '../.env'
-});
-
 const config: NuxtConfig = {
   dev: false,
   server: {
     host: '0.0.0.0',
     port: 3000
   },
-
   router: {
     linkExactActiveClass: 'active-link'
   },
 
+  privateRuntimeConfig: {
+    apiServerHost: process.env.API_SERVER_HOST
+  },
+
   publicRuntimeConfig: {
-    title: process.env.SITE_NAME
+    title: process.env.SITE_NAME,
+    apiClientHost: process.env.API_CLIENT_HOST,
+    defaultLang: process.env.DEFAULT_LANG
   },
 
   pwa: {

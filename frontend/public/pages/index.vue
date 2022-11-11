@@ -97,7 +97,7 @@ import ApiRouters from '~/api/api-routers';
     TheMainFooter
   },
   async asyncData({ $api }: Context) {
-    const api = await $api(ApiRouters.subscription.all);
+    const api = await $api(process.env.API_SERVER_HOST as string, ApiRouters.subscription.all);
 
     return {
       subscriptions: api.data

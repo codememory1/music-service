@@ -17,6 +17,7 @@
         $refs.authorizationModel.close();
         $refs.passwordRecoveryModal.open();
       "
+      @auth="auth"
     />
     <PasswordRecoveryModal
       ref="passwordRecoveryModal"
@@ -59,6 +60,7 @@ import RegistrationModal from '~/components/Business/Modal/RegistrationModal.vue
 import AuthorizationModal from '~/components/Business/Modal/AuthorizationModal.vue';
 import PasswordRecoveryModal from '~/components/Business/Modal/PasswordRecoveryModal.vue';
 import PasswordResetModal from '~/components/Business/Modal/PasswordResetModal.vue';
+import ApiRouters from '~/api/api-routers';
 
 @Component({
   components: {
@@ -82,6 +84,13 @@ export default class TheMainHeader extends Vue {
     const modal = this.$refs.authorizationModel as AuthorizationModal;
 
     modal.open();
+  }
+
+  private auth(): void {
+    const modal = this.$refs.authorizationModel as AuthorizationModal;
+    const response = this.$api(this.$config.apiClientHost as string, ApiRouters.security.auth);
+
+    console.log(response);
   }
 }
 </script>
