@@ -1,10 +1,14 @@
 <template>
   <BaseModal ref="modal" title="Authorization">
     <div class="modal-fields">
-      <BaseInputModal placeholder="Enter your email" />
-      <BaseInputModal input-type="password" placeholder="Enter your password" />
+      <BaseInputModal placeholder="Enter your email" @input="emailEntry" />
+      <BaseInputModal
+        input-type="password"
+        placeholder="Enter your password"
+        @input="passwordEntry"
+      />
     </div>
-    <BaseButton class="btn-auth button_bg--accent">Login</BaseButton>
+    <BaseButton class="btn-auth button_bg--accent" @click="$emit('auth', $event)">Login</BaseButton>
 
     <div class="auth-from-social">
       <p class="auth-from-social__text">or via social network</p>
@@ -44,6 +48,7 @@ import BaseInputModal from '~/components/UI/Input/BaseInputModal.vue';
 import BaseCheckbox from '~/components/UI/Checkbox/BaseCheckbox.vue';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
 import PasswordProgressBar from '~/components/UI/ProgressBar/PasswordProgressBar.vue';
+import { AuthorizationEntryData } from '~/types/ModalEntryData';
 
 @Component({
   components: {
@@ -55,6 +60,11 @@ import PasswordProgressBar from '~/components/UI/ProgressBar/PasswordProgressBar
   }
 })
 export default class AuthorizationModal extends Vue {
+  private data: AuthorizationEntryData = {
+    email: null,
+    password: null
+  };
+
   @Emit('open')
   public open(): void {
     const modal = this.$refs.modal as BaseModal;
@@ -67,6 +77,18 @@ export default class AuthorizationModal extends Vue {
     const modal = this.$refs.modal as BaseModal;
 
     modal.close();
+  }
+
+  private emailEntry(event: InputEvent): void {
+    this.data.email = (event.target as HTMLInputElement).value;
+  }
+
+  private passwordEntry(event: InputEvent): void {
+    this.data.password = (event.target as HTMLInputElement).value;
+  }
+
+  get entryData(): AuthorizationEntryData {
+    return this.data;
   }
 }
 </script>

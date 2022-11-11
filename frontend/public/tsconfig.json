@@ -27,7 +27,8 @@
       "@nuxt/types",
       "@types/node",
       "@types/swiper",
-      "@nuxtjs/axios"
+      "@nuxtjs/axios",
+      "@nuxtjs/dotenv"
     ]
   },
   "exclude": [
