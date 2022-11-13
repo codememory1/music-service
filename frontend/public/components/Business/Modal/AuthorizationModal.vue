@@ -116,12 +116,12 @@ export default class AuthorizationModal extends Vue {
     this.entryDataError.password = isEmpty(this.entryData.password);
 
     if (!Object.values(this.entryDataError).includes(true)) {
-      this.requestInProcess = true;
-
       const response = this.authorizationRequest.send(
         this.$config.apiClientHost as string,
         this.entryData
       );
+
+      this.requestInProcess = true;
 
       response
         .then((success) => {
@@ -155,7 +155,7 @@ export default class AuthorizationModal extends Vue {
   private failedAuth(response: ErrorResponseType): void {
     getAlertModule(this.$store).addAlert({
       title: this.$t('alert.title.auth'),
-      message: this.$t(response.error.message),
+      message: this.$t(response.error.message, response.error.message_parameters),
       isSuccess: false,
       autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
     });

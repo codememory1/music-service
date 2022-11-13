@@ -91,13 +91,18 @@ export default {
     title: {
       auth: 'Authorization',
       register: 'Registration',
-      account_activation: 'Email confirmation'
+      account_activation: 'Email confirmation',
+      password_recovery_request: 'Password recovery request',
+      reset_password: 'Reset the password'
     },
     message: {
       success_auth: 'You have successfully logged into your account',
       success_register:
         'Registration completed successfully! A confirmation code has been sent to {email} email address.',
-      success_account_activate: 'Account successfully activated. Now you can login'
+      success_account_activate: 'Account successfully activated. Now you can login.',
+      success_password_recovery_request:
+        'Password reset request successfully sent! A password reset code has been sent to your email.',
+      success_reset_password: 'Password changed successfully. Now you can login to your account.'
     }
   }
 };

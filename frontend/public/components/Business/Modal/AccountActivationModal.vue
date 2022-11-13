@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
+import { Component, Vue, Emit } from 'vue-property-decorator';
 import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import BaseInputModal from '~/components/UI/Input/BaseInputModal.vue';
 import BaseCheckbox from '~/components/UI/Checkbox/BaseCheckbox.vue';
@@ -39,46 +39,48 @@ import { getAlertModule } from '~/store';
   }
 })
 export default class AccountActivationModal extends Vue {
-  @Prop({ required: true })
-  private readonly email!: string | null;
-
   private requestIsProcess: boolean = false;
+  private email: string | null = null;
 
-  public open(): void {
-    const modal = this.$refs.modal as BaseModal;
+  public open(email: string): void {
+    (this.$refs.modal as BaseModal).open();
 
-    modal.open();
+    this.email = email;
   }
 
   public close(): void {
-    const modal = this.$refs.modal as BaseModal;
-
-    modal.close();
+    (this.$refs.modal as BaseModal).close();
   }
 
   private get accountActivationRequest(): AccountActivationRequest {
     return new AccountActivationRequest(this.$api);
   }
 
-  @Emit('resetPassword')
-  private activate(): void {
-    const code = this.$refs.code as InputCode;
+  private inputCodeValidation(): void {
+    const inputCode = this.$refs.code as InputCode;
 
-    code.codes.forEach((v, i) => {
+    inputCode.codes.forEach((v, i) => {
       if (!/^\d+$/.test(v)) {
-        code.setErrorSquare(i);
+        inputCode.setErrorSquare(i);
       } else {
-        code.removeErrorSquare(i);
+        inputCode.removeErrorSquare(i);
       }
     });
+  }
 
-    if (code.isOk) {
-      this.requestIsProcess = true;
+  @Emit('resetPassword')
+  private activate(): void {
+    const inputCode = this.$refs.code as InputCode;
 
+    this.inputCodeValidation();
+
+    if (inputCode.isOk) {
       const response = this.accountActivationRequest.send(this.$config.apiClientHost as string, {
         email: this.email!,
-        code: code.codes.join('')
+        code: inputCode.codes.join('')
       });
+
+      this.requestIsProcess = true;
 
       response
         .then((success) => {
@@ -107,7 +109,7 @@ export default class AccountActivationModal extends Vue {
   private failedActivate(response: ErrorResponseType): void {
     getAlertModule(this.$store).addAlert({
       title: this.$t('alert.title.account_activation'),
-      message: this.$t(response.error.message),
+      message: this.$t(response.error.message, response.error.message_parameters),
       isSuccess: false,
       autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
     });

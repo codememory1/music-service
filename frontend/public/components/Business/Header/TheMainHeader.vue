@@ -10,7 +10,6 @@
     />
     <AccountActivationModal
       ref="accountActivationModal"
-      :email="emailForActivationAccount"
       @successActivate="
         $refs.accountActivationModal.close();
         $refs.authorizationModal.open();
@@ -30,15 +29,16 @@
     />
     <PasswordRecoveryModal
       ref="passwordRecoveryModal"
-      @successSend="
-        $refs.passwordRecoveryModal.close();
-        $refs.passwordResetModal.open();
-      "
+      @successRequest="successPasswordRecoveryRequest"
     />
-    <PasswordResetModal
-      ref="passwordResetModal"
+    <ResetPasswordModal
+      ref="resetPasswordModal"
       @openLoginModal="
-        $refs.passwordResetModal.close();
+        $refs.resetPasswordModal.close();
+        $refs.authorizationModal.open();
+      "
+      @successResetPassword="
+        $refs.resetPasswordModal.close();
         $refs.authorizationModal.open();
       "
     />
@@ -72,7 +72,10 @@ import RegistrationModal from '~/components/Business/Modal/RegistrationModal.vue
 import AccountActivationModal from '~/components/Business/Modal/AccountActivationModal.vue';
 import AuthorizationModal from '~/components/Business/Modal/AuthorizationModal.vue';
 import PasswordRecoveryModal from '~/components/Business/Modal/PasswordRecoveryModal.vue';
-import PasswordResetModal from '~/components/Business/Modal/PasswordResetModal.vue';
+import ResetPasswordModal from '~/components/Business/Modal/ResetPasswordModal.vue';
+import { RegistrationResponseType } from '~/api/responses/RegistrationResponseType';
+import { PasswordRecoveryRequestEntryData, RegistrationEntryData } from '~/types/ModalEntryData';
+import { PasswordRecoveryRequestResponseType } from '~/api/responses/PasswordRecoveryRequestResponseType';
 
 @Component({
   components: {
@@ -83,19 +86,25 @@ import PasswordResetModal from '~/components/Business/Modal/PasswordResetModal.v
     AccountActivationModal,
     AuthorizationModal,
     PasswordRecoveryModal,
-    PasswordResetModal
+    ResetPasswordModal
   }
 })
 export default class TheMainHeader extends Vue {
   private authRequestInProcess: boolean = false;
-  private emailForActivationAccount: string | null = null;
 
-  private successRegister(): void {
-    (this.$refs.accountActivationModal as AccountActivationModal).open();
+  private successRegister(
+    _response: RegistrationResponseType,
+    entryData: RegistrationEntryData
+  ): void {
+    (this.$refs.accountActivationModal as AccountActivationModal).open(entryData.email!);
+  }
 
-    this.emailForActivationAccount = (
-      this.$refs.registrationModal as RegistrationModal
-    ).emailForActivation;
+  private successPasswordRecoveryRequest(
+    _response: PasswordRecoveryRequestResponseType,
+    entryData: PasswordRecoveryRequestEntryData
+  ): void {
+    (this.$refs.passwordRecoveryModal as PasswordRecoveryModal).close();
+    (this.$refs.resetPasswordModal as ResetPasswordModal).open(entryData.email!);
   }
 }
 </script>
