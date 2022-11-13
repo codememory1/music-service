@@ -1,4 +1,5 @@
 @import "../../include/variables";
+@import "../../include/mixins";
 
 .modal-field {
   display: flex;
@@ -11,7 +12,7 @@
   }
 
   &__input {
-    background-color: transparent;
+    background-color: transparent!important;
     color: $white;
     padding: 12px 20px 12px 12px;
     border-radius: 5px;
@@ -23,6 +24,20 @@
 
     &:focus {
       border-color: $accent;
+    }
+
+    @include autocomplete(2, $light-for-dark, $white, $dark-bg);
+
+    &:-webkit-autofill:focus {
+      border: 2px solid $accent;
+    }
+
+    &:-webkit-autofill {
+      background-color: transparent!important;
+
+      &:focus {
+        background-color: transparent!important;
+      }
     }
   }
 }

@@ -9,6 +9,7 @@
     />
     <AuthorizationModal
       ref="authorizationModel"
+      :request-in-process="authRequestInProcess"
       @openRegisterModal="
         $refs.authorizationModel.close();
         $refs.registrationModel.open();
@@ -60,7 +61,10 @@ import RegistrationModal from '~/components/Business/Modal/RegistrationModal.vue
 import AuthorizationModal from '~/components/Business/Modal/AuthorizationModal.vue';
 import PasswordRecoveryModal from '~/components/Business/Modal/PasswordRecoveryModal.vue';
 import PasswordResetModal from '~/components/Business/Modal/PasswordResetModal.vue';
-import ApiRouters from '~/api/api-routers';
+import AuthorizationRequest from '~/api/requests/AuthorizationRequest';
+import { getAlertModule, getUserModule } from '~/store';
+import { AuthorizationResponseType } from '~/api/responses/AuthorizationResponseType';
+import { ErrorResponseType } from '~/types/ErrorResponseType';
 
 @Component({
   components: {
@@ -74,6 +78,8 @@ import ApiRouters from '~/api/api-routers';
   }
 })
 export default class TheMainHeader extends Vue {
+  private authRequestInProcess: boolean = false;
+
   private signUp(): void {
     const modal = this.$refs.registrationModel as RegistrationModal;
 
@@ -86,11 +92,52 @@ export default class TheMainHeader extends Vue {
     modal.open();
   }
 
-  private auth(): void {
-    const modal = this.$refs.authorizationModel as AuthorizationModal;
-    const response = this.$api(this.$config.apiClientHost as string, ApiRouters.security.auth);
+  get authorizationRequest(): AuthorizationRequest {
+    return new AuthorizationRequest(this.$api);
+  }
 
-    console.log(response);
+  private auth(): void {
+    this.authRequestInProcess = true;
+
+    const modal = this.$refs.authorizationModel as AuthorizationModal;
+    const response = this.authorizationRequest.send(
+      this.$config.apiClientHost as string,
+      modal.entryData
+    );
+
+    response
+      .then((success) => {
+        this.successAuth(success.success!, modal);
+      })
+      .catch((error) => {
+        this.errorAuth(error.error);
+      })
+      .finally(() => {
+        this.authRequestInProcess = false;
+      });
+  }
+
+  private successAuth(response: AuthorizationResponseType, modal: AuthorizationModal): void {
+    getUserModule(this.$store).setAccessToken(response.data.access_token);
+    getUserModule(this.$store).setRefreshToken(response.data.refresh_token);
+
+    getAlertModule(this.$store).addAlert({
+      title: this.$t('alert.title.auth'),
+      message: this.$t('alert.message.success_auth'),
+      isSuccess: true,
+      autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
+    });
+
+    modal.close();
+  }
+
+  private errorAuth(response: ErrorResponseType): void {
+    getAlertModule(this.$store).addAlert({
+      title: this.$t('alert.title.auth'),
+      message: this.$t(response.error.message),
+      isSuccess: false,
+      autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
+    });
   }
 }
 </script>

@@ -65,5 +65,15 @@ export default {
   button: {
     subscribe: 'Subscribe',
     unsubscribe: 'Unsubscribe'
+  },
+
+  alert: {
+    title: {
+      auth: 'Authorization',
+      register: 'Registration'
+    },
+    message: {
+      success_auth: 'You have successfully logged into your account'
+    }
   }
 };

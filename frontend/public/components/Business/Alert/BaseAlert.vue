@@ -1,16 +1,16 @@
 <template>
   <transition name="alert">
-    <div v-if="isShow" class="alert" :style="cssVars">
+    <div class="alert" :style="cssVars">
       <div class="alert-top">
         <div class="alert-title">
           <img
-            v-if="isSuccess"
+            v-if="alert.isSuccess"
             class="alert__status-icon"
             src="/icons/success-circle.svg"
             alt="success"
           />
           <img v-else class="alert__status-icon" src="/icons/error-circle.svg" alt="error" />
-          <span class="alert-title__text">{{ title }}</span>
+          <span class="alert-title__text">{{ alert.title }}</span>
         </div>
 
         <BaseButton class="alert__close-btn" @click="close">
@@ -18,7 +18,7 @@
         </BaseButton>
       </div>
       <div class="alert-content">
-        <p class="alert-content__message">{{ message }}</p>
+        <p class="alert-content__message">{{ alert.message }}</p>
       </div>
     </div>
   </transition>
@@ -27,6 +27,8 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
+import { AlertType } from '~/types/AlertType';
+import { getAlertModule } from '~/store';
 
 @Component({
   components: {
@@ -34,35 +36,24 @@ import BaseButton from '~/components/UI/Button/BaseButton.vue';
   }
 })
 export default class BaseAlert extends Vue {
-  @Prop({ required: false, default: 5 })
-  private readonly autoRemove!: number;
-
   @Prop({ required: true })
-  private readonly isSuccess!: boolean;
-
-  @Prop({ required: true })
-  private readonly title!: string;
-
-  @Prop({ required: true })
-  private readonly message!: string;
-
-  private isShow: boolean = true;
+  private readonly alert!: AlertType;
 
   private get cssVars(): object {
     return {
-      '--time-remove': `${this.autoRemove}s`
+      '--time-remove': `${this.alert.autoDeleteTime}s`
     };
   }
 
   private mounted(): void {
     setTimeout(() => {
-      this.isShow = false;
-    }, this.autoRemove * 1000);
+      this.close();
+    }, this.alert.autoDeleteTime * 1000);
   }
 
   @Emit('close')
-  private close(event: PointerEvent): void {
-    this.isShow = false;
+  private close(): void {
+    getAlertModule(this.$store).removeAlert(this.alert);
   }
 }
 </script>

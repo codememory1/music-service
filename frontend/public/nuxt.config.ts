@@ -9,6 +9,12 @@ const config: NuxtConfig = {
   router: {
     linkExactActiveClass: 'active-link'
   },
+  vue: {
+    config: {
+      productionTip: false,
+      devtools: true
+    }
+  },
 
   privateRuntimeConfig: {
     apiServerHost: process.env.API_SERVER_HOST
@@ -17,7 +23,8 @@ const config: NuxtConfig = {
   publicRuntimeConfig: {
     title: process.env.SITE_NAME,
     apiClientHost: process.env.API_CLIENT_HOST,
-    defaultLang: process.env.DEFAULT_LANG
+    defaultLang: process.env.DEFAULT_LANG,
+    timeForAuthDeleteDefaultAlert: 10
   },
 
   pwa: {
@@ -100,7 +107,8 @@ const config: NuxtConfig = {
     },
     '~plugins/tooltip.ts',
     '~plugins/swiper.ts',
-    '~plugins/api.ts'
+    '~plugins/api.ts',
+    '~store/index.ts'
   ],
 
   components: true,
