@@ -5,6 +5,7 @@
   border: none;
   outline: none;
   cursor: pointer;
+  transition: ease-in opacity 0.15s;
 
   &_bg {
     &--accent {
@@ -48,5 +49,23 @@
         background-color: lighten($dark-bg, darkenActiveFromHover(7));
       }
     }
+  }
+
+  &__spinner {
+    animation: fa-spin 1s infinite linear;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+@keyframes fa-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

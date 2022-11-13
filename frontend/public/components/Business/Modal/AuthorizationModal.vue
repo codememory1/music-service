@@ -8,7 +8,13 @@
         @input="passwordEntry"
       />
     </div>
-    <BaseButton class="btn-auth button_bg--accent" @click="$emit('auth', $event)">Login</BaseButton>
+    <BaseButton
+      class="btn-auth button_bg--accent"
+      :is-loading="requestInProcess"
+      @click="$emit('auth', $event)"
+    >
+      Login
+    </BaseButton>
 
     <div class="auth-from-social">
       <p class="auth-from-social__text">or via social network</p>
@@ -42,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue } from 'vue-property-decorator';
+import { Component, Prop, Emit, Vue } from 'vue-property-decorator';
 import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import BaseInputModal from '~/components/UI/Input/BaseInputModal.vue';
 import BaseCheckbox from '~/components/UI/Checkbox/BaseCheckbox.vue';
@@ -60,6 +66,9 @@ import { AuthorizationEntryData } from '~/types/ModalEntryData';
   }
 })
 export default class AuthorizationModal extends Vue {
+  @Prop({ required: false, default: true })
+  private readonly requestInProcess!: boolean;
+
   private data: AuthorizationEntryData = {
     email: null,
     password: null

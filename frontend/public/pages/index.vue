@@ -1,5 +1,9 @@
 <template>
   <div>
+    <AlertList>
+      <BaseAlert v-for="alert in alerts" :key="alert.id" :alert="alert" />
+    </AlertList>
+
     <div class="wrapper-gradient">
       <div class="container">
         <TheMainHeader />
@@ -75,6 +79,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Context } from '@nuxt/types';
+import { getAlertModule } from '~/store';
 import TheMainHeader from '~/components/Business/Header/TheMainHeader.vue';
 import TheHomeHero from '~/components/Business/Hero/TheHomeHero.vue';
 import BaseSectionHeader from '~/components/UI/Section/BaseSectionHeader.vue';
@@ -83,7 +88,11 @@ import BaseOurAdvantage from '~/components/Business/OurAdvantage/BaseOurAdvantag
 import SubscriptionCard from '~/components/Business/Subscription/SubscriptionCard.vue';
 import SubscriptionPermission from '~/components/Business/Subscription/SubscriptionPermission.vue';
 import TheMainFooter from '~/components/Business/Footer/TheMainFooter.vue';
-import ApiRouters from '~/api/api-routers';
+import AlertList from '~/components/Business/Alert/AlertList.vue';
+import BaseAlert from '~/components/Business/Alert/BaseAlert.vue';
+import { AlertType } from '~/types/AlertType';
+import SubscriptionsRequest from '~/api/requests/SubscriptionsRequest';
+import { SubscriptionType } from '~/api/responses/SubscriptionResponseType';
 
 @Component({
   components: {
@@ -94,18 +103,25 @@ import ApiRouters from '~/api/api-routers';
     BaseOurAdvantage,
     SubscriptionCard,
     SubscriptionPermission,
-    TheMainFooter
+    TheMainFooter,
+    AlertList,
+    BaseAlert
   },
   async asyncData({ $api }: Context) {
-    const api = await $api(process.env.API_SERVER_HOST as string, ApiRouters.subscription.all);
+    const request = new SubscriptionsRequest($api);
+    const response = await request.send(process.env.API_SERVER_HOST as string);
 
     return {
-      subscriptions: api.data
+      subscriptions: response
     };
   }
 })
 export default class Index extends Vue {
-  private subscriptions = [];
+  private subscriptions: Array<SubscriptionType> = [];
+
+  private get alerts(): Array<AlertType> {
+    return getAlertModule(this.$store).alerts;
+  }
 }
 </script>
 

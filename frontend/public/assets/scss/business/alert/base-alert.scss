@@ -54,7 +54,7 @@
     content: "";
     position: absolute;
     bottom: 0;
-    animation: progress_time var(--time-remove) ease-in;
+    animation: progress_time var(--time-remove) linear;
     background: $accent-second;
     height: 5px;
     left: 0;
