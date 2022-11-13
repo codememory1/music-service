@@ -101,7 +101,6 @@ export default class RegistrationModal extends Vue {
   };
 
   private confirmPlatformRules: boolean = false;
-  public emailForActivation: string | null = null;
 
   @Emit('open')
   public open(): void {
@@ -145,12 +144,12 @@ export default class RegistrationModal extends Vue {
     this.entryDataError.confirmedPlatformRules = isEmpty(this.confirmPlatformRules);
 
     if (!Object.values(this.entryDataError).includes(true)) {
-      this.requestInProcess = true;
-
       const response = this.registrationRequest.send(
         this.$config.apiClientHost as string,
         this.entryData
       );
+
+      this.requestInProcess = true;
 
       response
         .then((success) => {
@@ -175,9 +174,7 @@ export default class RegistrationModal extends Vue {
       autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
     });
 
-    this.emailForActivation = response.data.email;
-
-    this.$emit('successRegister', response);
+    this.$emit('successRegister', response, this.entryData);
 
     this.close();
   }
@@ -185,7 +182,7 @@ export default class RegistrationModal extends Vue {
   private failedRegister(response: ErrorResponseType): void {
     getAlertModule(this.$store).addAlert({
       title: this.$t('alert.title.register'),
-      message: this.$t(response.error.message),
+      message: this.$t(response.error.message, response.error.message_parameters),
       isSuccess: false,
       autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
     });

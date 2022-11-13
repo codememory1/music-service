@@ -74,7 +74,7 @@ class PasswordReset implements EntityInterface
 
     public function generateCode(): self
     {
-        $this->code = mt_rand(000000, 999999);
+        $this->code = mt_rand(100000, 999999);
 
         return $this;
     }
@@ -117,7 +117,7 @@ class PasswordReset implements EntityInterface
         return $this->getStatus() === PasswordResetStatusEnum::COMPLETED->name;
     }
 
-    public function getTtl(): ?int
+    public function getTtl(): string|null|int
     {
         return $this->ttl;
     }

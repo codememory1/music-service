@@ -67,7 +67,7 @@ class AccountActivationCode implements EntityInterface
 
     public function generateCode(): self
     {
-        $this->code = mt_rand(000000, 999999);
+        $this->code = mt_rand(100000, 999999);
 
         return $this;
     }
