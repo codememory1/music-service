@@ -1,5 +1,5 @@
 <template>
-  <BaseModal ref="modal" title="Password Reset">
+  <BaseModal ref="modal" :title="$t('reset_password')">
     <div class="modal-fields">
       <InputCode
         ref="code"
@@ -10,23 +10,25 @@
       <BaseInputModal
         class="password-field"
         input-type="password"
-        placeholder="Enter your password"
+        :placeholder="$t('enter_your_password')"
       >
         <template #up>
           <PasswordProgressBar class="above-input" />
         </template>
       </BaseInputModal>
-      <BaseInputModal input-type="password" placeholder="Enter your password confirmation" />
+      <BaseInputModal input-type="password" :placeholder="$t('enter_your_password_confirmation')" />
     </div>
 
-    <BaseButton class="btn-auth button_bg--accent" @click="resetPassword"
-      >Reset the password</BaseButton
-    >
+    <BaseButton class="btn-auth button_bg--accent" @click="resetPassword">
+      {{ $t('reset_password') }}
+    </BaseButton>
 
     <div class="switch-to-another-modal-container row-grid grid-gap-5">
       <div class="security-modal__switch-to-another-modal">
-        Have an account?
-        <a class="link__switch-to-another-modal" @click="$emit('openLoginModal')">Login</a>
+        {{ $t('have_account_q') }}
+        <a class="link__switch-to-another-modal" @click="$emit('openLoginModal')">
+          {{ $t('login') }}
+        </a>
       </div>
     </div>
   </BaseModal>

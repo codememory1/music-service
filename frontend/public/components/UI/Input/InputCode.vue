@@ -126,6 +126,10 @@ export default class InputCode extends Vue {
       return code;
     });
   }
+
+  public get isOk(): boolean {
+    return Object.values(this.squaresInfo).every((square) => !square.error);
+  }
 }
 </script>
 

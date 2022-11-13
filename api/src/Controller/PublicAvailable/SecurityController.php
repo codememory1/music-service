@@ -8,7 +8,8 @@ use App\Dto\Transformer\RefreshTokenTransformer;
 use App\Dto\Transformer\RegistrationTransformer;
 use App\Enum\PlatformCodeEnum;
 use App\Infrastructure\Validator\Validator;
-use App\ResponseData\General\User\UserResponseData;
+use App\ResponseData\General\User\UserAccountActivationResponseData;
+use App\ResponseData\General\User\UserRegistrationResponseData;
 use App\ResponseData\Public\User\Session\UserSessionResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Security\AccountActivation\AccountActivation;
@@ -25,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SecurityController extends AbstractRestController
 {
     #[Route('/register', methods: 'POST')]
-    public function registration(RegistrationTransformer $transformer, Registration $register, UserResponseData $responseData): JsonResponse
+    public function registration(RegistrationTransformer $transformer, Registration $register, UserRegistrationResponseData $responseData): JsonResponse
     {
         $responseData->setEntities($register->handle($transformer->transformFromRequest()));
 
@@ -65,7 +66,7 @@ class SecurityController extends AbstractRestController
     }
 
     #[Route('/account-activation', methods: 'POST')]
-    public function activationAccount(AccountActivationTransformer $transformer, AccountActivation $accountActivation, UserResponseData $responseData): JsonResponse
+    public function activationAccount(AccountActivationTransformer $transformer, AccountActivation $accountActivation, UserAccountActivationResponseData $responseData): JsonResponse
     {
         $responseData->setEntities($accountActivation->activate($transformer->transformFromRequest()));
 

@@ -22,6 +22,7 @@ module.exports = {
   },
 
   rules: {
+    'vue/no-v-html': ['off'],
     'comma-dangle': ['error', 'never'],
     'vue/no-unused-components': ['error', { ignoreWhenBindingPresent: true }],
     'vue/no-useless-template-attributes': ['error'],

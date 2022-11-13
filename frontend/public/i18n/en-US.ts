@@ -61,6 +61,26 @@ export default {
   your_devices: 'Your devices',
   ip: 'IP-address',
   last_activity: 'Latest Activity',
+  active: 'Activate',
+  account_activation: 'Account activation',
+  authorization: 'Authorization',
+  login: 'Login',
+  enter_your_email: 'Enter your email',
+  enter_your_password: 'Enter your password',
+  enter_your_password_confirmation: 'Enter your password confirmation',
+  enter_your_pseudonym: 'Enter your pseudonym',
+  or_via_social_network: 'or via social network',
+  dont_have_account: "Don't know how to account?",
+  register: 'Register',
+  forgot_your_password_q: 'Forgot your password?',
+  restore_password: 'Restore password',
+  password_recovery: 'Password recovery',
+  send_code: 'Send code',
+  reset_password: 'Reset the password',
+  have_account_q: 'Have an account?',
+  registration: 'Registration',
+  by_clicking_register:
+    'By clicking "Register" or registering through a third party, you accept <a href="{terms_use_link}">the {title} terms of use</a> and accept <a href="{privacy_policy_link}">the Privacy Policy</a>.',
 
   button: {
     subscribe: 'Subscribe',
@@ -70,10 +90,14 @@ export default {
   alert: {
     title: {
       auth: 'Authorization',
-      register: 'Registration'
+      register: 'Registration',
+      account_activation: 'Email confirmation'
     },
     message: {
-      success_auth: 'You have successfully logged into your account'
+      success_auth: 'You have successfully logged into your account',
+      success_register:
+        'Registration completed successfully! A confirmation code has been sent to {email} email address.',
+      success_account_activate: 'Account successfully activated. Now you can login'
     }
   }
 };
