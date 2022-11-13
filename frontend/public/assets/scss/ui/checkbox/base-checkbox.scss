@@ -12,8 +12,14 @@
   transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
   border-radius: 2px;
 
-  &:hover {
-    border-color: $accent;
+  &.error {
+    border-color: $red;
+  }
+
+  &:not(.error) {
+    &:hover {
+      border-color: $accent;
+    }
   }
 }
 

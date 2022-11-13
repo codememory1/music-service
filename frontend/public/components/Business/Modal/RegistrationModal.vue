@@ -1,33 +1,60 @@
 <template>
-  <BaseModal ref="modal" title="Registration">
+  <BaseModal ref="modal" :title="$t('registration')">
     <div class="modal-fields">
-      <BaseInputModal placeholder="Enter your pseudonym" />
-      <BaseInputModal placeholder="Enter your email" />
+      <BaseInputModal
+        :placeholder="$t('enter_your_pseudonym')"
+        :class="{ error: entryDataError.pseudonym }"
+        @input="pseudonymEntry"
+      />
+      <BaseInputModal
+        :placeholder="$t('enter_your_email')"
+        :class="{ error: entryDataError.email }"
+        @input="emailEntry"
+      />
       <BaseInputModal
         class="password-field"
+        :class="{ error: entryDataError.password }"
         input-type="password"
-        placeholder="Enter your password"
+        :placeholder="$t('enter_your_password')"
+        @input="passwordEntry"
       >
         <template #up>
           <PasswordProgressBar class="above-input" />
         </template>
       </BaseInputModal>
-      <BaseInputModal input-type="password" placeholder="Enter your password confirmation" />
+      <BaseInputModal
+        input-type="password"
+        :placeholder="$t('enter_your_password_confirmation')"
+        :class="{ error: entryDataError.password_confirm }"
+        @input="passwordConfirmEntry"
+      />
     </div>
     <div class="security-modal__confirm-platform-rules">
-      <BaseCheckbox />
-      <p class="security-modal__confirm-platform-rules__text">
-        Нажимая «Зарегистрироваться» или регистрируясь через третье лицо, вы принимаете Условия
-        использования Sumron-Music <a href="">и признаете Политику конфиденциальности</a>
-        <a href="">и Политику использования файлов cookie</a>.
-      </p>
+      <BaseCheckbox
+        v-model="confirmPlatformRules"
+        :class="{ error: entryDataError.confirmedPlatformRules }"
+      />
+      <p
+        class="security-modal__confirm-platform-rules__text"
+        v-html="
+          $t('by_clicking_register', {
+            title: $config.title,
+            terms_use_link: '/1',
+            privacy_policy_link: '/2'
+          })
+        "
+      />
     </div>
-    <BaseButton class="btn-auth button_bg--accent">Register</BaseButton>
+    <BaseButton :is-loading="requestInProcess" class="btn-auth button_bg--accent" @click="register">
+      Register
+    </BaseButton>
 
     <div class="switch-to-another-modal-container row-grid grid-gap-5">
       <div class="security-modal__switch-to-another-modal">
-        Have an account?
-        <a class="link__switch-to-another-modal" @click="$emit('openLoginModal')">Login</a>
+        {{ $t('have_account_q') }}
+        <a class="link__switch-to-another-modal" @click="$emit('openLoginModal')">
+          {{ $t('login') }}
+        </a>
       </div>
     </div>
   </BaseModal>
@@ -40,6 +67,12 @@ import BaseInputModal from '~/components/UI/Input/BaseInputModal.vue';
 import BaseCheckbox from '~/components/UI/Checkbox/BaseCheckbox.vue';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
 import PasswordProgressBar from '~/components/UI/ProgressBar/PasswordProgressBar.vue';
+import { RegistrationEntryData } from '~/types/ModalEntryData';
+import RegistrationRequest from '~/api/requests/RegistrationRequest';
+import { getAlertModule } from '~/store';
+import { RegistrationResponseType } from '~/api/responses/RegistrationResponseType';
+import { ErrorResponseType } from '~/types/ErrorResponseType';
+import isEmpty from '~/utils/is-empty';
 
 @Component({
   components: {
@@ -51,6 +84,25 @@ import PasswordProgressBar from '~/components/UI/ProgressBar/PasswordProgressBar
   }
 })
 export default class RegistrationModal extends Vue {
+  private requestInProcess: boolean = false;
+  private entryData: RegistrationEntryData = {
+    pseudonym: null,
+    email: null,
+    password: null,
+    password_confirm: null
+  };
+
+  private entryDataError = {
+    pseudonym: false,
+    email: false,
+    password: false,
+    password_confirm: false,
+    confirmedPlatformRules: false
+  };
+
+  private confirmPlatformRules: boolean = false;
+  public emailForActivation: string | null = null;
+
   @Emit('open')
   public open(): void {
     const modal = this.$refs.modal as BaseModal;
@@ -63,6 +115,82 @@ export default class RegistrationModal extends Vue {
     const modal = this.$refs.modal as BaseModal;
 
     modal.close();
+  }
+
+  private pseudonymEntry(event: InputEvent): void {
+    this.entryData.pseudonym = (event.target as HTMLInputElement).value;
+  }
+
+  private emailEntry(event: InputEvent): void {
+    this.entryData.email = (event.target as HTMLInputElement).value;
+  }
+
+  private passwordEntry(event: InputEvent): void {
+    this.entryData.password = (event.target as HTMLInputElement).value;
+  }
+
+  private passwordConfirmEntry(event: InputEvent): void {
+    this.entryData.password_confirm = (event.target as HTMLInputElement).value;
+  }
+
+  private get registrationRequest(): RegistrationRequest {
+    return new RegistrationRequest(this.$api);
+  }
+
+  private register(): void {
+    this.entryDataError.pseudonym = isEmpty(this.entryData.pseudonym);
+    this.entryDataError.email = isEmpty(this.entryData.email);
+    this.entryDataError.password = isEmpty(this.entryData.password);
+    this.entryDataError.password_confirm = isEmpty(this.entryData.password_confirm);
+    this.entryDataError.confirmedPlatformRules = isEmpty(this.confirmPlatformRules);
+
+    if (!Object.values(this.entryDataError).includes(true)) {
+      this.requestInProcess = true;
+
+      const response = this.registrationRequest.send(
+        this.$config.apiClientHost as string,
+        this.entryData
+      );
+
+      response
+        .then((success) => {
+          this.successRegister(success.success!);
+        })
+        .catch((error) => {
+          this.failedRegister(error.error!);
+        })
+        .finally(() => {
+          this.requestInProcess = false;
+        });
+    }
+  }
+
+  private successRegister(response: RegistrationResponseType): void {
+    getAlertModule(this.$store).addAlert({
+      title: this.$t('alert.title.register'),
+      message: this.$t('alert.message.success_register', {
+        email: response.data.email
+      }),
+      isSuccess: true,
+      autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
+    });
+
+    this.emailForActivation = response.data.email;
+
+    this.$emit('successRegister', response);
+
+    this.close();
+  }
+
+  private failedRegister(response: ErrorResponseType): void {
+    getAlertModule(this.$store).addAlert({
+      title: this.$t('alert.title.register'),
+      message: this.$t(response.error.message),
+      isSuccess: false,
+      autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
+    });
+
+    this.$emit('failedRegister', response);
   }
 }
 </script>

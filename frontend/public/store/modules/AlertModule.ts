@@ -14,7 +14,7 @@ export default class AlertModule extends VuexModule {
   @Mutation
   public addAlert(alert: AlertType): void {
     alert.id = uuidv4();
-    this.alerts.push(alert);
+    this.alerts.unshift(alert);
   }
 
   @Mutation

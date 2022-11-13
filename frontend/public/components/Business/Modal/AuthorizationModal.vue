@@ -1,23 +1,24 @@
 <template>
-  <BaseModal ref="modal" title="Authorization">
+  <BaseModal ref="modal" :title="$t('authorization')">
     <div class="modal-fields">
-      <BaseInputModal placeholder="Enter your email" @input="emailEntry" />
       <BaseInputModal
+        :class="{ error: entryDataError.email }"
+        :placeholder="$t('enter_your_email')"
+        @input="emailEntry"
+      />
+      <BaseInputModal
+        :class="{ error: entryDataError.password }"
         input-type="password"
-        placeholder="Enter your password"
+        :placeholder="$t('enter_your_password')"
         @input="passwordEntry"
       />
     </div>
-    <BaseButton
-      class="btn-auth button_bg--accent"
-      :is-loading="requestInProcess"
-      @click="$emit('auth', $event)"
-    >
-      Login
+    <BaseButton class="btn-auth button_bg--accent" :is-loading="requestInProcess" @click="auth">
+      {{ $t('login') }}
     </BaseButton>
 
     <div class="auth-from-social">
-      <p class="auth-from-social__text">or via social network</p>
+      <p class="auth-from-social__text">{{ $t('or_via_social_network') }}</p>
 
       <div class="auth-from-social-icons">
         <a href="" class="auth-from-social__item">
@@ -34,13 +35,15 @@
 
     <div class="switch-to-another-modal-container row-grid grid-gap-5">
       <div class="security-modal__switch-to-another-modal">
-        Don't know how to account?
-        <a class="link__switch-to-another-modal" @click="$emit('openRegisterModal')">Register</a>
+        {{ $t('dont_have_account') }}
+        <a class="link__switch-to-another-modal" @click="$emit('openRegisterModal')">
+          {{ $t('register') }}
+        </a>
       </div>
       <div class="security-modal__switch-to-another-modal">
-        Forgot your password ?
+        {{ $t('forgot_your_password_q') }}
         <a class="link__switch-to-another-modal" @click="$emit('openPasswordRecoveryModal')">
-          Restore password
+          {{ $t('restore_password') }}
         </a>
       </div>
     </div>
@@ -48,13 +51,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Emit, Vue } from 'vue-property-decorator';
+import { Component, Emit, Vue } from 'vue-property-decorator';
 import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import BaseInputModal from '~/components/UI/Input/BaseInputModal.vue';
 import BaseCheckbox from '~/components/UI/Checkbox/BaseCheckbox.vue';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
 import PasswordProgressBar from '~/components/UI/ProgressBar/PasswordProgressBar.vue';
 import { AuthorizationEntryData } from '~/types/ModalEntryData';
+import AuthorizationRequest from '~/api/requests/AuthorizationRequest';
+import { AuthorizationResponseType } from '~/api/responses/AuthorizationResponseType';
+import { getAlertModule, getUserModule } from '~/store';
+import { ErrorResponseType } from '~/types/ErrorResponseType';
+import isEmpty from '~/utils/is-empty';
 
 @Component({
   components: {
@@ -66,12 +74,15 @@ import { AuthorizationEntryData } from '~/types/ModalEntryData';
   }
 })
 export default class AuthorizationModal extends Vue {
-  @Prop({ required: false, default: true })
-  private readonly requestInProcess!: boolean;
-
-  private data: AuthorizationEntryData = {
+  private requestInProcess: boolean = false;
+  private entryData: AuthorizationEntryData = {
     email: null,
     password: null
+  };
+
+  private entryDataError = {
+    email: false,
+    password: false
   };
 
   @Emit('open')
@@ -89,15 +100,67 @@ export default class AuthorizationModal extends Vue {
   }
 
   private emailEntry(event: InputEvent): void {
-    this.data.email = (event.target as HTMLInputElement).value;
+    this.entryData.email = (event.target as HTMLInputElement).value;
   }
 
   private passwordEntry(event: InputEvent): void {
-    this.data.password = (event.target as HTMLInputElement).value;
+    this.entryData.password = (event.target as HTMLInputElement).value;
   }
 
-  get entryData(): AuthorizationEntryData {
-    return this.data;
+  get authorizationRequest(): AuthorizationRequest {
+    return new AuthorizationRequest(this.$api);
+  }
+
+  private auth(): void {
+    this.entryDataError.email = isEmpty(this.entryData.email);
+    this.entryDataError.password = isEmpty(this.entryData.password);
+
+    if (!Object.values(this.entryDataError).includes(true)) {
+      this.requestInProcess = true;
+
+      const response = this.authorizationRequest.send(
+        this.$config.apiClientHost as string,
+        this.entryData
+      );
+
+      response
+        .then((success) => {
+          this.successAuth(success.success!);
+        })
+        .catch((error) => {
+          this.failedAuth(error.error);
+        })
+        .finally(() => {
+          this.requestInProcess = false;
+        });
+    }
+  }
+
+  private successAuth(response: AuthorizationResponseType): void {
+    getUserModule(this.$store).setAccessToken(response.data.access_token);
+    getUserModule(this.$store).setRefreshToken(response.data.refresh_token);
+
+    getAlertModule(this.$store).addAlert({
+      title: this.$t('alert.title.auth'),
+      message: this.$t('alert.message.success_auth'),
+      isSuccess: true,
+      autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
+    });
+
+    this.close();
+
+    this.$emit('successAuth', response);
+  }
+
+  private failedAuth(response: ErrorResponseType): void {
+    getAlertModule(this.$store).addAlert({
+      title: this.$t('alert.title.auth'),
+      message: this.$t(response.error.message),
+      isSuccess: false,
+      autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
+    });
+
+    this.$emit('failedAuth', response);
   }
 }
 </script>

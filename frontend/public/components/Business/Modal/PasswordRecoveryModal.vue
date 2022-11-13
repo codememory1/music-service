@@ -1,9 +1,9 @@
 <template>
-  <BaseModal ref="modal" title="Password recovery">
+  <BaseModal ref="modal" :title="$t('password_recovery')">
     <div class="modal-fields">
-      <BaseInputModal placeholder="Enter your email" />
+      <BaseInputModal :placeholder="$t('enter_your_email')" />
     </div>
-    <BaseButton class="btn-auth button_bg--accent" @click="send">Send code</BaseButton>
+    <BaseButton class="btn-auth button_bg--accent" @click="send">{{ $t('send_code') }}</BaseButton>
   </BaseModal>
 </template>
 

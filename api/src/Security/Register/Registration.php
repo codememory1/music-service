@@ -33,17 +33,17 @@ final class Registration
             throw new HttpException(409, PlatformCodeEnum::ENTITY_FOUND, 'user@existByEmail');
         }
 
-        $this->register($dto, $user);
-
-        return $user;
+        return $this->register($dto, $user);
     }
 
-    public function register(RegistrationDto $dto, ?User $user): void
+    public function register(RegistrationDto $dto, ?User $user): User
     {
         $registeredUser = $this->registrar->make($dto, $user);
 
         $this->eventDispatcher->dispatch(new UserRegistrationEvent($registeredUser));
 
         $this->flusher->save();
+
+        return $registeredUser;
     }
 }
