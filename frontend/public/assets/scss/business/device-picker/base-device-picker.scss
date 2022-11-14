@@ -5,6 +5,10 @@
   padding: 20px;
   border-radius: 10px;
   width: 400px;
+  border: 1px solid $light-for-dark;
+  position: absolute;
+  bottom: 50px;
+  z-index: 12;
 
   &__header {
     color: $white;

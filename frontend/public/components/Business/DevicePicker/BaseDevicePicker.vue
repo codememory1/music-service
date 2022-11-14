@@ -1,20 +1,22 @@
 <template>
-  <div class="device-picker">
-    <h3 class="device-picker__header">{{ $t('your_devices') }}</h3>
-    <BaseDevice :device="currentDives" class="current" />
+  <transition name="fade">
+    <div class="device-picker">
+      <h3 class="device-picker__header">{{ $t('your_devices') }}</h3>
+      <BaseDevice :device="currentDevice" class="current" />
 
-    <hr class="device-picker__separator" />
+      <hr class="device-picker__separator" />
 
-    <div class="device-picker-devices">
-      <BaseDevice
-        v-for="(device, index) in devices"
-        :key="index"
-        :device="device"
-        :is-selected="device.id === syncedActiveDevice"
-        @click="select(device)"
-      />
+      <div class="device-picker-devices">
+        <BaseDevice
+          v-for="(device, index) in devices"
+          :key="index"
+          :device="device"
+          :is-selected="device.id === syncedActiveDevice"
+          @click="select(device)"
+        />
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -29,7 +31,7 @@ import BaseDevice from '~/components/Business/DevicePicker/BaseDevice.vue';
 })
 export default class BaseDevicePicker extends Vue {
   @Prop({ required: true })
-  private readonly currentDives!: DeviceType;
+  private readonly currentDevice!: DeviceType;
 
   @Prop({ required: true })
   private readonly devices!: DeviceType[];

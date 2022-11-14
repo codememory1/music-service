@@ -20,12 +20,22 @@
         >
           <i class="fas fa-album-collection" />
         </BaseButton>
-        <BaseButton
-          v-tooltip="$t('multimedia.create_stream')"
-          class="desktop-player_multimedia-control-btn desktop-player__devices"
-        >
-          <i class="fas fa-users-class" />
-        </BaseButton>
+        <div ref="devicePickerWrapper" class="relative">
+          <BaseDevicePicker
+            v-show="isOpenDevicePicker"
+            :current-device="currentDevice"
+            :devices="devices"
+          />
+
+          <BaseButton
+            ref="btnToggleDevicePicker"
+            v-tooltip="$t('multimedia.create_stream')"
+            class="desktop-player_multimedia-control-btn desktop-player__devices"
+            @click="isOpenDevicePicker = !isOpenDevicePicker"
+          >
+            <i class="fas fa-users-class" />
+          </BaseButton>
+        </div>
       </div>
       <div class="desktop-player-player-control">
         <BaseButton class="desktop-player_player-control-btn desktop-player_repeat-btn">
@@ -63,16 +73,81 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
 import BaseRange from '~/components/UI/Range/BaseRange.vue';
+import BaseDevicePicker from '~/components/Business/DevicePicker/BaseDevicePicker.vue';
+import { DeviceType } from '~/types/DeviceType';
+import clickOut from '~/utils/click-out';
 
 @Component({
   components: {
     BaseButton,
-    BaseRange
+    BaseRange,
+    BaseDevicePicker
   }
 })
 export default class DesktopPlayer extends Vue {
   @Prop({ required: false, default: false })
   private readonly isPlay!: boolean;
+
+  private isOpenDevicePicker: boolean = false;
+  private devices: Array<DeviceType> = [
+    {
+      id: 1,
+      name: 'Mac',
+      type: 'Computer',
+      ip: '127.0.0.1',
+      isActive: false,
+      latest_activity: '2022-11-12 14:23'
+    },
+    {
+      id: 2,
+      name: 'Iphone',
+      type: 'Phone',
+      ip: '127.0.0.1',
+      isActive: true,
+      latest_activity: '2022-11-12 14:23'
+    },
+    {
+      id: 3,
+      name: 'IPad',
+      type: 'Tablet',
+      ip: '127.0.0.1',
+      isActive: true,
+      latest_activity: '2022-11-12 14:23'
+    },
+    {
+      id: 4,
+      name: 'Android TV',
+      type: 'Tablet',
+      ip: '127.0.0.1',
+      isActive: false,
+      latest_activity: '2022-11-12 14:23'
+    }
+  ];
+
+  private currentDevice: DeviceType = {
+    id: 5,
+    name: 'IPad',
+    type: 'Tablet',
+    ip: '127.0.0.1',
+    isActive: true,
+    latest_activity: '2022-11-12 14:23'
+  };
+
+  private mounted(): void {
+    this.clickOutDevicePicker();
+  }
+
+  private clickOutDevicePicker(): void {
+    clickOut(this.$refs.devicePickerWrapper as Node, (is: boolean) => {
+      if (is) {
+        this.isOpenDevicePicker = false;
+      }
+    });
+  }
+
+  private beforeDestroy(): void {
+    document.removeEventListener('click', this.clickOutDevicePicker);
+  }
 }
 </script>
 
