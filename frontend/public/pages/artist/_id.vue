@@ -56,6 +56,26 @@ export default class Artist extends Vue {
             id: 1,
             image: '/images/album1.png',
             name: 'Tvbuu'
+          },
+          {
+            id: 2,
+            image: '/images/album1.png',
+            name: 'Tvbuu'
+          },
+          {
+            id: 3,
+            image: '/images/album1.png',
+            name: 'Tvbuu'
+          },
+          {
+            id: 4,
+            image: '/images/album1.png',
+            name: 'Tvbuu'
+          },
+          {
+            id: 5,
+            image: '/images/album1.png',
+            name: 'Tvbuu'
           }
         ]
       },
