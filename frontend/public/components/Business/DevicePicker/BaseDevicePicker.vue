@@ -36,8 +36,8 @@ export default class BaseDevicePicker extends Vue {
   @Prop({ required: true })
   private readonly devices!: DeviceType[];
 
-  @Prop({ required: false })
-  private activeDevice!: number;
+  @Prop({ required: false, default: 0 })
+  private readonly activeDevice!: number;
 
   private syncedActiveDevice: number = this.activeDevice;
 

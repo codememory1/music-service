@@ -1,6 +1,6 @@
 <template>
   <div class="album">
-    <a href="">
+    <div class="album__inner">
       <img class="album__image" :src="data.image" :alt="data.title" />
       <div class="album__title">{{ data.title }}</div>
       <span class="album-artists">
@@ -8,7 +8,7 @@
           {{ performer.name }}
         </ArtistLink>
       </span>
-    </a>
+    </div>
 
     <slot />
   </div>
