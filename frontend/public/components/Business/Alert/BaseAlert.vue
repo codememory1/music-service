@@ -1,5 +1,5 @@
 <template>
-  <transition name="alert">
+  <transition name="fade">
     <div class="alert" :style="cssVars">
       <div class="alert-top">
         <div class="alert-title">

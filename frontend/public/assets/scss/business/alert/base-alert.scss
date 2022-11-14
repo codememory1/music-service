@@ -71,13 +71,3 @@
     width: 100%;
   }
 }
-
-.alert-enter-active,
-.alert-leave-active {
-  transition: opacity .5s
-}
-
-.alert-enter,
-.alert-leave-to {
-  opacity: 0;
-}

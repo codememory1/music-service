@@ -4,6 +4,7 @@
 @import "include/mixins";
 @import "include/fonts";
 @import "include/grid";
+@import "include/transition";
 @import "vendor/font-awesome";
 @import "ui/tooltip/tooltip";
 
@@ -71,4 +72,8 @@ img {
 
 .page-enter, .page-leave-active {
   opacity: 0;
+}
+
+.relative {
+  position: relative;
 }

@@ -77,6 +77,10 @@ export default class BaseSelect extends Vue {
   private isOpen: boolean = false;
 
   private mounted(): void {
+    this.clickOutSelect();
+  }
+
+  private clickOutSelect(): void {
     clickOut(this.$refs.select as Node, (is: boolean, event: PointerEvent) => {
       if (is) {
         this.close(event);
@@ -178,6 +182,10 @@ export default class BaseSelect extends Vue {
     });
 
     this.updatedOptions = options;
+  }
+
+  private beforeDestroy(): void {
+    document.removeEventListener('click', this.clickOutSelect);
   }
 }
 </script>
