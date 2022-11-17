@@ -48,7 +48,8 @@ export default {
     status: {
       online: 'Online',
       offline: 'Offline'
-    }
+    },
+    back: 'Back'
   },
 
   multimedia: {

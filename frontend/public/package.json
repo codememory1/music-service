@@ -20,6 +20,7 @@
     "@nuxtjs/sentry": "^6.0.1",
     "@types/swiper": "^6.0.0",
     "@typescript-eslint/parser": "^5.38.1",
+    "animate.css": "^4.1.1",
     "core-js": "^3.19.3",
     "http-build-query": "^0.7.0",
     "normalize.css": "^8.0.1",
