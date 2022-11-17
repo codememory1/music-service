@@ -7,6 +7,7 @@
 @import "include/transition";
 @import "vendor/font-awesome";
 @import "ui/tooltip/tooltip";
+@import "animate.css";
 
 :root {
   --accent: #{$accent};
@@ -21,6 +22,7 @@
   --grid-gap: #{$grid-gap};
   --column-width: #{$column-width};
   --column-count: #{$column-count};
+  --animate-duration: 5s;
 }
 
 * {

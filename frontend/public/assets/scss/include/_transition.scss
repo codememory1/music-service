@@ -8,22 +8,12 @@
   opacity: 0;
 }
 
-.left-enter-active,
-.left-leave-active {
-  transition: ease-in transform 0.5s
+.context-menu-enter-active,
+.context-menu-leave-active {
+  transition: transform 0.5s ease-in;
 }
 
-.left-enter,
-.left-leave-to {
-  transform: translateX(100%);
-}
-
-.right-enter-active,
-.right-leave-active {
-  transition: ease-in transform 0.5s
-}
-
-.right-enter,
-.right-leave-to {
-  transform: translateX(-100%);
+.context-menu-enter,
+.context-menu-leave-to {
+  opacity: 0;
 }

@@ -5,6 +5,7 @@
   width: 270px;
   height: max-content;
   z-index: 999;
+  position: absolute;
 
   &-top {
     border-bottom: 1px solid $light-for-dark;
@@ -12,7 +13,7 @@
   }
 
   &-content {
-    padding: 10px;
+    display: flex;
   }
 
   &__backward-btn {
@@ -30,6 +31,23 @@
 
     &:hover {
       color: $white;
+    }
+  }
+
+  &-items {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding: 10px;
+    transition: ease-in transoform 0.2s;
+
+    &.next {
+      transform: translateX(100%);
+    }
+
+    &.backward {
+      transform: translateX(-100%);
     }
   }
 }

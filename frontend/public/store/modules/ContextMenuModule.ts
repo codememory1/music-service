@@ -1,4 +1,4 @@
-import { Module, VuexModule, Mutation } from 'vuex-module-decorators';
+import { VuexModule, Module, Mutation } from 'vuex-module-decorators';
 import { ContextMenuType } from '~/types/ContextMenuType';
 
 @Module({
@@ -7,14 +7,12 @@ import { ContextMenuType } from '~/types/ContextMenuType';
   namespaced: true
 })
 export default class ContextMenuModule extends VuexModule {
-  public activeContextMenu: ContextMenuType | {} = {};
+  public contextMenu: ContextMenuType | {} = {};
   public isShowBackwardButton: boolean = false;
-  public transition: string = 'none';
 
   @Mutation
-  public setActiveContextMenu(contextMenu: ContextMenuType, transition: string): void {
-    this.activeContextMenu = contextMenu;
-    this.transition = transition;
+  public setContextMenu(contextMenu: ContextMenuType): void {
+    this.contextMenu = contextMenu;
   }
 
   @Mutation

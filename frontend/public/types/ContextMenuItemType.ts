@@ -6,4 +6,5 @@ export type ContextMenuItemType = {
   link?: string;
   disabled: boolean;
   context_menu?: ContextMenuType;
+  border: boolean;
 };

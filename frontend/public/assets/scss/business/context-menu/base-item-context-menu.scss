@@ -7,7 +7,7 @@
   list-style: none;
   color: $white;
   cursor: pointer;
-  transition: ease-in background-color 0.15s;
+  transition: ease-in background-color 0.15s, ease-in-out opacity 0.5s;
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
@@ -17,6 +17,10 @@
   &.disabled {
     opacity: 0.4;
     pointer-events: none;
+  }
+
+  &.border {
+    border-bottom: 1px solid $light-for-dark;
   }
 
   &:hover {

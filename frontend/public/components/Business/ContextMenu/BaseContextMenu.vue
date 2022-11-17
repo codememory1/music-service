@@ -1,20 +1,28 @@
 <template>
-  <div class="context-menu" role="menu">
-    <div v-if="isShowBackwardButton" class="context-menu-top">
-      <BaseButton class="context-menu__backward-btn" @click="backward">
-        <i class="far fa-long-arrow-alt-left" /> Backward
-      </BaseButton>
-    </div>
+  <transition name="fade">
+    <div class="context-menu" role="menu">
+      <div v-if="isShowBackwardButton" class="context-menu-top">
+        <BaseButton class="context-menu__backward-btn" @click="backward">
+          <i class="far fa-chevron-left" /> {{ $t('common.back') }}
+        </BaseButton>
+      </div>
 
-    <div class="context-menu-content">
-      <BaseListContextMenu :items="activeContextMenu.items" />
+      <div class="context-menu-content">
+        <ul class="context-menu-items">
+          <BaseItemContextMenu
+            v-for="item in activeContextMenu.items"
+            :key="item.id"
+            :item="item"
+          />
+        </ul>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import BaseListContextMenu from '~/components/Business/ContextMenu/BaseListContextMenu.vue';
+import BaseItemContextMenu from '~/components/Business/ContextMenu/BaseItemContextMenu.vue';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
 import { ContextMenuType } from '~/types/ContextMenuType';
 import { getContextMenuModule } from '~/store';
@@ -25,7 +33,7 @@ type FormattedContextMenu = {
 
 @Component({
   components: {
-    BaseListContextMenu,
+    BaseItemContextMenu,
     BaseButton
   }
 })
@@ -36,21 +44,9 @@ export default class BaseContextMenu extends Vue {
   private formattedContextMenu: FormattedContextMenu = {};
 
   private created(): void {
-    getContextMenuModule(this.$store).setActiveContextMenu(this.contextMenu, 'none');
+    getContextMenuModule(this.$store).setContextMenu(this.contextMenu);
 
     this.contextMenuFormatting(this.contextMenu);
-  }
-
-  private get activeContextMenu(): ContextMenuType {
-    return getContextMenuModule(this.$store).activeContextMenu as ContextMenuType;
-  }
-
-  private get isShowBackwardButton(): boolean {
-    return getContextMenuModule(this.$store).isShowBackwardButton;
-  }
-
-  private get transition(): string {
-    return getContextMenuModule(this.$store).transition;
   }
 
   private contextMenuFormatting(
@@ -68,21 +64,27 @@ export default class BaseContextMenu extends Vue {
     });
   }
 
+  private get activeContextMenu(): ContextMenuType {
+    return getContextMenuModule(this.$store).contextMenu as ContextMenuType;
+  }
+
+  private get isShowBackwardButton(): boolean {
+    return getContextMenuModule(this.$store).isShowBackwardButton;
+  }
+
   private backward(): void {
-    const activeContextMenu = getContextMenuModule(this.$store)
-      .activeContextMenu as ContextMenuType;
     let backwardContextMenu: ContextMenuType | undefined;
 
-    if (activeContextMenu!.id in this.formattedContextMenu) {
-      backwardContextMenu = this.formattedContextMenu[activeContextMenu.id];
+    if (this.activeContextMenu!.id in this.formattedContextMenu) {
+      backwardContextMenu = this.formattedContextMenu[this.activeContextMenu.id];
 
-      getContextMenuModule(this.$store).setActiveContextMenu(backwardContextMenu, 'left');
+      getContextMenuModule(this.$store).setContextMenu(backwardContextMenu!);
       getContextMenuModule(this.$store).setIsShowBackwardButton(
-        backwardContextMenu.id in this.formattedContextMenu
+        backwardContextMenu!.id in this.formattedContextMenu
       );
     }
 
-    this.$emit('backward', activeContextMenu, backwardContextMenu);
+    this.$emit('backward', this.activeContextMenu, backwardContextMenu);
   }
 }
 </script>

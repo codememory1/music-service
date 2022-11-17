@@ -1,5 +1,5 @@
 <template>
-  <div class="track">
+  <div class="track" @contextmenu.prevent="toggleMenu">
     <div class="track-left">
       <img :src="data.image" :alt="data.title" class="track__img" />
       <div class="track-multimedia-info">
@@ -17,8 +17,8 @@
         <BaseButton class="track__btn track__like-btn">
           <i class="fas fa-thumbs-up" />
         </BaseButton>
-        <BaseButton class="track__btn track__menu-btn">
-          <i class="fas fa-ellipsis-v"></i>
+        <BaseButton class="track__btn track__menu-btn" @click="toggleMenu">
+          <i class="fas fa-ellipsis-v" />
         </BaseButton>
       </div>
     </div>
@@ -30,16 +30,22 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import ArtistLink from '~/components/Business/Link/ArtistLink.vue';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
 import { TrackType } from '~/types/TrackType';
+import BaseContextMenu from '~/components/Business/ContextMenu/BaseContextMenu.vue';
 
 @Component({
   components: {
     ArtistLink,
-    BaseButton
+    BaseButton,
+    BaseContextMenu
   }
 })
 export default class BaseTrack extends Vue {
   @Prop({ required: true })
   private readonly data!: TrackType;
+
+  private toggleMenu(event: PointerEvent): void {
+    this.$emit('toggleMenu', event);
+  }
 }
 </script>
 
