@@ -49,7 +49,9 @@ export default {
       online: 'Online',
       offline: 'Offline'
     },
-    back: 'Back'
+    back: 'Back',
+    clear: 'Clear',
+    done: 'Done'
   },
 
   multimedia: {
@@ -57,6 +59,31 @@ export default {
     dislike: 'I did not like',
     add_to_media_library: 'Add to library',
     create_stream: 'Create stream'
+  },
+
+  month: {
+    january: 'January',
+    february: 'February',
+    march: 'March',
+    april: 'April',
+    may: 'May',
+    june: 'June',
+    july: 'July',
+    august: 'August',
+    september: 'September',
+    october: 'October',
+    november: 'November',
+    december: 'December'
+  },
+
+  day_week_shortcut: {
+    monday: 'Mo',
+    tuesday: 'Tu',
+    wednesday: 'We',
+    thursday: 'Th',
+    friday: 'Fri',
+    saturday: 'Sa',
+    sunday: 'Su'
   },
 
   your_devices: 'Your devices',

@@ -1,0 +1,69 @@
+@import "../../include/variables";
+
+.calendar {
+  background-color: $dark-bg;
+  width: 350px;
+  height: max-content;
+  padding: 10px;
+  border-radius: 10px;
+
+  &-top-control {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+
+  &__prev-next-month-btn {
+    color: $white;
+    transition: ease-in 0.15s;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+
+    &:hover {
+      background-color: $light-for-dark;
+    }
+  }
+
+  &-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  &-down-control {
+    display: flex;
+    gap: 25px;
+    margin-top: 15px;
+  }
+
+  &-date {
+    color: $white;
+    font-size: 14px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+  }
+
+  &-down-control__btn {
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  &__clear-btn {
+    background-color: transparent;
+    border: 2px solid $light-for-dark!important;
+    color: $white;
+    transition: ease-in background-color 0.15s;
+
+    &:hover {
+      background-color: $light-for-dark;
+    }
+  }
+}
