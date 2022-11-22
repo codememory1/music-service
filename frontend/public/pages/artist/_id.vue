@@ -42,7 +42,7 @@ import { ArtistType } from '~/types/ArtistType';
     SimilarArtistsSection
   },
 
-  layout: 'OpenPlayerLayout'
+  layout: 'OPLayout'
 })
 export default class Artist extends Vue {
   private albums(): AlbumType[] {

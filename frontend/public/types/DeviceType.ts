@@ -4,5 +4,5 @@ export type DeviceType = {
   type: string;
   ip: string;
   isActive: boolean;
-  latest_activity: string | null;
+  latestActivity: string | null;
 };

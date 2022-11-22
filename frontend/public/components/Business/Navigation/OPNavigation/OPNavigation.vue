@@ -1,11 +1,11 @@
 <template>
-  <div class="player-navigation">
-    <div class="player-navigation-header">
-      <MainLogo img-class="player-navigation__logo" />
+  <div class="op-navigation">
+    <div class="op-navigation-header">
+      <MainLogo img-class="op-navigation__logo" />
 
       <slot name="header" />
     </div>
-    <div class="player-navigation-categories">
+    <div class="op-navigation-categories">
       <slot name="categories" />
     </div>
   </div>
@@ -20,9 +20,9 @@ import MainLogo from '~/components/Business/Logo/MainLogo.vue';
     MainLogo
   }
 })
-export default class PlayerNavigation extends Vue {}
+export default class OPNavigation extends Vue {}
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/navigation/player-navigation/player-navigation';
+@import '@/assets/scss/business/navigation/op-navigation/op-navigation';
 </style>

@@ -1,6 +1,6 @@
 @import "../../../include/variables";
 
-.player-navigation__item {
+.op-navigation__item {
   user-select: none;
 
   &-link {
@@ -48,6 +48,6 @@
   }
 }
 
-.player-navigation__item-link.active-link .player-navigation__item-icon {
+.op-navigation__item-link.active-link .op-navigation__item-icon {
   color: $accent;
 }

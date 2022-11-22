@@ -23,7 +23,7 @@
         <div v-if="!device.isActive" class="device-info-row">
           <span class="device-info-row__name">{{ $t('last_activity') }}:</span>
           <span class="device-info-row__value">
-            {{ device.latest_activity }}
+            {{ device.latestActivity }}
           </span>
         </div>
       </div>

@@ -96,7 +96,7 @@ export default class DesktopPlayer extends Vue {
       type: 'Computer',
       ip: '127.0.0.1',
       isActive: false,
-      latest_activity: '2022-11-12 14:23'
+      latestActivity: '2022-11-12 14:23'
     },
     {
       id: 2,
@@ -104,7 +104,7 @@ export default class DesktopPlayer extends Vue {
       type: 'Phone',
       ip: '127.0.0.1',
       isActive: true,
-      latest_activity: '2022-11-12 14:23'
+      latestActivity: '2022-11-12 14:23'
     },
     {
       id: 3,
@@ -112,7 +112,7 @@ export default class DesktopPlayer extends Vue {
       type: 'Tablet',
       ip: '127.0.0.1',
       isActive: true,
-      latest_activity: '2022-11-12 14:23'
+      latestActivity: '2022-11-12 14:23'
     },
     {
       id: 4,
@@ -120,7 +120,7 @@ export default class DesktopPlayer extends Vue {
       type: 'Tablet',
       ip: '127.0.0.1',
       isActive: false,
-      latest_activity: '2022-11-12 14:23'
+      latestActivity: '2022-11-12 14:23'
     }
   ];
 
@@ -130,7 +130,7 @@ export default class DesktopPlayer extends Vue {
     type: 'Tablet',
     ip: '127.0.0.1',
     isActive: true,
-    latest_activity: '2022-11-12 14:23'
+    latestActivity: '2022-11-12 14:23'
   };
 
   private mounted(): void {

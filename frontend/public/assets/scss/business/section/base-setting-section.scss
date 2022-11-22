@@ -1,0 +1,20 @@
+@import "../../include/variables";
+
+.setting-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__title {
+    color: $gray;
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  &-content {
+    padding-bottom: 20px;
+    border-bottom: 1px solid $light-for-dark;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

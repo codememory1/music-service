@@ -25,6 +25,7 @@
     "http-build-query": "^0.7.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.12.2",
+    "nuxt-gmaps": "^1.2.10",
     "portal-vue": "^2.1.7",
     "uuidv4": "^6.2.13",
     "v-tooltip": "^2.1.3",
