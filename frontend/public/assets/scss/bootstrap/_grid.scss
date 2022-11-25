@@ -1,0 +1,59 @@
+.sm-flex {
+  display: flex;
+}
+
+.sm-grid {
+  display: grid;
+}
+
+.sm-fx-row {
+  flex-direction: row;
+}
+
+.sm-fx-column {
+  flex-direction: column;
+}
+
+@for $i from 1 through 10 {
+  .sm-gd-column--#{$i}-on-container {
+    grid-template-columns: repeat($i, 1fr);
+  }
+
+  .sm-gd-row--#{$i}-on-container {
+    grid-template-rows: repeat($i, 1fr);
+  }
+}
+
+@for $i from 1 through 50 {
+  .sm-gd-gap--#{$i} {
+    grid-gap: #{$i}px;
+  }
+
+  .sm-fx-gap--#{$i} {
+    gap: #{$i}px;
+  }
+}
+
+.sm-fx-h-center {
+  justify-content: center;
+}
+
+.sm-fx-v-center {
+  align-items: center;
+}
+
+.sm-right-end {
+  margin-left: auto;
+}
+
+.sm-left-end {
+  margin-right: auto;
+}
+
+.sm-top-end {
+  margin-bottom: auto;
+}
+
+.sm-bottom-end {
+  margin-top: auto;
+}

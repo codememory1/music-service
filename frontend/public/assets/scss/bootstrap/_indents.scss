@@ -1,0 +1,43 @@
+@for $i from 0 through 50 {
+  // Padding
+  .sm-pt--#{$i} {
+    padding-top: #{$i}px;
+  }
+
+  .sm-pb--#{$i} {
+    padding-bottom: #{$i}px;
+  }
+
+  .sm-pl--#{$i} {
+    padding-left: #{$i}px;
+  }
+
+  .sm-pr--#{$i} {
+    padding-right: #{$i}px;
+  }
+
+  // Margin
+  .sm-mt--#{$i} {
+    margin-top: #{$i}px;
+  }
+
+  .sm-mb--#{$i} {
+    margin-bottom: #{$i}px;
+  }
+
+  .sm-ml--#{$i} {
+    margin-left: #{$i}px;
+  }
+
+  .sm-mr--#{$i} {
+    margin-right: #{$i}px;
+  }
+}
+
+.sm-pb--between-title-content {
+  padding-bottom: 20px;
+}
+
+.sm-pb-between-section {
+  padding-bottom: 50px;
+}
