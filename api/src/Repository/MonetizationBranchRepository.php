@@ -11,4 +11,9 @@ final class MonetizationBranchRepository extends AbstractRepository
 {
     protected ?string $entity = MonetizationBranch::class;
     protected ?string $alias = 'mb';
+
+    public function findByKey(string $key): ?MonetizationBranch
+    {
+        return $this->findOneBy(['key' => $key]);
+    }
 }

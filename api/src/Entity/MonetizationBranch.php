@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\BranchInterface;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\UpdatedAtTrait;
@@ -11,10 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MonetizationBranchRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class MonetizationBranch implements EntityInterface
+class MonetizationBranch implements EntityInterface, BranchInterface
 {
     use IdentifierTrait;
     use UpdatedAtTrait;
+    public const IGNORED_ARTISTS_KEY = 'ignored_artists';
 
     #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'The name of the key for which there is logic'
@@ -38,7 +40,7 @@ class MonetizationBranch implements EntityInterface
         return $this;
     }
 
-    public function getValue(): ?array
+    public function getValue(): array
     {
         return $this->value;
     }

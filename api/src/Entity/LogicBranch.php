@@ -6,6 +6,7 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\UpdatedAtTrait;
 use App\Enum\LogicBranchEnum;
+use App\Enum\LogicBranchStatusEnum;
 use App\Repository\LogicBranchRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,9 +45,9 @@ class LogicBranch implements EntityInterface
         return $this->status;
     }
 
-    public function setStatus(LogicBranchEnum $status): self
+    public function setStatus(?LogicBranchStatusEnum $status): self
     {
-        $this->status = $status->name;
+        $this->status = $status?->name;
 
         return $this;
     }
