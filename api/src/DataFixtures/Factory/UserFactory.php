@@ -33,7 +33,7 @@ final class UserFactory implements DataFixtureFactoryInterface
     public function factoryMethod(): EntityInterface
     {
         /** @var Role $role */
-        $role = $this->referenceRepository->getReference("r-{$this->role}");
+        $role = $this->referenceRepository->getReference("r-{$this->role->name}");
         $subscription = null;
 
         if (null !== $this->subscription) {

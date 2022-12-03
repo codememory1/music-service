@@ -24,7 +24,7 @@ final class RolePermissionFactory implements DataFixtureFactoryInterface
     public function factoryMethod(): EntityInterface
     {
         /** @var Role $role */
-        $role = $this->referenceRepository->getReference("r-{$this->roleKey}");
+        $role = $this->referenceRepository->getReference("r-{$this->roleKey->name}");
 
         /** @var RolePermissionKey $rolePermissionKey */
         $rolePermissionKey = $this->referenceRepository->getReference("rpk-{$this->rolePermissionKey->name}");

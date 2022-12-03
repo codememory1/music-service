@@ -169,6 +169,10 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('rolePermission@addFriendToUser'),
             new TranslationKeyFactory('rolePermission@deleteFriendToUser'),
             new TranslationKeyFactory('rolePermission@showMultimediaStatisticsToUser'),
+            new TranslationKeyFactory('rolePermission@showAllBranch'),
+            new TranslationKeyFactory('rolePermission@updateBranch'),
+            new TranslationKeyFactory('rolePermission@updateDataBranch'),
+            new TranslationKeyFactory('rolePermission@showDataBranch'),
 
             new TranslationKeyFactory('role@developer'),
             new TranslationKeyFactory('role@developerDescription'),

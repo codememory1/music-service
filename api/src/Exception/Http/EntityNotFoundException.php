@@ -169,4 +169,9 @@ class EntityNotFoundException extends HttpException
     {
         return new self('entityNotFound@multimediaTimeCode', $parameters, $headers);
     }
+
+    final public static function logicBranch(array $parameters = [], array $headers = []): self
+    {
+        return new self('entityNotFound@logicBranch', $parameters, $headers);
+    }
 }
