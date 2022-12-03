@@ -171,6 +171,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'rolePermission@showAllBranch', 'Просмотр всех веток'),
             new TranslationFactory('ru', 'rolePermission@updateBranch', 'Обновление ветки'),
             new TranslationFactory('ru', 'rolePermission@updateDataBranch', 'Обновление данных ветки'),
+            new TranslationFactory('ru', 'rolePermission@showDataBranch', 'Просмотр данных ветки'),
 
             new TranslationFactory('ru', 'role@developer', 'Разработчик'),
             new TranslationFactory('ru', 'role@developerDescription', 'Данная роль предназначена только для тестирования в dev режиме'),

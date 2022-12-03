@@ -84,6 +84,7 @@ final class RolePermissionKeyDataFixture extends AbstractDataFixture implements 
             new RolePermissionKeyFactory(RolePermissionEnum::SHOW_ALL_BRANCHES, 'rolePermission@showAllBranch'),
             new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_BRANCH, 'rolePermission@updateBranch'),
             new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_DATA_BRANCH, 'rolePermission@updateDataBranch'),
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_DATA_BRANCH, 'rolePermission@showDataBranch'),
         ]);
     }
 

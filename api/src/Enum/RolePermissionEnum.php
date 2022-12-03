@@ -68,4 +68,5 @@ enum RolePermissionEnum
     case SHOW_ALL_BRANCHES;
     case UPDATE_BRANCH;
     case UPDATE_DATA_BRANCH;
+    case SHOW_DATA_BRANCH;
 }
