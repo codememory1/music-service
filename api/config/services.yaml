@@ -18,6 +18,11 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+
+        bind:
+          $deeplTranslatePath: '%env(DEEPL_TRANSLATION_PATH)%'
+          $deeplAuthKey: '%env(DEEPL_AUTH_KEY)%'
+
     App\:
         autowire: true
         resource: '../src/'
