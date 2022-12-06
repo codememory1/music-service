@@ -139,6 +139,11 @@ class Album implements EntityInterface, EntityS3SettingInterface
         return $this->multimedia;
     }
 
+    public function getPublishedMultimedia(): Collection
+    {
+        return $this->multimedia->filter(static fn(Multimedia $multimedia) => $multimedia->isPublished());
+    }
+
     public function addMultimedia(Multimedia $multimedia): self
     {
         if (!$this->multimedia->contains($multimedia)) {
