@@ -7,7 +7,6 @@ use App\Entity\Multimedia;
 use App\Entity\MultimediaStatistic;
 use App\Entity\User;
 use App\Infrastructure\Validator\Validator;
-use App\Service\Multimedia\UpsertMultimedia;
 
 final class AddMultimedia
 {
@@ -27,7 +26,7 @@ final class AddMultimedia
         $multimedia->setDraftStatus();
         $multimedia->setStatistic(new MultimediaStatistic());
 
-        $this->upsertMultimedia->save($dto, $multimedia);
+        $this->upsertMultimedia->process($dto, $multimedia);
 
         return $multimedia;
     }

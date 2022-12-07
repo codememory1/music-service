@@ -24,7 +24,7 @@ final class UpsertListen
             return $this->createListen($multimedia, $owner, $currentTime);
         }
 
-        $multimediaToMediaLibrary = $this->multimediaMediaLibraryRepository->findOneByMultimediaInMediaLibrary(
+        $multimediaToMediaLibrary = $this->multimediaMediaLibraryRepository->findInMediaLibrary(
             $multimedia,
             $owner->getMediaLibrary()
         );

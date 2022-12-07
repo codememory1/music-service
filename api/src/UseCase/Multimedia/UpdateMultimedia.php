@@ -7,7 +7,6 @@ use App\Entity\Multimedia;
 use App\Enum\MultimediaStatusEnum;
 use App\Exception\Http\MultimediaException;
 use App\Infrastructure\Validator\Validator;
-use App\Service\Multimedia\UpsertMultimedia;
 
 final class UpdateMultimedia
 {
@@ -27,7 +26,7 @@ final class UpdateMultimedia
             throw MultimediaException::badUpdateInStatus(['status' => MultimediaStatusEnum::getValueByName($multimedia->getStatus())]);
         }
 
-        $this->upsertMultimedia->save($dto, $multimedia);
+        $this->upsertMultimedia->process($dto, $multimedia);
 
         return $multimedia;
     }
