@@ -34,10 +34,6 @@ final class PlaylistDto extends AbstractDataTransfer
     #[DtoConstraints\IgnoreCallSetterConstraint]
     public ?UploadedFile $image = null;
 
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\IgnoreCallSetterConstraint]
-    public array $multimedia = [];
-
     #[AppAssert\Condition('callbackStatus', [
         new Assert\NotBlank(message: 'common@invalidStatus')
     ])]

@@ -5,7 +5,7 @@ namespace App\UseCase\MultimediaMediaLibrary\Event;
 use App\Entity\MultimediaMediaLibraryEvent;
 use App\Infrastructure\Doctrine\Flusher;
 
-final class DeleteMultimediaMediaLibraryEvent
+final class CancelMultimediaMediaLibraryEvent
 {
     public function __construct(
         private readonly Flusher $flusher

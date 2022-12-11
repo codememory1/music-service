@@ -15,10 +15,10 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\PlaylistRepository;
 use App\ResponseData\General\Playlist\PlaylistResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Playlist\CreatePlaylist;
-use App\Service\Playlist\DeletePlaylist;
-use App\Service\Playlist\MoveMultimediaToDirectory;
-use App\Service\Playlist\UpdatePlaylist;
+use App\UseCase\Playlist\CreatePlaylist;
+use App\UseCase\Playlist\DeletePlaylist;
+use App\UseCase\Playlist\Multimedia\MoveMultimediaPlaylistToDirectory;
+use App\UseCase\Playlist\UpdatePlaylist;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -52,7 +52,7 @@ class PlaylistController extends AbstractRestController
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_PLAYLIST)]
     public function create(PlaylistTransformer $transformer, CreatePlaylist $createPlaylist, PlaylistResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($createPlaylist->create(
+        $responseData->setEntities($createPlaylist->process(
             $transformer->transformFromRequest(),
             $this->getAuthorizedUser()
         ));
@@ -70,7 +70,7 @@ class PlaylistController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
-        $responseData->setEntities($updatePlaylist->update($transformer->transformFromRequest($playlist)));
+        $responseData->setEntities($updatePlaylist->process($transformer->transformFromRequest($playlist)));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -84,7 +84,7 @@ class PlaylistController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
-        $responseData->setEntities($deletePlaylist->delete($playlist));
+        $responseData->setEntities($deletePlaylist->process($playlist));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
@@ -94,7 +94,7 @@ class PlaylistController extends AbstractRestController
     public function moveMultimediaToDirectory(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylist $multimediaPlaylist,
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
-        MoveMultimediaToDirectory $moveMultimediaToDirectory,
+        MoveMultimediaPlaylistToDirectory $moveMultimediaPlaylistToDirectory,
         PlaylistResponseData $responseData
     ): JsonResponse {
         if (false === $this->getAuthorizedUser()->isMultimediaPlaylistBelongs($multimediaPlaylist)) {
@@ -105,7 +105,7 @@ class PlaylistController extends AbstractRestController
             throw EntityNotFoundException::playlistDirectory();
         }
 
-        $responseData->setEntities($moveMultimediaToDirectory->move($multimediaPlaylist, $playlistDirectory));
+        $responseData->setEntities($moveMultimediaPlaylistToDirectory->process($multimediaPlaylist, $playlistDirectory));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }

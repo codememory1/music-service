@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase\MultimediaCategory;
+namespace App\UseCase\Multimedia\Category;
 
 use App\Dto\Transfer\MultimediaCategoryDto;
 use App\Entity\MultimediaCategory;

@@ -13,9 +13,9 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaCategoryRepository;
 use App\ResponseData\General\Multimedia\MultimediaCategoryResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MultimediaCategory\CreateMultimediaCategory;
-use App\Service\MultimediaCategory\DeleteMultimediaCategory;
-use App\Service\MultimediaCategory\UpdateMultimediaCategory;
+use App\UseCase\Multimedia\Category\CreateMultimediaCategory;
+use App\UseCase\Multimedia\Category\DeleteMultimediaCategory;
+use App\UseCase\Multimedia\Category\UpdateMultimediaCategory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -38,7 +38,7 @@ class MultimediaCategoryController extends AbstractRestController
         CreateMultimediaCategory $createMultimediaCategory,
         MultimediaCategoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($createMultimediaCategory->create($transformer->transformFromRequest()));
+        $responseData->setEntities($createMultimediaCategory->process($transformer->transformFromRequest()));
 
         return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
@@ -51,7 +51,7 @@ class MultimediaCategoryController extends AbstractRestController
         UpdateMultimediaCategory $updateMultimediaCategory,
         MultimediaCategoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateMultimediaCategory->update(
+        $responseData->setEntities($updateMultimediaCategory->process(
             $transformer->transformFromRequest($multimediaCategory)
         ));
 
@@ -65,7 +65,7 @@ class MultimediaCategoryController extends AbstractRestController
         DeleteMultimediaCategory $deleteMultimediaCategory,
         MultimediaCategoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteMultimediaCategory->delete($multimediaCategory));
+        $responseData->setEntities($deleteMultimediaCategory->process($multimediaCategory));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }

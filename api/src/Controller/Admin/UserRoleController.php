@@ -13,9 +13,9 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\RoleRepository;
 use App\ResponseData\General\UserRole\UserRoleResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\UserRole\CreateUserRole;
-use App\Service\UserRole\DeleteUserRole;
-use App\Service\UserRole\UpdateUserRole;
+use App\UseCase\User\Role\CreateUserRole;
+use App\UseCase\User\Role\DeleteUserRole;
+use App\UseCase\User\Role\UpdateUserRole;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -47,7 +47,7 @@ class UserRoleController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::CREATE_USER_ROLE)]
     public function create(UserRoleTransformer $transformer, CreateUserRole $createUserRole, UserRoleResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($createUserRole->create($transformer->transformFromRequest()));
+        $responseData->setEntities($createUserRole->process($transformer->transformFromRequest()));
 
         return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
@@ -60,7 +60,7 @@ class UserRoleController extends AbstractRestController
         UpdateUserRole $updateUserRole,
         UserRoleResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateUserRole->update($transformer->transformFromRequest($role)));
+        $responseData->setEntities($updateUserRole->process($transformer->transformFromRequest($role)));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -72,7 +72,7 @@ class UserRoleController extends AbstractRestController
         DeleteUserRole $deleteUserRole,
         UserRoleResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteUserRole->delete($role));
+        $responseData->setEntities($deleteUserRole->process($role));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\MultimediaMediaLibraryEvent\Multimedia;
+namespace App\Service\MediaLibrary\Multimedia\Event;
 
 use App\Dto\Transfer\MultimediaMediaLibraryEventDto;
 use App\Entity\MediaLibrary;

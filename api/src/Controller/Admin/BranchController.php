@@ -18,9 +18,9 @@ use App\Repository\SubscriptionPermissionBranchRepository;
 use App\ResponseData\Admin\Branch\BranchResponseData;
 use App\ResponseData\Admin\Branch\LogicBranchResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\LogicBranches\UpdateLogicBranch;
-use App\Service\LogicBranches\UpdateMonetizationBranch;
-use App\Service\LogicBranches\UpdateSubscriptionPermissionBranch;
+use App\UseCase\Branch\UpdateLogicBranch;
+use App\UseCase\Branch\UpdateMonetizationBranch;
+use App\UseCase\Branch\UpdateSubscriptionPermissionBranch;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,7 +46,7 @@ class BranchController extends AbstractRestController
         LogicBranchTransformer $transformer,
         LogicBranchResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateLogicBranch->update($transformer->transformFromRequest($logicBranch)));
+        $responseData->setEntities($updateLogicBranch->process($transformer->transformFromRequest($logicBranch)));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -70,7 +70,7 @@ class BranchController extends AbstractRestController
         SubscriptionPermissionBranchRepository $subscriptionPermissionBranchRepository,
         BranchResponseData $responseData
     ): JsonResponse {
-        $updateSubscriptionPermissionBranch->update($transformer->transformFromRequest());
+        $updateSubscriptionPermissionBranch->process($transformer->transformFromRequest());
 
         $responseData->setEntities($subscriptionPermissionBranchRepository->findAll());
 
@@ -96,7 +96,7 @@ class BranchController extends AbstractRestController
         MonetizationBranchRepository $monetizationBranchRepository,
         BranchResponseData $responseData
     ): JsonResponse {
-        $updateMonetizationBranch->update($transformer->transformFromRequest());
+        $updateMonetizationBranch->process($transformer->transformFromRequest());
 
         $responseData->setEntities($monetizationBranchRepository->findAll());
 

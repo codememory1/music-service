@@ -10,7 +10,7 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaListeningHistoryRepository;
 use App\ResponseData\General\History\HistoryMultimediaListeningResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MultimediaListeningHistory\DeleteListen;
+use App\UseCase\History\DeleteListeningToHistory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,14 +29,14 @@ class MultimediaListeningHistoryController extends AbstractRestController
     #[Route('/listen/{multimediaListeningHistory_id<\d+>}/delete', methods: 'DELETE')]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'listenToHistory')] MultimediaListeningHistory $multimediaListeningHistory,
-        DeleteListen $deleteListen,
+        DeleteListeningToHistory $deleteListeningToHistory,
         HistoryMultimediaListeningResponseData $responseData
     ): JsonResponse {
         if (false === $multimediaListeningHistory->getUser()->isCompare($this->getAuthorizedUser())) {
             throw EntityNotFoundException::listenToHistory();
         }
 
-        $responseData->setEntities($deleteListen->delete($multimediaListeningHistory));
+        $responseData->setEntities($deleteListeningToHistory->process($multimediaListeningHistory));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }

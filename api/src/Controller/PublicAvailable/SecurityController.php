@@ -18,7 +18,7 @@ use App\Security\Auth\Authorization;
 use App\Security\Auth\Identification;
 use App\Security\Logout\Logout;
 use App\Security\Register\Registration;
-use App\Service\UserSession\UpdateAccessToken;
+use App\UseCase\User\Session\UpdateUserSessionAccessToken;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -52,9 +52,9 @@ class SecurityController extends AbstractRestController
     }
 
     #[Route('/access-token/update', methods: 'PUT')]
-    public function updateAccessToken(RefreshTokenTransformer $transformer, UpdateAccessToken $updateAccessToken): JsonResponse
+    public function updateAccessToken(RefreshTokenTransformer $transformer, UpdateUserSessionAccessToken $updateUserSessionAccessToken): JsonResponse
     {
-        return $this->response($updateAccessToken->update($transformer->transformFromRequest()));
+        return $this->response($updateUserSessionAccessToken->process($transformer->transformFromRequest()));
     }
 
     #[Route('/logout', methods: 'GET')]

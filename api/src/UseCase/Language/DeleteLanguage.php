@@ -12,7 +12,7 @@ final class DeleteLanguage
     ) {
     }
 
-    public function delete(Language $language): Language
+    public function process(Language $language): Language
     {
         $this->flusher->remove($language);
 

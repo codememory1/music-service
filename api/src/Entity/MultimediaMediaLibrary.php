@@ -55,7 +55,7 @@ class MultimediaMediaLibrary implements EntityInterface, EntityS3SettingInterfac
     ])]
     private ?string $image = null;
 
-    #[ORM\OneToMany(mappedBy: 'multimediaMediaLibrary', targetEntity: MultimediaMediaLibraryEvent::class)]
+    #[ORM\OneToMany(mappedBy: 'multimediaMediaLibrary', targetEntity: MultimediaMediaLibraryEvent::class, cascade: ['remove'])]
     private Collection $events;
 
     public function __construct()

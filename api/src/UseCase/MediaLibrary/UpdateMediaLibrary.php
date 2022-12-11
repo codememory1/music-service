@@ -15,7 +15,7 @@ final class UpdateMediaLibrary
     ) {
     }
 
-    public function update(MediaLibraryDto $dto): MediaLibrary
+    public function process(MediaLibraryDto $dto): MediaLibrary
     {
         $this->validator->validate($dto);
 

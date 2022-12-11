@@ -12,7 +12,7 @@ use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\User\Profile\UserProfileResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\UserProfileDesign\UpdateUserProfileDesign;
+use App\UseCase\UserProfile\Design\UpdateUserProfileDesign;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,7 +28,7 @@ class UserProfileController extends AbstractRestController
         UpdateUserProfileDesign $updateUserProfileDesign,
         UserProfileResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateUserProfileDesign->update(
+        $responseData->setEntities($updateUserProfileDesign->process(
             $transformer->transformFromRequest($userProfile->getDesign())
         ));
 

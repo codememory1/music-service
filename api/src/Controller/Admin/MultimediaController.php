@@ -17,9 +17,9 @@ use App\Repository\MultimediaRepository;
 use App\ResponseData\Admin\Multimedia\MultimediaStatisticsResponseData;
 use App\ResponseData\General\Multimedia\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Multimedia\AddMultimedia;
-use App\Service\Multimedia\DeleteMultimedia;
-use App\Service\Multimedia\UpdateMultimedia;
+use App\UseCase\Multimedia\AddMultimedia;
+use App\UseCase\Multimedia\DeleteMultimedia;
+use App\UseCase\Multimedia\UpdateMultimedia;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,7 +60,7 @@ class MultimediaController extends AbstractRestController
             throw MultimediaException::badAddMultimediaToUserInvalid();
         }
 
-        $responseData->setEntities($addMultimedia->add($transformer->transformFromRequest(), $user));
+        $responseData->setEntities($addMultimedia->process($transformer->transformFromRequest(), $user));
 
         return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
@@ -73,7 +73,7 @@ class MultimediaController extends AbstractRestController
         UpdateMultimedia $updateMultimedia,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateMultimedia->update($transformer->transformFromRequest($multimedia)));
+        $responseData->setEntities($updateMultimedia->process($transformer->transformFromRequest($multimedia)));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -85,7 +85,7 @@ class MultimediaController extends AbstractRestController
         DeleteMultimedia $deleteMultimedia,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteMultimedia->delete($multimedia));
+        $responseData->setEntities($deleteMultimedia->process($multimedia));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }

@@ -27,12 +27,12 @@ final class MultimediaValidator
 
     public function isValidatedTrackDuration(Stream $stream, float $max): bool
     {
-        return $this->multimediaStream->getDuration($stream) > $max;
+        return $this->multimediaStream->getDuration($stream) <= $max;
     }
 
     public function isValidatedClipDuration(Stream $stream, float $max): bool
     {
-        return $this->multimediaStream->getDuration($stream) > $max;
+        return $this->multimediaStream->getDuration($stream) <= $max;
     }
 
     public function isValidatedSubtitles(UploadedFile $file): bool

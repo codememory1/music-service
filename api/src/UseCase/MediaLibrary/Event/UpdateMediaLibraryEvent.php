@@ -7,7 +7,7 @@ use App\Entity\MediaLibrary;
 use App\Entity\MediaLibraryEvent;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
-use App\Service\MediaLibraryEvent\EventPayloadHandler;
+use App\Service\MediaLibrary\Event\EventPayloadHandler;
 
 final class UpdateMediaLibraryEvent
 {

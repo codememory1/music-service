@@ -17,7 +17,7 @@ final class AddMultimediaToMediaLibrary
     ) {
     }
 
-    public function process(Multimedia $multimedia, User $to): Multimedia
+    public function process(Multimedia $multimedia, User $to): MultimediaMediaLibrary
     {
         $this->throwIfNotMediaLibrary($to);
 
@@ -30,7 +30,7 @@ final class AddMultimediaToMediaLibrary
 
         $this->flusher->save($multimediaMediaLibrary);
 
-        return $multimedia;
+        return $multimediaMediaLibrary;
     }
 
     private function throwIfNotMediaLibrary(User $user): void

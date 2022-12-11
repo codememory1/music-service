@@ -15,11 +15,11 @@ use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\Playlist\Directory\PlaylistDirectoryResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\PlaylistDirectory\AddMultimediaToPlaylistDirectory;
-use App\Service\PlaylistDirectory\CreatePlaylistDirectory;
-use App\Service\PlaylistDirectory\DeleteMultimediaFromPlaylistDirectory;
-use App\Service\PlaylistDirectory\DeletePlaylistDirectory;
-use App\Service\PlaylistDirectory\UpdatePlaylistDirectory;
+use App\UseCase\MediaLibrary\Multimedia\AddMultimediaMediaLibraryToPlaylistDirectory;
+use App\UseCase\Playlist\Directory\CreatePlaylistDirectory;
+use App\UseCase\Playlist\Directory\DeletePlaylistDirectory;
+use App\UseCase\Playlist\Directory\Multimedia\DeleteMultimediaFromPlaylistDirectory;
+use App\UseCase\Playlist\Directory\UpdatePlaylistDirectory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -35,7 +35,7 @@ class PlaylistDirectoryController extends AbstractRestController
         CreatePlaylistDirectory $createPlaylistDirectory,
         PlaylistDirectoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($createPlaylistDirectory->create(
+        $responseData->setEntities($createPlaylistDirectory->process(
             $transformer->transformFromRequest(),
             $playlist
         ));
@@ -51,7 +51,7 @@ class PlaylistDirectoryController extends AbstractRestController
         UpdatePlaylistDirectory $updatePlaylistDirectory,
         PlaylistDirectoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updatePlaylistDirectory->update($transformer->transformFromRequest($playlistDirectory)));
+        $responseData->setEntities($updatePlaylistDirectory->process($transformer->transformFromRequest($playlistDirectory)));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -63,7 +63,7 @@ class PlaylistDirectoryController extends AbstractRestController
         DeletePlaylistDirectory $deletePlaylistDirectoryService,
         PlaylistDirectoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deletePlaylistDirectoryService->delete($playlistDirectory));
+        $responseData->setEntities($deletePlaylistDirectoryService->process($playlistDirectory));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
@@ -73,10 +73,13 @@ class PlaylistDirectoryController extends AbstractRestController
     public function addMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
-        AddMultimediaToPlaylistDirectory $addMultimediaToPlaylistDirectory,
+        AddMultimediaMediaLibraryToPlaylistDirectory $addMultimediaMediaLibraryToPlaylistDirectory,
         PlaylistDirectoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($addMultimediaToPlaylistDirectory->add($playlistDirectory, $multimediaMediaLibrary));
+        $responseData->setEntities($addMultimediaMediaLibraryToPlaylistDirectory->process(
+            $multimediaMediaLibrary,
+            $playlistDirectory
+        ));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -88,7 +91,7 @@ class PlaylistDirectoryController extends AbstractRestController
         DeleteMultimediaFromPlaylistDirectory $deleteMultimediaFromPlaylistDirectory,
         PlaylistDirectoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteMultimediaFromPlaylistDirectory->delete($multimediaPlaylistDirectory));
+        $responseData->setEntities($deleteMultimediaFromPlaylistDirectory->process($multimediaPlaylistDirectory));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }

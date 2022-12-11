@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class MessageHandler
+final class TranslationMessageHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $em,

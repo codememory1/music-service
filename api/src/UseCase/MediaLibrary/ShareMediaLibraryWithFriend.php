@@ -4,7 +4,7 @@ namespace App\UseCase\MediaLibrary;
 
 use App\Entity\MediaLibrary;
 use App\Entity\User;
-use App\UseCase\MultimediaMediaLibrary\ShareMultimediaMediaLibraryWithFriend;
+use App\UseCase\MediaLibrary\Multimedia\ShareMultimediaMediaLibraryWithFriend;
 
 final class ShareMediaLibraryWithFriend
 {
@@ -13,12 +13,12 @@ final class ShareMediaLibraryWithFriend
     ) {
     }
 
-    public function process(MediaLibrary $mediaLibraryForShare, User $from, User $to): MediaLibrary
+    public function process(MediaLibrary $mediaLibrary, User $from, User $to): MediaLibrary
     {
-        foreach ($mediaLibraryForShare->getMultimedia() as $multimedia) {
+        foreach ($mediaLibrary->getMultimedia() as $multimedia) {
             $this->shareMultimediaMediaLibraryWithFriend->share($multimedia, $from, $to);
         }
 
-        return $mediaLibraryForShare;
+        return $mediaLibrary;
     }
 }

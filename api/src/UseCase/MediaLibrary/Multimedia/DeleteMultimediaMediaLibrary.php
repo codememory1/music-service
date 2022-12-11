@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase\MultimediaMediaLibrary;
+namespace App\UseCase\MediaLibrary\Multimedia;
 
 use App\Entity\MultimediaMediaLibrary;
 use App\Infrastructure\Doctrine\Flusher;

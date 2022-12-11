@@ -13,9 +13,9 @@ use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\MediaLibrary\MediaLibraryEventResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MediaLibraryEvent\AddMediaLibraryEvent;
-use App\Service\MediaLibraryEvent\DeleteMediaLibraryEvent;
-use App\Service\MediaLibraryEvent\UpdateMediaLibraryEvent;
+use App\UseCase\MediaLibrary\Event\AddMediaLibraryEvent;
+use App\UseCase\MediaLibrary\Event\CancelMediaLibraryEvent;
+use App\UseCase\MediaLibrary\Event\UpdateMediaLibraryEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +30,7 @@ class MediaLibraryEventController extends AbstractRestController
         AddMediaLibraryEvent $addMediaLibraryEvent,
         MediaLibraryEventResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($addMediaLibraryEvent->add(
+        $responseData->setEntities($addMediaLibraryEvent->process(
             $transformer->transformFromRequest(),
             $this->getAuthorizedUser()->getMediaLibrary()
         ));
@@ -47,7 +47,7 @@ class MediaLibraryEventController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfEventNotBelongsAuthorizedUser($mediaLibraryEvent->getMediaLibrary());
 
-        $responseData->setEntities($updateMediaLibraryEvent->update(
+        $responseData->setEntities($updateMediaLibraryEvent->process(
             $transformer->transformFromRequest($mediaLibraryEvent),
             $this->getAuthorizedUser()->getMediaLibrary()
         ));
@@ -58,12 +58,12 @@ class MediaLibraryEventController extends AbstractRestController
     #[Route('/{mediaLibraryEvent_id<\d+>}/delete', methods: 'DELETE')]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'mediaLibraryEvent')] MediaLibraryEvent $mediaLibraryEvent,
-        DeleteMediaLibraryEvent $deleteMediaLibraryEvent,
+        CancelMediaLibraryEvent $cancelMediaLibraryEvent,
         MediaLibraryEventResponseData $responseData
     ): JsonResponse {
         $this->throwIfEventNotBelongsAuthorizedUser($mediaLibraryEvent->getMediaLibrary());
 
-        $responseData->setEntities($deleteMediaLibraryEvent->delete($mediaLibraryEvent));
+        $responseData->setEntities($cancelMediaLibraryEvent->process($mediaLibraryEvent));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }

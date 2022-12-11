@@ -9,7 +9,7 @@ use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\ResponseData\General\User\Profile\UserProfileDesignResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\UserProfileDesign\UpdateUserProfileDesign;
+use App\UseCase\UserProfile\Design\UpdateUserProfileDesign;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,7 +24,7 @@ class UserProfileController extends AbstractRestController
         UpdateUserProfileDesign $updateUserProfileDesign,
         UserProfileDesignResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateUserProfileDesign->update(
+        $responseData->setEntities($updateUserProfileDesign->process(
             $transformer->transformFromRequest($this->getAuthorizedUser()->getProfile())
         ));
 

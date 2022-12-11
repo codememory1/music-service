@@ -73,4 +73,10 @@ class MultimediaException extends HttpException
     {
         return new self(400, PlatformCodeEnum::INVALID_META_DATA_IN_FILE, 'multimedia@badDuration', $parameters, $headers);
     }
+
+    #[Pure]
+    final public static function badAddRatingToNotPublishedMultimedia(array $parameters = [], array $headers = []): self
+    {
+        return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'multimedia.bad_add_rating.not_published', $parameters, $headers);
+    }
 }

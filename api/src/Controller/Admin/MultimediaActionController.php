@@ -11,10 +11,10 @@ use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\Multimedia\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Multimedia\AppealCanceled;
-use App\Service\Multimedia\PublishMultimedia;
-use App\Service\Multimedia\SendOnModeration;
-use App\Service\Multimedia\UnpublishMultimedia;
+use App\UseCase\Multimedia\Action\PublishMultimedia;
+use App\UseCase\Multimedia\Action\SendMultimediaOnAppeal;
+use App\UseCase\Multimedia\Action\SendMultimediaOnModeration;
+use App\UseCase\Multimedia\Action\UnpublishMultimedia;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,10 +26,10 @@ class MultimediaActionController extends AbstractRestController
     #[Route('/send-on-moderation', methods: 'PATCH')]
     public function sendOnModeration(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        SendOnModeration $sendOnModeration,
+        SendMultimediaOnModeration $sendMultimediaOnModeration,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($sendOnModeration->sendOnModeration($multimedia));
+        $responseData->setEntities($sendMultimediaOnModeration->process($multimedia));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -40,7 +40,7 @@ class MultimediaActionController extends AbstractRestController
         PublishMultimedia $publishMultimedia,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($publishMultimedia->publish($multimedia));
+        $responseData->setEntities($publishMultimedia->process($multimedia));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -51,7 +51,7 @@ class MultimediaActionController extends AbstractRestController
         UnpublishMultimedia $unpublishMultimedia,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($unpublishMultimedia->unpublish($multimedia));
+        $responseData->setEntities($unpublishMultimedia->process($multimedia));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -59,10 +59,10 @@ class MultimediaActionController extends AbstractRestController
     #[Route('/appeal-canceled', methods: 'PATCH')]
     public function appealCanceled(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        AppealCanceled $appealCanceled,
+        SendMultimediaOnAppeal $sendMultimediaOnAppeal,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($appealCanceled->appeal($multimedia));
+        $responseData->setEntities($sendMultimediaOnAppeal->process($multimedia));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }

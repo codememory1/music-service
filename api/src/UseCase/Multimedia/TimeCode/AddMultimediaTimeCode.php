@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase\MultimediaTimeCode;
+namespace App\UseCase\Multimedia\TimeCode;
 
 use App\Dto\Transfer\MultimediaTimeCodeDto;
 use App\Entity\Multimedia;

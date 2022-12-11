@@ -9,7 +9,7 @@ use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\ResponseData\Admin\Notification\NotificationResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Notification\CreateNotification;
+use App\UseCase\Notification\CreateNotification;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,7 +21,7 @@ class NotificationController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::CREATE_NOTIFICATION)]
     public function create(NotificationTransformer $transformer, CreateNotification $createNotification, NotificationResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($createNotification->create(
+        $responseData->setEntities($createNotification->process(
             $transformer->transformFromRequest(),
             $this->getAuthorizedUser()
         ));
