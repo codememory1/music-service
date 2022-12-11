@@ -13,9 +13,9 @@ use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MediaLibrary\DeleteMultimediaMediaLibrary;
-use App\Service\MultimediaMediaLibrary\ShareMultimediaMediaLibraryWithFriend;
-use App\Service\MultimediaMediaLibrary\UpdateMultimediaMediaLibrary;
+use App\UseCase\MediaLibrary\Multimedia\DeleteMultimediaMediaLibrary;
+use App\UseCase\MediaLibrary\Multimedia\ShareMultimediaMediaLibraryWithFriend;
+use App\UseCase\MediaLibrary\Multimedia\UpdateMultimediaMediaLibrary;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,7 +33,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
-        $responseData->setEntities($updateMultimediaMediaLibrary->update(
+        $responseData->setEntities($updateMultimediaMediaLibrary->process(
             $transformer->transformFromRequest($multimediaMediaLibrary)
         ));
 
@@ -49,7 +49,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
-        $responseData->setEntities($deleteMultimediaMediaLibrary->delete($multimediaMediaLibrary));
+        $responseData->setEntities($deleteMultimediaMediaLibrary->process($multimediaMediaLibrary));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }

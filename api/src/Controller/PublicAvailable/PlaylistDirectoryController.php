@@ -16,11 +16,11 @@ use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\Playlist\Directory\PlaylistDirectoryMultimediaResponseData;
 use App\ResponseData\General\Playlist\PlaylistMultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\PlaylistDirectory\AddMultimediaToPlaylistDirectory;
-use App\Service\PlaylistDirectory\CreatePlaylistDirectory;
-use App\Service\PlaylistDirectory\DeleteMultimediaFromPlaylistDirectory;
-use App\Service\PlaylistDirectory\DeletePlaylistDirectory;
-use App\Service\PlaylistDirectory\UpdatePlaylistDirectory;
+use App\UseCase\MediaLibrary\Multimedia\AddMultimediaMediaLibraryToPlaylistDirectory;
+use App\UseCase\Playlist\Directory\CreatePlaylistDirectory;
+use App\UseCase\Playlist\Directory\DeletePlaylistDirectory;
+use App\UseCase\Playlist\Directory\Multimedia\DeleteMultimediaFromPlaylistDirectory;
+use App\UseCase\Playlist\Directory\UpdatePlaylistDirectory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -40,7 +40,7 @@ class PlaylistDirectoryController extends AbstractRestController
             throw EntityNotFoundException::playlist();
         }
 
-        $responseData->setEntities($createPlaylistDirectory->create(
+        $responseData->setEntities($createPlaylistDirectory->process(
             $transformer->transformFromRequest(),
             $playlist
         ));
@@ -58,7 +58,7 @@ class PlaylistDirectoryController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfPlaylistDirectoryNotBelongsAuthorizedUser($playlistDirectory);
 
-        $responseData->setEntities($updatePlaylistDirectory->update($transformer->transformFromRequest($playlistDirectory)));
+        $responseData->setEntities($updatePlaylistDirectory->process($transformer->transformFromRequest($playlistDirectory)));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -72,7 +72,7 @@ class PlaylistDirectoryController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfPlaylistDirectoryNotBelongsAuthorizedUser($playlistDirectory);
 
-        $responseData->setEntities($deletePlaylistDirectory->delete($playlistDirectory));
+        $responseData->setEntities($deletePlaylistDirectory->process($playlistDirectory));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
@@ -82,7 +82,7 @@ class PlaylistDirectoryController extends AbstractRestController
     public function addMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
-        AddMultimediaToPlaylistDirectory $addMultimediaToPlaylistDirectory,
+        AddMultimediaMediaLibraryToPlaylistDirectory $addMultimediaMediaLibraryToPlaylistDirectory,
         PlaylistMultimediaResponseData $responseData
     ): JsonResponse {
         $this->throwIfPlaylistDirectoryNotBelongsAuthorizedUser($playlistDirectory);
@@ -91,9 +91,9 @@ class PlaylistDirectoryController extends AbstractRestController
             throw EntityNotFoundException::multimedia();
         }
 
-        $responseData->setEntities($addMultimediaToPlaylistDirectory->add(
-            $playlistDirectory,
-            $multimediaMediaLibrary
+        $responseData->setEntities($addMultimediaMediaLibraryToPlaylistDirectory->process(
+            $multimediaMediaLibrary,
+            $playlistDirectory
         ));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
@@ -110,7 +110,7 @@ class PlaylistDirectoryController extends AbstractRestController
             throw EntityNotFoundException::multimedia();
         }
 
-        $responseData->setEntities($deleteMultimediaFromPlaylistDirectory->delete($multimediaPlaylistDirectory));
+        $responseData->setEntities($deleteMultimediaFromPlaylistDirectory->process($multimediaPlaylistDirectory));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }

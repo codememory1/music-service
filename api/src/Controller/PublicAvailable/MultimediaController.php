@@ -16,10 +16,10 @@ use App\ResponseData\General\Multimedia\MultimediaResponseData;
 use App\ResponseData\General\Multimedia\RunningMultimediaResponseData;
 use App\ResponseData\Public\Multimedia\MultimediaStatisticsResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Multimedia\AddMultimedia;
-use App\Service\Multimedia\DeleteMultimedia;
-use App\Service\Multimedia\PlayPauseMultimedia;
-use App\Service\Multimedia\UpdateMultimedia;
+use App\UseCase\Multimedia\Action\ToggleMultimediaPlayback;
+use App\UseCase\Multimedia\AddMultimedia;
+use App\UseCase\Multimedia\DeleteMultimedia;
+use App\UseCase\Multimedia\UpdateMultimedia;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,7 +55,7 @@ class MultimediaController extends AbstractRestController
         AddMultimedia $addMultimedia,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($addMultimedia->add(
+        $responseData->setEntities($addMultimedia->process(
             $transformer->transformFromRequest(),
             $this->getAuthorizedUser()
         ));
@@ -71,7 +71,7 @@ class MultimediaController extends AbstractRestController
         UpdateMultimedia $updateMultimedia,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateMultimedia->update($transformer->transformFromRequest($multimedia)));
+        $responseData->setEntities($updateMultimedia->process($transformer->transformFromRequest($multimedia)));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -87,7 +87,7 @@ class MultimediaController extends AbstractRestController
             throw EntityNotFoundException::multimedia();
         }
 
-        $responseData->setEntities($deleteMultimedia->delete($multimedia));
+        $responseData->setEntities($deleteMultimedia->process($multimedia));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
@@ -95,10 +95,10 @@ class MultimediaController extends AbstractRestController
     #[Route('/multimedia/{multimedia_id<\d+>}/play-pause', methods: 'PATCH')]
     public function playPause(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        PlayPauseMultimedia $playPauseMultimedia,
+        ToggleMultimediaPlayback $toggleMultimediaPlayback,
         RunningMultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($playPauseMultimedia->playPause($multimedia, $this->authorizedUser->getUserSession()));
+        $responseData->setEntities($toggleMultimediaPlayback->process($multimedia, $this->authorizedUser->getUserSession()));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }

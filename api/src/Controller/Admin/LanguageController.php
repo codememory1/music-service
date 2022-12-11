@@ -13,9 +13,9 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\LanguageRepository;
 use App\ResponseData\General\Language\LanguageResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Language\CreateLanguage;
-use App\Service\Language\DeleteLanguage;
-use App\Service\Language\UpdateLanguage;
+use App\UseCase\Language\CreateLanguage;
+use App\UseCase\Language\DeleteLanguage;
+use App\UseCase\Language\UpdateLanguage;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -47,7 +47,7 @@ class LanguageController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::CREATE_LANGUAGE)]
     public function create(LanguageTransformer $transformer, CreateLanguage $createLanguage, LanguageResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($createLanguage->create($transformer->transformFromRequest()));
+        $responseData->setEntities($createLanguage->process($transformer->transformFromRequest()));
 
         return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
@@ -60,7 +60,7 @@ class LanguageController extends AbstractRestController
         UpdateLanguage $updateLanguage,
         LanguageResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateLanguage->update($transformer->transformFromRequest($language)));
+        $responseData->setEntities($updateLanguage->process($transformer->transformFromRequest($language)));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -72,7 +72,7 @@ class LanguageController extends AbstractRestController
         DeleteLanguage $deleteLanguage,
         LanguageResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteLanguage->delete($language));
+        $responseData->setEntities($deleteLanguage->process($language));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }

@@ -8,7 +8,7 @@ use App\Entity\UserProfile;
 use App\Enum\RoleEnum;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Repository\RoleRepository;
-use App\Service\UserSetting\AddUserDefaultSetting;
+use App\UseCase\User\Setting\AddDefaultUserSetting;
 
 final class Registrar
 {
@@ -16,7 +16,7 @@ final class Registrar
         private readonly Flusher $flusher,
         private readonly RoleRepository $roleRepository,
         private readonly ReRegister $reRegister,
-        private readonly AddUserDefaultSetting $addUserDefaultSetting,
+        private readonly AddDefaultUserSetting $addDefaultUserSetting,
     ) {
     }
 
@@ -30,7 +30,7 @@ final class Registrar
             $user = $this->collectUserEntity(new User(), $dto);
             $user->setProfile($this->collectUserProfileEntity($dto));
 
-            $this->addUserDefaultSetting->add($user);
+            $this->addDefaultUserSetting->process($user);
 
             $this->flusher->addPersist($user);
         }

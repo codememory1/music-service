@@ -6,8 +6,8 @@ use App\Dto\Transformer\UserTransformer;
 use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
 use App\Event\UserRegistrationEvent;
-use App\Service\UserSession\CreateSession;
-use App\Service\UserSession\UpdateSession;
+use App\UseCase\User\Session\CreateUserSession;
+use App\UseCase\User\Session\UpdateUserSession;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -21,8 +21,8 @@ final class CreateRegistrationSessionListener
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly CreateSession $createSession,
-        private readonly UpdateSession $updateSession,
+        private readonly CreateUserSession $createUserSession,
+        private readonly UpdateUserSession $updateUserSession,
         private readonly UserTransformer $userTransformer
     ) {
     }
@@ -40,14 +40,14 @@ final class CreateRegistrationSessionListener
         $finedUserSession = $userSessionRepository->findRegistered($event->user);
 
         if (null !== $finedUserSession) {
-            $this->updateSession->make(
+            $this->updateUserSession->process(
                 $this->userTransformer->transformFromRequest(),
                 $event->user,
                 $finedUserSession,
                 UserSessionTypeEnum::REGISTRATION
             );
         } else {
-            $this->createSession->make(
+            $this->createUserSession->process(
                 $this->userTransformer->transformFromRequest(),
                 $event->user,
                 type: UserSessionTypeEnum::REGISTRATION

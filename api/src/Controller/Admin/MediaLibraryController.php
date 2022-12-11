@@ -13,8 +13,8 @@ use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MediaLibrary\CreateMediaLibrary;
-use App\Service\MediaLibrary\UpdateMediaLibrary;
+use App\UseCase\MediaLibrary\CreateMediaLibrary;
+use App\UseCase\MediaLibrary\UpdateMediaLibrary;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -45,7 +45,7 @@ class MediaLibraryController extends AbstractRestController
         CreateMediaLibrary $createMediaLibrary,
         MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($createMediaLibrary->create(
+        $responseData->setEntities($createMediaLibrary->process(
             $transformer->transformFromRequest(),
             $user
         ));
@@ -61,7 +61,7 @@ class MediaLibraryController extends AbstractRestController
         UpdateMediaLibrary $updateMediaLibrary,
         MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateMediaLibrary->update(
+        $responseData->setEntities($updateMediaLibrary->process(
             $transformer->transformFromRequest($mediaLibrary)
         ));
 

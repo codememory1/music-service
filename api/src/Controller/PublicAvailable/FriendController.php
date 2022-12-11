@@ -13,9 +13,9 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\FriendRepository;
 use App\ResponseData\General\Friendship\FriendResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Friend\AcceptAsFriend;
-use App\Service\Friend\ApplyInFriend;
-use App\Service\Friend\DeleteFriend;
+use App\UseCase\Friendship\AcceptAsFriend;
+use App\UseCase\Friendship\ApplyInFriend;
+use App\UseCase\Friendship\DeleteFriendship;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -39,7 +39,7 @@ class FriendController extends AbstractRestController
         FriendResponseData $responseData,
         ApplyInFriend $addAsFriend
     ): JsonResponse {
-        $responseData->setEntities($addAsFriend->apply($this->getAuthorizedUser(), $friend));
+        $responseData->setEntities($addAsFriend->process($this->getAuthorizedUser(), $friend));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -55,7 +55,7 @@ class FriendController extends AbstractRestController
             throw EntityNotFoundException::friend();
         }
 
-        $responseData->setEntities($acceptAsFriend->accept($friend));
+        $responseData->setEntities($acceptAsFriend->process($friend));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -65,7 +65,7 @@ class FriendController extends AbstractRestController
     public function deleteFriend(
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friendship,
         FriendResponseData $responseData,
-        DeleteFriend $deleteFriend
+        DeleteFriendship $deleteFriendship
     ): JsonResponse {
         $authorizedUser = $this->getAuthorizedUser();
 
@@ -73,7 +73,7 @@ class FriendController extends AbstractRestController
             throw EntityNotFoundException::friend();
         }
 
-        $responseData->setEntities($deleteFriend->delete($friendship));
+        $responseData->setEntities($deleteFriendship->process($friendship));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }

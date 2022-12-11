@@ -14,10 +14,10 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\AlbumRepository;
 use App\ResponseData\General\Album\AlbumResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Album\CreateAlbum;
-use App\Service\Album\DeleteAlbum;
-use App\Service\Album\PublishAlbum;
-use App\Service\Album\UpdateAlbum;
+use App\UseCase\Album\CreateAlbum;
+use App\UseCase\Album\DeleteAlbum;
+use App\UseCase\Album\PublishAlbum;
+use App\UseCase\Album\UpdateAlbum;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -45,7 +45,7 @@ class AlbumController extends AbstractRestController
         CreateAlbum $createAlbum,
         AlbumResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($createAlbum->create(
+        $responseData->setEntities($createAlbum->process(
             $transformer->transformFromRequest(),
             $user
         ));
@@ -61,7 +61,7 @@ class AlbumController extends AbstractRestController
         UpdateAlbum $updateAlbum,
         AlbumResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateAlbum->update(
+        $responseData->setEntities($updateAlbum->process(
             $transformer->transformFromRequest($album),
             $album->getUser()
         ));
@@ -76,7 +76,7 @@ class AlbumController extends AbstractRestController
         DeleteAlbum $deleteAlbum,
         AlbumResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteAlbum->delete($album));
+        $responseData->setEntities($deleteAlbum->process($album));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }
@@ -88,7 +88,7 @@ class AlbumController extends AbstractRestController
         PublishAlbum $publishAlbum,
         AlbumResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($publishAlbum->publish($album));
+        $responseData->setEntities($publishAlbum->process($album));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }

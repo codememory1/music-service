@@ -13,9 +13,9 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\SubscriptionRepository;
 use App\ResponseData\General\Subscription\SubscriptionResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Subscription\CreateSubscription;
-use App\Service\Subscription\DeleteSubscription;
-use App\Service\Subscription\UpdateSubscription;
+use App\UseCase\Subscription\CreateSubscription;
+use App\UseCase\Subscription\DeleteSubscription;
+use App\UseCase\Subscription\UpdateSubscription;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -47,7 +47,7 @@ class SubscriptionController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::CREATE_SUBSCRIPTION)]
     public function create(SubscriptionTransformer $transformer, CreateSubscription $createSubscription, SubscriptionResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($createSubscription->create($transformer->transformFromRequest()));
+        $responseData->setEntities($createSubscription->process($transformer->transformFromRequest()));
 
         return $this->responseData($responseData, PlatformCodeEnum::CREATED);
     }
@@ -60,7 +60,7 @@ class SubscriptionController extends AbstractRestController
         UpdateSubscription $updateSubscription,
         SubscriptionResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateSubscription->update($transformer->transformFromRequest($subscription)));
+        $responseData->setEntities($updateSubscription->process($transformer->transformFromRequest($subscription)));
 
         return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
     }
@@ -72,7 +72,7 @@ class SubscriptionController extends AbstractRestController
         DeleteSubscription $deleteSubscription,
         SubscriptionResponseData $responseData
     ): JsonResponse {
-        $deleteSubscription->delete($deleteSubscription->delete($subscription));
+        $responseData->setEntities($deleteSubscription->process($subscription));
 
         return $this->responseData($responseData, PlatformCodeEnum::DELETED);
     }

@@ -11,7 +11,7 @@ use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\ResponseData\General\MediaLibrary\MediaLibraryStatisticResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\MediaLibrary\ShareMediaLibraryWithFriend;
+use App\UseCase\MediaLibrary\ShareMediaLibraryWithFriend;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 

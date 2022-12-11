@@ -78,47 +78,37 @@ services:
       public: false
 
     # Services
+    # Default services
     App\Service\:
-      resource: '../src/Service/'
-      public: true
-      exclude:
-        - '../src/Service/DataRepresentation/AbstractDataRepresentation.php'
-        - '../src/Service/ObjectComparisonPercentageService.php'
-        - '../src/Service/Event/'
-        - '../src/Service/Reflection.php'
-        - '../src/Service/Parser/'
+      resource: '../src/Service/*.php'
+      public: false
 
+    # Album
+    App\Service\Album\:
+      resource: '../src/Service/Album/'
+      public: false
+
+    # Data Representation
     App\Service\DataRepresentation\:
       resource: '../src/Service/DataRepresentation/'
       public: true
       exclude:
         - '../src/Service/DataRepresentation/AbstractDataRepresentation.php'
 
-    App\Service\Platform\Google\Client:
+    # API Translation
+    App\Service\Translator\DeeplTranslator:
+      public: false
       arguments:
-        $clientId: '%env(GOOGLE_CLIENT_ID)%'
-        $secretKey: '%env(GOOGLE_CLIENT_SECRET)%'
-        $redirectUrl: '%env(GOOGLE_CLIENT_REDIRECT_URL)%'
-        $scopes:
-          - !php/const App\Enum\GoogleScopeEnum::EMAIL
-          - !php/const App\Enum\GoogleScopeEnum::PROFILE
+        $deeplTranslatePath: '%env(DEEPL_TRANSLATION_PATH)%'
+        $deeplAuthKey: '%env(DEEPL_AUTH_KEY)%'
 
-    # WebSocket
-    App\Service\WebSocket\WorkerConnectionManager:
+    App\Service\Translator\Interfaces\TranslatorInterface: '@App\Service\Translator\DeeplTranslator'
+
+    # Income
+    App\Service\Income\ArtistIncome:
       public: false
 
-    App\Service\WebSocket\MessageQueueToClient:
-      public: false
-
-    App\Service\WebSocket\Worker:
-      arguments:
-        $host: '%ws.host%'
-        $port: '%ws.port%'
-
-    App\Service\WebSocket\Handle\:
-      resource: '../src/Service/WebSocket/Handle/*.php'
-      public: true
-
+    # Geolocation
     App\Service\IPGeolocation\IPApi\Client:
       arguments:
         $client: '@Symfony\Contracts\HttpClient\HttpClientInterface'
@@ -141,6 +131,33 @@ services:
           - currency
           - proxy
 
+    # Logic branches
+    App\Service\LogicBranches\:
+      resource: '../src/Service/LogicBranches/*Handler.php'
+      public: false
+
+    # Media Library
+    App\Service\MediaLibrary\:
+      resource: '../src/Service/MediaLibrary/'
+      public: false
+
+    # Multimedia
+    App\Service\Multimedia\Subtitles\MultimediaSubtitles:
+      public: false
+
+    App\Service\Multimedia\MultimediaStream:
+      public: false
+
+    App\Service\Multimedia\MultimediaValidator:
+      public: false
+
+    App\Service\Multimedia\UpsertMultimediaFile:
+      public: false
+
+    # Notification
+    App\Service\Notification\NotificationCollection:
+      public: false
+
     # Parser
     App\Service\Parser\Http\:
       resource: '../src/Service/Parser/Http/*.php'
@@ -148,6 +165,51 @@ services:
 
     App\Service\Parser\Zaycev\Parser:
       public: false
+
+    # Platform
+    App\Service\Platform\Google\Client:
+      arguments:
+        $clientId: '%env(GOOGLE_CLIENT_ID)%'
+        $secretKey: '%env(GOOGLE_CLIENT_SECRET)%'
+        $redirectUrl: '%env(GOOGLE_CLIENT_REDIRECT_URL)%'
+        $scopes:
+          - !php/const App\Enum\GoogleScopeEnum::EMAIL
+          - !php/const App\Enum\GoogleScopeEnum::PROFILE
+
+    # Playlist
+    App\Service\Playlist\:
+      resource: '../src/Service/Playlist/'
+      public: false
+
+    # User Profile
+    App\Service\UserProfile\:
+      resource: '../src/Service/UserProfile/'
+      public: false
+
+    # User Session
+    App\Service\UserSession\:
+      resource: '../src/Service/UserSession/'
+      public: false
+
+    # WebSocket
+    App\Service\WebSocket\WorkerConnectionManager:
+      public: false
+
+    App\Service\WebSocket\MessageQueueToClient:
+      public: false
+
+    App\Service\WebSocket\Worker:
+      arguments:
+        $host: '%ws.host%'
+        $port: '%ws.port%'
+
+    App\Service\WebSocket\Components\:
+      resource: '../src/Service/WebSocket/Components/*Component.php'
+      public: false
+
+    App\Service\WebSocket\Handle\:
+      resource: '../src/Service/WebSocket/Handle/*.php'
+      public: true
 
     # DTO
     App\Dto\Constraints\:
