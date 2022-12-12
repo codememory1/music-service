@@ -255,6 +255,7 @@ final class TranslationKeyDataFixture extends AbstractDataFixture implements Fix
             new TranslationKeyFactory('subscriptionPermissionKey@deleteTimeCodeToMultimedia'),
             new TranslationKeyFactory('subscriptionPermissionKey@showMultimediaStatistics'),
             new TranslationKeyFactory('subscriptionPermissionKey@maxPlaylistsInMediaLibrary'),
+            new TranslationKeyFactory('subscriptionPermissionKey@maxDirectoriesInPlaylist'),
 
             new TranslationKeyFactory('translation@keyIsRequired'),
             new TranslationKeyFactory('translation@translationIsRequired'),

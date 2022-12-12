@@ -12,7 +12,7 @@ use App\Entity\PlaylistDirectory;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\Exception\Http\PlaylistException;
+use App\Exception\Http\LimitException;
 use App\Repository\PlaylistRepository;
 use App\ResponseData\General\Playlist\PlaylistResponseData;
 use App\Rest\Controller\AbstractRestController;
@@ -59,7 +59,7 @@ class PlaylistController extends AbstractRestController
         PlaylistResponseData $responseData
     ): JsonResponse {
         if ($allowedSubscriptionPermission->isMaxPlaylists($this->getAuthorizedUser())) {
-            throw PlaylistException::limitExceeded();
+            throw LimitException::playlistLimitExceeded();
         }
 
         $responseData->setEntities($createPlaylist->process(

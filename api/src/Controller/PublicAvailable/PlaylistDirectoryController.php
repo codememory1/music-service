@@ -13,9 +13,11 @@ use App\Entity\PlaylistDirectory;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\Exception\Http\LimitException;
 use App\ResponseData\General\Playlist\Directory\PlaylistDirectoryMultimediaResponseData;
 use App\ResponseData\General\Playlist\PlaylistMultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Service\Subscription\Permission\AllowedSubscriptionPermission;
 use App\UseCase\MediaLibrary\Multimedia\AddMultimediaMediaLibraryToPlaylistDirectory;
 use App\UseCase\Playlist\Directory\CreatePlaylistDirectory;
 use App\UseCase\Playlist\Directory\DeletePlaylistDirectory;
@@ -34,10 +36,15 @@ class PlaylistDirectoryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         PlaylistDirectoryTransformer $transformer,
         CreatePlaylistDirectory $createPlaylistDirectory,
+        AllowedSubscriptionPermission $allowedSubscriptionPermission,
         PlaylistDirectoryMultimediaResponseData $responseData
     ): JsonResponse {
         if (false === $this->getAuthorizedUser()->isPlaylistBelongs($playlist)) {
             throw EntityNotFoundException::playlist();
+        }
+
+        if ($allowedSubscriptionPermission->isMaxDirectoriesInPlaylists($playlist)) {
+            throw LimitException::playlistDirectoryLimitExceeded();
         }
 
         $responseData->setEntities($createPlaylistDirectory->process(

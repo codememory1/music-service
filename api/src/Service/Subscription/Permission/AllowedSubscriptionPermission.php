@@ -2,6 +2,7 @@
 
 namespace App\Service\Subscription\Permission;
 
+use App\Entity\Playlist;
 use App\Entity\User;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Service\LogicBranches\SubscriptionPermissionBranchHandler;
@@ -31,6 +32,25 @@ final class AllowedSubscriptionPermission
                 ->getPermission(SubscriptionPermissionEnum::MAX_PLAYLISTS_IN_MEDIA_LIBRARY);
 
             return $user->getMediaLibrary()?->getPlaylists()->count() >= $subscriptionPermission->getValue(true);
+        }
+
+        return true;
+    }
+
+    public function isMaxDirectoriesInPlaylists(Playlist $playlist): bool
+    {
+        $playlistOwner = $playlist->getMediaLibrary()->getUser();
+
+        if (!$this->subscriptionPermissionBranchHandler->allowedPermission(SubscriptionPermissionEnum::MAX_DIRECTORIES_IN_PLAYLIST)) {
+            return false;
+        }
+
+        if ($playlistOwner->isSubscriptionPermission(SubscriptionPermissionEnum::MAX_DIRECTORIES_IN_PLAYLIST)) {
+            $subscriptionPermission = $playlistOwner
+                ->getSubscription()
+                ->getPermission(SubscriptionPermissionEnum::MAX_DIRECTORIES_IN_PLAYLIST);
+
+            return $playlist->getDirectories()->count() >= $subscriptionPermission->getValue(true);
         }
 
         return true;
