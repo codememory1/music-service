@@ -181,6 +181,11 @@ services:
       resource: '../src/Service/Playlist/'
       public: false
 
+    # Subscription
+    App\Service\Subscription\:
+      resource: '../src/Service/Subscription/'
+      public: false
+
     # User Profile
     App\Service\UserProfile\:
       resource: '../src/Service/UserProfile/'

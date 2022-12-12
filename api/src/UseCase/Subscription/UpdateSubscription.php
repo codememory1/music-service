@@ -4,14 +4,13 @@ namespace App\UseCase\Subscription;
 
 use App\Dto\Transfer\SubscriptionDto;
 use App\Entity\Subscription;
-use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
 
 final class UpdateSubscription
 {
     public function __construct(
-        private readonly Flusher $flusher,
-        private readonly Validator $validator
+        private readonly Validator $validator,
+        private readonly UpsertSubscription $upsertSubscription
     ) {
     }
 
@@ -19,8 +18,6 @@ final class UpdateSubscription
     {
         $this->validator->validate($dto);
 
-        $this->flusher->save();
-
-        return $dto->getEntity();
+        return $this->upsertSubscription->process($dto, $dto->getEntity());
     }
 }

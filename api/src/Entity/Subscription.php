@@ -7,6 +7,7 @@ use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\PlatformCodeEnum;
+use App\Enum\SubscriptionPermissionEnum;
 use App\Enum\SubscriptionStatusEnum;
 use App\Infrastructure\Validator\Validator;
 use App\Repository\SubscriptionRepository;
@@ -170,7 +171,6 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isHide(): bool
     {
         return $this->getStatus() === SubscriptionStatusEnum::HIDE->name;
@@ -183,7 +183,6 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    #[Pure]
     public function isShow(): bool
     {
         return $this->getStatus() === SubscriptionStatusEnum::SHOW->name;
@@ -195,6 +194,17 @@ class Subscription implements EntityInterface
     public function getPermissions(): Collection
     {
         return $this->permissions;
+    }
+
+    public function getPermission(SubscriptionPermissionEnum $subscriptionPermission): ?SubscriptionPermission
+    {
+        foreach ($this->getPermissions() as $permission) {
+            if ($permission->getPermissionKey()->getKey() === $subscriptionPermission->name) {
+                return $permission;
+            }
+        }
+
+        return null;
     }
 
     /**

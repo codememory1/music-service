@@ -21,7 +21,7 @@ final class JsonSchemaValidator extends ConstraintValidator
         }
 
         $validationResult = (new SchemaValidator())->validate(
-            Json::fromString([] === $value ? '{}' : json_encode($value)),
+            Json::fromString(json_encode($value)),
             $this->readSchema($constraint->schemaName),
             JsonPointer::document()
         );

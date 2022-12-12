@@ -253,6 +253,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'subscriptionPermissionKey@addTimeCodeToMultimedia', 'Добавление тайм-кода мультимедиа'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@updateTimeCodeToMultimedia', 'Обновление тайм-кода мультимедиа'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteTimeCodeToMultimedia', 'Удаление тайм-кода мультимедиа'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@maxPlaylistsInMediaLibrary', 'Максимально кол-во плейлистов в медиатеке'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),

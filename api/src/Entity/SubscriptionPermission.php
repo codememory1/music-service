@@ -7,6 +7,7 @@ use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\SubscriptionPermissionRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SubscriptionPermissionRepository::class)]
@@ -25,6 +26,11 @@ class SubscriptionPermission implements EntityInterface
     #[ORM\ManyToOne(targetEntity: SubscriptionPermissionKey::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?SubscriptionPermissionKey $subscriptionPermissionKey = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true, options: [
+        'comment' => 'Subscription permission value'
+    ])]
+    private array $value = [];
 
     public function getSubscription(): ?Subscription
     {
@@ -46,6 +52,22 @@ class SubscriptionPermission implements EntityInterface
     public function setPermissionKey(?SubscriptionPermissionKey $subscriptionPermissionKey): self
     {
         $this->subscriptionPermissionKey = $subscriptionPermissionKey;
+
+        return $this;
+    }
+
+    public function getValue(bool $first = false): mixed
+    {
+        if ($first) {
+            return count($this->value) > 0 ? $this->value[array_key_first($this->value)] : null;
+        }
+
+        return $this->value;
+    }
+
+    public function setValue(array $value): self
+    {
+        $this->value = $value;
 
         return $this;
     }
