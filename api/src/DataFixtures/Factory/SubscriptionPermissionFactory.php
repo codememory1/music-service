@@ -17,7 +17,8 @@ final class SubscriptionPermissionFactory implements DataFixtureFactoryInterface
 
     public function __construct(
         private readonly SubscriptionEnum $subscription,
-        private readonly SubscriptionPermissionEnum $subscriptionPermission
+        private readonly SubscriptionPermissionEnum $subscriptionPermission,
+        private readonly array $value = []
     ) {
     }
 
@@ -33,6 +34,7 @@ final class SubscriptionPermissionFactory implements DataFixtureFactoryInterface
 
         $subscriptionPermission->setSubscription($subscription);
         $subscriptionPermission->setPermissionKey($subscriptionPermissionKey);
+        $subscriptionPermission->setValue($this->value);
 
         return $subscriptionPermission;
     }

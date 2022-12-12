@@ -12,9 +12,11 @@ use App\Entity\PlaylistDirectory;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\Exception\Http\PlaylistException;
 use App\Repository\PlaylistRepository;
 use App\ResponseData\General\Playlist\PlaylistResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Service\Subscription\Permission\AllowedSubscriptionPermission;
 use App\UseCase\Playlist\CreatePlaylist;
 use App\UseCase\Playlist\DeletePlaylist;
 use App\UseCase\Playlist\Multimedia\MoveMultimediaPlaylistToDirectory;
@@ -50,8 +52,16 @@ class PlaylistController extends AbstractRestController
 
     #[Route('/playlist/create', methods: 'POST')]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_PLAYLIST)]
-    public function create(PlaylistTransformer $transformer, CreatePlaylist $createPlaylist, PlaylistResponseData $responseData): JsonResponse
-    {
+    public function create(
+        PlaylistTransformer $transformer,
+        CreatePlaylist $createPlaylist,
+        AllowedSubscriptionPermission $allowedSubscriptionPermission,
+        PlaylistResponseData $responseData
+    ): JsonResponse {
+        if ($allowedSubscriptionPermission->isMaxPlaylists($this->getAuthorizedUser())) {
+            throw PlaylistException::limitExceeded();
+        }
+
         $responseData->setEntities($createPlaylist->process(
             $transformer->transformFromRequest(),
             $this->getAuthorizedUser()

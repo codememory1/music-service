@@ -12,6 +12,7 @@ use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
+use App\ResponseData\General\MediaLibrary\MediaLibraryResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\UseCase\MediaLibrary\CreateMediaLibrary;
 use App\UseCase\MediaLibrary\UpdateMediaLibrary;
@@ -43,7 +44,7 @@ class MediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         MediaLibraryTransformer $transformer,
         CreateMediaLibrary $createMediaLibrary,
-        MediaLibraryMultimediaResponseData $responseData
+        MediaLibraryResponseData $responseData
     ): JsonResponse {
         $responseData->setEntities($createMediaLibrary->process(
             $transformer->transformFromRequest(),

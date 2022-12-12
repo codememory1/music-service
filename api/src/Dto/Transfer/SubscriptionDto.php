@@ -4,15 +4,12 @@ namespace App\Dto\Transfer;
 
 use App\Dto\Constraints as DtoConstraints;
 use App\Entity\Subscription;
-use App\Entity\SubscriptionPermissionKey;
 use App\Entity\TranslationKey;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionStatusEnum;
-use App\Exception\Http\EntityNotFoundException;
 use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Infrastructure\Validator\Validator;
 use App\Validator\Constraints as AppAssert;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -56,28 +53,12 @@ final class SubscriptionDto extends AbstractDataTransfer
     #[DtoConstraints\ToTypeConstraint]
     public ?bool $isRecommend = null;
 
+    #[AppAssert\JsonSchema('subscription_permission', message: 'subscription.invalid_permissions_format')]
     #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ToEntityCallbackConstraint('callbackPermissionsEntity')]
-    public ?array $permissions = null;
+    #[DtoConstraints\IgnoreCallSetterConstraint]
+    public array $permissions = [];
 
     #[Assert\NotBlank(message: 'subscription@statusIsRequired')]
     #[DtoConstraints\ToEnumConstraint(SubscriptionStatusEnum::class)]
     public ?SubscriptionStatusEnum $status = null;
-
-    public function callbackPermissionsEntity(EntityManagerInterface $manager, array $value): array
-    {
-        $subscriptionPermissionKeyRepository = $manager->getRepository(SubscriptionPermissionKey::class);
-
-        foreach ($value as &$permissionKey) {
-            $subscriptionPermissionKey = $subscriptionPermissionKeyRepository->findByKey($permissionKey);
-
-            if (null === $subscriptionPermissionKey) {
-                throw EntityNotFoundException::subscriptionPermissionKey();
-            }
-
-            $permissionKey = $subscriptionPermissionKey;
-        }
-
-        return $value;
-    }
 }
