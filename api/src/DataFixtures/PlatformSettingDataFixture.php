@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\PlatformSettingFactory;
 use App\Entity\PlatformSetting;
+use App\Enum\MultimediaExternalServiceEnum;
 use App\Enum\PlatformSettingEnum;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -26,6 +27,9 @@ final class PlatformSettingDataFixture extends AbstractDataFixture
             new PlatformSettingFactory(PlatformSettingEnum::PERCENT_ARTIST_INCOME_FROM_TURNOVER, 45),
             new PlatformSettingFactory(PlatformSettingEnum::MONTHLY_EXPENSES, 2000),
             new PlatformSettingFactory(PlatformSettingEnum::PASSWORD_RESET_TTL_CODE, '10m'),
+            new PlatformSettingFactory(PlatformSettingEnum::ALLOWED_MULTIMEDIA_EXTERNAL_SERVICES, [
+                MultimediaExternalServiceEnum::YOUTUBE->name
+            ]),
         ]);
     }
 

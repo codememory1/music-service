@@ -54,6 +54,9 @@ final class SubscriptionPermissionKeyDataFixture extends AbstractDataFixture imp
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::SHOW_MULTIMEDIA_STATISTICS, 'subscriptionPermissionKey@showMultimediaStatistics'),
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::MAX_PLAYLISTS_IN_MEDIA_LIBRARY, 'subscriptionPermissionKey@maxPlaylistsInMediaLibrary'),
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::MAX_DIRECTORIES_IN_PLAYLIST, 'subscriptionPermissionKey@maxDirectoriesInPlaylist'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::ADD_MULTIMEDIA_FROM_EXTERNAL_SERVICE, 'subscriptionPermissionKey@addMultimediaFromExternalService'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA_FROM_EXTERNAL_SERVICE, 'subscriptionPermissionKey@updateMultimediaFromExternalService'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_MULTIMEDIA_FROM_EXTERNAL_SERVICE, 'subscriptionPermissionKey@deleteMultimediaFromExternalService'),
         ]);
     }
 

@@ -49,4 +49,10 @@ class FailedException extends HttpException
     {
         return new self(400, PlatformCodeEnum::UNEXPECTED_ERROR, 'friend@addMyselfAsFriend', $parameters, $headers);
     }
+
+    #[Pure]
+    final public static function failedNotAllowedMultimediaExternalService(array $parameters = [], array $headers = []): self
+    {
+        return new self(400, PlatformCodeEnum::NOT_ALLOWED, 'multimedia_external_service.service_not_allowed', $parameters, $headers);
+    }
 }
