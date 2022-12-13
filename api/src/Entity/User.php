@@ -127,6 +127,9 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'buyer', targetEntity: Transaction::class, cascade: ['remove'])]
     private Collection $transactions;
 
+    #[ORM\OneToMany(mappedBy: 'userr', targetEntity: MultimediaExternalService::class)]
+    private $multimediaExternalServices;
+
     #[Pure]
     public function __construct()
     {
@@ -147,6 +150,7 @@ class User implements EntityInterface
         $this->acceptedFriendRequests = new ArrayCollection();
         $this->multimediaListeningHistory = new ArrayCollection();
         $this->transactions = new ArrayCollection();
+        $this->multimediaExternalServices = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -843,5 +847,35 @@ class User implements EntityInterface
     public function getTransactions(): Collection
     {
         return $this->transactions;
+    }
+
+    /**
+     * @return Collection<int, MultimediaExternalService>
+     */
+    public function getMultimediaExternalServices(): Collection
+    {
+        return $this->multimediaExternalServices;
+    }
+
+    public function addMultimediaExternalService(MultimediaExternalService $multimediaExternalService): self
+    {
+        if (!$this->multimediaExternalServices->contains($multimediaExternalService)) {
+            $this->multimediaExternalServices[] = $multimediaExternalService;
+            $multimediaExternalService->setUserr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMultimediaExternalService(MultimediaExternalService $multimediaExternalService): self
+    {
+        if ($this->multimediaExternalServices->removeElement($multimediaExternalService)) {
+            // set the owning side to null (unless already changed)
+            if ($multimediaExternalService->getUserr() === $this) {
+                $multimediaExternalService->setUserr(null);
+            }
+        }
+
+        return $this;
     }
 }

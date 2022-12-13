@@ -4,6 +4,7 @@ namespace App\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
+use Exception;
 use function is_array;
 
 final class ArrayOrStringType extends StringType
@@ -36,7 +37,7 @@ final class ArrayOrStringType extends StringType
 
         try {
             return unserialize($value);
-        } finally {
+        } catch (Exception) {
             return (string) $value;
         }
     }

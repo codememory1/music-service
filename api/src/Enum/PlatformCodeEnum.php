@@ -30,4 +30,5 @@ enum PlatformCodeEnum: int
     case INPUT_ERROR = 6074; // Ошибка входных данных
     case INACCESSIBLE_DATA = 6075; // Недоступные данные
     case LIMIT = 6076;
+    case NOT_ALLOWED = 6077;
 }
