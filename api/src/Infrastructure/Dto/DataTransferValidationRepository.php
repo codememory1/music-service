@@ -4,7 +4,7 @@ namespace App\Infrastructure\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class DtoValidationRepository
+final class DataTransferValidationRepository
 {
     private array $inputData = [];
     private array $constraints = [];

@@ -9,7 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class GoogleAuthDto extends AbstractDataTransfer implements ServiceAuthorizationDtoInterface
 {
-    #[Assert\NotBlank(message: 'serviceAuth@authorizationCodeIsRequired')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'serviceAuth@authorizationCodeIsRequired')
+    ])]
     public ?string $code = null;
 }

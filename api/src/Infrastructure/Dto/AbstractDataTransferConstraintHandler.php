@@ -13,6 +13,7 @@ abstract class AbstractDataTransferConstraintHandler implements DataTransferCons
     private ?DataTransferInterface $dataTransfer = null;
     private ?ReflectionProperty $reflectionProperty = null;
     private ?string $propertyNameAsInputName = null;
+    private mixed $propertyValue = null;
 
     public function getDataTransfer(): ?DataTransferInterface
     {
@@ -64,6 +65,18 @@ abstract class AbstractDataTransferConstraintHandler implements DataTransferCons
     public function setPropertyNameAsInputName(string $name): DataTransferConstraintHandlerInterface
     {
         $this->propertyNameAsInputName = $name;
+
+        return $this;
+    }
+
+    public function getPropertyValue(): mixed
+    {
+        return $this->propertyValue;
+    }
+
+    public function setPropertyValue(mixed $value): DataTransferConstraintHandlerInterface
+    {
+        $this->propertyValue = $value;
 
         return $this;
     }

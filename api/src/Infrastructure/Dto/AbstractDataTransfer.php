@@ -4,6 +4,7 @@ namespace App\Infrastructure\Dto;
 
 use App\Collection\DtoConstraintCollection;
 use App\Entity\Interfaces\EntityInterface;
+use App\Infrastructure\Dto\Interfaces\DataTransferAssertConstraintHandlerInterface;
 use App\Infrastructure\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
 use App\Infrastructure\Dto\Interfaces\DataTransferConstraintHandlerInterface;
 use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
@@ -24,13 +25,13 @@ abstract class AbstractDataTransfer implements DataTransferInterface
     protected array $propertyNameToData = [];
     protected ReflectionClass $reflectionClass;
     private ?EntityInterface $entity = null;
-    private DtoValidationRepository $validationRepository;
+    private DataTransferValidationRepository $validationRepository;
 
     public function __construct(
         private readonly ReverseContainer $container
     ) {
         $this->reflectionClass = new ReflectionClass(static::class);
-        $this->validationRepository = new DtoValidationRepository();
+        $this->validationRepository = new DataTransferValidationRepository();
     }
 
     public function setEntity(EntityInterface $entity): self
@@ -62,15 +63,19 @@ abstract class AbstractDataTransfer implements DataTransferInterface
                 $constraintHandler->setDataTransfer($this);
                 $constraintHandler->setReflectionProperty($property);
                 $constraintHandler->setPropertyNameAsInputName($propertyNameToData ?: $this->getPropertyNameToSnakeCase($property));
+                $constraintHandler->setPropertyValue($dataValue);
 
                 if ($constraintHandler instanceof DataTransferCallSetterConstraintHandlerInterface) {
-                    $constraintHandler->setPropertyValue($dataValue);
                     $constraintHandler->setValidationRepository($this->validationRepository);
 
                     $isCallSetterToEntity = $constraintHandler->handle($attributeCollection->constraint);
                 } else {
-                    if ($constraintHandler instanceof DataTransferValueInterceptorConstraintHandlerInterface) {
-                        $dataValue = $constraintHandler->handle($attributeCollection->constraint, $dataValue);
+                    if ($constraintHandler instanceof DataTransferAssertConstraintHandlerInterface) {
+                        $constraintHandler->handle($attributeCollection->constraint, $this->validationRepository);
+                    } else {
+                        if ($constraintHandler instanceof DataTransferValueInterceptorConstraintHandlerInterface) {
+                            $dataValue = $constraintHandler->handle($attributeCollection->constraint, $dataValue);
+                        }
                     }
                 }
             }
@@ -85,7 +90,7 @@ abstract class AbstractDataTransfer implements DataTransferInterface
         return $this;
     }
 
-    public function getValidationRepository(): DtoValidationRepository
+    public function getValidationRepository(): DataTransferValidationRepository
     {
         return $this->validationRepository;
     }

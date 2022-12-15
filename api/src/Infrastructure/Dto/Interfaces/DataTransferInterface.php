@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Dto\Interfaces;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Infrastructure\Dto\DtoValidationRepository;
+use App\Infrastructure\Dto\DataTransferValidationRepository;
 
 interface DataTransferInterface
 {
@@ -13,5 +13,5 @@ interface DataTransferInterface
 
     public function collect(array $data): static;
 
-    public function getValidationRepository(): DtoValidationRepository;
+    public function getValidationRepository(): DataTransferValidationRepository;
 }

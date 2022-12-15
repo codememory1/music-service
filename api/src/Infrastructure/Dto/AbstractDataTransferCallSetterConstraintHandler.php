@@ -6,27 +6,14 @@ use App\Infrastructure\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInt
 
 abstract class AbstractDataTransferCallSetterConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferCallSetterConstraintHandlerInterface
 {
-    private mixed $propertyValue = null;
-    private ?DtoValidationRepository $validationRepository = null;
+    private ?DataTransferValidationRepository $validationRepository = null;
 
-    public function getPropertyValue(): mixed
-    {
-        return $this->propertyValue;
-    }
-
-    public function setPropertyValue(mixed $value): DataTransferCallSetterConstraintHandlerInterface
-    {
-        $this->propertyValue = $value;
-
-        return $this;
-    }
-
-    public function getValidationRepository(): ?DtoValidationRepository
+    public function getValidationRepository(): ?DataTransferValidationRepository
     {
         return $this->validationRepository;
     }
 
-    public function setValidationRepository(DtoValidationRepository $validationRepository): DataTransferCallSetterConstraintHandlerInterface
+    public function setValidationRepository(DataTransferValidationRepository $validationRepository): DataTransferCallSetterConstraintHandlerInterface
     {
         $this->validationRepository = $validationRepository;
 

@@ -8,9 +8,6 @@ use App\Entity\AlbumType;
 use App\Enum\AlbumStatusEnum;
 use App\Enum\RequestTypeEnum;
 use App\Infrastructure\Dto\AbstractDataTransfer;
-use App\Rest\Http\Request;
-use App\Validator\Constraints as AppAssert;
-use Symfony\Component\DependencyInjection\ReverseContainer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,48 +16,43 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class AlbumDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'album@typeIsRequired')]
     #[DtoConstraints\ToEntityConstraint('key')]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'album@typeIsRequired')
+    ])]
     public ?AlbumType $type = null;
 
-    #[Assert\NotBlank(message: 'album@titleIsRequired')]
-    #[Assert\Length(max: 50, maxMessage: 'album@maxTitleLength')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'album@titleIsRequired'),
+        new Assert\Length(max: 50, maxMessage: 'album@maxTitleLength')
+    ])]
     public ?string $title = null;
 
-    #[Assert\NotBlank(message: 'album@descriptionIsRequired')]
-    #[Assert\Length(max: 255, maxMessage: 'album@maxDescriptionLength')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'album@descriptionIsRequired'),
+        new Assert\Length(max: 255, maxMessage: 'album@maxDescriptionLength')
+    ])]
     public ?string $description = null;
 
-    #[Assert\NotBlank(message: 'album@imageIsRequired')]
-    #[Assert\Type(UploadedFile::class, message: 'common@onlyOneImage')]
-    #[Assert\File(
-        maxSize: '5M',
-        mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
-        maxSizeMessage: 'album@maxSizeImage',
-        mimeTypesMessage: 'common@uploadFileNotImage'
-    )]
     #[DtoConstraints\IgnoreCallSetterConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'album@imageIsRequired'),
+        new Assert\Type(UploadedFile::class, message: 'common@onlyOneImage'),
+        new Assert\File(
+            maxSize: '5M',
+            mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+            maxSizeMessage: 'album@maxSizeImage',
+            mimeTypesMessage: 'common@uploadFileNotImage'
+        )
+    ])]
     public null|array|UploadedFile $image = null;
 
-    #[AppAssert\Condition('callbackStatus', [
-        new Assert\NotBlank(message: 'common@invalidStatus')
-    ])]
     #[DtoConstraints\ToEnumConstraint(AlbumStatusEnum::class)]
     #[DtoConstraints\AllowedCallSetterByRequestTypeConstraint(RequestTypeEnum::ADMIN)]
+    #[DtoConstraints\ValidationByRequestTypeConstraint(RequestTypeEnum::ADMIN, [
+        new Assert\NotBlank(message: 'common@invalidStatus')
+    ])]
     public ?AlbumStatusEnum $status = null;
-    private ?string $requestType;
-
-    public function __construct(ReverseContainer $container, Request $request)
-    {
-        parent::__construct($container);
-
-        $this->requestType = $request->getRequestType();
-    }
-
-    public function callbackStatus(): bool
-    {
-        return $this->requestType === RequestTypeEnum::ADMIN->value;
-    }
 }
