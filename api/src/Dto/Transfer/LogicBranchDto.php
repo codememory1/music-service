@@ -13,7 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class LogicBranchDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'logicBranch@invalidStatus')]
     #[DtoConstraints\ToEnumConstraint(LogicBranchStatusEnum::class)]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'logicBranch@invalidStatus')
+    ])]
     public ?LogicBranchStatusEnum $status = null;
 }

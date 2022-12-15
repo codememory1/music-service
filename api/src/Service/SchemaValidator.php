@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
+use Ergebnis\Json\Json;
 use Ergebnis\Json\Pointer\JsonPointer;
-use Ergebnis\Json\SchemaValidator\Json;
 use Ergebnis\Json\SchemaValidator\SchemaValidator as JsonSchemaValidator;
 use function is_array;
 use function is_string;

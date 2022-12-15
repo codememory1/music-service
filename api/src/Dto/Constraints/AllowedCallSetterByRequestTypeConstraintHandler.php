@@ -2,12 +2,11 @@
 
 namespace App\Dto\Constraints;
 
-use App\Infrastructure\Dto\AbstractDataTransferConstraintHandler;
-use App\Infrastructure\Dto\Interfaces\DataTransferCallSetterConstraintHandlerInterface;
+use App\Infrastructure\Dto\AbstractDataTransferCallSetterConstraintHandler;
 use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
 use App\Rest\Http\Request;
 
-final class AllowedCallSetterByRequestTypeConstraintHandler extends AbstractDataTransferConstraintHandler implements DataTransferCallSetterConstraintHandlerInterface
+final class AllowedCallSetterByRequestTypeConstraintHandler extends AbstractDataTransferCallSetterConstraintHandler
 {
     public function __construct(
         private readonly Request $request

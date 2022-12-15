@@ -11,13 +11,17 @@ final class RegistrationDto extends AbstractDataTransfer
 {
     use SetPasswordTrait;
 
-    #[Assert\NotBlank(message: 'userProfile@pseudonymIsRequired')]
-    #[Assert\Length(max: 25, maxMessage: 'userProfile@maxPseudonymLength')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'userProfile@pseudonymIsRequired'),
+        new Assert\Length(max: 25, maxMessage: 'userProfile@maxPseudonymLength')
+    ])]
     public ?string $pseudonym = null;
 
-    #[Assert\NotBlank(message: 'common@incorrectEmail')]
-    #[Assert\Email(message: 'common@incorrectEmail')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'common@incorrectEmail'),
+        new Assert\Email(message: 'common@incorrectEmail')
+    ])]
     public ?string $email = null;
 }

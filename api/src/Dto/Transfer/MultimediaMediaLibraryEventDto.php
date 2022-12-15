@@ -17,7 +17,9 @@ final class MultimediaMediaLibraryEventDto extends AbstractDataTransfer
 {
     use EventPayloadTrait;
 
-    #[Assert\NotBlank(message: 'event@keyIsRequired')]
     #[DtoConstraints\ToEnumConstraint(MultimediaMediaLibraryEventEnum::class)]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'event@keyIsRequired')
+    ])]
     public ?EventInterface $key = null;
 }

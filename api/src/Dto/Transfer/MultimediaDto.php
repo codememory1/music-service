@@ -13,6 +13,7 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Repository\LanguageCodeRepository;
 use App\Security\AuthorizedUser;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\ORM\EntityManagerInterface;
 use function is_string;
 use Symfony\Component\DependencyInjection\ReverseContainer;
@@ -25,56 +26,79 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 final class MultimediaDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'multimedia@typeIsRequired')]
     #[DtoConstraints\ToEnumConstraint(MultimediaTypeEnum::class)]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimedia@typeIsRequired')
+    ])]
     public ?MultimediaTypeEnum $type = null;
 
-    #[Assert\NotBlank(message: 'multimedia@albumIsRequired')]
     #[DtoConstraints\ToEntityCallbackConstraint('callbackAlbumToEntity')]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimedia@albumIsRequired')
+    ])]
     public ?Album $album = null;
 
-    #[Assert\NotBlank(message: 'multimedia@titleIsRequired')]
-    #[Assert\Length(max: 50, maxMessage: 'multimedia@titleMaxLength')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimedia@titleIsRequired'),
+        new Assert\Length(max: 50, maxMessage: 'multimedia@titleMaxLength')
+    ])]
     public ?string $title = null;
 
-    #[Assert\Length(max: 200, maxMessage: 'multimedia@descriptionMaxLength')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\Length(max: 200, maxMessage: 'multimedia@descriptionMaxLength')
+    ])]
     public ?string $description = null;
 
-    #[Assert\NotBlank(message: 'multimedia@categoryIsRequired')]
     #[DtoConstraints\ToEntityConstraint('id')]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimedia@categoryIsRequired')
+    ])]
     public ?MultimediaCategory $category = null;
 
-    #[Assert\NotBlank(message: 'multimedia@multimediaIsRequired')]
     #[DtoConstraints\IgnoreCallSetterConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimedia@multimediaIsRequired')
+    ])]
     public ?UploadedFile $multimedia = null;
 
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new AppAssert\Callback('callbackValidationText')
+    ])]
     public ?array $text = null;
 
-    #[Assert\File(
-        mimeTypes: ['application/x-subrip', 'text/vnd.dvb.subtitle', 'text/plain'],
-        mimeTypesMessage: 'multimedia@uploadFileIsNotSubtitles'
-    )]
     #[DtoConstraints\IgnoreCallSetterConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\File(
+            mimeTypes: ['application/x-subrip', 'text/vnd.dvb.subtitle', 'text/plain'],
+            mimeTypesMessage: 'multimedia@uploadFileIsNotSubtitles'
+        )
+    ])]
     public ?UploadedFile $subtitles = null;
 
-    #[Assert\NotBlank(message: 'multimedia@isObsceneWordsIsRequired')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimedia@isObsceneWordsIsRequired')
+    ])]
     public ?bool $isObsceneWords = null;
 
-    #[Assert\NotBlank(message: 'multimedia@previewIsRequired')]
-    #[Assert\File(
-        maxSize: '5M',
-        mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
-        maxSizeMessage: 'multimedia@maxSizePreview',
-        mimeTypesMessage: 'multimedia@uploadFileIsNotPreview'
-    )]
     #[DtoConstraints\IgnoreCallSetterConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimedia@previewIsRequired'),
+        new Assert\File(
+            maxSize: '5M',
+            mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+            maxSizeMessage: 'multimedia@maxSizePreview',
+            mimeTypesMessage: 'multimedia@uploadFileIsNotPreview'
+        )
+    ])]
     public ?UploadedFile $image = null;
 
-    #[Assert\Length(max: 50, maxMessage: 'multimedia@max')]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\Length(max: 50, maxMessage: 'multimedia@max')
+    ])]
     public ?string $producer = null;
 
     #[DtoConstraints\ToTypeConstraint]
@@ -122,7 +146,6 @@ final class MultimediaDto extends AbstractDataTransfer
         return $value;
     }
 
-    #[Assert\Callback]
     public function callbackValidationText(ExecutionContextInterface $context): void
     {
         $texts = $this->text ?: [];

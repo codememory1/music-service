@@ -2,8 +2,8 @@
 
 namespace App\Validator\Constraints;
 
+use Ergebnis\Json\Json;
 use Ergebnis\Json\Pointer\JsonPointer;
-use Ergebnis\Json\SchemaValidator\Json;
 use Ergebnis\Json\SchemaValidator\SchemaValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

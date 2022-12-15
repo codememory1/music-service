@@ -13,7 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class MediaLibraryDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'mediaLibrary@invalidStatus')]
     #[DtoConstraints\ToEnumConstraint(MediaLibraryStatusEnum::class)]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'mediaLibrary@invalidStatus')
+    ])]
     public ?MediaLibraryStatusEnum $status = null;
 }

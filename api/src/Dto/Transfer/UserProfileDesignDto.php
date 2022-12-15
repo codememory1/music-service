@@ -14,17 +14,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class UserProfileDesignDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'userProfileDesign@coverImageIsRequired')]
-    #[Assert\File(
-        maxSize: '10M',
-        mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
-        maxSizeMessage: 'userProfileDesign@maxSizeCoverImage',
-        mimeTypesMessage: 'userProfileDesign@uploadFileIsNotCoverImage'
-    )]
     #[DtoConstraints\IgnoreCallSetterConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'userProfileDesign@coverImageIsRequired'),
+        new Assert\File(
+            maxSize: '10M',
+            mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+            maxSizeMessage: 'userProfileDesign@maxSizeCoverImage',
+            mimeTypesMessage: 'userProfileDesign@uploadFileIsNotCoverImage'
+        )
+    ])]
     public ?UploadedFile $coverImage = null;
 
-    #[AppAssert\JsonSchema('user_profile_design', message: 'userProfileDesign@invalidDesignComponents')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new AppAssert\JsonSchema('user_profile_design', message: 'userProfileDesign@invalidDesignComponents')
+    ])]
     public array $designComponents = [];
 }

@@ -15,14 +15,18 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 final class MultimediaExternalServiceDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'multimedia_external_service.service_name.is_required')]
     #[DtoConstraints\ToEnumConstraint(MultimediaExternalServiceEnum::class)]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimedia_external_service.service_name.is_required')
+    ])]
     public ?MultimediaExternalServiceEnum $serviceName = null;
 
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new AppAssert\Callback('callbackParameters')
+    ])]
     public array $parameters = [];
 
-    #[Assert\Callback]
     public function callbackParameters(ExecutionContextInterface $context): void
     {
         if (null !== $this->serviceName) {

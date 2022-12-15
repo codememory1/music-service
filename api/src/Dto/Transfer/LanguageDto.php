@@ -12,11 +12,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class LanguageDto extends AbstractDataTransfer
 {
-    #[Assert\Length(min: 2, max: 5, minMessage: 'language@minCodeLength', maxMessage: 'language@maxCodeLength')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\Length(min: 2, max: 5, minMessage: 'language@minCodeLength', maxMessage: 'language@maxCodeLength')
+    ])]
     public ?string $code = null;
 
-    #[Assert\NotBlank(message: 'language@originalTitleIsRequired')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'language@originalTitleIsRequired')
+    ])]
     public ?string $originalTitle = null;
 }

@@ -12,8 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class PlaylistDirectoryDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'playlistDirectory@titleIsRequired')]
-    #[Assert\Length(max: 50, maxMessage: 'playlistDirectory@titleMaxLength')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'playlistDirectory@titleIsRequired'),
+        new Assert\Length(max: 50, maxMessage: 'playlistDirectory@titleMaxLength')
+    ])]
     public ?string $title = null;
 }

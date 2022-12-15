@@ -19,27 +19,33 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class UserRoleDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'role@keyIsRequired')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'role@keyIsRequired')
+    ])]
     public ?string $key = null;
 
-    #[Assert\NotBlank(message: 'role@titleIsRequired')]
-    #[AppAssert\Exist(
-        TranslationKey::class,
-        'key',
-        'common@titleTranslationKeyNotExist',
-        payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND]
-    )]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'role@titleIsRequired'),
+        new AppAssert\Exist(
+            TranslationKey::class,
+            'key',
+            'common@titleTranslationKeyNotExist',
+            payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND]
+        )
+    ])]
     public ?string $title = null;
 
-    #[AppAssert\Exist(
-        TranslationKey::class,
-        'key',
-        'common@shortDescriptionTranslationKeyNotExist',
-        payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND]
-    )]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new AppAssert\Exist(
+            TranslationKey::class,
+            'key',
+            'common@shortDescriptionTranslationKeyNotExist',
+            payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND]
+        )
+    ])]
     public ?string $shortDescription = null;
 
     #[DtoConstraints\ToTypeConstraint]

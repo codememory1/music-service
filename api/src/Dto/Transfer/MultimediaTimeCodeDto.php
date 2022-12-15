@@ -13,21 +13,27 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class MultimediaTimeCodeDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'multimediaTimeCode@rangeTimeIsRequired')]
-    #[Assert\Type('integer', message: 'multimediaTimeCode@invalidFromTime')]
-    #[Assert\Range(minMessage: 'multimediaTimeCode@minFromTime', min: 0)]
-    #[AppAssert\MinMaxBetweenProperty('toTime', max: true, message: 'multimediaTimeCode@fromTimeMoreToTime')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimediaTimeCode@rangeTimeIsRequired'),
+        new Assert\Type('integer', message: 'multimediaTimeCode@invalidFromTime'),
+        new Assert\Range(minMessage: 'multimediaTimeCode@minFromTime', min: 0),
+        new AppAssert\MinMaxBetweenProperty('toTime', max: true, message: 'multimediaTimeCode@fromTimeMoreToTime')
+    ])]
     public ?int $fromTime = null;
 
-    #[Assert\NotBlank(message: 'multimediaTimeCode@rangeTimeIsRequired')]
-    #[Assert\Type('integer', message: 'multimediaTimeCode@invalidToTime')]
-    #[AppAssert\MinMaxBetweenProperty('fromTime', min: true, message: 'multimediaTimeCode@toTimeLessFromTime')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimediaTimeCode@rangeTimeIsRequired'),
+        new Assert\Type('integer', message: 'multimediaTimeCode@invalidToTime'),
+        new AppAssert\MinMaxBetweenProperty('fromTime', min: true, message: 'multimediaTimeCode@toTimeLessFromTime')
+    ])]
     public ?int $toTime = null;
 
-    #[Assert\NotBlank(message: 'multimediaTimeCode@titleIsRequired')]
-    #[Assert\Length(max: 50, maxMessage: 'multimediaTimeCode@titleMaxLength')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimediaTimeCode@titleIsRequired'),
+        new Assert\Length(max: 50, maxMessage: 'multimediaTimeCode@titleMaxLength')
+    ])]
     public ?string $title = null;
 }

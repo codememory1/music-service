@@ -13,11 +13,15 @@ final class AccountActivationDto extends AbstractDataTransfer
         'user' => 'email'
     ];
 
-    #[Assert\NotBlank(message: 'user@failedToIdentify')]
     #[DtoConstraints\ToEntityConstraint('email')]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'user@failedToIdentify')
+    ])]
     public ?User $user = null;
 
-    #[Assert\NotBlank(message: 'common@invalidCode')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'common@invalidCode')
+    ])]
     public ?string $code = null;
 }

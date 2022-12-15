@@ -17,48 +17,62 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class SubscriptionDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'subscription@keyIsRequired')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'subscription@keyIsRequired')
+    ])]
     public ?string $key = null;
 
-    #[Assert\NotBlank(message: 'subscription@titleIsRequired')]
-    #[AppAssert\Exist(
-        TranslationKey::class,
-        'key',
-        'common@titleTranslationKeyNotExist',
-        payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND]
-    )]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'subscription@titleIsRequired'),
+        new AppAssert\Exist(
+            TranslationKey::class,
+            'key',
+            'common@titleTranslationKeyNotExist',
+            payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND]
+        )
+    ])]
     public ?string $title = null;
 
-    #[Assert\NotBlank(message: 'subscription@descriptionIsRequired')]
-    #[AppAssert\Exist(
-        TranslationKey::class,
-        'key',
-        'common@shortDescriptionTranslationKeyNotExist',
-        payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND]
-    )]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'subscription@descriptionIsRequired'),
+        new AppAssert\Exist(
+            TranslationKey::class,
+            'key',
+            'common@shortDescriptionTranslationKeyNotExist',
+            payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND]
+        )
+    ])]
     public ?string $description = null;
 
-    #[Assert\Type('float', message: 'common@invalidOldPrice')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\Type('float', message: 'common@invalidOldPrice')
+    ])]
     public ?float $oldPrice = null;
 
-    #[Assert\NotBlank(message: 'subscription@priceIsRequired')]
-    #[Assert\Type('float', message: 'common@invalidPrice')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'subscription@priceIsRequired'),
+        new Assert\Type('float', message: 'common@invalidPrice')
+    ])]
     public ?float $price = null;
 
     #[DtoConstraints\ToTypeConstraint]
     public ?bool $isRecommend = null;
 
-    #[AppAssert\JsonSchema('subscription_permission', message: 'subscription.invalid_permissions_format')]
     #[DtoConstraints\ToTypeConstraint]
     #[DtoConstraints\IgnoreCallSetterConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new AppAssert\JsonSchema('subscription_permission', message: 'subscription.invalid_permissions_format')
+    ])]
     public array $permissions = [];
 
-    #[Assert\NotBlank(message: 'subscription@statusIsRequired')]
     #[DtoConstraints\ToEnumConstraint(SubscriptionStatusEnum::class)]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'subscription@statusIsRequired')
+    ])]
     public ?SubscriptionStatusEnum $status = null;
 }

@@ -5,6 +5,7 @@ namespace App\Infrastructure\Validator;
 use App\Enum\PlatformCodeEnum;
 use App\Exception\HttpException;
 use App\Exception\WebSocketException;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use function call_user_func;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface as SymfonyValidatorInterface;
@@ -25,21 +26,13 @@ final class Validator
      */
     public function validate(object $object, ?callable $throw = null): void
     {
-        $this->constraintViolationList = $this->validator->validate($object);
+        $this->constraintViolationList = $this->validateObject($object);
 
         foreach ($this->constraintViolationList as $constraintViolation) {
             $constraintViolationInfo = new ConstraintInfo($constraintViolation);
             $platformCode = $constraintViolationInfo->getPlatformCode() ?: PlatformCodeEnum::INPUT_ERROR;
 
-            if ('cli' !== PHP_SAPI) {
-                if (null === $throw) {
-                    $httpCode = $constraintViolationInfo->getHttpCode() ?: 400;
-
-                    throw new HttpException($httpCode, $platformCode, $constraintViolationInfo->getMessage());
-                }
-
-                call_user_func($throw, $constraintViolationInfo);
-            }
+            $this->cli($constraintViolationInfo, $platformCode, $throw);
 
             if (null === $throw) {
                 throw new WebSocketException($platformCode, $constraintViolationInfo->getMessage());
@@ -52,5 +45,28 @@ final class Validator
     public function getConstraintViolationList(): ?ConstraintViolationListInterface
     {
         return $this->constraintViolationList;
+    }
+
+    private function validateObject(object $object): ConstraintViolationListInterface
+    {
+        if ($object instanceof DataTransferInterface) {
+            return $this->validator->validate(
+                $object->getValidationRepository()->getInputData(),
+                $object->getValidationRepository()->getConstraints()
+            );
+        }
+
+        return $this->validator->validate($object);
+    }
+
+    private function cli(ConstraintInfo $constraintViolationInfo, PlatformCodeEnum $platformCode, ?callable $throw = null): void
+    {
+        if ('cli' !== PHP_SAPI) {
+            if (null === $throw) {
+                throw new HttpException($constraintViolationInfo->getHttpCode() ?: 400, $platformCode, $constraintViolationInfo->getMessage());
+            }
+
+            call_user_func($throw, $constraintViolationInfo);
+        }
     }
 }
