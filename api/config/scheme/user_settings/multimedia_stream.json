@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "properties": {
+        "number_streams": {
+            "if": {
+                "type": "integer",
+                "maximum": 100
+            },
+            "else": {
+                "type": "string",
+                "enum": ["auto"]
+            }
+        }
+    },
+    "required": ["number_streams"],
+    "additionalProperties": false
+}

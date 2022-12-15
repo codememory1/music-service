@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d00ee07e25b1d069037c8cd2872058c",
+    "content-hash": "6ab1594819de969bf481553847b3f0d0",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1884,32 +1884,94 @@
             "time": "2021-10-11T09:18:27+00:00"
         },
         {
-            "name": "ergebnis/json-pointer",
-            "version": "3.1.0",
+            "name": "ergebnis/json",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ergebnis/json-pointer.git",
-                "reference": "f762a112784ab0ffc81d6aca4ff5308fed6d287d"
+                "url": "https://github.com/ergebnis/json.git",
+                "reference": "d66ea30060856d0729a4aa319a02752519ca63a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/json-pointer/zipball/f762a112784ab0ffc81d6aca4ff5308fed6d287d",
-                "reference": "f762a112784ab0ffc81d6aca4ff5308fed6d287d",
+                "url": "https://api.github.com/repos/ergebnis/json/zipball/d66ea30060856d0729a4aa319a02752519ca63a0",
+                "reference": "d66ea30060856d0729a4aa319a02752519ca63a0",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.4 || ^8.0"
+                "php": "^8.0"
             },
             "require-dev": {
-                "ergebnis/composer-normalize": "^2.24.1",
+                "ergebnis/composer-normalize": "^2.29.0",
                 "ergebnis/data-provider": "^1.2.0",
-                "ergebnis/license": "^1.2.0",
-                "ergebnis/php-cs-fixer-config": "^4.4.0",
-                "fakerphp/faker": "^1.19.0",
-                "infection/infection": "~0.26.6",
-                "phpunit/phpunit": "^9.5.19",
-                "psalm/plugin-phpunit": "~0.16.1",
-                "vimeo/psalm": "^4.22"
+                "ergebnis/license": "^2.1.0",
+                "ergebnis/php-cs-fixer-config": "^5.0.0",
+                "ergebnis/phpstan-rules": "^1.0.0",
+                "fakerphp/faker": "^1.20.0",
+                "infection/infection": "~0.26.16",
+                "phpunit/phpunit": "^9.5.27",
+                "psalm/plugin-phpunit": "~0.18.4",
+                "vimeo/psalm": "^5.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "composer-normalize": {
+                    "indent-size": 2,
+                    "indent-style": "space"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ergebnis\\Json\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andreas Möller",
+                    "email": "am@localheinz.com"
+                }
+            ],
+            "description": "Provides a Json value object for representing a valid JSON string.",
+            "homepage": "https://github.com/ergebnis/json",
+            "keywords": [
+                "json"
+            ],
+            "support": {
+                "issues": "https://github.com/ergebnis/json/issues",
+                "source": "https://github.com/ergebnis/json"
+            },
+            "time": "2022-12-10T22:38:50+00:00"
+        },
+        {
+            "name": "ergebnis/json-pointer",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ergebnis/json-pointer.git",
+                "reference": "861516ff5afa1aa8905fdf3361315909523a1bf8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ergebnis/json-pointer/zipball/861516ff5afa1aa8905fdf3361315909523a1bf8",
+                "reference": "861516ff5afa1aa8905fdf3361315909523a1bf8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "ergebnis/composer-normalize": "^2.28.3",
+                "ergebnis/data-provider": "^1.2.0",
+                "ergebnis/license": "^2.1.0",
+                "ergebnis/php-cs-fixer-config": "^5.0.0",
+                "fakerphp/faker": "^1.20.0",
+                "infection/infection": "~0.26.16",
+                "phpunit/phpunit": "^9.5.26",
+                "psalm/plugin-phpunit": "~0.18.3",
+                "vimeo/psalm": "^4.30"
             },
             "type": "library",
             "extra": {
@@ -1944,44 +2006,39 @@
                 "issues": "https://github.com/ergebnis/json-pointer/issues",
                 "source": "https://github.com/ergebnis/json-pointer"
             },
-            "funding": [
-                {
-                    "url": "https://github.com/localheinz",
-                    "type": "github"
-                }
-            ],
-            "time": "2022-03-21T13:24:23+00:00"
+            "time": "2022-11-28T17:03:31+00:00"
         },
         {
             "name": "ergebnis/json-schema-validator",
-            "version": "3.1.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/json-schema-validator.git",
-                "reference": "689bf18666b508aa8c64edf237223d475670589b"
+                "reference": "a6166272ac5691a9bc791f185841e5f92a6d4723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/json-schema-validator/zipball/689bf18666b508aa8c64edf237223d475670589b",
-                "reference": "689bf18666b508aa8c64edf237223d475670589b",
+                "url": "https://api.github.com/repos/ergebnis/json-schema-validator/zipball/a6166272ac5691a9bc791f185841e5f92a6d4723",
+                "reference": "a6166272ac5691a9bc791f185841e5f92a6d4723",
                 "shasum": ""
             },
             "require": {
-                "ergebnis/json-pointer": "^3.0.0",
+                "ergebnis/json": "^1.0.0",
+                "ergebnis/json-pointer": "^3.2.0",
                 "ext-json": "*",
-                "justinrainbow/json-schema": "^5.2.10",
-                "php": "^7.4 || ^8.0"
+                "justinrainbow/json-schema": "^5.2.12",
+                "php": "^8.0"
             },
             "require-dev": {
                 "ergebnis/composer-normalize": "^2.21.0",
                 "ergebnis/data-provider": "^1.2.0",
-                "ergebnis/license": "^1.2.0",
-                "ergebnis/php-cs-fixer-config": "~4.4.0",
-                "fakerphp/faker": "^1.19.0",
-                "infection/infection": "~0.26.6",
-                "phpunit/phpunit": "~9.5.19",
-                "psalm/plugin-phpunit": "~0.16.1",
-                "vimeo/psalm": "^4.22"
+                "ergebnis/license": "^2.1.0",
+                "ergebnis/php-cs-fixer-config": "~5.0.0",
+                "fakerphp/faker": "^1.20.0",
+                "infection/infection": "~0.26.16",
+                "phpunit/phpunit": "~9.5.27",
+                "psalm/plugin-phpunit": "~0.18.4",
+                "vimeo/psalm": "^5.1.0"
             },
             "type": "library",
             "extra": {
@@ -2016,13 +2073,7 @@
                 "issues": "https://github.com/ergebnis/json-schema-validator/issues",
                 "source": "https://github.com/ergebnis/json-schema-validator"
             },
-            "funding": [
-                {
-                    "url": "https://github.com/localheinz",
-                    "type": "github"
-                }
-            ],
-            "time": "2022-03-21T10:35:08+00:00"
+            "time": "2022-12-10T14:50:15+00:00"
         },
         {
             "name": "evenement/evenement",

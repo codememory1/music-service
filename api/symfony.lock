@@ -136,6 +136,9 @@
     "egulias/email-validator": {
         "version": "3.1.2"
     },
+    "ergebnis/json": {
+        "version": "1.0.1"
+    },
     "ergebnis/json-pointer": {
         "version": "3.1.0"
     },

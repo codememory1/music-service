@@ -3,8 +3,8 @@
 namespace App\Service\DataRepresentation;
 
 use App\Rest\Http\Request;
+use Ergebnis\Json\Json;
 use Ergebnis\Json\Pointer\JsonPointer;
-use Ergebnis\Json\SchemaValidator\Json;
 use Ergebnis\Json\SchemaValidator\SchemaValidator;
 use function is_array;
 use LogicException;

@@ -12,6 +12,7 @@ abstract class AbstractDataTransferConstraintHandler implements DataTransferCons
 {
     private ?DataTransferInterface $dataTransfer = null;
     private ?ReflectionProperty $reflectionProperty = null;
+    private ?string $propertyNameAsInputName = null;
 
     public function getDataTransfer(): ?DataTransferInterface
     {
@@ -53,5 +54,17 @@ abstract class AbstractDataTransferConstraintHandler implements DataTransferCons
     public function getPropertyTypeName(): ?string
     {
         return $this->getReflectionProperty()?->getType()?->getName();
+    }
+
+    public function getPropertyNameAsInputName(): ?string
+    {
+        return $this->propertyNameAsInputName;
+    }
+
+    public function setPropertyNameAsInputName(string $name): DataTransferConstraintHandlerInterface
+    {
+        $this->propertyNameAsInputName = $name;
+
+        return $this;
     }
 }

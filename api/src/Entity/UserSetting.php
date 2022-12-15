@@ -24,9 +24,14 @@ class UserSetting implements EntityInterface
     private ?User $user = null;
 
     #[ORM\Column(type: Types::BOOLEAN, options: [
-        'comment' => ''
+        'comment' => 'Permission to automatically accept media sent by a friend'
     ])]
     private ?bool $acceptMultimediaFromFriends = null;
+
+    #[ORM\Column(type: Types::JSON, options: [
+        'comment' => 'Control over media flow'
+    ])]
+    private array $multimediaStream = [];
 
     public function getUser(): ?User
     {
@@ -48,6 +53,18 @@ class UserSetting implements EntityInterface
     public function setAcceptMultimediaFromFriends(?bool $acceptMultimediaFromFriends): self
     {
         $this->acceptMultimediaFromFriends = $acceptMultimediaFromFriends;
+
+        return $this;
+    }
+
+    public function getMultimediaStream(): array
+    {
+        return $this->multimediaStream;
+    }
+
+    public function setMultimediaStream(array $multimediaStream): self
+    {
+        $this->multimediaStream = $multimediaStream;
 
         return $this;
     }

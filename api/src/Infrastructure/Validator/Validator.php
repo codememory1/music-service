@@ -25,21 +25,16 @@ final class Validator
      */
     public function validate(object $object, ?callable $throw = null): void
     {
-        $this->constraintViolationList = $this->validator->validate($object);
+        $this->constraintViolationList = $this->validator->validate(
+            $object->getValidationRepository()->getInputData(),
+            $object->getValidationRepository()->getConstraints()
+        );
 
         foreach ($this->constraintViolationList as $constraintViolation) {
             $constraintViolationInfo = new ConstraintInfo($constraintViolation);
             $platformCode = $constraintViolationInfo->getPlatformCode() ?: PlatformCodeEnum::INPUT_ERROR;
 
-            if ('cli' !== PHP_SAPI) {
-                if (null === $throw) {
-                    $httpCode = $constraintViolationInfo->getHttpCode() ?: 400;
-
-                    throw new HttpException($httpCode, $platformCode, $constraintViolationInfo->getMessage());
-                }
-
-                call_user_func($throw, $constraintViolationInfo);
-            }
+            $this->cli($constraintViolationInfo, $platformCode, $throw);
 
             if (null === $throw) {
                 throw new WebSocketException($platformCode, $constraintViolationInfo->getMessage());
@@ -52,5 +47,16 @@ final class Validator
     public function getConstraintViolationList(): ?ConstraintViolationListInterface
     {
         return $this->constraintViolationList;
+    }
+
+    private function cli(ConstraintInfo $constraintViolationInfo, PlatformCodeEnum $platformCode, ?callable $throw = null): void
+    {
+        if ('cli' !== PHP_SAPI) {
+            if (null === $throw) {
+                throw new HttpException($constraintViolationInfo->getHttpCode() ?: 400, $platformCode, $constraintViolationInfo->getMessage());
+            }
+
+            call_user_func($throw, $constraintViolationInfo);
+        }
     }
 }

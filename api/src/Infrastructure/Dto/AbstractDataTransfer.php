@@ -24,11 +24,13 @@ abstract class AbstractDataTransfer implements DataTransferInterface
     protected array $propertyNameToData = [];
     protected ReflectionClass $reflectionClass;
     private ?EntityInterface $entity = null;
+    private DtoValidationRepository $validationRepository;
 
     public function __construct(
         private readonly ReverseContainer $container
     ) {
         $this->reflectionClass = new ReflectionClass(static::class);
+        $this->validationRepository = new DtoValidationRepository();
     }
 
     public function setEntity(EntityInterface $entity): self
@@ -59,8 +61,12 @@ abstract class AbstractDataTransfer implements DataTransferInterface
 
                 $constraintHandler->setDataTransfer($this);
                 $constraintHandler->setReflectionProperty($property);
+                $constraintHandler->setPropertyNameAsInputName($propertyNameToData ?: $this->getPropertyNameToSnakeCase($property));
 
                 if ($constraintHandler instanceof DataTransferCallSetterConstraintHandlerInterface) {
+                    $constraintHandler->setPropertyValue($dataValue);
+                    $constraintHandler->setValidationRepository($this->validationRepository);
+
                     $isCallSetterToEntity = $constraintHandler->handle($attributeCollection->constraint);
                 } else {
                     if ($constraintHandler instanceof DataTransferValueInterceptorConstraintHandlerInterface) {
@@ -77,6 +83,11 @@ abstract class AbstractDataTransfer implements DataTransferInterface
         }
 
         return $this;
+    }
+
+    public function getValidationRepository(): DtoValidationRepository
+    {
+        return $this->validationRepository;
     }
 
     /**

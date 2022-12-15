@@ -9,4 +9,8 @@ interface DataTransferConstraintHandlerInterface
     public function setDataTransfer(DataTransferInterface $dataTransfer): self;
 
     public function setReflectionProperty(ReflectionProperty $reflectionProperty): self;
+
+    public function getPropertyNameAsInputName(): ?string;
+
+    public function setPropertyNameAsInputName(string $name): self;
 }
