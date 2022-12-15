@@ -13,19 +13,23 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class MultimediaMediaLibraryDto extends AbstractDataTransfer
 {
-    #[Assert\Length(max: 50, maxMessage: 'multimedia@titleMaxLength')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\Length(max: 50, maxMessage: 'multimedia@titleMaxLength')
+    ])]
     public ?string $title = null;
 
-    #[Assert\AtLeastOneOf([
-        new Assert\IsNull(),
-        new Assert\File(
-            maxSize: '5M',
-            mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
-            maxSizeMessage: 'multimedia@maxSizePreview',
-            mimeTypesMessage: 'multimedia@uploadFileIsNotPreview'
-        )
-    ])]
     #[DtoConstraints\IgnoreCallSetterConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\AtLeastOneOf([
+            new Assert\IsNull(),
+            new Assert\File(
+                maxSize: '5M',
+                mimeTypes: ['image/png', 'image/jpg', 'image/jpeg'],
+                maxSizeMessage: 'multimedia@maxSizePreview',
+                mimeTypesMessage: 'multimedia@uploadFileIsNotPreview'
+            )
+        ])
+    ])]
     public ?UploadedFile $image = null;
 }

@@ -8,7 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class RefreshTokenDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'common@refreshTokenIsRequired')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'common@refreshTokenIsRequired')
+    ])]
     public ?string $refreshToken = null;
 }

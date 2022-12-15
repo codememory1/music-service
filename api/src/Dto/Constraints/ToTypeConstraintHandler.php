@@ -98,9 +98,9 @@ final class ToTypeConstraintHandler extends AbstractDataTransferConstraintHandle
         return (float) $value;
     }
 
-    private function toBoolean(mixed $value): float
+    private function toBoolean(mixed $value): bool
     {
-        return 1 === $value || '1' === $value || true === $value || false === empty($value);
+        return 1 === $value || '1' === $value || true === $value || 'true' === $value;
     }
 
     private function toDateTime(mixed $value): ?DateTimeInterface

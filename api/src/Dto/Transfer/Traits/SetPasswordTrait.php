@@ -9,13 +9,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 trait SetPasswordTrait
 {
-    #[Assert\NotBlank(message: 'common@passwordIsRequired')]
-    #[Assert\Regex(ValidationRuleEnum::PASSWORD_REGEXP, message: 'common@incorrectPasswordBySchema')]
-    #[Assert\Length(min: ValidationRuleEnum::PASSWORD_MIN_LENGTH, minMessage: 'common@minPasswordLength')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'common@passwordIsRequired'),
+        new Assert\Regex(ValidationRuleEnum::PASSWORD_REGEXP, message: 'common@incorrectPasswordBySchema'),
+        new Assert\Length(min: ValidationRuleEnum::PASSWORD_MIN_LENGTH, minMessage: 'common@minPasswordLength')
+    ])]
     public ?string $password = null;
 
-    #[AppAssert\Between('password', message: 'common@invalidConfirmPassword')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new AppAssert\Between('password', message: 'common@invalidConfirmPassword')
+    ])]
     public ?string $passwordConfirm = null;
 }

@@ -12,10 +12,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class SubscriptionPermissionBranchDto extends AbstractDataTransfer
 {
-    #[AppAssert\Enum(SubscriptionPermissionEnum::class, message: 'subscription@permissionNotFound', payload: [
-        Validator::PPC => PlatformCodeEnum::INACCESSIBLE_DATA,
-        Validator::PHD => Response::HTTP_BAD_REQUEST
-    ])]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new AppAssert\Enum(SubscriptionPermissionEnum::class, message: 'subscription@permissionNotFound', payload: [
+            Validator::PPC => PlatformCodeEnum::INACCESSIBLE_DATA,
+            Validator::PHD => Response::HTTP_BAD_REQUEST
+        ])
+    ])]
     public array $ignoredPermissions = [];
 }

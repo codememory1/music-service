@@ -16,13 +16,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class MultimediaCategoryDto extends AbstractDataTransfer
 {
-    #[Assert\NotBlank(message: 'multimediaCategory@titleIsRequired')]
-    #[AppAssert\Exist(
-        TranslationKey::class,
-        'key',
-        'common@titleTranslationKeyNotExist',
-        payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND],
-    )]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'multimediaCategory@titleIsRequired'),
+        new AppAssert\Exist(
+            TranslationKey::class,
+            'key',
+            'common@titleTranslationKeyNotExist',
+            payload: [Validator::PPC => PlatformCodeEnum::ENTITY_NOT_FOUND],
+        )
+    ])]
     public ?string $title = null;
 }

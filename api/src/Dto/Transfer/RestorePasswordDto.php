@@ -16,12 +16,16 @@ final class RestorePasswordDto extends AbstractDataTransfer
         'user' => 'email'
     ];
 
-    #[Assert\NotBlank(message: 'user@failedToIdentify')]
     #[DtoConstraints\ToEntityCallbackConstraint('callbackUserEntity')]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'user@failedToIdentify')
+    ])]
     public ?User $user = null;
 
-    #[Assert\NotBlank(message: 'common@codeIsRequired')]
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new Assert\NotBlank(message: 'common@codeIsRequired')
+    ])]
     public ?string $code = null;
 
     public function callbackUserEntity(EntityManagerInterface $manager, mixed $value): ?User

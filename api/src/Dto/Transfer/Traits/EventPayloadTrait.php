@@ -4,15 +4,16 @@ namespace App\Dto\Transfer\Traits;
 
 use App\Dto\Constraints as DtoConstraints;
 use App\Validator\Constraints as AppAssert;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 trait EventPayloadTrait
 {
     #[DtoConstraints\ToTypeConstraint]
+    #[DtoConstraints\ValidationConstraint([
+        new AppAssert\Callback('callbackPayload')
+    ])]
     public array $payload = [];
 
-    #[Assert\Callback]
     public function callbackPayload(ExecutionContextInterface $context): void
     {
         if (null !== $this->key) {
