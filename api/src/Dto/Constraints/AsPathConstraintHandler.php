@@ -23,8 +23,7 @@ final class AsPathConstraintHandler extends AbstractDataTransferCallSetterConstr
             return false;
         }
 
-        $this->getValidationRepository()->addInput($this->getPropertyName(), $this->getPropertyValue());
-        $this->getValidationRepository()->addConstraints($this->getPropertyName(), $constraint->assert);
+        $this->getDataTransfer()->addValidateConstraints($this->getPropertyName(), $constraint->assert);
 
         return true;
     }

@@ -28,7 +28,7 @@ final class RequestRestoration
 
         $passwordReset = $dto->getEntity();
 
-        $passwordReset->setTtl($this->platformSetting->get(PlatformSettingEnum::PASSWORD_RESET_TTL_CODE));
+        $passwordReset->setTtl($this->platformSetting->get(PlatformSettingEnum::PASSWORD_RESET_CODE_TTL));
         $passwordReset->setInProcessStatus();
 
         $this->eventDispatcher->dispatch(new RequestRestorationPasswordEvent($passwordReset));

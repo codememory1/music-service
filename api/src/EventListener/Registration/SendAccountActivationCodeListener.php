@@ -3,20 +3,23 @@
 namespace App\EventListener\Registration;
 
 use App\Entity\AccountActivationCode;
-use App\Event\UserRegistrationEvent;
+use App\Enum\PlatformSettingEnum;
+use App\Event\SuccessUserRegistrationEvent;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Service\MailMessaging;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\PlatformSetting;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-#[AsEventListener(UserRegistrationEvent::class, 'onUserRegistration', 0)]
+#[AsEventListener(SuccessUserRegistrationEvent::class, 'onUserRegistration', 1)]
 final class SendAccountActivationCodeListener
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
+        private readonly Flusher $flusher,
+        private readonly PlatformSetting $platformSetting,
         private readonly MailMessaging $mailMessagingService
     ) {
     }
@@ -27,10 +30,15 @@ final class SendAccountActivationCodeListener
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function onUserRegistration(UserRegistrationEvent $event): void
+    public function onUserRegistration(SuccessUserRegistrationEvent $event): void
     {
-        $accountActivationCodeRepository = $this->em->getRepository(AccountActivationCode::class);
+        $accountActivationCodeEntity = new AccountActivationCode();
 
-        $this->mailMessagingService->sendAccountActivationCode($accountActivationCodeRepository->findByUser($event->user));
+        $accountActivationCodeEntity->setUser($event->user);
+        $accountActivationCodeEntity->setTtl($this->platformSetting->get(PlatformSettingEnum::ACCOUNT_ACTIVATION_CODE_TTL));
+
+        $this->flusher->save($accountActivationCodeEntity);
+
+        $this->mailMessagingService->sendAccountActivationCode($accountActivationCodeEntity);
     }
 }

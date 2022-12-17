@@ -5,12 +5,12 @@ namespace App\EventListener\Registration;
 use App\Entity\User;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\PlatformSettingEnum;
-use App\Event\UserRegistrationEvent;
+use App\Event\PreUserRegistrationEvent;
 use App\Exception\HttpException;
 use App\Service\PlatformSetting;
-use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEntityListener(UserRegistrationEvent::class, 'onUserRegistration', 2)]
+#[AsEventListener(PreUserRegistrationEvent::class, 'onPreUserRegistration', 0)]
 final class MailDomainCheckListener
 {
     public function __construct(
@@ -18,7 +18,7 @@ final class MailDomainCheckListener
     ) {
     }
 
-    public function onUserRegistration(UserRegistrationEvent $event): void
+    public function onPreUserRegistration(PreUserRegistrationEvent $event): void
     {
         $allowedEmails = $this->platformSettingService->get(PlatformSettingEnum::ALLOWED_REGISTRATION_DOMAINS) ?: [];
         $mailDomain = $this->getMailDomain($event->user);

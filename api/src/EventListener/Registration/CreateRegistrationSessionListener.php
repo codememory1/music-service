@@ -3,12 +3,9 @@
 namespace App\EventListener\Registration;
 
 use App\Dto\Transformer\UserTransformer;
-use App\Entity\UserSession;
 use App\Enum\UserSessionTypeEnum;
-use App\Event\UserRegistrationEvent;
+use App\Event\SuccessUserRegistrationEvent;
 use App\UseCase\User\Session\CreateUserSession;
-use App\UseCase\User\Session\UpdateUserSession;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -16,13 +13,11 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-#[AsEventListener(UserRegistrationEvent::class, 'onUserRegistration', -1)]
+#[AsEventListener(SuccessUserRegistrationEvent::class, 'onUserRegistration', 0)]
 final class CreateRegistrationSessionListener
 {
     public function __construct(
-        private readonly EntityManagerInterface $em,
         private readonly CreateUserSession $createUserSession,
-        private readonly UpdateUserSession $updateUserSession,
         private readonly UserTransformer $userTransformer
     ) {
     }
@@ -34,23 +29,13 @@ final class CreateRegistrationSessionListener
      * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      */
-    public function onUserRegistration(UserRegistrationEvent $event): void
+    public function onUserRegistration(SuccessUserRegistrationEvent $event): void
     {
-        $userSessionRepository = $this->em->getRepository(UserSession::class);
-        $finedUserSession = $userSessionRepository->findRegistered($event->user);
-
-        if (null !== $finedUserSession) {
-            $this->updateUserSession->process(
-                $this->userTransformer->transformFromRequest(),
-                $event->user,
-                $finedUserSession,
-                UserSessionTypeEnum::REGISTRATION
-            );
-        } else {
+        if ($event->user->getSessions()->count() < 1) {
             $this->createUserSession->process(
                 $this->userTransformer->transformFromRequest(),
                 $event->user,
-                type: UserSessionTypeEnum::REGISTRATION
+                UserSessionTypeEnum::REGISTRATION
             );
         }
     }

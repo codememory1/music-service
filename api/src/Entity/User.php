@@ -13,6 +13,7 @@ use App\Enum\RoleEnum;
 use App\Enum\RolePermissionEnum;
 use App\Enum\SubscriptionEnum;
 use App\Enum\SubscriptionPermissionEnum;
+use App\Enum\UserSessionTypeEnum;
 use App\Enum\UserStatusEnum;
 use App\Infrastructure\Validator\Validator;
 use App\Repository\UserRepository;
@@ -127,8 +128,8 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'buyer', targetEntity: Transaction::class, cascade: ['remove'])]
     private Collection $transactions;
 
-    #[ORM\OneToMany(mappedBy: 'userr', targetEntity: MultimediaExternalService::class)]
-    private $multimediaExternalServices;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaExternalService::class)]
+    private Collection $multimediaExternalServices;
 
     #[Pure]
     public function __construct()
@@ -240,6 +241,13 @@ class User implements EntityInterface
         $this->profile = $profile;
 
         return $this;
+    }
+
+    public function getRegisteredSession(): ?UserSession
+    {
+        $session = $this->sessions->filter(static fn(UserSession $session) => $session->getType() === UserSessionTypeEnum::REGISTRATION->name)->first();
+
+        return false === $session ? null : $session;
     }
 
     /**
@@ -861,7 +869,7 @@ class User implements EntityInterface
     {
         if (!$this->multimediaExternalServices->contains($multimediaExternalService)) {
             $this->multimediaExternalServices[] = $multimediaExternalService;
-            $multimediaExternalService->setUserr($this);
+            $multimediaExternalService->setUser($this);
         }
 
         return $this;
@@ -871,11 +879,23 @@ class User implements EntityInterface
     {
         if ($this->multimediaExternalServices->removeElement($multimediaExternalService)) {
             // set the owning side to null (unless already changed)
-            if ($multimediaExternalService->getUserr() === $this) {
-                $multimediaExternalService->setUserr(null);
+            if ($multimediaExternalService->getUser() === $this) {
+                $multimediaExternalService->setUser(null);
             }
         }
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $userSetting = new UserSetting();
+
+        $userSetting->setUser($this);
+        $userSetting->setAcceptMultimediaFromFriends(false);
+        $userSetting->setMultimediaStream(['number_streams' => 'auto']);
+
+        $this->setting = $userSetting;
     }
 }

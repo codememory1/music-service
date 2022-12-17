@@ -17,7 +17,7 @@ use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
 use App\Security\Auth\Identification;
 use App\Security\Logout\Logout;
-use App\Security\Register\Registration;
+use App\Security\Registration\Registration;
 use App\UseCase\User\Session\UpdateUserSessionAccessToken;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +28,7 @@ class SecurityController extends AbstractRestController
     #[Route('/register', methods: 'POST')]
     public function registration(RegistrationTransformer $transformer, Registration $register, UserRegistrationResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($register->handle($transformer->transformFromRequest()));
+        $responseData->setEntities($register->registration($transformer->transformFromRequest()));
 
         return $this->responseData($responseData, PlatformCodeEnum::CREATED_PENDING);
     }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Security\Register;
+namespace App\Security\Registration;
 
 use App\Dto\Transfer\RegistrationDto;
 use App\Entity\User;
-use App\Enum\PlatformCodeEnum;
-use App\Event\UserRegistrationEvent;
-use App\Exception\HttpException;
+use App\Event\PreUserRegistrationEvent;
+use App\Event\SuccessUserRegistrationEvent;
+use App\Exception\Http\ConflictException;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
 use App\Repository\UserRepository;
@@ -23,26 +23,23 @@ final class Registration
     ) {
     }
 
-    public function handle(RegistrationDto $dto): User
+    public function registration(RegistrationDto $dto): User
     {
         $this->validator->validate($dto);
 
         $user = $this->userRepository->findByEmail($dto->email);
 
-        if (null !== $user && false === $user->isNotActive()) {
-            throw new HttpException(409, PlatformCodeEnum::ENTITY_FOUND, 'user@existByEmail');
+        if (true === $user?->isActive()) {
+            throw ConflictException::userByEmailExist();
         }
 
-        return $this->register($dto, $user);
-    }
+        $registeredUser = $this->registrar->registrar($dto, $user);
 
-    public function register(RegistrationDto $dto, ?User $user): User
-    {
-        $registeredUser = $this->registrar->make($dto, $user);
+        $this->eventDispatcher->dispatch(new PreUserRegistrationEvent($registeredUser));
 
-        $this->eventDispatcher->dispatch(new UserRegistrationEvent($registeredUser));
+        $this->flusher->save($registeredUser);
 
-        $this->flusher->save();
+        $this->eventDispatcher->dispatch(new SuccessUserRegistrationEvent($registeredUser));
 
         return $registeredUser;
     }
