@@ -20,12 +20,11 @@ final class BetweenValidator extends ConstraintValidator
         $object = $this->context->getObject();
         $propertyOrMethod = $constraint->with;
         $asProperty = $constraint->property;
-
         $withValue = $asProperty ? $object->$propertyOrMethod : $object->$propertyOrMethod();
 
         if ($value !== $withValue) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ current }}', $this->context->getPropertyName())
+                ->setParameter('{{ current }}', $this->context->getPropertyName() ?: $this->context->getPropertyPath())
                 ->setParameter('{{ with }}', $constraint->with)
                 ->addViolation();
         }

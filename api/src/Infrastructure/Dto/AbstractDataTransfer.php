@@ -10,6 +10,7 @@ use App\Infrastructure\Dto\Interfaces\DataTransferConstraintHandlerInterface;
 use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
 use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Infrastructure\Dto\Interfaces\DataTransferValueInterceptorConstraintHandlerInterface;
+use App\Validator\Constraints as AppAssert;
 use JetBrains\PhpStorm\Pure;
 use LogicException;
 use ReflectionClass;
@@ -20,18 +21,18 @@ use function Symfony\Component\String\u;
 /**
  * @template Entity as mixed
  */
+#[AppAssert\Collection('getValidateConstraints')]
 abstract class AbstractDataTransfer implements DataTransferInterface
 {
     protected array $propertyNameToData = [];
     protected ReflectionClass $reflectionClass;
     private ?EntityInterface $entity = null;
-    private DataTransferValidationRepository $validationRepository;
+    private array $validation = [];
 
     public function __construct(
         private readonly ReverseContainer $container
     ) {
         $this->reflectionClass = new ReflectionClass(static::class);
-        $this->validationRepository = new DataTransferValidationRepository();
     }
 
     public function setEntity(EntityInterface $entity): self
@@ -66,12 +67,10 @@ abstract class AbstractDataTransfer implements DataTransferInterface
                 $constraintHandler->setPropertyValue($dataValue);
 
                 if ($constraintHandler instanceof DataTransferCallSetterConstraintHandlerInterface) {
-                    $constraintHandler->setValidationRepository($this->validationRepository);
-
                     $isCallSetterToEntity = $constraintHandler->handle($attributeCollection->constraint);
                 } else {
                     if ($constraintHandler instanceof DataTransferAssertConstraintHandlerInterface) {
-                        $constraintHandler->handle($attributeCollection->constraint, $this->validationRepository);
+                        $constraintHandler->handle($attributeCollection->constraint);
                     } else {
                         if ($constraintHandler instanceof DataTransferValueInterceptorConstraintHandlerInterface) {
                             $dataValue = $constraintHandler->handle($attributeCollection->constraint, $dataValue);
@@ -90,9 +89,20 @@ abstract class AbstractDataTransfer implements DataTransferInterface
         return $this;
     }
 
-    public function getValidationRepository(): DataTransferValidationRepository
+    public function addValidateConstraints(string $propertyName, array $constraints): self
     {
-        return $this->validationRepository;
+        if (!array_key_exists($propertyName, $constraints)) {
+            $this->validation[$propertyName] = [];
+        }
+
+        $this->validation[$propertyName] = array_merge($this->validation[$propertyName], $constraints);
+
+        return $this;
+    }
+
+    public function getValidateConstraints(): array
+    {
+        return $this->validation;
     }
 
     /**

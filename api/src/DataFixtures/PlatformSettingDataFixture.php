@@ -26,7 +26,8 @@ final class PlatformSettingDataFixture extends AbstractDataFixture
             new PlatformSettingFactory(PlatformSettingEnum::AUTO_REJECT_OFFERED_STREAMING, 30),
             new PlatformSettingFactory(PlatformSettingEnum::PERCENT_ARTIST_INCOME_FROM_TURNOVER, 45),
             new PlatformSettingFactory(PlatformSettingEnum::MONTHLY_EXPENSES, 2000),
-            new PlatformSettingFactory(PlatformSettingEnum::PASSWORD_RESET_TTL_CODE, '10m'),
+            new PlatformSettingFactory(PlatformSettingEnum::ACCOUNT_ACTIVATION_CODE_TTL, '1h'),
+            new PlatformSettingFactory(PlatformSettingEnum::PASSWORD_RESET_CODE_TTL, '10m'),
             new PlatformSettingFactory(PlatformSettingEnum::ALLOWED_MULTIMEDIA_EXTERNAL_SERVICES, [
                 MultimediaExternalServiceEnum::YOUTUBE->name
             ]),

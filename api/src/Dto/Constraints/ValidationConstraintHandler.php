@@ -3,7 +3,6 @@
 namespace App\Dto\Constraints;
 
 use App\Infrastructure\Dto\AbstractDataTransferConstraintHandler;
-use App\Infrastructure\Dto\DataTransferValidationRepository;
 use App\Infrastructure\Dto\Interfaces\DataTransferAssertConstraintHandlerInterface;
 use App\Infrastructure\Dto\Interfaces\DataTransferConstraintInterface;
 
@@ -12,9 +11,8 @@ final class ValidationConstraintHandler extends AbstractDataTransferConstraintHa
     /**
      * @param ValidationConstraint $constraint
      */
-    public function handle(DataTransferConstraintInterface $constraint, DataTransferValidationRepository $validationRepository): void
+    public function handle(DataTransferConstraintInterface $constraint): void
     {
-        $validationRepository->addInput($this->getPropertyName(), $this->getPropertyValue());
-        $validationRepository->addConstraints($this->getPropertyName(), $constraint->constraints);
+        $this->getDataTransfer()->addValidateConstraints($this->getPropertyName(), $constraint->constraints);
     }
 }

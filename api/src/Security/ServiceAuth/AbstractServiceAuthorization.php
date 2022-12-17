@@ -6,9 +6,8 @@ use App\Dto\Interfaces\ServiceAuthorizationDtoInterface;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\UserProfile;
-use App\Enum\EventEnum;
 use App\Enum\RoleEnum;
-use App\Event\UserRegistrationEvent;
+use App\Event\PreUserRegistrationEvent;
 use App\Exception\Http\AuthorizationException;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
@@ -56,6 +55,26 @@ abstract class AbstractServiceAuthorization
             throw AuthorizationException::didNotProvideData();
         }
 
+        $user = $this->collectUser($userData);
+
+        $this->validator->validate($user);
+
+        $this->flusher->addPersist($user);
+
+        $this->eventDispatcher->dispatch(new PreUserRegistrationEvent($user));
+
+        $this->em->flush();
+
+        return $user;
+    }
+
+    protected function auth(User $user): array
+    {
+        return $this->authorization->auth($user);
+    }
+
+    private function collectUser(UserDataInterface $userData): User
+    {
         $roleRepository = $this->em->getRepository(Role::class);
         $userProfile = new UserProfile();
         $user = new User();
@@ -70,22 +89,6 @@ abstract class AbstractServiceAuthorization
         $user->setNotActiveStatus();
         $user->setProfile($userProfile);
 
-        $this->validator->validate($user);
-
-        $this->flusher->addPersist($user);
-
-        $this->eventDispatcher->dispatch(
-            new UserRegistrationEvent($user),
-            EventEnum::REGISTER->value
-        );
-
-        $this->em->flush();
-
         return $user;
-    }
-
-    protected function auth(User $user): array
-    {
-        return $this->authorization->auth($user);
     }
 }
