@@ -2,7 +2,7 @@
 
 namespace App\UseCase\Multimedia\ExternalService;
 
-use App\Dto\Transfer\MultimediaExternalServiceDto;
+use App\Dto\Transfer\UpdateMultimediaExternalServiceDto;
 use App\Entity\MultimediaExternalService;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Validator\Validator;
@@ -15,7 +15,7 @@ final class UpdateMultimediaFromExternalService
     ) {
     }
 
-    public function process(MultimediaExternalServiceDto $dto): MultimediaExternalService
+    public function process(UpdateMultimediaExternalServiceDto $dto): MultimediaExternalService
     {
         $this->validator->validate($dto);
 
