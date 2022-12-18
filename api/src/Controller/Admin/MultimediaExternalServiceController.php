@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Controller\PublicAvailable;
+namespace App\Controller\Admin;
 
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
-use App\Annotation\SubscriptionPermission;
+use App\Annotation\UserRolePermission;
 use App\Dto\Transformer\MultimediaExternalServiceTransformer;
 use App\Dto\Transformer\UpdateMultimediaExternalServiceTransformer;
 use App\Entity\MultimediaExternalService;
-use App\Enum\SubscriptionPermissionEnum;
+use App\Entity\User;
+use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaExternalServiceRepository;
 use App\ResponseData\General\Multimedia\ExternalService\MultimediaExternalServiceResponseData;
@@ -20,45 +21,46 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/user/multimedia-from-external-service')]
+#[Route('/user')]
 #[Authorization]
 class MultimediaExternalServiceController extends AbstractRestController
 {
-    #[Route('/all', methods: Request::METHOD_GET)]
-    public function all(MultimediaExternalServiceResponseData $responseData, MultimediaExternalServiceRepository $multimediaExternalServiceRepository): JsonResponse
-    {
-        $responseData->setEntities($multimediaExternalServiceRepository->findAllByUser($this->getAuthorizedUser()));
+    #[Route('/{user_id<\d+>}/multimedia-from-external-service/all', methods: Request::METHOD_GET)]
+    #[UserRolePermission(RolePermissionEnum::SHOW_ALL_USER_MULTIMEDIA_EXTERNAL_SERVICE)]
+    public function all(
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
+        MultimediaExternalServiceResponseData $responseData,
+        MultimediaExternalServiceRepository $multimediaExternalServiceRepository
+    ): JsonResponse {
+        $responseData->setEntities($multimediaExternalServiceRepository->findAllByUser($user));
 
         return $this->responseData($responseData);
     }
 
-    #[Route('/add', methods: Request::METHOD_POST)]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA_FROM_EXTERNAL_SERVICE)]
+    #[Route('/{user_id<\d+>}/multimedia-from-external-service/add', methods: Request::METHOD_POST)]
+    #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_EXTERNAL_SERVICE_TO_USER)]
     public function create(
+        #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         MultimediaExternalServiceTransformer $transformer,
         CreateMultimediaFromExternalService $createMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
     ): JsonResponse {
         $responseData->setEntities($createMultimediaFromExternalService->process(
             $transformer->transformFromRequest(),
-            $this->getAuthorizedUser()
+            $user
         ));
 
         return $this->responseData($responseData);
     }
 
     #[Route('/{multimediaExternalService_id<\d+>}/edit', methods: Request::METHOD_PUT)]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA_FROM_EXTERNAL_SERVICE)]
+    #[UserRolePermission(RolePermissionEnum::UPDATE_MULTIMEDIA_EXTERNAL_SERVICE_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaFromExternalService')] MultimediaExternalService $multimediaExternalService,
         UpdateMultimediaExternalServiceTransformer $transformer,
         UpdateMultimediaFromExternalService $updateMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
     ): JsonResponse {
-        if (false === $multimediaExternalService->getUser()->isCompare($this->getAuthorizedUser())) {
-            throw EntityNotFoundException::multimediaFromExternalService();
-        }
-
         $responseData->setEntities($updateMultimediaFromExternalService->process(
             $transformer->transformFromRequest($multimediaExternalService)
         ));
@@ -66,17 +68,13 @@ class MultimediaExternalServiceController extends AbstractRestController
         return $this->responseData($responseData);
     }
 
-    #[Route('/{multimediaExternalService_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA_FROM_EXTERNAL_SERVICE)]
+    #[Route('/multimedia-from-external-service/{multimediaExternalService_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
+    #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_EXTERNAL_SERVICE_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaFromExternalService')] MultimediaExternalService $multimediaExternalService,
         DeleteMultimediaFromExternalService $deleteMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
     ): JsonResponse {
-        if (false === $multimediaExternalService->getUser()->isCompare($this->getAuthorizedUser())) {
-            throw EntityNotFoundException::multimediaFromExternalService();
-        }
-
         $responseData->setEntities($deleteMultimediaFromExternalService->process($multimediaExternalService));
 
         return $this->responseData($responseData);
