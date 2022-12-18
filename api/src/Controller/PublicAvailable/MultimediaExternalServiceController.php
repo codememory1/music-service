@@ -9,6 +9,7 @@ use App\Dto\Transformer\MultimediaExternalServiceTransformer;
 use App\Entity\MultimediaExternalService;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\Repository\MultimediaExternalServiceRepository;
 use App\ResponseData\General\Multimedia\ExternalService\MultimediaExternalServiceResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\UseCase\Multimedia\ExternalService\CreateMultimediaFromExternalService;
@@ -22,6 +23,14 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Authorization]
 class MultimediaExternalServiceController extends AbstractRestController
 {
+    #[Route('/all', methods: Request::METHOD_GET)]
+    public function all(MultimediaExternalServiceResponseData $responseData, MultimediaExternalServiceRepository $multimediaExternalServiceRepository): JsonResponse
+    {
+        $responseData->setEntities($multimediaExternalServiceRepository->findAllByUser($this->getAuthorizedUser()));
+
+        return $this->responseData($responseData);
+    }
+
     #[Route('/add', methods: Request::METHOD_POST)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA_FROM_EXTERNAL_SERVICE)]
     public function create(

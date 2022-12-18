@@ -6,6 +6,7 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\MultimediaExternalServiceEnum;
+use App\Enum\MultimediaExternalServiceStatusEnum;
 use App\Repository\MultimediaExternalServiceRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,6 +19,10 @@ class MultimediaExternalService implements EntityInterface
     use IdentifierTrait;
     use TimestampTrait;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'multimediaExternalServices')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     #[ORM\Column(type: Types::STRING, length: 25, options: [
         'comment' => 'Service name from MultimediaExternalServiceEnum'
     ])]
@@ -28,9 +33,22 @@ class MultimediaExternalService implements EntityInterface
     ])]
     private array $parameters = [];
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'multimediaExternalServices')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    #[ORM\Column(type: Types::STRING, options: [
+        'comment' => 'Status from MultimediaExternalServiceStatusEnum'
+    ])]
+    private ?string $status = null;
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 
     public function getServiceName(): ?string
     {
@@ -56,14 +74,14 @@ class MultimediaExternalService implements EntityInterface
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getStatus(): ?string
     {
-        return $this->user;
+        return $this->status;
     }
 
-    public function setUser(?User $user): self
+    public function setStatus(?MultimediaExternalServiceStatusEnum $status): self
     {
-        $this->user = $user;
+        $this->status = $status?->name;
 
         return $this;
     }

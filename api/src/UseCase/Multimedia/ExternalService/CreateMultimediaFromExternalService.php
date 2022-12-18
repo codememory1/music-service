@@ -5,6 +5,7 @@ namespace App\UseCase\Multimedia\ExternalService;
 use App\Dto\Transfer\MultimediaExternalServiceDto;
 use App\Entity\MultimediaExternalService;
 use App\Entity\User;
+use App\Enum\MultimediaExternalServiceStatusEnum;
 use App\Enum\PlatformSettingEnum;
 use App\Exception\Http\FailedException;
 use App\Infrastructure\Doctrine\Flusher;
@@ -33,6 +34,7 @@ final class CreateMultimediaFromExternalService
         $multimediaExternalService = $dto->getEntity();
 
         $multimediaExternalService->setUser($owner);
+        $multimediaExternalService->setStatus(MultimediaExternalServiceStatusEnum::UNPUBLISHED);
 
         $this->flusher->save($multimediaExternalService);
 
