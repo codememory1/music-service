@@ -14,13 +14,14 @@ use App\ResponseData\General\User\Profile\UserProfileResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\UseCase\UserProfile\Design\UpdateUserProfileDesign;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user/profile')]
 #[Authorization]
 class UserProfileController extends AbstractRestController
 {
-    #[Route('/{userProfile_id<\d+>}/design/edit', methods: 'POST')]
+    #[Route('/{userProfile_id<\d+>}/design/edit', methods: Request::METHOD_POST)]
     #[UserRolePermission(RolePermissionEnum::UPDATE_USER_PROFILE_DESIGN)]
     public function editDesignProfile(
         #[EntityNotFound(EntityNotFoundException::class, 'userProfile')] UserProfile $userProfile,
@@ -28,10 +29,10 @@ class UserProfileController extends AbstractRestController
         UpdateUserProfileDesign $updateUserProfileDesign,
         UserProfileResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateUserProfileDesign->process(
-            $transformer->transformFromRequest($userProfile->getDesign())
-        ));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $updateUserProfileDesign->process($transformer->transformFromRequest($userProfile->getDesign())),
+            PlatformCodeEnum::UPDATED
+        );
     }
 }

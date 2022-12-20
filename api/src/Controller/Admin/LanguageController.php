@@ -17,42 +17,41 @@ use App\UseCase\Language\CreateLanguage;
 use App\UseCase\Language\DeleteLanguage;
 use App\UseCase\Language\UpdateLanguage;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/language')]
 #[Authorization]
 class LanguageController extends AbstractRestController
 {
-    #[Route('/all', methods: 'GET')]
+    #[Route('/all', methods: Request::METHOD_GET)]
     #[UserRolePermission(RolePermissionEnum::VIEW_LANGUAGES_WITH_FULL_INFO)]
     public function all(LanguageResponseData $responseData, LanguageRepository $languageRepository): JsonResponse
     {
-        $responseData->setEntities($languageRepository->findAll());
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $languageRepository->findAll());
     }
 
-    #[Route('/{language_code<[a-z]+>}/read', methods: 'GET')]
+    #[Route('/{language_code<[a-z]+>}/read', methods: Request::METHOD_GET)]
     #[UserRolePermission(RolePermissionEnum::VIEW_LANGUAGES_WITH_FULL_INFO)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
         LanguageResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($language);
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $language);
     }
 
-    #[Route('/create', methods: 'POST')]
+    #[Route('/create', methods: Request::METHOD_POST)]
     #[UserRolePermission(RolePermissionEnum::CREATE_LANGUAGE)]
     public function create(LanguageTransformer $transformer, CreateLanguage $createLanguage, LanguageResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($createLanguage->process($transformer->transformFromRequest()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
+        return $this->responseData(
+            $responseData,
+            $createLanguage->process($transformer->transformFromRequest()),
+            PlatformCodeEnum::CREATED
+        );
     }
 
-    #[Route('/{language_id<\d+>}/edit', methods: 'PUT')]
+    #[Route('/{language_id<\d+>}/edit', methods: Request::METHOD_PUT)]
     #[UserRolePermission(RolePermissionEnum::UPDATE_LANGUAGE)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
@@ -60,20 +59,20 @@ class LanguageController extends AbstractRestController
         UpdateLanguage $updateLanguage,
         LanguageResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateLanguage->process($transformer->transformFromRequest($language)));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $updateLanguage->process($transformer->transformFromRequest($language)),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
-    #[Route('/{language_id<\d+>}/delete', methods: 'DELETE')]
+    #[Route('/{language_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
     #[UserRolePermission(RolePermissionEnum::DELETE_LANGUAGE)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'language')] Language $language,
         DeleteLanguage $deleteLanguage,
         LanguageResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteLanguage->process($language));
-
-        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
+        return $this->responseData($responseData, $deleteLanguage->process($language), PlatformCodeEnum::DELETED);
     }
 }

@@ -13,12 +13,12 @@ final class ShareMediaLibraryWithFriend
     ) {
     }
 
-    public function process(MediaLibrary $mediaLibrary, User $from, User $to): MediaLibrary
+    public function process(User $from, User $to): MediaLibrary
     {
-        foreach ($mediaLibrary->getMultimedia() as $multimedia) {
+        foreach ($from->getMediaLibrary()->getMultimedia() as $multimedia) {
             $this->shareMultimediaMediaLibraryWithFriend->share($multimedia, $from, $to);
         }
 
-        return $mediaLibrary;
+        return $from->getMediaLibrary();
     }
 }

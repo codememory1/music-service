@@ -20,20 +20,23 @@ use App\Security\Logout\Logout;
 use App\Security\Registration\Registration;
 use App\UseCase\User\Session\UpdateUserSessionAccessToken;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user')]
 class SecurityController extends AbstractRestController
 {
-    #[Route('/register', methods: 'POST')]
+    #[Route('/register', methods: Request::METHOD_POST)]
     public function registration(RegistrationTransformer $transformer, Registration $register, UserRegistrationResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($register->registration($transformer->transformFromRequest()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::CREATED_PENDING);
+        return $this->responseData(
+            $responseData,
+            $register->registration($transformer->transformFromRequest()),
+            PlatformCodeEnum::CREATED_PENDING
+        );
     }
 
-    #[Route('/auth', methods: 'POST')]
+    #[Route('/auth', methods: Request::METHOD_POST)]
     public function auth(
         AuthorizationTransformer $transformer,
         Validator $validator,
@@ -51,25 +54,25 @@ class SecurityController extends AbstractRestController
         return $this->response($authorization->auth($authenticatedUser));
     }
 
-    #[Route('/access-token/update', methods: 'PUT')]
+    #[Route('/access-token/update', methods: Request::METHOD_PUT)]
     public function updateAccessToken(RefreshTokenTransformer $transformer, UpdateUserSessionAccessToken $updateUserSessionAccessToken): JsonResponse
     {
         return $this->response($updateUserSessionAccessToken->process($transformer->transformFromRequest()));
     }
 
-    #[Route('/logout', methods: 'GET')]
+    #[Route('/logout', methods: Request::METHOD_GET)]
     public function logout(RefreshTokenTransformer $transformer, Logout $logout, UserSessionResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($logout->logout($transformer->transformFromRequest()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
+        return $this->responseData($responseData, $logout->logout($transformer->transformFromRequest()), PlatformCodeEnum::DELETED);
     }
 
-    #[Route('/account-activation', methods: 'POST')]
+    #[Route('/account-activation', methods: Request::METHOD_POST)]
     public function activationAccount(AccountActivationTransformer $transformer, AccountActivation $accountActivation, UserAccountActivationResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($accountActivation->activate($transformer->transformFromRequest()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $accountActivation->activate($transformer->transformFromRequest()),
+            PlatformCodeEnum::UPDATED
+        );
     }
 }

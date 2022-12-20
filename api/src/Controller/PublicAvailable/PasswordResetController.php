@@ -12,31 +12,36 @@ use App\Rest\Controller\AbstractRestController;
 use App\Security\PasswordReset\RequestRestoration;
 use App\Security\PasswordReset\RestorePassword;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user/password-reset')]
 #[Authorization(false)]
 class PasswordResetController extends AbstractRestController
 {
-    #[Route('/request-restoration', methods: 'POST')]
+    #[Route('/request-restoration', methods: Request::METHOD_POST)]
     public function requestRestoration(
         RequestRestorationPasswordTransformer $transformer,
         RequestRestoration $requestRestoration,
         RequestRestorationResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($requestRestoration->send($transformer->transformFromRequest()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
+        return $this->responseData(
+            $responseData,
+            $requestRestoration->send($transformer->transformFromRequest()),
+            PlatformCodeEnum::CREATED
+        );
     }
 
-    #[Route('/restore-password', methods: 'POST')]
+    #[Route('/restore-password', methods: Request::METHOD_POST)]
     public function restorePassword(
         RestorePasswordTransformer $transformer,
         RestorePassword $restorePassword,
         RestoreResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($restorePassword->restore($transformer->transformFromRequest()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $restorePassword->restore($transformer->transformFromRequest()),
+            PlatformCodeEnum::UPDATED
+        );
     }
 }

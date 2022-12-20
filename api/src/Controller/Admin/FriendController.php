@@ -15,32 +15,29 @@ use App\ResponseData\General\Friendship\FriendResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\UseCase\Friendship\DeleteFriendship;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user')]
 #[Authorization]
 class FriendController extends AbstractRestController
 {
-    #[Route('/{user_id<\d+>}/friend/all', methods: 'GET')]
+    #[Route('/{user_id<\d+>}/friend/all', methods: Request::METHOD_GET)]
     public function all(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         FriendResponseData $responseData,
         FriendRepository $friendRepository
     ): JsonResponse {
-        $responseData->setEntities($friendRepository->findByUser($user));
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $friendRepository->findByUser($user));
     }
 
-    #[Route('/friend/{friend_id<\d+>}/terminate-friendship', methods: 'DELETE')]
+    #[Route('/friend/{friend_id<\d+>}/terminate-friendship', methods: Request::METHOD_DELETE)]
     #[UserRolePermission(RolePermissionEnum::DELETE_FRIEND_TO_USER)]
     public function terminateFriendship(
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friend,
         DeleteFriendship $deleteFriendship,
         FriendResponseData $responseData
     ): JsonResponse {
-        $deleteFriendship->process($friend);
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData($responseData, $deleteFriendship->process($friend), PlatformCodeEnum::UPDATED);
     }
 }

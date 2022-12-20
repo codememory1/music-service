@@ -9,6 +9,7 @@ use App\Dto\Transformer\MultimediaExternalServiceTransformer;
 use App\Dto\Transformer\UpdateMultimediaExternalServiceTransformer;
 use App\Entity\MultimediaExternalService;
 use App\Entity\User;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaExternalServiceRepository;
@@ -32,9 +33,7 @@ class MultimediaExternalServiceController extends AbstractRestController
         MultimediaExternalServiceResponseData $responseData,
         MultimediaExternalServiceRepository $multimediaExternalServiceRepository
     ): JsonResponse {
-        $responseData->setEntities($multimediaExternalServiceRepository->findAllByUser($user));
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $multimediaExternalServiceRepository->findAllByUser($user));
     }
 
     #[Route('/{user_id<\d+>}/multimedia-from-external-service/add', methods: Request::METHOD_POST)]
@@ -45,12 +44,11 @@ class MultimediaExternalServiceController extends AbstractRestController
         CreateMultimediaFromExternalService $createMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($createMultimediaFromExternalService->process(
-            $transformer->transformFromRequest(),
-            $user
-        ));
-
-        return $this->responseData($responseData);
+        return $this->responseData(
+            $responseData,
+            $createMultimediaFromExternalService->process($transformer->transformFromRequest(), $user),
+            PlatformCodeEnum::CREATED
+        );
     }
 
     #[Route('/{multimediaExternalService_id<\d+>}/edit', methods: Request::METHOD_PUT)]
@@ -61,11 +59,11 @@ class MultimediaExternalServiceController extends AbstractRestController
         UpdateMultimediaFromExternalService $updateMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateMultimediaFromExternalService->process(
-            $transformer->transformFromRequest($multimediaExternalService)
-        ));
-
-        return $this->responseData($responseData);
+        return $this->responseData(
+            $responseData,
+            $updateMultimediaFromExternalService->process($transformer->transformFromRequest($multimediaExternalService)),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
     #[Route('/multimedia-from-external-service/{multimediaExternalService_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
@@ -75,8 +73,10 @@ class MultimediaExternalServiceController extends AbstractRestController
         DeleteMultimediaFromExternalService $deleteMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteMultimediaFromExternalService->process($multimediaExternalService));
-
-        return $this->responseData($responseData);
+        return $this->responseData(
+            $responseData,
+            $deleteMultimediaFromExternalService->process($multimediaExternalService),
+            PlatformCodeEnum::DELETED
+        );
     }
 }

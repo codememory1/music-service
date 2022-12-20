@@ -21,13 +21,14 @@ use App\UseCase\Playlist\Directory\DeletePlaylistDirectory;
 use App\UseCase\Playlist\Directory\Multimedia\DeleteMultimediaFromPlaylistDirectory;
 use App\UseCase\Playlist\Directory\UpdatePlaylistDirectory;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user/media-library/playlist')]
 #[Authorization]
 class PlaylistDirectoryController extends AbstractRestController
 {
-    #[Route('/{playlist_id<\d+>}/directory/create', methods: 'POST')]
+    #[Route('/{playlist_id<\d+>}/directory/create', methods: Request::METHOD_POST)]
     #[UserRolePermission(RolePermissionEnum::CREATE_PLAYLIST_DIRECTORY_TO_USER)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
@@ -35,15 +36,14 @@ class PlaylistDirectoryController extends AbstractRestController
         CreatePlaylistDirectory $createPlaylistDirectory,
         PlaylistDirectoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($createPlaylistDirectory->process(
-            $transformer->transformFromRequest(),
-            $playlist
-        ));
-
-        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
+        return $this->responseData(
+            $responseData,
+            $createPlaylistDirectory->process($transformer->transformFromRequest(), $playlist),
+            PlatformCodeEnum::CREATED
+        );
     }
 
-    #[Route('/directory/{playlistDirectory_id<\d+>}/edit', methods: 'PUT')]
+    #[Route('/directory/{playlistDirectory_id<\d+>}/edit', methods: Request::METHOD_PUT)]
     #[UserRolePermission(RolePermissionEnum::UPDATE_PLAYLIST_DIRECTORY_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
@@ -51,24 +51,28 @@ class PlaylistDirectoryController extends AbstractRestController
         UpdatePlaylistDirectory $updatePlaylistDirectory,
         PlaylistDirectoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updatePlaylistDirectory->process($transformer->transformFromRequest($playlistDirectory)));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $updatePlaylistDirectory->process($transformer->transformFromRequest($playlistDirectory)),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
-    #[Route('/directory/{playlistDirectory_id<\d+>}/delete', methods: 'DELETE')]
+    #[Route('/directory/{playlistDirectory_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
     #[UserRolePermission(RolePermissionEnum::DELETE_PLAYLIST_DIRECTORY_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
         DeletePlaylistDirectory $deletePlaylistDirectoryService,
         PlaylistDirectoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deletePlaylistDirectoryService->process($playlistDirectory));
-
-        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
+        return $this->responseData(
+            $responseData,
+            $deletePlaylistDirectoryService->process($playlistDirectory),
+            PlatformCodeEnum::DELETED
+        );
     }
 
-    #[Route('/directory/{playlistDirectory_id<\d+>}/multimedia/{multimediaMediaLibrary_id<\d+>}/add', methods: 'POST')]
+    #[Route('/directory/{playlistDirectory_id<\d+>}/multimedia/{multimediaMediaLibrary_id<\d+>}/add', methods: Request::METHOD_POST)]
     #[UserRolePermission(RolePermissionEnum::ADD_MULTIMEDIA_TO_PLAYLIST_DIRECTORY)]
     public function addMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
@@ -76,23 +80,24 @@ class PlaylistDirectoryController extends AbstractRestController
         AddMultimediaMediaLibraryToPlaylistDirectory $addMultimediaMediaLibraryToPlaylistDirectory,
         PlaylistDirectoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($addMultimediaMediaLibraryToPlaylistDirectory->process(
-            $multimediaMediaLibrary,
-            $playlistDirectory
-        ));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $addMultimediaMediaLibraryToPlaylistDirectory->process($multimediaMediaLibrary, $playlistDirectory),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
-    #[Route('/directory/multimedia/{multimediaPlaylistDirectory_id<\d+>}/delete', methods: 'DELETE')]
+    #[Route('/directory/multimedia/{multimediaPlaylistDirectory_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
     #[UserRolePermission(RolePermissionEnum::DELETE_MULTIMEDIA_TO_PLAYLIST_DIRECTORY)]
     public function deleteMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaPlaylistDirectory $multimediaPlaylistDirectory,
         DeleteMultimediaFromPlaylistDirectory $deleteMultimediaFromPlaylistDirectory,
         PlaylistDirectoryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteMultimediaFromPlaylistDirectory->process($multimediaPlaylistDirectory));
-
-        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
+        return $this->responseData(
+            $responseData,
+            $deleteMultimediaFromPlaylistDirectory->process($multimediaPlaylistDirectory),
+            PlatformCodeEnum::DELETED
+        );
     }
 }

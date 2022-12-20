@@ -28,42 +28,40 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Authorization]
 class MultimediaController extends AbstractRestController
 {
-    #[Route('/multimedia/all', methods: 'GET')]
+    #[Route('/multimedia/all', methods: Request::METHOD_GET)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_MULTIMEDIA)]
     public function myAll(MultimediaResponseData $responseData, MultimediaRepository $multimediaRepository): JsonResponse
     {
-        $responseData->setEntities($multimediaRepository->findAllByUser($this->getAuthorizedUser()));
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $multimediaRepository->findAllByUser($this->getAuthorizedUser()));
     }
 
-    #[Route('/{user_id<\d+>}/multimedia/all', methods: 'GET')]
+    #[Route('/{user_id<\d+>}/multimedia/all', methods: Request::METHOD_GET)]
     public function userAll(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         MultimediaResponseData $responseData,
         MultimediaRepository $multimediaRepository
     ): JsonResponse {
-        $responseData->setEntities($user->getSetting()->isHideMyMultimedia() ? $multimediaRepository->findAnother($user) : []);
-
-        return $this->responseData($responseData);
+        return $this->responseData(
+            $responseData,
+            $user->getSetting()->isHideMyMultimedia() ? $multimediaRepository->findAnother($user) : []
+        );
     }
 
-    #[Route('/multimedia/add', methods: 'POST')]
+    #[Route('/multimedia/add', methods: Request::METHOD_POST)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
     public function add(
         MultimediaTransformer $transformer,
         AddMultimedia $addMultimedia,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($addMultimedia->process(
-            $transformer->transformFromRequest(),
-            $this->getAuthorizedUser()
-        ));
-
-        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
+        return $this->responseData(
+            $responseData,
+            $addMultimedia->process($transformer->transformFromRequest(), $this->getAuthorizedUser()),
+            PlatformCodeEnum::CREATED
+        );
     }
 
-    #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
+    #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: Request::METHOD_POST)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
@@ -71,36 +69,38 @@ class MultimediaController extends AbstractRestController
         UpdateMultimedia $updateMultimedia,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateMultimedia->process($transformer->transformFromRequest($multimedia)));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $updateMultimedia->process($transformer->transformFromRequest($multimedia)),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
-    #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: 'DELETE')]
+    #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_MULTIMEDIA)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         DeleteMultimedia $deleteMultimedia,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        if (false === $this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
+        if (!$this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
             throw EntityNotFoundException::multimedia();
         }
 
-        $responseData->setEntities($deleteMultimedia->process($multimedia));
-
-        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
+        return $this->responseData($responseData, $deleteMultimedia->process($multimedia), PlatformCodeEnum::DELETED);
     }
 
-    #[Route('/multimedia/{multimedia_id<\d+>}/play-pause', methods: 'PATCH')]
+    #[Route('/multimedia/{multimedia_id<\d+>}/play-pause', methods: Request::METHOD_PATCH)]
     public function playPause(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         ToggleMultimediaPlayback $toggleMultimediaPlayback,
         RunningMultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($toggleMultimediaPlayback->process($multimedia, $this->authorizedUser->getUserSession()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $toggleMultimediaPlayback->process($multimedia, $this->authorizedUser->getUserSession()),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
     #[Route('/multimedia/{multimedia_id<\d+>}/statistics', methods: Request::METHOD_GET)]
@@ -108,12 +108,10 @@ class MultimediaController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         MultimediaStatisticsResponseData $responseData
     ): JsonResponse {
-        if (false === $this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
+        if (!$this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
             throw EntityNotFoundException::multimedia();
         }
 
-        $responseData->setEntities($multimedia->getStatistic());
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $multimedia->getStatistic());
     }
 }

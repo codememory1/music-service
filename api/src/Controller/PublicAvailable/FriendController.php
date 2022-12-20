@@ -17,50 +17,49 @@ use App\UseCase\Friendship\AcceptAsFriend;
 use App\UseCase\Friendship\ApplyInFriend;
 use App\UseCase\Friendship\DeleteFriendship;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user')]
 #[Authorization]
 class FriendController extends AbstractRestController
 {
-    #[Route('/friend/all', methods: 'GET')]
+    #[Route('/friend/all', methods: Request::METHOD_GET)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_FRIENDS)]
     public function all(FriendResponseData $responseData, FriendRepository $friendRepository): JsonResponse
     {
-        $responseData->setEntities($friendRepository->findByUser($this->getAuthorizedUser()));
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $friendRepository->findByUser($this->getAuthorizedUser()));
     }
 
-    #[Route('/{user_id<\d+>}/add-as-friend', methods: 'PATCH')]
+    #[Route('/{user_id<\d+>}/add-as-friend', methods: Request::METHOD_PATCH)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_AS_FRIEND)]
     public function addAsFriend(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
         FriendResponseData $responseData,
         ApplyInFriend $addAsFriend
     ): JsonResponse {
-        $responseData->setEntities($addAsFriend->process($this->getAuthorizedUser(), $friend));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $addAsFriend->process($this->getAuthorizedUser(), $friend),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
-    #[Route('/friend/{friend_id<\d+>}/accept', methods: 'PATCH')]
+    #[Route('/friend/{friend_id<\d+>}/accept', methods: Request::METHOD_PATCH)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_AS_FRIEND)]
     public function acceptAsFriend(
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friend,
         FriendResponseData $responseData,
         AcceptAsFriend $acceptAsFriend
     ): JsonResponse {
-        if (false === $this->getAuthorizedUser()->isCompare($friend->getFriend()) || false === $friend->isAwaitingConfirmation()) {
+        if (!$this->getAuthorizedUser()->isCompare($friend->getFriend()) || !$friend->isAwaitingConfirmation()) {
             throw EntityNotFoundException::friend();
         }
 
-        $responseData->setEntities($acceptAsFriend->process($friend));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData($responseData, $acceptAsFriend->process($friend), PlatformCodeEnum::UPDATED);
     }
 
-    #[Route('/friend/{friend_id<\d+>}/delete', methods: 'DELETE')]
+    #[Route('/friend/{friend_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_FRIEND)]
     public function deleteFriend(
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friendship,
@@ -69,12 +68,10 @@ class FriendController extends AbstractRestController
     ): JsonResponse {
         $authorizedUser = $this->getAuthorizedUser();
 
-        if (false === $friendship->isCompare($authorizedUser) && false === $friendship->getFriend()->isCompare($authorizedUser)) {
+        if (!$friendship->isCompare($authorizedUser) && !$friendship->getFriend()->isCompare($authorizedUser)) {
             throw EntityNotFoundException::friend();
         }
 
-        $responseData->setEntities($deleteFriendship->process($friendship));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData($responseData, $deleteFriendship->process($friendship), PlatformCodeEnum::UPDATED);
     }
 }

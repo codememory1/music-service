@@ -16,45 +16,40 @@ use App\Rest\Controller\AbstractRestController;
 use App\UseCase\User\Session\DeleteAllUserSession;
 use App\UseCase\User\Session\DeleteUserSession;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user')]
 #[Authorization]
 class UseSessionController extends AbstractRestController
 {
-    #[Route('/{user_id<\d+>}/session/all')]
+    #[Route('/{user_id<\d+>}/session/all', methods: Request::METHOD_GET)]
     #[UserRolePermission(RolePermissionEnum::SHOW_USER_SESSIONS)]
     public function all(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         UserSessionResponseData $responseData,
         UserSessionRepository $userSessionRepository
     ): JsonResponse {
-        $responseData->setEntities($userSessionRepository->allByUser($user));
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $userSessionRepository->allByUser($user));
     }
 
-    #[Route('/session/{userSession_id<\d+>}/delete', methods: 'DELETE')]
+    #[Route('/session/{userSession_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
     #[UserRolePermission(RolePermissionEnum::DELETE_USER_SESSION_TO_USER)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
         DeleteUserSession $deleteUserSession,
         UserSessionResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteUserSession->process($userSession));
-
-        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
+        return $this->responseData($responseData, $deleteUserSession->process($userSession), PlatformCodeEnum::DELETED);
     }
 
-    #[Route('/{user_id<\d+>}/session/all/delete', methods: 'DELETE')]
+    #[Route('/{user_id<\d+>}/session/all/delete', methods: Request::METHOD_DELETE)]
     #[UserRolePermission(RolePermissionEnum::DELETE_USER_SESSION_TO_USER)]
     public function deleteAll(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         DeleteAllUserSession $deleteAllUserSession,
         UserSessionResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($deleteAllUserSession->process($user));
-
-        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
+        return $this->responseData($responseData, $deleteAllUserSession->process($user), PlatformCodeEnum::DELETED);
     }
 }

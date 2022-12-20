@@ -11,21 +11,21 @@ use App\ResponseData\Admin\Notification\NotificationResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\UseCase\Notification\CreateNotification;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/notification')]
 #[Authorization]
 class NotificationController extends AbstractRestController
 {
-    #[Route('/create', methods: 'POST')]
+    #[Route('/create', methods: Request::METHOD_POST)]
     #[UserRolePermission(RolePermissionEnum::CREATE_NOTIFICATION)]
     public function create(NotificationTransformer $transformer, CreateNotification $createNotification, NotificationResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($createNotification->process(
-            $transformer->transformFromRequest(),
-            $this->getAuthorizedUser()
-        ));
-
-        return $this->responseData($responseData, PlatformCodeEnum::PENDING);
+        return $this->responseData(
+            $responseData,
+            $createNotification->process($transformer->transformFromRequest(), $this->getAuthorizedUser()),
+            PlatformCodeEnum::PENDING
+        );
     }
 }

@@ -31,13 +31,15 @@ class MultimediaTimeCodeController extends AbstractRestController
         AddMultimediaTimeCode $addMultimediaTimeCode,
         MultimediaTimeCodeResponseData $responseData
     ): JsonResponse {
-        if (false === $multimedia->getUser()->isCompare($this->getAuthorizedUser())) {
+        if (!$multimedia->getUser()->isCompare($this->getAuthorizedUser())) {
             throw EntityNotFoundException::multimedia();
         }
 
-        $responseData->setEntities($addMultimediaTimeCode->process($multimedia, $transformer->transformFromRequest()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
+        return $this->responseData(
+            $responseData,
+            $addMultimediaTimeCode->process($multimedia, $transformer->transformFromRequest()),
+            PlatformCodeEnum::CREATED
+        );
     }
 
     #[Route('/time-code/{multimediaTimeCode_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
@@ -47,12 +49,10 @@ class MultimediaTimeCodeController extends AbstractRestController
         DeleteMultimediaTimeCode $deleteMultimediaTimeCode,
         MultimediaTimeCodeResponseData $responseData
     ): JsonResponse {
-        if (false === $multimediaTimeCode->getMultimedia()->getUser()->isCompare($this->getAuthorizedUser())) {
+        if (!$multimediaTimeCode->getMultimedia()->getUser()->isCompare($this->getAuthorizedUser())) {
             throw EntityNotFoundException::multimediaTimeCode();
         }
 
-        $responseData->setEntities($deleteMultimediaTimeCode->process($multimediaTimeCode));
-
-        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
+        return $this->responseData($responseData, $deleteMultimediaTimeCode->process($multimediaTimeCode), PlatformCodeEnum::DELETED);
     }
 }

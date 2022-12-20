@@ -6,16 +6,15 @@ use App\Repository\LanguageRepository;
 use App\ResponseData\General\Language\LanguageResponseData;
 use App\Rest\Controller\AbstractRestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/language')]
 class LanguageController extends AbstractRestController
 {
-    #[Route('/all', methods: 'GET')]
+    #[Route('/all', methods: Request::METHOD_GET)]
     public function all(LanguageResponseData $responseData, LanguageRepository $languageRepository): JsonResponse
     {
-        $responseData->setEntities($languageRepository->findAll());
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $languageRepository->findAll());
     }
 }

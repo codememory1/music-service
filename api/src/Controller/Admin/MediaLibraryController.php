@@ -17,13 +17,14 @@ use App\Rest\Controller\AbstractRestController;
 use App\UseCase\MediaLibrary\CreateMediaLibrary;
 use App\UseCase\MediaLibrary\UpdateMediaLibrary;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user')]
 #[Authorization]
 class MediaLibraryController extends AbstractRestController
 {
-    #[Route('/{user_id<\d+>}/media-library/multimedia/all', methods: 'GET')]
+    #[Route('/{user_id<\d+>}/media-library/multimedia/all', methods: Request::METHOD_GET)]
     #[UserRolePermission(RolePermissionEnum::SHOW_MEDIA_LIBRARY_TO_USER)]
     public function allMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
@@ -33,12 +34,10 @@ class MediaLibraryController extends AbstractRestController
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
 
-        $responseData->setEntities($user->getMediaLibrary()->getMultimedia());
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $user->getMediaLibrary()->getMultimedia());
     }
 
-    #[Route('/{user_id<\d+>}/media-library/create', methods: 'POST')]
+    #[Route('/{user_id<\d+>}/media-library/create', methods: Request::METHOD_POST)]
     #[UserRolePermission(RolePermissionEnum::CREATE_MEDIA_LIBRARY_TO_USER)]
     public function create(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
@@ -46,15 +45,14 @@ class MediaLibraryController extends AbstractRestController
         CreateMediaLibrary $createMediaLibrary,
         MediaLibraryResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($createMediaLibrary->process(
-            $transformer->transformFromRequest(),
-            $user
-        ));
-
-        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
+        return $this->responseData(
+            $responseData,
+            $createMediaLibrary->process($transformer->transformFromRequest(), $user),
+            PlatformCodeEnum::CREATED
+        );
     }
 
-    #[Route('/media-library/{mediaLibrary_id<\d+>}/edit', methods: 'PUT')]
+    #[Route('/media-library/{mediaLibrary_id<\d+>}/edit', methods: Request::METHOD_PUT)]
     #[UserRolePermission(RolePermissionEnum::UPDATE_MEDIA_LIBRARY_TO_USER)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'mediaLibrary')] MediaLibrary $mediaLibrary,
@@ -62,10 +60,10 @@ class MediaLibraryController extends AbstractRestController
         UpdateMediaLibrary $updateMediaLibrary,
         MediaLibraryMultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateMediaLibrary->process(
-            $transformer->transformFromRequest($mediaLibrary)
-        ));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $updateMediaLibrary->process($transformer->transformFromRequest($mediaLibrary)),
+            PlatformCodeEnum::UPDATED
+        );
     }
 }
