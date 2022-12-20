@@ -2,6 +2,7 @@
 
 namespace App\Rest\Controller;
 
+use App\Entity\Interfaces\EntityInterface;
 use App\Entity\User;
 use App\Enum\PlatformCodeEnum;
 use App\Infrastructure\ResponseData\Interfaces\ResponseDataInterface;
@@ -9,6 +10,7 @@ use App\Rest\Response\HttpResponse;
 use App\Rest\Response\Scheme\HttpSuccessScheme;
 use App\Security\AuthorizedUser;
 use App\Security\Http\BearerToken;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -33,9 +35,13 @@ abstract class AbstractRestController extends AbstractController
         return $this->httpResponse->getResponse($scheme, $headers);
     }
 
-    final protected function responseData(ResponseDataInterface $responseData, PlatformCodeEnum $platformCode = PlatformCodeEnum::OUTPUT, array $headers = []): JsonResponse
-    {
-        $scheme = new HttpSuccessScheme(200, $platformCode, $responseData->getResponse());
+    final protected function responseData(
+        ResponseDataInterface $responseData,
+        array|Collection|EntityInterface $data,
+        PlatformCodeEnum $platformCode = PlatformCodeEnum::OUTPUT,
+        array $headers = []
+    ): JsonResponse {
+        $scheme = new HttpSuccessScheme(200, $platformCode, $responseData->setEntities($data)->getResponse());
 
         return $this->httpResponse->getResponse($scheme, $headers);
     }

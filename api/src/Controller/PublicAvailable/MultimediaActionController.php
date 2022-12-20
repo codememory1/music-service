@@ -18,75 +18,78 @@ use App\UseCase\Multimedia\Action\SendMultimediaOnModeration;
 use App\UseCase\Multimedia\Action\ToggleMultimediaDislike;
 use App\UseCase\Multimedia\Action\ToggleMultimediaLike;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user/multimedia/{multimedia_id<\d+>}')]
 #[Authorization]
 class MultimediaActionController extends AbstractRestController
 {
-    #[Route('/add-to-media-library', methods: 'PATCH')]
+    #[Route('/add-to-media-library', methods: Request::METHOD_PATCH)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA_TO_MEDIA_LIBRARY)]
     public function addToMediaLibrary(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         AddMultimediaToMediaLibrary $addMultimediaToMediaLibrary,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        if (false === $multimedia->isPublished()) {
+        if (!$multimedia->isPublished()) {
             throw EntityNotFoundException::multimedia();
         }
 
-        $responseData->setEntities($addMultimediaToMediaLibrary->process($multimedia, $this->getAuthorizedUser()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $addMultimediaToMediaLibrary->process($multimedia, $this->getAuthorizedUser()),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
-    #[Route('/send-on-moderation', methods: 'PATCH')]
+    #[Route('/send-on-moderation', methods: Request::METHOD_PATCH)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
     public function sendOnModeration(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SendMultimediaOnModeration $sendMultimediaOnModeration,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        if (false === $this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
+        if (!$this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
             throw EntityNotFoundException::multimedia();
         }
 
-        $responseData->setEntities($sendMultimediaOnModeration->process($multimedia));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData($responseData, $sendMultimediaOnModeration->process($multimedia), PlatformCodeEnum::UPDATED);
     }
 
-    #[Route('/send-on-appeal', methods: 'PATCH')]
+    #[Route('/send-on-appeal', methods: Request::METHOD_PATCH)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
     public function sendOnAppeal(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SendMultimediaOnAppeal $sendMultimediaOnAppeal,
         MultimediaResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($sendMultimediaOnAppeal->process($multimedia));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData($responseData, $sendMultimediaOnAppeal->process($multimedia), PlatformCodeEnum::UPDATED);
     }
 
-    #[Route('/like', methods: 'PATCH')]
+    #[Route('/like', methods: Request::METHOD_PATCH)]
     public function like(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         ToggleMultimediaLike $toggleMultimediaLike,
         MultimediaRatingResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($toggleMultimediaLike->process($multimedia, $this->getAuthorizedUser()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $toggleMultimediaLike->process($multimedia, $this->getAuthorizedUser()),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
-    #[Route('/dislike', methods: 'PATCH')]
+    #[Route('/dislike', methods: Request::METHOD_PATCH)]
     public function dislike(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         ToggleMultimediaDislike $toggleMultimediaDislike,
         MultimediaRatingResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($toggleMultimediaDislike->process($multimedia, $this->getAuthorizedUser()));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $toggleMultimediaDislike->process($multimedia, $this->getAuthorizedUser()),
+            PlatformCodeEnum::UPDATED
+        );
     }
 }

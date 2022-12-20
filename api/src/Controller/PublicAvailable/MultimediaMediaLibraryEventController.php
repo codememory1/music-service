@@ -17,6 +17,7 @@ use App\UseCase\MultimediaMediaLibrary\Event\AddMultimediaMediaLibraryEvent;
 use App\UseCase\MultimediaMediaLibrary\Event\CancelMultimediaMediaLibraryEvent;
 use App\UseCase\MultimediaMediaLibrary\Event\UpdateMultimediaMediaLibraryEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/user/media-library/multimedia')]
@@ -24,26 +25,25 @@ use Symfony\Component\Routing\Annotation\Route;
 #[SubscriptionPermission(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT)]
 class MultimediaMediaLibraryEventController extends AbstractRestController
 {
-    #[Route('/{multimediaMediaLibrary_id<\d+>}/event/add', methods: 'POST')]
+    #[Route('/{multimediaMediaLibrary_id<\d+>}/event/add', methods: Request::METHOD_POST)]
     public function add(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         MultimediaMediaLibraryEventTransformer $transformer,
         AddMultimediaMediaLibraryEvent $addMultimediaMediaLibraryEvent,
         MediaLibraryEventResponseData $responseData
     ): JsonResponse {
-        if (false === $this->getAuthorizedUser()->isMultimediaMediaLibraryBelongs($multimediaMediaLibrary)) {
+        if (!$this->getAuthorizedUser()->isMultimediaMediaLibraryBelongs($multimediaMediaLibrary)) {
             throw EntityNotFoundException::multimedia();
         }
 
-        $responseData->setEntities($addMultimediaMediaLibraryEvent->process(
-            $transformer->transformFromRequest(),
-            $multimediaMediaLibrary
-        ));
-
-        return $this->responseData($responseData, PlatformCodeEnum::CREATED);
+        return $this->responseData(
+            $responseData,
+            $addMultimediaMediaLibraryEvent->process($transformer->transformFromRequest(), $multimediaMediaLibrary),
+            PlatformCodeEnum::CREATED
+        );
     }
 
-    #[Route('/event/{multimediaMediaLibraryEvent_id}/edit', methods: 'PUT')]
+    #[Route('/event/{multimediaMediaLibraryEvent_id}/edit', methods: Request::METHOD_PUT)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaEvent')] MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent,
         MultimediaMediaLibraryEventTransformer $transformer,
@@ -52,15 +52,17 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 
-        $responseData->setEntities($updateMultimediaMediaLibraryEvent->process(
-            $transformer->transformFromRequest($multimediaMediaLibraryEvent),
-            $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()
-        ));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $updateMultimediaMediaLibraryEvent->process(
+                $transformer->transformFromRequest($multimediaMediaLibraryEvent),
+                $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()
+            ),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
-    #[Route('/event/{multimediaMediaLibraryEvent_id}/delete', methods: 'DELETE')]
+    #[Route('/event/{multimediaMediaLibraryEvent_id}/delete', methods: Request::METHOD_DELETE)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaEvent')] MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent,
         CancelMultimediaMediaLibraryEvent $cancelMultimediaMediaLibraryEvent,
@@ -68,16 +70,18 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
     ): JsonResponse {
         $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 
-        $responseData->setEntities($cancelMultimediaMediaLibraryEvent->process($multimediaMediaLibraryEvent));
-
-        return $this->responseData($responseData, PlatformCodeEnum::DELETED);
+        return $this->responseData(
+            $responseData,
+            $cancelMultimediaMediaLibraryEvent->process($multimediaMediaLibraryEvent),
+            PlatformCodeEnum::DELETED
+        );
     }
 
     private function throwIfEventNotBelongsAuthorizedUser(MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent): void
     {
         $mediaLibraryFromEvent = $multimediaMediaLibraryEvent->getMultimediaMediaLibrary()->getMediaLibrary();
 
-        if (false === $this->getAuthorizedUser()->isMediaLibraryBelongs($mediaLibraryFromEvent)) {
+        if (!$this->getAuthorizedUser()->isMediaLibraryBelongs($mediaLibraryFromEvent)) {
             throw EntityNotFoundException::multimediaEvent();
         }
     }

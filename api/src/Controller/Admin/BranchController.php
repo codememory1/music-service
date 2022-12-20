@@ -33,9 +33,7 @@ class BranchController extends AbstractRestController
     #[UserRolePermission(RolePermissionEnum::SHOW_ALL_BRANCHES)]
     public function allBranches(LogicBranchRepository $logicBranchRepository, LogicBranchResponseData $responseData): JsonResponse
     {
-        $responseData->setEntities($logicBranchRepository->findAll());
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $logicBranchRepository->findAll());
     }
 
     #[Route('/{logicBranch_id<\d+>}/edit', methods: Request::METHOD_PUT)]
@@ -46,9 +44,11 @@ class BranchController extends AbstractRestController
         LogicBranchTransformer $transformer,
         LogicBranchResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($updateLogicBranch->process($transformer->transformFromRequest($logicBranch)));
-
-        return $this->responseData($responseData, PlatformCodeEnum::UPDATED);
+        return $this->responseData(
+            $responseData,
+            $updateLogicBranch->process($transformer->transformFromRequest($logicBranch)),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
     #[Route('/subscription-permission/data/all', methods: Request::METHOD_GET)]
@@ -57,9 +57,7 @@ class BranchController extends AbstractRestController
         SubscriptionPermissionBranchRepository $subscriptionPermissionBranchRepository,
         BranchResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($subscriptionPermissionBranchRepository->findAll());
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $subscriptionPermissionBranchRepository->findAll());
     }
 
     #[Route('/subscription-permission/edit', methods: Request::METHOD_PUT)]
@@ -72,9 +70,7 @@ class BranchController extends AbstractRestController
     ): JsonResponse {
         $updateSubscriptionPermissionBranch->process($transformer->transformFromRequest());
 
-        $responseData->setEntities($subscriptionPermissionBranchRepository->findAll());
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $subscriptionPermissionBranchRepository->findAll(), PlatformCodeEnum::UPDATED);
     }
 
     #[Route('/monetization/data/all', methods: Request::METHOD_GET)]
@@ -83,9 +79,7 @@ class BranchController extends AbstractRestController
         MonetizationBranchRepository $monetizationBranchRepository,
         BranchResponseData $responseData
     ): JsonResponse {
-        $responseData->setEntities($monetizationBranchRepository->findAll());
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $monetizationBranchRepository->findAll());
     }
 
     #[Route('/monetization/edit', methods: Request::METHOD_PUT)]
@@ -98,8 +92,6 @@ class BranchController extends AbstractRestController
     ): JsonResponse {
         $updateMonetizationBranch->process($transformer->transformFromRequest());
 
-        $responseData->setEntities($monetizationBranchRepository->findAll());
-
-        return $this->responseData($responseData);
+        return $this->responseData($responseData, $monetizationBranchRepository->findAll(), PlatformCodeEnum::UPDATED);
     }
 }
