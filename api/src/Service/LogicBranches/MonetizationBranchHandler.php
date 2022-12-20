@@ -5,7 +5,6 @@ namespace App\Service\LogicBranches;
 use App\Entity\MonetizationBranch;
 use App\Entity\User;
 use App\Enum\LogicBranchEnum;
-use App\Enum\LogicBranchStatusEnum;
 use App\Repository\LogicBranchRepository;
 use App\Repository\MonetizationBranchRepository;
 
@@ -20,8 +19,8 @@ final class MonetizationBranchHandler
     public function isAllowed(User $user): bool
     {
         $logicBranch = $this->logicBranchRepository->findByName(LogicBranchEnum::ARTIST_MONETIZATION);
-        $ignoredArtist = $this->monetizationBranchRepository->findByKey(MonetizationBranch::IGNORED_ARTISTS_KEY);
+        $artistsWithDisabledMonetization = $this->monetizationBranchRepository->findByKey(MonetizationBranch::DISABLED_MONETIZATION_FOR_ARTISTS);
 
-        return $logicBranch->getStatus() === LogicBranchStatusEnum::ENABLED->name && !in_array($user->getId(), $ignoredArtist->getValue(), true);
+        return $logicBranch->isEnabled() && !$artistsWithDisabledMonetization->existToDisabled($user);
     }
 }

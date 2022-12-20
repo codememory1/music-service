@@ -56,9 +56,10 @@ final class AuthorizedUser
         }
 
         $accessTokenData = $this->accessToken->getData();
+        $user = $this->userRepository->find($accessTokenData['id']);
 
-        $this->userSession = $this->userSessionRepository->findByAccessTokenWithUser(
-            $this->userRepository->find($accessTokenData['id']),
+        $this->userSession = null === $user ? null : $this->userSessionRepository->findByAccessTokenWithUser(
+            $user,
             $this->accessToken->getToken()
         );
 

@@ -8,6 +8,7 @@ use App\Entity\MonetizationBranch;
 use App\Entity\SubscriptionPermissionBranch;
 use App\Enum\LogicBranchEnum;
 use App\Enum\LogicBranchStatusEnum;
+use App\Enum\SubscriptionPermissionEnum;
 use Doctrine\Persistence\ObjectManager;
 
 final class LoadBranchDataFixture extends AbstractDataFixture
@@ -18,8 +19,10 @@ final class LoadBranchDataFixture extends AbstractDataFixture
             new LogicBranchFactory(LogicBranchEnum::SUBSCRIPTION_PERMISSION, LogicBranchStatusEnum::ENABLED),
             new LogicBranchFactory(LogicBranchEnum::ARTIST_MONETIZATION, LogicBranchStatusEnum::ENABLED),
 
-            new BranchFactory(SubscriptionPermissionBranch::class, SubscriptionPermissionBranch::IGNORED_PERMISSIONS_KEY, []),
-            new BranchFactory(MonetizationBranch::class, MonetizationBranch::IGNORED_ARTISTS_KEY, [])
+            new BranchFactory(SubscriptionPermissionBranch::class, SubscriptionPermissionBranch::CHECK_PERMISSIONS_IF_DISABLED, [
+                SubscriptionPermissionEnum::USER_SETTING_HIDE_MY_MULTIMEDIA->name
+            ]),
+            new BranchFactory(MonetizationBranch::class, MonetizationBranch::DISABLED_MONETIZATION_FOR_ARTISTS, [])
         ]);
     }
 

@@ -15,6 +15,9 @@ final class UserSettingResponseData extends AbstractResponseData
     private bool $acceptMultimediaFromFriends = false;
     private array $multimediaStream = [];
 
+    #[RDCS\Prefix('is', 'is')]
+    private bool $hideMyMultimedia = false;
+
     #[RDCV\DateTime]
     private ?string $updatedAt = null;
 }

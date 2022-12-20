@@ -67,7 +67,7 @@ abstract class AbstractDataTransfer implements DataTransferInterface
                 $constraintHandler->setPropertyValue($dataValue);
 
                 if ($constraintHandler instanceof DataTransferCallSetterConstraintHandlerInterface) {
-                    $isCallSetterToEntity = $constraintHandler->handle($attributeCollection->constraint);
+                    $isCallSetterToEntity = $isCallSetterToEntity ? $constraintHandler->handle($attributeCollection->constraint) : false;
                 } else {
                     if ($constraintHandler instanceof DataTransferAssertConstraintHandlerInterface) {
                         $constraintHandler->handle($attributeCollection->constraint);
