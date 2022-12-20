@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase\MultimediaMediaLibrary\Event;
+namespace App\UseCase\MediaLibrary\Multimedia\Event;
 
 use App\Entity\MultimediaMediaLibraryEvent;
 use App\Infrastructure\Doctrine\Flusher;

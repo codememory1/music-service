@@ -84,7 +84,7 @@ class Multimedia implements EntityInterface, EntityS3SettingInterface
     ])]
     private ?string $producer = null;
 
-    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaPerformer::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaPerformer::class, cascade: ['persist', 'remove'])]
     private Collection $performers;
 
     #[ORM\OneToOne(mappedBy: 'multimedia', targetEntity: MultimediaMetadata::class, cascade: ['persist', 'remove'])]
