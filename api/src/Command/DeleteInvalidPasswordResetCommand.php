@@ -11,13 +11,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * Class DeleteInvalidPasswordResetCommand.
- *
- * @package App\Command
- *
- * @author  Codememory
- */
 #[AsCommand(
     'app:user:delete-invalid-password-resets',
     'Removing invalid password resets'
@@ -26,31 +19,21 @@ class DeleteInvalidPasswordResetCommand extends Command
 {
     use DeleteByInvalidTtlTrait;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
-
-    /**
-     * @param EntityManagerInterface $manager
-     */
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->em = $manager;
-
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {
         parent::__construct();
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $passwordResetRepository = $this->em->getRepository(PasswordReset::class);
+
+        $io->info('Worker started successfully');
 
         while (true) {
             sleep(1);
@@ -61,12 +44,6 @@ class DeleteInvalidPasswordResetCommand extends Command
         }
     }
 
-    /**
-     * @param SymfonyStyle  $io
-     * @param PasswordReset $passwordReset
-     *
-     * @return void
-     */
     private function deleteMessage(SymfonyStyle $io, PasswordReset $passwordReset): void
     {
         $io->writeln(sprintf(

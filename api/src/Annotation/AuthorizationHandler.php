@@ -4,38 +4,23 @@ namespace App\Annotation;
 
 use App\Annotation\Interfaces\MethodAnnotationHandlerInterface;
 use App\Annotation\Interfaces\MethodAnnotationInterface;
-use App\Rest\Http\Exceptions\AuthorizationException;
-use App\Security\Auth\AuthorizedUser;
+use App\Exception\Http\AuthorizationException;
+use App\Security\AuthorizedUser;
 
-/**
- * Class AuthorizationHandler.
- *
- * @package App\Annotation
- *
- * @author  Codememory
- */
-class AuthorizationHandler implements MethodAnnotationHandlerInterface
+final class AuthorizationHandler implements MethodAnnotationHandlerInterface
 {
-    /**
-     * @var AuthorizedUser
-     */
-    private AuthorizedUser $authorizedUser;
-
-    /**
-     * @param AuthorizedUser $authorizedUser
-     */
-    public function __construct(AuthorizedUser $authorizedUser)
-    {
-        $this->authorizedUser = $authorizedUser;
+    public function __construct(
+        private readonly AuthorizedUser $authorizedUser
+    ) {
     }
 
     /**
-     * @inheritDoc
-     *
      * @param Authorization|MethodAnnotationInterface $annotation
      */
     public function handle(MethodAnnotationInterface $annotation): void
     {
+        $this->authorizedUser->fromBearer();
+
         if ($annotation->required && null === $this->authorizedUser->getUser()) {
             throw AuthorizationException::authorizedIsRequired();
         }

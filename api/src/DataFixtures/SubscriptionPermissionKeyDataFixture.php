@@ -3,17 +3,14 @@
 namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\SubscriptionPermissionKeyFactory;
+use App\Entity\SubscriptionPermissionKey;
 use App\Enum\SubscriptionPermissionEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class SubscriptionPermissionKeyDataFixture.
- *
- * @package App\DataFixtures
- *
- * @author  Codememory
+ * @template-extends AbstractDataFixture<SubscriptionPermissionKey>
  */
 final class SubscriptionPermissionKeyDataFixture extends AbstractDataFixture implements DependentFixtureInterface
 {
@@ -27,6 +24,37 @@ final class SubscriptionPermissionKeyDataFixture extends AbstractDataFixture imp
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_ALBUM, 'subscriptionPermissionKey@deleteAlbum'),
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::ADD_MULTIMEDIA, 'subscriptionPermissionKey@addMultimedia'),
             new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA, 'subscriptionPermissionKey@listeningToMultimedia'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST, 'subscriptionPermissionKey@controlSubscriptionOnArtist'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::ACCEPTING_SUBSCRIBERS, 'subscriptionPermissionKey@acceptingSubscribers'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::ADD_MULTIMEDIA_TO_MEDIA_LIBRARY, 'subscriptionPermissionKey@addMultimediaToMediaLibrary'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA_TO_MEDIA_LIBRARY, 'subscriptionPermissionKey@updateMultimediaFromMediaLibrary'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_MULTIMEDIA_TO_MEDIA_LIBRARY, 'subscriptionPermissionKey@deleteMultimediaFromMediaLibrary'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::CREATE_PLAYLIST, 'subscriptionPermissionKey@createPlaylist'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::UPDATE_PLAYLIST, 'subscriptionPermissionKey@updatePlaylist'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_PLAYLIST, 'subscriptionPermissionKey@deletePlaylist'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::SHOW_MY_PLAYLISTS, 'subscriptionPermissionKey@showMyPlaylists'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::SHOW_MY_PLAYLIST_DIRECTORIES, 'subscriptionPermissionKey@showMyPlaylistDirectories'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::CREATE_DIRECTORY_TO_PLAYLIST, 'subscriptionPermissionKey@createDirectoryToPlaylist'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::UPDATE_DIRECTORY_TO_PLAYLIST, 'subscriptionPermissionKey@updateDirectoryToPlaylist'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_DIRECTORY_TO_PLAYLIST, 'subscriptionPermissionKey@deleteDirectoryToPlaylist'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::UPDATE_PROFILE_DESIGN, 'subscriptionPermissionKey@updateProfileDesign'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::SHOW_MY_FRIENDS, 'subscriptionPermissionKey@showMyFriends'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::ADD_AS_FRIEND, 'subscriptionPermissionKey@addAsFriend'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_FRIEND, 'subscriptionPermissionKey@deleteFriend'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::SHARE_MULTIMEDIA_WITH_FRIENDS, 'subscriptionPermissionKey@shareMultimediaWithFriends'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::SHARE_MEDIA_LIBRARY_WITH_FRIENDS, 'subscriptionPermissionKey@shareMediaLibraryWithFriends'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::CONTROL_MULTIMEDIA_MEDIA_LIBRARY_EVENT, 'subscriptionPermissionKey@controlMultimediaMediaLibraryEvent'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::CONTROL_MEDIA_LIBRARY_EVENT, 'subscriptionPermissionKey@controlMediaLibraryEvent'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::ADD_TIME_CODE_TO_MULTIMEDIA, 'subscriptionPermissionKey@addTimeCodeToMultimedia'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::UPDATE_TIME_CODE_TO_MULTIMEDIA, 'subscriptionPermissionKey@updateTimeCodeToMultimedia'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_TIME_CODE_TO_MULTIMEDIA, 'subscriptionPermissionKey@deleteTimeCodeToMultimedia'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::SHOW_MULTIMEDIA_STATISTICS, 'subscriptionPermissionKey@showMultimediaStatistics'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::MAX_PLAYLISTS_IN_MEDIA_LIBRARY, 'subscriptionPermissionKey@maxPlaylistsInMediaLibrary'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::MAX_DIRECTORIES_IN_PLAYLIST, 'subscriptionPermissionKey@maxDirectoriesInPlaylist'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::ADD_MULTIMEDIA_FROM_EXTERNAL_SERVICE, 'subscriptionPermissionKey@addMultimediaFromExternalService'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA_FROM_EXTERNAL_SERVICE, 'subscriptionPermissionKey@updateMultimediaFromExternalService'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::DELETE_MULTIMEDIA_FROM_EXTERNAL_SERVICE, 'subscriptionPermissionKey@deleteMultimediaFromExternalService'),
+            new SubscriptionPermissionKeyFactory(SubscriptionPermissionEnum::USER_SETTING_HIDE_MY_MULTIMEDIA, 'subscriptionPermissionKey@userSettingHideMyMultimedia'),
         ]);
     }
 

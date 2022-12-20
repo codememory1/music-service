@@ -3,29 +3,42 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Enum\UserStatusEnum;
 
 /**
- * Class UserRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<User>
- *
- * @author  Codememory
  */
-class UserRepository extends AbstractRepository
+final class UserRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = User::class;
+    protected ?string $alias = 'u';
 
-    /**
-     * @param null|string $email
-     *
-     * @return null|User
-     */
-    public function getByEmail(?string $email): ?User
+    public function findByEmail(?string $email): ?User
     {
         return $this->findOneBy(['email' => $email]);
+    }
+
+    /**
+     * @return array<User>
+     */
+    public function findActive(): array
+    {
+        return $this->findBy(['status' => UserStatusEnum::ACTIVE->name]);
+    }
+
+    public function findActiveByEmail(string $email): ?User
+    {
+        return $this->findOneBy([
+            'email' => $email,
+            'status' => UserStatusEnum::ACTIVE->name
+        ]);
+    }
+
+    public function findByAuthService(string $idInAuthService, string $serviceType): ?User
+    {
+        return $this->findOneBy([
+            'idInAuthService' => $idInAuthService,
+            'authServiceType' => $serviceType
+        ]);
     }
 }

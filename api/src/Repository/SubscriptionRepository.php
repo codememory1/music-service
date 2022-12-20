@@ -3,19 +3,20 @@
 namespace App\Repository;
 
 use App\Entity\Subscription;
+use App\Enum\SubscriptionEnum;
 
 /**
- * Class SubscriptionRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<Subscription>
- *
- * @author  Codememory
  */
-class SubscriptionRepository extends AbstractRepository
+final class SubscriptionRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = Subscription::class;
+    protected ?string $alias = 's';
+
+    public function findByName(SubscriptionEnum $name): ?Subscription
+    {
+        return $this->findOneBy([
+            'key' => $name->name
+        ]);
+    }
 }

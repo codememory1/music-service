@@ -3,30 +3,25 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\UserSessionTypeEnum;
 use App\Repository\UserSessionRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class UserSession.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: UserSessionRepository::class)]
 #[ORM\Table('user_sessions')]
 #[ORM\HasLifecycleCallbacks]
 class UserSession implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'sessions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -72,6 +67,11 @@ class UserSession implements EntityInterface
     ])]
     private ?string $operatingSystem = null;
 
+    #[ORM\Column(type: Types::STRING, length: 100, nullable: true, options: [
+        'comment' => 'Continent'
+    ])]
+    private ?string $continent = null;
+
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true, options: [
         'comment' => 'The city in which the account was logged out or registered'
     ])]
@@ -81,6 +81,31 @@ class UserSession implements EntityInterface
         'comment' => 'The country in which the account was logged out or registered'
     ])]
     private ?string $country = null;
+
+    #[ORM\Column(type: Types::STRING, length: 10, nullable: true, options: [
+        'comment' => 'Code of the country'
+    ])]
+    private ?string $countryCode = null;
+
+    #[ORM\Column(type: Types::STRING, length: 10, nullable: true, options: [
+        'comment' => 'Region code'
+    ])]
+    private ?string $region = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true, options: [
+        'comment' => 'Region name'
+    ])]
+    private ?string $regionName = null;
+
+    #[ORM\Column(type: Types::STRING, length: 100, nullable: true, options: [
+        'comment' => 'Time zone'
+    ])]
+    private ?string $timezone = null;
+
+    #[ORM\Column(type: Types::STRING, length: 10, nullable: true, options: [
+        'comment' => 'Country currency'
+    ])]
+    private ?string $currency = null;
 
     #[ORM\Column(type: Types::ARRAY, options: [
         'comment' => 'The authority in which the account was logged out or registered'
@@ -92,24 +117,25 @@ class UserSession implements EntityInterface
     ])]
     private ?DateTimeImmutable $lastActivity = null;
 
+    #[ORM\OneToOne(mappedBy: 'userSession', targetEntity: RunningMultimedia::class, cascade: ['persist', 'remove'])]
+    private ?RunningMultimedia $runningMultimedia = null;
+
+    #[ORM\OneToMany(mappedBy: 'fromUserSession', targetEntity: StreamRunningMultimedia::class)]
+    private Collection $streamRunningMultimediaFromMe;
+
+    #[ORM\OneToMany(mappedBy: 'toUserSession', targetEntity: StreamRunningMultimedia::class)]
+    private Collection $streamRunningMultimediaForMe;
+
     public function __construct()
     {
         $this->type = UserSessionTypeEnum::TEMP->name;
     }
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -117,19 +143,21 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param null|UserSessionTypeEnum $type
-     *
-     * @return $this
-     */
+    public function isTemp(): bool
+    {
+        return $this->getType() === UserSessionTypeEnum::TEMP->name;
+    }
+
+    public function isRegistered(): bool
+    {
+        return $this->getType() === UserSessionTypeEnum::REGISTRATION->name;
+    }
+
     public function setType(?UserSessionTypeEnum $type): self
     {
         $this->type = $type->name;
@@ -137,19 +165,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }
 
-    /**
-     * @param null|string $accessToken
-     *
-     * @return $this
-     */
     public function setAccessToken(?string $accessToken): self
     {
         $this->accessToken = $accessToken;
@@ -157,19 +177,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getRefreshToken(): ?string
     {
         return $this->refreshToken;
     }
 
-    /**
-     * @param null|string $refreshToken
-     *
-     * @return $this
-     */
     public function setRefreshToken(?string $refreshToken): self
     {
         $this->refreshToken = $refreshToken;
@@ -177,19 +189,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|bool
-     */
     public function isActive(): ?bool
     {
         return $this->isActive;
     }
 
-    /**
-     * @param bool $isActive
-     *
-     * @return $this
-     */
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
@@ -197,19 +201,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getIp(): ?string
     {
         return $this->ip;
     }
 
-    /**
-     * @param null|string $ip
-     *
-     * @return $this
-     */
     public function setIp(?string $ip): self
     {
         $this->ip = $ip;
@@ -217,19 +213,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getBrowser(): ?string
     {
         return $this->browser;
     }
 
-    /**
-     * @param null|string $browser
-     *
-     * @return $this
-     */
     public function setBrowser(?string $browser): self
     {
         $this->browser = $browser;
@@ -237,19 +225,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getDevice(): ?string
     {
         return $this->device;
     }
 
-    /**
-     * @param null|string $device
-     *
-     * @return $this
-     */
     public function setDevice(?string $device): self
     {
         $this->device = $device;
@@ -257,19 +237,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getOperatingSystem(): ?string
     {
         return $this->operatingSystem;
     }
 
-    /**
-     * @param null|string $operatingSystem
-     *
-     * @return $this
-     */
     public function setOperatingSystem(?string $operatingSystem): self
     {
         $this->operatingSystem = $operatingSystem;
@@ -277,19 +249,23 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
+    public function getContinent(): ?string
+    {
+        return $this->continent;
+    }
+
+    public function setContinent(?string $continent): self
+    {
+        $this->continent = $continent;
+
+        return $this;
+    }
+
     public function getCity(): ?string
     {
         return $this->city;
     }
 
-    /**
-     * @param null|string $city
-     *
-     * @return $this
-     */
     public function setCity(?string $city): self
     {
         $this->city = $city;
@@ -297,19 +273,11 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    /**
-     * @param null|string $country
-     *
-     * @return $this
-     */
     public function setCountry(?string $country): self
     {
         $this->country = $country;
@@ -317,19 +285,71 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|array
-     */
+    public function getCountryCode(): ?string
+    {
+        return $this->countryCode;
+    }
+
+    public function setCountryCode(?string $countryCode): self
+    {
+        $this->countryCode = $countryCode;
+
+        return $this;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?string $region): self
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    public function getRegionName(): ?string
+    {
+        return $this->regionName;
+    }
+
+    public function setRegionName(?string $regionName): self
+    {
+        $this->regionName = $regionName;
+
+        return $this;
+    }
+
+    public function getTimezone(): ?string
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(?string $timezone): self
+    {
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?string $currency): self
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
     public function getCoordinates(): ?array
     {
         return $this->coordinates;
     }
 
-    /**
-     * @param array $coordinates
-     *
-     * @return $this
-     */
     public function setCoordinates(array $coordinates): self
     {
         $this->coordinates = $coordinates;
@@ -337,23 +357,42 @@ class UserSession implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|DateTimeInterface
-     */
     public function getLastActivity(): ?DateTimeInterface
     {
         return $this->lastActivity;
     }
 
-    /**
-     * @param null|DateTimeInterface $lastActivity
-     *
-     * @return $this
-     */
     public function setLastActivity(?DateTimeInterface $lastActivity): self
     {
         $this->lastActivity = $lastActivity;
 
         return $this;
+    }
+
+    public function getRunningMultimedia(): ?RunningMultimedia
+    {
+        return $this->runningMultimedia;
+    }
+
+    public function setRunningMultimedia(RunningMultimedia $runningMultimedia): self
+    {
+        // set the owning side of the relation if necessary
+        if ($runningMultimedia->getUserSession() !== $this) {
+            $runningMultimedia->setUserSession($this);
+        }
+
+        $this->runningMultimedia = $runningMultimedia;
+
+        return $this;
+    }
+
+    public function getStreamRunningMultimediaFromMe(): ?Collection
+    {
+        return $this->streamRunningMultimediaFromMe;
+    }
+
+    public function getStreamRunningMultimediaForMe(): ?Collection
+    {
+        return $this->streamRunningMultimediaFromMe;
     }
 }

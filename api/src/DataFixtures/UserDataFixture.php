@@ -11,12 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class UserDataFixture.
- *
- * @package App\DataFixtures
  * @template-extends AbstractDataFixture<User>
- *
- * @author  Codememory
  */
 final class UserDataFixture extends AbstractDataFixture implements DependentFixtureInterface
 {
@@ -30,6 +25,10 @@ final class UserDataFixture extends AbstractDataFixture implements DependentFixt
             new UserFactory('Support', 'support@gmail.com', 'founder', RoleEnum::SUPPORT),
             new UserFactory('Music Manager', 'music-manager@gmail.com', 'music_manager', RoleEnum::MUSIC_MANAGER),
             new UserFactory('User', 'user@gmail.com', 'user', RoleEnum::USER),
+
+            new UserFactory('Artist', 'artist@gmail.com', 'artist', RoleEnum::USER, SubscriptionEnum::ARTIST),
+            new UserFactory('Artist2', 'artist2@gmail.com', 'artist', RoleEnum::USER, SubscriptionEnum::ARTIST),
+            new UserFactory('Artist3', 'artist3@gmail.com', 'artist', RoleEnum::USER, SubscriptionEnum::ARTIST),
         ]);
     }
 

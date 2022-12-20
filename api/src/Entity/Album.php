@@ -3,30 +3,29 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\EntityS3SettingInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UuidIdentifierTrait;
 use App\Enum\AlbumStatusEnum;
+use App\Enum\EntityS3SettingEnum;
 use App\Repository\AlbumRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * Class Album.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
 #[ORM\Table('albums')]
 #[ORM\HasLifecycleCallbacks]
-class Album implements EntityInterface
+class Album implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
-
+    use UuidIdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'albums')]
     #[ORM\JoinColumn(nullable: false)]
@@ -61,23 +60,22 @@ class Album implements EntityInterface
 
     public function __construct()
     {
-        $this->setStatus(AlbumStatusEnum::SHOW);
+        $this->generateUuid();
+        $this->setUnpublishStatus();
+
         $this->multimedia = new ArrayCollection();
     }
 
-    /**
-     * @return null|User
-     */
+    public function getFolderName(): EntityS3SettingEnum
+    {
+        return EntityS3SettingEnum::ALBUM;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -85,19 +83,11 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|AlbumType
-     */
     public function getType(): ?AlbumType
     {
         return $this->type;
     }
 
-    /**
-     * @param null|AlbumType $type
-     *
-     * @return $this
-     */
     public function setType(?AlbumType $type): self
     {
         $this->type = $type;
@@ -105,19 +95,11 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param null|string $title
-     *
-     * @return $this
-     */
     public function setTitle(?string $title): self
     {
         $this->title = $title;
@@ -125,19 +107,11 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param null|string $description
-     *
-     * @return $this
-     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -145,19 +119,11 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getImage(): ?string
     {
         return $this->image;
     }
 
-    /**
-     * @param null|string $image
-     *
-     * @return $this
-     */
     public function setImage(?string $image): self
     {
         $this->image = $image;
@@ -173,11 +139,11 @@ class Album implements EntityInterface
         return $this->multimedia;
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return $this
-     */
+    public function getPublishedMultimedia(): Collection
+    {
+        return $this->multimedia->filter(static fn(Multimedia $multimedia) => $multimedia->isPublished());
+    }
+
     public function addMultimedia(Multimedia $multimedia): self
     {
         if (!$this->multimedia->contains($multimedia)) {
@@ -188,11 +154,6 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function removeMultimedia(Multimedia $multimedia): self
     {
         if ($this->multimedia->removeElement($multimedia)) {
@@ -205,23 +166,41 @@ class Album implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|AlbumStatusEnum $status
-     *
-     * @return $this
-     */
     public function setStatus(?AlbumStatusEnum $status): self
     {
         $this->status = $status?->name;
 
         return $this;
+    }
+
+    public function setPublishStatus(): self
+    {
+        $this->setStatus(AlbumStatusEnum::PUBLISHED);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isPublished(): bool
+    {
+        return $this->getStatus() === AlbumStatusEnum::PUBLISHED->name;
+    }
+
+    public function setUnpublishStatus(): self
+    {
+        $this->setStatus(AlbumStatusEnum::UNPUBLISHED);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isUnpublished(): bool
+    {
+        return $this->getStatus() === AlbumStatusEnum::UNPUBLISHED->name;
     }
 }

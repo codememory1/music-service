@@ -2,18 +2,11 @@
 
 namespace App\DBAL\Types;
 
-use App\Service\HashingService;
+use App\Infrastructure\Hashing\Password;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\TextType;
 
-/**
- * Class PasswordType.
- *
- * @package App\DBAL\Types
- *
- * @author  Codememory
- */
-class PasswordType extends TextType
+final class PasswordType extends TextType
 {
     public const NAME = 'password';
 
@@ -22,13 +15,13 @@ class PasswordType extends TextType
      */
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
     {
-        $hashingService = new HashingService();
+        $passwordHashing = new Password();
 
         if (empty($value)) {
             return null;
         }
 
-        return $hashingService->encode($value);
+        return $passwordHashing->encode($value);
     }
 
     /**

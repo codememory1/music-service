@@ -2,25 +2,10 @@
 
 namespace App\Rest\S3;
 
-/**
- * Class ObjectPath.
- *
- * @package App\Rest\S3
- *
- * @author  Codememory
- */
-class ObjectPath
+final class ObjectPath
 {
-    /**
-     * @var null|string
-     */
     private ?string $path = null;
 
-    /**
-     * @param string $path
-     *
-     * @return $this
-     */
     public function setPath(string $path): self
     {
         $this->path = $path;
@@ -28,9 +13,6 @@ class ObjectPath
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getBucket(): ?string
     {
         if (null !== $this->path) {
@@ -40,13 +22,10 @@ class ObjectPath
         return null;
     }
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         if (null !== $this->path) {
-            return mb_substr($this->path, mb_strpos($this->path, '/'));
+            return mb_substr($this->path, mb_strpos($this->path, '/') + 1);
         }
 
         return null;

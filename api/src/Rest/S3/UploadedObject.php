@@ -6,41 +6,14 @@ use Aws\Result;
 use Exception;
 use GuzzleHttp\Psr7\Stream;
 
-/**
- * Class UploadedObject.
- *
- * @package App\Rest\S3
- *
- * @author  Codememory
- */
-class UploadedObject
+final class UploadedObject
 {
-    /**
-     * @var Client
-     */
-    private Client $client;
-
-    /**
-     * @var ObjectPath
-     */
-    private ObjectPath $objectPath;
-
-    /**
-     * @param Client     $client
-     * @param ObjectPath $objectPath
-     */
-    public function __construct(Client $client, ObjectPath $objectPath)
-    {
-        $this->client = $client;
-        $this->objectPath = $objectPath;
+    public function __construct(
+        private readonly Client $client,
+        private readonly ObjectPath $objectPath
+    ) {
     }
 
-    /**
-     * @param string $path
-     * @param bool   $asStream
-     *
-     * @return null|Result|Stream
-     */
     public function getObject(string $path, bool $asStream = false): null|Result|Stream
     {
         $this->objectPath->setPath($path);
@@ -61,11 +34,6 @@ class UploadedObject
         }
     }
 
-    /**
-     * @param Stream $stream
-     *
-     * @return bool|resource
-     */
     public function createTempFile(Stream $stream): mixed
     {
         $tempFile = tmpfile();

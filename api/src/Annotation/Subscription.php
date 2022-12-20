@@ -6,32 +6,14 @@ use App\Annotation\Interfaces\MethodAnnotationInterface;
 use App\Enum\SubscriptionEnum;
 use Attribute;
 
-/**
- * Class Subscription.
- *
- * @package App\Annotation
- *
- * @author  Codememory
- */
-#[Attribute(Attribute::TARGET_METHOD)]
-class Subscription implements MethodAnnotationInterface
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
+final class Subscription implements MethodAnnotationInterface
 {
-    /**
-     * @var SubscriptionEnum
-     */
-    public readonly SubscriptionEnum $subscription;
-
-    /**
-     * @param SubscriptionEnum $subscriptionEnum
-     */
-    public function __construct(SubscriptionEnum $subscriptionEnum)
-    {
-        $this->subscription = $subscriptionEnum;
+    public function __construct(
+        public readonly SubscriptionEnum $subscription
+    ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHandler(): string
     {
         return SubscriptionHandler::class;

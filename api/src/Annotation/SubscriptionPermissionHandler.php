@@ -4,44 +4,26 @@ namespace App\Annotation;
 
 use App\Annotation\Interfaces\MethodAnnotationHandlerInterface;
 use App\Annotation\Interfaces\MethodAnnotationInterface;
-use App\Entity\SubscriptionPermission as SubscriptionPermissionEntity;
-use App\Rest\Http\Exceptions\AccessDeniedException;
-use App\Security\Auth\AuthorizedUser;
+use App\Exception\Http\AccessDeniedException;
+use App\Security\AuthorizedUser;
+use App\Service\LogicBranches\SubscriptionPermissionBranchHandler;
 
-/**
- * Class SubscriptionPermissionHandler.
- *
- * @package App\Annotation
- *
- * @author  Codememory
- */
-class SubscriptionPermissionHandler implements MethodAnnotationHandlerInterface
+final class SubscriptionPermissionHandler implements MethodAnnotationHandlerInterface
 {
-    /**
-     * @var AuthorizedUser
-     */
-    private AuthorizedUser $authorizedUser;
-
-    /**
-     * @param AuthorizedUser $authorizedUser
-     */
-    public function __construct(AuthorizedUser $authorizedUser)
-    {
-        $this->authorizedUser = $authorizedUser;
+    public function __construct(
+        private readonly AuthorizedUser $authorizedUser,
+        private readonly SubscriptionPermissionBranchHandler $subscriptionPermissionBranchHandler
+    ) {
     }
 
     /**
-     * @inheritDoc
-     *
      * @param SubscriptionPermission $annotation
      */
     public function handle(MethodAnnotationInterface $annotation): void
     {
         $user = $this->authorizedUser->getUser();
-        $subscriptionPermissions = $user?->getSubscription()?->getPermissions();
-        $exist = $subscriptionPermissions?->exists(static fn(int $key, SubscriptionPermissionEntity $subscriptionPermission) => $subscriptionPermission->getPermissionKey()->getKey() === $annotation->permission->name);
 
-        if (true !== $exist) {
+        if (!$this->subscriptionPermissionBranchHandler->allowedPermission($user, $annotation->subscriptionPermission)) {
             throw AccessDeniedException::notEnoughSubscriptionPermissions();
         }
     }

@@ -5,112 +5,74 @@ namespace App\Controller\Admin;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\UserRolePermission;
-use App\DTO\SubscriptionDTO;
+use App\Dto\Transformer\SubscriptionTransformer;
 use App\Entity\Subscription;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\SubscriptionRepository;
-use App\ResponseData\SubscriptionResponseData;
+use App\ResponseData\General\Subscription\SubscriptionResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
-use App\Service\Subscription\CreateSubscriptionService;
-use App\Service\Subscription\DeleteSubscriptionService;
-use App\Service\Subscription\UpdateSubscriptionService;
+use App\UseCase\Subscription\CreateSubscription;
+use App\UseCase\Subscription\DeleteSubscription;
+use App\UseCase\Subscription\UpdateSubscription;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class SubscriptionController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/subscription')]
+#[Authorization]
 class SubscriptionController extends AbstractRestController
 {
-    /**
-     * @param SubscriptionResponseData $subscriptionResponseData
-     * @param SubscriptionRepository   $subscriptionRepository
-     *
-     * @return JsonResponse
-     */
-    #[Route('/all', methods: 'GET')]
-    #[Authorization]
+    #[Route('/all', methods: Request::METHOD_GET)]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
-    public function all(SubscriptionResponseData $subscriptionResponseData, SubscriptionRepository $subscriptionRepository): JsonResponse
+    public function all(SubscriptionResponseData $responseData, SubscriptionRepository $subscriptionRepository): JsonResponse
     {
-        $subscriptionResponseData->setEntities($subscriptionRepository->findAll());
-        $subscriptionResponseData->collect();
-
-        return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse());
+        return $this->responseData($responseData, $subscriptionRepository->findAll());
     }
 
-    /**
-     * @param Subscription             $subscription
-     * @param SubscriptionResponseData $subscriptionResponseData
-     *
-     * @return JsonResponse
-     */
-    #[Route('/{subscription_id<\d+>}/read', methods: 'GET')]
-    #[Authorization]
+    #[Route('/{subscription_id<\d+>}/read', methods: Request::METHOD_GET)]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,
-        SubscriptionResponseData $subscriptionResponseData
+        SubscriptionResponseData $responseData
     ): JsonResponse {
-        $subscriptionResponseData->setEntities($subscription);
-        $subscriptionResponseData->collect();
-
-        return $this->responseCollection->dataOutput($subscriptionResponseData->getResponse(true));
+        return $this->responseData($responseData, $subscription);
     }
 
-    /**
-     * @param SubscriptionDTO           $subscriptionDTO
-     * @param CreateSubscriptionService $createSubscriptionService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/create', methods: 'POST')]
-    #[Authorization]
+    #[Route('/create', methods: Request::METHOD_POST)]
     #[UserRolePermission(RolePermissionEnum::CREATE_SUBSCRIPTION)]
-    public function create(SubscriptionDTO $subscriptionDTO, CreateSubscriptionService $createSubscriptionService): JsonResponse
+    public function create(SubscriptionTransformer $transformer, CreateSubscription $createSubscription, SubscriptionResponseData $responseData): JsonResponse
     {
-        return $createSubscriptionService->make($subscriptionDTO->collect());
+        return $this->responseData(
+            $responseData,
+            $createSubscription->process($transformer->transformFromRequest()),
+            PlatformCodeEnum::CREATED
+        );
     }
 
-    /**
-     * @param Subscription              $subscription
-     * @param SubscriptionDTO           $subscriptionDTO
-     * @param UpdateSubscriptionService $updateSubscriptionService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/{subscription_id<\d+>}/edit', methods: 'PUT')]
-    #[Authorization]
+    #[Route('/{subscription_id<\d+>}/edit', methods: Request::METHOD_PUT)]
     #[UserRolePermission(RolePermissionEnum::UPDATE_SUBSCRIPTION)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,
-        SubscriptionDTO $subscriptionDTO,
-        UpdateSubscriptionService $updateSubscriptionService
+        SubscriptionTransformer $transformer,
+        UpdateSubscription $updateSubscription,
+        SubscriptionResponseData $responseData
     ): JsonResponse {
-        $subscriptionDTO->setEntity($subscription);
-
-        return $updateSubscriptionService->make($subscriptionDTO->collect(), $subscription);
+        return $this->responseData(
+            $responseData,
+            $updateSubscription->process($transformer->transformFromRequest($subscription)),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
-    /**
-     * @param Subscription              $subscription
-     * @param DeleteSubscriptionService $deleteSubscriptionService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/{subscription_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
+    #[Route('/{subscription_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
     #[UserRolePermission(RolePermissionEnum::DELETE_SUBSCRIPTION)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,
-        DeleteSubscriptionService $deleteSubscriptionService
+        DeleteSubscription $deleteSubscription,
+        SubscriptionResponseData $responseData
     ): JsonResponse {
-        return $deleteSubscriptionService->make($subscription);
+        return $this->responseData($responseData, $deleteSubscription->process($subscription), PlatformCodeEnum::DELETED);
     }
 }

@@ -8,12 +8,12 @@ services:
     platform: linux/arm64
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - "${DOCKER_DEV_PATH}/nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "${API_PATH}:${API_WORKDIR}"
     links:
       - api
+      - public-frontend
       - rabbitmq
 
   api:
@@ -26,6 +26,8 @@ services:
         app_path: ${API_PATH}
     expose:
       - "9000"
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
     volumes:
       - "${API_PATH}:${API_WORKDIR}"
       - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
@@ -33,12 +35,12 @@ services:
       - postgres
       - redis
       - s3
+      - mailhog
 
   postgres:
     container_name: postgres
     image: postgres:14.2
     restart: unless-stopped
-    platform: linux/amd64
     environment:
       POSTGRES_USER: "${DB_USER}"
       POSTGRES_PASSWORD: "${DB_PASSWORD}"
@@ -91,6 +93,13 @@ services:
     volumes:
       - "./data/rabbitmq/:/var/lib/rabbitmq/"
 
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
   user-session-process:
     container_name: user-session-process
     build:
@@ -139,8 +148,8 @@ services:
     depends_on:
       - api
 
-  send-user-notification:
-    container_name: send-user-notification
+  stream-running-multimedia-reset-process:
+    container_name: stream-running-multimedia-reset-process
     build:
       context: ./
       dockerfile: "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/Dockerfile"
@@ -150,7 +159,7 @@ services:
     volumes:
       - "${API_PATH}:${API_WORKDIR}"
       - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
-    command: sh -c "sleep 30 && bin/console --no-debug app:notifications:send-to-users"
+    command: sh -c "sleep 30 && bin/console --no-debug app:stream:delete-invalid"
     restart: unless-stopped
     depends_on:
       - api
@@ -164,11 +173,27 @@ services:
         workdir: ${API_WORKDIR}
         app_path: ${API_PATH}
     ports:
-      - "8282:8282"
+      - "8500:8500"
     volumes:
       - "${API_PATH}:${API_WORKDIR}"
       - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
-    command: sh -c "bin/console --no-debug app:ws-server start"
+    command: sh -c "bin/console --no-debug app:ws-server"
+    restart: unless-stopped
+    depends_on:
+      - api
+
+  send-user-notification:
+    container_name: send-user-notification
+    build:
+      context: ./
+      dockerfile: "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/Dockerfile"
+      args:
+        workdir: ${API_WORKDIR}
+        app_path: ${API_PATH}
+    volumes:
+      - "${API_PATH}:${API_WORKDIR}"
+      - "${DOCKER_DEV_PATH}/php${PHP_VERSION}-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini"
+    command: sh -c "sleep 30 && bin/console --no-debug app:notifications:send-to-users"
     restart: unless-stopped
     depends_on:
       - api
@@ -189,3 +214,16 @@ services:
     depends_on:
       - api
       - rabbitmq
+
+  public-frontend:
+    container_name: public-frontend
+    build:
+      context: ./
+      dockerfile: "${DOCKER_DEV_PATH}/frontend/Dockerfile"
+    volumes:
+        - "./frontend/public:/usr/src/frontend/public"
+    env_file:
+      - "frontend/.env"
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

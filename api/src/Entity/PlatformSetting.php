@@ -2,75 +2,56 @@
 
 namespace App\Entity;
 
+use App\DBAL\Types\ArrayOrStringType;
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Enum\PlatformSettingEnum;
 use App\Repository\PlatformSettingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use function is_array;
 
-/**
- * Class PlatformSetting.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: PlatformSettingRepository::class)]
 #[ORM\Table('platform_settings')]
 #[ORM\HasLifecycleCallbacks]
 class PlatformSetting implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
         'comment' => 'Unique setting key to receive'
     ])]
     private ?string $key = null;
 
-    #[ORM\Column(type: Types::ARRAY, options: [
+    #[ORM\Column(type: ArrayOrStringType::NAME, options: [
         'comment' => 'Setting value'
     ])]
-    private array $value = [];
+    private null|array|string $value = null;
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @param null|string $key
-     *
-     * @return $this
-     */
-    public function setKey(?string $key): self
+    public function setKey(?PlatformSettingEnum $platformSetting): self
     {
-        $this->key = $key;
+        $this->key = $platformSetting?->name;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValue(): mixed
+    public function getValue(): string|array|null
     {
-        return $this->value['value'] ?? null;
+        return $this->value;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return $this
-     */
-    public function setValue(mixed $value): self
+    public function setValue(array|string|int|float $value): self
     {
-        $this->value = ['value' => $value];
+        $this->value = is_array($value) ? $value : (string) $value;
 
         return $this;
     }

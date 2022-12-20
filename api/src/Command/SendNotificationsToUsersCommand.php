@@ -4,9 +4,9 @@ namespace App\Command;
 
 use App\Entity\Notification;
 use App\Entity\User;
-use App\Enum\NotificationStatusEnum;
-use App\Enum\UserStatusEnum;
 use App\Repository\UserRepository;
+use App\Rest\Response\WebSocketResponseCollection;
+use App\Service\WebSocket\MessageQueueToClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -14,39 +14,22 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * Class SendNotificationsToUsersCommand.
- *
- * @package App\Command
- *
- * @author  Codememory
- */
 #[AsCommand(
     'app:notifications:send-to-users',
     'Send notifications to pending users'
 )]
 class SendNotificationsToUsersCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
-
-    /**
-     * @param EntityManagerInterface $manager
-     */
-    public function __construct(EntityManagerInterface $manager)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly WebSocketResponseCollection $webSocketResponseCollection,
+        private readonly MessageQueueToClient $messageQueueToClient
+    ) {
         parent::__construct();
-
-        $this->em = $manager;
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -54,11 +37,13 @@ class SendNotificationsToUsersCommand extends Command
         $notificationRepository = $this->em->getRepository(Notification::class);
         $userRepository = $this->em->getRepository(User::class);
 
+        $io->info('Worker started successfully');
+
         while (true) {
             sleep(1);
 
             foreach ($notificationRepository->getPendingNotifications() as $pendingNotification) {
-                $pendingNotification->setStatus(NotificationStatusEnum::IN_PROCESS_SENDING);
+                $pendingNotification->setInProcessSendingStatus();
 
                 $this->em->flush();
 
@@ -70,7 +55,7 @@ class SendNotificationsToUsersCommand extends Command
                         $this->sendToUser($userRepository, $pendingNotification);
                 }
 
-                $pendingNotification->setStatus(NotificationStatusEnum::SENT_OUT);
+                $pendingNotification->setSentOutStatus();
 
                 $this->em->flush();
 
@@ -79,37 +64,30 @@ class SendNotificationsToUsersCommand extends Command
         }
     }
 
-    /**
-     * @param UserRepository $userRepository
-     * @param Notification   $notification
-     *
-     * @return void
-     */
     private function sendToAllRegisteredUsers(UserRepository $userRepository, Notification $notification): void
     {
-        $registeredUsers = $userRepository->findBy([
-            'status' => UserStatusEnum::ACTIVE->name
-        ]);
-
-        foreach ($registeredUsers as $registeredUser) {
+        foreach ($userRepository->findActive() as $registeredUser) {
             $registeredUser->addNotification($notification);
+
+            $this->sendInRealTime($notification, $registeredUser);
 
             sleep(1);
         }
     }
 
-    /**
-     * @param UserRepository $userRepository
-     * @param Notification   $notification
-     *
-     * @return void
-     */
     private function sendToUser(UserRepository $userRepository, Notification $notification): void
     {
-        $user = $userRepository->findOneBy([
-            'email' => $notification->getToUser()
-        ]);
+        $user = $userRepository->findByEmail($notification->getToUser());
 
-        $user?->addNotification($notification);
+        if (null !== $user) {
+            $user->addNotification($notification);
+
+            $this->sendInRealTime($notification, $user);
+        }
+    }
+
+    private function sendInRealTime(Notification $notification, User $toUser): void
+    {
+        $this->messageQueueToClient->sendMessage($this->webSocketResponseCollection->userNotification($notification), $toUser);
     }
 }

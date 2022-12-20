@@ -11,61 +11,31 @@ use App\Enum\RoleEnum;
 use App\Enum\RolePermissionEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class RolePermissionFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class RolePermissionFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private string $roleKey;
+    private ?ReferenceRepository $referenceRepository = null;
 
-    /**
-     * @var string
-     */
-    private string $rolePermissionKey;
-
-    /**
-     * @var ReferenceRepository
-     */
-    private ReferenceRepository $referenceRepository;
-
-    /**
-     * @param string $roleKey
-     * @param string $rolePermissionKey
-     */
-    public function __construct(RoleEnum $roleKey, RolePermissionEnum $rolePermissionKey)
-    {
-        $this->roleKey = $roleKey->name;
-        $this->rolePermissionKey = $rolePermissionKey->name;
+    public function __construct(
+        private readonly RoleEnum $roleKey,
+        private readonly RolePermissionEnum $rolePermissionKey
+    ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
         /** @var Role $role */
-        $role = $this->referenceRepository->getReference("r-{$this->roleKey}");
+        $role = $this->referenceRepository->getReference("r-{$this->roleKey->name}");
 
         /** @var RolePermissionKey $rolePermissionKey */
-        $rolePermissionKey = $this->referenceRepository->getReference("rpk-{$this->rolePermissionKey}");
-        $rolePermissionEntity = new RolePermission();
+        $rolePermissionKey = $this->referenceRepository->getReference("rpk-{$this->rolePermissionKey->name}");
+        $rolePermission = new RolePermission();
 
-        $rolePermissionEntity->setRole($role);
-        $rolePermissionEntity->setPermissionKey($rolePermissionKey);
+        $rolePermission->setRole($role);
+        $rolePermission->setPermissionKey($rolePermissionKey);
 
-        return $rolePermissionEntity;
+        return $rolePermission;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         $this->referenceRepository = $referenceRepository;

@@ -1,0 +1,20 @@
+button {
+  cursor: pointer;
+}
+
+img {
+  user-select: none;
+}
+
+.sm-cp {
+  cursor: pointer;
+}
+
+.sm-usn {
+  user-select: none;
+}
+
+.sm-pen {
+  pointer-events: none;
+  user-select: none;
+}

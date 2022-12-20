@@ -2,110 +2,123 @@
 
 namespace App\Service\WebSocket;
 
-use App\Enum\WebSocketClientMessageTypeEnum;
-use App\Security\Auth\AuthorizedUser;
-use App\Service\AbstractService;
+use App\Entity\Interfaces\EntityInterface;
+use App\Exception\WebSocket\AuthorizationException;
+use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
+use App\Infrastructure\Validator\Validator;
+use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
+use App\Rest\Response\WebSocketResponseCollection;
+use App\Security\AuthorizedUser;
+use App\Service\Translation;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
-use Symfony\Contracts\Service\Attribute\Required;
-use Workerman\Connection\ConnectionInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\Pure;
 
-/**
- * Class AbstractUserMessageHandlerService.
- *
- * @package App\Service\WebSocket
- *
- * @author  Codememory
- */
-abstract class AbstractUserMessageHandlerService extends AbstractService implements UserMessageHandlerInterface
+abstract class AbstractUserMessageHandlerService implements UserMessageHandlerInterface
 {
-    #[Required]
-    public ?AuthorizedUser $authorizedUser = null;
-
-    /**
-     * @var null|ConnectionInterface
-     */
-    private ?ConnectionInterface $connection = null;
-
-    /**
-     * @var array
-     */
+    protected ?Worker $worker = null;
+    private ?int $connectionId = null;
     private array $messageHeaders = [];
-
-    /**
-     * @var array
-     */
     private array $messageData = [];
 
-    /**
-     * @param WebSocketClientMessageTypeEnum $clientMessageTypeEnum
-     * @param array                          $data
-     *
-     * @return $this
-     */
-    protected function sendToClient(WebSocketClientMessageTypeEnum $clientMessageTypeEnum, array $data): self
+    public function __construct(
+        protected readonly EntityManagerInterface $em,
+        protected readonly AuthorizedUser $authorizedUser,
+        protected readonly Translation $translation,
+        protected readonly Validator $validator,
+        protected readonly WebSocketResponseCollection $responseCollection
+    ) {
+    }
+
+    #[Pure]
+    protected function getLocale(): ?string
     {
-        $this->connection?->send(json_encode([
-            'type' => $clientMessageTypeEnum->name,
-            'data' => $data
-        ]));
+        return $this->getMessageHeaders()['language'] ?? null;
+    }
+
+    protected function getTranslation(string $translationKey, array $parameters = []): ?string
+    {
+        if (null === $this->getLocale()) {
+            return null;
+        }
+
+        $this->translation->setLocale($this->getLocale());
+
+        return $this->translation->get($translationKey, $parameters);
+    }
+
+    protected function validate(EntityInterface|DataTransferInterface $object, ?callable $throw = null): void
+    {
+        $this->validator->validate($object, $throw);
+    }
+
+    protected function validateWithEntity(DataTransferInterface $dataTransfer): void
+    {
+        $this->validate($dataTransfer);
+        $this->validate($dataTransfer->getEntity());
+    }
+
+    protected function sendToClient(WebSocketSchemeInterface $scheme): self
+    {
+        $this->worker->sendToConnection($this->connectionId, $scheme);
 
         return $this;
     }
 
-    /**
-     * @return null|AuthorizedUser
-     */
     protected function getAuthorizedUser(): ?AuthorizedUser
     {
         if ([] !== $this->messageHeaders && array_key_exists('access_token', $this->messageHeaders)) {
-            $this->authorizedUser->setToken($this->messageHeaders['access_token']);
+            $this->authorizedUser->setAccessToken($this->messageHeaders['access_token']);
         }
 
         return $this->authorizedUser;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function setConnection(ConnectionInterface $connection): UserMessageHandlerInterface
+    protected function throwIfNotAuthorized(): void
     {
-        $this->connection = $connection;
+        $authorizedUser = $this->getAuthorizedUser();
+
+        if (null === $authorizedUser->getUser()) {
+            throw AuthorizationException::authorizationIsRequired();
+        }
+    }
+
+    public function setConnection(int $connectionId): UserMessageHandlerInterface
+    {
+        $this->connectionId = $connectionId;
 
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getConnection(): ?ConnectionInterface
+    public function getConnectionId(): ?int
     {
-        return $this->connection;
+        return $this->connectionId;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setMessage(array $headers, array $data): UserMessageHandlerInterface
     {
         $this->messageHeaders = $headers;
         $this->messageData = $data;
 
+        $this->responseCollection->setLocale($headers['language']);
+
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getMessageHeaders(): array
     {
         return $this->messageHeaders;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getMessage(): array
+    public function getMessageData(): array
     {
-        return $this->messageData['message'] ?? [];
+        return $this->messageData;
+    }
+
+    public function setWorker(Worker $worker): self
+    {
+        $this->worker = $worker;
+
+        return $this;
     }
 }

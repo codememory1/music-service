@@ -2,14 +2,12 @@
 
 namespace App\Enum;
 
-/**
- * Enum WebSocketClientMessageTypeEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum WebSocketClientMessageTypeEnum
 {
-    // example -> case TEST;
+    case CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_CURRENT_ACCOUNT;
+    case CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_FRIEND;
+    case MULTIMEDIA_STREAM_OFFER;
+    case ACCEPT_OFFERED_STREAMING;
+    case REJECT_OFFERED_STREAMING;
+    case USER_NOTIFICATION;
 }

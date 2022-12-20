@@ -71,7 +71,7 @@ return (new PhpCsFixer\Config())
 		],
 		'class_attributes_separation' => [
 			'elements' => [
-				'trait_import' => 'one',
+				'trait_import' => 'none',
 				'case' => 'only_if_meta',
 				'const'  => 'only_if_meta',
 				'property' => 'only_if_meta',
@@ -304,7 +304,7 @@ return (new PhpCsFixer\Config())
 		'phpdoc_no_access' => true,
 		'phpdoc_no_alias_tag' => true,
 		'phpdoc_no_empty_return' => false,
-		'phpdoc_no_package' => false,
+		'phpdoc_no_package' => true,
 		'phpdoc_no_useless_inheritdoc' => false,
 		'phpdoc_order' => true,
 		'phpdoc_return_self_reference' => true,

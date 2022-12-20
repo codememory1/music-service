@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum RoleEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum RoleEnum
 {
     case FOUNDER;
@@ -17,4 +10,5 @@ enum RoleEnum
     case SUPPORT;
     case MUSIC_MANAGER;
     case USER;
+    case SYSTEM_USER;
 }

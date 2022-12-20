@@ -2,77 +2,41 @@
 
 namespace App\EventListener\Registration;
 
-use App\DTO\UserDTO;
-use App\Entity\UserSession;
+use App\Dto\Transformer\UserTransformer;
 use App\Enum\UserSessionTypeEnum;
-use App\Event\UserRegistrationEvent;
-use App\Service\UserSession\CreateSessionService;
-use App\Service\UserSession\UpdateSessionService;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Event\SuccessUserRegistrationEvent;
+use App\UseCase\User\Session\CreateUserSession;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-/**
- * Class CreateRegistrationSessionListener.
- *
- * @package App\EventListener\Registration
- *
- * @author  Codememory
- */
-class CreateRegistrationSessionListener
+#[AsEventListener(SuccessUserRegistrationEvent::class, 'onUserRegistration', 0)]
+final class CreateRegistrationSessionListener
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
-
-    /**
-     * @var CreateSessionService
-     */
-    private CreateSessionService $createUserSessionService;
-
-    /**
-     * @var UpdateSessionService
-     */
-    private UpdateSessionService $updateUserSessionService;
-
-    /**
-     * @var UserDTO
-     */
-    private UserDTO $userDTO;
-
-    /**
-     * @param EntityManagerInterface $manager
-     * @param CreateSessionService   $createSessionService
-     * @param UpdateSessionService   $updateSessionService
-     * @param UserDTO                $userDTO
-     */
     public function __construct(
-        EntityManagerInterface $manager,
-        CreateSessionService $createSessionService,
-        UpdateSessionService $updateSessionService,
-        UserDTO $userDTO
+        private readonly CreateUserSession $createUserSession,
+        private readonly UserTransformer $userTransformer
     ) {
-        $this->em = $manager;
-        $this->createUserSessionService = $createSessionService;
-        $this->updateUserSessionService = $updateSessionService;
-        $this->userDTO = $userDTO->collect();
     }
 
     /**
-     * @param UserRegistrationEvent $event
-     *
-     * @return void
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
      */
-    public function onUserRegistration(UserRegistrationEvent $event): void
+    public function onUserRegistration(SuccessUserRegistrationEvent $event): void
     {
-        $userSessionRepository = $this->em->getRepository(UserSession::class);
-        $finedUserSession = $userSessionRepository->findOneBy([
-            'user' => $event->user
-        ]);
-
-        if (null !== $finedUserSession) {
-            $this->updateUserSessionService->make($this->userDTO, $event->user, $finedUserSession, UserSessionTypeEnum::REGISTRATION);
-        } else {
-            $this->createUserSessionService->make($this->userDTO, $event->user, type: UserSessionTypeEnum::REGISTRATION);
+        if ($event->user->getSessions()->count() < 1) {
+            $this->createUserSession->process(
+                $this->userTransformer->transformFromRequest(),
+                $event->user,
+                UserSessionTypeEnum::REGISTRATION
+            );
         }
     }
 }

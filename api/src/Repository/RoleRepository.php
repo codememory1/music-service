@@ -3,19 +3,18 @@
 namespace App\Repository;
 
 use App\Entity\Role;
+use App\Enum\RoleEnum;
 
 /**
- * Class RoleRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<Role>
- *
- * @author  Codememory
  */
-class RoleRepository extends AbstractRepository
+final class RoleRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = Role::class;
+    protected ?string $alias = 'r';
+
+    public function findByKey(RoleEnum $role): ?Role
+    {
+        return $this->findOneBy(['key' => $role->name]);
+    }
 }

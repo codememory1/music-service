@@ -4,18 +4,8 @@ namespace App\Entity\Traits;
 
 use DateTimeImmutable;
 
-/**
- * Trait ValidTtlTrait.
- *
- * @package App\Entity\Traits
- *
- * @author  Codememory
- */
 trait ValidTtlTrait
 {
-    /**
-     * @return bool
-     */
     public function isValidTtlByCreatedAt(): bool
     {
         $createdAt = $this->getCreatedAt()->getTimestamp();
@@ -24,9 +14,6 @@ trait ValidTtlTrait
         return false === $now > $createdAt + $this->getTtl();
     }
 
-    /**
-     * @return bool
-     */
     public function isValidTtlWithUpdatedAt(): bool
     {
         $createdAt = $this->getCreatedAt()->getTimestamp();

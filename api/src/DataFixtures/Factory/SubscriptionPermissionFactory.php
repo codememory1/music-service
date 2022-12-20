@@ -11,62 +11,34 @@ use App\Enum\SubscriptionEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class SubscriptionPermissionFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class SubscriptionPermissionFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private string $subscription;
+    private ?ReferenceRepository $referenceRepository = null;
 
-    /**
-     * @var string
-     */
-    private string $subscriptionPermission;
-
-    /**
-     * @var ReferenceRepository
-     */
-    private ReferenceRepository $referenceRepository;
-
-    /**
-     * @param SubscriptionEnum           $subscriptionEnum
-     * @param SubscriptionPermissionEnum $subscriptionPermissionEnum
-     */
-    public function __construct(SubscriptionEnum $subscriptionEnum, SubscriptionPermissionEnum $subscriptionPermissionEnum)
-    {
-        $this->subscription = $subscriptionEnum->name;
-        $this->subscriptionPermission = $subscriptionPermissionEnum->name;
+    public function __construct(
+        private readonly SubscriptionEnum $subscription,
+        private readonly SubscriptionPermissionEnum $subscriptionPermission,
+        private readonly array $value = []
+    ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
-        $subscriptionPermissionEntity = new SubscriptionPermission();
+        $subscriptionPermission = new SubscriptionPermission();
 
         /** @var Subscription $subscription */
-        $subscription = $this->referenceRepository->getReference("s-{$this->subscription}");
+        $subscription = $this->referenceRepository->getReference("s-{$this->subscription->name}");
 
         /** @var SubscriptionPermissionKey $subscriptionPermissionKey */
-        $subscriptionPermissionKey = $this->referenceRepository->getReference("spk-{$this->subscriptionPermission}");
+        $subscriptionPermissionKey = $this->referenceRepository->getReference("spk-{$this->subscriptionPermission->name}");
 
-        $subscriptionPermissionEntity->setSubscription($subscription);
-        $subscriptionPermissionEntity->setPermissionKey($subscriptionPermissionKey);
+        $subscriptionPermission->setSubscription($subscription);
+        $subscriptionPermission->setPermissionKey($subscriptionPermissionKey);
+        $subscriptionPermission->setValue($this->value);
 
-        return $subscriptionPermissionEntity;
+        return $subscriptionPermission;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         $this->referenceRepository = $referenceRepository;

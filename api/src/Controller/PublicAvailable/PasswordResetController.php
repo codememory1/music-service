@@ -3,47 +3,45 @@
 namespace App\Controller\PublicAvailable;
 
 use App\Annotation\Authorization;
-use App\DTO\RequestRestorationPasswordDTO;
-use App\DTO\RestorePasswordDTO;
+use App\Dto\Transformer\RequestRestorationPasswordTransformer;
+use App\Dto\Transformer\RestorePasswordTransformer;
+use App\Enum\PlatformCodeEnum;
+use App\ResponseData\General\PasswordReset\RequestRestorationResponseData;
+use App\ResponseData\General\PasswordReset\RestoreResponseData;
 use App\Rest\Controller\AbstractRestController;
 use App\Security\PasswordReset\RequestRestoration;
 use App\Security\PasswordReset\RestorePassword;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class PasswordResetController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user/password-reset')]
+#[Authorization(false)]
 class PasswordResetController extends AbstractRestController
 {
-    /**
-     * @param RequestRestorationPasswordDTO $requestRestorationPasswordDTO
-     * @param RequestRestoration            $requestRestoration
-     *
-     * @return JsonResponse
-     */
-    #[Route('/request-restoration', methods: 'POST')]
-    #[Authorization(false)]
-    public function requestRestoration(RequestRestorationPasswordDTO $requestRestorationPasswordDTO, RequestRestoration $requestRestoration): JsonResponse
-    {
-        return $requestRestoration->send($requestRestorationPasswordDTO->collect());
+    #[Route('/request-restoration', methods: Request::METHOD_POST)]
+    public function requestRestoration(
+        RequestRestorationPasswordTransformer $transformer,
+        RequestRestoration $requestRestoration,
+        RequestRestorationResponseData $responseData
+    ): JsonResponse {
+        return $this->responseData(
+            $responseData,
+            $requestRestoration->send($transformer->transformFromRequest()),
+            PlatformCodeEnum::CREATED
+        );
     }
 
-    /**
-     * @param RestorePasswordDTO $restorePasswordDTO
-     * @param RestorePassword    $restorePassword
-     *
-     * @return JsonResponse
-     */
-    #[Route('/restore-password', methods: 'POST')]
-    #[Authorization(false)]
-    public function restorePassword(RestorePasswordDTO $restorePasswordDTO, RestorePassword $restorePassword): JsonResponse
-    {
-        return $restorePassword->restore($restorePasswordDTO->collect());
+    #[Route('/restore-password', methods: Request::METHOD_POST)]
+    public function restorePassword(
+        RestorePasswordTransformer $transformer,
+        RestorePassword $restorePassword,
+        RestoreResponseData $responseData
+    ): JsonResponse {
+        return $this->responseData(
+            $responseData,
+            $restorePassword->restore($transformer->transformFromRequest()),
+            PlatformCodeEnum::UPDATED
+        );
     }
 }

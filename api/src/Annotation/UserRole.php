@@ -6,32 +6,14 @@ use App\Annotation\Interfaces\MethodAnnotationInterface;
 use App\Enum\RoleEnum;
 use Attribute;
 
-/**
- * Class UserRole.
- *
- * @package App\Annotation
- *
- * @author  Codememory
- */
-#[Attribute(Attribute::TARGET_METHOD)]
-class UserRole implements MethodAnnotationInterface
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
+final class UserRole implements MethodAnnotationInterface
 {
-    /**
-     * @var RoleEnum
-     */
-    public readonly RoleEnum $role;
-
-    /**
-     * @param RoleEnum $rolePermissionEnum
-     */
-    public function __construct(RoleEnum $roleEnum)
-    {
-        $this->role = $roleEnum;
+    public function __construct(
+        public readonly RoleEnum $role
+    ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getHandler(): string
     {
         return UserRoleHandler::class;

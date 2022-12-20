@@ -2,48 +2,38 @@
 
 namespace App\Security\PasswordReset;
 
-use App\DTO\RestorePasswordDTO;
+use App\Dto\Transfer\RestorePasswordDto;
 use App\Entity\PasswordReset;
-use App\Enum\PasswordResetStatusEnum;
-use App\Rest\Http\Exceptions\InvalidException;
-use App\Service\AbstractService;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Exception\Http\InvalidException;
+use App\Infrastructure\Doctrine\Flusher;
+use App\Infrastructure\Validator\Validator;
+use App\Repository\PasswordResetRepository;
 
-/**
- * Class RestorePassword.
- *
- * @package App\Security\PasswordReset
- *
- * @author  Codememory
- */
-class RestorePassword extends AbstractService
+final class RestorePassword
 {
-    /**
-     * @param RestorePasswordDTO $restorePasswordDTO
-     *
-     * @return JsonResponse
-     */
-    public function restore(RestorePasswordDTO $restorePasswordDTO): JsonResponse
+    public function __construct(
+        private readonly Flusher $flusher,
+        private readonly Validator $validator,
+        private readonly PasswordResetRepository $passwordResetRepository
+    ) {
+    }
+
+    public function restore(RestorePasswordDto $dto): PasswordReset
     {
-        if (false === $this->validate($restorePasswordDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validator->validate($dto);
 
-        $finedPasswordReset = $this->em->getRepository(PasswordReset::class)->findOneBy([
-            'user' => $restorePasswordDTO->user,
-            'code' => $restorePasswordDTO->code,
-            'status' => PasswordResetStatusEnum::IN_PROCESS->name
-        ]);
+        $passwordReset = $this->passwordResetRepository->findByCodeAndUserInProcess($dto->user, $dto->code);
 
-        if (null === $finedPasswordReset || false === $finedPasswordReset->isValidTtlByCreatedAt()) {
+        if (null === $passwordReset || false === $passwordReset->isValidTtlByCreatedAt()) {
             throw InvalidException::invalidCode();
         }
 
-        $restorePasswordDTO->user->setPassword($restorePasswordDTO->password);
-        $finedPasswordReset->setStatus(PasswordResetStatusEnum::COMPLETED);
+        $dto->user->setPassword($dto->password);
 
-        $this->em->flush();
+        $passwordReset->setCompletedStatus();
 
-        return $this->responseCollection->successUpdate('passwordReset@successRestorePassword');
+        $this->flusher->save();
+
+        return $passwordReset;
     }
 }

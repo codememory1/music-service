@@ -2,21 +2,14 @@
 
 namespace App\Validator\Constraints;
 
+use Ergebnis\Json\Json;
 use Ergebnis\Json\Pointer\JsonPointer;
-use Ergebnis\Json\SchemaValidator\Json;
 use Ergebnis\Json\SchemaValidator\SchemaValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class JsonSchemaValidator.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
-class JsonSchemaValidator extends ConstraintValidator
+final class JsonSchemaValidator extends ConstraintValidator
 {
     /**
      * @inheritDoc
@@ -28,7 +21,7 @@ class JsonSchemaValidator extends ConstraintValidator
         }
 
         $validationResult = (new SchemaValidator())->validate(
-            Json::fromString([] === $value ? '{}' : json_encode($value)),
+            Json::fromString(json_encode($value)),
             $this->readSchema($constraint->schemaName),
             JsonPointer::document()
         );
@@ -36,7 +29,7 @@ class JsonSchemaValidator extends ConstraintValidator
         if (false === $validationResult->isValid()) {
             $this->context
                 ->buildViolation($constraint->message)
-                ->setParameter('{{ property }}', $this->context->getPropertyName())
+                ->setParameter('{{ property }}', $this->context->getPropertyName() ?: $this->context->getPropertyPath())
                 ->addViolation();
         }
     }

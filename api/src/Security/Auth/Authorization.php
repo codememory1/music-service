@@ -3,34 +3,18 @@
 namespace App\Security\Auth;
 
 use App\Entity\User;
-use App\Enum\EventEnum;
 use App\Event\UserAuthorizationEvent;
-use App\Service\AbstractService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class Authorization.
- *
- * @package App\Security\Auth
- *
- * @author  Сodememory
- */
-class Authorization extends AbstractService
+final class Authorization
 {
-    #[Required]
-    public ?AuthorizationToken $authorizationToken = null;
+    public function __construct(
+        private readonly AuthorizationToken $authorizationToken,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
 
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
-
-    /**
-     * @param User $authenticatedUser
-     *
-     * @return JsonResponse
-     */
-    public function auth(User $authenticatedUser): JsonResponse
+    public function auth(User $authenticatedUser): array
     {
         $accessToken = $this->authorizationToken->generateAccessToken($authenticatedUser)->getAccessToken();
         $refreshToken = $this->authorizationToken->generateRefreshToken($authenticatedUser)->getRefreshToken();
@@ -38,11 +22,11 @@ class Authorization extends AbstractService
         $this->eventDispatcher->dispatch(new UserAuthorizationEvent(
             $authenticatedUser,
             $this->authorizationToken
-        ), EventEnum::AUTHORIZATION->value);
+        ));
 
-        return $this->responseCollection->successAuthorization([
+        return [
             'access_token' => $accessToken,
             'refresh_token' => $refreshToken
-        ]);
+        ];
     }
 }

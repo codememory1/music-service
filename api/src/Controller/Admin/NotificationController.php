@@ -4,34 +4,28 @@ namespace App\Controller\Admin;
 
 use App\Annotation\Authorization;
 use App\Annotation\UserRolePermission;
-use App\DTO\NotificationDTO;
+use App\Dto\Transformer\NotificationTransformer;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\RolePermissionEnum;
+use App\ResponseData\Admin\Notification\NotificationResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Service\Notification\CreateNotificationService;
+use App\UseCase\Notification\CreateNotification;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class NotificationController.
- *
- * @package App\Controller\Admin
- *
- * @author  Codememory
- */
 #[Route('/notification')]
+#[Authorization]
 class NotificationController extends AbstractRestController
 {
-    /**
-     * @param NotificationDTO           $notificationDTO
-     * @param CreateNotificationService $createNotificationService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/create', methods: 'POST')]
-    #[Authorization]
+    #[Route('/create', methods: Request::METHOD_POST)]
     #[UserRolePermission(RolePermissionEnum::CREATE_NOTIFICATION)]
-    public function create(NotificationDTO $notificationDTO, CreateNotificationService $createNotificationService): JsonResponse
+    public function create(NotificationTransformer $transformer, CreateNotification $createNotification, NotificationResponseData $responseData): JsonResponse
     {
-        return $createNotificationService->make($notificationDTO->collect(), $this->authorizedUser->getUser());
+        return $this->responseData(
+            $responseData,
+            $createNotification->process($transformer->transformFromRequest(), $this->getAuthorizedUser()),
+            PlatformCodeEnum::PENDING
+        );
     }
 }

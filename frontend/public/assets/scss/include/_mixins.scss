@@ -1,0 +1,52 @@
+@import "variables";
+
+@mixin font($name, $type, $weight: 'normal', $style: 'normal') {
+  $path: '~/assets/fonts/#{$name}/#{$type}/#{$name}-#{$type}';
+
+  @font-face {
+    font-family: $name;
+    src: url('#{$path}.eot');
+    src: url('#{$path}.eot?#iefix') format('embedded-opentype'),
+    url('#{$path}.woff2') format('woff2'),
+    url('#{$path}.woff') format('woff'),
+    url('#{$path}.ttf') format('truetype'),
+    url('#{$path}.svg#Roboto-Regular') format('svg');
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+  }
+}
+
+@mixin scrollbar($bg: $light-bg, $thumb: $accent, $weight: 6px) {
+  &::-webkit-scrollbar {
+    width: $weight;
+    height: $weight;
+    background-color: lighten($bg, 10%);
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 $weight $light-for-dark;
+    cursor: pointer;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $thumb;
+    cursor: pointer;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: darken($thumb, 10%);
+    }
+  }
+}
+
+@mixin autocomplete($borderWidth, $borderColor, $color, $background) {
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    border: #{$borderWidth}px solid $borderColor;
+    -webkit-text-fill-color: $color;
+    -webkit-box-shadow: 0 0 0 1000px $background inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}

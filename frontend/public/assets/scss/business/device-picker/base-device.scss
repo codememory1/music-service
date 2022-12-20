@@ -1,0 +1,96 @@
+@import "../../include/variables";
+
+.device {
+  display: flex;
+  transition: ease-in background-color 0.15s;
+  padding: 10px;
+  justify-content: space-between;
+  position: relative;
+  user-select: none;
+
+  &:not(.current) {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $light-for-dark;
+    }
+  }
+
+  &.current {
+    background-color: $accent-second;
+  }
+
+  &.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  &.selected {
+    background-color: $light-for-dark;
+  }
+
+  &__icon {
+    font-size: 20px;
+    width: 25px;
+    color: $gray;
+    text-align: center;
+  }
+
+  &__name {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+
+  &__status {
+    &.online {
+      color: $green;
+    }
+
+    &.offline {
+      color: $red;
+    }
+  }
+
+  &-info {
+    &-wrapper {
+      display: flex;
+      align-items: center;
+    }
+
+    margin-left: 20px;
+  }
+
+  &-info-row {
+    display: flex;
+    font-size: 14px;
+
+    &__name {
+      color: $gray;
+      text-align: left;
+    }
+
+    &__value {
+      color: $white;
+      margin-left: 5px;
+    }
+  }
+
+  .device-control {
+    display: flex;
+    align-items: center;
+  }
+
+  &__selected-icon {
+    color: $green;
+  }
+}
+
+.device.current .device__icon {
+  color: $white;
+}
+
+.device.current .device-info-row__name {
+  color: $white;
+}

@@ -2,48 +2,31 @@
 
 namespace App\Security\Auth;
 
-use App\DTO\AuthorizationDTO;
+use App\Dto\Transfer\AuthorizationDto;
 use App\Entity\User;
 use App\Event\UserAuthenticationInAuthEvent;
-use App\Rest\Http\Exceptions\AuthorizationException;
-use App\Service\HashingService;
+use App\Exception\Http\AuthorizationException;
+use App\Infrastructure\Hashing\Password as PasswordHashing;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class Authentication.
- *
- * @package App\Security\Auth
- *
- * @author  Codememory
- */
-class Authentication
+final class Authentication
 {
-    #[Required]
-    public ?HashingService $hashingService = null;
+    public function __construct(
+        private readonly PasswordHashing $passwordHashing,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
 
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
-
-    /**
-     * @param AuthorizationDTO $authorizationDTO
-     * @param User             $identifiedUser
-     *
-     * @return User
-     */
-    public function authenticate(AuthorizationDTO $authorizationDTO, User $identifiedUser): User
+    public function authenticate(AuthorizationDto $dto, User $identifiedUser): User
     {
-        $realPassword = $authorizationDTO->password;
+        $realPassword = $dto->password;
         $hashPassword = $identifiedUser->getPassword();
 
-        if (false === $this->hashingService->compare($realPassword, $hashPassword)) {
+        if (false === $this->passwordHashing->compare($realPassword, $hashPassword)) {
             throw AuthorizationException::incorrectPassword();
         }
 
-        $this->eventDispatcher->dispatch(new UserAuthenticationInAuthEvent(
-            $authorizationDTO,
-            $identifiedUser
-        ));
+        $this->eventDispatcher->dispatch(new UserAuthenticationInAuthEvent($dto, $identifiedUser));
 
         return $identifiedUser;
     }

@@ -3,29 +3,18 @@
 namespace App\Repository;
 
 use App\Entity\PlatformSetting;
+use App\Enum\PlatformSettingEnum;
 
 /**
- * Class PlatformSettingRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<PlatformSetting>
- *
- * @author  Codememory
  */
-class PlatformSettingRepository extends AbstractRepository
+final class PlatformSettingRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = PlatformSetting::class;
+    protected ?string $alias = 'ps';
 
-    /**
-     * @param string $key
-     *
-     * @return null|PlatformSetting
-     */
-    public function getSetting(string $key): ?PlatformSetting
+    public function getSetting(PlatformSettingEnum $platformSetting): ?PlatformSetting
     {
-        return $this->findOneBy(['key' => $key]);
+        return $this->findOneBy(['key' => $platformSetting->name]);
     }
 }

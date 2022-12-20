@@ -2,59 +2,41 @@
 
 namespace App\Security\AccountActivation;
 
-use App\DTO\AccountActivationDTO;
-use App\Entity\AccountActivationCode;
-use App\Enum\EventEnum;
-use App\Enum\UserStatusEnum;
+use App\Dto\Transfer\AccountActivationDto;
+use App\Entity\User;
 use App\Event\AccountActivationEvent;
-use App\Rest\Http\Exceptions\InvalidException;
-use App\Service\AbstractService;
+use App\Exception\Http\InvalidException;
+use App\Infrastructure\Doctrine\Flusher;
+use App\Infrastructure\Validator\Validator;
+use App\Repository\AccountActivationCodeRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
-/**
- * Class AccountActivation.
- *
- * @package App\Security\AccountActivation
- *
- * @author  Codememory
- */
-class AccountActivation extends AbstractService
+final class AccountActivation
 {
-    #[Required]
-    public ?EventDispatcherInterface $eventDispatcher = null;
+    public function __construct(
+        private readonly Flusher $flusher,
+        private readonly Validator $validator,
+        private readonly AccountActivationCodeRepository $accountActivationCodeRepository,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
 
-    /**
-     * @param AccountActivationDTO $accountActivationDTO
-     *
-     * @return JsonResponse
-     */
-    public function activate(AccountActivationDTO $accountActivationDTO): JsonResponse
+    public function activate(AccountActivationDto $dto): User
     {
-        if (false === $this->validate($accountActivationDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validator->validate($dto);
 
-        $finedAccountActivationCode = $this->em->getRepository(AccountActivationCode::class)->findOneBy([
-            'user' => $accountActivationDTO->user,
-            'code' => $accountActivationDTO->code
-        ]);
+        $finedAccountActivationCode = $this->accountActivationCodeRepository->findByCodeAndUser($dto->user, $dto->code);
 
         if (null === $finedAccountActivationCode || false === $finedAccountActivationCode->isValidTtlByCreatedAt()) {
             throw InvalidException::invalidCode();
         }
 
-        $accountActivationDTO->user->setStatus(UserStatusEnum::ACTIVE);
+        $dto->user->setActiveStatus();
 
-        $this->em->remove($finedAccountActivationCode);
-        $this->em->flush();
+        $this->flusher->addRemove($finedAccountActivationCode)->save();
 
-        $this->eventDispatcher->dispatch(
-            new AccountActivationEvent($finedAccountActivationCode),
-            EventEnum::ACCOUNT_ACTIVATION->value
-        );
+        $this->eventDispatcher->dispatch(new AccountActivationEvent($finedAccountActivationCode));
 
-        return $this->responseCollection->successUpdate('accountActivation@successActivate');
+        return $dto->user;
     }
 }

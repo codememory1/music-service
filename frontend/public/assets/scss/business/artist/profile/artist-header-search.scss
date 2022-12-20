@@ -1,0 +1,34 @@
+@import "../../../include/variables";
+
+.artist-header__search {
+  position: relative;
+  width: 400px;
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    color: lighten($gray, 5%);
+    font-size: 14px;
+  }
+
+  &-input {
+    width: inherit;
+    background-color: transparent;
+    border: none;
+    color: $white;
+    outline: none;
+    font-size: 14px;
+    padding-left: 10px;
+
+    &::placeholder {
+      color: lighten($gray, 5%);
+      transition: ease-in color 0.15s;
+    }
+
+    &:focus {
+      &::placeholder {
+        color: $white;
+      }
+    }
+  }
+}

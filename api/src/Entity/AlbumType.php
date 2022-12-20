@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Enum\AlbumTypeEnum;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\AlbumTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,22 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class AlbumType.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: AlbumTypeRepository::class)]
 #[ORM\Table('album_types')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('key', 'entityExist@albumType', payload: [ResponseTypeEnum::EXIST, 409])]
+#[UniqueEntity('key', 'entityExist@albumType', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class AlbumType implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
         'comment' => 'Unique key for identification'
@@ -51,19 +46,11 @@ class AlbumType implements EntityInterface
         $this->albums = new ArrayCollection();
     }
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @param null|AlbumTypeEnum $key
-     *
-     * @return $this
-     */
     public function setKey(?AlbumTypeEnum $key): self
     {
         $this->key = $key?->name;
@@ -71,19 +58,11 @@ class AlbumType implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->titleTranslationKey;
     }
 
-    /**
-     * @param null|string $titleTranslationKey
-     *
-     * @return $this
-     */
     public function setTitle(?string $titleTranslationKey): self
     {
         $this->titleTranslationKey = $titleTranslationKey;
@@ -99,11 +78,6 @@ class AlbumType implements EntityInterface
         return $this->albums;
     }
 
-    /**
-     * @param Album $album
-     *
-     * @return $this
-     */
     public function addAlbum(Album $album): self
     {
         if (!$this->albums->contains($album)) {
@@ -114,11 +88,6 @@ class AlbumType implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Album $album
-     *
-     * @return $this
-     */
     public function removeAlbum(Album $album): self
     {
         if ($this->albums->removeElement($album)) {

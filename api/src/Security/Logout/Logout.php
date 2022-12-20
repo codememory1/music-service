@@ -2,44 +2,39 @@
 
 namespace App\Security\Logout;
 
-use App\DTO\RefreshTokenDTO;
+use App\Dto\Transfer\RefreshTokenDto;
 use App\Entity\UserSession;
-use App\Rest\Http\Exceptions\FailedException;
-use App\Service\AbstractService;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Event\LogoutEvent;
+use App\Exception\Http\FailedException;
+use App\Infrastructure\Doctrine\Flusher;
+use App\Infrastructure\Validator\Validator;
+use App\Repository\UserSessionRepository;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Class Logout.
- *
- * @package App\Security\Logout
- *
- * @author  Codememory
- */
-class Logout extends AbstractService
+final class Logout
 {
-    /**
-     * @param RefreshTokenDTO $refreshTokenDTO
-     *
-     * @return JsonResponse
-     */
-    public function logout(RefreshTokenDTO $refreshTokenDTO): JsonResponse
+    public function __construct(
+        private readonly Flusher $flusher,
+        private readonly Validator $validator,
+        private readonly UserSessionRepository $userSessionRepository,
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+    }
+
+    public function logout(RefreshTokenDto $dto): UserSession
     {
-        if (false === $this->validate($refreshTokenDTO)) {
-            return $this->validator->getResponse();
-        }
+        $this->validator->validate($dto);
 
-        $userSessionRepository = $this->em->getRepository(UserSession::class);
-        $finedUserSession = $userSessionRepository->findOneBy([
-            'refreshToken' => $refreshTokenDTO->refreshToken
-        ]);
+        $userSession = $this->userSessionRepository->findByRefreshToken($dto->refreshToken);
 
-        if (null === $finedUserSession) {
+        if (null === $userSession) {
             throw FailedException::failedToLogout();
         }
 
-        $this->em->remove($finedUserSession);
-        $this->em->flush();
+        $this->flusher->remove($userSession);
 
-        return $this->responseCollection->successLogout();
+        $this->eventDispatcher->dispatch(new LogoutEvent($userSession));
+
+        return $userSession;
     }
 }

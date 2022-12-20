@@ -6,13 +6,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class BetweenValidator.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
 final class BetweenValidator extends ConstraintValidator
 {
     /**
@@ -27,12 +20,11 @@ final class BetweenValidator extends ConstraintValidator
         $object = $this->context->getObject();
         $propertyOrMethod = $constraint->with;
         $asProperty = $constraint->property;
-
         $withValue = $asProperty ? $object->$propertyOrMethod : $object->$propertyOrMethod();
 
         if ($value !== $withValue) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ current }}', $this->context->getPropertyName())
+                ->setParameter('{{ current }}', $this->context->getPropertyName() ?: $this->context->getPropertyPath())
                 ->setParameter('{{ with }}', $constraint->with)
                 ->addViolation();
         }

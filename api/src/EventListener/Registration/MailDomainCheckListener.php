@@ -3,40 +3,22 @@
 namespace App\EventListener\Registration;
 
 use App\Entity\User;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\PlatformSettingEnum;
-use App\Enum\ResponseTypeEnum;
-use App\Event\UserRegistrationEvent;
-use App\Rest\Http\Exceptions\ApiResponseException;
-use App\Service\PlatformSettingService;
+use App\Event\PreUserRegistrationEvent;
+use App\Exception\HttpException;
+use App\Service\PlatformSetting;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-/**
- * Class MailDomainCheckListener.
- *
- * @package App\EventListener\Registration
- *
- * @author  Codememory
- */
-class MailDomainCheckListener
+#[AsEventListener(PreUserRegistrationEvent::class, 'onPreUserRegistration', 0)]
+final class MailDomainCheckListener
 {
-    /**
-     * @var PlatformSettingService
-     */
-    private PlatformSettingService $platformSettingService;
-
-    /**
-     * @param PlatformSettingService $platformSettingService
-     */
-    public function __construct(PlatformSettingService $platformSettingService)
-    {
-        $this->platformSettingService = $platformSettingService;
+    public function __construct(
+        private readonly PlatformSetting $platformSettingService
+    ) {
     }
 
-    /**
-     * @param UserRegistrationEvent $event
-     *
-     * @return void
-     */
-    public function onUserRegistration(UserRegistrationEvent $event): void
+    public function onPreUserRegistration(PreUserRegistrationEvent $event): void
     {
         $allowedEmails = $this->platformSettingService->get(PlatformSettingEnum::ALLOWED_REGISTRATION_DOMAINS) ?: [];
         $mailDomain = $this->getMailDomain($event->user);
@@ -55,15 +37,10 @@ class MailDomainCheckListener
         }
 
         if (false === $isPassed) {
-            throw new ApiResponseException(451, ResponseTypeEnum::UNAVAILABLE, 'common@bannedDomainMail');
+            throw new HttpException(451, PlatformCodeEnum::INACCESSIBLE_DATA, 'common@bannedDomainMail');
         }
     }
 
-    /**
-     * @param User $user
-     *
-     * @return null|string
-     */
     private function getMailDomain(User $user): ?string
     {
         $email = $user->getEmail();

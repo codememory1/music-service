@@ -1,0 +1,53 @@
+@import "../../include/variables";
+@import "../../include/mixins";
+
+.select {
+  position: relative;
+
+  &-top {
+    background-color: $dark-bg;
+    border: 1px solid $light-for-dark;
+    border-radius: 5px;
+    padding: 10px 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: ease-in 0.15s;
+
+    &-selected-tags {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    &__chevron {
+      transition: ease-in 0.15s;
+
+      i {
+        color: $gray;
+        font-size: 14px;
+      }
+
+      &.active {
+        transform: rotate(-180deg);
+      }
+    }
+  }
+
+  &-list {
+    width: 100%;
+    background-color: $dark-bg;
+    max-height: 200px;
+    overflow: auto;
+    transition: ease-in 0.15s;
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+
+    @include scrollbar($light-bg, $accent, 1px);
+
+    &.active {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}

@@ -2,43 +2,31 @@
 
 namespace App\Rest\S3\Interfaces;
 
+use App\Entity\Interfaces\EntityS3SettingInterface;
 use App\Rest\S3\Uploader\UploadedFile as S3UploadedFile;
 use Aws\Result;
-use Symfony\Component\HttpFoundation\File\UploadedFile as HttpUploadedFile;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * Interface S3UploaderInterface.
- *
- * @package  App\Rest\S3\Interfaces
- *
- * @author   Codememory
- */
 interface S3UploaderInterface
 {
-    /**
-     * @return string
-     */
     public function getBucketName(): string;
 
-    /**
-     * @param HttpUploadedFile $uploadedFile
-     * @param array            $dataForName
-     * @param array            $args
-     *
-     * @return Result
-     */
-    public function upload(HttpUploadedFile $uploadedFile, array $dataForName, array $args = []): Result;
+    public function upload(
+        UploadedFile $file,
+        string $propertyName,
+        EntityS3SettingInterface $entityS3Setting,
+        array $args = []
+    ): Result;
 
-    /**
-     * @param string $path
-     * @param array  $argc
-     *
-     * @return Result
-     */
-    public function delete(string $path, array $argc = []): Result;
+    public function save(
+        ?string $oldFilePathInStorage,
+        UploadedFile $file,
+        string $propertyName,
+        EntityS3SettingInterface $entityS3Setting,
+        array $args = []
+    ): ?Result;
 
-    /**
-     * @return S3UploadedFile
-     */
+    public function delete(string $pathInStorage, array $argc = []): Result;
+
     public function getUploadedFile(): S3UploadedFile;
 }

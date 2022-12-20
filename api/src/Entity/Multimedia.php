@@ -3,8 +3,12 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\EntityS3SettingInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UuidIdentifierTrait;
+use App\Enum\EntityS3SettingEnum;
 use App\Enum\MultimediaStatusEnum;
 use App\Enum\MultimediaTypeEnum;
 use App\Repository\MultimediaRepository;
@@ -12,23 +16,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 
-/**
- * Class Multimedia.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: MultimediaRepository::class)]
 #[ORM\Table('multimedia')]
 #[ORM\HasLifecycleCallbacks]
-class Multimedia implements EntityInterface
+class Multimedia implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
-
+    use UuidIdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'multimedia')]
     #[ORM\JoinColumn(nullable: false)]
@@ -75,7 +72,7 @@ class Multimedia implements EntityInterface
     #[ORM\Column(type: Types::BOOLEAN, options: [
         'comment' => 'Are there obscene words in the text'
     ])]
-    private bool $isObsceneWords = false;
+    private ?bool $isObsceneWords = false;
 
     #[ORM\Column(type: Types::TEXT, nullable: true, options: [
         'comment' => 'Path to image file (preview)'
@@ -98,28 +95,52 @@ class Multimedia implements EntityInterface
     ])]
     private ?string $status = null;
 
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaMediaLibrary::class, cascade: ['remove'])]
+    private Collection $multimediaMediaLibrary;
+
     #[ORM\OneToOne(mappedBy: 'multimedia', targetEntity: MultimediaQueue::class, cascade: ['persist', 'remove'])]
     private ?MultimediaQueue $queue = null;
 
-    #[Pure]
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaShare::class, cascade: ['persist', 'remove'])]
+    private Collection $shares;
+
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaAudition::class)]
+    private Collection $auditions;
+
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaRating::class, cascade: ['persist', 'remove'])]
+    private Collection $ratings;
+
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: RunningMultimedia::class, cascade: ['persist', 'remove'])]
+    private Collection $runningMultimedia;
+
+    #[ORM\OneToMany(mappedBy: 'multimedia', targetEntity: MultimediaTimeCode::class, cascade: ['persist', 'remove'])]
+    private Collection $timeCodes;
+
+    #[ORM\OneToOne(mappedBy: 'multimedia', targetEntity: MultimediaStatistic::class, cascade: ['persist', 'remove'])]
+    private ?MultimediaStatistic $statistic = null;
+
     public function __construct()
     {
+        $this->generateUuid();
+
         $this->performers = new ArrayCollection();
+        $this->shares = new ArrayCollection();
+        $this->auditions = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
+        $this->runningMultimedia = new ArrayCollection();
+        $this->timeCodes = new ArrayCollection();
     }
 
-    /**
-     * @return null|User
-     */
+    public function getFolderName(): EntityS3SettingEnum
+    {
+        return EntityS3SettingEnum::MULTIMEDIA;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -127,19 +148,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param null|string $type
-     *
-     * @return $this
-     */
     public function setType(?MultimediaTypeEnum $type): self
     {
         $this->type = $type?->name;
@@ -147,19 +160,35 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|Album
-     */
+    public function setTrackType(): self
+    {
+        $this->setType(MultimediaTypeEnum::TRACK);
+
+        return $this;
+    }
+
+    public function isTrack(): bool
+    {
+        return $this->getType() === MultimediaTypeEnum::TRACK->name;
+    }
+
+    public function setClipType(): self
+    {
+        $this->setType(MultimediaTypeEnum::CLIP);
+
+        return $this;
+    }
+
+    public function isClip(): bool
+    {
+        return $this->getType() === MultimediaTypeEnum::CLIP->name;
+    }
+
     public function getAlbum(): ?Album
     {
         return $this->album;
     }
 
-    /**
-     * @param null|Album $album
-     *
-     * @return $this
-     */
     public function setAlbum(?Album $album): self
     {
         $this->album = $album;
@@ -167,19 +196,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param null|string $title
-     *
-     * @return $this
-     */
     public function setTitle(?string $title): self
     {
         $this->title = $title;
@@ -187,19 +208,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param null|string $description
-     *
-     * @return $this
-     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -207,19 +220,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getMultimedia(): ?string
     {
         return $this->multimedia;
     }
 
-    /**
-     * @param null|string $multimedia
-     *
-     * @return $this
-     */
     public function setMultimedia(?string $multimedia): self
     {
         $this->multimedia = $multimedia;
@@ -227,19 +232,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|MultimediaCategory
-     */
     public function getCategory(): ?MultimediaCategory
     {
         return $this->category;
     }
 
-    /**
-     * @param null|MultimediaCategory $category
-     *
-     * @return $this
-     */
     public function setCategory(?MultimediaCategory $category): self
     {
         $this->category = $category;
@@ -247,19 +244,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|array
-     */
     public function getText(): ?array
     {
         return $this->text;
     }
 
-    /**
-     * @param null|string $text
-     *
-     * @return $this
-     */
     public function setText(?array $text): self
     {
         $this->text = $text;
@@ -267,19 +256,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getSubtitles(): ?string
     {
         return $this->subtitles;
     }
 
-    /**
-     * @param null|string $subtitles
-     *
-     * @return $this
-     */
     public function setSubtitles(?string $subtitles): self
     {
         $this->subtitles = $subtitles;
@@ -287,19 +268,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|bool
-     */
-    public function IsObsceneWords(): ?bool
+    public function isObsceneWords(): ?bool
     {
         return $this->isObsceneWords;
     }
 
-    /**
-     * @param null|bool $isObsceneWords
-     *
-     * @return $this
-     */
     public function setIsObsceneWords(?bool $isObsceneWords): self
     {
         $this->isObsceneWords = $isObsceneWords;
@@ -307,19 +280,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getImage(): ?string
     {
         return $this->image;
     }
 
-    /**
-     * @param null|string $image
-     *
-     * @return $this
-     */
     public function setImage(?string $image): self
     {
         $this->image = $image;
@@ -327,19 +292,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getProducer(): ?string
     {
         return $this->producer;
     }
 
-    /**
-     * @param null|string $producer
-     *
-     * @return $this
-     */
     public function setProducer(?string $producer): self
     {
         $this->producer = $producer;
@@ -355,10 +312,13 @@ class Multimedia implements EntityInterface
         return $this->performers;
     }
 
+    public function getEmailPerformers(): array
+    {
+        return $this->getPerformers()->map(static fn(MultimediaPerformer $multimediaPerformer) => $multimediaPerformer->getUser()->getEmail())->toArray();
+    }
+
     /**
      * @param array<MultimediaPerformer> $performers
-     *
-     * @return $this
      */
     public function setPerformers(array $performers): self
     {
@@ -371,11 +331,6 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param MultimediaPerformer $performer
-     *
-     * @return $this
-     */
     public function addPerformer(MultimediaPerformer $performer): self
     {
         if (!$this->performers->contains($performer)) {
@@ -386,11 +341,6 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param MultimediaPerformer $performer
-     *
-     * @return $this
-     */
     public function removePerformer(MultimediaPerformer $performer): self
     {
         if ($this->performers->removeElement($performer)) {
@@ -403,19 +353,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|MultimediaMetadata
-     */
     public function getMetadata(): ?MultimediaMetadata
     {
         return $this->metadata;
     }
 
-    /**
-     * @param MultimediaMetadata $metadata
-     *
-     * @return $this
-     */
     public function setMetadata(MultimediaMetadata $metadata): self
     {
         // set the owning side of the relation if necessary
@@ -428,19 +370,11 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|MultimediaStatusEnum $status
-     *
-     * @return $this
-     */
     public function setStatus(?MultimediaStatusEnum $status): self
     {
         $this->status = $status?->name;
@@ -448,19 +382,88 @@ class Multimedia implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|MultimediaQueue
-     */
+    public function setDraftStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::DRAFT);
+
+        return $this;
+    }
+
+    public function isDraft(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::DRAFT->name;
+    }
+
+    public function setModerationStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::MODERATION);
+
+        return $this;
+    }
+
+    public function isModeration(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::MODERATION->name;
+    }
+
+    public function setPublishStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::PUBLISHED);
+
+        return $this;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::PUBLISHED->name;
+    }
+
+    public function setUnpublishStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::UNPUBLISHED);
+
+        return $this;
+    }
+
+    public function isUnpublished(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::UNPUBLISHED->name;
+    }
+
+    public function setAppealStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::APPEAL);
+
+        return $this;
+    }
+
+    public function isAppeal(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::APPEAL->name;
+    }
+
+    public function setAppealCanceledStatus(): self
+    {
+        $this->setStatus(MultimediaStatusEnum::APPEAL_CANCELED);
+
+        return $this;
+    }
+
+    public function isAppealCanceled(): bool
+    {
+        return $this->getStatus() === MultimediaStatusEnum::APPEAL_CANCELED->name;
+    }
+
+    public function getMultimediaMediaLibrary(): Collection
+    {
+        return $this->multimediaMediaLibrary;
+    }
+
     public function getQueue(): ?MultimediaQueue
     {
         return $this->queue;
     }
 
-    /**
-     * @param MultimediaQueue $queue
-     *
-     * @return $this
-     */
     public function setQueue(MultimediaQueue $queue): self
     {
         // set the owning side of the relation if necessary
@@ -469,6 +472,151 @@ class Multimedia implements EntityInterface
         }
 
         $this->queue = $queue;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaShare>
+     */
+    public function getShares(): Collection
+    {
+        return $this->shares;
+    }
+
+    /**
+     * @return Collection<int, MultimediaAudition>
+     */
+    public function getAuditions(): Collection
+    {
+        return $this->auditions;
+    }
+
+    public function addAudition(MultimediaAudition $audition): self
+    {
+        if (!$this->auditions->contains($audition)) {
+            $this->auditions[] = $audition;
+            $audition->setMultimedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAudition(MultimediaAudition $audition): self
+    {
+        if ($this->auditions->removeElement($audition)) {
+            // set the owning side to null (unless already changed)
+            if ($audition->getMultimedia() === $this) {
+                $audition->setMultimedia(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaRating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(MultimediaRating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setMultimedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(MultimediaRating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getMultimedia() === $this) {
+                $rating->setMultimedia(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RunningMultimedia>
+     */
+    public function getRunningMultimedia(): Collection
+    {
+        return $this->runningMultimedia;
+    }
+
+    public function addRunningMultimedia(RunningMultimedia $runningMultimedia): self
+    {
+        if (!$this->runningMultimedia->contains($runningMultimedia)) {
+            $this->runningMultimedia[] = $runningMultimedia;
+            $runningMultimedia->setMultimedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRunningMultimedia(RunningMultimedia $runningMultimedia): self
+    {
+        if ($this->runningMultimedia->removeElement($runningMultimedia)) {
+            // set the owning side to null (unless already changed)
+            if ($runningMultimedia->getMultimedia() === $this) {
+                $runningMultimedia->setMultimedia(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaTimeCode>
+     */
+    public function getTimeCodes(): Collection
+    {
+        return $this->timeCodes;
+    }
+
+    public function addTimeCode(MultimediaTimeCode $timeCode): self
+    {
+        if (!$this->timeCodes->contains($timeCode)) {
+            $this->timeCodes[] = $timeCode;
+            $timeCode->setMultimedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTimeCode(MultimediaTimeCode $timeCode): self
+    {
+        if ($this->timeCodes->removeElement($timeCode)) {
+            // set the owning side to null (unless already changed)
+            if ($timeCode->getMultimedia() === $this) {
+                $timeCode->setMultimedia(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStatistic(): ?MultimediaStatistic
+    {
+        return $this->statistic;
+    }
+
+    public function setStatistic(MultimediaStatistic $statistic): self
+    {
+        // set the owning side of the relation if necessary
+        if ($statistic->getMultimedia() !== $this) {
+            $statistic->setMultimedia($this);
+        }
+
+        $this->statistic = $statistic;
 
         return $this;
     }

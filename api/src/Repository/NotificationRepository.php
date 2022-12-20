@@ -6,22 +6,15 @@ use App\Entity\Notification;
 use App\Enum\NotificationStatusEnum;
 
 /**
- * Class NotificationRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<Notification>
- *
- * @author  Codememory
  */
-class NotificationRepository extends AbstractRepository
+final class NotificationRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = Notification::class;
+    protected ?string $alias = 'n';
 
     /**
-     * @return array
+     * @return array<Notification>
      */
     public function getPendingNotifications(): array
     {
@@ -39,7 +32,7 @@ class NotificationRepository extends AbstractRepository
                 )
             )
         );
-        $qb->setParameter('status', NotificationStatusEnum::EXPECTS->name);
+        $qb->setParameter('status', NotificationStatusEnum::PENDING->name);
 
         return $qb->getQuery()->getResult();
     }

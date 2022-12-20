@@ -5,140 +5,113 @@ namespace App\Controller\PublicAvailable;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Annotation\SubscriptionPermission;
-use App\DTO\MultimediaDTO;
+use App\Dto\Transformer\MultimediaTransformer;
 use App\Entity\Multimedia;
 use App\Entity\User;
-use App\Enum\MultimediaStatusEnum;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaRepository;
-use App\ResponseData\MultimediaResponseData;
+use App\ResponseData\General\Multimedia\MultimediaResponseData;
+use App\ResponseData\General\Multimedia\RunningMultimediaResponseData;
+use App\ResponseData\Public\Multimedia\MultimediaStatisticsResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
-use App\Service\Multimedia\AddMultimediaService;
-use App\Service\Multimedia\SendOnAppealService;
-use App\Service\Multimedia\SendOnModerationService;
-use App\Service\Multimedia\UpdateMultimediaService;
+use App\UseCase\Multimedia\Action\ToggleMultimediaPlayback;
+use App\UseCase\Multimedia\AddMultimedia;
+use App\UseCase\Multimedia\DeleteMultimedia;
+use App\UseCase\Multimedia\UpdateMultimedia;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class MultimediaController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user')]
+#[Authorization]
 class MultimediaController extends AbstractRestController
 {
-    /**
-     * @param MultimediaResponseData $multimediaResponseData
-     * @param MultimediaRepository   $multimediaRepository
-     *
-     * @return JsonResponse
-     */
-    #[Route('/multimedia/all', methods: 'GET')]
-    #[Authorization]
-    public function myAll(MultimediaResponseData $multimediaResponseData, MultimediaRepository $multimediaRepository): JsonResponse
+    #[Route('/multimedia/all', methods: Request::METHOD_GET)]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_MULTIMEDIA)]
+    public function myAll(MultimediaResponseData $responseData, MultimediaRepository $multimediaRepository): JsonResponse
     {
-        $multimediaResponseData->setEntities($multimediaRepository->findBy([
-            'user' => $this->authorizedUser->getUser()
-        ]));
-        $multimediaResponseData->collect();
-
-        return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
+        return $this->responseData($responseData, $multimediaRepository->findAllByUser($this->getAuthorizedUser()));
     }
 
-    /**
-     * @param User                   $user
-     * @param MultimediaResponseData $multimediaResponseData
-     * @param MultimediaRepository   $multimediaRepository
-     *
-     * @return JsonResponse
-     */
-    #[Route('/{user_id<\d+>}/multimedia/all', methods: 'GET')]
-    #[Authorization]
+    #[Route('/{user_id<\d+>}/multimedia/all', methods: Request::METHOD_GET)]
     public function userAll(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
-        MultimediaResponseData $multimediaResponseData,
+        MultimediaResponseData $responseData,
         MultimediaRepository $multimediaRepository
     ): JsonResponse {
-        $multimediaResponseData->setEntities($multimediaRepository->findBy([
-            'user' => $user,
-            'status' => MultimediaStatusEnum::PUBLISHED->name
-        ]));
-        $multimediaResponseData->collect();
-
-        return $this->responseCollection->dataOutput($multimediaResponseData->getResponse());
+        return $this->responseData(
+            $responseData,
+            $user->getSetting()->isHideMyMultimedia() ? $multimediaRepository->findAnother($user) : []
+        );
     }
 
-    /**
-     * @param MultimediaDTO        $multimediaDTO
-     * @param AddMultimediaService $addMultimediaService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/multimedia/add', methods: 'POST')]
-    #[Authorization]
+    #[Route('/multimedia/add', methods: Request::METHOD_POST)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
-    public function add(MultimediaDTO $multimediaDTO, AddMultimediaService $addMultimediaService): JsonResponse
-    {
-        return $addMultimediaService->make($multimediaDTO->collect(), $this->authorizedUser->getUser());
+    public function add(
+        MultimediaTransformer $transformer,
+        AddMultimedia $addMultimedia,
+        MultimediaResponseData $responseData
+    ): JsonResponse {
+        return $this->responseData(
+            $responseData,
+            $addMultimedia->process($transformer->transformFromRequest(), $this->getAuthorizedUser()),
+            PlatformCodeEnum::CREATED
+        );
     }
 
-    /**
-     * @param Multimedia              $multimedia
-     * @param MultimediaDTO           $multimediaDTO
-     * @param UpdateMultimediaService $updateMultimediaService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: 'POST')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
+    #[Route('/multimedia/{multimedia_id<\d+>}/edit', methods: Request::METHOD_POST)]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::UPDATE_MULTIMEDIA)]
     public function update(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        MultimediaDTO $multimediaDTO,
-        UpdateMultimediaService $updateMultimediaService
+        MultimediaTransformer $transformer,
+        UpdateMultimedia $updateMultimedia,
+        MultimediaResponseData $responseData
     ): JsonResponse {
-        $multimediaDTO->setEntity($multimedia);
-
-        return $updateMultimediaService->make($multimediaDTO->collect());
+        return $this->responseData(
+            $responseData,
+            $updateMultimedia->process($transformer->transformFromRequest($multimedia)),
+            PlatformCodeEnum::UPDATED
+        );
     }
 
-    /**
-     * @param Multimedia              $multimedia
-     * @param SendOnModerationService $sendOnModerationService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/multimedia/{multimedia_id<\d+>}/send-on-moderation', methods: 'PATCH')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
-    public function sendOnModeration(
+    #[Route('/multimedia/{multimedia_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
+    #[SubscriptionPermission(SubscriptionPermissionEnum::DELETE_MULTIMEDIA)]
+    public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        SendOnModerationService $sendOnModerationService
+        DeleteMultimedia $deleteMultimedia,
+        MultimediaResponseData $responseData
     ): JsonResponse {
-        if ($multimedia->getUser() !== $this->authorizedUser->getUser()) {
+        if (!$this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
             throw EntityNotFoundException::multimedia();
         }
 
-        return $sendOnModerationService->make($multimedia);
+        return $this->responseData($responseData, $deleteMultimedia->process($multimedia), PlatformCodeEnum::DELETED);
     }
 
-    /**
-     * @param Multimedia          $multimedia
-     * @param SendOnAppealService $sendOnAppealService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/multimedia/{multimedia_id<\d+>}/send-on-appeal', methods: 'PATCH')]
-    #[Authorization]
-    #[SubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)]
-    public function sendOnAppeal(
+    #[Route('/multimedia/{multimedia_id<\d+>}/play-pause', methods: Request::METHOD_PATCH)]
+    public function playPause(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
-        SendOnAppealService $sendOnAppealService
+        ToggleMultimediaPlayback $toggleMultimediaPlayback,
+        RunningMultimediaResponseData $responseData
     ): JsonResponse {
-        return $sendOnAppealService->make($multimedia);
+        return $this->responseData(
+            $responseData,
+            $toggleMultimediaPlayback->process($multimedia, $this->authorizedUser->getUserSession()),
+            PlatformCodeEnum::UPDATED
+        );
+    }
+
+    #[Route('/multimedia/{multimedia_id<\d+>}/statistics', methods: Request::METHOD_GET)]
+    public function statistics(
+        #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
+        MultimediaStatisticsResponseData $responseData
+    ): JsonResponse {
+        if (!$this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
+            throw EntityNotFoundException::multimedia();
+        }
+
+        return $this->responseData($responseData, $multimedia->getStatistic());
     }
 }

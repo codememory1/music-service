@@ -2,49 +2,24 @@
 
 namespace App\Service\WebSocket\Interfaces;
 
-use Workerman\Connection\ConnectionInterface;
+use App\Enum\WebSocketClientMessageTypeEnum;
+use App\Service\WebSocket\Worker;
 
-/**
- * Interface UserMessageHandlerInterface.
- *
- * @package  App\Service\WebSocket\Interfaces
- *
- * @author   Codememory
- */
 interface UserMessageHandlerInterface
 {
-    /**
-     * @param ConnectionInterface $connection
-     *
-     * @return $this
-     */
-    public function setConnection(ConnectionInterface $connection): self;
+    public function setConnection(int $connectionId): self;
 
-    /**
-     * @return null|ConnectionInterface
-     */
-    public function getConnection(): ?ConnectionInterface;
+    public function getConnectionId(): ?int;
 
-    /**
-     * @param array $headers
-     * @param array $data
-     *
-     * @return $this
-     */
     public function setMessage(array $headers, array $data): self;
 
-    /**
-     * @return array
-     */
     public function getMessageHeaders(): array;
 
-    /**
-     * @return array
-     */
-    public function getMessage(): array;
+    public function getMessageData(): array;
 
-    /**
-     * @return void
-     */
+    public function setWorker(Worker $worker): self;
+
+    public function getClientMessageType(): WebSocketClientMessageTypeEnum;
+
     public function handler(): void;
 }

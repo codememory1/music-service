@@ -5,17 +5,15 @@ namespace App\Repository;
 use App\Entity\MultimediaCategory;
 
 /**
- * Class MultimediaCategoryRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<MultimediaCategory>
- *
- * @author  Codememory
  */
-class MultimediaCategoryRepository extends AbstractRepository
+final class MultimediaCategoryRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = MultimediaCategory::class;
+    protected ?string $alias = 'mc';
+
+    public function findByTitle(string $titleTranslationKey): ?MultimediaCategory
+    {
+        return $this->findOneBy(['titleTranslationKey' => $titleTranslationKey]);
+    }
 }

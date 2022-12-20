@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\SubscriptionFactory;
+use App\Entity\Subscription;
 use App\Enum\SubscriptionEnum;
 use App\Enum\SubscriptionStatusEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -10,11 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class SubscriptionDataFixture.
- *
- * @package App\DataFixtures
- *
- * @author  Codememory
+ * @template-extends AbstractDataFixture<Subscription>
  */
 final class SubscriptionDataFixture extends AbstractDataFixture implements DependentFixtureInterface
 {

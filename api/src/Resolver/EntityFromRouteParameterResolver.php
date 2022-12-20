@@ -4,7 +4,7 @@ namespace App\Resolver;
 
 use App\Annotation\EntityNotFound;
 use App\Entity\Interfaces\EntityInterface;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
+use App\Exception\Http\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\ArrayShape;
 use LogicException;
@@ -15,36 +15,14 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use function Symfony\Component\String\u;
 
-/**
- * Class EntityFromRouteParameterResolver.
- *
- * @package App\Resolver
- *
- * @author  Codememory
- */
 final class EntityFromRouteParameterResolver implements ArgumentValueResolverInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
-
-    /**
-     * @var array
-     */
     private array $routeParameters = [];
-
-    /**
-     * @var null|ReflectionClass
-     */
     private ?ReflectionClass $reflection = null;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->em = $manager;
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ) {
     }
 
     /**
@@ -92,11 +70,6 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
         yield $finedEntity;
     }
 
-    /**
-     * @param string $entityNameInCamel
-     *
-     * @return null|array
-     */
     #[ArrayShape(['property_name' => 'string', 'value' => 'mixed'])]
     private function finedRouteParameter(string $entityNameInCamel): ?array
     {
@@ -117,8 +90,7 @@ final class EntityFromRouteParameterResolver implements ArgumentValueResolverInt
     /**
      * @template T
      *
-     * @param ArgumentMetadata $argument
-     * @param class-string<T>  $class
+     * @param class-string<T> $class
      *
      * @return null|T
      */

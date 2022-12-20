@@ -3,32 +3,33 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Interfaces\EntityS3SettingInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
+use App\Entity\Traits\UuidIdentifierTrait;
+use App\Enum\EntityS3SettingEnum;
+use App\Enum\PlatformCodeEnum;
 use App\Enum\UserProfileStatusEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\UserProfileRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class UserProfile.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: UserProfileRepository::class)]
 #[ORM\Table('user_profiles')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('user', message: 'userProfile@existByUser')]
-class UserProfile implements EntityInterface
+#[UniqueEntity('user', message: 'userProfile@existByUser', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
+class UserProfile implements EntityInterface, EntityS3SettingInterface
 {
     use IdentifierTrait;
-
+    use UuidIdentifierTrait;
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\OneToOne(inversedBy: 'profile', targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -54,11 +55,19 @@ class UserProfile implements EntityInterface
     ])]
     private ?string $status = null;
 
-    /**
-     * @param null|User $user
-     *
-     * @return $this
-     */
+    #[ORM\OneToOne(mappedBy: 'userProfile', targetEntity: UserProfileDesign::class, cascade: ['persist', 'remove'])]
+    private ?UserProfileDesign $design = null;
+
+    public function __construct()
+    {
+        $this->generateUuid();
+    }
+
+    public function getFolderName(): EntityS3SettingEnum
+    {
+        return EntityS3SettingEnum::USER_PROFILE;
+    }
+
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -66,27 +75,16 @@ class UserProfile implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|User
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @return null|string
-     */
     public function getPseudonym(): ?string
     {
         return $this->pseudonym;
     }
 
-    /**
-     * @param null|string $pseudonym
-     *
-     * @return $this
-     */
     public function setPseudonym(?string $pseudonym): self
     {
         $this->pseudonym = $pseudonym;
@@ -94,19 +92,11 @@ class UserProfile implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|DateTimeInterface
-     */
     public function getDateBirth(): ?DateTimeInterface
     {
         return $this->dateBirth;
     }
 
-    /**
-     * @param null|DateTimeInterface $dateBirth
-     *
-     * @return $this
-     */
     public function setDateBirth(?DateTimeInterface $dateBirth): self
     {
         $this->dateBirth = $dateBirth;
@@ -114,19 +104,11 @@ class UserProfile implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getPhoto(): ?string
     {
         return $this->photo;
     }
 
-    /**
-     * @param null|string $photo
-     *
-     * @return $this
-     */
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
@@ -134,22 +116,57 @@ class UserProfile implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|UserProfileStatusEnum $status
-     *
-     * @return $this
-     */
     public function setStatus(?UserProfileStatusEnum $status): self
     {
         $this->status = $status?->name;
+
+        return $this;
+    }
+
+    public function setHideStatus(): self
+    {
+        $this->setStatus(UserProfileStatusEnum::HIDE);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isHide(): bool
+    {
+        return $this->getStatus() === UserProfileStatusEnum::HIDE->name;
+    }
+
+    public function setShowStatus(): self
+    {
+        $this->setStatus(UserProfileStatusEnum::SHOW);
+
+        return $this;
+    }
+
+    #[Pure]
+    public function isShow(): bool
+    {
+        return $this->getStatus() === UserProfileStatusEnum::SHOW->name;
+    }
+
+    public function getDesign(): ?UserProfileDesign
+    {
+        return $this->design;
+    }
+
+    public function setDesign(UserProfileDesign $design): self
+    {
+        // set the owning side of the relation if necessary
+        if ($design->getUserProfile() !== $this) {
+            $design->setUserProfile($this);
+        }
+
+        $this->design = $design;
 
         return $this;
     }

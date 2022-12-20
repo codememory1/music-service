@@ -2,73 +2,49 @@
 
 namespace App\Command;
 
+use App\Entity\User;
+use App\Entity\UserSession;
 use App\Enum\WebSocketUserMessageTypeHandlerEnum;
-use App\Service\SchemaValidatorService;
+use App\Exception\Interfaces\WebSocketExceptionInterface;
+use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
+use App\Rest\Response\Scheme\WebSocketErrorScheme;
+use App\Service\SchemaValidator;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
+use App\Service\WebSocket\MessageQueueToClient;
+use App\Service\WebSocket\Worker;
+use Exception;
+use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use ReflectionException;
+use Swoole\Process;
+use Swoole\WebSocket\Frame;
+use Swoole\WebSocket\Server;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\ReverseContainer;
-use Workerman\Connection\ConnectionInterface;
-use Workerman\Worker;
 
-/**
- * Class WebSocketServerCommand.
- *
- * @package App\Command
- *
- * @author  Codememory
- */
 #[AsCommand(
     'app:ws-server',
     'Starting the Web Socket Server'
 )]
 class WebSocketServerCommand extends Command
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private ParameterBagInterface $parameterBag;
-
-    /**
-     * @var ReverseContainer
-     */
-    private ReverseContainer $container;
-
-    /**
-     * @var Worker
-     */
-    private Worker $worker;
-
-    /**
-     * @var SchemaValidatorService
-     */
-    private SchemaValidatorService $schemaValidatorService;
-
-    /**
-     * @param ParameterBagInterface  $parameterBag
-     * @param ReverseContainer       $container
-     * @param SchemaValidatorService $schemaValidatorService
-     */
-    public function __construct(ParameterBagInterface $parameterBag, ReverseContainer $container, SchemaValidatorService $schemaValidatorService)
-    {
+    public function __construct(
+        private readonly ReverseContainer $container,
+        private readonly SchemaValidator $schemaValidatorService,
+        private readonly Worker $worker,
+        private readonly MessageQueueToClient $messageQueueToClient,
+        private readonly LoggerInterface $logger
+    ) {
         parent::__construct();
-
-        $this->parameterBag = $parameterBag;
-        $this->container = $container;
-        $this->schemaValidatorService = $schemaValidatorService;
-
-        $this->worker = new Worker($this->parameterBag->get('ws.url'));
     }
 
     /**
-     * @return void
+     * @inheritDoc
      */
     protected function configure(): void
     {
@@ -77,61 +53,55 @@ class WebSocketServerCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->worker->count = $this->parameterBag->get('ws.count_process');
-        $this->worker->reloadable = true;
+        $context = $this;
+        $worker = $this->worker;
+        $messageQueueToClient = $this->messageQueueToClient;
 
-        $this->worker->onMessage = function(ConnectionInterface $connection, string $message): void {
-            if ($this->schemaValidatorService->validate('ws_client_message', $message)) {
-                $this->messageHandler($connection, $message);
+        $this->worker->initServer();
+        $this->worker->onStart();
+        $this->worker->onConnect();
+        $this->worker->onMessage(static function(Server $server, Frame $frame) use ($context): void {
+            if ($context->schemaValidatorService->validate('ws_client_message', $frame->data)) {
+                $context->messageHandler($frame->fd, $frame->data);
             }
-        };
+        });
 
-        global $argv;
+        $this->worker->getServer()->addProcess(new Process(static function() use ($worker, $messageQueueToClient): void {
+            $messageQueueToClient->pickMessage(static function(User|UserSession $to, WebSocketSchemeInterface $scheme) use ($worker): void {
+                match ($to::class) {
+                    User::class => $worker->sendToUser($to, $scheme),
+                    UserSession::class => $worker->sendToSession($to, $scheme)
+                };
+            });
+        }));
 
-        $argv[0] = 'app:ws-server';
-        $argv[1] = $input->getArgument('worker-command');
-        $argv[2] = $input->getOption('demon');
-
-        Worker::runAll();
+        $this->worker->onCloseConnect();
+        $this->worker->startServer();
 
         return self::SUCCESS;
     }
 
     /**
-     * @param ConnectionInterface $connection
-     * @param string              $message
-     *
      * @throws ReflectionException
-     *
-     * @return void
      */
-    private function messageHandler(ConnectionInterface $connection, string $message): void
+    private function messageHandler(string $connectionId, string $message): void
     {
         $message = json_decode($message, true);
-        $typeHandlerNamespace = WebSocketUserMessageTypeHandlerEnum::get($message['data']['type']);
+        $typeHandlerNamespace = WebSocketUserMessageTypeHandlerEnum::get($message['type']);
 
         if (null !== $typeHandlerNamespace && class_exists($typeHandlerNamespace)) {
-            $this->messageTypeHandler($connection, $typeHandlerNamespace, (array) $message);
+            $this->messageTypeHandler($connectionId, $typeHandlerNamespace, (array) $message);
         }
     }
 
     /**
-     * @param ConnectionInterface $connection
-     * @param string              $typeHandlerNamespace
-     * @param array               $message
-     *
      * @throws ReflectionException
-     *
-     * @return void
      */
-    private function messageTypeHandler(ConnectionInterface $connection, string $typeHandlerNamespace, array $message): void
+    private function messageTypeHandler(string $connectionId, string $typeHandlerNamespace, array $message): void
     {
         $typeHandlerReflection = new ReflectionClass($typeHandlerNamespace);
 
@@ -139,9 +109,31 @@ class WebSocketServerCommand extends Command
             /** @var UserMessageHandlerInterface $handler */
             $handler = $this->container->getService($typeHandlerNamespace);
 
-            $handler->setConnection($connection);
+            $handler->setConnection($connectionId);
+            $handler->setWorker($this->worker);
             $handler->setMessage($message['headers'], $message['data']);
-            $handler->handler();
+
+            try {
+                $handler->handler();
+            } catch (Exception $exception) {
+                if ($exception instanceof WebSocketExceptionInterface) {
+                    $this->throwHandler($handler, $exception, $connectionId);
+                } else {
+                    $this->logger->critical($exception->getMessage());
+                }
+            }
         }
+    }
+
+    private function throwHandler(UserMessageHandlerInterface $handler, WebSocketExceptionInterface $exception, int $connectionId): void
+    {
+        $scheme = new WebSocketErrorScheme(
+            $exception->getPlatformCode(),
+            $handler->getClientMessageType(),
+            $exception->getMessage(),
+            $exception->getParameters()
+        );
+
+        $this->worker->sendToConnection($connectionId, $scheme);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use Codememory\Support\Str;
 use sixlive\DotenvEditor\DotenvEditor;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -12,34 +11,18 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use function Symfony\Component\String\u;
 
-/**
- * Class GenerateJwtKeysCommand.
- *
- * @package App\Command
- *
- * @author  Codememory
- */
 #[AsCommand(
     'app:jwt-generate-keys',
     'Generate public and private key for jwt'
 )]
 class GenerateJwtKeysCommand extends Command
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private ParameterBagInterface $params;
-
-    /**
-     * @param ParameterBagInterface $params
-     * @param null|string           $name
-     */
-    public function __construct(ParameterBagInterface $params, ?string $name = null)
-    {
-        parent::__construct($name);
-
-        $this->params = $params;
+    public function __construct(
+        private readonly ParameterBagInterface $parameterBag
+    ) {
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -50,10 +33,7 @@ class GenerateJwtKeysCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -66,8 +46,8 @@ class GenerateJwtKeysCommand extends Command
         $publicPath = $this->generateFilename($variablePrefix);
         $privatePath = $this->generateFilename($variablePrefix, true);
 
-        if (!is_dir($this->params->get('jwt.secrets'))) {
-            mkdir($this->params->get('jwt.secrets'), 0777, true);
+        if (!is_dir($this->parameterBag->get('jwt.secrets'))) {
+            mkdir($this->parameterBag->get('jwt.secrets'), 0777, true);
         }
 
         shell_exec("openssl genrsa -out ${privatePath} 2048");
@@ -85,37 +65,21 @@ class GenerateJwtKeysCommand extends Command
         return self::SUCCESS;
     }
 
-    /**
-     * @param string $prefix
-     *
-     * @return string
-     */
     private function generatePublicVariableName(string $prefix): string
     {
         return $prefix . '_PUBLIC_KEY';
     }
 
-    /**
-     * @param string $prefix
-     *
-     * @return string
-     */
     private function generatePrivateVariableName(string $prefix): string
     {
         return $prefix . '_PRIVATE_KEY';
     }
 
-    /**
-     * @param string $prefix
-     * @param bool   $isPrivate
-     *
-     * @return string
-     */
     private function generateFilename(string $prefix, bool $isPrivate = false): string
     {
-        $prefix = Str::toLowercase($prefix);
+        $prefix = u($prefix)->lower()->toString();
         $prefix .= $isPrivate ? '_private.pem' : '_public.pem';
 
-        return $this->params->get('jwt.secrets') . $prefix;
+        return $this->parameterBag->get('jwt.secrets') . $prefix;
     }
 }

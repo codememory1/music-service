@@ -4,34 +4,36 @@ namespace App\Entity;
 
 use App\DBAL\Types\PasswordType;
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\FriendStatusEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Enum\RoleEnum;
+use App\Enum\RolePermissionEnum;
+use App\Enum\SubscriptionEnum;
+use App\Enum\SubscriptionPermissionEnum;
+use App\Enum\UserSessionTypeEnum;
 use App\Enum\UserStatusEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class User.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('email', message: 'user@existByEmail', payload: [ResponseTypeEnum::EXIST, 409])]
+#[UniqueEntity('email', message: 'user@existByEmail', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class User implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
         'comment' => 'Email to login'
@@ -55,7 +57,7 @@ class User implements EntityInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserProfile::class, cascade: ['persist', 'remove'])]
     private ?UserProfile $profile = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserSession::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserSession::class, cascade: ['persist', 'remove'])]
     private Collection $sessions;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: AccountActivationCode::class, cascade: ['persist', 'remove'])]
@@ -89,6 +91,46 @@ class User implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaPerformer::class)]
     private Collection $multimediaPerformers;
 
+    #[ORM\OneToMany(mappedBy: 'fromUser', targetEntity: MultimediaShare::class)]
+    private Collection $multimediaSharedByMe;
+
+    #[ORM\OneToMany(mappedBy: 'toUser', targetEntity: MultimediaShare::class)]
+    private Collection $multimediaSharedWithMe;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaAudition::class)]
+    private Collection $multimediaAuditions;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaRating::class)]
+    private Collection $multimediaRatings;
+
+    #[ORM\OneToMany(mappedBy: 'artist', targetEntity: ArtistSubscriber::class, cascade: ['persist', 'remove'])]
+    private Collection $subscribers;
+
+    #[ORM\OneToMany(mappedBy: 'subscriber', targetEntity: ArtistSubscriber::class, cascade: ['persist', 'remove'])]
+    private Collection $subscriptions;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: MediaLibrary::class, cascade: ['persist', 'remove'])]
+    private ?MediaLibrary $mediaLibrary = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Friend::class, cascade: ['persist', 'remove'])]
+    private Collection $friendRequests;
+
+    #[ORM\OneToMany(mappedBy: 'friend', targetEntity: Friend::class, cascade: ['persist', 'remove'])]
+    private Collection $acceptedFriendRequests;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSetting::class, cascade: ['persist', 'remove'])]
+    private ?UserSetting $setting = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaListeningHistory::class, cascade: ['remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private Collection $multimediaListeningHistory;
+
+    #[ORM\OneToMany(mappedBy: 'buyer', targetEntity: Transaction::class, cascade: ['remove'])]
+    private Collection $transactions;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: MultimediaExternalService::class)]
+    private Collection $multimediaExternalServices;
+
     #[Pure]
     public function __construct()
     {
@@ -99,21 +141,24 @@ class User implements EntityInterface
         $this->notifications = new ArrayCollection();
         $this->multimedia = new ArrayCollection();
         $this->multimediaPerformers = new ArrayCollection();
+        $this->multimediaSharedByMe = new ArrayCollection();
+        $this->multimediaSharedWithMe = new ArrayCollection();
+        $this->multimediaAuditions = new ArrayCollection();
+        $this->multimediaRatings = new ArrayCollection();
+        $this->subscribers = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
+        $this->friendRequests = new ArrayCollection();
+        $this->acceptedFriendRequests = new ArrayCollection();
+        $this->multimediaListeningHistory = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
+        $this->multimediaExternalServices = new ArrayCollection();
     }
 
-    /**
-     * @return null|string
-     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param null|string $email
-     *
-     * @return $this
-     */
     public function setEmail(?string $email): self
     {
         $this->email = $email;
@@ -121,19 +166,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     *
-     * @return $this
-     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -141,19 +178,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|Role
-     */
     public function getRole(): ?Role
     {
         return $this->role;
     }
 
-    /**
-     * @param null|Role $role
-     *
-     * @return $this
-     */
     public function setRole(?Role $role): self
     {
         $this->role = $role;
@@ -161,29 +190,35 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param UserStatusEnum $userStatusEnum
-     *
-     * @return bool
-     */
-    public function isStatus(UserStatusEnum $userStatusEnum): bool
-    {
-        return $this->getStatus() === $userStatusEnum->name;
-    }
-
-    /**
-     * @return null|string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|UserStatusEnum $status
-     *
-     * @return $this
-     */
+    public function setActiveStatus(): self
+    {
+        $this->setStatus(UserStatusEnum::ACTIVE);
+
+        return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->getStatus() === UserStatusEnum::ACTIVE->name;
+    }
+
+    public function setNotActiveStatus(): self
+    {
+        $this->setStatus(UserStatusEnum::NOT_ACTIVE);
+
+        return $this;
+    }
+
+    public function isNotActive(): bool
+    {
+        return $this->getStatus() === UserStatusEnum::NOT_ACTIVE->name;
+    }
+
     public function setStatus(?UserStatusEnum $status): self
     {
         $this->status = $status?->name;
@@ -191,19 +226,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|UserProfile
-     */
     public function getProfile(): ?UserProfile
     {
         return $this->profile;
     }
 
-    /**
-     * @param UserProfile $profile
-     *
-     * @return $this
-     */
     public function setProfile(UserProfile $profile): self
     {
         // set the owning side of the relation if necessary
@@ -216,6 +243,13 @@ class User implements EntityInterface
         return $this;
     }
 
+    public function getRegisteredSession(): ?UserSession
+    {
+        $session = $this->sessions->filter(static fn(UserSession $session) => $session->getType() === UserSessionTypeEnum::REGISTRATION->name)->first();
+
+        return false === $session ? null : $session;
+    }
+
     /**
      * @return Collection<int, UserSession>
      */
@@ -224,11 +258,6 @@ class User implements EntityInterface
         return $this->sessions;
     }
 
-    /**
-     * @param UserSession $session
-     *
-     * @return $this
-     */
     public function addSession(UserSession $session): self
     {
         if (!$this->sessions->contains($session)) {
@@ -239,11 +268,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param UserSession $session
-     *
-     * @return $this
-     */
     public function removeSession(UserSession $session): self
     {
         if ($this->sessions->removeElement($session)) {
@@ -257,18 +281,24 @@ class User implements EntityInterface
     }
 
     /**
-     * @return Collection<AccountActivationCode>
+     * @return Collection<int, AccountActivationCode>
      */
     public function getAccountActivationCode(): Collection
     {
         return $this->accountActivationCodes;
     }
 
-    /**
-     * @param AccountActivationCode $accountActivationCode
-     *
-     * @return $this
-     */
+    public function getLastAccountActivationCode(): ?int
+    {
+        $lastAccountActivationCode = $this->getAccountActivationCode()->last();
+
+        if (false === $lastAccountActivationCode) {
+            return null;
+        }
+
+        return $lastAccountActivationCode->getCode();
+    }
+
     public function setAccountActivationCode(AccountActivationCode $accountActivationCode): self
     {
         if (!$this->accountActivationCodes->contains($accountActivationCode)) {
@@ -280,18 +310,24 @@ class User implements EntityInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection<int, PasswordReset>
      */
     public function getPasswordResets(): Collection
     {
         return $this->passwordResets;
     }
 
-    /**
-     * @param PasswordReset $passwordReset
-     *
-     * @return $this
-     */
+    public function getLastPasswordResetCode(): ?int
+    {
+        $lastPasswordReset = $this->getPasswordResets()->last();
+
+        if (false === $lastPasswordReset) {
+            return null;
+        }
+
+        return $lastPasswordReset->getCode();
+    }
+
     public function setPasswordReset(PasswordReset $passwordReset): self
     {
         if (!$this->passwordResets->contains($passwordReset)) {
@@ -302,19 +338,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|Subscription
-     */
     public function getSubscription(): ?Subscription
     {
         return $this->subscription;
     }
 
-    /**
-     * @param null|Subscription $subscription
-     *
-     * @return $this
-     */
     public function setSubscription(?Subscription $subscription): self
     {
         $this->subscription = $subscription;
@@ -322,11 +350,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Album $album
-     *
-     * @return $this
-     */
     public function addAlbum(Album $album): self
     {
         if (!$this->albums->contains($album)) {
@@ -337,11 +360,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Album $album
-     *
-     * @return $this
-     */
     public function removeAlbum(Album $album): self
     {
         if ($this->albums->removeElement($album)) {
@@ -362,11 +380,6 @@ class User implements EntityInterface
         return $this->notifications;
     }
 
-    /**
-     * @param Notification $notification
-     *
-     * @return $this
-     */
     public function addNotification(Notification $notification): self
     {
         $userNotification = new UserNotification();
@@ -381,11 +394,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param UserNotification $notification
-     *
-     * @return $this
-     */
     public function removeNotification(UserNotification $notification): self
     {
         if ($this->notifications->removeElement($notification)) {
@@ -398,19 +406,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getIdInAuthService(): ?string
     {
         return $this->idInAuthService;
     }
 
-    /**
-     * @param null|string $idInAuthService
-     *
-     * @return $this
-     */
     public function setIdInAuthService(?string $idInAuthService): self
     {
         $this->idInAuthService = $idInAuthService;
@@ -418,19 +418,11 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getAuthServiceType(): ?string
     {
         return $this->authServiceType;
     }
 
-    /**
-     * @param null|string $authServiceType
-     *
-     * @return $this
-     */
     public function setAuthServiceType(?string $authServiceType): self
     {
         $this->authServiceType = $authServiceType;
@@ -446,11 +438,6 @@ class User implements EntityInterface
         return $this->multimedia;
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function addMultimedia(Multimedia $multimedia): self
     {
         if (!$this->multimedia->contains($multimedia)) {
@@ -461,11 +448,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return $this
-     */
     public function removeMultimedia(Multimedia $multimedia): self
     {
         if ($this->multimedia->removeElement($multimedia)) {
@@ -486,11 +468,6 @@ class User implements EntityInterface
         return $this->multimediaPerformers;
     }
 
-    /**
-     * @param MultimediaPerformer $multimediaPerformer
-     *
-     * @return $this
-     */
     public function addMultimediaPerformer(MultimediaPerformer $multimediaPerformer): self
     {
         if (!$this->multimediaPerformers->contains($multimediaPerformer)) {
@@ -501,11 +478,6 @@ class User implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param MultimediaPerformer $multimediaPerformer
-     *
-     * @return $this
-     */
     public function removeMultimediaPerformer(MultimediaPerformer $multimediaPerformer): self
     {
         if ($this->multimediaPerformers->removeElement($multimediaPerformer)) {
@@ -516,5 +488,414 @@ class User implements EntityInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaShare>
+     */
+    public function getMultimediaSharedByMe(): Collection
+    {
+        return $this->multimediaSharedByMe;
+    }
+
+    public function removeMultimediaSharedByMe(MultimediaShare $sharedByMe): self
+    {
+        if ($this->multimediaSharedByMe->removeElement($sharedByMe)) {
+            // set the owning side to null (unless already changed)
+            if ($sharedByMe->getToUser() === $this) {
+                $sharedByMe->setToUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaShare>
+     */
+    public function getMultimediaSharedWithMe(): Collection
+    {
+        return $this->multimediaSharedWithMe;
+    }
+
+    public function removeSharedWithMe(MultimediaShare $sharedWithMe): self
+    {
+        if ($this->multimediaSharedWithMe->removeElement($sharedWithMe)) {
+            // set the owning side to null (unless already changed)
+            if ($sharedWithMe->getToUser() === $this) {
+                $sharedWithMe->setToUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaAudition>
+     */
+    public function getMultimediaAuditions(): Collection
+    {
+        return $this->multimediaAuditions;
+    }
+
+    public function addMultimediaAudition(MultimediaAudition $multimediaAudition): self
+    {
+        if (!$this->multimediaAuditions->contains($multimediaAudition)) {
+            $this->multimediaAuditions[] = $multimediaAudition;
+            $multimediaAudition->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMultimediaAudition(MultimediaAudition $multimediaAudition): self
+    {
+        if ($this->multimediaAuditions->removeElement($multimediaAudition)) {
+            // set the owning side to null (unless already changed)
+            if ($multimediaAudition->getUser() === $this) {
+                $multimediaAudition->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MultimediaRating>
+     */
+    public function getMultimediaRatings(): Collection
+    {
+        return $this->multimediaRatings;
+    }
+
+    public function addMultimediaRating(MultimediaRating $multimediaRating): self
+    {
+        if (!$this->multimediaRatings->contains($multimediaRating)) {
+            $this->multimediaRatings[] = $multimediaRating;
+            $multimediaRating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMultimediaRating(MultimediaRating $multimediaRating): self
+    {
+        if ($this->multimediaRatings->removeElement($multimediaRating)) {
+            // set the owning side to null (unless already changed)
+            if ($multimediaRating->getUser() === $this) {
+                $multimediaRating->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArtistSubscriber>
+     */
+    public function getSubscribers(): Collection
+    {
+        return $this->subscribers;
+    }
+
+    public function addSubscriber(ArtistSubscriber $subscriber): self
+    {
+        if (!$this->subscribers->contains($subscriber)) {
+            $this->subscribers[] = $subscriber;
+            $subscriber->setArtist($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscriber(ArtistSubscriber $subscriber): self
+    {
+        if ($this->subscribers->removeElement($subscriber)) {
+            // set the owning side to null (unless already changed)
+            if ($subscriber->getArtist() === $this) {
+                $subscriber->setArtist(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArtistSubscriber>
+     */
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    public function addSubscription(ArtistSubscriber $subscription): self
+    {
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions[] = $subscription;
+            $subscription->setSubscriber($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscription(ArtistSubscriber $subscription): self
+    {
+        if ($this->subscriptions->removeElement($subscription)) {
+            // set the owning side to null (unless already changed)
+            if ($subscription->getSubscriber() === $this) {
+                $subscription->setSubscriber(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMediaLibrary(): ?MediaLibrary
+    {
+        return $this->mediaLibrary;
+    }
+
+    public function setMediaLibrary(MediaLibrary $mediaLibrary): self
+    {
+        // set the owning side of the relation if necessary
+        if ($mediaLibrary->getUser() !== $this) {
+            $mediaLibrary->setUser($this);
+        }
+
+        $this->mediaLibrary = $mediaLibrary;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Friend>
+     */
+    public function getFriends(): Collection
+    {
+        return new ArrayCollection(array_merge(
+            $this->friendRequests->toArray(),
+            $this->acceptedFriendRequests->toArray()
+        ));
+    }
+
+    public function addFriend(Friend $friend): self
+    {
+        if (!$this->friendRequests->contains($friend)) {
+            $this->friendRequests[] = $friend;
+            $friend->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFriend(Friend $friend): self
+    {
+        if ($this->friendRequests->removeElement($friend)) {
+            // set the owning side to null (unless already changed)
+            if ($friend->getUser() === $this) {
+                $friend->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isFriend(self $user): bool
+    {
+        $criteria = Criteria::create();
+
+        $criteria->orWhere(Criteria::expr()->eq('user', $user));
+        $criteria->orWhere(Criteria::expr()->eq('friend', $user));
+        $criteria->andWhere(Criteria::expr()->eq('status', FriendStatusEnum::CONFIRMED->name));
+
+        return 1 === $this->getFriends()->matching($criteria)->count();
+    }
+
+    public function getSetting(): ?UserSetting
+    {
+        return $this->setting;
+    }
+
+    public function setSetting(UserSetting $setting): self
+    {
+        // set the owning side of the relation if necessary
+        if ($setting->getUser() !== $this) {
+            $setting->setUser($this);
+        }
+
+        $this->setting = $setting;
+
+        return $this;
+    }
+
+    public function isRole(RoleEnum $role): bool
+    {
+        return $this->getRole()->getKey() === $role->name;
+    }
+
+    public function isRolePermission(RolePermissionEnum $expectedRolePermission): bool
+    {
+        return $this
+            ->getRole()
+            ->getPermissions()
+            ->exists(static fn(int $key, RolePermission $rolePermission): bool => $rolePermission->getPermissionKey()->getKey() === $expectedRolePermission->name);
+    }
+
+    public function isSubscriptionPermission(SubscriptionPermissionEnum $expectedSubscriptionPermission): bool
+    {
+        if (null === $subscriptionPermissions = $this->getSubscription()?->getPermissions()) {
+            return false;
+        }
+
+        return $subscriptionPermissions->exists(static fn(int $key, SubscriptionPermission $subscriptionPermission): bool => $subscriptionPermission->getPermissionKey()->getKey() === $expectedSubscriptionPermission->name);
+    }
+
+    public function isSubscription(SubscriptionEnum $expectedSubscription): bool
+    {
+        if (null === $subscription = $this->getSubscription()) {
+            return false;
+        }
+
+        return $subscription->getKey() === $expectedSubscription->name;
+    }
+
+    public function isAlbumBelongs(Album $album): bool
+    {
+        return $album->getUser()->isCompare($this);
+    }
+
+    public function isMultimediaBelongs(Multimedia $multimedia): bool
+    {
+        return $multimedia->getUser()->isCompare($this);
+    }
+
+    public function isMultimediaMediaLibraryBelongs(MultimediaMediaLibrary $multimediaMediaLibrary): bool
+    {
+        return $multimediaMediaLibrary->getMediaLibrary()->isCompare($this->getMediaLibrary());
+    }
+
+    public function isMediaLibraryBelongs(MediaLibrary $mediaLibrary): bool
+    {
+        return $mediaLibrary->isCompare($this->getMediaLibrary());
+    }
+
+    public function isPlaylistBelongs(Playlist $playlist): bool
+    {
+        return $playlist->getMediaLibrary()->isCompare($this->getMediaLibrary());
+    }
+
+    public function isMultimediaPlaylistBelongs(MultimediaPlaylist $multimediaPlaylist): bool
+    {
+        return $multimediaPlaylist
+            ->getMultimediaMediaLibrary()
+            ->getMediaLibrary()
+            ->isCompare($this->getMediaLibrary());
+    }
+
+    public function isPlaylistDirectoryBelongs(PlaylistDirectory $playlistDirectory): bool
+    {
+        return $playlistDirectory
+            ->getPlaylist()
+            ->getMediaLibrary()
+            ->isCompare($this->getMediaLibrary());
+    }
+
+    public function isMultimediaPlaylistDirectoryBelongs(MultimediaPlaylistDirectory $multimediaPlaylistDirectory): bool
+    {
+        return $multimediaPlaylistDirectory
+            ->getMultimediaMediaLibrary()
+            ->getMediaLibrary()
+            ->isCompare($this->getMediaLibrary());
+    }
+
+    /**
+     * @return Collection<int, MultimediaListeningHistory>
+     */
+    public function getMultimediaListeningHistory(): ?Collection
+    {
+        return $this->multimediaListeningHistory;
+    }
+
+    public function addMultimediaToListeningHistory(MultimediaListeningHistory $multimediaListeningHistory): self
+    {
+        if (!$this->multimediaListeningHistory->contains($multimediaListeningHistory)) {
+            $this->multimediaListeningHistory[] = $multimediaListeningHistory;
+            $multimediaListeningHistory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMultimediaToListeningHistory(MultimediaListeningHistory $multimediaListeningHistory): self
+    {
+        if ($this->multimediaListeningHistory->removeElement($multimediaListeningHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($multimediaListeningHistory->getUser() === $this) {
+                $multimediaListeningHistory->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTotalNumberAuditions(): int
+    {
+        $total = 0;
+
+        $this->getMultimedia()->map(static function(Multimedia $multimedia) use (&$total): void {
+            $total += $multimedia->getAuditions()->count();
+        });
+
+        return $total;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    /**
+     * @return Collection<int, MultimediaExternalService>
+     */
+    public function getMultimediaExternalServices(): Collection
+    {
+        return $this->multimediaExternalServices;
+    }
+
+    public function addMultimediaExternalService(MultimediaExternalService $multimediaExternalService): self
+    {
+        if (!$this->multimediaExternalServices->contains($multimediaExternalService)) {
+            $this->multimediaExternalServices[] = $multimediaExternalService;
+            $multimediaExternalService->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMultimediaExternalService(MultimediaExternalService $multimediaExternalService): self
+    {
+        if ($this->multimediaExternalServices->removeElement($multimediaExternalService)) {
+            // set the owning side to null (unless already changed)
+            if ($multimediaExternalService->getUser() === $this) {
+                $multimediaExternalService->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $userSetting = new UserSetting();
+
+        $userSetting->setUser($this);
+        $userSetting->setAcceptMultimediaFromFriends(false);
+        $userSetting->setMultimediaStream(['number_streams' => 'auto']);
+
+        $this->setting = $userSetting;
     }
 }

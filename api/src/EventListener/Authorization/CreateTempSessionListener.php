@@ -2,48 +2,33 @@
 
 namespace App\EventListener\Authorization;
 
-use App\DTO\UserDTO;
+use App\Dto\Transformer\UserTransformer;
 use App\Entity\UserSession;
 use App\Event\UserAuthorizationEvent;
-use App\Event\UserRegistrationEvent;
-use App\Service\UserSession\UpdateSessionService;
+use App\UseCase\User\Session\UpdateUserSession;
 use DateTimeImmutable;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-/**
- * Class CreateTempSessionListener.
- *
- * @package App\EventListener\Authorization
- *
- * @author  Codememory
- */
-class CreateTempSessionListener
+#[AsEventListener(UserAuthorizationEvent::class, 'onAuth', 1)]
+final class CreateTempSessionListener
 {
-    /**
-     * @var UpdateSessionService
-     */
-    private UpdateSessionService $updateUserSessionService;
-
-    /**
-     * @var UserDTO
-     */
-    private UserDTO $userDTO;
-
-    /**
-     * @param UpdateSessionService $updateSessionService
-     * @param UserDTO              $userDTO
-     */
     public function __construct(
-        UpdateSessionService $updateSessionService,
-        UserDTO $userDTO
+        private readonly UpdateUserSession $updateUserSession,
+        private readonly UserTransformer $userTransformer
     ) {
-        $this->updateUserSessionService = $updateSessionService;
-        $this->userDTO = $userDTO->collect();
     }
 
     /**
-     * @param UserRegistrationEvent $event
-     *
-     * @return void
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
      */
     public function onAuth(UserAuthorizationEvent $event): void
     {
@@ -54,6 +39,10 @@ class CreateTempSessionListener
         $userSessionEntity->setLastActivity(new DateTimeImmutable());
         $userSessionEntity->setIsActive(true);
 
-        $this->updateUserSessionService->make($this->userDTO, $event->authorizedUser, $userSessionEntity);
+        $this->updateUserSession->process(
+            $this->userTransformer->transformFromRequest(),
+            $event->authorizedUser,
+            $userSessionEntity
+        );
     }
 }

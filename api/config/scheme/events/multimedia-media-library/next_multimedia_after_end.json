@@ -1,0 +1,10 @@
+{
+    "type": "object",
+    "properties": {
+        "multimedia_id": {
+            "type": "integer"
+        }
+    },
+    "required": ["multimedia_id"],
+    "additionalProperties": false
+}

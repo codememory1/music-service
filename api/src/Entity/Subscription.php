@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Enum\SubscriptionPermissionEnum;
 use App\Enum\SubscriptionStatusEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\SubscriptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,22 +18,15 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class Subscription.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 #[ORM\Table('subscriptions')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('key', 'entityExist@subscription', payload: [ResponseTypeEnum::EXIST, 409])]
+#[UniqueEntity('key', 'entityExist@subscription', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class Subscription implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
         'comment' => 'Unique subscription key for identification'
@@ -70,25 +66,21 @@ class Subscription implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPermission::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $permissions;
 
+    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPayment::class, cascade: ['remove'])]
+    private Collection $payments;
+
     #[Pure]
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @param null|string $key
-     *
-     * @return $this
-     */
     public function setKey(?string $key): self
     {
         $this->key = $key;
@@ -96,19 +88,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->titleTranslationKey;
     }
 
-    /**
-     * @param null|string $titleTranslationKey
-     *
-     * @return $this
-     */
     public function setTitle(?string $titleTranslationKey): self
     {
         $this->titleTranslationKey = $titleTranslationKey;
@@ -116,19 +100,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getDescription(): ?string
     {
         return $this->descriptionTranslationKey;
     }
 
-    /**
-     * @param null|string $descriptionTranslationKey
-     *
-     * @return $this
-     */
     public function setDescription(?string $descriptionTranslationKey): self
     {
         $this->descriptionTranslationKey = $descriptionTranslationKey;
@@ -136,19 +112,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|float
-     */
     public function getOldPrice(): ?float
     {
         return $this->oldPrice;
     }
 
-    /**
-     * @param null|float $oldPrice
-     *
-     * @return $this
-     */
     public function setOldPrice(?float $oldPrice): self
     {
         $this->oldPrice = $oldPrice;
@@ -156,19 +124,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|float
-     */
     public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    /**
-     * @param null|float $price
-     *
-     * @return $this
-     */
     public function setPrice(?float $price): self
     {
         $this->price = $price;
@@ -176,19 +136,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|bool
-     */
     public function isRecommend(): ?bool
     {
         return $this->isRecommend;
     }
 
-    /**
-     * @param null|bool $isRecommend
-     *
-     * @return $this
-     */
     public function setIsRecommend(?bool $isRecommend): self
     {
         $this->isRecommend = $isRecommend;
@@ -196,19 +148,11 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param null|SubscriptionStatusEnum $statusEnum
-     *
-     * @return $this
-     */
     public function setStatus(?SubscriptionStatusEnum $statusEnum): self
     {
         if (null === $statusEnum) {
@@ -220,6 +164,30 @@ class Subscription implements EntityInterface
         return $this;
     }
 
+    public function setHideStatus(): self
+    {
+        $this->setStatus(SubscriptionStatusEnum::HIDE);
+
+        return $this;
+    }
+
+    public function isHide(): bool
+    {
+        return $this->getStatus() === SubscriptionStatusEnum::HIDE->name;
+    }
+
+    public function setShowStatus(): self
+    {
+        $this->setStatus(SubscriptionStatusEnum::SHOW);
+
+        return $this;
+    }
+
+    public function isShow(): bool
+    {
+        return $this->getStatus() === SubscriptionStatusEnum::SHOW->name;
+    }
+
     /**
      * @return Collection<int, SubscriptionPermission>
      */
@@ -228,10 +196,19 @@ class Subscription implements EntityInterface
         return $this->permissions;
     }
 
+    public function getPermission(SubscriptionPermissionEnum $subscriptionPermission): ?SubscriptionPermission
+    {
+        foreach ($this->getPermissions() as $permission) {
+            if ($permission->getPermissionKey()->getKey() === $subscriptionPermission->name) {
+                return $permission;
+            }
+        }
+
+        return null;
+    }
+
     /**
-     * @param array<SubscriptionPermissionKey> $permissions
-     *
-     * @return $this
+     * @param array<SubscriptionPermissionKey> $permissionKeys
      */
     public function setPermissions(array $permissionKeys): self
     {
@@ -251,11 +228,6 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param SubscriptionPermission $permission
-     *
-     * @return $this
-     */
     public function addPermission(SubscriptionPermission $permission): self
     {
         if (!$this->permissions->contains($permission)) {
@@ -266,11 +238,6 @@ class Subscription implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param SubscriptionPermission $permission
-     *
-     * @return $this
-     */
     public function removePermission(SubscriptionPermission $permission): self
     {
         if ($this->permissions->removeElement($permission)) {
@@ -281,5 +248,13 @@ class Subscription implements EntityInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, SubscriptionPayment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
     }
 }

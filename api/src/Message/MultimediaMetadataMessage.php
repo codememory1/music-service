@@ -2,25 +2,10 @@
 
 namespace App\Message;
 
-/**
- * Class MultimediaMetadataMessage.
- *
- * @package App\Message
- *
- * @author  Codememory
- */
-class MultimediaMetadataMessage
+final class MultimediaMetadataMessage
 {
-    /**
-     * @var int
-     */
-    public readonly int $multimediaId;
-
-    /**
-     * @param int $multimediaId
-     */
-    public function __construct(int $multimediaId)
-    {
-        $this->multimediaId = $multimediaId;
+    public function __construct(
+        public readonly int $multimediaId
+    ) {
     }
 }

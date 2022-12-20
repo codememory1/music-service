@@ -8,51 +8,24 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Enum\AlbumTypeEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class AlbumTypeFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class AlbumTypeFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var AlbumTypeEnum
-     */
-    private AlbumTypeEnum $key;
-
-    /**
-     * @var string
-     */
-    private string $titleTranslationKey;
-
-    /**
-     * @param AlbumTypeEnum $albumTypeEnum
-     * @param string        $titleTranslationKey
-     */
-    public function __construct(AlbumTypeEnum $albumTypeEnum, string $titleTranslationKey)
-    {
-        $this->key = $albumTypeEnum;
-        $this->titleTranslationKey = $titleTranslationKey;
+    public function __construct(
+        private readonly AlbumTypeEnum $albumType,
+        private readonly string $titleTranslationKey
+    ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
-        $albumTypeEntity = new AlbumType();
+        $albumType = new AlbumType();
 
-        $albumTypeEntity->setKey($this->key);
-        $albumTypeEntity->setTitle($this->titleTranslationKey);
+        $albumType->setKey($this->albumType);
+        $albumType->setTitle($this->titleTranslationKey);
 
-        return $albumTypeEntity;
+        return $albumType;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;

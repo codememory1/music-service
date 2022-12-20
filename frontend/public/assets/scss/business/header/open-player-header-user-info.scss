@@ -1,0 +1,60 @@
+@import "../../include/variables";
+
+.open-player-header {
+  &-user-info {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+  }
+
+  &__notification-btn {
+    background-color: transparent;
+    color: $white;
+    font-size: 20px;
+    transition: ease-in opacity 0.15s;
+    margin-right: 30px;
+    position: relative;
+
+    &.unread {
+      &:before {
+        content: "";
+        position: absolute;
+        right: -3px;
+        width: 6px;
+        height: 6px;
+        background-color: $accent;
+        border-radius: 100%;
+        border: 2px solid $white;
+        top: 3px;
+      }
+    }
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+  &__user {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: $white;
+
+    &-photo {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 100%;
+      margin-right: 10px;
+      transition: ease-in opacity 0.15s;
+    }
+
+    &-chevron {
+      font-size: 12px;
+    }
+
+    &:hover &-photo {
+      opacity: 0.5;
+    }
+  }
+}

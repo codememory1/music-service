@@ -5,68 +5,47 @@ namespace App\Controller\PublicAvailable;
 use App\Annotation\Authorization;
 use App\Annotation\EntityNotFound;
 use App\Entity\UserSession;
+use App\Enum\PlatformCodeEnum;
+use App\Exception\Http\EntityNotFoundException;
 use App\Repository\UserSessionRepository;
-use App\ResponseData\User\UserSessionResponseData;
+use App\ResponseData\Public\User\Session\UserSessionResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Http\Exceptions\EntityNotFoundException;
-use App\Service\UserSession\DeleteUserSessionService;
+use App\UseCase\User\Session\DeleteAllUserSession;
+use App\UseCase\User\Session\DeleteUserSession;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class UserSessionController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author Codememory
- */
 #[Route('/user/session')]
+#[Authorization]
 class UserSessionController extends AbstractRestController
 {
-    /**
-     * @param UserSessionResponseData $userSessionResponseData
-     * @param UserSessionRepository   $userSessionRepository
-     *
-     * @return JsonResponse
-     */
-    #[Route('/all', methods: 'GET')]
-    #[Authorization]
-    public function all(UserSessionResponseData $userSessionResponseData, UserSessionRepository $userSessionRepository): JsonResponse
+    #[Route('/all', methods: Request::METHOD_GET)]
+    public function all(UserSessionResponseData $responseData, UserSessionRepository $userSessionRepository): JsonResponse
     {
-        $userSessionResponseData->setEntities($userSessionRepository->authorizedUserSessions());
-        $userSessionResponseData->collect();
-
-        return $this->responseCollection->dataOutput($userSessionResponseData->getResponse());
+        return $this->responseData($responseData, $userSessionRepository->authorizedUserSessions());
     }
 
-    /**
-     * @param UserSession              $userSession
-     * @param DeleteUserSessionService $deleteUserSessionService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/{userSession_id<\d+>}/delete', methods: 'DELETE')]
-    #[Authorization]
+    #[Route('/{userSession_id<\d+>}/delete', methods: Request::METHOD_DELETE)]
     public function delete(
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
-        DeleteUserSessionService $deleteUserSessionService
+        DeleteUserSession $deleteUserSession,
+        UserSessionResponseData $responseData
     ): JsonResponse {
-        if ($userSession->getUser() !== $this->authorizedUser->getUser()) {
+        if (!$this->getAuthorizedUser()->isCompare($userSession->getUser())) {
             throw EntityNotFoundException::userSession();
         }
 
-        return $deleteUserSessionService->make($userSession);
+        return $this->responseData($responseData, $deleteUserSession->process($userSession), PlatformCodeEnum::DELETED);
     }
 
-    /**
-     * @param DeleteUserSessionService $deleteUserSessionService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/all/delete', methods: 'DELETE')]
-    #[Authorization]
-    public function deleteAll(DeleteUserSessionService $deleteUserSessionService): JsonResponse
+    #[Route('/all/delete', methods: Request::METHOD_DELETE)]
+    public function deleteAll(DeleteAllUserSession $deleteAllUserSession, UserSessionResponseData $responseData): JsonResponse
     {
-        return $deleteUserSessionService->deleteAll($this->authorizedUser->getUser());
+        return $this->responseData(
+            $responseData,
+            $deleteAllUserSession->process($this->getAuthorizedUser()),
+            PlatformCodeEnum::DELETED
+        );
     }
 }

@@ -1,0 +1,53 @@
+@import "../../../include/variables";
+
+.player-navigation__item {
+  user-select: none;
+
+  &-link {
+    display: flex;
+    position: relative;
+    align-items: center;
+    padding: 15px 0 15px 40px;
+    width: 100%;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    transition: background-color 0.3s ease-in-out;
+
+    &:not(.active-link) {
+      &:hover {
+        background-color: lighten($dark-bg, 5%);
+      }
+    }
+
+    &:before {
+      content: "";
+      width: 0;
+      height: 100%;
+      background: linear-gradient(
+          270deg,
+          rgba($accent, 0.3) 0%,
+          rgba($accent, 0) 108.38%
+      );
+      position: absolute;
+      border-right: none;
+      right: 0;
+      transition: width 0.2s ease-in-out, border 0.2s ease-in-out;
+    }
+
+    &.active-link {
+      &:before {
+        width: 100%;
+        border-right: 2px solid $accent;
+      }
+    }
+  }
+
+  &-icon {
+    margin-right: 15px;
+  }
+}
+
+.player-navigation__item-link.active-link .player-navigation__item-icon {
+  color: $accent;
+}

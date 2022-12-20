@@ -7,15 +7,8 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class QuantityByDelimiterValidator.
- *
- * @package App\Validator\Constraints
- *
- * @author  Codememory
- */
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class QuantityByDelimiterValidator extends ConstraintValidator
+final class QuantityByDelimiterValidator extends ConstraintValidator
 {
     /**
      * @inheritDoc

@@ -2,101 +2,77 @@
 
 namespace App\Controller\PublicAvailable;
 
-use App\DTO\AccountActivationDTO;
-use App\DTO\AuthorizationDTO;
-use App\DTO\RefreshTokenDTO;
-use App\DTO\RegistrationDTO;
+use App\Dto\Transformer\AccountActivationTransformer;
+use App\Dto\Transformer\AuthorizationTransformer;
+use App\Dto\Transformer\RefreshTokenTransformer;
+use App\Dto\Transformer\RegistrationTransformer;
+use App\Enum\PlatformCodeEnum;
+use App\Infrastructure\Validator\Validator;
+use App\ResponseData\General\User\UserAccountActivationResponseData;
+use App\ResponseData\General\User\UserRegistrationResponseData;
+use App\ResponseData\Public\User\Session\UserSessionResponseData;
 use App\Rest\Controller\AbstractRestController;
-use App\Rest\Validator\Validator;
 use App\Security\AccountActivation\AccountActivation;
 use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
 use App\Security\Auth\Identification;
 use App\Security\Logout\Logout;
-use App\Security\Register\Registration;
-use App\Service\UserSession\UpdateAccessTokenService;
+use App\Security\Registration\Registration;
+use App\UseCase\User\Session\UpdateUserSessionAccessToken;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class SecurityController.
- *
- * @package App\Controller\PublicAvailable
- *
- * @author  Codememory
- */
 #[Route('/user')]
 class SecurityController extends AbstractRestController
 {
-    /**
-     * @param RegistrationDTO $registrationDTO
-     * @param Registration    $register
-     *
-     * @return JsonResponse
-     */
-    #[Route('/register', methods: 'POST')]
-    public function registration(RegistrationDTO $registrationDTO, Registration $register): JsonResponse
+    #[Route('/register', methods: Request::METHOD_POST)]
+    public function registration(RegistrationTransformer $transformer, Registration $register, UserRegistrationResponseData $responseData): JsonResponse
     {
-        return $register->handle($registrationDTO->collect());
+        return $this->responseData(
+            $responseData,
+            $register->registration($transformer->transformFromRequest()),
+            PlatformCodeEnum::CREATED_PENDING
+        );
     }
 
-    /**
-     * @param AuthorizationDTO $authorizationDTO
-     * @param Validator        $validator
-     * @param Identification   $identification
-     * @param Authentication   $authentication
-     * @param Authorization    $authorization
-     *
-     * @return JsonResponse
-     */
-    #[Route('/auth', methods: 'POST')]
-    public function auth(AuthorizationDTO $authorizationDTO, Validator $validator, Identification $identification, Authentication $authentication, Authorization $authorization): JsonResponse
-    {
-        $authorizationDTO->collect();
+    #[Route('/auth', methods: Request::METHOD_POST)]
+    public function auth(
+        AuthorizationTransformer $transformer,
+        Validator $validator,
+        Identification $identification,
+        Authentication $authentication,
+        Authorization $authorization
+    ): JsonResponse {
+        $dto = $transformer->transformFromRequest();
 
-        if (false === $validator->validate($authorizationDTO)) {
-            return $validator->getResponse();
-        }
+        $validator->validate($dto);
 
-        $identifiedUser = $identification->identify($authorizationDTO);
-        $authenticatedUser = $authentication->authenticate($authorizationDTO, $identifiedUser);
+        $identifiedUser = $identification->identify($dto);
+        $authenticatedUser = $authentication->authenticate($dto, $identifiedUser);
 
-        return $authorization->auth($authenticatedUser);
+        return $this->response($authorization->auth($authenticatedUser));
     }
 
-    /**
-     * @param RefreshTokenDTO          $refreshTokenDTO
-     * @param UpdateAccessTokenService $updateAccessTokenService
-     *
-     * @return JsonResponse
-     */
-    #[Route('/access-token/update', methods: 'PUT')]
-    public function updateAccessToken(RefreshTokenDTO $refreshTokenDTO, UpdateAccessTokenService $updateAccessTokenService): JsonResponse
+    #[Route('/access-token/update', methods: Request::METHOD_PUT)]
+    public function updateAccessToken(RefreshTokenTransformer $transformer, UpdateUserSessionAccessToken $updateUserSessionAccessToken): JsonResponse
     {
-        return $updateAccessTokenService->make($refreshTokenDTO->collect());
+        return $this->response($updateUserSessionAccessToken->process($transformer->transformFromRequest()));
     }
 
-    /**
-     * @param RefreshTokenDTO $refreshTokenDTO
-     * @param Logout          $logout
-     *
-     * @return JsonResponse
-     */
-    #[Route('/logout', methods: 'GET')]
-    public function logout(RefreshTokenDTO $refreshTokenDTO, Logout $logout): JsonResponse
+    #[Route('/logout', methods: Request::METHOD_GET)]
+    public function logout(RefreshTokenTransformer $transformer, Logout $logout, UserSessionResponseData $responseData): JsonResponse
     {
-        return $logout->logout($refreshTokenDTO->collect());
+        return $this->responseData($responseData, $logout->logout($transformer->transformFromRequest()), PlatformCodeEnum::DELETED);
     }
 
-    /**
-     * @param AccountActivationDTO $accountActivationDTO
-     * @param AccountActivation    $accountActivation
-     *
-     * @return JsonResponse
-     */
-    #[Route('/account-activation', methods: 'POST')]
-    public function activationAccount(AccountActivationDTO $accountActivationDTO, AccountActivation $accountActivation): JsonResponse
+    #[Route('/account-activation', methods: Request::METHOD_POST)]
+    public function activationAccount(AccountActivationTransformer $transformer, AccountActivation $accountActivation, UserAccountActivationResponseData $responseData): JsonResponse
     {
-        return $accountActivation->activate($accountActivationDTO->collect());
+        return $this->responseData(
+            $responseData,
+            $accountActivation->activate($transformer->transformFromRequest()),
+            PlatformCodeEnum::UPDATED
+        );
     }
 }

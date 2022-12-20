@@ -2,13 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * Enum MultimediaStatusEnum.
- *
- * @package App\Enum
- *
- * @author  Codememory
- */
 enum MultimediaStatusEnum: string
 {
     case DRAFT = 'status@draft';
@@ -18,11 +11,6 @@ enum MultimediaStatusEnum: string
     case APPEAL = 'status@appeal';
     case APPEAL_CANCELED = 'status@appealCanceled';
 
-    /**
-     * @param string $value
-     *
-     * @return null|string
-     */
     public static function getValueByName(string $value): ?string
     {
         foreach (self::cases() as $case) {

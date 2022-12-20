@@ -2,22 +2,13 @@
 
 namespace App\Enum;
 
-/**
- * Enum WebSocketUserMessageTypeHandlerEnum.
- *
- * @package App\Enum
- *
- * @author  Сodememory
- */
 enum WebSocketUserMessageTypeHandlerEnum: string
 {
-    // example -> case TEST_HANDLER = 'App\Service\WebSocket\TestUserMessageHandlerService';
+    case CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_CURRENT_ACCOUNT = 'App\Service\WebSocket\Handle\CreateStreamMultimediaOfferBetweenCurrentAccountHandler';
+    case ACCEPT_OFFERED_STREAMING = 'App\Service\WebSocket\Handle\AcceptOfferedStreamingHandler';
+    case REJECT_OFFERED_STREAMING = 'App\Service\WebSocket\Handle\RejectOfferedStreamingHandler';
+    case CREATE_STREAM_MULTIMEDIA_OFFER_BETWEEN_FRIEND = 'App\Service\WebSocket\Handle\CreateStreamMultimediaOfferBetweenFriendHandler';
 
-    /**
-     * @param string $name
-     *
-     * @return null|string
-     */
     public static function get(string $name): ?string
     {
         foreach (self::cases() as $case) {

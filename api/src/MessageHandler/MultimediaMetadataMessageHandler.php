@@ -4,7 +4,7 @@ namespace App\MessageHandler;
 
 use App\Entity\Multimedia;
 use App\Entity\MultimediaMetadata;
-use App\Enum\MultimediaTypeEnum;
+use App\Infrastructure\Doctrine\Flusher;
 use App\Message\MultimediaMetadataMessage;
 use App\Rest\S3\UploadedObject;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,41 +13,16 @@ use FFMpeg\FFProbe\DataMapping\Stream;
 use FFMpeg\FFProbe\DataMapping\StreamCollection;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-/**
- * Class MultimediaMetadataMessageHandler.
- *
- * @package App\MessageHandler
- *
- * @author  Codememory
- */
 #[AsMessageHandler]
-class MultimediaMetadataMessageHandler
+final class MultimediaMetadataMessageHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $em;
-
-    /**
-     * @var UploadedObject
-     */
-    private UploadedObject $uploadedObject;
-
-    /**
-     * @param EntityManagerInterface $manager
-     * @param UploadedObject         $uploadedObject
-     */
-    public function __construct(EntityManagerInterface $manager, UploadedObject $uploadedObject)
-    {
-        $this->em = $manager;
-        $this->uploadedObject = $uploadedObject;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly Flusher $flusher,
+        private readonly UploadedObject $uploadedObject
+    ) {
     }
 
-    /**
-     * @param Multimedia $multimedia
-     *
-     * @return MultimediaMetadata
-     */
     private function getMultimediaMetadata(Multimedia $multimedia): ?MultimediaMetadata
     {
         if (null !== $multimedia->getMetadata()) {
@@ -57,12 +32,6 @@ class MultimediaMetadataMessageHandler
         return new MultimediaMetadata();
     }
 
-    /**
-     * @param Multimedia $multimedia
-     * @param Stream     $stream
-     *
-     * @return void
-     */
     private function trackHandler(Multimedia $multimedia, Stream $stream): void
     {
         $multimediaMetadataEntity = $this->getMultimediaMetadata($multimedia);
@@ -73,12 +42,6 @@ class MultimediaMetadataMessageHandler
         $multimedia->setMetadata($multimediaMetadataEntity);
     }
 
-    /**
-     * @param Multimedia $multimedia
-     * @param Stream     $stream
-     *
-     * @return void
-     */
     private function clipHandler(Multimedia $multimedia, Stream $stream): void
     {
         $multimediaMetadataEntity = $this->getMultimediaMetadata($multimedia);
@@ -90,29 +53,15 @@ class MultimediaMetadataMessageHandler
         $multimedia->setMetadata($multimediaMetadataEntity);
     }
 
-    /**
-     * @param Multimedia       $multimedia
-     * @param StreamCollection $streamCollection
-     *
-     * @return void
-     */
     private function handlerTypes(Multimedia $multimedia, StreamCollection $streamCollection): void
     {
-        switch ($multimedia->getType()) {
-            case MultimediaTypeEnum::TRACK->name:
-                $this->trackHandler($multimedia, $streamCollection->audios()->first());
-                break;
-            case MultimediaTypeEnum::CLIP->name:
-                $this->clipHandler($multimedia, $streamCollection->videos()->first());
-                break;
+        if ($multimedia->isTrack()) {
+            $this->trackHandler($multimedia, $streamCollection->audios()->first());
+        } elseif ($multimedia->isClip()) {
+            $this->clipHandler($multimedia, $streamCollection->videos()->first());
         }
     }
 
-    /**
-     * @param MultimediaMetadataMessage $message
-     *
-     * @return void
-     */
     public function __invoke(MultimediaMetadataMessage $message): void
     {
         $multimediaRepository = $this->em->getRepository(Multimedia::class);
@@ -130,6 +79,6 @@ class MultimediaMetadataMessageHandler
             $this->handlerTypes($multimedia, $streamCollection);
         }
 
-        $this->em->flush();
+        $this->flusher->save();
     }
 }

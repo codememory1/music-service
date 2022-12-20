@@ -11,12 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
 
 /**
- * Class RolePermissionKeyDataFixture.
- *
- * @package App\DataFixtures
  * @template-extends AbstractDataFixture<RolePermissionKey>
- *
- * @author  Codememory
  */
 final class RolePermissionKeyDataFixture extends AbstractDataFixture implements DependentFixtureInterface, FixtureGroupInterface
 {
@@ -63,6 +58,38 @@ final class RolePermissionKeyDataFixture extends AbstractDataFixture implements 
             new RolePermissionKeyFactory(RolePermissionEnum::ADD_MULTIMEDIA_TO_USER, 'rolePermission@addMultimediaToUser'),
             new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_MULTIMEDIA_TO_USER, 'rolePermission@updateMultimediaToUser'),
             new RolePermissionKeyFactory(RolePermissionEnum::DELETE_MULTIMEDIA_TO_USER, 'rolePermission@deleteMultimediaToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::ALBUM_STATUS_CONTROL_TO_USER, 'rolePermission@albumStatusControlToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::CREATE_MEDIA_LIBRARY_TO_USER, 'rolePermission@createMediaLibraryToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_MEDIA_LIBRARY_TO_USER, 'rolePermission@updateMediaLibraryToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_MEDIA_LIBRARY_TO_USER, 'rolePermission@showMediaLibraryToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::DELETE_MULTIMEDIA_MEDIA_LIBRARY_TO_USER, 'rolePermission@deleteMultimediaMediaLibraryToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_MULTIMEDIA_MEDIA_LIBRARY_TO_USER, 'rolePermission@updateMultimediaFromMediaLibraryToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_USER_PLAYLISTS, 'rolePermission@showUserPlaylists'),
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_FULL_INFO_USER_PLAYLISTS, 'rolePermission@showFullInfoUserPlaylist'),
+            new RolePermissionKeyFactory(RolePermissionEnum::CREATE_PLAYLIST_TO_USER, 'rolePermission@createPlaylistToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_PLAYLIST_TO_USER, 'rolePermission@updatePlaylistToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::DELETE_PLAYLIST_TO_USER, 'rolePermission@deletePlaylistToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_PLAYLIST_DIRECTORIES_TO_USER, 'rolePermission@showPlaylistDirectoriesToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_FULL_INFO_PLAYLIST_DIRECTORIES_TO_USER, 'rolePermission@showFullInfoPlaylistDirectoriesToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::CREATE_PLAYLIST_DIRECTORY_TO_USER, 'rolePermission@createPlaylistDirectoryToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_PLAYLIST_DIRECTORY_TO_USER, 'rolePermission@updatePlaylistDirectoryToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::DELETE_PLAYLIST_DIRECTORY_TO_USER, 'rolePermission@deletePlaylistDirectoryToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::ADD_MULTIMEDIA_TO_PLAYLIST_DIRECTORY, 'rolePermission@addMultimediaToPlaylistDirectory'),
+            new RolePermissionKeyFactory(RolePermissionEnum::DELETE_MULTIMEDIA_TO_PLAYLIST_DIRECTORY, 'rolePermission@deleteMultimediaToPlaylistDirectory'),
+            new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_USER_PROFILE_DESIGN, 'rolePermission@updateUserProfileDesign'),
+            new RolePermissionKeyFactory(RolePermissionEnum::ADD_FRIEND_TO_USER, 'rolePermission@addFriendToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::DELETE_FRIEND_TO_USER, 'rolePermission@deleteFriendToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_MULTIMEDIA_STATISTICS_TO_USER, 'rolePermission@showMultimediaStatisticsToUser'),
+
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_ALL_BRANCHES, 'rolePermission@showAllBranch'),
+            new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_BRANCH, 'rolePermission@updateBranch'),
+            new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_DATA_BRANCH, 'rolePermission@updateDataBranch'),
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_DATA_BRANCH, 'rolePermission@showDataBranch'),
+
+            new RolePermissionKeyFactory(RolePermissionEnum::SHOW_ALL_USER_MULTIMEDIA_EXTERNAL_SERVICE, 'rolePermission@showAllUserMultimediaExternalService'),
+            new RolePermissionKeyFactory(RolePermissionEnum::ADD_MULTIMEDIA_EXTERNAL_SERVICE_TO_USER, 'rolePermission@addMultimediaExternalServiceToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::UPDATE_MULTIMEDIA_EXTERNAL_SERVICE_TO_USER, 'rolePermission@updateMultimediaExternalServiceToUser'),
+            new RolePermissionKeyFactory(RolePermissionEnum::DELETE_MULTIMEDIA_EXTERNAL_SERVICE_TO_USER, 'rolePermission@deleteMultimediaExternalServiceToUser'),
         ]);
     }
 

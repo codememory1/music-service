@@ -4,25 +4,10 @@ namespace App\Event;
 
 use App\Entity\AccountActivationCode;
 
-/**
- * Class AccountActivationEvent.
- *
- * @package App\Event
- *
- * @author  Codememory
- */
-class AccountActivationEvent
+final class AccountActivationEvent
 {
-    /**
-     * @var AccountActivationCode
-     */
-    public readonly AccountActivationCode $accountActivationCode;
-
-    /**
-     * @param AccountActivationCode $accountActivationCode
-     */
-    public function __construct(AccountActivationCode $accountActivationCode)
-    {
-        $this->accountActivationCode = $accountActivationCode;
+    public function __construct(
+        public readonly AccountActivationCode $accountActivationCode
+    ) {
     }
 }

@@ -7,43 +7,22 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\TranslationKey;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class TranslationKeyFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class TranslationKeyFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private string $key;
-
-    /**
-     * @param string $key
-     */
-    public function __construct(string $key)
-    {
-        $this->key = $key;
+    public function __construct(
+        private readonly string $key
+    ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
-        $translationKeyEntity = new TranslationKey();
+        $translationKey = new TranslationKey();
 
-        $translationKeyEntity->setKey($this->key);
+        $translationKey->setKey($this->key);
 
-        return $translationKeyEntity;
+        return $translationKey;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;

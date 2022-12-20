@@ -3,39 +3,21 @@
 namespace App\Security\Auth;
 
 use App\Entity\User;
-use App\Service\JwtTokenGenerator;
-use Symfony\Contracts\Service\Attribute\Required;
+use App\Infrastructure\JwtToken\Generator as JwtGenerator;
 
-/**
- * Class AuthorizationToken.
- *
- * @package App\Security\Auth
- *
- * @author  Codememory
- */
-class AuthorizationToken
+final class AuthorizationToken
 {
-    #[Required]
-    public ?JwtTokenGenerator $jwtTokenGenerator = null;
-
-    /**
-     * @var null|string
-     */
     private ?string $accessToken = null;
-
-    /**
-     * @var null|string
-     */
     private ?string $refreshToken = null;
 
-    /**
-     * @param User $user
-     *
-     * @return $this
-     */
+    public function __construct(
+        private readonly JwtGenerator $jwtGenerator
+    ) {
+    }
+
     public function generateAccessToken(User $user): self
     {
-        $this->accessToken = $this->jwtTokenGenerator->encode(
+        $this->accessToken = $this->jwtGenerator->encode(
             ['id' => $user->getId()],
             'jwt.access_private_key',
             'jwt.access_ttl'
@@ -44,22 +26,14 @@ class AuthorizationToken
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getAccessToken(): ?string
     {
         return $this->accessToken;
     }
 
-    /**
-     * @param User $user
-     *
-     * @return $this
-     */
     public function generateRefreshToken(User $user): self
     {
-        $this->refreshToken = $this->jwtTokenGenerator->encode(
+        $this->refreshToken = $this->jwtGenerator->encode(
             ['id' => $user->getId()],
             'jwt.refresh_private_key',
             'jwt.refresh_ttl'
@@ -68,9 +42,6 @@ class AuthorizationToken
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getRefreshToken(): ?string
     {
         return $this->refreshToken;

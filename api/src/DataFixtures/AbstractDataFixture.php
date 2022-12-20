@@ -7,33 +7,18 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class AbstractDataFixture.
- *
- * @package App\DataFixtures
  * @template Entity as mixed
- *
- * @author  Codememory
  */
 abstract class AbstractDataFixture extends Fixture
 {
     /**
-     * @var array<DataFixtureFactoryInterface>
-     */
-    protected array $factories;
-
-    /**
      * @param array<DataFixtureFactoryInterface> $factories
      */
-    public function __construct(array $factories)
-    {
-        $this->factories = $factories;
+    public function __construct(
+        protected readonly array $factories
+    ) {
     }
 
-    /**
-     * @param ObjectManager $manager
-     *
-     * @return void
-     */
     abstract public function load(ObjectManager $manager): void;
 
     /**

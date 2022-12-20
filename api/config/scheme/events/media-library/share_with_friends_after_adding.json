@@ -1,0 +1,24 @@
+{
+    "type": "object",
+    "properties": {
+        "with_all_friends": {
+            "const": true
+        },
+        "with_selected_friends": {
+            "type": "array",
+            "items": {
+                "type": "integer"
+            },
+            "minItems": 1
+        }
+    },
+    "oneOf": [
+        {
+            "required": ["with_all_friends"]
+        },
+        {
+            "required": ["with_selected_friends"]
+        }
+    ],
+    "additionalProperties": false
+}

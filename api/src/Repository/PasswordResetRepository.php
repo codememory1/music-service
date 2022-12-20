@@ -3,19 +3,28 @@
 namespace App\Repository;
 
 use App\Entity\PasswordReset;
+use App\Entity\User;
+use App\Enum\PasswordResetStatusEnum;
 
 /**
- * Class PasswordResetRepository.
- *
- * @package App\Repository
  * @template-extends AbstractRepository<PasswordReset>
- *
- * @author  Codememory
  */
-class PasswordResetRepository extends AbstractRepository
+final class PasswordResetRepository extends AbstractRepository
 {
-    /**
-     * @inheritDoc
-     */
     protected ?string $entity = PasswordReset::class;
+    protected ?string $alias = 'pr';
+
+    public function findAllByUser(User $user): array
+    {
+        return $this->findBy(['user' => $user]);
+    }
+
+    public function findByCodeAndUserInProcess(User $user, string $code): ?PasswordReset
+    {
+        return $this->findOneBy([
+            'user' => $user,
+            'code' => $code,
+            'status' => PasswordResetStatusEnum::IN_PROCESS->name
+        ]);
+    }
 }

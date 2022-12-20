@@ -7,51 +7,24 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Language;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class LanguageFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class LanguageFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private string $code;
-
-    /**
-     * @var string
-     */
-    private string $originalTitle;
-
-    /**
-     * @param string $code
-     * @param string $originalTitle
-     */
-    public function __construct(string $code, string $originalTitle)
-    {
-        $this->code = $code;
-        $this->originalTitle = $originalTitle;
+    public function __construct(
+        private readonly string $code,
+        private readonly string $originalTitle
+    ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
-        $languageEntity = new Language();
+        $language = new Language();
 
-        $languageEntity->setCode($this->code);
-        $languageEntity->setOriginalTitle($this->originalTitle);
+        $language->setCode($this->code);
+        $language->setOriginalTitle($this->originalTitle);
 
-        return $languageEntity;
+        return $language;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;

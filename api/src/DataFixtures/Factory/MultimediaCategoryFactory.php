@@ -7,43 +7,22 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\MultimediaCategory;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class MultimediaCategoryFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class MultimediaCategoryFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private string $titleTranslationKey;
-
-    /**
-     * @param string $titleTranslationKey
-     */
-    public function __construct(string $titleTranslationKey)
-    {
-        $this->titleTranslationKey = $titleTranslationKey;
+    public function __construct(
+        private readonly string $titleTranslationKey
+    ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
-        $multimediaCategoryEntity = new MultimediaCategory();
+        $multimediaCategory = new MultimediaCategory();
 
-        $multimediaCategoryEntity->setTitle($this->titleTranslationKey);
+        $multimediaCategory->setTitle($this->titleTranslationKey);
 
-        return $multimediaCategoryEntity;
+        return $multimediaCategory;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         return $this;

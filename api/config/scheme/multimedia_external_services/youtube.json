@@ -1,0 +1,9 @@
+{
+    "type": "object",
+    "properties": {
+        "hash": {
+            "type": "string",
+            "maxLength": 100
+        }
+    }
+}

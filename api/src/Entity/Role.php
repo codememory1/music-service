@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Entity\Interfaces\EntityInterface;
+use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
-use App\Enum\ResponseTypeEnum;
+use App\Enum\PlatformCodeEnum;
+use App\Infrastructure\Validator\Validator;
 use App\Repository\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,22 +16,15 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Class Role.
- *
- * @package App\Entity
- *
- * @author  Codememory
- */
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
 #[ORM\Table('roles')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity('key', message: 'role@exist', payload: [ResponseTypeEnum::EXIST, 409])]
+#[UniqueEntity('key', message: 'role@exist', payload: [Validator::PPC => PlatformCodeEnum::ENTITY_FOUND])]
 class Role implements EntityInterface
 {
     use IdentifierTrait;
-
     use TimestampTrait;
+    use ComparisonTrait;
 
     #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
         'comment' => 'Unique processing key'
@@ -55,19 +50,11 @@ class Role implements EntityInterface
         $this->permissions = new ArrayCollection();
     }
 
-    /**
-     * @return null|string
-     */
     public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @param null|string $key
-     *
-     * @return $this
-     */
     public function setKey(?string $key): self
     {
         $this->key = $key;
@@ -75,9 +62,6 @@ class Role implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getTitle(): ?string
     {
         return $this->titleTranslationKey;
@@ -90,19 +74,11 @@ class Role implements EntityInterface
         return $this;
     }
 
-    /**
-     * @return null|string
-     */
     public function getShortDescription(): ?string
     {
         return $this->shortDescriptionTranslationKey;
     }
 
-    /**
-     * @param null|string $shortDescriptionTranslationKey
-     *
-     * @return $this
-     */
     public function setShortDescription(?string $shortDescriptionTranslationKey): self
     {
         $this->shortDescriptionTranslationKey = $shortDescriptionTranslationKey;
@@ -120,8 +96,6 @@ class Role implements EntityInterface
 
     /**
      * @param array<RolePermissionKey> $permissionKeys
-     *
-     * @return $this
      */
     public function setPermissions(array $permissionKeys): self
     {
@@ -141,11 +115,6 @@ class Role implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param RolePermission $permission
-     *
-     * @return $this
-     */
     public function addPermission(RolePermission $permission): self
     {
         if (!$this->permissions->contains($permission)) {
@@ -156,11 +125,6 @@ class Role implements EntityInterface
         return $this;
     }
 
-    /**
-     * @param RolePermission $permission
-     *
-     * @return $this
-     */
     public function removePermission(RolePermission $permission): self
     {
         if ($this->permissions->removeElement($permission)) {

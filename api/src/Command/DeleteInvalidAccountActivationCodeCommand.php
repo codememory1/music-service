@@ -11,13 +11,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * Class DeleteInvalidAccountActivationCodeCommand.
- *
- * @package App\Command
- *
- * @author  Codememory
- */
 #[AsCommand(
     'app:user:delete-invalid-account-activation-codes',
     'Removing invalid codes for account activation'
@@ -25,15 +18,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class DeleteInvalidAccountActivationCodeCommand extends Command
 {
     use DeleteByInvalidTtlTrait;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $em;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->em = $manager;
@@ -42,15 +28,14 @@ class DeleteInvalidAccountActivationCodeCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
+     * @inheritDoc
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $accountActivationCodeRepository = $this->em->getRepository(AccountActivationCode::class);
+
+        $io->info('Worker started successfully');
 
         while (true) {
             sleep(1);
@@ -61,12 +46,6 @@ class DeleteInvalidAccountActivationCodeCommand extends Command
         }
     }
 
-    /**
-     * @param SymfonyStyle          $io
-     * @param AccountActivationCode $accountActivationCode
-     *
-     * @return void
-     */
     private function deleteMessage(SymfonyStyle $io, AccountActivationCode $accountActivationCode): void
     {
         $io->writeln(sprintf(

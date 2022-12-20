@@ -9,50 +9,17 @@ use App\Entity\Translation;
 use App\Entity\TranslationKey;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
-/**
- * Class TranslationFactory.
- *
- * @package App\DataFixtures\Factory
- *
- * @author  Codememory
- */
 final class TranslationFactory implements DataFixtureFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private string $language;
-
-    /**
-     * @var string
-     */
-    private string $translationKey;
-
-    /**
-     * @var string
-     */
-    private string $translation;
-
-    /**
-     * @var null|ReferenceRepository
-     */
     private ?ReferenceRepository $referenceRepository = null;
 
-    /**
-     * @param string $language
-     * @param string $translationKey
-     * @param string $translation
-     */
-    public function __construct(string $language, string $translationKey, string $translation)
-    {
-        $this->language = $language;
-        $this->translationKey = $translationKey;
-        $this->translation = $translation;
+    public function __construct(
+        private readonly string $language,
+        private readonly string $translationKey,
+        private readonly string $translation
+    ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function factoryMethod(): EntityInterface
     {
         /** @var Language $language */
@@ -60,18 +27,15 @@ final class TranslationFactory implements DataFixtureFactoryInterface
 
         /** @var TranslationKey $translationKey */
         $translationKey = $this->referenceRepository->getReference("tk-{$this->translationKey}");
-        $translationEntity = new Translation();
+        $translation = new Translation();
 
-        $translationEntity->setLanguage($language);
-        $translationEntity->setTranslationKey($translationKey);
-        $translationEntity->setTranslation($this->translation);
+        $translation->setLanguage($language);
+        $translation->setTranslationKey($translationKey);
+        $translation->setTranslation($this->translation);
 
-        return $translationEntity;
+        return $translation;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function setReferenceRepository(ReferenceRepository $referenceRepository): DataFixtureFactoryInterface
     {
         $this->referenceRepository = $referenceRepository;
