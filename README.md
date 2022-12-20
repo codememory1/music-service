@@ -2,6 +2,11 @@
     <img src="/bin/assets/codememory-logo.svg" alt="Codememory company" width="300" height="110"/>
 </p>
 
+## YouTrack agile
+> https://codememory.youtrack.cloud/
+> Login: read@sumron-music.com
+> Password: sumron
+
 ## Ветки
 
 > **master** - Продакшн ветка _(Используется на реальном продакшн сервере)_
