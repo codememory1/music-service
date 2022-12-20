@@ -6,11 +6,13 @@ use App\Infrastructure\ResponseData\Constraints\AbstractConstraintHandler;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintAvailabilityHandlerInterface;
 use App\Infrastructure\ResponseData\Interfaces\ConstraintInterface;
 use App\Security\AuthorizedUser;
+use App\Service\LogicBranches\SubscriptionPermissionBranchHandler;
 
 final class SubscriptionPermissionHandler extends AbstractConstraintHandler implements ConstraintAvailabilityHandlerInterface
 {
     public function __construct(
-        private AuthorizedUser $authorizedUser
+        private readonly AuthorizedUser $authorizedUser,
+        private readonly SubscriptionPermissionBranchHandler $subscriptionPermissionBranchHandler
     ) {
     }
 
@@ -21,10 +23,6 @@ final class SubscriptionPermissionHandler extends AbstractConstraintHandler impl
     {
         $user = $this->authorizedUser->getUser();
 
-        if (null === $user) {
-            return false;
-        }
-
-        return $user->isSubscriptionPermission($constraint->permission);
+        return null !== $user && $this->subscriptionPermissionBranchHandler->allowedPermission($user, $constraint->permission);
     }
 }
