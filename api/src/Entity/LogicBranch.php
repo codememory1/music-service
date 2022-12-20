@@ -51,4 +51,14 @@ class LogicBranch implements EntityInterface
 
         return $this;
     }
+
+    public function isEnabled(): bool
+    {
+        return $this->status === LogicBranchStatusEnum::ENABLED->name;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->status === LogicBranchStatusEnum::DISABLED->name;
+    }
 }

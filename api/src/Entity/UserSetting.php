@@ -33,6 +33,11 @@ class UserSetting implements EntityInterface
     ])]
     private array $multimediaStream = [];
 
+    #[ORM\Column(type: Types::BOOLEAN, options: [
+        'comment' => 'Whether to hide all my added media from other users'
+    ])]
+    private bool $hideMyMultimedia = false;
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -65,6 +70,18 @@ class UserSetting implements EntityInterface
     public function setMultimediaStream(array $multimediaStream): self
     {
         $this->multimediaStream = $multimediaStream;
+
+        return $this;
+    }
+
+    public function isHideMyMultimedia(): bool
+    {
+        return $this->hideMyMultimedia;
+    }
+
+    public function setHideMyMultimedia(bool $hide): self
+    {
+        $this->hideMyMultimedia = $hide;
 
         return $this;
     }

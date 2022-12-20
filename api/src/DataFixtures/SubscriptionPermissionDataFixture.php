@@ -58,6 +58,7 @@ final class SubscriptionPermissionDataFixture extends AbstractDataFixture implem
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::ADD_MULTIMEDIA_FROM_EXTERNAL_SERVICE),
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::UPDATE_MULTIMEDIA_FROM_EXTERNAL_SERVICE),
             new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::DELETE_MULTIMEDIA_FROM_EXTERNAL_SERVICE),
+            new SubscriptionPermissionFactory(SubscriptionEnum::ARTIST, SubscriptionPermissionEnum::USER_SETTING_HIDE_MY_MULTIMEDIA),
 
             new SubscriptionPermissionFactory(SubscriptionEnum::PREMIUM, SubscriptionPermissionEnum::LISTENING_TO_MULTIMEDIA),
             new SubscriptionPermissionFactory(SubscriptionEnum::PREMIUM, SubscriptionPermissionEnum::CONTROL_SUBSCRIPTION_ON_ARTIST),

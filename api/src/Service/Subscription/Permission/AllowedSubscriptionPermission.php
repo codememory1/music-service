@@ -14,15 +14,9 @@ final class AllowedSubscriptionPermission
     ) {
     }
 
-    public function isFullAllowedPermission(User $user, SubscriptionPermissionEnum $subscriptionPermission): bool
-    {
-        return !$this->subscriptionPermissionBranchHandler->allowedPermission($subscriptionPermission)
-            || $user->isSubscriptionPermission($subscriptionPermission);
-    }
-
     public function isMaxPlaylists(User $user): bool
     {
-        if (!$this->subscriptionPermissionBranchHandler->allowedPermission(SubscriptionPermissionEnum::MAX_PLAYLISTS_IN_MEDIA_LIBRARY)) {
+        if (!$this->subscriptionPermissionBranchHandler->allowedPermission($user, SubscriptionPermissionEnum::MAX_PLAYLISTS_IN_MEDIA_LIBRARY)) {
             return false;
         }
 
@@ -41,7 +35,7 @@ final class AllowedSubscriptionPermission
     {
         $playlistOwner = $playlist->getMediaLibrary()->getUser();
 
-        if (!$this->subscriptionPermissionBranchHandler->allowedPermission(SubscriptionPermissionEnum::MAX_DIRECTORIES_IN_PLAYLIST)) {
+        if (!$this->subscriptionPermissionBranchHandler->allowedPermission($playlistOwner, SubscriptionPermissionEnum::MAX_DIRECTORIES_IN_PLAYLIST)) {
             return false;
         }
 

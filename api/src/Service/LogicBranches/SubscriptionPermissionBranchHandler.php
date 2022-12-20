@@ -3,8 +3,8 @@
 namespace App\Service\LogicBranches;
 
 use App\Entity\SubscriptionPermissionBranch;
+use App\Entity\User;
 use App\Enum\LogicBranchEnum;
-use App\Enum\LogicBranchStatusEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Repository\LogicBranchRepository;
 use App\Repository\SubscriptionPermissionBranchRepository;
@@ -17,12 +17,15 @@ final class SubscriptionPermissionBranchHandler
     ) {
     }
 
-    public function allowedPermission(SubscriptionPermissionEnum $permission): bool
+    public function allowedPermission(User $user, SubscriptionPermissionEnum $permission): bool
     {
         $logicBranch = $this->logicBranchRepository->findByName(LogicBranchEnum::SUBSCRIPTION_PERMISSION);
-        $ignoredPermissions = $this->subscriptionPermissionBranchRepository->findByKey(SubscriptionPermissionBranch::IGNORED_PERMISSIONS_KEY);
+        $permissionForCheckIfDisabled = $this->subscriptionPermissionBranchRepository->findByKey(SubscriptionPermissionBranch::CHECK_PERMISSIONS_IF_DISABLED);
+        $existInCheckIsDisabled = $permissionForCheckIfDisabled->existInCheckIfDisabled($permission);
+        $userHasPermission = $user->isSubscriptionPermission($permission);
 
-        return $logicBranch->getStatus() === LogicBranchStatusEnum::ENABLED->name
-            && false === in_array($permission->name, $ignoredPermissions->getValue(), true);
+        return ($logicBranch->isDisabled() && !$existInCheckIsDisabled)
+            || ($logicBranch->isEnabled() && $userHasPermission)
+            || ($logicBranch->isDisabled() && $existInCheckIsDisabled && $userHasPermission);
     }
 }

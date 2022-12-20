@@ -6,13 +6,13 @@ use App\Annotation\Interfaces\MethodAnnotationHandlerInterface;
 use App\Annotation\Interfaces\MethodAnnotationInterface;
 use App\Exception\Http\AccessDeniedException;
 use App\Security\AuthorizedUser;
-use App\Service\Subscription\Permission\AllowedSubscriptionPermission;
+use App\Service\LogicBranches\SubscriptionPermissionBranchHandler;
 
 final class SubscriptionPermissionHandler implements MethodAnnotationHandlerInterface
 {
     public function __construct(
         private readonly AuthorizedUser $authorizedUser,
-        private readonly AllowedSubscriptionPermission $allowedSubscriptionPermission
+        private readonly SubscriptionPermissionBranchHandler $subscriptionPermissionBranchHandler
     ) {
     }
 
@@ -23,7 +23,7 @@ final class SubscriptionPermissionHandler implements MethodAnnotationHandlerInte
     {
         $user = $this->authorizedUser->getUser();
 
-        if (null === $user->getSubscription() || !$this->allowedSubscriptionPermission->isFullAllowedPermission($user, $annotation->subscriptionPermission)) {
+        if (!$this->subscriptionPermissionBranchHandler->allowedPermission($user, $annotation->subscriptionPermission)) {
             throw AccessDeniedException::notEnoughSubscriptionPermissions();
         }
     }
