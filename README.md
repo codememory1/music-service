@@ -3,9 +3,11 @@
 </p>
 
 ## YouTrack agile
-> https://codememory.youtrack.cloud/_
-> Login: read@sumron-music.com_
-> Password: sumron_
+> https://codememory.youtrack.cloud/
+
+> Login: read@sumron-music.com
+
+> Password: sumron
 
 ## Ветки
 
