@@ -43,7 +43,7 @@ class MultimediaController extends AbstractRestController
         MultimediaResponseData $responseData,
         MultimediaRepository $multimediaRepository
     ): JsonResponse {
-        $responseData->setEntities($multimediaRepository->findAnother($user));
+        $responseData->setEntities($user->getSetting()->isHideMyMultimedia() ? $multimediaRepository->findAnother($user) : []);
 
         return $this->responseData($responseData);
     }
