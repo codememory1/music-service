@@ -5,7 +5,7 @@
 ## YouTrack agile
 > https://codememory.youtrack.cloud/
 
-> Login: read@sumron-music.com
+> Login: git@sumron-music.com
 
 > Password: sumron
 
