@@ -3,8 +3,8 @@
 namespace App\EventListener\KernelException;
 
 use App\Exception\Interfaces\HttpExceptionInterface;
-use App\Rest\Response\HttpResponse;
-use App\Rest\Response\Scheme\HttpErrorScheme;
+use App\Rest\Response\Http\HttpResponseCreator;
+use App\Rest\Response\Interfaces\FailedHttpResponseCollectorInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
@@ -12,7 +12,8 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 final class ApiExceptionListener
 {
     public function __construct(
-        private readonly HttpResponse $httpResponse
+        private readonly HttpResponseCreator $httpResponseCreator,
+        private readonly FailedHttpResponseCollectorInterface $failedHttpResponseCollector
     ) {
     }
 
@@ -27,13 +28,12 @@ final class ApiExceptionListener
 
     private function httpException(HttpExceptionInterface $exception): void
     {
-        $httpScheme = new HttpErrorScheme(
-            $exception->getHttpCode(),
-            $exception->getPlatformCode(),
-            $exception->getMessage(),
-            $exception->getParameters()
-        );
+        $this->failedHttpResponseCollector->setPlatformCode($exception->getPlatformCode());
+        $this->failedHttpResponseCollector->setHttpCode($exception->getHttpCode());
+        $this->failedHttpResponseCollector->setMessage($exception->getMessage());
+        $this->failedHttpResponseCollector->setMessageParameters($exception->getParameters());
+        $this->failedHttpResponseCollector->setHeaders($exception->getHeaders());
 
-        $this->httpResponse->getResponse($httpScheme, $exception->getHeaders())->send();
+        $this->httpResponseCreator->response($this->failedHttpResponseCollector)->send();
     }
 }

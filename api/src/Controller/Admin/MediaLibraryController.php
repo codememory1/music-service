@@ -14,9 +14,9 @@ use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\ResponseData\General\MediaLibrary\MediaLibraryResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\MediaLibrary\CreateMediaLibrary;
 use App\UseCase\MediaLibrary\UpdateMediaLibrary;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,7 +29,7 @@ class MediaLibraryController extends AbstractRestController
     public function allMultimedia(
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         MediaLibraryMultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (null === $user->getMediaLibrary()) {
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
@@ -44,7 +44,7 @@ class MediaLibraryController extends AbstractRestController
         MediaLibraryTransformer $transformer,
         CreateMediaLibrary $createMediaLibrary,
         MediaLibraryResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $createMediaLibrary->process($transformer->transformFromRequest(), $user),
@@ -59,7 +59,7 @@ class MediaLibraryController extends AbstractRestController
         MediaLibraryTransformer $transformer,
         UpdateMediaLibrary $updateMediaLibrary,
         MediaLibraryMultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateMediaLibrary->process($transformer->transformFromRequest($mediaLibrary)),

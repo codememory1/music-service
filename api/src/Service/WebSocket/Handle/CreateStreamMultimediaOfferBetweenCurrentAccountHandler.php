@@ -67,7 +67,7 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
     private function throwIfFakeSession(?UserSession $userSession): void
     {
         if (null === $userSession
-            || false === $userSession->isActive()
+            || !$userSession->isActive()
             || $userSession->isCompare($this->getAuthorizedUser()->getUserSession())) {
             throw EntityNotFoundException::userSession();
         }
@@ -76,8 +76,8 @@ final class CreateStreamMultimediaOfferBetweenCurrentAccountHandler extends Abst
     private function createStreamAcceptRequestResponse(RunningMultimedia $runningMultimedia, UserSession $from, UserSession $to): void
     {
         $streamRunningMultimedia = $this->streamRunningMultimediaComponent->createStreamRunningMultimedia($runningMultimedia, $from, $to);
-        $response = $this->responseCollection->multimediaStreamAcceptRequest($streamRunningMultimedia);
+        $responseCollector = $this->responseCollectors->multimediaStreamAcceptRequest($streamRunningMultimedia);
 
-        $this->worker->sendToSession($to, $response);
+        $this->worker->sendToSession($to, $responseCollector);
     }
 }

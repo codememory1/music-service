@@ -16,11 +16,11 @@ use App\ResponseData\General\Multimedia\MultimediaResponseData;
 use App\ResponseData\General\Multimedia\RunningMultimediaResponseData;
 use App\ResponseData\Public\Multimedia\MultimediaStatisticsResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Multimedia\Action\ToggleMultimediaPlayback;
 use App\UseCase\Multimedia\AddMultimedia;
 use App\UseCase\Multimedia\DeleteMultimedia;
 use App\UseCase\Multimedia\UpdateMultimedia;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +30,7 @@ class MultimediaController extends AbstractRestController
 {
     #[Route('/multimedia/all', methods: Request::METHOD_GET)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_MULTIMEDIA)]
-    public function myAll(MultimediaResponseData $responseData, MultimediaRepository $multimediaRepository): JsonResponse
+    public function myAll(MultimediaResponseData $responseData, MultimediaRepository $multimediaRepository): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $multimediaRepository->findAllByUser($this->getAuthorizedUser()));
     }
@@ -40,7 +40,7 @@ class MultimediaController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         MultimediaResponseData $responseData,
         MultimediaRepository $multimediaRepository
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $user->getSetting()->isHideMyMultimedia() ? $multimediaRepository->findAnother($user) : []
@@ -53,7 +53,7 @@ class MultimediaController extends AbstractRestController
         MultimediaTransformer $transformer,
         AddMultimedia $addMultimedia,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $addMultimedia->process($transformer->transformFromRequest(), $this->getAuthorizedUser()),
@@ -68,7 +68,7 @@ class MultimediaController extends AbstractRestController
         MultimediaTransformer $transformer,
         UpdateMultimedia $updateMultimedia,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateMultimedia->process($transformer->transformFromRequest($multimedia)),
@@ -82,7 +82,7 @@ class MultimediaController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         DeleteMultimedia $deleteMultimedia,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
             throw EntityNotFoundException::multimedia();
         }
@@ -95,7 +95,7 @@ class MultimediaController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         ToggleMultimediaPlayback $toggleMultimediaPlayback,
         RunningMultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $toggleMultimediaPlayback->process($multimedia, $this->authorizedUser->getUserSession()),
@@ -107,7 +107,7 @@ class MultimediaController extends AbstractRestController
     public function statistics(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         MultimediaStatisticsResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
             throw EntityNotFoundException::multimedia();
         }

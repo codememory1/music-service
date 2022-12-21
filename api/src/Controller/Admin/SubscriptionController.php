@@ -13,10 +13,10 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\SubscriptionRepository;
 use App\ResponseData\General\Subscription\SubscriptionResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Subscription\CreateSubscription;
 use App\UseCase\Subscription\DeleteSubscription;
 use App\UseCase\Subscription\UpdateSubscription;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,7 +26,7 @@ class SubscriptionController extends AbstractRestController
 {
     #[Route('/all', methods: Request::METHOD_GET)]
     #[UserRolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
-    public function all(SubscriptionResponseData $responseData, SubscriptionRepository $subscriptionRepository): JsonResponse
+    public function all(SubscriptionResponseData $responseData, SubscriptionRepository $subscriptionRepository): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $subscriptionRepository->findAll());
     }
@@ -36,13 +36,13 @@ class SubscriptionController extends AbstractRestController
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,
         SubscriptionResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $subscription);
     }
 
     #[Route('/create', methods: Request::METHOD_POST)]
     #[UserRolePermission(RolePermissionEnum::CREATE_SUBSCRIPTION)]
-    public function create(SubscriptionTransformer $transformer, CreateSubscription $createSubscription, SubscriptionResponseData $responseData): JsonResponse
+    public function create(SubscriptionTransformer $transformer, CreateSubscription $createSubscription, SubscriptionResponseData $responseData): HttpResponseCollectorInterface
     {
         return $this->responseData(
             $responseData,
@@ -58,7 +58,7 @@ class SubscriptionController extends AbstractRestController
         SubscriptionTransformer $transformer,
         UpdateSubscription $updateSubscription,
         SubscriptionResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateSubscription->process($transformer->transformFromRequest($subscription)),
@@ -72,7 +72,7 @@ class SubscriptionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'subscription')] Subscription $subscription,
         DeleteSubscription $deleteSubscription,
         SubscriptionResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $deleteSubscription->process($subscription), PlatformCodeEnum::DELETED);
     }
 }

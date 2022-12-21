@@ -2,7 +2,7 @@
 
 namespace App\Service\DataRepresentation;
 
-class FilterService extends AbstractDataRepresentation
+final class FilterService extends AbstractDataRepresentation
 {
     protected ?string $keyName = 'filter';
     protected ?string $schemaName = 'filter';

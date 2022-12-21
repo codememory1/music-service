@@ -16,12 +16,12 @@ use App\Exception\Http\LimitException;
 use App\Repository\PlaylistRepository;
 use App\ResponseData\General\Playlist\PlaylistResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\Service\Subscription\Permission\AllowedSubscriptionPermission;
 use App\UseCase\Playlist\CreatePlaylist;
 use App\UseCase\Playlist\DeletePlaylist;
 use App\UseCase\Playlist\Multimedia\MoveMultimediaPlaylistToDirectory;
 use App\UseCase\Playlist\UpdatePlaylist;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,7 +31,7 @@ class PlaylistController extends AbstractRestController
 {
     #[Route('/playlist/all', methods: Request::METHOD_GET)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_PLAYLISTS)]
-    public function all(PlaylistResponseData $responseData, PlaylistRepository $playlistRepository): JsonResponse
+    public function all(PlaylistResponseData $responseData, PlaylistRepository $playlistRepository): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $playlistRepository->findByUser($this->getAuthorizedUser()));
     }
@@ -41,7 +41,7 @@ class PlaylistController extends AbstractRestController
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         PlaylistResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
         return $this->responseData($responseData, $playlist);
@@ -54,7 +54,7 @@ class PlaylistController extends AbstractRestController
         CreatePlaylist $createPlaylist,
         AllowedSubscriptionPermission $allowedSubscriptionPermission,
         PlaylistResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if ($allowedSubscriptionPermission->isMaxPlaylists($this->getAuthorizedUser())) {
             throw LimitException::playlistLimitExceeded();
         }
@@ -73,7 +73,7 @@ class PlaylistController extends AbstractRestController
         PlaylistTransformer $transformer,
         UpdatePlaylist $updatePlaylist,
         PlaylistResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
         return $this->responseData(
@@ -89,7 +89,7 @@ class PlaylistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         DeletePlaylist $deletePlaylist,
         PlaylistResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfPlaylistNotBelongsAuthorizedUser($playlist);
 
         return $this->responseData($responseData, $deletePlaylist->process($playlist), PlatformCodeEnum::DELETED);
@@ -102,7 +102,7 @@ class PlaylistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
         MoveMultimediaPlaylistToDirectory $moveMultimediaPlaylistToDirectory,
         PlaylistResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$this->getAuthorizedUser()->isMultimediaPlaylistBelongs($multimediaPlaylist)) {
             throw EntityNotFoundException::multimedia();
         }

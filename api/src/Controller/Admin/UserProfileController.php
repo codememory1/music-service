@@ -12,8 +12,8 @@ use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\User\Profile\UserProfileResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\UserProfile\Design\UpdateUserProfileDesign;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,7 +28,7 @@ class UserProfileController extends AbstractRestController
         UserProfileDesignTransformer $transformer,
         UpdateUserProfileDesign $updateUserProfileDesign,
         UserProfileResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateUserProfileDesign->process($transformer->transformFromRequest($userProfile->getDesign())),

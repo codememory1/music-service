@@ -6,8 +6,8 @@ use App\Entity\User;
 use App\Entity\UserSession;
 use App\Enum\WebSocketUserMessageTypeHandlerEnum;
 use App\Exception\Interfaces\WebSocketExceptionInterface;
-use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
-use App\Rest\Response\Scheme\WebSocketErrorScheme;
+use App\Rest\Response\Interfaces\FailedWebSocketResponseCollectorInterface;
+use App\Rest\Response\Interfaces\WebSocketResponseCollectorInterface;
 use App\Service\SchemaValidator;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
 use App\Service\WebSocket\MessageQueueToClient;
@@ -38,7 +38,8 @@ class WebSocketServerCommand extends Command
         private readonly SchemaValidator $schemaValidatorService,
         private readonly Worker $worker,
         private readonly MessageQueueToClient $messageQueueToClient,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly FailedWebSocketResponseCollectorInterface $failedWebSocketResponseCollector
     ) {
         parent::__construct();
     }
@@ -71,10 +72,10 @@ class WebSocketServerCommand extends Command
         });
 
         $this->worker->getServer()->addProcess(new Process(static function() use ($worker, $messageQueueToClient): void {
-            $messageQueueToClient->pickMessage(static function(User|UserSession $to, WebSocketSchemeInterface $scheme) use ($worker): void {
+            $messageQueueToClient->pickMessage(static function(User|UserSession $to, WebSocketResponseCollectorInterface $responseCollector) use ($worker): void {
                 match ($to::class) {
-                    User::class => $worker->sendToUser($to, $scheme),
-                    UserSession::class => $worker->sendToSession($to, $scheme)
+                    User::class => $worker->sendToUser($to, $responseCollector),
+                    UserSession::class => $worker->sendToSession($to, $responseCollector)
                 };
             });
         }));
@@ -115,25 +116,21 @@ class WebSocketServerCommand extends Command
 
             try {
                 $handler->handler();
+            } catch (WebSocketExceptionInterface $exception) {
+                $this->throwHandler($handler, $exception, $connectionId);
             } catch (Exception $exception) {
-                if ($exception instanceof WebSocketExceptionInterface) {
-                    $this->throwHandler($handler, $exception, $connectionId);
-                } else {
-                    $this->logger->critical($exception->getMessage());
-                }
+                $this->logger->critical($exception->getMessage());
             }
         }
     }
 
     private function throwHandler(UserMessageHandlerInterface $handler, WebSocketExceptionInterface $exception, int $connectionId): void
     {
-        $scheme = new WebSocketErrorScheme(
-            $exception->getPlatformCode(),
-            $handler->getClientMessageType(),
-            $exception->getMessage(),
-            $exception->getParameters()
-        );
+        $this->failedWebSocketResponseCollector->setPlatformCode($exception->getPlatformCode());
+        $this->failedWebSocketResponseCollector->setClientType($handler->getClientMessageType());
+        $this->failedWebSocketResponseCollector->setMessage($exception->getMessage());
+        $this->failedWebSocketResponseCollector->setMessageParameters($exception->getParameters());
 
-        $this->worker->sendToConnection($connectionId, $scheme);
+        $this->worker->sendToConnection($connectionId, $this->failedWebSocketResponseCollector);
     }
 }

@@ -13,10 +13,10 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\RoleRepository;
 use App\ResponseData\General\UserRole\UserRoleResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\User\Role\CreateUserRole;
 use App\UseCase\User\Role\DeleteUserRole;
 use App\UseCase\User\Role\UpdateUserRole;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,7 +26,7 @@ class UserRoleController extends AbstractRestController
 {
     #[Route('/all', methods: Request::METHOD_GET)]
     #[UserRolePermission(RolePermissionEnum::SHOW_ROLES)]
-    public function all(UserRoleResponseData $responseData, RoleRepository $roleRepository): JsonResponse
+    public function all(UserRoleResponseData $responseData, RoleRepository $roleRepository): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $roleRepository->findAll());
     }
@@ -36,13 +36,13 @@ class UserRoleController extends AbstractRestController
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'role')] Role $role,
         UserRoleResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $role);
     }
 
     #[Route('/create', methods: Request::METHOD_POST)]
     #[UserRolePermission(RolePermissionEnum::CREATE_USER_ROLE)]
-    public function create(UserRoleTransformer $transformer, CreateUserRole $createUserRole, UserRoleResponseData $responseData): JsonResponse
+    public function create(UserRoleTransformer $transformer, CreateUserRole $createUserRole, UserRoleResponseData $responseData): HttpResponseCollectorInterface
     {
         return $this->responseData(
             $responseData,
@@ -58,7 +58,7 @@ class UserRoleController extends AbstractRestController
         UserRoleTransformer $transformer,
         UpdateUserRole $updateUserRole,
         UserRoleResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateUserRole->process($transformer->transformFromRequest($role)),
@@ -72,7 +72,7 @@ class UserRoleController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'role')] Role $role,
         DeleteUserRole $deleteUserRole,
         UserRoleResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $deleteUserRole->process($role), PlatformCodeEnum::DELETED);
     }
 }

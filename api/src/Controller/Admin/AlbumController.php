@@ -14,11 +14,11 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\AlbumRepository;
 use App\ResponseData\General\Album\AlbumResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Album\CreateAlbum;
 use App\UseCase\Album\DeleteAlbum;
 use App\UseCase\Album\PublishAlbum;
 use App\UseCase\Album\UpdateAlbum;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -32,7 +32,7 @@ class AlbumController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         AlbumResponseData $responseData,
         AlbumRepository $albumRepository
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $albumRepository->findAllByUser($user));
     }
 
@@ -43,7 +43,7 @@ class AlbumController extends AbstractRestController
         AlbumTransformer $transformer,
         CreateAlbum $createAlbum,
         AlbumResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $createAlbum->process($transformer->transformFromRequest(), $user),
@@ -58,7 +58,7 @@ class AlbumController extends AbstractRestController
         AlbumTransformer $transformer,
         UpdateAlbum $updateAlbum,
         AlbumResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateAlbum->process($transformer->transformFromRequest($album), $album->getUser()),
@@ -72,7 +72,7 @@ class AlbumController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         DeleteAlbum $deleteAlbum,
         AlbumResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $deleteAlbum->process($album), PlatformCodeEnum::DELETED);
     }
 
@@ -82,7 +82,7 @@ class AlbumController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         PublishAlbum $publishAlbum,
         AlbumResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $publishAlbum->process($album), PlatformCodeEnum::UPDATED);
     }
 }

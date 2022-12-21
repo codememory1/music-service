@@ -14,10 +14,10 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaExternalServiceRepository;
 use App\ResponseData\General\Multimedia\ExternalService\MultimediaExternalServiceResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Multimedia\ExternalService\CreateMultimediaFromExternalService;
 use App\UseCase\Multimedia\ExternalService\DeleteMultimediaFromExternalService;
 use App\UseCase\Multimedia\ExternalService\UpdateMultimediaFromExternalService;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MultimediaExternalServiceController extends AbstractRestController
 {
     #[Route('/all', methods: Request::METHOD_GET)]
-    public function all(MultimediaExternalServiceResponseData $responseData, MultimediaExternalServiceRepository $multimediaExternalServiceRepository): JsonResponse
+    public function all(MultimediaExternalServiceResponseData $responseData, MultimediaExternalServiceRepository $multimediaExternalServiceRepository): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $multimediaExternalServiceRepository->findAllByUser($this->getAuthorizedUser()));
     }
@@ -37,7 +37,7 @@ class MultimediaExternalServiceController extends AbstractRestController
         MultimediaExternalServiceTransformer $transformer,
         CreateMultimediaFromExternalService $createMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $createMultimediaFromExternalService->process($transformer->transformFromRequest(), $this->getAuthorizedUser()),
@@ -52,7 +52,7 @@ class MultimediaExternalServiceController extends AbstractRestController
         UpdateMultimediaExternalServiceTransformer $transformer,
         UpdateMultimediaFromExternalService $updateMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (false === $multimediaExternalService->getUser()->isCompare($this->getAuthorizedUser())) {
             throw EntityNotFoundException::multimediaFromExternalService();
         }
@@ -70,7 +70,7 @@ class MultimediaExternalServiceController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaFromExternalService')] MultimediaExternalService $multimediaExternalService,
         DeleteMultimediaFromExternalService $deleteMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (false === $multimediaExternalService->getUser()->isCompare($this->getAuthorizedUser())) {
             throw EntityNotFoundException::multimediaFromExternalService();
         }

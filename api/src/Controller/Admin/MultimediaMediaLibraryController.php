@@ -12,9 +12,9 @@ use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\MediaLibrary\Multimedia\DeleteMultimediaMediaLibrary;
 use App\UseCase\MediaLibrary\Multimedia\UpdateMultimediaMediaLibrary;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,7 +29,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
         MultimediaMediaLibraryTransformer $transformer,
         UpdateMultimediaMediaLibrary $updateMultimediaMediaLibrary,
         MediaLibraryMultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateMultimediaMediaLibrary->process($transformer->transformFromRequest($multimediaMediaLibrary)),
@@ -43,7 +43,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         DeleteMultimediaMediaLibrary $deleteMultimediaMediaLibrary,
         MediaLibraryMultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $deleteMultimediaMediaLibrary->process($multimediaMediaLibrary),

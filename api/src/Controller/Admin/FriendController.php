@@ -13,8 +13,8 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\FriendRepository;
 use App\ResponseData\General\Friendship\FriendResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Friendship\DeleteFriendship;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,7 +27,7 @@ class FriendController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         FriendResponseData $responseData,
         FriendRepository $friendRepository
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $friendRepository->findByUser($user));
     }
 
@@ -37,7 +37,7 @@ class FriendController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'friend')] Friend $friend,
         DeleteFriendship $deleteFriendship,
         FriendResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $deleteFriendship->process($friend), PlatformCodeEnum::UPDATED);
     }
 }

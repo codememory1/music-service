@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Entity\UserSession;
 use App\Repository\UserRepository;
 use App\Repository\UserSessionRepository;
-use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
+use App\Rest\Response\Interfaces\WebSocketResponseCollectorInterface;
 use function call_user_func;
 use LogicException;
 use Predis\Client;
@@ -22,7 +22,7 @@ final class MessageQueueToClient
     ) {
     }
 
-    public function sendMessage(WebSocketSchemeInterface $scheme, ?User $to = null, ?UserSession $toUserSession = null): self
+    public function sendMessage(WebSocketResponseCollectorInterface $responseCollector, ?User $to = null, ?UserSession $toUserSession = null): self
     {
         if ((null !== $to && null !== $toUserSession) || (null === $to && null === $toUserSession)) {
             throw new LogicException('Specify one of the $toUser or $toUserSession parameters');
@@ -31,7 +31,7 @@ final class MessageQueueToClient
         $this->redisClient->set($this->getNextKey(), json_encode([
             'to_user' => $to?->getId(),
             'to_user_session' => $toUserSession?->getId(),
-            'scheme' => serialize($scheme->use())
+            'scheme' => serialize($responseCollector)
         ]));
 
         return $this;

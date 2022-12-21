@@ -13,9 +13,9 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\UserSessionRepository;
 use App\ResponseData\Admin\User\Session\UserSessionResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\User\Session\DeleteAllUserSession;
 use App\UseCase\User\Session\DeleteUserSession;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,7 +29,7 @@ class UseSessionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         UserSessionResponseData $responseData,
         UserSessionRepository $userSessionRepository
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $userSessionRepository->allByUser($user));
     }
 
@@ -39,7 +39,7 @@ class UseSessionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
         DeleteUserSession $deleteUserSession,
         UserSessionResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $deleteUserSession->process($userSession), PlatformCodeEnum::DELETED);
     }
 
@@ -49,7 +49,7 @@ class UseSessionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         DeleteAllUserSession $deleteAllUserSession,
         UserSessionResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $deleteAllUserSession->process($user), PlatformCodeEnum::DELETED);
     }
 }
