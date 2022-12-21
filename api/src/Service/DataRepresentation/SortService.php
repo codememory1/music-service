@@ -2,7 +2,7 @@
 
 namespace App\Service\DataRepresentation;
 
-class SortService extends AbstractDataRepresentation
+final class SortService extends AbstractDataRepresentation
 {
     protected ?string $keyName = 'sort';
     protected ?string $schemaName = 'sort';

@@ -12,8 +12,8 @@ use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\ResponseData\General\MediaLibrary\MediaLibraryResponseData;
 use App\ResponseData\General\MediaLibrary\MediaLibraryStatisticResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\MediaLibrary\ShareMediaLibraryWithFriend;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MediaLibraryController extends AbstractRestController
 {
     #[Route('/multimedia/all', methods: Request::METHOD_GET)]
-    public function allMultimedia(MediaLibraryMultimediaResponseData $responseData): JsonResponse
+    public function allMultimedia(MediaLibraryMultimediaResponseData $responseData): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $this->getAuthorizedUser()->getMediaLibrary()?->getMultimedia() ?: []);
     }
@@ -33,7 +33,7 @@ class MediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
         ShareMediaLibraryWithFriend $shareMediaLibraryWithFriend,
         MediaLibraryResponseData $responseData,
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (null === $this->getAuthorizedUser()->getMediaLibrary()) {
             throw EntityNotFoundException::mediaLibraryNotCreated();
         }
@@ -46,7 +46,7 @@ class MediaLibraryController extends AbstractRestController
     }
 
     #[Route('/statistic', methods: Request::METHOD_GET)]
-    public function statistic(MediaLibraryStatisticResponseData $responseData): JsonResponse
+    public function statistic(MediaLibraryStatisticResponseData $responseData): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $this->getAuthorizedUser()->getMediaLibrary()?->getStatistic() ?: []);
     }

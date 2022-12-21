@@ -18,10 +18,10 @@ use App\Repository\SubscriptionPermissionBranchRepository;
 use App\ResponseData\Admin\Branch\BranchResponseData;
 use App\ResponseData\Admin\Branch\LogicBranchResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Branch\UpdateLogicBranch;
 use App\UseCase\Branch\UpdateMonetizationBranch;
 use App\UseCase\Branch\UpdateSubscriptionPermissionBranch;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,7 +31,7 @@ class BranchController extends AbstractRestController
 {
     #[Route('/all', methods: Request::METHOD_GET)]
     #[UserRolePermission(RolePermissionEnum::SHOW_ALL_BRANCHES)]
-    public function allBranches(LogicBranchRepository $logicBranchRepository, LogicBranchResponseData $responseData): JsonResponse
+    public function allBranches(LogicBranchRepository $logicBranchRepository, LogicBranchResponseData $responseData): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $logicBranchRepository->findAll());
     }
@@ -43,7 +43,7 @@ class BranchController extends AbstractRestController
         UpdateLogicBranch $updateLogicBranch,
         LogicBranchTransformer $transformer,
         LogicBranchResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateLogicBranch->process($transformer->transformFromRequest($logicBranch)),
@@ -56,7 +56,7 @@ class BranchController extends AbstractRestController
     public function allSubscriptionPermissionBranchData(
         SubscriptionPermissionBranchRepository $subscriptionPermissionBranchRepository,
         BranchResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $subscriptionPermissionBranchRepository->findAll());
     }
 
@@ -67,7 +67,7 @@ class BranchController extends AbstractRestController
         UpdateSubscriptionPermissionBranch $updateSubscriptionPermissionBranch,
         SubscriptionPermissionBranchRepository $subscriptionPermissionBranchRepository,
         BranchResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $updateSubscriptionPermissionBranch->process($transformer->transformFromRequest());
 
         return $this->responseData($responseData, $subscriptionPermissionBranchRepository->findAll(), PlatformCodeEnum::UPDATED);
@@ -78,7 +78,7 @@ class BranchController extends AbstractRestController
     public function allMonetizationBranchData(
         MonetizationBranchRepository $monetizationBranchRepository,
         BranchResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $monetizationBranchRepository->findAll());
     }
 
@@ -89,7 +89,7 @@ class BranchController extends AbstractRestController
         UpdateMonetizationBranch $updateMonetizationBranch,
         MonetizationBranchRepository $monetizationBranchRepository,
         BranchResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $updateMonetizationBranch->process($transformer->transformFromRequest());
 
         return $this->responseData($responseData, $monetizationBranchRepository->findAll(), PlatformCodeEnum::UPDATED);

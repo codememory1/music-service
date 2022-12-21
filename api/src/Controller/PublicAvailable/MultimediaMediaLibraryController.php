@@ -13,10 +13,10 @@ use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\MediaLibrary\MediaLibraryMultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\MediaLibrary\Multimedia\DeleteMultimediaMediaLibrary;
 use App\UseCase\MediaLibrary\Multimedia\ShareMultimediaMediaLibraryWithFriend;
 use App\UseCase\MediaLibrary\Multimedia\UpdateMultimediaMediaLibrary;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,7 +31,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
         MultimediaMediaLibraryTransformer $transformer,
         UpdateMultimediaMediaLibrary $updateMultimediaMediaLibrary,
         MediaLibraryMultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
         return $this->responseData(
@@ -47,7 +47,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] MultimediaMediaLibrary $multimediaMediaLibrary,
         DeleteMultimediaMediaLibrary $deleteMultimediaMediaLibrary,
         MediaLibraryMultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
         return $this->responseData(
@@ -64,7 +64,7 @@ class MultimediaMediaLibraryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $friend,
         ShareMultimediaMediaLibraryWithFriend $shareMultimediaMediaLibraryWithFriend,
         MediaLibraryMultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfMultimediaMediaLibraryNotBelongsAuthorizedUser($multimediaMediaLibrary);
 
         if (!$friend->isFriend($this->getAuthorizedUser())) {

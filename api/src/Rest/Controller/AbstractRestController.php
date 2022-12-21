@@ -6,20 +6,19 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\User;
 use App\Enum\PlatformCodeEnum;
 use App\Infrastructure\ResponseData\Interfaces\ResponseDataInterface;
-use App\Rest\Response\HttpResponse;
-use App\Rest\Response\Scheme\HttpSuccessScheme;
+use App\Rest\Response\Interfaces\SuccessHttpResponseCollectorInterface;
 use App\Security\AuthorizedUser;
 use App\Security\Http\BearerToken;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractRestController extends AbstractController
 {
     public function __construct(
         protected readonly AuthorizedUser $authorizedUser,
         protected readonly BearerToken $bearerToken,
-        protected readonly HttpResponse $httpResponse
+        protected readonly SuccessHttpResponseCollectorInterface $successHttpResponseCollector
     ) {
     }
 
@@ -28,11 +27,14 @@ abstract class AbstractRestController extends AbstractController
         return $this->authorizedUser->fromBearer()->getUser();
     }
 
-    final protected function response(array $data, PlatformCodeEnum $platformCode = PlatformCodeEnum::OUTPUT, array $headers = []): JsonResponse
+    final protected function response(array $data, PlatformCodeEnum $platformCode = PlatformCodeEnum::OUTPUT, array $headers = []): SuccessHttpResponseCollectorInterface
     {
-        $scheme = new HttpSuccessScheme(200, $platformCode, $data);
+        $this->successHttpResponseCollector->setHeaders($headers);
+        $this->successHttpResponseCollector->setPlatformCode($platformCode);
+        $this->successHttpResponseCollector->setHttpCode(Response::HTTP_OK);
+        $this->successHttpResponseCollector->setData($data);
 
-        return $this->httpResponse->getResponse($scheme, $headers);
+        return $this->successHttpResponseCollector;
     }
 
     final protected function responseData(
@@ -40,9 +42,12 @@ abstract class AbstractRestController extends AbstractController
         array|Collection|EntityInterface $data,
         PlatformCodeEnum $platformCode = PlatformCodeEnum::OUTPUT,
         array $headers = []
-    ): JsonResponse {
-        $scheme = new HttpSuccessScheme(200, $platformCode, $responseData->setEntities($data)->getResponse());
+    ): SuccessHttpResponseCollectorInterface {
+        $this->successHttpResponseCollector->setHeaders($headers);
+        $this->successHttpResponseCollector->setPlatformCode($platformCode);
+        $this->successHttpResponseCollector->setHttpCode(Response::HTTP_OK);
+        $this->successHttpResponseCollector->setData($responseData->setEntities($data)->getResponse());
 
-        return $this->httpResponse->getResponse($scheme, $headers);
+        return $this->successHttpResponseCollector;
     }
 }

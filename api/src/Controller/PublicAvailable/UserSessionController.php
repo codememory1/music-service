@@ -10,9 +10,9 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\UserSessionRepository;
 use App\ResponseData\Public\User\Session\UserSessionResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\User\Session\DeleteAllUserSession;
 use App\UseCase\User\Session\DeleteUserSession;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserSessionController extends AbstractRestController
 {
     #[Route('/all', methods: Request::METHOD_GET)]
-    public function all(UserSessionResponseData $responseData, UserSessionRepository $userSessionRepository): JsonResponse
+    public function all(UserSessionResponseData $responseData, UserSessionRepository $userSessionRepository): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $userSessionRepository->authorizedUserSessions());
     }
@@ -31,7 +31,7 @@ class UserSessionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'userSession')] UserSession $userSession,
         DeleteUserSession $deleteUserSession,
         UserSessionResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$this->getAuthorizedUser()->isCompare($userSession->getUser())) {
             throw EntityNotFoundException::userSession();
         }
@@ -40,7 +40,7 @@ class UserSessionController extends AbstractRestController
     }
 
     #[Route('/all/delete', methods: Request::METHOD_DELETE)]
-    public function deleteAll(DeleteAllUserSession $deleteAllUserSession, UserSessionResponseData $responseData): JsonResponse
+    public function deleteAll(DeleteAllUserSession $deleteAllUserSession, UserSessionResponseData $responseData): HttpResponseCollectorInterface
     {
         return $this->responseData(
             $responseData,

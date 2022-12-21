@@ -19,25 +19,19 @@ final class SchemaValidator
 
     public function validate(string $schemaName, array|string $data): bool
     {
-        $validator = new JsonSchemaValidator();
-
-        if (false === $this->isJson($data)) {
+        if (!$this->jsonIsValidated($data) || false === $schema = $this->getSchema($schemaName)) {
             return false;
         }
 
-        $settings = Json::fromString(is_array($data) ? json_encode($data) : $data);
-        $schema = $this->getSchema($schemaName);
+        $jsonSchemaValidator = new JsonSchemaValidator();
+        $dataInJson = Json::fromString(is_array($data) ? json_encode($data) : $data);
 
-        return false !== $schema && $validator->validate($settings, $schema, JsonPointer::document())->isValid();
+        return $jsonSchemaValidator->validate($dataInJson, $schema, JsonPointer::document())->isValid();
     }
 
     private function getSchema(string $name): Json|bool
     {
-        $path = sprintf(
-            '%s/config/scheme/%s.json',
-            $this->parameterBag->get('kernel.project_dir'),
-            $name
-        );
+        $path = "{$this->parameterBag->get('kernel.project_dir')}/config/scheme/{$name}.json";
 
         if (file_exists($path)) {
             return Json::fromString(file_get_contents($path));
@@ -46,7 +40,7 @@ final class SchemaValidator
         return false;
     }
 
-    private function isJson(mixed $data): bool
+    private function jsonIsValidated(mixed $data): bool
     {
         if (is_string($data)) {
             json_decode($data);
@@ -54,6 +48,6 @@ final class SchemaValidator
             return JSON_ERROR_NONE === json_last_error();
         }
 
-        return false;
+        return true;
     }
 }

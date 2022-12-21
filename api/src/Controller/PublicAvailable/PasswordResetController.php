@@ -9,9 +9,9 @@ use App\Enum\PlatformCodeEnum;
 use App\ResponseData\General\PasswordReset\RequestRestorationResponseData;
 use App\ResponseData\General\PasswordReset\RestoreResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\Security\PasswordReset\RequestRestoration;
 use App\Security\PasswordReset\RestorePassword;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,7 +24,7 @@ class PasswordResetController extends AbstractRestController
         RequestRestorationPasswordTransformer $transformer,
         RequestRestoration $requestRestoration,
         RequestRestorationResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $requestRestoration->send($transformer->transformFromRequest()),
@@ -37,7 +37,7 @@ class PasswordResetController extends AbstractRestController
         RestorePasswordTransformer $transformer,
         RestorePassword $restorePassword,
         RestoreResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $restorePassword->restore($transformer->transformFromRequest()),

@@ -6,8 +6,8 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Exception\WebSocket\AuthorizationException;
 use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
 use App\Infrastructure\Validator\Validator;
-use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
-use App\Rest\Response\WebSocketResponseCollection;
+use App\Rest\Response\Interfaces\WebSocketResponseCollectorInterface;
+use App\Rest\Response\WebSocket\CollectionWebSocketResponseCollectors;
 use App\Security\AuthorizedUser;
 use App\Service\Translation;
 use App\Service\WebSocket\Interfaces\UserMessageHandlerInterface;
@@ -26,7 +26,7 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         protected readonly AuthorizedUser $authorizedUser,
         protected readonly Translation $translation,
         protected readonly Validator $validator,
-        protected readonly WebSocketResponseCollection $responseCollection
+        protected readonly CollectionWebSocketResponseCollectors $responseCollectors
     ) {
     }
 
@@ -58,9 +58,9 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         $this->validate($dataTransfer->getEntity());
     }
 
-    protected function sendToClient(WebSocketSchemeInterface $scheme): self
+    protected function sendToClient(WebSocketResponseCollectorInterface $responseCollector): self
     {
-        $this->worker->sendToConnection($this->connectionId, $scheme);
+        $this->worker->sendToConnection($this->connectionId, $responseCollector);
 
         return $this;
     }
@@ -100,7 +100,7 @@ abstract class AbstractUserMessageHandlerService implements UserMessageHandlerIn
         $this->messageHeaders = $headers;
         $this->messageData = $data;
 
-        $this->responseCollection->setLocale($headers['language']);
+        $this->responseCollectors->setLocale($headers['language']);
 
         return $this;
     }

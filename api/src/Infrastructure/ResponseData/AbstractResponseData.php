@@ -36,14 +36,9 @@ abstract class AbstractResponseData implements ResponseDataInterface
     {
         if ($entities instanceof EntityInterface) {
             $this->entities = [$entities];
-
             $this->asFirstResponse = true;
         } else {
-            if ($entities instanceof Collection) {
-                $this->entities = $entities->toArray();
-            } else {
-                $this->entities = $entities;
-            }
+            $this->entities = $entities instanceof Collection ? $entities->toArray() : $entities;
         }
 
         return $this;

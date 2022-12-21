@@ -13,9 +13,9 @@ use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\Multimedia\MultimediaTimeCodeResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Multimedia\TimeCode\AddMultimediaTimeCode;
 use App\UseCase\Multimedia\TimeCode\DeleteMultimediaTimeCode;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +30,7 @@ class MultimediaTimeCodeController extends AbstractRestController
         MultimediaTimeCodeTransformer $transformer,
         AddMultimediaTimeCode $addMultimediaTimeCode,
         MultimediaTimeCodeResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$multimedia->getUser()->isCompare($this->getAuthorizedUser())) {
             throw EntityNotFoundException::multimedia();
         }
@@ -48,7 +48,7 @@ class MultimediaTimeCodeController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaTimeCode')] MultimediaTimeCode $multimediaTimeCode,
         DeleteMultimediaTimeCode $deleteMultimediaTimeCode,
         MultimediaTimeCodeResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$multimediaTimeCode->getMultimedia()->getUser()->isCompare($this->getAuthorizedUser())) {
             throw EntityNotFoundException::multimediaTimeCode();
         }

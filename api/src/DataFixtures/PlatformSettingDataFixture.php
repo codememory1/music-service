@@ -31,6 +31,7 @@ final class PlatformSettingDataFixture extends AbstractDataFixture
             new PlatformSettingFactory(PlatformSettingEnum::ALLOWED_MULTIMEDIA_EXTERNAL_SERVICES, [
                 MultimediaExternalServiceEnum::YOUTUBE->name
             ]),
+            new PlatformSettingFactory(PlatformSettingEnum::PAGINATION_MAX_LIMIT, 30),
         ]);
     }
 

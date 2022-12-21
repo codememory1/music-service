@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "properties": {
+        "page": {
+            "type": ["string", "integer"],
+            "pattern": "^[0-9]+$"
+        },
+        "offset": {
+            "type": ["string", "integer"],
+            "pattern": "^[0-9]+$"
+        },
+        "limit": {
+            "type": ["string", "integer"],
+            "pattern": "^[0-9]+$"
+        }
+    }
+}
