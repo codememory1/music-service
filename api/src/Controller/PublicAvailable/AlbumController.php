@@ -10,14 +10,17 @@ use App\Entity\Album;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
+use App\Infrastructure\Doctrine\Paginator;
 use App\Repository\AlbumRepository;
 use App\ResponseData\General\Album\AlbumResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
+use App\Rest\Response\Interfaces\SuccessHttpResponseCollectorInterface;
+use App\Rest\Response\Meta\ResponseMetaPagination;
 use App\UseCase\Album\CreateAlbum;
 use App\UseCase\Album\DeleteAlbum;
 use App\UseCase\Album\PublishAlbum;
 use App\UseCase\Album\UpdateAlbum;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,14 +30,18 @@ class AlbumController extends AbstractRestController
 {
     #[Route('/all', methods: Request::METHOD_GET)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::SHOW_MY_ALBUMS)]
-    public function all(AlbumResponseData $responseData, AlbumRepository $albumRepository): JsonResponse
+    public function all(AlbumResponseData $responseData, AlbumRepository $albumRepository, Paginator $paginator): SuccessHttpResponseCollectorInterface
     {
-        return $this->responseData($responseData, $albumRepository->findAllByUser($this->getAuthorizedUser()));
+        $paginator->setQuery($albumRepository->getFindQueryAllByUser($this->getAuthorizedUser()));
+
+        return $this
+            ->responseData($responseData, $paginator->getData())
+            ->addMeta(new ResponseMetaPagination($paginator));
     }
 
     #[Route('/create', methods: Request::METHOD_POST)]
     #[SubscriptionPermission(SubscriptionPermissionEnum::CREATE_ALBUM)]
-    public function create(AlbumResponseData $albumResponseData, AlbumTransformer $albumTransformer, CreateAlbum $createAlbum): JsonResponse
+    public function create(AlbumResponseData $albumResponseData, AlbumTransformer $albumTransformer, CreateAlbum $createAlbum): HttpResponseCollectorInterface
     {
         return $this->responseData(
             $albumResponseData,
@@ -50,7 +57,7 @@ class AlbumController extends AbstractRestController
         AlbumResponseData $responseData,
         AlbumTransformer $albumTransformer,
         UpdateAlbum $updateAlbumService
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfAlbumNotBelongsAuthorizedUser($album);
 
         return $this->responseData(
@@ -66,7 +73,7 @@ class AlbumController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         AlbumResponseData $responseData,
         DeleteAlbum $deleteAlbumService
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfAlbumNotBelongsAuthorizedUser($album);
 
         return $this->responseData($responseData, $deleteAlbumService->process($album), PlatformCodeEnum::DELETED);
@@ -78,7 +85,7 @@ class AlbumController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'album')] Album $album,
         AlbumResponseData $responseData,
         PublishAlbum $publishAlbumService
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfAlbumNotBelongsAuthorizedUser($album);
 
         return $this->responseData($responseData, $publishAlbumService->process($album), PlatformCodeEnum::UPDATED);

@@ -16,11 +16,11 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\PlaylistRepository;
 use App\ResponseData\General\Playlist\PlaylistResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Playlist\CreatePlaylist;
 use App\UseCase\Playlist\DeletePlaylist;
 use App\UseCase\Playlist\Multimedia\MoveMultimediaPlaylistToDirectory;
 use App\UseCase\Playlist\UpdatePlaylist;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -34,7 +34,7 @@ class PlaylistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         PlaylistResponseData $responseData,
         PlaylistRepository $playlistRepository
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $playlistRepository->findByUser($user));
     }
 
@@ -43,7 +43,7 @@ class PlaylistController extends AbstractRestController
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         PlaylistResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $playlist);
     }
 
@@ -54,7 +54,7 @@ class PlaylistController extends AbstractRestController
         PlaylistTransformer $transformer,
         CreatePlaylist $createPlaylist,
         PlaylistResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $createPlaylist->process($transformer->transformFromRequest(), $user),
@@ -69,7 +69,7 @@ class PlaylistController extends AbstractRestController
         PlaylistTransformer $transformer,
         UpdatePlaylist $updatePlaylist,
         PlaylistResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updatePlaylist->process($transformer->transformFromRequest($playlist)),
@@ -83,7 +83,7 @@ class PlaylistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlist')] Playlist $playlist,
         DeletePlaylist $deletePlaylist,
         PlaylistResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $deletePlaylist->process($playlist), PlatformCodeEnum::DELETED);
     }
 
@@ -94,7 +94,7 @@ class PlaylistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'playlistDirectory')] PlaylistDirectory $playlistDirectory,
         MoveMultimediaPlaylistToDirectory $moveMultimediaPlaylistToDirectory,
         PlaylistResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $moveMultimediaPlaylistToDirectory->process($multimediaPlaylist, $playlistDirectory),

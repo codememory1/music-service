@@ -17,10 +17,10 @@ use App\Repository\MultimediaRepository;
 use App\ResponseData\Admin\Multimedia\MultimediaStatisticsResponseData;
 use App\ResponseData\General\Multimedia\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Multimedia\AddMultimedia;
 use App\UseCase\Multimedia\DeleteMultimedia;
 use App\UseCase\Multimedia\UpdateMultimedia;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +30,7 @@ class MultimediaController extends AbstractRestController
 {
     #[Route('/multimedia/all', methods: Request::METHOD_GET)]
     #[UserRolePermission(RolePermissionEnum::SHOW_ALL_USER_MULTIMEDIA)]
-    public function all(MultimediaResponseData $responseData, MultimediaRepository $multimediaRepository): JsonResponse
+    public function all(MultimediaResponseData $responseData, MultimediaRepository $multimediaRepository): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $multimediaRepository->findAll());
     }
@@ -40,7 +40,7 @@ class MultimediaController extends AbstractRestController
     public function read(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $multimedia);
     }
 
@@ -51,7 +51,7 @@ class MultimediaController extends AbstractRestController
         MultimediaTransformer $transformer,
         AddMultimedia $addMultimedia,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$user->isSubscriptionPermission(SubscriptionPermissionEnum::ADD_MULTIMEDIA)) {
             throw MultimediaException::badAddMultimediaToUserInvalid();
         }
@@ -70,7 +70,7 @@ class MultimediaController extends AbstractRestController
         MultimediaTransformer $transformer,
         UpdateMultimedia $updateMultimedia,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateMultimedia->process($transformer->transformFromRequest($multimedia)),
@@ -84,7 +84,7 @@ class MultimediaController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         DeleteMultimedia $deleteMultimedia,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $deleteMultimedia->process($multimedia), PlatformCodeEnum::DELETED);
     }
 
@@ -93,7 +93,7 @@ class MultimediaController extends AbstractRestController
     public function statistics(
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         MultimediaStatisticsResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $multimedia->getStatistic());
     }
 }

@@ -11,9 +11,9 @@ use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\Artist\ArtistSubscriberResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Artist\SubscribeOnArtist;
 use App\UseCase\Artist\UnsubscribeOnArtist;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,7 +27,7 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
         ArtistSubscriberResponseData $responseData,
         SubscribeOnArtist $subscribeOnArtist
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfArtistNotAcceptingSubscribers($artist);
 
         return $this->responseData(
@@ -42,7 +42,7 @@ class ControllingSubscriptionOnArtistController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $artist,
         ArtistSubscriberResponseData $responseData,
         UnsubscribeOnArtist $unsubscribeOnArtist
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfArtistNotAcceptingSubscribers($artist);
 
         return $this->responseData(

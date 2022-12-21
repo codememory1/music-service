@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Entity\UserSession;
 use App\Message\WebSocketConnectionCloseMessage;
 use App\Repository\UserSessionRepository;
-use App\Rest\Response\Interfaces\WebSocketSchemeInterface;
+use App\Rest\Response\Interfaces\WebSocketResponseCollectorInterface;
 use function call_user_func;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Server;
@@ -71,19 +71,19 @@ final class Worker
         return $this->server->start();
     }
 
-    public function sendToConnection(string $connectionId, WebSocketSchemeInterface $scheme): void
+    public function sendToConnection(string $connectionId, WebSocketResponseCollectorInterface $responseCollector): void
     {
         if ($this->server->exist($connectionId)) {
-            $this->server->push($connectionId, json_encode($scheme->use()));
+            $this->server->push($connectionId, json_encode($responseCollector->collect()->getCollectedResponse()));
         }
     }
 
-    public function sendToUser(User $user, WebSocketSchemeInterface $scheme): self
+    public function sendToUser(User $user, WebSocketResponseCollectorInterface $responseCollector): self
     {
         $connectionIds = $this->workerConnectionManager->getAllUserConnectionIds($user->getId());
 
         foreach ($connectionIds as $connectionId) {
-            $this->sendToConnection($connectionId, $scheme);
+            $this->sendToConnection($connectionId, $responseCollector);
         }
 
         return $this;
@@ -102,12 +102,12 @@ final class Worker
         return $this;
     }
 
-    public function sendToSession(UserSession $userSession, WebSocketSchemeInterface $scheme): self
+    public function sendToSession(UserSession $userSession, WebSocketResponseCollectorInterface $responseCollector): self
     {
         $connectionId = $this->workerConnectionManager->getConnectionIdByUserSession($userSession->getId());
 
         if (null !== $connectionId) {
-            $this->sendToConnection($connectionId, $scheme);
+            $this->sendToConnection($connectionId, $responseCollector);
         }
 
         return $this;

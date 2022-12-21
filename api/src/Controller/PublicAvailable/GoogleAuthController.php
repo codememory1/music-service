@@ -5,10 +5,10 @@ namespace App\Controller\PublicAvailable;
 use App\Annotation\Authorization;
 use App\Dto\Transformer\GoogleAuthTransformer;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\Security\ServiceAuth\GoogleAuthorization;
 use App\Service\Platform\Google\Client;
 use App\Service\Platform\Google\Client as GoogleClient;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class GoogleAuthController extends AbstractRestController
 {
     #[Route('/authorization-url', methods: Request::METHOD_GET)]
-    public function authorizationUrl(GoogleClient $client): JsonResponse
+    public function authorizationUrl(GoogleClient $client): HttpResponseCollectorInterface
     {
         return $this->response([
             'url' => $client->createAuthorizationUrl()
@@ -25,7 +25,7 @@ class GoogleAuthController extends AbstractRestController
     }
 
     #[Route('/auth', methods: Request::METHOD_POST)]
-    public function auth(Client $client, GoogleAuthTransformer $googleAuthTransformer, GoogleAuthorization $googleAuthorization): JsonResponse
+    public function auth(Client $client, GoogleAuthTransformer $googleAuthTransformer, GoogleAuthorization $googleAuthorization): HttpResponseCollectorInterface
     {
         return $this->response($googleAuthorization->make($client, $googleAuthTransformer->transformFromRequest()));
     }

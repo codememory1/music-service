@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Entity\Notification;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Rest\Response\WebSocketResponseCollection;
+use App\Rest\Response\WebSocket\CollectionWebSocketResponseCollectors;
 use App\Service\WebSocket\MessageQueueToClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -22,7 +22,7 @@ class SendNotificationsToUsersCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly WebSocketResponseCollection $webSocketResponseCollection,
+        private readonly CollectionWebSocketResponseCollectors $responseCollectors,
         private readonly MessageQueueToClient $messageQueueToClient
     ) {
         parent::__construct();
@@ -88,6 +88,6 @@ class SendNotificationsToUsersCommand extends Command
 
     private function sendInRealTime(Notification $notification, User $toUser): void
     {
-        $this->messageQueueToClient->sendMessage($this->webSocketResponseCollection->userNotification($notification), $toUser);
+        $this->messageQueueToClient->sendMessage($this->responseCollectors->userNotification($notification), $toUser);
     }
 }

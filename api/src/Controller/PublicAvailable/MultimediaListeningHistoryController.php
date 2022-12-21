@@ -10,8 +10,8 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaListeningHistoryRepository;
 use App\ResponseData\General\History\HistoryMultimediaListeningResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\History\DeleteListeningToHistory;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MultimediaListeningHistoryController extends AbstractRestController
 {
     #[Route('/all', methods: Request::METHOD_GET)]
-    public function all(HistoryMultimediaListeningResponseData $responseData, MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository): JsonResponse
+    public function all(HistoryMultimediaListeningResponseData $responseData, MultimediaListeningHistoryRepository $multimediaListeningHistoryRepository): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $multimediaListeningHistoryRepository->findAllByUser($this->getAuthorizedUser()));
     }
@@ -30,7 +30,7 @@ class MultimediaListeningHistoryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'listenToHistory')] MultimediaListeningHistory $multimediaListeningHistory,
         DeleteListeningToHistory $deleteListeningToHistory,
         HistoryMultimediaListeningResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$multimediaListeningHistory->getUser()->isCompare($this->getAuthorizedUser())) {
             throw EntityNotFoundException::listenToHistory();
         }

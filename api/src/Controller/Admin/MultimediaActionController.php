@@ -11,11 +11,11 @@ use App\Enum\RolePermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\Multimedia\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Multimedia\Action\PublishMultimedia;
 use App\UseCase\Multimedia\Action\SendMultimediaOnAppeal;
 use App\UseCase\Multimedia\Action\SendMultimediaOnModeration;
 use App\UseCase\Multimedia\Action\UnpublishMultimedia;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,7 +29,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SendMultimediaOnModeration $sendMultimediaOnModeration,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $sendMultimediaOnModeration->process($multimedia), PlatformCodeEnum::UPDATED);
     }
 
@@ -38,7 +38,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         PublishMultimedia $publishMultimedia,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $publishMultimedia->process($multimedia), PlatformCodeEnum::UPDATED);
     }
 
@@ -47,7 +47,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         UnpublishMultimedia $unpublishMultimedia,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $unpublishMultimedia->process($multimedia), PlatformCodeEnum::UPDATED);
     }
 
@@ -56,7 +56,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SendMultimediaOnAppeal $sendMultimediaOnAppeal,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $sendMultimediaOnAppeal->process($multimedia), PlatformCodeEnum::UPDATED);
     }
 }

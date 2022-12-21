@@ -59,10 +59,30 @@ services:
       tags:
         - {name: kernel.event_listener, event: kernel.exception}
 
-    App\Rest\Response\:
-      resource: '../src/Rest/Response/*.php'
-      exclude:
-        - '../src/Rest/Response/Interfaces'
+    # Response collectors
+    App\Rest\Response\Interfaces\SuccessHttpResponseCollectorInterface:
+      class: App\Rest\Response\Http\SuccessHttpResponseCollector
+      public: false
+
+    App\Rest\Response\Interfaces\FailedHttpResponseCollectorInterface:
+      class: App\Rest\Response\Http\FailedHttpResponseCollector
+      public: false
+
+    App\Rest\Response\Interfaces\SuccessWebSocketResponseCollectorInterface:
+      class: App\Rest\Response\WebSocket\SuccessWebSocketResponseCollector
+      public: false
+
+    App\Rest\Response\Interfaces\FailedWebSocketResponseCollectorInterface:
+      class: App\Rest\Response\WebSocket\FailedWebSocketResponseCollector
+      public: false
+
+    # Response collection collectors
+    App\Rest\Response\WebSocket\CollectionWebSocketResponseCollectors:
+      public: false
+
+    # Response creators
+    App\Rest\Response\Http\HttpResponseCreator:
+      public: false
 
     App\Rest\S3\:
       resource: '../src/Rest/S3/'
@@ -253,7 +273,11 @@ services:
     App\Infrastructure\CronTime\Parser:
       public: false
 
+    # Doctrine
     App\Infrastructure\Doctrine\Flusher:
+      public: false
+
+    App\Infrastructure\Doctrine\Paginator:
       public: false
 
     App\Infrastructure\File\MimeTypeConverter:

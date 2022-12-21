@@ -12,6 +12,7 @@ use App\ResponseData\General\User\UserAccountActivationResponseData;
 use App\ResponseData\General\User\UserRegistrationResponseData;
 use App\ResponseData\Public\User\Session\UserSessionResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\Security\AccountActivation\AccountActivation;
 use App\Security\Auth\Authentication;
 use App\Security\Auth\Authorization;
@@ -19,7 +20,6 @@ use App\Security\Auth\Identification;
 use App\Security\Logout\Logout;
 use App\Security\Registration\Registration;
 use App\UseCase\User\Session\UpdateUserSessionAccessToken;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,7 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SecurityController extends AbstractRestController
 {
     #[Route('/register', methods: Request::METHOD_POST)]
-    public function registration(RegistrationTransformer $transformer, Registration $register, UserRegistrationResponseData $responseData): JsonResponse
+    public function registration(RegistrationTransformer $transformer, Registration $register, UserRegistrationResponseData $responseData): HttpResponseCollectorInterface
     {
         return $this->responseData(
             $responseData,
@@ -43,7 +43,7 @@ class SecurityController extends AbstractRestController
         Identification $identification,
         Authentication $authentication,
         Authorization $authorization
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $dto = $transformer->transformFromRequest();
 
         $validator->validate($dto);
@@ -55,20 +55,23 @@ class SecurityController extends AbstractRestController
     }
 
     #[Route('/access-token/update', methods: Request::METHOD_PUT)]
-    public function updateAccessToken(RefreshTokenTransformer $transformer, UpdateUserSessionAccessToken $updateUserSessionAccessToken): JsonResponse
+    public function updateAccessToken(RefreshTokenTransformer $transformer, UpdateUserSessionAccessToken $updateUserSessionAccessToken): HttpResponseCollectorInterface
     {
         return $this->response($updateUserSessionAccessToken->process($transformer->transformFromRequest()));
     }
 
     #[Route('/logout', methods: Request::METHOD_GET)]
-    public function logout(RefreshTokenTransformer $transformer, Logout $logout, UserSessionResponseData $responseData): JsonResponse
+    public function logout(RefreshTokenTransformer $transformer, Logout $logout, UserSessionResponseData $responseData): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $logout->logout($transformer->transformFromRequest()), PlatformCodeEnum::DELETED);
     }
 
     #[Route('/account-activation', methods: Request::METHOD_POST)]
-    public function activationAccount(AccountActivationTransformer $transformer, AccountActivation $accountActivation, UserAccountActivationResponseData $responseData): JsonResponse
-    {
+    public function activationAccount(
+        AccountActivationTransformer $transformer,
+        AccountActivation $accountActivation,
+        UserAccountActivationResponseData $responseData
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $accountActivation->activate($transformer->transformFromRequest()),

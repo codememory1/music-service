@@ -15,10 +15,10 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaExternalServiceRepository;
 use App\ResponseData\General\Multimedia\ExternalService\MultimediaExternalServiceResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Multimedia\ExternalService\CreateMultimediaFromExternalService;
 use App\UseCase\Multimedia\ExternalService\DeleteMultimediaFromExternalService;
 use App\UseCase\Multimedia\ExternalService\UpdateMultimediaFromExternalService;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -32,7 +32,7 @@ class MultimediaExternalServiceController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'user')] User $user,
         MultimediaExternalServiceResponseData $responseData,
         MultimediaExternalServiceRepository $multimediaExternalServiceRepository
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $multimediaExternalServiceRepository->findAllByUser($user));
     }
 
@@ -43,7 +43,7 @@ class MultimediaExternalServiceController extends AbstractRestController
         MultimediaExternalServiceTransformer $transformer,
         CreateMultimediaFromExternalService $createMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $createMultimediaFromExternalService->process($transformer->transformFromRequest(), $user),
@@ -58,7 +58,7 @@ class MultimediaExternalServiceController extends AbstractRestController
         UpdateMultimediaExternalServiceTransformer $transformer,
         UpdateMultimediaFromExternalService $updateMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateMultimediaFromExternalService->process($transformer->transformFromRequest($multimediaExternalService)),
@@ -72,7 +72,7 @@ class MultimediaExternalServiceController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaFromExternalService')] MultimediaExternalService $multimediaExternalService,
         DeleteMultimediaFromExternalService $deleteMultimediaFromExternalService,
         MultimediaExternalServiceResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $deleteMultimediaFromExternalService->process($multimediaExternalService),

@@ -58,7 +58,7 @@ final class CreateStreamMultimediaOfferBetweenFriendHandler extends AbstractUser
                 $session
             );
 
-            return $this->responseCollection->multimediaStreamAcceptRequest($streamRunningMultimedia);
+            return $this->responseCollectors->multimediaStreamAcceptRequest($streamRunningMultimedia);
         });
     }
 }

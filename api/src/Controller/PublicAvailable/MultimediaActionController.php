@@ -12,12 +12,12 @@ use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\Multimedia\MultimediaRatingResponseData;
 use App\ResponseData\General\Multimedia\MultimediaResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Multimedia\Action\AddMultimediaToMediaLibrary;
 use App\UseCase\Multimedia\Action\SendMultimediaOnAppeal;
 use App\UseCase\Multimedia\Action\SendMultimediaOnModeration;
 use App\UseCase\Multimedia\Action\ToggleMultimediaDislike;
 use App\UseCase\Multimedia\Action\ToggleMultimediaLike;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,7 +31,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         AddMultimediaToMediaLibrary $addMultimediaToMediaLibrary,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$multimedia->isPublished()) {
             throw EntityNotFoundException::multimedia();
         }
@@ -49,7 +49,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SendMultimediaOnModeration $sendMultimediaOnModeration,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$this->getAuthorizedUser()->isMultimediaBelongs($multimedia)) {
             throw EntityNotFoundException::multimedia();
         }
@@ -63,7 +63,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         SendMultimediaOnAppeal $sendMultimediaOnAppeal,
         MultimediaResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData($responseData, $sendMultimediaOnAppeal->process($multimedia), PlatformCodeEnum::UPDATED);
     }
 
@@ -72,7 +72,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         ToggleMultimediaLike $toggleMultimediaLike,
         MultimediaRatingResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $toggleMultimediaLike->process($multimedia, $this->getAuthorizedUser()),
@@ -85,7 +85,7 @@ class MultimediaActionController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimedia')] Multimedia $multimedia,
         ToggleMultimediaDislike $toggleMultimediaDislike,
         MultimediaRatingResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $toggleMultimediaDislike->process($multimedia, $this->getAuthorizedUser()),

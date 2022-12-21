@@ -13,10 +13,10 @@ use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\MediaLibrary\MediaLibraryEventResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\MediaLibrary\Event\AddMediaLibraryEvent;
 use App\UseCase\MediaLibrary\Event\CancelMediaLibraryEvent;
 use App\UseCase\MediaLibrary\Event\UpdateMediaLibraryEvent;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +30,7 @@ class MediaLibraryEventController extends AbstractRestController
         MediaLibraryEventTransformer $transformer,
         AddMediaLibraryEvent $addMediaLibraryEvent,
         MediaLibraryEventResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $addMediaLibraryEvent->process($transformer->transformFromRequest(), $this->getAuthorizedUser()->getMediaLibrary()),
@@ -44,7 +44,7 @@ class MediaLibraryEventController extends AbstractRestController
         MediaLibraryEventTransformer $transformer,
         UpdateMediaLibraryEvent $updateMediaLibraryEvent,
         MediaLibraryEventResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfEventNotBelongsAuthorizedUser($mediaLibraryEvent->getMediaLibrary());
 
         return $this->responseData(
@@ -62,7 +62,7 @@ class MediaLibraryEventController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'mediaLibraryEvent')] MediaLibraryEvent $mediaLibraryEvent,
         CancelMediaLibraryEvent $cancelMediaLibraryEvent,
         MediaLibraryEventResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfEventNotBelongsAuthorizedUser($mediaLibraryEvent->getMediaLibrary());
 
         return $this->responseData($responseData, $cancelMediaLibraryEvent->process($mediaLibraryEvent), PlatformCodeEnum::DELETED);

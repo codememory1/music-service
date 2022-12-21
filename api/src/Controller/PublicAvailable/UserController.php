@@ -7,8 +7,8 @@ use App\Dto\Transformer\UserSettingTransformer;
 use App\Enum\PlatformCodeEnum;
 use App\ResponseData\General\User\UserSettingResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\User\Setting\UpdateUserSetting;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractRestController
 {
     #[Route('/settings/edit', methods: Request::METHOD_PATCH)]
-    public function editSettings(UserSettingTransformer $transformer, UpdateUserSetting $updateUserSetting, UserSettingResponseData $responseData): JsonResponse
+    public function editSettings(UserSettingTransformer $transformer, UpdateUserSetting $updateUserSetting, UserSettingResponseData $responseData): HttpResponseCollectorInterface
     {
         return $this->responseData(
             $responseData,

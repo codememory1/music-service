@@ -13,10 +13,10 @@ use App\Enum\SubscriptionPermissionEnum;
 use App\Exception\Http\EntityNotFoundException;
 use App\ResponseData\General\MediaLibrary\MediaLibraryEventResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\MediaLibrary\Multimedia\Event\AddMultimediaMediaLibraryEvent;
 use App\UseCase\MediaLibrary\Multimedia\Event\CancelMultimediaMediaLibraryEvent;
 use App\UseCase\MediaLibrary\Multimedia\Event\UpdateMultimediaMediaLibraryEvent;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -31,7 +31,7 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
         MultimediaMediaLibraryEventTransformer $transformer,
         AddMultimediaMediaLibraryEvent $addMultimediaMediaLibraryEvent,
         MediaLibraryEventResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         if (!$this->getAuthorizedUser()->isMultimediaMediaLibraryBelongs($multimediaMediaLibrary)) {
             throw EntityNotFoundException::multimedia();
         }
@@ -49,7 +49,7 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
         MultimediaMediaLibraryEventTransformer $transformer,
         UpdateMultimediaMediaLibraryEvent $updateMultimediaMediaLibraryEvent,
         MediaLibraryEventResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 
         return $this->responseData(
@@ -67,7 +67,7 @@ class MultimediaMediaLibraryEventController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaEvent')] MultimediaMediaLibraryEvent $multimediaMediaLibraryEvent,
         CancelMultimediaMediaLibraryEvent $cancelMultimediaMediaLibraryEvent,
         MediaLibraryEventResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         $this->throwIfEventNotBelongsAuthorizedUser($multimediaMediaLibraryEvent);
 
         return $this->responseData(

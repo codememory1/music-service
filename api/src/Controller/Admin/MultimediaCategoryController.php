@@ -13,10 +13,10 @@ use App\Exception\Http\EntityNotFoundException;
 use App\Repository\MultimediaCategoryRepository;
 use App\ResponseData\General\Multimedia\MultimediaCategoryResponseData;
 use App\Rest\Controller\AbstractRestController;
+use App\Rest\Response\Interfaces\HttpResponseCollectorInterface;
 use App\UseCase\Multimedia\Category\CreateMultimediaCategory;
 use App\UseCase\Multimedia\Category\DeleteMultimediaCategory;
 use App\UseCase\Multimedia\Category\UpdateMultimediaCategory;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MultimediaCategoryController extends AbstractRestController
 {
     #[Route('/all', methods: Request::METHOD_GET)]
-    public function all(MultimediaCategoryResponseData $responseData, MultimediaCategoryRepository $multimediaCategoryRepository): JsonResponse
+    public function all(MultimediaCategoryResponseData $responseData, MultimediaCategoryRepository $multimediaCategoryRepository): HttpResponseCollectorInterface
     {
         return $this->responseData($responseData, $multimediaCategoryRepository->findAll());
     }
@@ -36,7 +36,7 @@ class MultimediaCategoryController extends AbstractRestController
         MultimediaCategoryTransformer $transformer,
         CreateMultimediaCategory $createMultimediaCategory,
         MultimediaCategoryResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $createMultimediaCategory->process($transformer->transformFromRequest()),
@@ -51,7 +51,7 @@ class MultimediaCategoryController extends AbstractRestController
         MultimediaCategoryTransformer $transformer,
         UpdateMultimediaCategory $updateMultimediaCategory,
         MultimediaCategoryResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $updateMultimediaCategory->process($transformer->transformFromRequest($multimediaCategory)),
@@ -65,7 +65,7 @@ class MultimediaCategoryController extends AbstractRestController
         #[EntityNotFound(EntityNotFoundException::class, 'multimediaCategory')] MultimediaCategory $multimediaCategory,
         DeleteMultimediaCategory $deleteMultimediaCategory,
         MultimediaCategoryResponseData $responseData
-    ): JsonResponse {
+    ): HttpResponseCollectorInterface {
         return $this->responseData(
             $responseData,
             $deleteMultimediaCategory->process($multimediaCategory),
