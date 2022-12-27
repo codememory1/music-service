@@ -1,17 +1,20 @@
 <template>
-  <input v-model="checked" type="radio" class="radiobox" />
+  <input v-model="isChecked" type="radio" class="radiobox" :class="{ error }" />
 </template>
 
 <script lang="ts">
-import { Component, Vue, VModel } from 'vue-property-decorator';
+import { Component, Vue, Prop, VModel } from 'vue-property-decorator';
 
 @Component
 export default class BaseRadiobox extends Vue {
-  @VModel({ required: false, default: null })
-  private checked!: any;
+  @Prop({ required: false, default: false })
+  private readonly error!: boolean;
+
+  @VModel({ required: false, default: false })
+  private readonly isChecked!: boolean;
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/ui/radiobox/base-radiobox';
+@import '@/assets/scss/components/ui/radiobox/base-radiobox.scss';
 </style>

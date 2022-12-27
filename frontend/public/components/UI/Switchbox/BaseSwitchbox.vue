@@ -1,23 +1,24 @@
 <template>
-  <input v-model="checked" :type="type" class="switchbox" :value="inputValue" />
+  <input v-if="!asRadio" v-model="isChecked" type="checkbox" class="switchbox" :class="{ error }" />
+  <input v-else v-model="isChecked" type="radio" class="switchbox" :class="{ error }" />
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, VModel } from 'vue-property-decorator';
+import { Component, Prop, VModel, Vue } from 'vue-property-decorator';
 
 @Component
 export default class BaseSwitchbox extends Vue {
-  @Prop({ required: false, default: 'checkbox' })
-  private readonly type!: string;
+  @Prop({ required: false, default: false })
+  private readonly error!: boolean;
 
-  @Prop({ required: false })
-  private readonly inputValue!: string | number | boolean;
+  @Prop({ required: false, default: false })
+  private readonly asRadio!: boolean;
 
   @VModel({ required: false, default: false })
-  private checked!: boolean;
+  private readonly isChecked!: boolean;
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/ui/switchbox/base-switchbox.scss';
+@import '@/assets/scss/components/ui/switchbox/base-switchbox.scss';
 </style>

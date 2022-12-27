@@ -46,7 +46,7 @@ export default class BaseRange extends Vue {
   private value: Array<number> | number = this.defaultValue;
   private mutatedTooltipPositions: Array<string> = [];
 
-  created() {
+  private created() {
     this.mutatedTooltipPositions = this.tooltipPositions;
 
     if (
@@ -65,5 +65,5 @@ export default class BaseRange extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/ui/range/base-range.scss';
+@import '@/assets/scss/components/ui/range/base-range.scss';
 </style>

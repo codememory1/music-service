@@ -1,7 +1,7 @@
 export type AlertType = {
-  id?: string;
-  isSuccess: boolean;
-  title: string;
-  message: string;
-  autoDeleteTime: number;
+  id: String;
+  title: String;
+  message: String;
+  status: string;
+  autoDeleteTime: number | undefined;
 };

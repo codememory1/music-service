@@ -1,0 +1,77 @@
+@import '../../../include/variables';
+
+.alert {
+  background-color: $dark-bg;
+  border-radius: $default-radius;
+  padding: 20px 15px;
+  width: 400px;
+  box-shadow: 0 3px 5px 1px rgba(darken($dark-bg, 2%), 0.7);
+  border: 1px solid $light-for-dark;
+  position: relative;
+  display: flex;
+  gap: 15px;
+
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    animation: progress_time var(--time-remove) linear;
+    background: $accent-second;
+    height: 5px;
+    left: 0;
+    border-radius: 0 0 10px 10px;
+  }
+
+  &-content-wrapper {
+    width: 100%;
+  }
+
+  &-close-wrapper {
+    margin-left: auto;
+  }
+
+  &__icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 16px;
+    color: $white;
+    margin-bottom: 10px;
+  }
+
+  &__message {
+    font-size: $default-size;
+    color: $gray;
+    word-break: break-all;
+  }
+
+  &__btn-close {
+    transition: ease-in color 0.15s;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    color: $gray;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}
+
+@keyframes progress_time {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 100%;
+  }
+}

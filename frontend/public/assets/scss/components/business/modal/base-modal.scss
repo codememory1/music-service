@@ -1,0 +1,81 @@
+@import '../../../include/variables';
+
+.modal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  transition: background-color 0.3s ease-in-out;
+  pointer-events: none;
+
+  &__bg {
+    backdrop-filter: saturate(180%) blur(5px);
+    width: 100%;
+    height: 100%;
+    border: 2px solid $light-for-dark;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  &__title {
+    color: $white;
+    font-size: 22px;
+    font-weight: 400;
+    text-align: center;
+  }
+
+  &-wrapper {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    background-color: $dark-bg;
+    width: 450px;
+    max-height: 90%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    overflow: auto;
+    padding: 0 $default-padding-container $default-padding-container;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  &__btn-close {
+    font-size: 22px;
+    background: transparent;
+    color: lighten($light-for-dark, 7%);
+    cursor: pointer;
+    transition: ease-in color 0.15s;
+    margin-left: auto;
+    margin-top: $default-padding-container;
+    width: 25px;
+    height: 25px;
+
+    &:hover {
+      color: lighten($light-for-dark, 14%);
+    }
+  }
+}
+
+.modal.active {
+  pointer-events: all;
+}
+
+.modal.active .modal-wrapper {
+  visibility: visible;
+  opacity: 1;
+  top: 30%;
+}
+
+.modal.active .modal__bg {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: all;
+}

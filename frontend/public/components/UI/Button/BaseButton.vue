@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class BaseButton extends Vue {
@@ -16,5 +16,5 @@ export default class BaseButton extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/ui/buttons/base-button';
+@import '@/assets/scss/components/ui/button/base-button.scss';
 </style>

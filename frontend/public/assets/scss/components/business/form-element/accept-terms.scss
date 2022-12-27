@@ -1,0 +1,15 @@
+@import '../../../include/variables';
+
+.accept-terms {
+  display: flex;
+  gap: 10px;
+
+  &__description {
+    font-size: $default-size;
+    color: $gray;
+  }
+
+  a {
+    color: $accent-second;
+  }
+}

@@ -1,0 +1,10 @@
+.modal-form-windows-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.modal-form-windows-inner {
+  transition: ease-in left 0.3s;
+  position: relative;
+  display: flex;
+}

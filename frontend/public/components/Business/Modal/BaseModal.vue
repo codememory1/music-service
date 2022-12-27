@@ -1,71 +1,53 @@
 <template>
-  <div class="modal" :class="{ active: isOpenData }">
+  <div class="modal" :class="{ active: syncedIsOpen }">
     <div class="modal__bg" @click="close" />
     <div class="modal-wrapper">
-      <div class="modal-top">
-        <BaseButton class="modal__close-btn" @click="close">
+      <BlockFormElements>
+        <BaseButton class="modal__btn-close" @click="close">
           <i class="fal fa-times" />
         </BaseButton>
-      </div>
-      <div class="modal-content">
-        <h3 v-if="null !== title" class="modal__title">{{ title }}</h3>
+      </BlockFormElements>
+      <BlockFormElements>
+        <h3 class="modal__title">{{ $t(title) }}</h3>
+      </BlockFormElements>
 
-        <slot />
-      </div>
+      <slot />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
+import BlockFormElements from '~/components/UI/Block/BlockFormElements.vue';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
 
 @Component({
   components: {
+    BlockFormElements,
     BaseButton
   }
 })
 export default class BaseModal extends Vue {
-  @Prop({ required: false, default: null })
-  private readonly title!: string;
-
   @Prop({ required: false, default: false })
   private readonly isOpen!: boolean;
 
-  @Prop({ required: false, default: false })
-  private readonly bodyScroll!: boolean;
+  @Prop({ required: true })
+  private readonly title!: string;
 
-  private isOpenData: boolean = this.isOpen;
-
-  private closeOurContainer(event: PointerEvent): void {
-    const element = this.$refs.modal as Element;
-    const target = event.target as Element;
-
-    if (target.contains(element)) {
-      this.close();
-    }
-  }
+  private syncedIsOpen: boolean = this.isOpen;
 
   @Emit('open')
   public open(): void {
-    this.isOpenData = true;
-
-    if (!this.bodyScroll) {
-      document.body.style.overflow = 'hidden';
-    }
+    this.syncedIsOpen = true;
   }
 
   @Emit('close')
   public close(): void {
-    this.isOpenData = false;
-
-    if (!this.bodyScroll) {
-      document.body.style.overflow = 'auto';
-    }
+    this.syncedIsOpen = false;
   }
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/modal/base-modal';
+@import '@/assets/scss/components/business/modal/base-modal.scss';
 </style>

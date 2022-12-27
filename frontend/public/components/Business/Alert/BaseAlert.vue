@@ -1,34 +1,27 @@
 <template>
-  <transition name="fade">
-    <div class="alert" :style="cssVars">
-      <div class="alert-top">
-        <div class="alert-title">
-          <img
-            v-if="alert.isSuccess"
-            class="alert__status-icon"
-            src="/icons/success-circle.svg"
-            alt="success"
-          />
-          <img v-else class="alert__status-icon" src="/icons/error-circle.svg" alt="error" />
-          <span class="alert-title__text">{{ alert.title }}</span>
-        </div>
-
-        <BaseButton class="alert__close-btn" @click="close">
-          <i class="fal fa-times" />
-        </BaseButton>
-      </div>
+  <div class="alert" :style="getStyles">
+    <div class="alert-icon-wrapper">
+      <img class="alert__icon" :src="getIconByStatus" :alt="alert.status" />
+    </div>
+    <div class="alert-content-wrapper">
       <div class="alert-content">
-        <p class="alert-content__message">{{ alert.message }}</p>
+        <span class="alert__title">{{ alert.title }}</span>
+        <p class="alert__message">{{ alert.message }}</p>
       </div>
     </div>
-  </transition>
+    <div class="alert-close-wrapper">
+      <BaseButton class="alert__btn-close" @click="close">
+        <i class="fal fa-times" />
+      </BaseButton>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
+import { Component, Prop, Emit, Vue } from 'vue-property-decorator';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import { AlertType } from '~/types/AlertType';
 import { getAlertModule } from '~/store';
+import { AlertType } from '~/types/AlertType';
 
 @Component({
   components: {
@@ -39,16 +32,33 @@ export default class BaseAlert extends Vue {
   @Prop({ required: true })
   private readonly alert!: AlertType;
 
-  private get cssVars(): object {
+  private get getStyles(): object {
     return {
-      '--time-remove': `${this.alert.autoDeleteTime}s`
+      '--time-remove': `${this.getAutoDeleteTime}s`
     };
+  }
+
+  private get getIconByStatus(): string {
+    switch (this.alert.status) {
+      case 'success':
+        return '/icons/success-circle.svg';
+      case 'error':
+        return '/icons/error-circle.svg';
+      default:
+        return '';
+    }
+  }
+
+  private get getAutoDeleteTime(): number {
+    return undefined === this.alert.autoDeleteTime
+      ? this.$config.alertAutoDeleteTime
+      : this.alert.autoDeleteTime;
   }
 
   private mounted(): void {
     setTimeout(() => {
       this.close();
-    }, this.alert.autoDeleteTime * 1000);
+    }, this.getAutoDeleteTime * 1000);
   }
 
   @Emit('close')
@@ -59,5 +69,5 @@ export default class BaseAlert extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/alert/base-alert';
+@import '@/assets/scss/components/business/alert/base-alert.scss';
 </style>

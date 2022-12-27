@@ -1,0 +1,7 @@
+@import '../../../include/variables';
+
+.block-form-elements {
+  display: flex;
+  flex-direction: column;
+  gap: $form-el-padding;
+}

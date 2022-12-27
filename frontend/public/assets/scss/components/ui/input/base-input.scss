@@ -1,0 +1,54 @@
+@import '../../../include/variables';
+@import '../../../include/mixins';
+
+.form-input {
+  &-wrapper {
+    width: 100%;
+    position: relative;
+  }
+
+  &__description {
+    color: $gray;
+    font-size: 10px;
+    margin-top: 5px;
+  }
+}
+
+.form__input {
+  width: 100%;
+  background-color: transparent!important;
+  color: $white;
+  padding: 12px 20px 12px 12px;
+  border-radius: $default-radius;
+  border: 2px solid $light-for-dark;
+  outline: none;
+  font-size: $default-size;
+  height: $form-el-height;
+  transition: ease-in border $form-el-transition;
+
+  @include autocomplete(2, $light-for-dark, $white, $dark-bg);
+
+  &:focus {
+    border-color: $accent;
+  }
+
+  &::placeholder {
+    color: $gray;
+  }
+
+  &:-webkit-autofill:focus {
+    border: 2px solid $accent;
+  }
+
+  &:-webkit-autofill {
+    background-color: transparent!important;
+
+    &:focus {
+      background-color: transparent!important;
+    }
+  }
+
+  &.error {
+    border: 2px solid $red;
+  }
+}
