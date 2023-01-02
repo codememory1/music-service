@@ -28,7 +28,10 @@ export default {
     choose_image_file: 'Choose image file',
     choose_subtitle_file: 'Choose a subtitle file',
     is_obscene_words: 'Is there profanity in the media?',
-    search: 'Search...'
+    search: 'Search...',
+    enter_album_title: 'Enter album title',
+    enter_album_description: 'Enter album description',
+    enter_playlist_title: 'Enter playlist title'
   },
 
   modal: {
@@ -38,7 +41,9 @@ export default {
       password_recovery: 'Password Recovery',
       create_playlist_directory: 'Creating a playlist directory',
       update_playlist_directory: 'Update a playlist directory',
-      add_multimedia: 'Adding multimedia'
+      add_multimedia: 'Adding multimedia',
+      create_album: 'Create a album',
+      create_playlist: 'Create a playlist'
     },
     switch: {
       have_an_account: 'Have an account?',
@@ -74,6 +79,10 @@ export default {
       basic_info: 'Basic information',
       secondary_info: 'Secondary Information',
       members: 'Participant settings'
+    },
+    album: {
+      type: 'Album type definition',
+      basic_info: 'Basic information'
     }
   },
 

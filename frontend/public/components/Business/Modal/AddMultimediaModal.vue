@@ -81,8 +81,6 @@ import ModalFormWindow from '~/components/UI/Window/ModalFormWindow.vue';
 import BaseUploader from '~/components/UI/Uploader/BaseUploader.vue';
 import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
 import ModalFormCheckbox from '~/components/UI/Checkbox/ModalFormCheckbox.vue';
-import isEmpty from '~/utils/is-empty';
-import { UpsertPlaylistDirectoryFormType } from '~/types/UpsertPlaylistDirectoryFormType';
 import MultimediaCategoriesRequest from '~/api/requests/MultimediaCategoriesRequest';
 import { SelectLoadingType } from '~/types/SelectLoadingType';
 
@@ -107,12 +105,6 @@ export default class AddMultimediaModal extends Vue {
   };
 
   private activeWindow: number = 0;
-  private inputData: UpsertPlaylistDirectoryFormType = {
-    title: {
-      isError: false,
-      value: null
-    }
-  };
 
   private async created() {
     await this.categoryRequest();
@@ -131,14 +123,6 @@ export default class AddMultimediaModal extends Vue {
     });
 
     this.selectCategories.isLoading = false;
-  }
-
-  private create(): void {
-    this.inputData.title.isError = isEmpty(this.inputData.title.value);
-  }
-
-  private changeTitle(event: InputEvent): void {
-    this.inputData.title.value = (event.target as HTMLInputElement).value;
   }
 
   private changeWindow(index: number): void {
