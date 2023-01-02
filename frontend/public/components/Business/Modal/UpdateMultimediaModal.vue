@@ -2,27 +2,15 @@
   <StepModal
     ref="modal"
     :steep-titles="[
-      $t('steep_form.multimedia.type'),
       $t('steep_form.multimedia.basic_info'),
       $t('steep_form.multimedia.secondary_info'),
       $t('steep_form.multimedia.members')
     ]"
-    title="modal.titles.add_multimedia"
-    button-title="buttons.add"
+    title="modal.titles.update_multimedia"
+    button-title="buttons.update"
     @changeWindow="changeWindow"
   >
     <ModalFormWindow v-show="activeWindow === 0">
-      <BlockFormElements>
-        <BaseSelect
-          :placeholder="$t('placeholder.select_type')"
-          :options="[
-            { value: 'TRACK', title: $t('multimedia.type.track') },
-            { value: 'CLIP', title: $t('multimedia.type.clip') }
-          ]"
-        />
-      </BlockFormElements>
-    </ModalFormWindow>
-    <ModalFormWindow v-show="activeWindow === 1">
       <BlockFormElements>
         <BaseSelect
           :placeholder="$t('placeholder.select_album')"
@@ -37,24 +25,18 @@
           :options="selectCategories.options"
           :use-search="true"
         />
-        <FieldModalForm :title="$t('placeholder.choose_media_file')">
-          <BaseUploader />
-        </FieldModalForm>
         <FieldModalForm :title="$t('placeholder.choose_image_file')">
           <BaseUploader />
         </FieldModalForm>
       </BlockFormElements>
     </ModalFormWindow>
-    <ModalFormWindow v-show="activeWindow === 2">
+    <ModalFormWindow v-show="activeWindow === 1">
       <BlockFormElements>
         <ModalFormTextarea :placeholder="$t('placeholder.enter_multimedia_text')" />
         <ModalFormCheckbox :description="$t('placeholder.is_obscene_words')" />
-        <FieldModalForm :title="$t('placeholder.choose_subtitle_file')">
-          <BaseUploader />
-        </FieldModalForm>
       </BlockFormElements>
     </ModalFormWindow>
-    <ModalFormWindow v-show="activeWindow === 3">
+    <ModalFormWindow v-show="activeWindow === 2">
       <BlockFormElements>
         <ModalFormInput :placeholder="$t('placeholder.enter_multimedia_producer')" />
         <BaseSelect
@@ -77,10 +59,10 @@ import ModalFormInput from '~/components/UI/Input/ModalFormInput.vue';
 import ModalFormTextarea from '~/components/UI/Input/ModalFormTextarea.vue';
 import BaseSelect from '~/components/UI/Select/BaseSelect.vue';
 import ModalFormWindow from '~/components/UI/Window/ModalFormWindow.vue';
-import BaseUploader from '~/components/UI/Uploader/BaseUploader.vue';
 import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
 import ModalFormCheckbox from '~/components/UI/Checkbox/ModalFormCheckbox.vue';
 import MultimediaCategoriesRequest from '~/api/requests/MultimediaCategoriesRequest';
+import BaseUploader from '~/components/UI/Uploader/BaseUploader.vue';
 import { SelectLoadingType } from '~/types/SelectLoadingType';
 
 @Component({
@@ -93,11 +75,11 @@ import { SelectLoadingType } from '~/types/SelectLoadingType';
     BaseSelect,
     ModalFormWindow,
     FieldModalForm,
-    BaseUploader,
-    ModalFormCheckbox
+    ModalFormCheckbox,
+    BaseUploader
   }
 })
-export default class AddMultimediaModal extends Vue {
+export default class UpdateMultimediaModal extends Vue {
   private selectCategories: SelectLoadingType = {
     isLoading: true,
     options: []

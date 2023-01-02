@@ -43,7 +43,8 @@ export default {
       update_playlist_directory: 'Update a playlist directory',
       add_multimedia: 'Adding multimedia',
       create_album: 'Create a album',
-      create_playlist: 'Create a playlist'
+      create_playlist: 'Create a playlist',
+      update_multimedia: 'Update a multimedia'
     },
     switch: {
       have_an_account: 'Have an account?',
