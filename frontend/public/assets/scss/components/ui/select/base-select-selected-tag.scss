@@ -1,0 +1,22 @@
+@import '../../../include/variables';
+
+.select-selected-tag {
+  background: $light-for-dark;
+  color: $white;
+  font-size: $default-size;
+  padding: 5px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+
+  &__btn-close {
+    background-color: transparent;
+    color: $gray;
+    font-size: 12px;
+    transition: ease-in color $default-size;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}

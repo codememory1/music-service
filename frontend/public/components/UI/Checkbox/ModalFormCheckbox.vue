@@ -1,7 +1,7 @@
 <template>
-  <div class="accept-terms">
+  <div class="modal-form-checkbox">
     <BaseCheckbox v-model="isAccept" :is-error="isError" />
-    <p class="accept-terms__description" v-html="description" />
+    <p class="modal-form-checkbox__description" v-html="description" />
   </div>
 </template>
 
@@ -14,7 +14,7 @@ import BaseCheckbox from '~/components/UI/Checkbox/BaseCheckbox.vue';
     BaseCheckbox
   }
 })
-export default class AcceptTerms extends Vue {
+export default class ModalFormCheckbox extends Vue {
   @Prop({ required: true })
   private readonly description!: string;
 
@@ -27,5 +27,5 @@ export default class AcceptTerms extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/components/business/form-element/accept-terms.scss';
+@import '@/assets/scss/components/ui/checkbox/modal-form-checkbox.scss';
 </style>

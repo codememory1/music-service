@@ -16,6 +16,7 @@ $default-radius: 5px;
 $fa-font-path: "~/assets/fonts/FontAwesome/";
 
 // Z-index
+$z-index-select: 990;
 $z-index-modal: 1000;
 $btn-show-password: 1010;
 
@@ -30,4 +31,4 @@ $form-el-height: 40px;
 $default-size: 14px;
 
 // Transitions
-$form-el-transition: 0.15s;
+$default-transition: 0.15s;

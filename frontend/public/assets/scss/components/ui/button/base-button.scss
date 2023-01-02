@@ -3,7 +3,7 @@
 
 .button {
   border-radius: 5px;
-  transition: ease-in background-color $form-el-transition, ease-in opacity $form-el-transition;
+  transition: ease-in background-color $default-transition, ease-in opacity $default-transition;
   font-size: 16px;
   font-weight: 400;
   display: flex;
@@ -52,7 +52,7 @@
     background-color: transparent;
     outline: 2px solid $light-for-dark;
     color: $gray;
-    transition: ease-in outline-color $form-el-transition;
+    transition: ease-in outline-color $default-transition;
 
     &:hover {
       outline-color: lighten($light-for-dark, 7%);

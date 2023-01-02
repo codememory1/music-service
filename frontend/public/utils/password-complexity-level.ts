@@ -1,39 +1,41 @@
 export default function passwordComplexityLevel(password: string): number {
-  const hasSmallLetters = password.search(/[a-z]+/);
-  const hasCapitalLetters = password.search(/[A-Z]+/);
-  const hasNumbers = password.search(/[0-9]+/);
-  const hasMinimalSpecialChars = password.search('[\\-\\_\\%\\@\\.\\&\\+]{1,}');
-  const hasMoreMinimalSpecialChars = password.search('[\\-\\_\\%\\@\\.\\&\\+]{3,}');
+  const hasSmallLetters = password.search(/[a-z]+/) > -1;
+  const hasCapitalLetters = password.search(/[A-Z]+/) > -1;
+  const hasNumbers = password.search(/[0-9]+/) > -1;
+  const specialChars = '<>@!#$%^&*()_+[]{}?:;|"\\,./~`-=';
+  const specialCharsToPassword = password.split('').reduce((acc, char) => {
+    if (specialChars.includes(char)) {
+      ++acc;
+    }
 
-  if (
-    hasSmallLetters > -1 &&
-    hasCapitalLetters > -1 &&
-    hasNumbers > -1 &&
-    hasMoreMinimalSpecialChars > -1
-  ) {
-    return 100;
-  }
+    return acc;
+  }, 0);
 
-  if (
-    hasSmallLetters > -1 &&
-    hasCapitalLetters > -1 &&
-    hasNumbers > -1 &&
-    hasMinimalSpecialChars > -1
-  ) {
-    return 80;
-  }
+  let percentageLevel: number = 0;
 
-  if (hasSmallLetters > -1 && hasCapitalLetters > -1 && hasNumbers > -1) {
-    return 60;
-  }
-
-  if (hasSmallLetters > -1 && hasCapitalLetters > -1) {
-    return 40;
-  }
-
-  if (hasSmallLetters > -1) {
+  if (password.length < 8) {
     return 20;
   }
 
-  return 0;
+  if (hasSmallLetters) {
+    percentageLevel += 20;
+  }
+
+  if (hasCapitalLetters) {
+    percentageLevel += 20;
+  }
+
+  if (hasNumbers) {
+    percentageLevel += 20;
+  }
+
+  if (specialCharsToPassword >= 1) {
+    percentageLevel += 20;
+  }
+
+  if (specialCharsToPassword >= 3) {
+    percentageLevel += 20;
+  }
+
+  return percentageLevel;
 }

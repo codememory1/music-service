@@ -10,8 +10,6 @@ use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
 
 final class MultimediaCategoryResponseData extends AbstractResponseData
 {
-    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
-    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_MULTIMEDIA_CATEGORIES)]
     private ?int $id = null;
 
     #[RDCV\AsTranslation]

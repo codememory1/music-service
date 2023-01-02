@@ -12,8 +12,21 @@
         :is-error="inputData.password.isError"
         @input="changePassword"
       />
-
       <BaseButton class="accent" @click.prevent="auth">{{ $t('buttons.login') }}</BaseButton>
+
+      <p class="via-social-network-text">{{ $t('or_via_social_network') }}</p>
+
+      <div class="auth-from-social-icons">
+        <a href="" class="auth-from-social__item">
+          <i class="fab fa-google" />
+        </a>
+        <a href="" class="auth-from-social__item">
+          <i class="fab fa-facebook-f" />
+        </a>
+        <a href="" class="auth-from-social__item">
+          <i class="fab fa-twitter" />
+        </a>
+      </div>
 
       <ModalSwitcher>
         {{ $t('modal.switch.dont_have_account') }}
@@ -70,3 +83,7 @@ export default class AuthModal extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+@import '@/assets/scss/components/business/modal/auth-modal.scss';
+</style>

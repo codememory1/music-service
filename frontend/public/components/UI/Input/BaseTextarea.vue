@@ -1,8 +1,7 @@
 <template>
   <div class="form-input-wrapper">
-    <input
-      :type="type"
-      class="form__input"
+    <textarea
+      class="form__input textarea"
       :class="{ error: isError }"
       :placeholder="$t(placeholder)"
       @input="$emit('input', $event)"
@@ -12,13 +11,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
-export default class BaseInput extends Vue {
-  @Prop({ required: false, default: 'text' })
-  private readonly type!: string;
-
+export default class BaseTextarea extends Vue {
   @Prop({ required: false, default: '' })
   private readonly placeholder!: string;
 
@@ -31,5 +27,5 @@ export default class BaseInput extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/components/ui/input/base-input.scss';
+@import '@/assets/scss/components/ui/input/base-textarea.scss';
 </style>

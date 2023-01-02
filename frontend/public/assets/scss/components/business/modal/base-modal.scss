@@ -1,4 +1,5 @@
 @import '../../../include/variables';
+@import '../../../include/mixins';
 
 .modal {
   position: fixed;
@@ -45,6 +46,8 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+
+    @include scrollbar($light-bg, $accent, 0);
   }
 
   &__btn-close {

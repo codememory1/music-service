@@ -8,6 +8,7 @@ declare class VueI18n {
 declare module 'vue/types/vue' {
   interface Vue {
     $api: NuxtAxiosInstance;
+    $uuid: string;
     $t: typeof VueI18n.prototype.t;
   }
 }
@@ -15,9 +16,11 @@ declare module 'vue/types/vue' {
 declare module '@nuxt/types' {
   interface Context {
     $api: NuxtAxiosInstance;
+    $uuid: string;
   }
 
   interface NuxtAppOptions {
     $api: NuxtAxiosInstance;
+    $uuid: string;
   }
 }

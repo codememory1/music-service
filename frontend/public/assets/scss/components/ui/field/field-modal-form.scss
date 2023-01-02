@@ -1,5 +1,13 @@
+@import '../../../include/variables';
+
 .field-modal-form {
   display: flex;
   flex-direction: column;
   position: relative;
+
+  &__title {
+    margin-bottom: 10px;
+    font-size: $default-size;
+    color: $gray;
+  }
 }

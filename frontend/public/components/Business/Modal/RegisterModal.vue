@@ -1,5 +1,5 @@
 <template>
-  <BaseModal :is-open="true" ref="modal" title="modal.titles.register">
+  <BaseModal ref="modal" title="modal.titles.register">
     <ModalForm>
       <ModalFormInput
         placeholder="placeholder.enter_pseudonym"
@@ -23,7 +23,7 @@
         @input="changePasswordConfirm"
       />
 
-      <AcceptTerms
+      <ModalFormCheckbox
         v-model="inputData.isAccept.value"
         :is-error="inputData.isAccept.isError"
         :description="
@@ -52,7 +52,7 @@ import ModalForm from '~/components/UI/Form/ModalForm.vue';
 import ModalFormInput from '~/components/UI/Input/ModalFormInput.vue';
 import ModalNewPasswordFormInput from '~/components/UI/Input/ModalNewPasswordFormInput.vue';
 import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import AcceptTerms from '~/components/Business/FormElement/AcceptTerms.vue';
+import ModalFormCheckbox from '~/components/UI/Checkbox/ModalFormCheckbox.vue';
 import ModalSwitcher from '~/components/Business/Switch/ModalSwitcher.vue';
 import isEmpty from '~/utils/is-empty';
 import { RegisterType } from '~/types/RegisterType';
@@ -64,7 +64,7 @@ import { RegisterType } from '~/types/RegisterType';
     ModalFormInput,
     ModalNewPasswordFormInput,
     BaseButton,
-    AcceptTerms,
+    ModalFormCheckbox,
     ModalSwitcher
   }
 })
