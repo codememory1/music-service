@@ -18,9 +18,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import ModalForm from '~/components/UI/Form/ModalForm.vue';
-import ModalFormInput from '~/components/UI/Input/ModalFormInput.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import AcceptTerms from '~/components/Business/FormElement/AcceptTerms.vue';
+import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
+import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import isEmpty from '~/utils/is-empty';
 import { PasswordRecoveryType } from '~/types/PasswordRecoveryType';
 
@@ -29,8 +28,7 @@ import { PasswordRecoveryType } from '~/types/PasswordRecoveryType';
     BaseModal,
     ModalForm,
     ModalFormInput,
-    BaseButton,
-    AcceptTerms
+    BaseButton
   }
 })
 export default class PasswordRecoveryModal extends Vue {

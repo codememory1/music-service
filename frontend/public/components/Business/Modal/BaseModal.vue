@@ -19,7 +19,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import BlockFormElements from '~/components/UI/Block/BlockFormElements.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
+import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 
 @Component({
   components: {

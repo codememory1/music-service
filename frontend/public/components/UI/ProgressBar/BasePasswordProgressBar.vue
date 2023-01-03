@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-
 @Component
 export default class PasswordProgressBar extends Vue {
   @Prop({ required: true })

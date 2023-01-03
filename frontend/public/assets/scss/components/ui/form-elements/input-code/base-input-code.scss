@@ -1,0 +1,33 @@
+@import '../../../../include/variables';
+
+.input-code {
+  &-squares {
+    display: flex;
+    gap: 6px;
+
+    &--center {
+      justify-content: center;
+    }
+  }
+
+  &__square {
+    width: $form-el-height;
+    height: $form-el-height;
+    border-radius: $default-radius;
+    border: 2px solid $light-for-dark;
+    background-color: transparent;
+    outline: none;
+    color: $white;
+    transition: ease-in border $default-transition;
+    text-align: center;
+    font-size: $default-size;
+
+    &:focus {
+      border-color: $accent-second;
+    }
+
+    &.error {
+      border-color: $red;
+    }
+  }
+}

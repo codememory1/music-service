@@ -1,9 +1,0 @@
-@import './base-input';
-@import '../../../include/mixins';
-
-.textarea {
-  height: 150px;
-  resize: none;
-
-  @include scrollbar($light-for-dark, $accent, 2px);
-}

@@ -49,10 +49,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import ModalForm from '~/components/UI/Form/ModalForm.vue';
-import ModalFormInput from '~/components/UI/Input/ModalFormInput.vue';
-import ModalNewPasswordFormInput from '~/components/UI/Input/ModalNewPasswordFormInput.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import ModalFormCheckbox from '~/components/UI/Checkbox/ModalFormCheckbox.vue';
+import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
+import ModalNewPasswordFormInput from '~/components/UI/FormElements/Input/ModalNewPasswordFormInput.vue';
+import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
+import ModalFormCheckbox from '~/components/UI/FormElements/Checkbox/ModalFormCheckbox.vue';
 import ModalSwitcher from '~/components/Business/Switch/ModalSwitcher.vue';
 import isEmpty from '~/utils/is-empty';
 import { RegisterType } from '~/types/RegisterType';

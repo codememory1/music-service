@@ -1,5 +1,5 @@
 <template>
-  <BaseModal :is-open="true" ref="modal" title="modal.titles.create_playlist_directory">
+  <BaseModal ref="modal" title="modal.titles.create_playlist_directory">
     <ModalForm>
       <ModalFormInput
         placeholder="placeholder.enter_playlist_directory_title"
@@ -15,8 +15,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import ModalForm from '~/components/UI/Form/ModalForm.vue';
-import ModalFormInput from '~/components/UI/Input/ModalFormInput.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
+import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
+import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import isEmpty from '~/utils/is-empty';
 import { UpsertPlaylistDirectoryFormType } from '~/types/UpsertPlaylistDirectoryFormType';
 

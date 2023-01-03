@@ -1,0 +1,14 @@
+@import '../../../../include/variables';
+
+.select__selected-option {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: $white;
+  padding-right: 10px;
+
+  &-title {
+    font-size: $default-size;
+    color: $white;
+  }
+}

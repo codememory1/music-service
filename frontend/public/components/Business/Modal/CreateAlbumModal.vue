@@ -16,7 +16,7 @@
         <ModalFormInput :placeholder="$t('placeholder.enter_album_title')" />
         <ModalFormInput :placeholder="$t('placeholder.enter_album_description')" />
         <FieldModalForm :title="$t('placeholder.choose_image_file')">
-          <BaseUploader />
+          <BaseDragAndDrop />
         </FieldModalForm>
       </BlockFormElements>
     </ModalFormWindow>
@@ -28,10 +28,10 @@ import { Component, Vue } from 'vue-property-decorator';
 import StepModal from '~/components/Business/Modal/StepModal.vue';
 import ModalSteepForm from '~/components/UI/Form/ModalSteepForm.vue';
 import BlockFormElements from '~/components/UI/Block/BlockFormElements.vue';
-import ModalFormInput from '~/components/UI/Input/ModalFormInput.vue';
-import BaseSelect from '~/components/UI/Select/BaseSelect.vue';
+import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
+import BaseSelect from '~/components/UI/FormElements/Select/BaseSelect.vue';
 import ModalFormWindow from '~/components/UI/Window/ModalFormWindow.vue';
-import BaseUploader from '~/components/UI/Uploader/BaseUploader.vue';
+import BaseDragAndDrop from '~/components/UI/FormElements/DragAndDrop/BaseDragAndDrop.vue';
 import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
 
 @Component({
@@ -43,7 +43,7 @@ import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
     BaseSelect,
     ModalFormWindow,
     FieldModalForm,
-    BaseUploader
+    BaseDragAndDrop
   }
 })
 export default class CreateAlbumModal extends Vue {

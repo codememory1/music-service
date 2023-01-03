@@ -1,6 +1,7 @@
 <template>
   <StepModal
     ref="modal"
+    :is-open="true"
     :steep-titles="[
       $t('steep_form.multimedia.type'),
       $t('steep_form.multimedia.basic_info'),
@@ -38,10 +39,10 @@
           :use-search="true"
         />
         <FieldModalForm :title="$t('placeholder.choose_media_file')">
-          <BaseUploader />
+          <BaseDragAndDrop />
         </FieldModalForm>
         <FieldModalForm :title="$t('placeholder.choose_image_file')">
-          <BaseUploader />
+          <BaseDragAndDrop />
         </FieldModalForm>
       </BlockFormElements>
     </ModalFormWindow>
@@ -50,7 +51,7 @@
         <ModalFormTextarea :placeholder="$t('placeholder.enter_multimedia_text')" />
         <ModalFormCheckbox :description="$t('placeholder.is_obscene_words')" />
         <FieldModalForm :title="$t('placeholder.choose_subtitle_file')">
-          <BaseUploader />
+          <BaseDragAndDrop />
         </FieldModalForm>
       </BlockFormElements>
     </ModalFormWindow>
@@ -73,13 +74,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import StepModal from '~/components/Business/Modal/StepModal.vue';
 import ModalSteepForm from '~/components/UI/Form/ModalSteepForm.vue';
 import BlockFormElements from '~/components/UI/Block/BlockFormElements.vue';
-import ModalFormInput from '~/components/UI/Input/ModalFormInput.vue';
-import ModalFormTextarea from '~/components/UI/Input/ModalFormTextarea.vue';
-import BaseSelect from '~/components/UI/Select/BaseSelect.vue';
+import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
+import ModalFormTextarea from '~/components/UI/FormElements/Input/ModalFormTextarea.vue';
+import BaseSelect from '~/components/UI/FormElements/Select/BaseSelect.vue';
 import ModalFormWindow from '~/components/UI/Window/ModalFormWindow.vue';
-import BaseUploader from '~/components/UI/Uploader/BaseUploader.vue';
+import BaseDragAndDrop from '~/components/UI/FormElements/DragAndDrop/BaseDragAndDrop.vue';
 import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
-import ModalFormCheckbox from '~/components/UI/Checkbox/ModalFormCheckbox.vue';
+import ModalFormCheckbox from '~/components/UI/FormElements/Checkbox/ModalFormCheckbox.vue';
 import MultimediaCategoriesRequest from '~/api/requests/MultimediaCategoriesRequest';
 import { SelectLoadingType } from '~/types/SelectLoadingType';
 
@@ -93,7 +94,7 @@ import { SelectLoadingType } from '~/types/SelectLoadingType';
     BaseSelect,
     ModalFormWindow,
     FieldModalForm,
-    BaseUploader,
+    BaseDragAndDrop,
     ModalFormCheckbox
   }
 })

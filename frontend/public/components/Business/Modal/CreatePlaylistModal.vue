@@ -4,7 +4,7 @@
       <BlockFormElements>
         <ModalFormInput :placeholder="$t('placeholder.enter_playlist_title')" />
         <FieldModalForm :title="$t('placeholder.choose_image_file')">
-          <BaseUploader />
+          <BaseDragAndDrop />
         </FieldModalForm>
         <BaseButton class="accent" @click="create">{{ $t('buttons.create') }}</BaseButton>
       </BlockFormElements>
@@ -17,10 +17,10 @@ import { Component, Vue } from 'vue-property-decorator';
 import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import ModalForm from '~/components/UI/Form/ModalForm.vue';
 import BlockFormElements from '~/components/UI/Block/BlockFormElements.vue';
-import ModalFormInput from '~/components/UI/Input/ModalFormInput.vue';
-import BaseUploader from '~/components/UI/Uploader/BaseUploader.vue';
+import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
+import BaseDragAndDrop from '~/components/UI/FormElements/DragAndDrop/BaseDragAndDrop.vue';
 import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
+import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 
 @Component({
   components: {
@@ -29,7 +29,7 @@ import BaseButton from '~/components/UI/Button/BaseButton.vue';
     BlockFormElements,
     ModalFormInput,
     FieldModalForm,
-    BaseUploader,
+    BaseDragAndDrop,
     BaseButton
   }
 })

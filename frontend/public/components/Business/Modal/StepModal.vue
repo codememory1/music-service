@@ -40,7 +40,7 @@ import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import BlockFormElements from '~/components/UI/Block/BlockFormElements.vue';
 import BaseProgressStep from '~/components/UI/Step/BaseProgressStep.vue';
 import ModalForm from '~/components/UI/Form/ModalForm.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
+import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 
 @Component({
   components: {

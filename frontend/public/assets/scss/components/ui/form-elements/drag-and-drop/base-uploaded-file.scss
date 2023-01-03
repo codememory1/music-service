@@ -1,0 +1,60 @@
+@import '../../../../include/variables';
+
+.uploader-uploaded-file {
+  display: flex;
+  border: 2px solid $light-for-dark;
+  border-radius: 5px;
+  padding: 10px;
+  gap: 10px;
+  transition: ease-in border $default-transition;
+  background-color: $light-for-dark;
+  width: inherit;
+
+  &:hover {
+    border-color: $accent-second;
+  }
+
+  &__icon {
+    font-size: 30px;
+    color: $white;
+  }
+
+  &__name {
+    font-weight: 500;
+    font-size: 14px;
+    color: $white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__size {
+    font-size: 12px;
+    color: $white;
+    margin-top: 5px;
+  }
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+    max-width: 70%;
+  }
+
+  &-close {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+
+  &__btn-close {
+    width: 25px;
+    height: 25px;
+    background: transparent;
+    color: $gray;
+    transition: ease-in color $default-transition;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}

@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import { Component, Prop, Emit, Vue } from 'vue-property-decorator';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
+import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import { getAlertModule } from '~/store';
 import { AlertType } from '~/types/AlertType';
 
