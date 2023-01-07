@@ -1,0 +1,13 @@
+@import '../../../../include/variables';
+@import '../../../../include/animations';
+
+.select-loading {
+  color: $gray;
+  font-size: $default-size;
+  text-align: center;
+  padding: 10px;
+
+  &__icon {
+    animation: loadingSpinner 1s infinite linear;
+  }
+}

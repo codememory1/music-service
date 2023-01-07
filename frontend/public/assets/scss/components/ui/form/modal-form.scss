@@ -1,0 +1,7 @@
+@import '../../../include/variables';
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: $form-el-padding;
+}

@@ -1,0 +1,32 @@
+@import '../../../include/variables';
+
+.via-social-network-text {
+  font-size: $default-size;
+  color: $gray;
+  text-align: center;
+}
+
+.auth-from-social {
+  &-icons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-color: $light-for-dark;
+    color: #fff;
+    font-size: 18px;
+    transition: ease-in background-color $default-transition;
+
+    &:hover {
+      background-color: lighten($light-for-dark, 7%);
+    }
+  }
+}

@@ -24,7 +24,7 @@ const config: NuxtConfig = {
     title: process.env.SITE_NAME,
     apiClientHost: process.env.API_CLIENT_HOST,
     defaultLang: process.env.DEFAULT_LANG,
-    timeForAuthDeleteDefaultAlert: 10
+    alertAutoDeleteTime: 10
   },
 
   pwa: {
@@ -108,7 +108,8 @@ const config: NuxtConfig = {
     '~plugins/tooltip.ts',
     '~plugins/swiper.ts',
     '~plugins/api.ts',
-    '~store/index.ts'
+    '~store/index.ts',
+    '~prototypes/array-prototype.ts'
   ],
 
   components: true,

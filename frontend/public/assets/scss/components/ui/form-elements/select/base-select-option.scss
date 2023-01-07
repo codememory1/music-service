@@ -1,0 +1,39 @@
+@import '../../../../include/variables';
+
+.select__option {
+  transition: ease-in background-color $default-transition;
+  border-radius: $default-radius;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  margin-right: 5px;
+
+  &:hover {
+    background-color: lighten($light-for-dark, 7%);
+  }
+
+  &-title {
+    color: $white;
+    font-size: $default-size;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px;
+  }
+
+  &-check {
+    margin-left: auto;
+    color: $green;
+    font-size: $default-size;
+  }
+
+  &.selected {
+    background-color: lighten($light-for-dark, 7%);
+  }
+
+  &.active {
+    background-color: lighten($light-for-dark, 7%);
+  }
+}

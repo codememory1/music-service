@@ -1,121 +1,47 @@
 <template>
-  <BaseModal ref="modal" :title="$t('password_recovery')">
-    <div class="modal-fields">
-      <BaseInputModal
-        :class="{ error: entryDataError.email }"
-        :placeholder="$t('enter_your_email')"
-        @input="emailEntry"
+  <BaseModal ref="modal" title="modal.titles.password_recovery">
+    <ModalForm>
+      <ModalFormInput
+        placeholder="placeholder.enter_email"
+        :is-error="inputData.email.isError"
+        @input="changeInputService.change($event, inputData.email)"
       />
-    </div>
-    <BaseButton class="btn-auth button_bg--accent" :is-loading="requestInProcess" @click="send">
-      {{ $t('send_code') }}
-    </BaseButton>
+
+      <BaseButton class="accent" @click.prevent="passwordRecovery">
+        {{ $t('buttons.send_code') }}
+      </BaseButton>
+    </ModalForm>
   </BaseModal>
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import BaseModal from '~/components/Business/Modal/BaseModal.vue';
-import BaseInputModal from '~/components/UI/Input/BaseInputModal.vue';
-import BaseCheckbox from '~/components/UI/Checkbox/BaseCheckbox.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import PasswordProgressBar from '~/components/UI/ProgressBar/PasswordProgressBar.vue';
-import { PasswordRecoveryRequestEntryData } from '~/types/ModalEntryData';
-import PasswordRecoveryRequest from '~/api/requests/PasswordRecoveryRequest';
-import isEmpty from '~/utils/is-empty';
-import { PasswordRecoveryRequestResponseType } from '~/api/responses/PasswordRecoveryRequestResponseType';
-import { ErrorResponseType } from '~/types/ErrorResponseType';
-import { getAlertModule } from '~/store';
+import ModalForm from '~/components/UI/Form/ModalForm.vue';
+import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
+import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
+import PasswordRecoveryFormDataType from '~/types/ui/form-data/password-recovery-form-data-type';
+import ChangeInputService from '~/services/ui/input/change-input-service';
 
 @Component({
   components: {
     BaseModal,
-    BaseInputModal,
-    BaseCheckbox,
-    BaseButton,
-    PasswordProgressBar
+    ModalForm,
+    ModalFormInput,
+    BaseButton
   }
 })
-export default class PasswordRecovery extends Vue {
-  private requestInProcess: boolean = false;
-  private entryData: PasswordRecoveryRequestEntryData = {
-    email: null
-  };
-
-  private entryDataError = {
-    email: false
-  };
-
-  @Emit('open')
-  public open(): void {
-    const modal = this.$refs.modal as BaseModal;
-
-    modal.open();
-  }
-
-  @Emit('close')
-  public close(): void {
-    const modal = this.$refs.modal as BaseModal;
-
-    modal.close();
-  }
-
-  private get passwordRecoveryRequest(): PasswordRecoveryRequest {
-    return new PasswordRecoveryRequest(this.$api);
-  }
-
-  private emailEntry(event: InputEvent): void {
-    this.entryData.email = (event.target as HTMLInputElement).value;
-  }
-
-  private send(): void {
-    this.entryDataError.email = isEmpty(this.entryData.email);
-
-    if (!Object.values(this.entryDataError).includes(true)) {
-      const response = this.passwordRecoveryRequest.send(
-        this.$config.apiClientHost,
-        this.entryData
-      );
-
-      this.requestInProcess = true;
-
-      response
-        .then((success) => {
-          this.successPasswordRecoveryPassword(success.success!);
-        })
-        .catch((error) => {
-          this.failedPasswordRecoveryPassword(error.error!);
-        })
-        .finally(() => {
-          this.requestInProcess = false;
-        });
+export default class PasswordRecoveryModal extends Vue {
+  private readonly changeInputService: ChangeInputService = new ChangeInputService();
+  private inputData: PasswordRecoveryFormDataType = {
+    email: {
+      isError: false,
+      value: ''
     }
-  }
+  };
 
-  private successPasswordRecoveryPassword(response: PasswordRecoveryRequestResponseType): void {
-    getAlertModule(this.$store).addAlert({
-      title: this.$t('alert.title.password_recovery_request'),
-      message: this.$t('alert.message.success_password_recovery_request'),
-      isSuccess: true,
-      autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
-    });
-
-    this.close();
-
-    this.$emit('successRequest', response, this.entryData);
-  }
-
-  private failedPasswordRecoveryPassword(response: ErrorResponseType): void {
-    getAlertModule(this.$store).addAlert({
-      title: this.$t('alert.title.password_recovery_request'),
-      message: this.$t(response.error.message, response.error.message_parameters),
-      isSuccess: false,
-      autoDeleteTime: this.$config.timeForAuthDeleteDefaultAlert
-    });
+  private passwordRecovery(): void {
+    this.inputData.email.isError = this.inputData.email.value.length === 0;
   }
 }
 </script>
-
-<style lang="scss">
-@import '@/assets/scss/business/modal/security-modal';
-</style>

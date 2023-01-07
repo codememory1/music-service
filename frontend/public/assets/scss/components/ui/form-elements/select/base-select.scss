@@ -1,0 +1,28 @@
+@import '../../../../include/variables';
+
+.select {
+  position: relative;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &-drop-down {
+    position: absolute;
+    top: $form-el-height + 5px;
+    width: 100%;
+    background-color: $light-for-dark;
+    border-radius: $default-radius;
+    z-index: $z-index-select;
+    box-shadow: 0 4px 4px rgba($dark-bg, 0.6);
+  }
+}
+
+.select-drop-down-enter-active, .select-drop-down-leave-active {
+  transition: ease-in transform $default-transition, ease-in opacity $default-transition;
+}
+.select-drop-down-enter, .select-drop-down-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}

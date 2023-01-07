@@ -1,13 +1,9 @@
-@import "normalize.css";
-@import "include/variables";
-@import "include/functions";
-@import "include/mixins";
-@import "include/fonts";
-@import "include/grid";
-@import "include/transition";
-@import "vendor/font-awesome";
-@import "ui/tooltip/tooltip";
-@import "animate.css";
+@import 'include/variables';
+@import 'include/normalize';
+@import 'vendor/font-awesome';
+@import 'components/ui/tooltip/tooltip';
+@import 'animate.css';
+@import 'include/bootstrap';
 
 :root {
   --accent: #{$accent};
@@ -19,63 +15,9 @@
   --white: #{$white};
   --green: #{$green};
   --red: #{$red};
-  --grid-gap: #{$grid-gap};
-  --column-width: #{$column-width};
-  --column-count: #{$column-count};
   --animate-duration: 5s;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-
-  @include scrollbar();
-}
-
-body {
-  background-color: $light-bg;
-}
-
-a {
-  text-decoration: none;
-}
-
-img {
-  user-select: none;
-}
-
-.horizontal-logo {
-  width: 200px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 .wrapper-gradient {
   background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
-}
-
-.row {
-  display: flex;
-}
-
-.m-40 {
-  margin: 40px;
-}
-
-.page-enter-active, .page-leave-active {
-  transition: ease-in opacity 0.5s;
-}
-
-.page-enter, .page-leave-active {
-  opacity: 0;
-}
-
-.relative {
-  position: relative;
 }

@@ -1,0 +1,65 @@
+@import '../../../../include/variables';
+@import '../../../../include/animations';
+
+.button {
+  border-radius: 5px;
+  transition: ease-in background-color $default-transition, ease-in opacity $default-transition;
+  font-size: 16px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &.accent {
+    height: $form-el-height;
+    background-color: $accent;
+    outline: none;
+    color: $white;
+
+    &:hover {
+      background-color: darken($accent, 7%);
+    }
+
+    &:active {
+      background-color: darken($accent, 14%);
+    }
+  }
+
+  &.blue {
+    height: $form-el-height;
+    background-color: $accent-second;
+    outline: none;
+    color: $white;
+
+    &:hover {
+      background-color: darken($accent-second, 7%);
+    }
+
+    &:active {
+      background-color: darken($accent-second, 14%);
+    }
+  }
+
+  &.only-border {
+    height: $form-el-height;
+    background-color: transparent;
+    outline: 2px solid $light-for-dark;
+    color: $gray;
+    transition: ease-in outline-color $default-transition;
+
+    &:hover {
+      outline-color: lighten($light-for-dark, 7%);
+    }
+  }
+
+  &__spinner {
+    animation: loadingSpinner 1s infinite linear;
+  }
+}

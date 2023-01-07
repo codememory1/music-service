@@ -1,136 +1,105 @@
 export default {
-  our_advantage: {
-    title: 'Our advantages',
-    items: {
-      unique_features: {
-        title: 'Unique features',
-        description: 'Lots of unique features for your use.'
-      },
-      subscription_price: {
-        title: 'Subscription price',
-        description: 'Low prices for extended list of subscriptions.'
-      },
+  buttons: {
+    prev: 'Previous',
+    next: 'Next',
+    register: 'Register',
+    login: 'Login',
+    send_code: 'Send Code',
+    add: 'Add',
+    create: 'Create',
+    update: 'Update',
+    reset: 'Reset'
+  },
 
-      more_options_for_free_subscription: {
-        title: 'More options for free subscription',
-        description: 'Lots of features for free use.'
-      },
+  placeholder: {
+    enter_pseudonym: 'Enter your Pseudonym',
+    enter_email: 'Enter your Email',
+    enter_password: 'Enter your Password',
+    enter_confirm_password: 'Enter password confirmation',
+    enter_playlist_directory_title: 'Enter directory name',
+    select_type: 'Select type',
+    enter_multimedia_title: 'Enter multimedia title',
+    enter_multimedia_description: 'Enter multimedia description',
+    enter_multimedia_text: 'Enter original media text',
+    enter_multimedia_producer: 'Enter media producer',
+    select_multimedia_genre: 'Select multimedia genre',
+    select_album: 'Select album',
+    select_multimedia_performers: 'Select media contributors',
+    choose_media_file: 'Choose a media file',
+    choose_image_file: 'Choose image file',
+    choose_subtitle_file: 'Choose a subtitle file',
+    is_obscene_words: 'Is there profanity in the media?',
+    search: 'Search...',
+    enter_album_title: 'Enter album title',
+    enter_album_description: 'Enter album description',
+    enter_playlist_title: 'Enter playlist title'
+  },
 
-      listen_to_opinions_users: {
-        title: 'We listen to the opinions of users',
-        description: 'We listen to your opinion on the implementation of new functionality.'
-      },
-
-      ease_use: {
-        title: 'Ease of use',
-        description: 'Use all the features of the platform with convenience.'
-      },
-
-      stream_control: {
-        title: 'Stream control',
-        description: 'Control media flow if you have poor internet.'
-      }
+  modal: {
+    titles: {
+      register: 'Registration',
+      auth: 'Authorization',
+      password_recovery: 'Password Recovery',
+      create_playlist_directory: 'Creating a playlist directory',
+      update_playlist_directory: 'Update a playlist directory',
+      add_multimedia: 'Adding multimedia',
+      create_album: 'Create a album',
+      create_playlist: 'Create a playlist',
+      update_multimedia: 'Update a multimedia',
+      password_reset: 'Password Reset'
+    },
+    switch: {
+      have_an_account: 'Have an account?',
+      dont_have_account: "Don't know how to account?"
     }
   },
 
-  choose_subscription: {
-    title: 'Choose your subscription',
-    description: 'Listen without limits on your phone, speaker and other devices'
+  confirm_action: {
+    register:
+      'By clicking "Register" or registering through a third party, you accept <a href="{terms_use_link}">the {title} terms of use</a> and accept <a href="{privacy_policy_link}">the Privacy Policy</a>.'
   },
 
-  subscription: {
-    recommend: 'Recommended',
-    buy_btn: 'Buy a subscription'
-  },
-
-  common: {
-    search: 'Search',
-    status: {
-      online: 'Online',
-      offline: 'Offline'
-    },
-    back: 'Back',
-    clear: 'Clear',
-    done: 'Done'
-  },
-
-  multimedia: {
-    like: 'I like it. Recommend Similar',
-    dislike: 'I did not like',
-    add_to_media_library: 'Add to library',
-    create_stream: 'Create stream'
-  },
-
-  month: {
-    january: 'January',
-    february: 'February',
-    march: 'March',
-    april: 'April',
-    may: 'May',
-    june: 'June',
-    july: 'July',
-    august: 'August',
-    september: 'September',
-    october: 'October',
-    november: 'November',
-    december: 'December'
-  },
-
-  day_week_shortcut: {
-    monday: 'Mo',
-    tuesday: 'Tu',
-    wednesday: 'We',
-    thursday: 'Th',
-    friday: 'Fri',
-    saturday: 'Sa',
-    sunday: 'Su'
-  },
-
-  your_devices: 'Your devices',
-  ip: 'IP-address',
-  last_activity: 'Latest Activity',
-  active: 'Activate',
-  account_activation: 'Account activation',
-  authorization: 'Authorization',
-  login: 'Login',
-  enter_your_email: 'Enter your email',
-  enter_your_password: 'Enter your password',
-  enter_your_password_confirmation: 'Enter your password confirmation',
-  enter_your_pseudonym: 'Enter your pseudonym',
   or_via_social_network: 'or via social network',
-  dont_have_account: "Don't know how to account?",
-  register: 'Register',
-  forgot_your_password_q: 'Forgot your password?',
-  restore_password: 'Restore password',
-  password_recovery: 'Password recovery',
-  send_code: 'Send code',
-  reset_password: 'Reset the password',
-  have_account_q: 'Have an account?',
-  registration: 'Registration',
-  by_clicking_register:
-    'By clicking "Register" or registering through a third party, you accept <a href="{terms_use_link}">the {title} terms of use</a> and accept <a href="{privacy_policy_link}">the Privacy Policy</a>.',
-
-  button: {
-    subscribe: 'Subscribe',
-    unsubscribe: 'Unsubscribe'
-  },
 
   alert: {
-    title: {
-      auth: 'Authorization',
-      register: 'Registration',
-      account_activation: 'Email confirmation',
-      password_recovery_request: 'Password recovery request',
-      reset_password: 'Reset the password'
+    titles: {
+      upload_files: 'Upload file'
     },
-    message: {
-      success_auth: 'You have successfully logged into your account',
-      success_register:
-        'Registration completed successfully! A confirmation code has been sent to {email} email address.',
-      success_account_activate: 'Account successfully activated. Now you can login.',
-      success_password_recovery_request:
-        'Password reset request successfully sent! A password reset code has been sent to your email.',
-      success_reset_password: 'Password changed successfully. Now you can login to your account.'
+    messages: {
+      unable_add_file_max_number:
+        'Unable to add file! Maximum number of uploaded files {max_files}',
+      unable_add_file_min_size:
+        'Unable to add file! Unable to add file! The minimum file size must be {size}{unit}',
+      unable_add_file_max_size: 'Unable to add file! File size should not exceed {size}{unit}',
+      unable_add_file_not_allowed_mime_type:
+        'Unable to add file! Incorrect file mime-type, allowed mime-types: {mime_types}'
+    }
+  },
+
+  steep_form: {
+    multimedia: {
+      type: 'Multimedia type definition',
+      basic_info: 'Basic information',
+      secondary_info: 'Secondary Information',
+      members: 'Participant settings'
+    },
+    album: {
+      type: 'Album type definition',
+      basic_info: 'Basic information'
+    }
+  },
+
+  drag_and_drop: {
+    click_to_upload: 'Click to upload',
+    or_drag_and_drop: 'or drag and drop'
+  },
+
+  no_matches_found: 'No matches found',
+
+  multimedia: {
+    type: {
+      track: 'Music',
+      clip: 'Clip'
     }
   }
 };
