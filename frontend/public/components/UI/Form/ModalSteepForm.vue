@@ -1,7 +1,7 @@
 <template>
   <ModalForm>
     <div class="modal-form-windows-wrapper">
-      <div class="modal-form-windows-inner" :style="styles">
+      <div class="modal-form-windows-inner">
         <slot name="windows" />
       </div>
     </div>
@@ -26,12 +26,6 @@ export default class ModalSteepForm extends Vue {
 
   @Prop({ required: true })
   private readonly activeNumber!: number;
-
-  private get styles(): object {
-    return {
-      left: -100 * this.activeNumber + '%'
-    };
-  }
 }
 </script>
 

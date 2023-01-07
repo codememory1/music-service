@@ -4,13 +4,13 @@
       <ModalFormInput
         placeholder="placeholder.enter_email"
         :is-error="inputData.email.isError"
-        @input="changeEmail"
+        @input="changeInputService.change($event, inputData.email)"
       />
       <ModalFormInput
         type="password"
         placeholder="placeholder.enter_password"
         :is-error="inputData.password.isError"
-        @input="changePassword"
+        @input="changeInputService.change($event, inputData.password)"
       />
       <BaseButton class="accent" @click.prevent="auth">{{ $t('buttons.login') }}</BaseButton>
 
@@ -43,8 +43,8 @@ import ModalForm from '~/components/UI/Form/ModalForm.vue';
 import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import ModalSwitcher from '~/components/Business/Switch/ModalSwitcher.vue';
-import isEmpty from '~/utils/is-empty';
-import { AuthType } from '~/types/AuthType';
+import AuthFormDataType from '~/types/ui/form-data/auth-form-data-type';
+import ChangeInputService from '~/services/ui/input/change-input-service';
 
 @Component({
   components: {
@@ -56,28 +56,21 @@ import { AuthType } from '~/types/AuthType';
   }
 })
 export default class AuthModal extends Vue {
-  private inputData: AuthType = {
+  private readonly changeInputService: ChangeInputService = new ChangeInputService();
+  private inputData: AuthFormDataType = {
     email: {
       isError: false,
-      value: null
+      value: ''
     },
     password: {
       isError: false,
-      value: null
+      value: ''
     }
   };
 
   private auth(): void {
-    this.inputData.email.isError = isEmpty(this.inputData.email.value);
-    this.inputData.password.isError = isEmpty(this.inputData.password.value);
-  }
-
-  private changeEmail(event: InputEvent): void {
-    this.inputData.email.value = (event.target as HTMLInputElement).value;
-  }
-
-  private changePassword(event: InputEvent): void {
-    this.inputData.password.value = (event.target as HTMLInputElement).value;
+    this.inputData.email.isError = this.inputData.email.value.length === 0;
+    this.inputData.password.isError = this.inputData.password.value.length === 0;
   }
 }
 </script>

@@ -17,6 +17,7 @@
       <BaseInput
         ref="password"
         :type="isShowPassword ? 'text' : 'password'"
+        name="new-password"
         :description="description"
         :placeholder="placeholder"
         :is-error="isError"
@@ -32,7 +33,7 @@ import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
 import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
 import BaseInput from '~/components/UI/FormElements/Input/BaseInput.vue';
 import PasswordProgressBar from '~/components/UI/ProgressBar/BasePasswordProgressBar.vue';
-import passwordComplexityLevel from '~/utils/password-complexity-level';
+import PasswordLevelService from '~/services/ui/password-level-service';
 
 @Component({
   components: {
@@ -52,16 +53,8 @@ export default class ModalNewPasswordFormInput extends Vue {
   private readonly isError!: boolean;
 
   private isShowPassword: boolean = false;
-  private levels: Array<Array<string>> = [
-    ['', '', '', '', ''],
-    ['first-level', '', '', '', ''],
-    ['first-level', 'second-level', '', '', ''],
-    ['first-level', 'second-level', 'third-level', '', ''],
-    ['first-level', 'second-level', 'third-level', 'fourth-level', ''],
-    ['first-level', 'second-level', 'third-level', 'fourth-level', 'fifth-level']
-  ];
-
-  private level: Array<string> = this.levels[0];
+  private passwordLevelService: PasswordLevelService = new PasswordLevelService();
+  private level: Array<string> = this.passwordLevelService.levels[0];
 
   private togglePassword(): void {
     this.isShowPassword = !this.isShowPassword;
@@ -69,25 +62,7 @@ export default class ModalNewPasswordFormInput extends Vue {
 
   @Emit('input')
   private change(event: InputEvent): void {
-    const password = (event.target as HTMLInputElement).value;
-
-    if (password.length === 0) {
-      this.level = this.levels[0];
-    } else {
-      const level = passwordComplexityLevel(password);
-
-      if (level === 20) {
-        this.level = this.levels[1];
-      } else if (level === 40) {
-        this.level = this.levels[2];
-      } else if (level === 60) {
-        this.level = this.levels[3];
-      } else if (level === 80) {
-        this.level = this.levels[4];
-      } else {
-        this.level = this.levels[5];
-      }
-    }
+    this.level = this.passwordLevelService.defineLevel((event.target as HTMLInputElement).value);
   }
 }
 </script>

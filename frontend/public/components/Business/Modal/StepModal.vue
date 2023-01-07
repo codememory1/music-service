@@ -1,31 +1,35 @@
 <template>
-  <BaseModal ref="modal" :title="title" :is-open="isOpen" class="step-modal">
+  <BaseModal ref="modal" :title="title" class="step-modal">
     <BlockFormElements>
       <BaseProgressStep
         ref="progressSteep"
         :titles="steepTitles"
-        :active="activeWindow"
-        @changeStep="changeStep"
+        :active="stepModalService.getActiveWindow()"
+        @changeStep="changeActiveStep"
       />
     </BlockFormElements>
     <BlockFormElements>
       <ModalForm>
         <slot />
 
-        <BaseButton v-if="activeWindow > 0" class="only-border" @click.prevent="prev">
+        <BaseButton
+          v-if="stepModalService.isShowPrevButton()"
+          class="only-border"
+          @click.prevent="stepModalService.prev()"
+        >
           {{ $t('buttons.prev') }}
         </BaseButton>
         <BaseButton
-          v-if="activeWindow === steepTitles.length - 1"
+          v-if="stepModalService.isLastWindow()"
           class="accent"
           @click="$emit('sendForm', $event)"
         >
           {{ $t(buttonTitle) }}
         </BaseButton>
         <BaseButton
-          v-if="activeWindow < steepTitles.length - 1"
+          v-if="stepModalService.isShowNextButton()"
           class="step-modal__btn-next blue"
-          @click.prevent="next"
+          @click.prevent="stepModalService.next()"
         >
           {{ $t('buttons.next') }}
         </BaseButton>
@@ -41,6 +45,7 @@ import BlockFormElements from '~/components/UI/Block/BlockFormElements.vue';
 import BaseProgressStep from '~/components/UI/Step/BaseProgressStep.vue';
 import ModalForm from '~/components/UI/Form/ModalForm.vue';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
+import StepModalService from '~/services/ui/modal/step-modal/step-modal-service';
 
 @Component({
   components: {
@@ -52,9 +57,6 @@ import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
   }
 })
 export default class StepModal extends Vue {
-  @Prop({ required: false, default: false })
-  private readonly isOpen!: boolean;
-
   @Prop({ required: true })
   private readonly title!: string;
 
@@ -64,20 +66,13 @@ export default class StepModal extends Vue {
   @Prop({ required: true })
   private readonly buttonTitle!: string;
 
-  private activeWindow: number = 0;
+  private readonly stepModalService: StepModalService = new StepModalService(
+    this,
+    this.steepTitles
+  );
 
-  private prev(): void {
-    this.changeStep(--this.activeWindow);
-  }
-
-  private next(): void {
-    this.changeStep(++this.activeWindow);
-  }
-
-  private changeStep(index: number) {
-    this.activeWindow = index;
-
-    this.$emit('changeWindow', this.activeWindow);
+  private changeActiveStep(index: number): void {
+    this.stepModalService.changeTo(index);
   }
 }
 </script>

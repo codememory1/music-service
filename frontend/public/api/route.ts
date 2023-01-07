@@ -1,10 +1,10 @@
-import { ViewSortableEnum } from '~/Enums/EnumSortable';
-import { HttpRequestMethodEnum } from '~/Enums/EnumRequestMethods';
-import { ApiQueryDataType } from '~/types/api-query-data-type';
+import { ViewSortableEnum } from '~/Enums/view-sortable-enum';
+import { HttpRequestMethodEnum } from '~/Enums/http-request-method-enum';
+import { ApiQueryDataType } from '~/types/business/api-query-data-type';
 
 const httpBuildQuery = require('http-build-query');
 
-export class Route {
+export default class Route {
   private readonly path: string;
   private readonly method: HttpRequestMethodEnum;
   private readonly filters: Array<string>;
@@ -16,7 +16,7 @@ export class Route {
 
   public constructor(
     path: string,
-    method: HttpRequestMethodEnum = HttpRequestMethodEnum.Get,
+    method: HttpRequestMethodEnum = HttpRequestMethodEnum.GET,
     filters: Array<string> = [],
     sorts: Array<string> = []
   ) {
@@ -48,7 +48,7 @@ export class Route {
     return query === '' ? this.path : decodeURI(`${this.path}?${query}`);
   }
 
-  public getMethod(): string {
+  public getMethod(): number {
     return this.method;
   }
 }

@@ -1,7 +1,7 @@
 <template>
-  <div class="alert" :style="getStyles">
+  <div class="alert" :style="{ '--time-remove': alertService.getAutoDeleteTime(alert) + 's' }">
     <div class="alert-icon-wrapper">
-      <img class="alert__icon" :src="getIconByStatus" :alt="alert.status" />
+      <img class="alert__icon" :src="alertService.getIconByStatus(alert)" :alt="alert.status" />
     </div>
     <div class="alert-content-wrapper">
       <div class="alert-content">
@@ -18,10 +18,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Emit, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
-import { getAlertModule } from '~/store';
-import { AlertType } from '~/types/AlertType';
+import AlertInterface from '~/Interfaces/ui/alert-interface';
+import AlertService from '~/services/ui/alert/alert-service';
 
 @Component({
   components: {
@@ -30,40 +30,14 @@ import { AlertType } from '~/types/AlertType';
 })
 export default class BaseAlert extends Vue {
   @Prop({ required: true })
-  private readonly alert!: AlertType;
+  private readonly alert!: AlertInterface;
 
-  private get getStyles(): object {
-    return {
-      '--time-remove': `${this.getAutoDeleteTime}s`
-    };
-  }
-
-  private get getIconByStatus(): string {
-    switch (this.alert.status) {
-      case 'success':
-        return '/icons/success-circle.svg';
-      case 'error':
-        return '/icons/error-circle.svg';
-      default:
-        return '';
-    }
-  }
-
-  private get getAutoDeleteTime(): number {
-    return undefined === this.alert.autoDeleteTime
-      ? this.$config.alertAutoDeleteTime
-      : this.alert.autoDeleteTime;
-  }
+  private readonly alertService: AlertService = new AlertService(this);
 
   private mounted(): void {
     setTimeout(() => {
-      this.close();
-    }, this.getAutoDeleteTime * 1000);
-  }
-
-  @Emit('close')
-  private close(): void {
-    getAlertModule(this.$store).removeAlert(this.alert);
+      this.alertService.deleteAlert(this.alert);
+    }, this.alertService.getAutoDeleteTime(this.alert) * 1000);
   }
 }
 </script>

@@ -1,124 +1,53 @@
 <template>
   <div class="input-code-squares">
     <input
-      v-for="n in countSquares"
-      :key="n"
-      ref="inputCodeSquare"
+      v-for="(square, index) in inputCodeService.getSquares()"
+      :key="index"
+      ref="square"
+      name="one-time-code"
       type="text"
       class="input-code__square"
-      :class="{ error: isErrorSquare(n - 1) }"
+      :class="{ error: square.isError() }"
       maxlength="1"
-      @input="input($event, n - 1)"
-      @keydown="keydown($event, n - 1)"
+      autocomplete="off"
+      @input="square.input($event.target, index)"
+      @keydown="keydown($event)"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-
-type InputCodeType = {
-  index: number;
-  error: boolean;
-};
+import InputCodeService from '~/services/ui/input-code/input-code-service';
+import InputCodeKeydownService from '~/services/ui/input-code/input-code-keydown-service';
 
 @Component
 export default class BaseInputCode extends Vue {
   @Prop({ required: true })
-  private readonly countSquares!: number;
+  private readonly numberSquares!: number;
 
-  @Prop({ required: false, default: null })
-  private readonly activeSquareNumber!: number | null;
+  @Prop({ required: false, default: 0 })
+  private readonly activeSquareIndex!: number | null;
 
-  public squares: Array<HTMLInputElement> = [];
-  public codes: Array<string> = [];
-  private squaresInfo: Array<InputCodeType> = [];
+  private readonly inputCodeService: InputCodeService = new InputCodeService(
+    this,
+    this.numberSquares
+  );
 
   private mounted(): void {
-    this.squares = this.$refs.inputCodeSquare as Array<HTMLInputElement>;
-    this.codes = this.squares.map((v, i) => {
-      this.squaresInfo.push({
-        index: i,
-        error: false
-      });
+    const squares = this.$refs.square as Array<HTMLInputElement>;
 
-      return '';
+    this.inputCodeService.getSquares().forEach((square, index) => {
+      square.setElement(squares[index]);
     });
 
-    if (this.activeSquareNumber !== null) {
-      this.squares[this.activeSquareNumber - 1].focus();
+    if (this.activeSquareIndex !== null) {
+      this.inputCodeService.activeSquare(this.activeSquareIndex);
     }
   }
 
-  private input(event: InputEvent, i: number): void {
-    if (i + 1 <= this.squares.length) {
-      if (event.data !== null) {
-        if (i + 1 < this.squares.length) {
-          this.squares[i].blur();
-          this.squares[i + 1].focus();
-        }
-        this.removeErrorSquare(i);
-        this.codes[i] = event.data.toString();
-      } else {
-        this.codes[i] = '';
-      }
-    }
-
-    this.$emit('change', event, this.codes, this.squares);
-  }
-
-  private keydown(event: KeyboardEvent, i: number): void {
-    if (event.key === 'ArrowLeft') {
-      if (i <= this.countSquares - 1 && i - 1 >= 0) {
-        this.squares[i].blur();
-        setTimeout(() => {
-          const input = this.squares[i - 1];
-          input.selectionStart = 1;
-          input.focus();
-        }, 0);
-      }
-    } else if (event.key === 'ArrowRight') {
-      if (i + 1 <= this.countSquares - 1) {
-        this.squares[i].blur();
-        setTimeout(() => {
-          const input = this.squares[i + 1];
-          input.selectionStart = 1;
-          input.focus();
-        }, 0);
-      }
-    }
-  }
-
-  public isErrorSquare(index: number): boolean {
-    let isError: boolean = false;
-
-    this.squaresInfo.forEach((code: InputCodeType) => {
-      if (code.index === index) {
-        isError = code.error;
-      }
-    });
-
-    return isError;
-  }
-
-  public setErrorSquare(index: number): void {
-    this.squaresInfo.map((code: InputCodeType) => {
-      if (code.index === index) {
-        code.error = true;
-      }
-
-      return code;
-    });
-  }
-
-  public removeErrorSquare(index: number): void {
-    this.squaresInfo.map((code: InputCodeType) => {
-      if (code.index === index) {
-        code.error = false;
-      }
-
-      return code;
-    });
+  private keydown(event: KeyboardEvent): void {
+    new InputCodeKeydownService(this.inputCodeService).handle(event);
   }
 }
 </script>

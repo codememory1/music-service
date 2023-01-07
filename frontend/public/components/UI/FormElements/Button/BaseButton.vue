@@ -1,6 +1,7 @@
 <template>
   <button class="button" :class="{ disabled: isLoading }" @click="$emit('click', $event)">
     <slot v-if="!isLoading" />
+
     <i v-else class="button__spinner fas fa-spin fa-spinner-third" />
   </button>
 </template>

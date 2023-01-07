@@ -1,4 +1,5 @@
 @import '../../../../include/variables';
+@import '../../../../include/mixins';
 
 .input-code {
   &-squares {
@@ -21,6 +22,8 @@
     transition: ease-in border $default-transition;
     text-align: center;
     font-size: $default-size;
+
+    @include autocomplete(2, $light-for-dark, $white, $dark-bg);
 
     &:focus {
       border-color: $accent-second;

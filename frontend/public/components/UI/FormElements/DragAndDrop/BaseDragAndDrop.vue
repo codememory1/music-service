@@ -1,7 +1,7 @@
 <template>
   <div class="uploader">
     <div
-      v-if="!isMaxUploadedFiles()"
+      v-if="!dragAndDropService.isMaxUploadedFiles(maxFiles)"
       ref="uploader"
       class="uploader-drag-and-drop"
       :class="{ dragenter: isDragenter }"
@@ -9,7 +9,7 @@
       @dragleave.prevent="toggleActive"
       @dragover.prevent
       @drop.prevent="drop"
-      @click="clickByUploader"
+      @click="$refs.inputFile.click()"
     >
       <input
         ref="inputFile"
@@ -32,12 +32,12 @@
         </div>
       </div>
     </div>
-    <div v-if="uploadedFiles.length > 0" class="uploader-uploaded-files">
+    <div v-if="dragAndDropService.getUploadedFiles().length > 0" class="uploader-uploaded-files">
       <BaseUploadedFile
-        v-for="(uploadedFile, index) in uploadedFiles"
+        v-for="(uploadedFile, index) in dragAndDropService.getUploadedFiles()"
         :key="index"
         :file="uploadedFile"
-        @delete="deleteFile(index)"
+        @delete="dragAndDropService.removeFile(index)"
       />
     </div>
   </div>
@@ -48,7 +48,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import BaseUploadedFile from '~/components/UI/FormElements/DragAndDrop/BaseUploadedFile.vue';
 import { getAlertModule } from '~/store';
-import sizeConverter from '~/utils/size-converter';
+import DragAndDropValidationService from '~/services/ui/drag-and-drop/drag-and-drop-validation-service';
+import DragAndDropService from '~/services/ui/drag-and-drop/drag-and-drop-service';
 
 @Component({
   components: {
@@ -69,12 +70,11 @@ export default class BaseDragAndDrop extends Vue {
   @Prop({ required: false, default: () => [] }) // Empty Array - Any MimeType
   private readonly allowedMimeTypes!: Array<string>;
 
-  private isDragenter: boolean = false;
-  private uploadedFiles: Array<File> = [];
+  private readonly dragAndDropService = new DragAndDropService(this);
+  private readonly dragAndDropValidationService: DragAndDropValidationService =
+    new DragAndDropValidationService(this.dragAndDropService);
 
-  private clickByUploader(): void {
-    (this.$refs.inputFile as HTMLInputElement).click();
-  }
+  private isDragenter: boolean = false;
 
   private changeFiles(event: PointerEvent): void {
     const files = (event.target as HTMLInputElement).files;
@@ -99,57 +99,23 @@ export default class BaseDragAndDrop extends Vue {
   }
 
   private uploadFile(file: File): void {
-    if (this.isMaxUploadedFiles()) {
-      this.addErrorAlert('alert.titles.upload_files', 'alert.messages.unable_add_file_max_number', {
-        max_files: this.maxFiles
+    this.dragAndDropValidationService.addValidateNumberUploadedFiles(this.maxFiles);
+    this.dragAndDropValidationService.addValidateMinSize(this.minSize, file);
+    this.dragAndDropValidationService.addValidateMaxSize(this.maxSize, file);
+    this.dragAndDropValidationService.addValidateMimeTypes(this.allowedMimeTypes, file);
+
+    this.dragAndDropValidationService.validate((error) => {
+      getAlertModule(this.$store).addAlert({
+        id: this.$uuid,
+        title: this.$t(error.title),
+        message: this.$t(error.message, error.parameters),
+        status: 'error'
       });
-    } else if (this.minSize !== -1 && file.size < this.minSize) {
-      const size = sizeConverter(this.minSize);
-
-      this.addErrorAlert('alert.titles.upload_files', 'alert.messages.unable_add_file_min_size', {
-        size: size.size,
-        unit: size.name
-      });
-    } else if (this.maxSize !== -1 && file.size > this.maxSize) {
-      const size = sizeConverter(this.maxSize);
-
-      this.addErrorAlert('alert.titles.upload_files', 'alert.messages.unable_add_file_max_size', {
-        size: size.size,
-        unit: size.name
-      });
-    } else if (this.allowedMimeTypes.length !== 0 && !this.allowedMimeTypes.includes(file.type)) {
-      this.addErrorAlert(
-        'alert.titles.upload_files',
-        'alert.messages.unable_add_file_not_allowed_mime_type',
-        { mime_types: this.allowedMimeTypes.join(', ') }
-      );
-    } else {
-      this.uploadedFiles.push(file);
-
-      this.$emit('uploadFile', file);
-    }
-  }
-
-  private deleteFile(index: number): void {
-    this.uploadedFiles.splice(index, 1);
-  }
-
-  private isMaxUploadedFiles(): boolean {
-    return this.maxFiles !== -1 && this.uploadedFiles.length >= this.maxFiles;
-  }
-
-  private addErrorAlert(
-    titleKey: string,
-    messageKey: string,
-    messageParameters: object = {}
-  ): void {
-    getAlertModule(this.$store).addAlert({
-      id: this.$uuid,
-      title: this.$t(titleKey),
-      message: this.$t(messageKey, messageParameters),
-      status: 'error',
-      autoDeleteTime: undefined
     });
+
+    if (this.dragAndDropValidationService.isValidated()) {
+      this.dragAndDropService.addFile(file);
+    }
   }
 }
 </script>

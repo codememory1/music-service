@@ -28,7 +28,8 @@
       "@types/node",
       "@types/swiper",
       "@nuxtjs/axios",
-      "@nuxtjs/dotenv"
+      "@nuxtjs/dotenv",
+      "@nuxtjs/i18n"
     ]
   },
   "exclude": [

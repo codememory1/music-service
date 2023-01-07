@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="to">
+  <NuxtLink :to="link">
     <img class="platform-logo" src="/images/logo.svg" :alt="$config.title" />
   </NuxtLink>
 </template>
@@ -10,7 +10,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class PlatformLogo extends Vue {
   @Prop({ required: false, default: '/' })
-  private readonly to!: string;
+  private readonly link!: string;
 }
 </script>
 

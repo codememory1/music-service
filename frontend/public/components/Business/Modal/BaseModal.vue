@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" :class="{ active: syncedIsOpen }">
+  <div class="modal" :class="{ active: isOpen }">
     <div class="modal__bg" @click="close" />
     <div class="modal-wrapper">
       <BlockFormElements>
@@ -28,22 +28,19 @@ import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
   }
 })
 export default class BaseModal extends Vue {
-  @Prop({ required: false, default: false })
-  private readonly isOpen!: boolean;
-
   @Prop({ required: true })
   private readonly title!: string;
 
-  private syncedIsOpen: boolean = this.isOpen;
+  private isOpen: boolean = true;
 
   @Emit('open')
   public open(): void {
-    this.syncedIsOpen = true;
+    this.isOpen = true;
   }
 
   @Emit('close')
   public close(): void {
-    this.syncedIsOpen = false;
+    this.isOpen = false;
   }
 }
 </script>

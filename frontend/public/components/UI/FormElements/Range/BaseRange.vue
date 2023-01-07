@@ -6,7 +6,7 @@
     :max="max"
     :interval="steep"
     :tooltip="enabledTooltip ? tooltipType : 'none'"
-    :tooltip-placement="mutatedTooltipPositions"
+    :tooltip-placement="syncedTooltipPositions"
     :tooltip-formatter="tooltipFormat"
   />
 </template>
@@ -44,19 +44,16 @@ export default class BaseRange extends Vue {
   private readonly tooltipFormat!: string;
 
   private value: Array<number> | number = this.defaultValue;
-  private mutatedTooltipPositions: Array<string> = [];
+  private syncedTooltipPositions: Array<string> = this.tooltipPositions;
 
   private created() {
-    this.mutatedTooltipPositions = this.tooltipPositions;
-
     if (
       Array.isArray(this.defaultValue) &&
-      this.mutatedTooltipPositions.length < this.defaultValue.length
+      this.syncedTooltipPositions.length < this.defaultValue.length
     ) {
-      const difference = this.defaultValue.length - this.mutatedTooltipPositions.length;
-      for (let i = 0; i < difference; i++) {
-        this.mutatedTooltipPositions.push(
-          this.mutatedTooltipPositions[this.mutatedTooltipPositions.length - 1]
+      for (let i = 0; i < this.defaultValue.length - this.syncedTooltipPositions.length; i++) {
+        this.syncedTooltipPositions.push(
+          this.syncedTooltipPositions[this.syncedTooltipPositions.length - 1]
         );
       }
     }

@@ -1,7 +1,6 @@
 <template>
   <StepModal
     ref="modal"
-    :is-open="true"
     :steep-titles="[
       $t('steep_form.multimedia.type'),
       $t('steep_form.multimedia.basic_info'),
@@ -60,7 +59,7 @@
         <ModalFormInput :placeholder="$t('placeholder.enter_multimedia_producer')" />
         <BaseSelect
           :placeholder="$t('placeholder.select_multimedia_performers')"
-          :options="[]"
+          :options="[{value: '1', title: 'Danil'}, {value: 2, title: 'Danil2'}, {value: '3', title: 'Danil3'}]"
           :use-search="true"
           :as-multiple="true"
         />
@@ -81,8 +80,12 @@ import ModalFormWindow from '~/components/UI/Window/ModalFormWindow.vue';
 import BaseDragAndDrop from '~/components/UI/FormElements/DragAndDrop/BaseDragAndDrop.vue';
 import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
 import ModalFormCheckbox from '~/components/UI/FormElements/Checkbox/ModalFormCheckbox.vue';
-import MultimediaCategoriesRequest from '~/api/requests/MultimediaCategoriesRequest';
-import { SelectLoadingType } from '~/types/SelectLoadingType';
+import ApiRequestService from '~/services/business/api-request-service';
+import ListMultimediaCategoryResponseInterface from '~/Interfaces/business/api-responses/list-multimedia-category-response-interface';
+import Routes from '~/api/routes';
+import ApiSuccessResponseInterface from '~/Interfaces/business/api-success-response-interface';
+import SelectListLoadingType from '~/types/ui/select/select-list-loading-type';
+import ApiFailedResponseInterface from '~/Interfaces/business/api-failed-response-interface';
 
 @Component({
   components: {
@@ -99,10 +102,14 @@ import { SelectLoadingType } from '~/types/SelectLoadingType';
   }
 })
 export default class AddMultimediaModal extends Vue {
-  private selectCategories: SelectLoadingType = {
+  private selectCategories: SelectListLoadingType = {
     isLoading: true,
     options: []
   };
+
+  private readonly apiRequestService: ApiRequestService<
+    Array<ListMultimediaCategoryResponseInterface>
+  > = new ApiRequestService(this, Routes.multimedia.category.all);
 
   private activeWindow: number = 0;
 
@@ -111,16 +118,22 @@ export default class AddMultimediaModal extends Vue {
   }
 
   private async categoryRequest() {
-    const multimediaCategoriesResponse = await new MultimediaCategoriesRequest(this.$api).send(
-      this.$config.apiClientHost
-    );
+    const apiResponse = await this.apiRequestService.request();
 
-    multimediaCategoriesResponse.forEach((category) => {
-      this.selectCategories.options.push({
-        value: String(category.id),
-        title: category.title
+    if (apiResponse.isError) {
+      // const response = apiResponse.response as ApiFailedResponseInterface;
+    } else {
+      const response = apiResponse.response as ApiSuccessResponseInterface<
+        Array<ListMultimediaCategoryResponseInterface>
+      >;
+
+      response.data.forEach((category) => {
+        this.selectCategories.options.push({
+          value: String(category.id),
+          title: category.title
+        });
       });
-    });
+    }
 
     this.selectCategories.isLoading = false;
   }

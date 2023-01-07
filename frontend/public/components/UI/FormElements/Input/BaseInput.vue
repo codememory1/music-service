@@ -5,6 +5,7 @@
       class="form__input"
       :class="{ error: isError }"
       :placeholder="$t(placeholder)"
+      :name="name"
       @input="$emit('input', $event)"
     />
     <p v-if="undefined !== description" class="form-input__description">{{ description }}</p>
@@ -27,6 +28,9 @@ export default class BaseInput extends Vue {
 
   @Prop({ required: false, default: false })
   private readonly isError!: boolean;
+
+  @Prop({ required: false, default: undefined })
+  private readonly name!: string | undefined;
 }
 </script>
 

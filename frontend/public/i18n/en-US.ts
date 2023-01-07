@@ -7,7 +7,8 @@ export default {
     send_code: 'Send Code',
     add: 'Add',
     create: 'Create',
-    update: 'Update'
+    update: 'Update',
+    reset: 'Reset'
   },
 
   placeholder: {
@@ -44,7 +45,8 @@ export default {
       add_multimedia: 'Adding multimedia',
       create_album: 'Create a album',
       create_playlist: 'Create a playlist',
-      update_multimedia: 'Update a multimedia'
+      update_multimedia: 'Update a multimedia',
+      password_reset: 'Password Reset'
     },
     switch: {
       have_an_account: 'Have an account?',

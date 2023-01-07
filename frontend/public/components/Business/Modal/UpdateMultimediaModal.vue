@@ -61,9 +61,12 @@ import BaseSelect from '~/components/UI/FormElements/Select/BaseSelect.vue';
 import ModalFormWindow from '~/components/UI/Window/ModalFormWindow.vue';
 import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
 import ModalFormCheckbox from '~/components/UI/FormElements/Checkbox/ModalFormCheckbox.vue';
-import MultimediaCategoriesRequest from '~/api/requests/MultimediaCategoriesRequest';
 import BaseDragAndDrop from '~/components/UI/FormElements/DragAndDrop/BaseDragAndDrop.vue';
-import { SelectLoadingType } from '~/types/SelectLoadingType';
+import SelectListLoadingType from '~/types/ui/select/select-list-loading-type';
+import ApiRequestService from '~/services/business/api-request-service';
+import ListMultimediaCategoryResponseInterface from '~/Interfaces/business/api-responses/list-multimedia-category-response-interface';
+import Routes from '~/api/routes';
+import ApiSuccessResponseInterface from '~/Interfaces/business/api-success-response-interface';
 
 @Component({
   components: {
@@ -80,10 +83,14 @@ import { SelectLoadingType } from '~/types/SelectLoadingType';
   }
 })
 export default class UpdateMultimediaModal extends Vue {
-  private selectCategories: SelectLoadingType = {
+  private selectCategories: SelectListLoadingType = {
     isLoading: true,
     options: []
   };
+
+  private readonly apiRequestService: ApiRequestService<
+    Array<ListMultimediaCategoryResponseInterface>
+  > = new ApiRequestService(this, Routes.multimedia.category.all);
 
   private activeWindow: number = 0;
 
@@ -92,16 +99,20 @@ export default class UpdateMultimediaModal extends Vue {
   }
 
   private async categoryRequest() {
-    const multimediaCategoriesResponse = await new MultimediaCategoriesRequest(this.$api).send(
-      this.$config.apiClientHost
-    );
+    const apiResponse = await this.apiRequestService.request();
 
-    multimediaCategoriesResponse.forEach((category) => {
-      this.selectCategories.options.push({
-        value: String(category.id),
-        title: category.title
+    if (!apiResponse.isError) {
+      const response = apiResponse.response as ApiSuccessResponseInterface<
+        Array<ListMultimediaCategoryResponseInterface>
+      >;
+
+      response.data.forEach((category) => {
+        this.selectCategories.options.push({
+          value: String(category.id),
+          title: category.title
+        });
       });
-    });
+    }
 
     this.selectCategories.isLoading = false;
   }

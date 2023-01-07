@@ -4,23 +4,23 @@
       <ModalFormInput
         placeholder="placeholder.enter_pseudonym"
         :is-error="inputData.pseudonym.isError"
-        @input="changePseudonym"
+        @input="changeInputService.change($event, inputData.pseudonym)"
       />
       <ModalFormInput
         placeholder="placeholder.enter_email"
         :is-error="inputData.email.isError"
-        @input="changeEmail"
+        @input="changeInputService.change($event, inputData.email)"
       />
       <ModalNewPasswordFormInput
         placeholder="placeholder.enter_password"
         :is-error="inputData.password.isError"
-        @input="changePassword"
+        @input="changeInputService.change($event, inputData.password)"
       />
       <ModalFormInput
         type="password"
         placeholder="placeholder.enter_confirm_password"
         :is-error="inputData.confirmPassword.isError"
-        @input="changePasswordConfirm"
+        @input="changeInputService.change($event, inputData.confirmPassword)"
       />
 
       <ModalFormCheckbox
@@ -54,8 +54,8 @@ import ModalNewPasswordFormInput from '~/components/UI/FormElements/Input/ModalN
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import ModalFormCheckbox from '~/components/UI/FormElements/Checkbox/ModalFormCheckbox.vue';
 import ModalSwitcher from '~/components/Business/Switch/ModalSwitcher.vue';
-import isEmpty from '~/utils/is-empty';
-import { RegisterType } from '~/types/RegisterType';
+import RegisterFormDataType from '~/types/ui/form-data/register-form-data-type';
+import ChangeInputService from '~/services/ui/input/change-input-service';
 
 @Component({
   components: {
@@ -69,22 +69,23 @@ import { RegisterType } from '~/types/RegisterType';
   }
 })
 export default class RegisterModal extends Vue {
-  private inputData: RegisterType = {
+  private readonly changeInputService: ChangeInputService = new ChangeInputService();
+  private inputData: RegisterFormDataType = {
     pseudonym: {
       isError: false,
-      value: null
+      value: ''
     },
     email: {
       isError: false,
-      value: null
+      value: ''
     },
     password: {
       isError: false,
-      value: null
+      value: ''
     },
     confirmPassword: {
       isError: false,
-      value: null
+      value: ''
     },
     isAccept: {
       isError: false,
@@ -93,27 +94,11 @@ export default class RegisterModal extends Vue {
   };
 
   private register(): void {
-    this.inputData.pseudonym.isError = isEmpty(this.inputData.pseudonym.value);
-    this.inputData.email.isError = isEmpty(this.inputData.email.value);
-    this.inputData.password.isError = isEmpty(this.inputData.password.value);
-    this.inputData.confirmPassword.isError = isEmpty(this.inputData.confirmPassword.value);
+    this.inputData.pseudonym.isError = this.inputData.pseudonym.value.length === 0;
+    this.inputData.email.isError = this.inputData.email.value.length === 0;
+    this.inputData.password.isError = this.inputData.password.value.length === 0;
+    this.inputData.confirmPassword.isError = this.inputData.confirmPassword.value.length === 0;
     this.inputData.isAccept.isError = !this.inputData.isAccept.value;
-  }
-
-  private changePseudonym(event: InputEvent): void {
-    this.inputData.pseudonym.value = (event.target as HTMLInputElement).value;
-  }
-
-  private changeEmail(event: InputEvent): void {
-    this.inputData.email.value = (event.target as HTMLInputElement).value;
-  }
-
-  private changePassword(event: InputEvent): void {
-    this.inputData.password.value = (event.target as HTMLInputElement).value;
-  }
-
-  private changePasswordConfirm(event: InputEvent): void {
-    this.inputData.confirmPassword.value = (event.target as HTMLInputElement).value;
   }
 }
 </script>

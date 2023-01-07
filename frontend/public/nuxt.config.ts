@@ -108,7 +108,8 @@ const config: NuxtConfig = {
     '~plugins/tooltip.ts',
     '~plugins/swiper.ts',
     '~plugins/api.ts',
-    '~store/index.ts'
+    '~store/index.ts',
+    '~prototypes/array-prototype.ts'
   ],
 
   components: true,
