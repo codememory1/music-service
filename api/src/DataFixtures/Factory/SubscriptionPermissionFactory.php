@@ -7,7 +7,6 @@ use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Subscription;
 use App\Entity\SubscriptionPermission;
 use App\Entity\SubscriptionPermissionKey;
-use App\Enum\SubscriptionEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 
@@ -16,7 +15,7 @@ final class SubscriptionPermissionFactory implements DataFixtureFactoryInterface
     private ?ReferenceRepository $referenceRepository = null;
 
     public function __construct(
-        private readonly SubscriptionEnum $subscription,
+        private readonly string $subscriptionTitle,
         private readonly SubscriptionPermissionEnum $subscriptionPermission,
         private readonly array $value = []
     ) {
@@ -27,7 +26,7 @@ final class SubscriptionPermissionFactory implements DataFixtureFactoryInterface
         $subscriptionPermission = new SubscriptionPermission();
 
         /** @var Subscription $subscription */
-        $subscription = $this->referenceRepository->getReference("s-{$this->subscription->name}");
+        $subscription = $this->referenceRepository->getReference("s-{$this->subscriptionTitle}");
 
         /** @var SubscriptionPermissionKey $subscriptionPermissionKey */
         $subscriptionPermissionKey = $this->referenceRepository->getReference("spk-{$this->subscriptionPermission->name}");

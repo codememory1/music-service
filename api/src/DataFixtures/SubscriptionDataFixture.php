@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use App\DataFixtures\Factory\SubscriptionFactory;
 use App\Entity\Subscription;
-use App\Enum\SubscriptionEnum;
 use App\Enum\SubscriptionStatusEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -20,7 +19,6 @@ final class SubscriptionDataFixture extends AbstractDataFixture implements Depen
     {
         parent::__construct([
             new SubscriptionFactory(
-                SubscriptionEnum::PREMIUM,
                 'subscription@premium',
                 'subscription@premiumDescription',
                 1.99,
@@ -28,7 +26,6 @@ final class SubscriptionDataFixture extends AbstractDataFixture implements Depen
                 isRecommend: false
             ),
             new SubscriptionFactory(
-                SubscriptionEnum::ARTIST,
                 'subscription@artist',
                 'subscription@artustDescription',
                 99.99,
@@ -36,7 +33,6 @@ final class SubscriptionDataFixture extends AbstractDataFixture implements Depen
                 isRecommend: false
             ),
             new SubscriptionFactory(
-                SubscriptionEnum::FAMILY,
                 'subscription@family',
                 'subscription@familyDescription',
                 5.99,
@@ -54,7 +50,7 @@ final class SubscriptionDataFixture extends AbstractDataFixture implements Depen
         foreach ($this->getEntities() as $entity) {
             $manager->persist($entity);
 
-            $this->addReference("s-{$entity->getKey()}", $entity);
+            $this->addReference("s-{$entity->getTitle()}", $entity);
         }
 
         $manager->flush();
