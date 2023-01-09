@@ -13,10 +13,6 @@ final class SubscriptionResponseData extends AbstractResponseData
 {
     private ?int $id = null;
 
-    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
-    #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
-    private ?string $key = null;
-
     #[RDCV\AsTranslation]
     private ?string $title = null;
 
@@ -29,8 +25,16 @@ final class SubscriptionResponseData extends AbstractResponseData
     private ?bool $recommend = null;
     private ?string $status = null;
 
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
     #[RDCV\CallbackResponseData(SubscriptionPermissionResponseData::class)]
     private array $permissions = [];
+
+    #[RDCV\CallbackResponseData(SubscriptionPermissionResponseData::class)]
+    private array $uniquePermissions = [];
+
+    #[RDCS\AliasInResponse('expands_from')]
+    #[RDCV\CallbackResponseData(SubscriptionExtenderResponseData::class, onlyProperties: ['id', 'basicSubscription'])]
+    private array $extenders = [];
 
     #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
     #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]

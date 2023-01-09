@@ -263,6 +263,7 @@ final class TranslationDataFixture extends AbstractDataFixture implements Depend
             new TranslationFactory('ru', 'subscriptionPermissionKey@updateMultimediaFromExternalService', 'Обновление мультимедиа добавленные с внешний сервисов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@deleteMultimediaFromExternalService', 'Удаление мультимедиа добавленные с внешний сервисов'),
             new TranslationFactory('ru', 'subscriptionPermissionKey@userSettingHideMyMultimedia', 'Настройка на скрытие своих мультимедиа'),
+            new TranslationFactory('ru', 'subscriptionPermissionKey@numberConnectedAccounts', 'Максимальное кол-во подключений с одного аккаунта'),
 
             new TranslationFactory('ru', 'translation@keyIsRequired', 'Ключ перевода обязательный к заполнению'),
             new TranslationFactory('ru', 'translation@translationIsRequired', 'Перевод обязательный к заполнению'),

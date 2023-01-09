@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 use App\DataFixtures\Factory\UserFactory;
 use App\Entity\User;
 use App\Enum\RoleEnum;
-use App\Enum\SubscriptionEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use JetBrains\PhpStorm\Pure;
@@ -20,15 +19,15 @@ final class UserDataFixture extends AbstractDataFixture implements DependentFixt
     {
         parent::__construct([
             new UserFactory('Founder', 'founder@gmail.com', 'founder', RoleEnum::FOUNDER),
-            new UserFactory('Developer', 'developer@gmail.com', 'developer', RoleEnum::DEVELOPER, SubscriptionEnum::ARTIST),
+            new UserFactory('Developer', 'developer@gmail.com', 'developer', RoleEnum::DEVELOPER, 'subscription@artist'),
             new UserFactory('Admin', 'admin@gmail.com', 'admin', RoleEnum::ADMIN),
             new UserFactory('Support', 'support@gmail.com', 'founder', RoleEnum::SUPPORT),
             new UserFactory('Music Manager', 'music-manager@gmail.com', 'music_manager', RoleEnum::MUSIC_MANAGER),
             new UserFactory('User', 'user@gmail.com', 'user', RoleEnum::USER),
 
-            new UserFactory('Artist', 'artist@gmail.com', 'artist', RoleEnum::USER, SubscriptionEnum::ARTIST),
-            new UserFactory('Artist2', 'artist2@gmail.com', 'artist', RoleEnum::USER, SubscriptionEnum::ARTIST),
-            new UserFactory('Artist3', 'artist3@gmail.com', 'artist', RoleEnum::USER, SubscriptionEnum::ARTIST),
+            new UserFactory('Artist', 'artist@gmail.com', 'artist', RoleEnum::USER, 'subscription@artist'),
+            new UserFactory('Artist2', 'artist2@gmail.com', 'artist', RoleEnum::USER, 'subscription@artist'),
+            new UserFactory('Artist3', 'artist3@gmail.com', 'artist', RoleEnum::USER, 'subscription@artist'),
         ]);
     }
 
