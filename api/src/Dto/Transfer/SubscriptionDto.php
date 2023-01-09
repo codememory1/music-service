@@ -19,12 +19,6 @@ final class SubscriptionDto extends AbstractDataTransfer
 {
     #[DtoConstraints\ToTypeConstraint]
     #[DtoConstraints\ValidationConstraint([
-        new Assert\NotBlank(message: 'subscription@keyIsRequired')
-    ])]
-    public ?string $key = null;
-
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
         new Assert\NotBlank(message: 'subscription@titleIsRequired'),
         new AppAssert\Exist(
             TranslationKey::class,
