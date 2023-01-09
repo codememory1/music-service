@@ -64,9 +64,9 @@ import ModalFormCheckbox from '~/components/UI/FormElements/Checkbox/ModalFormCh
 import BaseDragAndDrop from '~/components/UI/FormElements/DragAndDrop/BaseDragAndDrop.vue';
 import SelectListLoadingType from '~/types/ui/select/select-list-loading-type';
 import ApiRequestService from '~/services/business/api-request-service';
-import ListMultimediaCategoryResponseInterface from '~/Interfaces/business/api-responses/list-multimedia-category-response-interface';
+import ListMultimediaCategoryResponseInterface from '~/interfaces/business/api-responses/list-multimedia-category-response-interface';
 import Routes from '~/api/routes';
-import ApiSuccessResponseInterface from '~/Interfaces/business/api-success-response-interface';
+import ApiSuccessResponseInterface from '~/interfaces/business/api-success-response-interface';
 
 @Component({
   components: {

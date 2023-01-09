@@ -3,8 +3,8 @@ import { Method } from 'axios';
 import Route from '~/api/route';
 import { HttpRequestMethodEnum } from '~/enums/http-request-method-enum';
 import ApiResponseService from '~/services/business/api-response-service';
-import ApiFailedResponseInterface from '~/Interfaces/business/api-failed-response-interface';
-import ApiSuccessResponseInterface from '~/Interfaces/business/api-success-response-interface';
+import ApiFailedResponseInterface from '~/interfaces/business/api-failed-response-interface';
+import ApiSuccessResponseInterface from '~/interfaces/business/api-success-response-interface';
 
 type RequestPromiseType<D> = Promise<
   ApiResponseService<ApiSuccessResponseInterface<D> | ApiFailedResponseInterface>

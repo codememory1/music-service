@@ -1,0 +1,30 @@
+@import '../../../include/variables';
+
+.our-advantage-item {
+  display: flex;
+  gap: $gap-between-el;
+
+  &__icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  &-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-between-el;
+  }
+
+  &__title {
+    font-size: 16px;
+    text-transform: uppercase;
+    color: $accent;
+    font-weight: 500;
+  }
+
+  &__description {
+    font-size: $default-size;
+    color: $white;
+    font-weight: 300;
+  }
+}

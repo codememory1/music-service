@@ -8,7 +8,8 @@ export default {
     add: 'Add',
     create: 'Create',
     update: 'Update',
-    reset: 'Reset'
+    reset: 'Reset',
+    buy_subscription: 'Buy a subscription'
   },
 
   placeholder: {
@@ -100,6 +101,47 @@ export default {
     type: {
       track: 'Music',
       clip: 'Clip'
+    }
+  },
+
+  section: {
+    our_advantage: {
+      title: 'Our advantages',
+      items: {
+        unique_features: {
+          title: 'Unique features',
+          description: 'Lots of unique features for your use.'
+        },
+        subscription_price: {
+          title: 'Subscription price',
+          description: 'Low prices for extended list of subscriptions.'
+        },
+
+        more_options_for_free_subscription: {
+          title: 'More options for free subscription',
+          description: 'Lots of features for free use.'
+        },
+
+        listen_to_opinions_users: {
+          title: 'We listen to the opinions of users',
+          description: 'We listen to your opinion on the implementation of new functionality.'
+        },
+
+        ease_use: {
+          title: 'Ease of use',
+          description: 'Use all the features of the platform with convenience.'
+        },
+
+        stream_control: {
+          title: 'Stream control',
+          description: 'Control media flow if you have poor internet.'
+        }
+      }
+    },
+
+    subscription: {
+      title: 'Choose your subscription',
+      description: 'Listen without limits on your phone, speaker and other devices'
     }
   }
 };

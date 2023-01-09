@@ -1,5 +1,5 @@
 import Route from '~/api/route';
-import { HttpRequestMethodEnum } from '~/Enums/http-request-method-enum';
+import { HttpRequestMethodEnum } from '~/enums/http-request-method-enum';
 
 export default {
   lang: {

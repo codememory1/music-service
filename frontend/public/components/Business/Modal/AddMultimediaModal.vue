@@ -59,7 +59,7 @@
         <ModalFormInput :placeholder="$t('placeholder.enter_multimedia_producer')" />
         <BaseSelect
           :placeholder="$t('placeholder.select_multimedia_performers')"
-          :options="[{value: '1', title: 'Danil'}, {value: 2, title: 'Danil2'}, {value: '3', title: 'Danil3'}]"
+          :options="[]"
           :use-search="true"
           :as-multiple="true"
         />
@@ -81,11 +81,11 @@ import BaseDragAndDrop from '~/components/UI/FormElements/DragAndDrop/BaseDragAn
 import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
 import ModalFormCheckbox from '~/components/UI/FormElements/Checkbox/ModalFormCheckbox.vue';
 import ApiRequestService from '~/services/business/api-request-service';
-import ListMultimediaCategoryResponseInterface from '~/Interfaces/business/api-responses/list-multimedia-category-response-interface';
+import ListMultimediaCategoryResponseInterface from '~/interfaces/business/api-responses/list-multimedia-category-response-interface';
 import Routes from '~/api/routes';
-import ApiSuccessResponseInterface from '~/Interfaces/business/api-success-response-interface';
+import ApiSuccessResponseInterface from '~/interfaces/business/api-success-response-interface';
 import SelectListLoadingType from '~/types/ui/select/select-list-loading-type';
-import ApiFailedResponseInterface from '~/Interfaces/business/api-failed-response-interface';
+import ApiFailedResponseInterface from '~/interfaces/business/api-failed-response-interface';
 
 @Component({
   components: {

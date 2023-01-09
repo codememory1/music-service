@@ -1,5 +1,5 @@
 import { Vue } from 'vue-property-decorator';
-import AlertInterface from '~/Interfaces/ui/alert-interface';
+import AlertInterface from '~/interfaces/ui/alert-interface';
 import { getAlertModule } from '~/store';
 
 export default class AlertService {

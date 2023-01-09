@@ -29,7 +29,8 @@
       "@types/swiper",
       "@nuxtjs/axios",
       "@nuxtjs/dotenv",
-      "@nuxtjs/i18n"
+      "@nuxtjs/i18n",
+      "@nuxt/image"
     ]
   },
   "exclude": [
