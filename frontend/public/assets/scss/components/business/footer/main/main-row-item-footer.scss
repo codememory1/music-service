@@ -1,0 +1,13 @@
+@import '../../../../include/variables';
+
+.main-footer-row__item {
+  &-link {
+    color: $white;
+    font-size: $default-size;
+    transition: ease-in color $default-transition;
+
+    &:hover {
+      color: $accent;
+    }
+  }
+}

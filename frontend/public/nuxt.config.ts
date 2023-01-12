@@ -1,5 +1,4 @@
 import type { NuxtConfig } from '@nuxt/types';
-import { resolve } from 'path';
 import serverConfig from './configs/server';
 import runtimeConfig from './configs/runtime-config';
 import pwaConfig from './configs/pwa';
@@ -43,11 +42,17 @@ const config: NuxtConfig = {
 
   css: ['@/assets/scss/main.scss'],
 
-  plugins: pluginsConfig,
-
   components: true,
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/pwa', '@nuxt/image'],
-  modules: ['@nuxtjs/i18n', '@nuxtjs/sentry', '@nuxtjs/axios', 'portal-vue/nuxt'],
+  modules: [
+    '@nuxtjs/i18n',
+    '@nuxtjs/sentry',
+    '@nuxtjs/axios',
+    'portal-vue/nuxt',
+    'cookie-universal-nuxt'
+  ],
+
+  plugins: pluginsConfig,
 
   i18n: i18nConfig,
   sentry: sentryConfig,

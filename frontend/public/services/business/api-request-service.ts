@@ -10,14 +10,12 @@ type RequestPromiseType<D> = Promise<
   ApiResponseService<ApiSuccessResponseInterface<D> | ApiFailedResponseInterface>
 >;
 
-export default class ApiRequestService<D> {
+export default class ApiRequestService {
   protected readonly app: Vue;
-  protected readonly route: Route;
   protected data?: any = undefined;
 
-  public constructor(app: Vue, route: Route) {
+  public constructor(app: Vue) {
     this.app = app;
-    this.route = route;
   }
 
   public getHost(): string {
@@ -28,19 +26,21 @@ export default class ApiRequestService<D> {
     return this.app.$config.apiClientHost;
   }
 
-  protected collectUrl(): string {
-    return `${this.getHost()}/${this.app.$i18n.locale}/public/${this.route.getPath()}`;
+  protected collectUrl(route: Route): string {
+    const locale = this.app.$cookies.get(this.app.$config.langCookieName) || this.app.$i18n.locale;
+
+    return `${this.getHost()}/${locale}/public/${route.getPath()}`;
   }
 
   public setData(data: any) {
     this.data = data;
   }
 
-  public request(): RequestPromiseType<D> {
+  public request<D>(route: Route): RequestPromiseType<D> {
     return new Promise((resolve, reject) => {
       const response = this.app.$api.request({
-        url: this.collectUrl(),
-        method: HttpRequestMethodEnum[this.route.getMethod()] as Method,
+        url: this.collectUrl(route),
+        method: HttpRequestMethodEnum[route.getMethod()] as Method,
         data: this.data
       });
 

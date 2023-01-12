@@ -1,6 +1,5 @@
 import { Vue } from 'vue-property-decorator';
 import SelectOptionService from '~/services/ui/Select/select-option-service';
-import BaseSelectOption from '~/components/UI/FormElements/Select/BaseSelectOption.vue';
 
 export default class SelectService {
   public readonly app: Vue;
@@ -26,10 +25,24 @@ export default class SelectService {
     return this.options;
   }
 
+  public setOptions(options: Array<SelectOptionService>): SelectService {
+    this.options = options;
+
+    return this;
+  }
+
   public getOnlySelectedOptions(): Array<SelectOptionService> {
     return this.options.filter((option) => {
       return option.isSelected();
     });
+  }
+
+  public getSelectedOption(): SelectOptionService | undefined {
+    const selectedOption = this.options.filter((option) => {
+      return option.isSelected();
+    });
+
+    return selectedOption.length > 0 ? selectedOption[0] : undefined;
   }
 
   public getActivatedOption(): SelectOptionService | undefined {

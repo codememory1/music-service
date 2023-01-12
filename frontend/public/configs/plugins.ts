@@ -7,5 +7,6 @@ export default [
   '~plugins/swiper.ts',
   '~plugins/api.ts',
   '~store/index.ts',
-  '~prototypes/array-prototype.ts'
+  '~prototypes/array-prototype.ts',
+  '~plugins/i18n.ts'
 ];

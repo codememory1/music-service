@@ -7,18 +7,23 @@
       </div>
       <div class="subscription-price">
         <span v-if="data.old_price !== null" class="subscription__old-price">
-          {{ data.old_price }}
+          <i class="far fa-dollar-sign" />{{ data.old_price }}
         </span>
-        <span class="subscription__purchase-price">{{ data.price }}</span>
+        <span class="subscription__purchase-price">
+          <i class="far fa-dollar-sign" />{{ data.price }}
+        </span>
       </div>
+      <p class="subscription__validity">Valid for 1 month</p>
       <div class="subscription-permission-list">
         <BasePermissionSubscription
-          v-for="(permission, index) in data.permissions"
+          v-for="(permission, index) in data.unique_permissions"
           :key="index"
           :data="permission"
         />
       </div>
-      <BaseButton class="subscription__buy-btn">{{ $t('buttons.buy_subscription') }}</BaseButton>
+      <BaseButton class="accent subscription__buy-btn" @click="buySubscriptionService.buy">
+        {{ $t('buttons.buy_subscription') }}
+      </BaseButton>
     </div>
   </div>
 </template>
@@ -28,6 +33,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { SubscriptionInterface } from '~/interfaces/business/api-responses/list-subscription-response-interface';
 import BasePermissionSubscription from '~/components/Business/Subscription/BasePermissionSubscription.vue';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
+import BuySubscriptionService from '~/services/business/buy-subscription-service';
 
 @Component({
   components: {
@@ -38,6 +44,11 @@ import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 export default class BaseSubscription extends Vue {
   @Prop({ required: true })
   private readonly data!: SubscriptionInterface;
+
+  private readonly buySubscriptionService: BuySubscriptionService = new BuySubscriptionService(
+    this,
+    this.data
+  );
 }
 </script>
 

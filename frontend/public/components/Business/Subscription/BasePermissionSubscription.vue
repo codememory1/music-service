@@ -1,5 +1,6 @@
 <template>
   <div class="subscription-permission">
+    <nuxt-img class="subscription-permission__icon" src="icons/check-mark.svg" />
     <span class="subscription-permission__title">{{ data.permission_key.title }}</span>
   </div>
 </template>

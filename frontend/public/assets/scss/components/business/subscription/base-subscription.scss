@@ -1,0 +1,70 @@
+@use 'sass:math';
+@import '../../../include/variables';
+
+.subscription {
+  width: 100%;
+  background-color: $dark-bg;
+  border-radius: $default-radius;
+
+  &-inner {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: $gap-between-el * 2;
+  }
+
+  &-basic-info {
+    display: flex;
+    flex-direction: column;
+    gap: math.div($gap-between-el, 2);
+    align-items: center;
+  }
+
+  &__title {
+    color: $white;
+    font-size: 25px;
+    font-weight: 500;
+  }
+
+  &__description {
+    color: $gray;
+    font-size: $default-size;
+    text-align: center;
+  }
+
+  &-price {
+    display: flex;
+    flex-direction: column;
+    gap: math.div($gap-between-el, 2);
+    align-items: center;
+  }
+
+  &__old-price {
+    font-size: 20px;
+    color: $gray;
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+
+  &__purchase-price {
+    font-size: 25px;
+    color: $white;
+    font-weight: 500;
+  }
+
+  &__validity {
+    font-size: $default-size;
+    color: $gray;
+    text-align: center;
+  }
+
+  &-permission-list {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-between-el;
+  }
+
+  &__buy-btn {
+    width: 100%;
+  }
+}

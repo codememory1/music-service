@@ -33,7 +33,8 @@ export default {
     search: 'Search...',
     enter_album_title: 'Enter album title',
     enter_album_description: 'Enter album description',
-    enter_playlist_title: 'Enter playlist title'
+    enter_playlist_title: 'Enter playlist title',
+    choose_lang: 'Choose language'
   },
 
   modal: {
@@ -142,6 +143,61 @@ export default {
     subscription: {
       title: 'Choose your subscription',
       description: 'Listen without limits on your phone, speaker and other devices'
+    }
+  },
+
+  hero: {
+    home: {
+      header: 'Listening is everything in your life',
+      tagline:
+        'Millions of songs and podcasts. No credit card. of songs and podcasts. No credit card.'
+    }
+  },
+
+  footer: {
+    main: {
+      rows: {
+        get_started: {
+          title: 'Get Started',
+          items: {
+            pricing_and_plans: 'Pricing & Plans',
+            get_support: 'Get Support'
+          }
+        },
+        discover: {
+          title: 'Discover',
+          items: {
+            about: 'About',
+            explore_the_app: 'Explore the App',
+            for_artists: 'For Artists'
+          }
+        },
+        company: {
+          title: 'Company',
+          items: {
+            partners: 'Partners',
+            careers: 'Careers',
+            guarantee: 'Guarantee',
+            contacts: 'Contact Information'
+          }
+        },
+        community: {
+          title: 'Community',
+          items: {
+            changelog: "What's new ?",
+            suggestion: 'Suggestion',
+            api: 'API',
+            ads: 'Ads'
+          }
+        }
+      }
+    },
+
+    bottom_links: {
+      privacy_policy: 'Privacy Policy',
+      terms_and_conditions: 'Terms and Conditions',
+      cookie_settings: 'Cookie Settings',
+      sitemap: 'Sitemap'
     }
   }
 };

@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import '../../../include/variables';
 
 .our-advantage-item {
@@ -12,7 +13,7 @@
   &-info-wrapper {
     display: flex;
     flex-direction: column;
-    gap: $gap-between-el;
+    gap: math.div($gap-between-el, 2);
   }
 
   &__title {
