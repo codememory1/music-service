@@ -9,7 +9,7 @@ use App\Infrastructure\ResponseData\Interfaces\ResponseDataInterface;
 use App\Rest\Http\Request;
 use App\Service\Translation;
 
-final class AsTranslationHandler extends AbstractConstraintHandler implements ConstraintValueHandlerInterface
+final class CallbackWithTranslationHandler extends AbstractConstraintHandler implements ConstraintValueHandlerInterface
 {
     public function __construct(
         private readonly Translation $translation,
@@ -17,14 +17,15 @@ final class AsTranslationHandler extends AbstractConstraintHandler implements Co
     ) {
     }
 
-    public function handle(ConstraintInterface $constraint, ResponseDataInterface $responseData, mixed $value): ?string
+    /**
+     * @param CallbackWithTranslation $constraint
+     */
+    public function handle(ConstraintInterface $constraint, ResponseDataInterface $responseData, mixed $value): mixed
     {
-        if (null === $value) {
-            return null;
-        }
-
         $this->translation->setLocale($this->request->getRequest()->getLocale());
 
-        return $this->translation->get($value);
+        $class = null === $constraint->class ? $responseData : new ($constraint->class)();
+
+        return $class->{$constraint->methodName}($this->entityIteration, $value, $this->translation);
     }
 }

@@ -61,6 +61,9 @@ class Subscription implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPermission::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $permissions;
 
+    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionUiPermission::class, cascade: ['persist', 'remove'])]
+    private Collection $uiPermissions;
+
     #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPayment::class, cascade: ['remove'])]
     private Collection $payments;
 
@@ -71,6 +74,7 @@ class Subscription implements EntityInterface
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
+        $this->uiPermissions = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->extenders = new ArrayCollection();
     }
@@ -255,6 +259,36 @@ class Subscription implements EntityInterface
             // set the owning side to null (unless already changed)
             if ($permission->getSubscription() === $this) {
                 $permission->setSubscription(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SubscriptionUiPermission>
+     */
+    public function getUiPermissions(): Collection
+    {
+        return $this->uiPermissions;
+    }
+
+    public function addUiPermissions(SubscriptionUiPermission $uiPermissions): self
+    {
+        if (!$this->uiPermissions->contains($uiPermissions)) {
+            $this->uiPermissions[] = $uiPermissions;
+            $uiPermissions->setSubscription($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUiPermissions2(SubscriptionUiPermission $uiPermissions): self
+    {
+        if ($this->uiPermissions->removeElement($uiPermissions)) {
+            // set the owning side to null (unless already changed)
+            if ($uiPermissions->getSubscription() === $this) {
+                $uiPermissions->setSubscription(null);
             }
         }
 

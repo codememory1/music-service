@@ -1,5 +1,5 @@
 import { Vue } from 'vue-property-decorator';
-import { SubscriptionResponseInterface } from '~/interfaces/business/api-responses/subscription-response-interface';
+import SubscriptionResponseInterface from '~/interfaces/business/api-responses/subscription-response-interface';
 
 export default class BuySubscriptionService {
   public readonly app: Vue;

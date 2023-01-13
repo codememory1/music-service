@@ -3,7 +3,7 @@
     <PlatformLogo />
 
     <div class="main-header-info">
-      <slot name="navigation" />
+      <slot />
       <BaseSelect
         class="main-header-language"
         :placeholder="$t('placeholder.choose_lang')"

@@ -2,12 +2,15 @@
 
 namespace App\ResponseData\General\Subscription;
 
+use App\Entity\Subscription;
 use App\Enum\RequestTypeEnum;
 use App\Enum\RolePermissionEnum;
 use App\Infrastructure\ResponseData\AbstractResponseData;
 use App\Infrastructure\ResponseData\Constraints\Availability as RDCA;
 use App\Infrastructure\ResponseData\Constraints\System as RDCS;
 use App\Infrastructure\ResponseData\Constraints\Value as RDCV;
+use App\Service\Translation;
+use Doctrine\Common\Collections\Collection;
 
 final class SubscriptionResponseData extends AbstractResponseData
 {
@@ -29,8 +32,12 @@ final class SubscriptionResponseData extends AbstractResponseData
     #[RDCV\CallbackResponseData(SubscriptionPermissionResponseData::class)]
     private array $permissions = [];
 
+    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
     #[RDCV\CallbackResponseData(SubscriptionPermissionResponseData::class)]
     private array $uniquePermissions = [];
+
+    #[RDCV\CallbackWithTranslation('uiPermissionsCallback')]
+    private array $uiPermissions = [];
 
     #[RDCS\AliasInResponse('expands_from')]
     #[RDCV\CallbackResponseData(SubscriptionExtenderResponseData::class, onlyProperties: ['id', 'basicSubscription'])]
@@ -45,4 +52,21 @@ final class SubscriptionResponseData extends AbstractResponseData
     #[RDCA\RolePermission(RolePermissionEnum::SHOW_FULL_INFO_SUBSCRIPTIONS)]
     #[RDCV\DateTime]
     private ?string $updatedAt = null;
+
+    public function uiPermissionsCallback(Subscription $subscription, Collection $permissions, Translation $translation): array
+    {
+        $formattedPermissions = [];
+
+        foreach ($permissions as $uiPermission) {
+            if (null === $uiPermission->getPermission()) {
+                $formattedPermissions[] = $translation->get($uiPermission->getTitle());
+            } else {
+                $formattedPermissions[] = $translation->get($uiPermission->getTitle(), [
+                    'value' => implode(', ', $uiPermission->getPermission()->getValue())
+                ]);
+            }
+        }
+
+        return $formattedPermissions;
+    }
 }

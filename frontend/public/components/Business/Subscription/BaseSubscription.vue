@@ -16,9 +16,9 @@
       <p class="subscription__validity">Valid for 1 month</p>
       <div class="subscription-permission-list">
         <BasePermissionSubscription
-          v-for="(permission, index) in data.unique_permissions"
+          v-for="(title, index) in data.ui_permissions"
           :key="index"
-          :data="permission"
+          :title="title"
         />
       </div>
       <BaseButton class="accent subscription__buy-btn" @click="buySubscriptionService.buy">
@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { SubscriptionInterface } from '~/interfaces/business/api-responses/list-subscription-response-interface';
+import SubscriptionResponseInterface from '~/interfaces/business/api-responses/subscription-response-interface';
 import BasePermissionSubscription from '~/components/Business/Subscription/BasePermissionSubscription.vue';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import BuySubscriptionService from '~/services/business/buy-subscription-service';
@@ -43,7 +43,7 @@ import BuySubscriptionService from '~/services/business/buy-subscription-service
 })
 export default class BaseSubscription extends Vue {
   @Prop({ required: true })
-  private readonly data!: SubscriptionInterface;
+  private readonly data!: SubscriptionResponseInterface;
 
   private readonly buySubscriptionService: BuySubscriptionService = new BuySubscriptionService(
     this,

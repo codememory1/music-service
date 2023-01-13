@@ -4,5 +4,22 @@
   &-link {
     font-size: 16px;
     color: $white;
+    padding-bottom: 10px;
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background-color: $accent;
+      transition: ease-in width $default-transition;
+      border-radius: 3px;
+    }
+
+    &:hover:before {
+      width: 100%;
+    }
   }
 }

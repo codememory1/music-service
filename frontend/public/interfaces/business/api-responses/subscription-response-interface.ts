@@ -1,9 +1,3 @@
-interface SubscriptionPermissionResponseInterface {
-  permission_key: {
-    title: string;
-  };
-}
-
 interface SubscriptionResponseInterface {
   id: number;
   title: string;
@@ -12,7 +6,7 @@ interface SubscriptionResponseInterface {
   price: number;
   is_recommend: boolean;
   status: string;
-  unique_permissions: Array<SubscriptionPermissionResponseInterface>;
+  ui_permissions: Array<string>;
 }
 
-export { SubscriptionPermissionResponseInterface, SubscriptionResponseInterface };
+export default SubscriptionResponseInterface;

@@ -7,6 +7,8 @@ use App\Entity\Traits\ComparisonTrait;
 use App\Entity\Traits\IdentifierTrait;
 use App\Entity\Traits\TimestampTrait;
 use App\Repository\SubscriptionPermissionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,14 @@ class SubscriptionPermission implements EntityInterface
         'comment' => 'Subscription permission value'
     ])]
     private array $value = [];
+
+    #[ORM\OneToMany(mappedBy: 'permission', targetEntity: SubscriptionUiPermission::class, cascade: ['remove'])]
+    private Collection $uiPermissions;
+
+    public function __construct()
+    {
+        $this->uiPermissions = new ArrayCollection();
+    }
 
     public function getSubscription(): ?Subscription
     {
@@ -68,6 +78,36 @@ class SubscriptionPermission implements EntityInterface
     public function setValue(array $value): self
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SubscriptionUiPermission>
+     */
+    public function getUiPermissions(): Collection
+    {
+        return $this->uiPermissions;
+    }
+
+    public function addUiPermission(SubscriptionUiPermission $uiPermission): self
+    {
+        if (!$this->uiPermissions->contains($uiPermission)) {
+            $this->uiPermissions[] = $uiPermission;
+            $uiPermission->setPermission($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUiPermission(SubscriptionUiPermission $uiPermission): self
+    {
+        if ($this->uiPermissions->removeElement($uiPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($uiPermission->getPermission() === $this) {
+                $uiPermission->setPermission(null);
+            }
+        }
 
         return $this;
     }

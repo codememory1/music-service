@@ -199,5 +199,14 @@ export default {
       cookie_settings: 'Cookie Settings',
       sitemap: 'Sitemap'
     }
+  },
+
+  navigation: {
+    main: {
+      premium: 'Premium',
+      support: 'Support',
+      signUp: 'Sign Up',
+      signIn: 'Sign In'
+    }
   }
 };
