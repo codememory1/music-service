@@ -55,25 +55,16 @@ export default class PasswordResetModal extends Vue {
   });
 
   private passwordRecovery(): void {
-    const inputCodeValue = this.validateInputCode();
-
-    if (this.changeInputService.allFieldsWithoutErrors() && inputCodeValue.length === 6) {
-      // TODO: Reset password
-    }
-  }
-
-  private validateInputCode(): string {
     const inputCodeService = (this.$refs.inputCode as BaseInputCode).inputCodeService;
 
-    inputCodeService.getSquares().forEach((square) => {
-      if (square.getValue().length === 0) {
-        square.setIsError(true);
-      } else {
-        square.setIsError(false);
-      }
-    });
+    inputCodeService.validateSquares();
 
-    return inputCodeService.getValue();
+    if (
+      this.changeInputService.allFieldsWithoutErrors() &&
+      inputCodeService.getValue().length === 6
+    ) {
+      // TODO: Reset password
+    }
   }
 }
 </script>

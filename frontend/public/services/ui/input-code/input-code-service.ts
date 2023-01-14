@@ -21,6 +21,12 @@ export default class InputCodeService {
     return this.squares;
   }
 
+  public validateSquares(): void {
+    this.getSquares().forEach((square) => {
+      square.getValue().length === 0 ? square.setIsError(true) : square.setIsError(false);
+    });
+  }
+
   public getValue(separator: string = ''): string {
     const values: Array<string> = [];
 
