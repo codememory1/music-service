@@ -3,14 +3,14 @@
     <ModalForm>
       <ModalFormInput
         placeholder="placeholder.enter_email"
-        :is-error="inputData.email.isError"
-        @input="changeInputService.change($event, inputData.email)"
+        :is-error="changeInputService.inputIsError('email')"
+        @input="changeInputService.change($event, 'email')"
       />
       <ModalFormInput
         type="password"
         placeholder="placeholder.enter_password"
-        :is-error="inputData.password.isError"
-        @input="changeInputService.change($event, inputData.password)"
+        :is-error="changeInputService.inputIsError('password')"
+        @input="changeInputService.change($event, 'password')"
       />
       <BaseButton class="accent" @click.prevent="auth">{{ $t('buttons.login') }}</BaseButton>
 
@@ -30,7 +30,15 @@
 
       <ModalSwitcher>
         {{ $t('modal.switch.dont_have_account') }}
-        <a @click="$emit('openRegister')">{{ $t('buttons.register') }}</a>
+        <a @click.prevent="$emit('register')">
+          {{ $t('buttons.register') }}
+        </a>
+      </ModalSwitcher>
+      <ModalSwitcher>
+        {{ $t('modal.switch.forgot_your_password ?') }}
+        <a @click.prevent="$emit('restorePassword')">
+          {{ $t('buttons.restore_password') }}
+        </a>
       </ModalSwitcher>
     </ModalForm>
   </BaseModal>
@@ -43,8 +51,8 @@ import ModalForm from '~/components/UI/Form/ModalForm.vue';
 import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import ModalSwitcher from '~/components/Business/Switch/ModalSwitcher.vue';
-import AuthFormDataType from '~/types/ui/form-data/auth-form-data-type';
 import ChangeInputService from '~/services/ui/input/change-input-service';
+import InputService from '~/services/ui/input/input-service';
 
 @Component({
   components: {
@@ -56,21 +64,15 @@ import ChangeInputService from '~/services/ui/input/change-input-service';
   }
 })
 export default class AuthModal extends Vue {
-  private readonly changeInputService: ChangeInputService = new ChangeInputService();
-  private inputData: AuthFormDataType = {
-    email: {
-      isError: false,
-      value: ''
-    },
-    password: {
-      isError: false,
-      value: ''
-    }
-  };
+  private readonly changeInputService: ChangeInputService = new ChangeInputService({
+    email: new InputService('', 'string', undefined, 1),
+    password: new InputService('', 'string', undefined, 1)
+  });
 
   private auth(): void {
-    this.inputData.email.isError = this.inputData.email.value.length === 0;
-    this.inputData.password.isError = this.inputData.password.value.length === 0;
+    if (this.changeInputService.allFieldsWithoutErrors()) {
+      // TODO: Authorize user
+    }
   }
 }
 </script>

@@ -31,7 +31,7 @@ export default class BaseModal extends Vue {
   @Prop({ required: true })
   private readonly title!: string;
 
-  private isOpen: boolean = true;
+  private isOpen: boolean = false;
 
   @Emit('open')
   public open(): void {

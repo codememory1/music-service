@@ -9,7 +9,8 @@ export default {
     create: 'Create',
     update: 'Update',
     reset: 'Reset',
-    buy_subscription: 'Buy a subscription'
+    buy_subscription: 'Buy a subscription',
+    restore_password: 'Restore password'
   },
 
   placeholder: {
@@ -52,7 +53,8 @@ export default {
     },
     switch: {
       have_an_account: 'Have an account?',
-      dont_have_account: "Don't know how to account?"
+      dont_have_account: "Don't know how to account?",
+      forgot_your_password: 'Forgot your password?'
     }
   },
 

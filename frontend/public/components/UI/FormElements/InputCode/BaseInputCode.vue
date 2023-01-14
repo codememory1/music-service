@@ -29,7 +29,10 @@ export default class BaseInputCode extends Vue {
   @Prop({ required: false, default: 0 })
   private readonly activeSquareIndex!: number | null;
 
-  private readonly inputCodeService: InputCodeService = new InputCodeService(
+  @Prop({ required: false, default: '.*' })
+  private readonly patternValue!: string;
+
+  public readonly inputCodeService: InputCodeService = new InputCodeService(
     this,
     this.numberSquares
   );
@@ -39,6 +42,7 @@ export default class BaseInputCode extends Vue {
 
     this.inputCodeService.getSquares().forEach((square, index) => {
       square.setElement(squares[index]);
+      square.setPatternValue(this.patternValue);
     });
 
     if (this.activeSquareIndex !== null) {

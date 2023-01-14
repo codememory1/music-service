@@ -3,8 +3,8 @@
     <ModalForm>
       <ModalFormInput
         placeholder="placeholder.enter_email"
-        :is-error="inputData.email.isError"
-        @input="changeInputService.change($event, inputData.email)"
+        :is-error="changeInputService.inputIsError('email')"
+        @input="changeInputService.change($event, 'email')"
       />
 
       <BaseButton class="accent" @click.prevent="passwordRecovery">
@@ -20,8 +20,8 @@ import BaseModal from '~/components/Business/Modal/BaseModal.vue';
 import ModalForm from '~/components/UI/Form/ModalForm.vue';
 import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
-import PasswordRecoveryFormDataType from '~/types/ui/form-data/password-recovery-form-data-type';
 import ChangeInputService from '~/services/ui/input/change-input-service';
+import InputService from '~/services/ui/input/input-service';
 
 @Component({
   components: {
@@ -32,16 +32,15 @@ import ChangeInputService from '~/services/ui/input/change-input-service';
   }
 })
 export default class PasswordRecoveryModal extends Vue {
-  private readonly changeInputService: ChangeInputService = new ChangeInputService();
-  private inputData: PasswordRecoveryFormDataType = {
-    email: {
-      isError: false,
-      value: ''
-    }
-  };
+  private readonly changeInputService: ChangeInputService = new ChangeInputService({
+    email: new InputService('', 'string', undefined, 1)
+  });
 
   private passwordRecovery(): void {
-    this.inputData.email.isError = this.inputData.email.value.length === 0;
+    if (this.changeInputService.allFieldsWithoutErrors()) {
+      this.$emit('recovery');
+      // TODO: Request
+    }
   }
 }
 </script>

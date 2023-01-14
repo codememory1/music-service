@@ -5,6 +5,7 @@ export default class InputCodeSquareService {
   private element?: HTMLInputElement = undefined;
   private error: boolean = false;
   private active: boolean = false;
+  private patternValue: string = '/^.*$/';
   private value: string = '';
 
   public constructor(inputCodeService: InputCodeService) {
@@ -39,6 +40,16 @@ export default class InputCodeSquareService {
     return this.active;
   }
 
+  public getPatternValue(): string {
+    return this.patternValue;
+  }
+
+  public setPatternValue(pattern: string) {
+    this.patternValue = pattern;
+
+    return this;
+  }
+
   public getValue(): string {
     return this.value;
   }
@@ -50,25 +61,35 @@ export default class InputCodeSquareService {
   }
 
   public input(event: HTMLInputElement, index: number): void {
-    if (event.value !== null && event.value.length > 0) {
-      if (index < this.inputCodeService.getSquares().length - 1) {
-        this.inputCodeService.activeNextSquare();
+    this.resetAndGoToPrevious(event, index);
+
+    if (new RegExp(this.patternValue).test(event.value)) {
+      if (event.value !== null && event.value.length > 0) {
+        if (index < this.inputCodeService.getSquares().length - 1) {
+          this.inputCodeService.activeNextSquare();
+        }
+
+        this.setValue(event.value);
+      } else {
+        this.setValue('');
       }
 
-      this.setValue(event.value);
+      this.inputCodeService.app.$emit(
+        'change',
+        event,
+        this.inputCodeService.getValue(),
+        this.inputCodeService.getSquares()
+      );
     } else {
+      event.value = '';
+    }
+  }
+
+  private resetAndGoToPrevious(event: HTMLInputElement, index: number): void {
+    if (event.value === null || event.value.length === 0) {
       if (index > 0) {
         this.inputCodeService.activePrevSquare();
       }
-
-      this.setValue('');
     }
-
-    this.inputCodeService.app.$emit(
-      'change',
-      event,
-      this.inputCodeService.getValue(),
-      this.inputCodeService.getSquares()
-    );
   }
 }
