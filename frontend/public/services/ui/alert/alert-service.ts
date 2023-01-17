@@ -1,6 +1,5 @@
 import { Vue } from 'vue-property-decorator';
 import AlertInterface from '~/interfaces/ui/alert-interface';
-import { getAlertModule } from '~/store';
 
 export default class AlertService {
   public readonly app: Vue;
@@ -27,7 +26,7 @@ export default class AlertService {
   }
 
   public deleteAlert(alert: AlertInterface): void {
-    getAlertModule(this.app.$store).removeAlert(alert);
+    this.app.$store.commit('modules/alert-module/removeAlert', alert);
 
     this.app.$emit('close', alert);
   }

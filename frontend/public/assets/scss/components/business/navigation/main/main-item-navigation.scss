@@ -1,25 +1,26 @@
 @import '../../../../include/variables';
 
 .main-navigation__item {
+  position: relative;
+
+  &:hover .main-navigation-drop-down {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   &-link {
     font-size: 16px;
     color: $white;
-    padding-bottom: 10px;
+    padding: 10px 15px;
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: linear background-color $default-transition;
 
-    &:before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      width: 0;
-      height: 2px;
-      background-color: $accent;
-      transition: ease-in width $default-transition;
-      border-radius: 3px;
-    }
-
-    &:hover:before {
-      width: 100%;
+    &:hover {
+      background-color: rgba($dark-bg, 0.3);
     }
   }
 }

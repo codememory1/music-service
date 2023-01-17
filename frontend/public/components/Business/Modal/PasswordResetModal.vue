@@ -20,7 +20,7 @@
         @input="changeInputService.change($event, 'confirmPassword')"
       />
 
-      <BaseButton class="accent" @click.prevent="passwordRecovery">
+      <BaseButton class="accent" :is-loading="buttonIsLoading" @click.prevent="passwordRecovery">
         {{ $t('buttons.reset') }}
       </BaseButton>
     </ModalForm>
@@ -37,6 +37,7 @@ import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vu
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import ChangeInputService from '~/services/ui/input/change-input-service';
 import InputService from '~/services/ui/input/input-service';
+import PasswordResetService from '~/services/business/security/password-reset-service';
 
 @Component({
   components: {
@@ -54,16 +55,34 @@ export default class PasswordResetModal extends Vue {
     confirmPassword: new InputService('', 'string', undefined, 1)
   });
 
-  private passwordRecovery(): void {
+  private readonly passwordResetService: PasswordResetService = new PasswordResetService(this);
+  private buttonIsLoading: boolean = false;
+  private email: string | null = null;
+
+  public setEmail(email: string): void {
+    this.email = email;
+  }
+
+  private async passwordRecovery(): Promise<void> {
     const inputCodeService = (this.$refs.inputCode as BaseInputCode).inputCodeService;
 
     inputCodeService.validateSquares();
 
     if (
       this.changeInputService.allFieldsWithoutErrors() &&
-      inputCodeService.getValue().length === 6
+      inputCodeService.getValue().length === 6 &&
+      this.email !== null
     ) {
-      // TODO: Reset password
+      this.buttonIsLoading = true;
+
+      await this.passwordResetService.reset({
+        email: this.email,
+        code: inputCodeService.getValue(),
+        password: this.changeInputService.getInput('password').getValue(),
+        password_confirm: this.changeInputService.getInput('confirmPassword').getValue()
+      });
+
+      this.buttonIsLoading = false;
     }
   }
 }

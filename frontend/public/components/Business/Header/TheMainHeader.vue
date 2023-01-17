@@ -22,7 +22,7 @@ import BaseSelect from '~/components/UI/FormElements/Select/BaseSelect.vue';
 import SelectOptionType from '~/types/ui/select/select-option-type';
 import ApiRequestService from '~/services/business/api-request-service';
 import SelectOptionService from '~/services/ui/Select/select-option-service';
-import ListLanguageRequest from '~/api/requests/ListLanguageRequest';
+import ListLanguageRequest from '~/api/requests/list-language-request';
 
 @Component({
   components: {
@@ -32,7 +32,7 @@ import ListLanguageRequest from '~/api/requests/ListLanguageRequest';
 
   async fetch() {
     const that = this as TheMainHeader;
-    const requestService = new ApiRequestService(this);
+    const requestService = new ApiRequestService(this, this.$i18n.locale);
     const listLanguageRequest = new ListLanguageRequest(requestService);
 
     await listLanguageRequest.request();

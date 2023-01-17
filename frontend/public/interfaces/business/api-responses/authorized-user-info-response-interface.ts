@@ -1,0 +1,3 @@
+interface AuthorizedUserInfoResponseInterface {}
+
+export default AuthorizedUserInfoResponseInterface;

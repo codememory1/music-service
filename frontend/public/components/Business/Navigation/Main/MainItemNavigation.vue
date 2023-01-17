@@ -1,16 +1,13 @@
 <template>
   <li class="main-navigation__item">
     <nuxt-link v-if="link !== null" class="main-navigation__item-link" :to="link">
-      {{ title }}
+      <slot />
     </nuxt-link>
-    <a
-      v-if="null === link"
-      href="#"
-      class="main-navigation__item-link"
-      @click.prevent="$emit('click')"
-    >
-      {{ title }}
+    <a v-else href="#" class="main-navigation__item-link" @click.prevent="$emit('click')">
+      <slot />
     </a>
+
+    <slot name="drop-down" />
   </li>
 </template>
 
@@ -21,9 +18,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class MainItemNavigation extends Vue {
   @Prop({ required: false, default: null })
   private readonly link!: string | null;
-
-  @Prop({ required: true })
-  private readonly title!: string;
 }
 </script>
 

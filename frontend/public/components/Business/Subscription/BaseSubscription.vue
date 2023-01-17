@@ -33,7 +33,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import SubscriptionResponseInterface from '~/interfaces/business/api-responses/subscription-response-interface';
 import BasePermissionSubscription from '~/components/Business/Subscription/BasePermissionSubscription.vue';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
-import BuySubscriptionService from '~/services/business/buy-subscription-service';
+import BuySubscriptionService from '~/services/business/subscription/buy-subscription-service';
 
 @Component({
   components: {

@@ -18,7 +18,7 @@ import InformationSection from '~/components/UI/Section/InformationSection.vue';
 import BaseSubscription from '~/components/Business/Subscription/BaseSubscription.vue';
 import ApiRequestService from '~/services/business/api-request-service';
 import ListSubscriptionResponseType from '~/types/business/api-responses/list-subscription-response-type';
-import ListSubscriptionRequest from '~/api/requests/ListSubscriptionRequest';
+import ListSubscriptionRequest from '~/api/requests/list-subscription-request';
 
 @Component({
   components: {
@@ -28,7 +28,7 @@ import ListSubscriptionRequest from '~/api/requests/ListSubscriptionRequest';
 
   async fetch() {
     const that = this as SubscriptionSection;
-    const requestService = new ApiRequestService(this);
+    const requestService = new ApiRequestService(this, this.$i18n.locale);
     const listSubscriptionRequest = new ListSubscriptionRequest(requestService);
 
     await listSubscriptionRequest.request();

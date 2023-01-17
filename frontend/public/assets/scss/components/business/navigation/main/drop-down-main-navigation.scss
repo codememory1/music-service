@@ -1,0 +1,15 @@
+@import '../../../../include/variables';
+
+.main-navigation-drop-down {
+  position: absolute;
+  background-color: #fff;
+  border-radius: $default-radius;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: linear transform 0.2s, linear opacity 0.2s;
+  z-index: 2;
+  padding: 10px 0;
+  box-shadow: 0 9px 20px rgb(0 0 0 / 7%);
+}

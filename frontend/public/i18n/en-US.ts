@@ -10,7 +10,8 @@ export default {
     update: 'Update',
     reset: 'Reset',
     buy_subscription: 'Buy a subscription',
-    restore_password: 'Restore password'
+    restore_password: 'Restore password',
+    activate_account: 'Activate account'
   },
 
   placeholder: {
@@ -35,7 +36,8 @@ export default {
     enter_album_title: 'Enter album title',
     enter_album_description: 'Enter album description',
     enter_playlist_title: 'Enter playlist title',
-    choose_lang: 'Choose language'
+    choose_lang: 'Choose language',
+    account_activate: 'Activate account'
   },
 
   modal: {
@@ -49,7 +51,8 @@ export default {
       create_album: 'Create a album',
       create_playlist: 'Create a playlist',
       update_multimedia: 'Update a multimedia',
-      password_reset: 'Password Reset'
+      password_reset: 'Password Reset',
+      account_activate: 'Account Activation'
     },
     switch: {
       have_an_account: 'Have an account?',
@@ -67,7 +70,12 @@ export default {
 
   alert: {
     titles: {
-      upload_files: 'Upload file'
+      upload_files: 'Upload File',
+      auth: 'Authorization',
+      register: 'Registration',
+      account_activation: 'Account Activation',
+      password_recovery_request: 'Password Recovery Request',
+      password_reset: 'Password Reset'
     },
     messages: {
       unable_add_file_max_number:
@@ -76,7 +84,15 @@ export default {
         'Unable to add file! Unable to add file! The minimum file size must be {size}{unit}',
       unable_add_file_max_size: 'Unable to add file! File size should not exceed {size}{unit}',
       unable_add_file_not_allowed_mime_type:
-        'Unable to add file! Incorrect file mime-type, allowed mime-types: {mime_types}'
+        'Unable to add file! Incorrect file mime-type, allowed mime-types: {mime_types}',
+      success_auth: 'You have successfully logged into your account',
+      error_auth: "An authorization error has occurred! We couldn't get your information",
+      success_register:
+        'Registration completed successfully! An email has been sent to activate your account',
+      success_account_activate: 'Account successfully activated! Now you can enter it',
+      success_password_recovery_request:
+        'Password reset request successfully created! A password reset code has been sent to your email',
+      success_password_reset: 'Password reset successfully! Now you can sign in'
     }
   },
 
@@ -208,7 +224,11 @@ export default {
       premium: 'Premium',
       support: 'Support',
       signUp: 'Sign Up',
-      signIn: 'Sign In'
+      signIn: 'Sign In',
+      my_account: 'My Account',
+      manage_account: 'Manage Account',
+      web_player: 'Web Player',
+      logout: 'Logout'
     }
   }
 };

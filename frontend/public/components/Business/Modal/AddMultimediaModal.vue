@@ -81,7 +81,7 @@ import FieldModalForm from '~/components/UI/Field/FieldModalForm.vue';
 import ModalFormCheckbox from '~/components/UI/FormElements/Checkbox/ModalFormCheckbox.vue';
 import ApiRequestService from '~/services/business/api-request-service';
 import SelectOptionType from '~/types/ui/select/select-option-type';
-import ListMultimediaCategoryRequest from '~/api/requests/ListMultimediaCategoryRequest';
+import ListMultimediaCategoryRequest from '~/api/requests/list-multimedia-category-request';
 
 @Component({
   components: {
@@ -99,7 +99,7 @@ import ListMultimediaCategoryRequest from '~/api/requests/ListMultimediaCategory
 
   async fetch() {
     const that = this as AddMultimediaModal;
-    const requestService = new ApiRequestService(this);
+    const requestService = new ApiRequestService(this, this.$i18n.locale);
     const listMultimediaCategoryRequest = new ListMultimediaCategoryRequest(requestService);
 
     await listMultimediaCategoryRequest.request();

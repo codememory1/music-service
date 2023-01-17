@@ -8,5 +8,6 @@ export default [
   '~plugins/api.ts',
   '~store/index.ts',
   '~prototypes/array-prototype.ts',
-  '~plugins/i18n.ts'
+  '~plugins/i18n.ts',
+  { src: '~plugins/login.ts', ssr: false }
 ];

@@ -1,9 +1,8 @@
-import InputFormDataType from '~/types/ui/form-data/input-form-data-type';
-
 type PasswordResetFormDataType = {
-  codes: InputFormDataType;
-  password: InputFormDataType;
-  confirmPassword: InputFormDataType;
+  email: string;
+  code: string;
+  password: string;
+  password_confirm: string;
 };
 
 export default PasswordResetFormDataType;

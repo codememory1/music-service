@@ -35,7 +35,9 @@
         "
       />
 
-      <BaseButton class="accent" @click.prevent="register">{{ $t('buttons.register') }}</BaseButton>
+      <BaseButton class="accent" :is-loading="buttonIsLoading" @click.prevent="register">
+        {{ $t('buttons.register') }}
+      </BaseButton>
 
       <ModalSwitcher>
         {{ $t('modal.switch.have_an_account') }}
@@ -56,6 +58,7 @@ import ModalFormCheckbox from '~/components/UI/FormElements/Checkbox/ModalFormCh
 import ModalSwitcher from '~/components/Business/Switch/ModalSwitcher.vue';
 import ChangeInputService from '~/services/ui/input/change-input-service';
 import InputService from '~/services/ui/input/input-service';
+import RegisterService from '~/services/business/security/register-service';
 
 @Component({
   components: {
@@ -77,9 +80,21 @@ export default class RegisterModal extends Vue {
     isAccept: new InputService(false, 'boolean', true)
   });
 
-  private register(): void {
+  private registerService: RegisterService = new RegisterService(this);
+  private buttonIsLoading: boolean = false;
+
+  private async register(): Promise<void> {
     if (this.changeInputService.allFieldsWithoutErrors()) {
-      // TODO: Registration
+      this.buttonIsLoading = true;
+
+      await this.registerService.register({
+        pseudonym: this.changeInputService.getInput('pseudonym').getValue(),
+        email: this.changeInputService.getInput('email').getValue(),
+        password: this.changeInputService.getInput('password').getValue(),
+        password_confirm: this.changeInputService.getInput('confirmPassword').getValue()
+      });
+
+      this.buttonIsLoading = false;
     }
   }
 }

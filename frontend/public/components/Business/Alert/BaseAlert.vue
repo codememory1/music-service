@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="alert-close-wrapper">
-      <BaseButton class="alert__btn-close" @click="close">
+      <BaseButton class="alert__btn-close" @click="alertService.deleteAlert(alert)">
         <i class="fal fa-times" />
       </BaseButton>
     </div>

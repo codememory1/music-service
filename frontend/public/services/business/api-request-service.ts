@@ -12,10 +12,13 @@ type RequestPromiseType<D> = Promise<
 
 export default class ApiRequestService {
   protected readonly app: Vue;
+  protected readonly defaultLocale: string;
   protected data?: any = undefined;
+  protected headers: { [key: string]: string } = {};
 
-  public constructor(app: Vue) {
+  public constructor(app: Vue, defaultLocale: string) {
     this.app = app;
+    this.defaultLocale = defaultLocale;
   }
 
   public getHost(): string {
@@ -27,13 +30,27 @@ export default class ApiRequestService {
   }
 
   protected collectUrl(route: Route): string {
-    const locale = this.app.$cookies.get(this.app.$config.langCookieName) || this.app.$i18n.locale;
+    const locale = this.app.$cookies.get(this.app.$config.langCookieName) || this.defaultLocale;
 
     return `${this.getHost()}/${locale}/public/${route.getPath()}`;
   }
 
-  public setData(data: any) {
+  public setData(data: any): ApiRequestService {
     this.data = data;
+
+    return this;
+  }
+
+  public setHeaders(headers: any): ApiRequestService {
+    this.headers = headers;
+
+    return this;
+  }
+
+  public addAuthorizationToken(token: string): ApiRequestService {
+    this.headers.Authorization = `Bearer ${token}`;
+
+    return this;
   }
 
   public request<D>(route: Route): RequestPromiseType<D> {
@@ -41,7 +58,8 @@ export default class ApiRequestService {
       const response = this.app.$api.request({
         url: this.collectUrl(route),
         method: HttpRequestMethodEnum[route.getMethod()] as Method,
-        data: this.data
+        data: this.data,
+        headers: this.headers
       });
 
       response
@@ -60,7 +78,7 @@ export default class ApiRequestService {
             resolve(
               new ApiResponseService<ApiFailedResponseInterface>(
                 true,
-                response.response as ApiFailedResponseInterface
+                response.response.data as ApiFailedResponseInterface
               )
             );
           }

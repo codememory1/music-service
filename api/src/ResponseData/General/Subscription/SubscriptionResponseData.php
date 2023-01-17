@@ -28,7 +28,6 @@ final class SubscriptionResponseData extends AbstractResponseData
     private ?bool $recommend = null;
     private ?string $status = null;
 
-    #[RDCA\RequestType(RequestTypeEnum::ADMIN)]
     #[RDCV\CallbackResponseData(SubscriptionPermissionResponseData::class)]
     private array $permissions = [];
 

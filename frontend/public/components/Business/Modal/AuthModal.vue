@@ -12,7 +12,9 @@
         :is-error="changeInputService.inputIsError('password')"
         @input="changeInputService.change($event, 'password')"
       />
-      <BaseButton class="accent" @click.prevent="auth">{{ $t('buttons.login') }}</BaseButton>
+      <BaseButton :is-loading="buttonIsLoading" class="accent" @click.prevent="auth">
+        {{ $t('buttons.login') }}
+      </BaseButton>
 
       <p class="via-social-network-text">{{ $t('or_via_social_network') }}</p>
 
@@ -35,7 +37,7 @@
         </a>
       </ModalSwitcher>
       <ModalSwitcher>
-        {{ $t('modal.switch.forgot_your_password ?') }}
+        {{ $t('modal.switch.forgot_your_password') }}
         <a @click.prevent="$emit('restorePassword')">
           {{ $t('buttons.restore_password') }}
         </a>
@@ -53,6 +55,7 @@ import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import ModalSwitcher from '~/components/Business/Switch/ModalSwitcher.vue';
 import ChangeInputService from '~/services/ui/input/change-input-service';
 import InputService from '~/services/ui/input/input-service';
+import AuthService from '~/services/business/security/auth-service';
 
 @Component({
   components: {
@@ -69,9 +72,19 @@ export default class AuthModal extends Vue {
     password: new InputService('', 'string', undefined, 1)
   });
 
-  private auth(): void {
+  private readonly authService: AuthService = new AuthService(this);
+  private buttonIsLoading: boolean = false;
+
+  private async auth(): Promise<void> {
     if (this.changeInputService.allFieldsWithoutErrors()) {
-      // TODO: Authorize user
+      this.buttonIsLoading = true;
+
+      await this.authService.auth({
+        email: this.changeInputService.getInput('email').getValue(),
+        password: this.changeInputService.getInput('password').getValue()
+      });
+
+      this.buttonIsLoading = false;
     }
   }
 }

@@ -95,7 +95,6 @@ import MainRowFooter from '~/components/Business/Footer/Main/MainRowFooter.vue';
 import MainRowItemFooter from '~/components/Business/Footer/Main/MainRowItemFooter.vue';
 import MainSocialMediaFooter from '~/components/Business/Footer/Main/MainSocialMediaFooter.vue';
 import PlatformSettingResponseInterface from '~/interfaces/business/api-responses/platform-setting-response-interface';
-import { getPlatformSettingModule } from '~/store';
 
 @Component({
   components: {
@@ -106,8 +105,8 @@ import { getPlatformSettingModule } from '~/store';
   }
 })
 export default class TheMainFooter extends Vue {
-  private get getPlatformSettings(): PlatformSettingResponseInterface {
-    return getPlatformSettingModule(this.$store).settings;
+  private get getPlatformSettings(): PlatformSettingResponseInterface | undefined {
+    return undefined;
   }
 
   private get getCurrentYear(): number {

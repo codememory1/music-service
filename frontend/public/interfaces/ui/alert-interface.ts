@@ -1,5 +1,5 @@
 interface AlertInterface {
-  id: string;
+  id?: string;
   title: string;
   message: string;
   status: string;
