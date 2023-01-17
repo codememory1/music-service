@@ -3,21 +3,22 @@ import { Method } from 'axios';
 import Route from '~/api/route';
 import { HttpRequestMethodEnum } from '~/enums/http-request-method-enum';
 import ApiResponseService from '~/services/business/api-response-service';
-import ApiFailedResponseInterface from '~/Interfaces/business/api-failed-response-interface';
-import ApiSuccessResponseInterface from '~/Interfaces/business/api-success-response-interface';
+import ApiFailedResponseInterface from '~/interfaces/business/api-failed-response-interface';
+import ApiSuccessResponseInterface from '~/interfaces/business/api-success-response-interface';
 
 type RequestPromiseType<D> = Promise<
   ApiResponseService<ApiSuccessResponseInterface<D> | ApiFailedResponseInterface>
 >;
 
-export default class ApiRequestService<D> {
+export default class ApiRequestService {
   protected readonly app: Vue;
-  protected readonly route: Route;
+  protected readonly defaultLocale: string;
   protected data?: any = undefined;
+  protected headers: { [key: string]: string } = {};
 
-  public constructor(app: Vue, route: Route) {
+  public constructor(app: Vue, defaultLocale: string) {
     this.app = app;
-    this.route = route;
+    this.defaultLocale = defaultLocale;
   }
 
   public getHost(): string {
@@ -28,20 +29,37 @@ export default class ApiRequestService<D> {
     return this.app.$config.apiClientHost;
   }
 
-  protected collectUrl(): string {
-    return `${this.getHost()}/${this.app.$i18n.locale}/public/${this.route.getPath()}`;
+  protected collectUrl(route: Route): string {
+    const locale = this.app.$cookies.get(this.app.$config.langCookieName) || this.defaultLocale;
+
+    return `${this.getHost()}/${locale}/public/${route.getPath()}`;
   }
 
-  public setData(data: any) {
+  public setData(data: any): ApiRequestService {
     this.data = data;
+
+    return this;
   }
 
-  public request(): RequestPromiseType<D> {
+  public setHeaders(headers: any): ApiRequestService {
+    this.headers = headers;
+
+    return this;
+  }
+
+  public addAuthorizationToken(token: string): ApiRequestService {
+    this.headers.Authorization = `Bearer ${token}`;
+
+    return this;
+  }
+
+  public request<D>(route: Route): RequestPromiseType<D> {
     return new Promise((resolve, reject) => {
       const response = this.app.$api.request({
-        url: this.collectUrl(),
-        method: HttpRequestMethodEnum[this.route.getMethod()] as Method,
-        data: this.data
+        url: this.collectUrl(route),
+        method: HttpRequestMethodEnum[route.getMethod()] as Method,
+        data: this.data,
+        headers: this.headers
       });
 
       response
@@ -60,7 +78,7 @@ export default class ApiRequestService<D> {
             resolve(
               new ApiResponseService<ApiFailedResponseInterface>(
                 true,
-                response.response as ApiFailedResponseInterface
+                response.response.data as ApiFailedResponseInterface
               )
             );
           }

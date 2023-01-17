@@ -1,21 +1,26 @@
 <template>
   <BaseModal ref="modal" title="modal.titles.password_reset">
     <ModalForm>
-      <BaseInputCode class="sm-m-auto" :number-squares="6" />
+      <BaseInputCode
+        ref="inputCode"
+        class="sm-m-auto"
+        :number-squares="6"
+        pattern-value="^[0-9]+$"
+      />
       <ModalNewPasswordFormInput
         placeholder="placeholder.enter_password"
-        :is-error="inputData.password.isError"
-        @input="changeInputService.change($event, inputData.password)"
+        :is-error="changeInputService.inputIsError('password')"
+        @input="changeInputService.change($event, 'password')"
       />
       <ModalFormInput
         type="password"
         name="new-password"
         placeholder="placeholder.enter_confirm_password"
-        :is-error="inputData.confirmPassword.isError"
-        @input="changeInputService.change($event, inputData.confirmPassword)"
+        :is-error="changeInputService.inputIsError('confirmPassword')"
+        @input="changeInputService.change($event, 'confirmPassword')"
       />
 
-      <BaseButton class="accent" @click.prevent="passwordRecovery">
+      <BaseButton class="accent" :is-loading="buttonIsLoading" @click.prevent="passwordRecovery">
         {{ $t('buttons.reset') }}
       </BaseButton>
     </ModalForm>
@@ -30,8 +35,9 @@ import BaseInputCode from '~/components/UI/FormElements/InputCode/BaseInputCode.
 import ModalNewPasswordFormInput from '~/components/UI/FormElements/Input/ModalNewPasswordFormInput.vue';
 import ModalFormInput from '~/components/UI/FormElements/Input/ModalFormInput.vue';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
-import PasswordResetFormDataType from '~/types/ui/form-data/password-reset-form-data-type';
 import ChangeInputService from '~/services/ui/input/change-input-service';
+import InputService from '~/services/ui/input/input-service';
+import PasswordResetService from '~/services/business/security/password-reset-service';
 
 @Component({
   components: {
@@ -44,25 +50,40 @@ import ChangeInputService from '~/services/ui/input/change-input-service';
   }
 })
 export default class PasswordResetModal extends Vue {
-  private readonly changeInputService: ChangeInputService = new ChangeInputService();
-  private inputData: PasswordResetFormDataType = {
-    codes: {
-      isError: false,
-      value: ''
-    },
-    password: {
-      isError: false,
-      value: ''
-    },
-    confirmPassword: {
-      isError: false,
-      value: ''
-    }
-  };
+  private readonly changeInputService: ChangeInputService = new ChangeInputService({
+    password: new InputService('', 'string', undefined, 1),
+    confirmPassword: new InputService('', 'string', undefined, 1)
+  });
 
-  private passwordRecovery(): void {
-    this.inputData.password.isError = this.inputData.password.value.length === 0;
-    this.inputData.confirmPassword.isError = this.inputData.confirmPassword.value.length === 0;
+  private readonly passwordResetService: PasswordResetService = new PasswordResetService(this);
+  private buttonIsLoading: boolean = false;
+  private email: string | null = null;
+
+  public setEmail(email: string): void {
+    this.email = email;
+  }
+
+  private async passwordRecovery(): Promise<void> {
+    const inputCodeService = (this.$refs.inputCode as BaseInputCode).inputCodeService;
+
+    inputCodeService.validateSquares();
+
+    if (
+      this.changeInputService.allFieldsWithoutErrors() &&
+      inputCodeService.getValue().length === 6 &&
+      this.email !== null
+    ) {
+      this.buttonIsLoading = true;
+
+      await this.passwordResetService.reset({
+        email: this.email,
+        code: inputCodeService.getValue(),
+        password: this.changeInputService.getInput('password').getValue(),
+        password_confirm: this.changeInputService.getInput('confirmPassword').getValue()
+      });
+
+      this.buttonIsLoading = false;
+    }
   }
 }
 </script>

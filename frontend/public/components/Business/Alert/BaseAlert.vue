@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="alert-close-wrapper">
-      <BaseButton class="alert__btn-close" @click="close">
+      <BaseButton class="alert__btn-close" @click="alertService.deleteAlert(alert)">
         <i class="fal fa-times" />
       </BaseButton>
     </div>
@@ -20,7 +20,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
-import AlertInterface from '~/Interfaces/ui/alert-interface';
+import AlertInterface from '~/interfaces/ui/alert-interface';
 import AlertService from '~/services/ui/alert/alert-service';
 
 @Component({

@@ -1,0 +1,16 @@
+@import '../../../include/variables';
+
+.main-header {
+  margin-top: 50px;
+  display: flex;
+
+  &-info {
+    display: flex;
+    margin-left: auto;
+    gap: 100px;
+  }
+
+  &-language {
+    width: 170px;
+  }
+}

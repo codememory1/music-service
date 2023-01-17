@@ -2,8 +2,11 @@
 
 namespace App\Enum;
 
+use App\Enum\Traits\EnumTrait;
+
 enum SubscriptionPermissionEnum
 {
+    use EnumTrait;
     case SHOW_MY_ALBUMS;
     case CREATE_ALBUM;
     case UPDATE_ALBUM;

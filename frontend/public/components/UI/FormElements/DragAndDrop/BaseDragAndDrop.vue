@@ -47,7 +47,6 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import BaseUploadedFile from '~/components/UI/FormElements/DragAndDrop/BaseUploadedFile.vue';
-import { getAlertModule } from '~/store';
 import DragAndDropValidationService from '~/services/ui/drag-and-drop/drag-and-drop-validation-service';
 import DragAndDropService from '~/services/ui/drag-and-drop/drag-and-drop-service';
 
@@ -105,8 +104,7 @@ export default class BaseDragAndDrop extends Vue {
     this.dragAndDropValidationService.addValidateMimeTypes(this.allowedMimeTypes, file);
 
     this.dragAndDropValidationService.validate((error) => {
-      getAlertModule(this.$store).addAlert({
-        id: this.$uuid,
+      this.$store.commit('modules/alert-module/addAlert', {
         title: this.$t(error.title),
         message: this.$t(error.message, error.parameters),
         status: 'error'

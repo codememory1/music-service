@@ -8,7 +8,10 @@ export default {
     add: 'Add',
     create: 'Create',
     update: 'Update',
-    reset: 'Reset'
+    reset: 'Reset',
+    buy_subscription: 'Buy a subscription',
+    restore_password: 'Restore password',
+    activate_account: 'Activate account'
   },
 
   placeholder: {
@@ -32,7 +35,9 @@ export default {
     search: 'Search...',
     enter_album_title: 'Enter album title',
     enter_album_description: 'Enter album description',
-    enter_playlist_title: 'Enter playlist title'
+    enter_playlist_title: 'Enter playlist title',
+    choose_lang: 'Choose language',
+    account_activate: 'Activate account'
   },
 
   modal: {
@@ -46,11 +51,13 @@ export default {
       create_album: 'Create a album',
       create_playlist: 'Create a playlist',
       update_multimedia: 'Update a multimedia',
-      password_reset: 'Password Reset'
+      password_reset: 'Password Reset',
+      account_activate: 'Account Activation'
     },
     switch: {
       have_an_account: 'Have an account?',
-      dont_have_account: "Don't know how to account?"
+      dont_have_account: "Don't know how to account?",
+      forgot_your_password: 'Forgot your password?'
     }
   },
 
@@ -63,7 +70,12 @@ export default {
 
   alert: {
     titles: {
-      upload_files: 'Upload file'
+      upload_files: 'Upload File',
+      auth: 'Authorization',
+      register: 'Registration',
+      account_activation: 'Account Activation',
+      password_recovery_request: 'Password Recovery Request',
+      password_reset: 'Password Reset'
     },
     messages: {
       unable_add_file_max_number:
@@ -72,7 +84,15 @@ export default {
         'Unable to add file! Unable to add file! The minimum file size must be {size}{unit}',
       unable_add_file_max_size: 'Unable to add file! File size should not exceed {size}{unit}',
       unable_add_file_not_allowed_mime_type:
-        'Unable to add file! Incorrect file mime-type, allowed mime-types: {mime_types}'
+        'Unable to add file! Incorrect file mime-type, allowed mime-types: {mime_types}',
+      success_auth: 'You have successfully logged into your account',
+      error_auth: "An authorization error has occurred! We couldn't get your information",
+      success_register:
+        'Registration completed successfully! An email has been sent to activate your account',
+      success_account_activate: 'Account successfully activated! Now you can enter it',
+      success_password_recovery_request:
+        'Password reset request successfully created! A password reset code has been sent to your email',
+      success_password_reset: 'Password reset successfully! Now you can sign in'
     }
   },
 
@@ -100,6 +120,115 @@ export default {
     type: {
       track: 'Music',
       clip: 'Clip'
+    }
+  },
+
+  section: {
+    our_advantage: {
+      title: 'Our advantages',
+      items: {
+        unique_features: {
+          title: 'Unique features',
+          description: 'Lots of unique features for your use.'
+        },
+        subscription_price: {
+          title: 'Subscription price',
+          description: 'Low prices for extended list of subscriptions.'
+        },
+
+        more_options_for_free_subscription: {
+          title: 'More options for free subscription',
+          description: 'Lots of features for free use.'
+        },
+
+        listen_to_opinions_users: {
+          title: 'We listen to the opinions of users',
+          description: 'We listen to your opinion on the implementation of new functionality.'
+        },
+
+        ease_use: {
+          title: 'Ease of use',
+          description: 'Use all the features of the platform with convenience.'
+        },
+
+        stream_control: {
+          title: 'Stream control',
+          description: 'Control media flow if you have poor internet.'
+        }
+      }
+    },
+
+    subscription: {
+      title: 'Choose your subscription',
+      description: 'Listen without limits on your phone, speaker and other devices'
+    }
+  },
+
+  hero: {
+    home: {
+      header: 'Listening is everything in your life',
+      tagline:
+        'Millions of songs and podcasts. No credit card. of songs and podcasts. No credit card.'
+    }
+  },
+
+  footer: {
+    main: {
+      rows: {
+        get_started: {
+          title: 'Get Started',
+          items: {
+            pricing_and_plans: 'Pricing & Plans',
+            get_support: 'Get Support'
+          }
+        },
+        discover: {
+          title: 'Discover',
+          items: {
+            about: 'About',
+            explore_the_app: 'Explore the App',
+            for_artists: 'For Artists'
+          }
+        },
+        company: {
+          title: 'Company',
+          items: {
+            partners: 'Partners',
+            careers: 'Careers',
+            guarantee: 'Guarantee',
+            contacts: 'Contact Information'
+          }
+        },
+        community: {
+          title: 'Community',
+          items: {
+            changelog: "What's new ?",
+            suggestion: 'Suggestion',
+            api: 'API',
+            ads: 'Ads'
+          }
+        }
+      }
+    },
+
+    bottom_links: {
+      privacy_policy: 'Privacy Policy',
+      terms_and_conditions: 'Terms and Conditions',
+      cookie_settings: 'Cookie Settings',
+      sitemap: 'Sitemap'
+    }
+  },
+
+  navigation: {
+    main: {
+      premium: 'Premium',
+      support: 'Support',
+      signUp: 'Sign Up',
+      signIn: 'Sign In',
+      my_account: 'My Account',
+      manage_account: 'Manage Account',
+      web_player: 'Web Player',
+      logout: 'Logout'
     }
   }
 };

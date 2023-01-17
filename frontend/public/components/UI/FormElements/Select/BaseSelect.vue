@@ -18,7 +18,7 @@
           @close="optionService.unselect()"
         />
       </BaseSelectListSelectedTags>
-      <BaseSelectSelectedOption v-else :title="selectService.getOptions()[0].option.title" />
+      <BaseSelectSelectedOption v-else :title="selectService.getSelectedOption().option.title" />
     </BaseSelectBoxCurrent>
     <transition name="select-drop-down">
       <div v-show="selectService.isOpened()" class="select-drop-down">
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import BaseSelectBoxCurrent from '~/components/UI/FormElements/Select/BaseSelectBoxCurrent.vue';
 import BaseSelectPlaceholder from '~/components/UI/FormElements/Select/BaseSelectPlaceholder.vue';
 import BaseSelectSelectedOption from '~/components/UI/FormElements/Select/BaseSelectSelectedOption.vue';
@@ -100,23 +100,15 @@ export default class BaseSelect extends Vue {
   @Prop({ required: false, default: false })
   private readonly isLoading!: boolean;
 
-  private readonly selectService: SelectService = new SelectService(this, []);
-  private readonly selectListService: SelectListService = new SelectListService(this.selectService);
-  private readonly selectKeydownService: SelectKeydownService = new SelectKeydownService(
+  private selectService: SelectService = new SelectService(this, []);
+  private selectListService: SelectListService = new SelectListService(this.selectService);
+  private selectKeydownService: SelectKeydownService = new SelectKeydownService(
     this.selectService,
     this.selectListService
   );
 
   private created(): void {
-    this.options.forEach((option) => {
-      const optionService = new SelectOptionService(this.selectService, option);
-
-      if (this.selectedOptions.includes(option.value)) {
-        optionService.setIsSelected(true);
-      }
-
-      this.selectService.addOption(optionService);
-    });
+    this.selectService.setOptions(this.buildOptionsServices());
   }
 
   private mounted(): void {
@@ -129,6 +121,32 @@ export default class BaseSelect extends Vue {
     document.addEventListener('keydown', (event: KeyboardEvent) => {
       this.selectKeydownService.handle(event, this.asMultiple);
     });
+  }
+
+  private buildOptionsServices(): Array<SelectOptionService> {
+    const options: Array<SelectOptionService> = [];
+
+    this.options.forEach((option) => {
+      const optionService = new SelectOptionService(this.selectService, option);
+
+      if (this.selectedOptions.includes(option.value)) {
+        optionService.setIsSelected(true);
+      }
+
+      options.push(optionService);
+    });
+
+    return options;
+  }
+
+  @Watch('options')
+  private onOptionsChanged(): void {
+    this.selectService = new SelectService(this, this.buildOptionsServices());
+    this.selectListService = new SelectListService(this.selectService);
+    this.selectKeydownService = new SelectKeydownService(
+      this.selectService,
+      this.selectListService
+    );
   }
 }
 </script>

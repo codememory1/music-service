@@ -1,0 +1,35 @@
+@import '../include/variables';
+
+.home-header {
+  &-wrapper {
+    position: relative;
+
+    &:after,
+    &:before {
+      content: '';
+      position: absolute;
+      border-radius: 100%;
+      filter: blur(125px);
+      width: 70%;
+      height: 70%;
+      opacity: 0.3;
+    }
+
+    &:before {
+      background-color: $accent;
+      top: 0;
+      left: 0;
+    }
+
+    &:after {
+      background-color: $accent-second;
+      bottom: 0;
+      right: 0;
+    }
+  }
+
+  &-inner {
+    position: relative;
+    z-index: 1;
+  }
+}

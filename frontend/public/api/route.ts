@@ -1,5 +1,5 @@
-import { ViewSortableEnum } from '~/Enums/view-sortable-enum';
-import { HttpRequestMethodEnum } from '~/Enums/http-request-method-enum';
+import { ViewSortableEnum } from '~/enums/view-sortable-enum';
+import { HttpRequestMethodEnum } from '~/enums/http-request-method-enum';
 import { ApiQueryDataType } from '~/types/business/api-query-data-type';
 
 const httpBuildQuery = require('http-build-query');

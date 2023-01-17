@@ -3,29 +3,29 @@
     <ModalForm>
       <ModalFormInput
         placeholder="placeholder.enter_pseudonym"
-        :is-error="inputData.pseudonym.isError"
-        @input="changeInputService.change($event, inputData.pseudonym)"
+        :is-error="changeInputService.inputIsError('pseudonym')"
+        @input="changeInputService.change($event, 'pseudonym')"
       />
       <ModalFormInput
         placeholder="placeholder.enter_email"
-        :is-error="inputData.email.isError"
-        @input="changeInputService.change($event, inputData.email)"
+        :is-error="changeInputService.inputIsError('email')"
+        @input="changeInputService.change($event, 'email')"
       />
       <ModalNewPasswordFormInput
         placeholder="placeholder.enter_password"
-        :is-error="inputData.password.isError"
-        @input="changeInputService.change($event, inputData.password)"
+        :is-error="changeInputService.inputIsError('password')"
+        @input="changeInputService.change($event, 'password')"
       />
       <ModalFormInput
         type="password"
         placeholder="placeholder.enter_confirm_password"
-        :is-error="inputData.confirmPassword.isError"
-        @input="changeInputService.change($event, inputData.confirmPassword)"
+        :is-error="changeInputService.inputIsError('confirmPassword')"
+        @input="changeInputService.change($event, 'confirmPassword')"
       />
 
       <ModalFormCheckbox
-        v-model="inputData.isAccept.value"
-        :is-error="inputData.isAccept.isError"
+        v-model="changeInputService.getInput('isAccept').actualValue"
+        :is-error="changeInputService.inputIsError('isAccept')"
         :description="
           $t('confirm_action.register', {
             title: $config.title,
@@ -35,11 +35,13 @@
         "
       />
 
-      <BaseButton class="accent" @click.prevent="register">{{ $t('buttons.register') }}</BaseButton>
+      <BaseButton class="accent" :is-loading="buttonIsLoading" @click.prevent="register">
+        {{ $t('buttons.register') }}
+      </BaseButton>
 
       <ModalSwitcher>
         {{ $t('modal.switch.have_an_account') }}
-        <a @click="$emit('openLogin')">{{ $t('buttons.login') }}</a>
+        <a @click="$emit('openLogin')" @click.prevent="$emit('auth')">{{ $t('buttons.login') }}</a>
       </ModalSwitcher>
     </ModalForm>
   </BaseModal>
@@ -54,8 +56,9 @@ import ModalNewPasswordFormInput from '~/components/UI/FormElements/Input/ModalN
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import ModalFormCheckbox from '~/components/UI/FormElements/Checkbox/ModalFormCheckbox.vue';
 import ModalSwitcher from '~/components/Business/Switch/ModalSwitcher.vue';
-import RegisterFormDataType from '~/types/ui/form-data/register-form-data-type';
 import ChangeInputService from '~/services/ui/input/change-input-service';
+import InputService from '~/services/ui/input/input-service';
+import RegisterService from '~/services/business/security/register-service';
 
 @Component({
   components: {
@@ -69,36 +72,30 @@ import ChangeInputService from '~/services/ui/input/change-input-service';
   }
 })
 export default class RegisterModal extends Vue {
-  private readonly changeInputService: ChangeInputService = new ChangeInputService();
-  private inputData: RegisterFormDataType = {
-    pseudonym: {
-      isError: false,
-      value: ''
-    },
-    email: {
-      isError: false,
-      value: ''
-    },
-    password: {
-      isError: false,
-      value: ''
-    },
-    confirmPassword: {
-      isError: false,
-      value: ''
-    },
-    isAccept: {
-      isError: false,
-      value: false
-    }
-  };
+  private readonly changeInputService: ChangeInputService = new ChangeInputService({
+    pseudonym: new InputService('', 'string', undefined, 1),
+    email: new InputService('', 'string', undefined, 1),
+    password: new InputService('', 'string', undefined, 1),
+    confirmPassword: new InputService('', 'string', undefined, 1),
+    isAccept: new InputService(false, 'boolean', true)
+  });
 
-  private register(): void {
-    this.inputData.pseudonym.isError = this.inputData.pseudonym.value.length === 0;
-    this.inputData.email.isError = this.inputData.email.value.length === 0;
-    this.inputData.password.isError = this.inputData.password.value.length === 0;
-    this.inputData.confirmPassword.isError = this.inputData.confirmPassword.value.length === 0;
-    this.inputData.isAccept.isError = !this.inputData.isAccept.value;
+  private registerService: RegisterService = new RegisterService(this);
+  private buttonIsLoading: boolean = false;
+
+  private async register(): Promise<void> {
+    if (this.changeInputService.allFieldsWithoutErrors()) {
+      this.buttonIsLoading = true;
+
+      await this.registerService.register({
+        pseudonym: this.changeInputService.getInput('pseudonym').getValue(),
+        email: this.changeInputService.getInput('email').getValue(),
+        password: this.changeInputService.getInput('password').getValue(),
+        password_confirm: this.changeInputService.getInput('confirmPassword').getValue()
+      });
+
+      this.buttonIsLoading = false;
+    }
   }
 }
 </script>

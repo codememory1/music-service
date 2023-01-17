@@ -1,0 +1,82 @@
+@import '../../../include/variables';
+
+.home-hero {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  &-info {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__header {
+    font-size: 68px;
+    color: $white;
+    font-weight: bold;
+  }
+
+  &__description {
+    font-size: 18px;
+    color: $gray;
+  }
+
+  &-macap {
+    &-wrapper {
+      position: relative;
+      margin-left: auto;
+    }
+
+    &__img {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  &__try-for-free {
+    width: max-content;
+    padding: 0 50px;
+    margin-top: 50px;
+  }
+
+  &-statistic {
+    &-items {
+      margin-top: 50px;
+      display: flex;
+      gap: 20px;
+    }
+
+    &__item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      &-value {
+        display: flex;
+        gap: 10px;
+        color: $white;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      &-title {
+        font-size: 16px;
+        color: $gray;
+      }
+    }
+
+    &-rating {
+      &-starts {
+        display: flex;
+        align-items: center;
+        gap: 2.5px;
+      }
+
+      &__img {
+        width: 13px;
+        height: 13px;
+      }
+    }
+  }
+}

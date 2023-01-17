@@ -1,0 +1,7 @@
+.our-advantages-section {
+  > div.information-section-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 50px;
+  }
+}

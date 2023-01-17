@@ -1,8 +1,6 @@
-import InputFormDataType from '~/types/ui/form-data/input-form-data-type';
-
 type AuthFormDataType = {
-  email: InputFormDataType;
-  password: InputFormDataType;
+  email: string;
+  password: string;
 };
 
 export default AuthFormDataType;

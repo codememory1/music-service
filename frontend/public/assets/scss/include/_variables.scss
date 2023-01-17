@@ -21,8 +21,11 @@ $z-index-modal: 1000;
 $btn-show-password: 1010;
 
 // indents
+$default-gap: 20px;
+$gap-between-el: $default-gap - 5px;
 $default-padding-container: 40px;
 $form-el-padding: 25px;
+$gap-between-information-section: 50px;
 
 // Widths / Heights
 $form-el-height: 40px;

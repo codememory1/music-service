@@ -6,3 +6,15 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes skeletonBgOnLight {
+  0% {
+    background-color: #ddd;
+  }
+  50% {
+    background-color: #d0d0d0;
+  }
+  100% {
+    background-color: #ddd;
+  }
+}

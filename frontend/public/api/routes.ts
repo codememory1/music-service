@@ -1,5 +1,5 @@
 import Route from '~/api/route';
-import { HttpRequestMethodEnum } from '~/Enums/http-request-method-enum';
+import { HttpRequestMethodEnum } from '~/enums/http-request-method-enum';
 
 export default {
   lang: {
@@ -15,7 +15,7 @@ export default {
 
     password_reset: {
       request_restoration: new Route(
-        '/user/password-reset/request-restoration',
+        'user/password-reset/request-restoration',
         HttpRequestMethodEnum.POST
       ),
       restore: new Route('user/password-reset/restore-password', HttpRequestMethodEnum.POST)
@@ -190,7 +190,8 @@ export default {
   user: {
     profile: {
       update_design: new Route('user/profile/design/edit', HttpRequestMethodEnum.PUT)
-    }
+    },
+    authorized_info: new Route('user/info')
   },
 
   friend: {

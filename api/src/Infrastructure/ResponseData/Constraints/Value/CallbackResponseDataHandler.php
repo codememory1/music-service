@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ReverseContainer;
 final class CallbackResponseDataHandler extends AbstractConstraintHandler implements ConstraintValueHandlerInterface
 {
     public function __construct(
-        private ReverseContainer $container
+        private readonly ReverseContainer $container
     ) {
     }
 
