@@ -1,0 +1,26 @@
+@import '@/assets/scss/include/variables';
+
+.wp-header-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__icon {
+    color: $white;
+    font-size: $default-size;
+  }
+
+  &__input {
+    background-color: transparent;
+    border: none;
+    color: $white;
+    width: 250px;
+    height: 40px;
+    outline: none;
+    font-size: $default-size;
+
+    &::placeholder {
+      color: $white;
+    }
+  }
+}

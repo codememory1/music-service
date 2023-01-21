@@ -1,0 +1,13 @@
+@import '@/assets/scss/include/variables';
+
+.wp-information-section {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  &__title {
+    color: $white;
+    font-size: 20px;
+    font-weight: 500;
+  }
+}

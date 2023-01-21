@@ -1,0 +1,17 @@
+@import '@/assets/scss/include/variables';
+
+.single-album {
+  &__play-btn {
+    width: 45px!important;
+    height: 45px!important;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $default-size;
+    position: absolute;
+    top: 60%;
+    right: -12px;
+    outline: 4px solid $light-for-dark!important;
+  }
+}

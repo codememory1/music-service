@@ -1,0 +1,26 @@
+@import '@/assets/scss/include/variables';
+@import '@/assets/scss/include/mixins';
+
+.wp-layout {
+  display: flex;
+}
+
+.wp-main-wrapper {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.wp-main-page {
+  height: 100vh;
+  overflow: auto;
+}
+
+.wp-main-content {
+  padding-bottom: 40px;
+  overflow: auto;
+
+  @include scrollbar($light-bg, $accent, 6px);
+}

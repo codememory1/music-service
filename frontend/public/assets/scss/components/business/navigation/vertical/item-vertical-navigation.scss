@@ -1,0 +1,27 @@
+@import '../../../../include/variables';
+
+.vertical-navigation__item {
+  &-link {
+    font-size: $default-size;
+    font-weight: 400;
+    color: $white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12.5px 40px;
+    transition: ease-in background-color $default-transition;
+
+    &:hover {
+      background-color: $light-for-dark;
+    }
+
+    &.active-link {
+      background: linear-gradient(270deg, rgba($accent, 0.3) 0%, rgba($accent, 0) 115.38%);
+      border-right: 2px solid $accent;
+    }
+
+    i {
+      width: 20px;
+    }
+  }
+}

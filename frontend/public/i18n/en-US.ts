@@ -230,5 +230,34 @@ export default {
       web_player: 'Web Player',
       logout: 'Logout'
     }
+  },
+
+  web_player: {
+    navigation_groups: {
+      my_library: 'My library'
+    },
+    navigation: {
+      home: 'Home',
+      search: 'Search',
+      popular_artists: 'Popular artists',
+      media_library: 'Media library',
+      friends: 'Friends',
+      history: 'Listening history',
+      mix: 'Mix',
+      favorite_artists: 'Favorite artists',
+      playlists: 'Playlists',
+      my_best_musics: 'My best musics'
+    }
+  },
+
+  artist: {
+    buttons: {
+      subscribe: 'Subscribe',
+      unsubscribe: 'Unsubscribe'
+    }
+  },
+
+  album: {
+    various_artists: 'Various artists'
   }
 };
