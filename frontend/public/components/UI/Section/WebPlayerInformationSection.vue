@@ -2,9 +2,11 @@
   <section class="wp-information-section">
     <div class="wp-information-section-top">
       <h3 class="wp-information-section__title">{{ title }}</h3>
+
+      <slot name="top" />
     </div>
     <div class="wp-information-section-content">
-      <slot />
+      <slot name="content" />
     </div>
   </section>
 </template>

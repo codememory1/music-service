@@ -1,11 +1,11 @@
 import PerformerType from '~/types/business/performer-type';
 
-interface AlbumResponseInterface {
+interface TrackResponseInterface {
   id: number;
   title: string;
   image: string;
-  created_at: string;
+  duration: string;
   performers: Array<PerformerType>;
 }
 
-export default AlbumResponseInterface;
+export default TrackResponseInterface;

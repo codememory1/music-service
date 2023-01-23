@@ -8,7 +8,7 @@
   padding: 0 40px;
 }
 
-.wp-mp {
+.wp-mt {
   margin-top: 40px;
 }
 
@@ -22,4 +22,10 @@
 
 .wp-pt-of-header {
   padding-top: $wp-header-height + 20px;
+}
+
+.wp-half-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
 }

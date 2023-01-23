@@ -10,4 +10,21 @@
     font-size: 20px;
     font-weight: 500;
   }
+
+  &.see-all &-top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__see-all-link {
+    color: $gray;
+    font-size: $default-size;
+    transition: ease color $default-transition;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      color: $accent;
+    }
+  }
 }

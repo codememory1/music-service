@@ -11,7 +11,8 @@ export default {
     reset: 'Reset',
     buy_subscription: 'Buy a subscription',
     restore_password: 'Restore password',
-    activate_account: 'Activate account'
+    activate_account: 'Activate account',
+    see_all: 'See all'
   },
 
   placeholder: {
@@ -254,7 +255,11 @@ export default {
     buttons: {
       subscribe: 'Subscribe',
       unsubscribe: 'Unsubscribe'
-    }
+    },
+
+    top_albums: 'Top Albums',
+    top_tracks: 'Top Tracks',
+    similar_artists: 'Similar Artists'
   },
 
   album: {

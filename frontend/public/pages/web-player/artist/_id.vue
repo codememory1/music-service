@@ -1,57 +1,19 @@
 <template>
   <main>
     <TheArtistProfile
-      name="Zara Larsson"
-      background="/images/artist-header-bg.jpeg"
-      description="Millions of songs and podcasts. No credit card. of songs and podcasts. No credit card."
+      :name="artistProfileService.getPseudonym"
+      :description="artistProfileService.getDescription"
+      :background="artistProfileService.getBackgroundLink"
     />
     <div class="wp-container wp-mt">
-      <TopAlbumSection
-        :albums="[
-          {
-            id: 1,
-            title: 'Top album',
-            performers: [{ id: 1, title: 'Tvbuu' }],
-            created_at: '2023',
-            image: '/images/album2.jpeg'
-          },
-          {
-            id: 2,
-            title: 'Top album',
-            performers: [{ id: 1, title: 'Tvbuu' }],
-            created_at: '2023',
-            image: '/images/album2.jpeg'
-          },
-          {
-            id: 3,
-            title: 'Top album',
-            performers: [{ id: 1, title: 'Tvbuu' }],
-            created_at: '2023',
-            image: '/images/album2.jpeg'
-          },
-          {
-            id: 4,
-            title: 'Top album',
-            performers: [{ id: 1, title: 'Tvbuu' }],
-            created_at: '2023',
-            image: '/images/album2.jpeg'
-          },
-          {
-            id: 5,
-            title: 'Top album',
-            performers: [{ id: 1, title: 'Tvbuu' }],
-            created_at: '2023',
-            image: '/images/album2.jpeg'
-          },
-          {
-            id: 6,
-            title: 'Top album',
-            performers: [{ id: 1, title: 'Tvbuu' }],
-            created_at: '2023',
-            image: '/images/album2.jpeg'
-          }
-        ]"
-      />
+      <TopAlbumSection :albums="artistProfileService.getTopAlbums" />
+
+      <div class="wp-mt">
+        <div class="wp-half-container">
+          <TopTrackSection :tracks="artistProfileService.getTopTracks" />
+          <SimilarArtistSection :artists="artistProfileService.getSimilarArtists" />
+        </div>
+      </div>
     </div>
   </main>
 </template>
@@ -60,6 +22,9 @@
 import { Component, Vue } from 'vue-property-decorator';
 import TheArtistProfile from '~/components/Business/Profile/Artist/TheArtistProfile.vue';
 import TopAlbumSection from '~/components/Business/Section/TopAlbumSection.vue';
+import TopTrackSection from '~/components/Business/Section/TopTrackSection.vue';
+import ArtistProfileService from '~/services/business/profile/artist-profile-service';
+import SimilarArtistSection from '~/components/Business/Section/SimilarArtistSection.vue';
 
 @Component({
   validate({ params }) {
@@ -70,10 +35,12 @@ import TopAlbumSection from '~/components/Business/Section/TopAlbumSection.vue';
 
   components: {
     TheArtistProfile,
-    TopAlbumSection
+    TopAlbumSection,
+    TopTrackSection,
+    SimilarArtistSection
   }
 })
-export default class Artist extends Vue {}
+export default class Artist extends Vue {
+  private readonly artistProfileService: ArtistProfileService = new ArtistProfileService(this); // FIX: Сервис использует mock-данные
+}
 </script>
-
-<style lang="scss"></style>

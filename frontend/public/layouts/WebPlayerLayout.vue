@@ -37,7 +37,7 @@
       </GroupVerticalNavigation>
     </TheVerticalNavigation>
     <div class="wp-main-wrapper">
-      <div class="wp-main-page" @scroll="scrollContent">
+      <div ref="content" class="wp-main-page" @scroll="scrollContent">
         <TheWebPlayerHeader :active="headerIsActive">
           <TheSearchWebPlayerHeader />
         </TheWebPlayerHeader>
@@ -71,6 +71,10 @@ import BasePlayer from '~/components/Business/Player/BasePlayer.vue';
 })
 export default class WebPlayerLayout extends Vue {
   private headerIsActive: boolean = false;
+
+  public mounted(): void {
+    this.headerIsActive = (this.$refs.content as HTMLElement).scrollTop >= 40;
+  }
 
   private scrollContent(event: Event): void {
     this.headerIsActive = (event.target as HTMLElement).scrollTop >= 40;

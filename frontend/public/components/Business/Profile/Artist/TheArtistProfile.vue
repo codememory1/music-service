@@ -2,7 +2,7 @@
   <div class="artist-profile" :style="styles">
     <div class="wp-container wp-pt-of-header artist-profile-content">
       <div class="artist-profile-info">
-        <h1 class="artist-profile__name">{{ name }}</h1>
+        <h1 data-aos="fade-right" class="artist-profile__name">{{ name }}</h1>
         <p class="artist-profile__description">{{ description }}</p>
       </div>
 

@@ -9,10 +9,12 @@
       <h3 class="album__title">{{ data.title }}</h3>
       <div class="album-performer-wrapper">
         <time class="album__year-creation" :datetime="data.created_at">{{ data.created_at }}</time>
-        <nuxt-link v-if="data.performers.length === 1" class="album__performer link" to="">
-          {{ data.performers[0].title }}
-        </nuxt-link>
-        <span v-else class="album__performer">{{ $t('album.various_artists') }}</span>
+        <span v-for="(performer, index) in data.performers" :key="index" class="album__performer">
+          <nuxt-link class="album__performer-link" to="">
+            {{ performer.title }}
+          </nuxt-link>
+          <template v-if="index < data.performers.length - 1">&</template>
+        </span>
       </div>
 
       <slot name="info" />
