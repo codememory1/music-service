@@ -15,7 +15,10 @@
           <i class="fab fa-mixcloud" /> {{ $t('web_player.navigation.mix') }}
         </ItemVerticalNavigation>
       </GroupVerticalNavigation>
-      <GroupVerticalNavigation :title="$t('web_player.navigation_groups.my_library')">
+      <GroupVerticalNavigation
+        v-show="authorizedUserInfo !== null"
+        :title="$t('web_player.navigation_groups.my_library')"
+      >
         <ItemVerticalNavigation link="/web-player/history">
           <i class="fal fa-history" /> {{ $t('web_player.navigation.history') }}
         </ItemVerticalNavigation>
@@ -78,6 +81,10 @@ export default class WebPlayerLayout extends Vue {
 
   private scrollContent(event: Event): void {
     this.headerIsActive = (event.target as HTMLElement).scrollTop >= 40;
+  }
+
+  private get authorizedUserInfo() {
+    return this.$store.getters['modules/global-module/authorizedUserInfo'];
   }
 }
 </script>

@@ -264,5 +264,19 @@ export default {
 
   album: {
     various_artists: 'Various artists'
+  },
+
+  device_picker: {
+    your_devices: 'Your devices'
+  },
+
+  common: {
+    ip: 'IP-address',
+    last_activity: 'Last activity'
+  },
+
+  statuses: {
+    offline: 'Не в сети',
+    online: 'В сети'
   }
 };

@@ -1,12 +1,15 @@
 import { Vue } from 'vue-property-decorator';
 import AuthorizedUserInfoResponseInterface from '~/interfaces/business/api-responses/authorized-user-info-response-interface';
+import UserSessionResponseInterface from '~/interfaces/business/api-responses/user-session-response-interface';
+import mocks from '~/api/mocks';
 
 export default {
   namespaced: true,
 
   state: {
     loaderIsActive: true,
-    authorizedUserInfo: null
+    authorizedUserInfo: null,
+    sessions: mocks.authorized_user.sessions // FIX: Используются мокавые данные - изменить на реальные, которые будут загружаться после авторизации и через какое-то время обновляться или же загружаться с помощью WebSocket
   },
 
   getters: {
@@ -16,6 +19,10 @@ export default {
 
     authorizedUserInfo(state: any): AuthorizedUserInfoResponseInterface | null {
       return state.authorizedUserInfo;
+    },
+
+    sessions(state: any): Array<UserSessionResponseInterface> {
+      return state.sessions;
     }
   },
 
@@ -33,6 +40,10 @@ export default {
       app.$cookies.remove(app.$config.cookieAccessTokenName);
 
       state.authorizedUserInfo = null;
+    },
+
+    sessions(state: any, sessions: Array<UserSessionResponseInterface>): void {
+      state.sessions = sessions;
     }
   }
 };

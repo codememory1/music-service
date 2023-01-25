@@ -1,0 +1,38 @@
+@import '@/assets/scss/include/variables';
+
+.profile-header-drop-down {
+  width: 230px;
+  border-radius: $default-radius;
+  border: 2px solid $light-for-dark;
+  position: absolute;
+  background-color: $dark-bg;
+  top: 100%;
+  right: 40px;
+
+  &-inner {
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+    }
+
+    &:after {
+      border: 8px solid transparent;
+      border-bottom: 8px solid $dark-bg;
+      top: -16px;
+      right: 11px;
+    }
+
+    &:before {
+      border: 10px solid transparent;
+      border-bottom: 10px solid $light-for-dark;
+      top: -20px;
+      right: 9px;
+    }
+  }
+
+  &-items {
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -45,18 +45,18 @@
       display: flex;
       gap: 10px;
       align-items: center;
-      transition: ease-in opacity $default-transition;
       cursor: pointer;
-
-      &:hover {
-        opacity: 0.6;
-      }
     }
 
     &__photo {
       width: 40px;
       height: 40px;
       border-radius: 100%;
+      transition: ease-in opacity $default-transition;
+
+      &:hover {
+        opacity: 0.6;
+      }
     }
   }
 
