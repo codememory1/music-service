@@ -2,6 +2,7 @@ import { Vue } from 'vue-property-decorator';
 import AuthorizedUserInfoResponseInterface from '~/interfaces/business/api-responses/authorized-user-info-response-interface';
 import UserSessionResponseInterface from '~/interfaces/business/api-responses/user-session-response-interface';
 import mocks from '~/api/mocks';
+import ListUserNotificationResponseType from '~/types/business/api-responses/list-user-notification-response-type';
 
 export default {
   namespaced: true,
@@ -9,7 +10,8 @@ export default {
   state: {
     loaderIsActive: true,
     authorizedUserInfo: null,
-    sessions: mocks.authorized_user.sessions // FIX: Используются мокавые данные - изменить на реальные, которые будут загружаться после авторизации и через какое-то время обновляться или же загружаться с помощью WebSocket
+    sessions: mocks.authorized_user.sessions, // FIX: Используются мокавые данные - изменить на реальные, которые будут загружаться после авторизации и через какое-то время обновляться или же загружаться с помощью WebSocket
+    notifications: mocks.authorized_user.notifications // FIX: Изменить на реальные уведомления пользователя
   },
 
   getters: {
@@ -23,6 +25,10 @@ export default {
 
     sessions(state: any): Array<UserSessionResponseInterface> {
       return state.sessions;
+    },
+
+    notifications(state: any): ListUserNotificationResponseType {
+      return state.notifications;
     }
   },
 
@@ -44,6 +50,10 @@ export default {
 
     sessions(state: any, sessions: Array<UserSessionResponseInterface>): void {
       state.sessions = sessions;
+    },
+
+    notifications(state: any, notifications: ListUserNotificationResponseType): void {
+      state.notifications = notifications;
     }
   }
 };

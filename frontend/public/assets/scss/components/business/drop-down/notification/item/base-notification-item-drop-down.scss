@@ -1,0 +1,65 @@
+@import '@/assets/scss/include/variables';
+
+.notification-drop-down-item {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  transition: ease-in background-color $default-transition;
+
+  &:hover {
+    background-color: $light-for-dark;
+  }
+
+  &.unread &__title {
+    &:before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background-color: $accent-second;
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      border-radius: 100%;
+    }
+  }
+
+  &__img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__title {
+    position: relative;
+    color: $white;
+    font-size: $default-size;
+    font-weight: 500;
+  }
+
+  &__message {
+    color: $white;
+    font-size: $default-size;
+    font-weight: 300;
+  }
+
+  &-date-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__time,
+  &__date {
+    font-size: 12px;
+    color: $gray;
+  }
+}

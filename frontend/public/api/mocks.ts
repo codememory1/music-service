@@ -302,6 +302,44 @@ export default {
         created_at: '2023-01-20 23:33:29',
         updated_at: '2023-01-24 00:00:44'
       }
+    ],
+    notifications: [
+      {
+        id: 1,
+        from: {
+          pseudonym: 'Codememory',
+          photo: '/images/user.png'
+        },
+        type: 'REFERENCE',
+        title: 'New release',
+        message: 'Anonymous author has a new release "Release name"',
+        actions: {},
+        created_at: '2023-10-12 10:23:24'
+      },
+      {
+        id: 2,
+        from: {
+          pseudonym: 'Codememory',
+          photo: '/images/user.png'
+        },
+        type: 'REFERENCE',
+        title: 'New release',
+        message: 'Anonymous author has a new release "Release name"',
+        actions: {},
+        created_at: '2023-05-23 22:23:24'
+      },
+      {
+        id: 3,
+        from: {
+          pseudonym: 'Codememory',
+          photo: '/images/user.png'
+        },
+        type: 'REFERENCE',
+        title: 'New release',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aspernatur aut corporis, deserunt enim ex in ipsa iusto, necessitatibus, nulla pariatur quam qui recusandae repellendus sed sint totam vero vitae?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aspernatur aut corporis, deserunt enim ex in ipsa iusto, necessitatibus, nulla pariatur quam qui recusandae repellendus sed sint totam vero vitae?',
+        actions: {},
+        created_at: '2023-01-23 22:23:24'
+      }
     ]
   }
 };

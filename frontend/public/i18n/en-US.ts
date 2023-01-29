@@ -272,11 +272,30 @@ export default {
 
   common: {
     ip: 'IP-address',
-    last_activity: 'Last activity'
+    last_activity: 'Last activity',
+    months: {
+      0: 'January',
+      1: 'February',
+      2: 'March',
+      3: 'April',
+      4: 'May',
+      5: 'June',
+      6: 'July',
+      7: 'August',
+      8: 'September',
+      9: 'October',
+      10: 'November',
+      11: 'December'
+    }
   },
 
   statuses: {
     offline: 'Не в сети',
     online: 'В сети'
+  },
+
+  notification_drop_down: {
+    title: 'Notifications',
+    mark_all_as_read: 'Mark all as read'
   }
 };

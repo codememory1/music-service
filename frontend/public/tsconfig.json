@@ -31,8 +31,7 @@
       "@nuxtjs/dotenv",
       "@nuxtjs/i18n",
       "@nuxt/image",
-      "cookie-universal-nuxt",
-      "@types/aos"
+      "cookie-universal-nuxt"
     ]
   },
   "exclude": [

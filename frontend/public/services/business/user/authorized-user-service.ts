@@ -1,6 +1,7 @@
 import { Vue } from 'vue-property-decorator';
 import AuthorizedUserInfoResponseInterface from '~/interfaces/business/api-responses/authorized-user-info-response-interface';
 import UserSessionResponseInterface from '~/interfaces/business/api-responses/user-session-response-interface';
+import ListUserNotificationResponseType from '~/types/business/api-responses/list-user-notification-response-type';
 
 export default class AuthorizedUserService {
   private readonly app: Vue;
@@ -34,5 +35,9 @@ export default class AuthorizedUserService {
     });
 
     return currentSession;
+  }
+
+  public get notifications(): ListUserNotificationResponseType {
+    return this.app.$store.getters['modules/global-module/notifications'];
   }
 }

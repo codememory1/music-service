@@ -40,24 +40,8 @@
     }
   }
 
-  &-user {
-    &-wrapper {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    &__photo {
-      width: 40px;
-      height: 40px;
-      border-radius: 100%;
-      transition: ease-in opacity $default-transition;
-
-      &:hover {
-        opacity: 0.6;
-      }
-    }
+  &-notification-wrapper {
+    position: relative;
   }
 
   &__notification-btn {
@@ -84,6 +68,26 @@
         background-color: $accent;
         border-radius: 100%;
         border: 1.5px solid $white;
+      }
+    }
+  }
+
+  &-user {
+    &-wrapper {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    &__photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+      transition: ease-in opacity $default-transition;
+
+      &:hover {
+        opacity: 0.6;
       }
     }
   }

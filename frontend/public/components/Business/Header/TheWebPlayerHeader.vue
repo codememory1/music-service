@@ -12,13 +12,21 @@
       <slot />
     </div>
     <div class="wp-header-right">
-      <BaseButton class="wp-header__notification-btn">
-        <i class="fal fa-bell" />
-      </BaseButton>
+      <div ref="notificationWrapper" class="wp-header-notification-wrapper">
+        <BaseButton
+          class="wp-header__notification-btn"
+          @click="$refs.notificationDropDown.toggleIsOpen()"
+        >
+          <i class="fal fa-bell" />
+        </BaseButton>
+
+        <NotificationDropDown ref="notificationDropDown" />
+      </div>
       <div ref="userWrapper" class="wp-header-user-wrapper">
         <img
           class="wp-header-user__photo"
           src="/images/user.png"
+          alt="Codememory"
           @click="$refs.profileDropDown.toggleIsOpen()"
         />
 
@@ -38,6 +46,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
+import NotificationDropDown from '~/components/Business/DropDown/Notification/NotificationDropDown.vue';
 import ProfileHeaderDropDown from '~/components/Business/DropDown/ProfileHeader/ProfileHeaderDropDown.vue';
 import ProfileHeaderItemDropDown from '~/components/Business/DropDown/ProfileHeader/ProfileHeaderItemDropDown.vue';
 import clickOut from '~/utils/click-out';
@@ -45,6 +54,7 @@ import clickOut from '~/utils/click-out';
 @Component({
   components: {
     BaseButton,
+    NotificationDropDown,
     ProfileHeaderDropDown,
     ProfileHeaderItemDropDown
   }
@@ -54,17 +64,27 @@ export default class TheWebPlayerHeader extends Vue {
   private readonly active!: boolean;
 
   public mounted(): void {
-    this.clickOutDevicePicker();
+    this.clickOutUserWrapper();
+    this.clickOutNotificationWrapper();
   }
 
   public beforeDestroy(): void {
-    document.removeEventListener('click', this.clickOutDevicePicker);
+    document.removeEventListener('click', this.clickOutUserWrapper);
+    document.removeEventListener('click', this.clickOutNotificationWrapper);
   }
 
-  private clickOutDevicePicker(): void {
+  private clickOutUserWrapper(): void {
     clickOut(this.$refs.userWrapper as Node, (is: boolean) => {
       if (is) {
         (this.$refs.profileDropDown as ProfileHeaderDropDown).setIsOpen(false);
+      }
+    });
+  }
+
+  private clickOutNotificationWrapper(): void {
+    clickOut(this.$refs.notificationWrapper as Node, (is: boolean) => {
+      if (is) {
+        (this.$refs.notificationDropDown as ProfileHeaderDropDown).setIsOpen(false);
       }
     });
   }
