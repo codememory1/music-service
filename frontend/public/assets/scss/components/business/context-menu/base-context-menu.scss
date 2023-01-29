@@ -1,0 +1,13 @@
+@import '@/assets/scss/include/variables';
+
+.context-menu {
+  width: 300px;
+  background-color: $dark-bg;
+  padding: 10px;
+  border-radius: $default-radius;
+
+  &-groups {
+    display: flex;
+    flex-direction: column;
+  }
+}
