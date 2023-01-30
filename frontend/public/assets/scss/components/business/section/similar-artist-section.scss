@@ -1,0 +1,11 @@
+.similar-artists-section .wp-information-section-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 15px;
+}
+
+@media (min-width: 1600px) {
+  .similar-artists-section .wp-information-section-content {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}

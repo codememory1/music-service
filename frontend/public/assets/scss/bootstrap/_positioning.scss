@@ -1,3 +1,31 @@
+@import '@/assets/scss/include/variables';
+
 .sm-m-auto {
   margin: auto;
+}
+
+.wp-container {
+  padding: 0 40px;
+}
+
+.wp-mt {
+  margin-top: 40px;
+}
+
+.wp-pt {
+  padding-top: 40px;
+}
+
+.wp-mt-of-header {
+  margin-top: $wp-header-height + 20px;
+}
+
+.wp-pt-of-header {
+  padding-top: $wp-header-height + 20px;
+}
+
+.wp-half-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
 }

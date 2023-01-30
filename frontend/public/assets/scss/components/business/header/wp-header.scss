@@ -1,0 +1,94 @@
+@import '@/assets/scss/include/variables';
+
+.wp-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  height: $wp-header-height;
+  position: fixed;
+  width: calc(100% - $wp-navigation-width);
+  transition: linear 0.3s;
+  z-index: 2;
+
+  &.active {
+    backdrop-filter: saturate(180%) blur(10px);
+    background-color: rgba($dark-bg, 0.5);
+  }
+
+  &-left,
+  &-right {
+    display: flex;
+    align-items: center;
+  }
+
+  &-left {
+    gap: 30px;
+  }
+
+  &-right {
+    gap: 30px;
+  }
+
+  &-navigation {
+    display: flex;
+    gap: 10px;
+
+    &__btn {
+      width: 30px!important;
+      height: 30px!important;
+      font-size: $default-size!important;
+    }
+  }
+
+  &-notification-wrapper {
+    position: relative;
+  }
+
+  &__notification-btn {
+    width: 30px;
+    height: 30px!important;
+    font-size: 20px!important;
+    background-color: transparent;
+    transition: ease-in opacity $default-transition;
+    color: $white;
+    position: relative;
+
+    &:hover {
+      opacity: 0.6;
+    }
+
+    &.unread {
+      &:before {
+        content: '';
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 7px;
+        height: 7px;
+        background-color: $accent;
+        border-radius: 100%;
+        border: 1.5px solid $white;
+      }
+    }
+  }
+
+  &-user {
+    &-wrapper {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    &__photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+      transition: ease-in opacity $default-transition;
+
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+  }
+}

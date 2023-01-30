@@ -1,0 +1,111 @@
+@import '@/assets/scss/include/variables';
+
+.player {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+  background-color: $dark-bg;
+  padding: 20px 40px;
+  border-top: 2px solid $light-for-dark;
+
+  &-top {
+    display: flex;
+    justify-content: space-between;
+
+    &-main-control {
+      display: flex;
+      gap: 15px;
+
+      &__btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 10px;
+        background-color: $light-for-dark;
+        font-size: 14px;
+        color: $gray;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: ease-in background-color $default-transition;
+
+        &:hover {
+          background-color: lighten($light-for-dark, 7%);
+        }
+      }
+    }
+
+    &-control {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+
+      &__btn {
+        width: 35px;
+        height: 35px;
+        font-size: $default-size;
+
+        &.repeat,
+        &.shuffle {
+          background-color: transparent;
+          color: $gray;
+          transition: ease-in color $default-transition;
+
+          &:hover {
+            color: $white;
+          }
+        }
+
+        &.prev,
+        &.next {
+          background-color: transparent;
+          color: $accent;
+          transition: ease-in color $default-transition;
+
+          &:hover {
+            color: darken($accent, 7%);
+          }
+        }
+
+        &.play-pause {
+          border-radius: 100%;
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+
+    &-volume {
+      display: flex;
+      gap: 15px;
+      width: 150px;
+      align-items: center;
+
+      &__icon {
+        font-size: $default-size;
+        color: $gray;
+      }
+
+      &__range {
+        width: 100%!important;
+      }
+    }
+  }
+
+  &-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    align-items: center;
+
+    &-current-time__text,
+    &-duration-time__text {
+      font-size: $default-size;
+      color: $gray;
+    }
+
+    &-progress-time-wrapper {
+      width: 100%;
+    }
+  }
+}

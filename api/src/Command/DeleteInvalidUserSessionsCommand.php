@@ -38,17 +38,25 @@ class DeleteInvalidUserSessionsCommand extends Command
             sleep(1);
 
             foreach ($userSessionRepository->findAll() as $userSession) {
-                $decodedRefreshToken = $this->jwtGenerator->decode($userSession->getRefreshToken(), 'jwt.refresh_public_key');
-
-                if (false === $decodedRefreshToken) {
-                    $io->writeln("<fg=green>[INFO] Removed session with id: <fg=white>{$userSession->getId()}</> for user with id: <fg=white>{$userSession->getUser()->getId()}</></>");
-
-                    $this->em->remove($userSession);
-                    $this->em->flush();
-                }
+                $this->removeSession($userSession, $io);
             }
 
             $this->em->clear();
         }
+    }
+
+    private function removeSession(UserSession $userSession, SymfonyStyle $io): void
+    {
+        if (null === $userSession->getRefreshToken() || $this->isNotValidRefreshToken($userSession)) {
+            $io->writeln("<fg=green>[INFO] Removed session with id: <fg=white>{$userSession->getId()}</> for user with id: <fg=white>{$userSession->getUser()->getId()}</></>");
+
+            $this->em->remove($userSession);
+            $this->em->flush();
+        }
+    }
+
+    private function isNotValidRefreshToken(UserSession $userSession): bool
+    {
+        return false === $this->jwtGenerator->decode($userSession->getRefreshToken(), 'jwt.refresh_public_key');
     }
 }

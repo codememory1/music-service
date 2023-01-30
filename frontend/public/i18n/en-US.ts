@@ -11,7 +11,8 @@ export default {
     reset: 'Reset',
     buy_subscription: 'Buy a subscription',
     restore_password: 'Restore password',
-    activate_account: 'Activate account'
+    activate_account: 'Activate account',
+    see_all: 'See all'
   },
 
   placeholder: {
@@ -230,5 +231,83 @@ export default {
       web_player: 'Web Player',
       logout: 'Logout'
     }
+  },
+
+  web_player: {
+    navigation_groups: {
+      my_library: 'My library'
+    },
+    navigation: {
+      home: 'Home',
+      search: 'Search',
+      popular_artists: 'Popular artists',
+      media_library: 'Media library',
+      friends: 'Friends',
+      history: 'Listening history',
+      mix: 'Mix',
+      favorite_artists: 'Favorite artists',
+      playlists: 'Playlists',
+      my_best_musics: 'My best musics'
+    }
+  },
+
+  artist: {
+    buttons: {
+      subscribe: 'Subscribe',
+      unsubscribe: 'Unsubscribe'
+    },
+
+    top_albums: 'Top Albums',
+    top_tracks: 'Top Tracks',
+    similar_artists: 'Similar Artists'
+  },
+
+  album: {
+    various_artists: 'Various artists'
+  },
+
+  device_picker: {
+    your_devices: 'Your devices'
+  },
+
+  common: {
+    ip: 'IP-address',
+    last_activity: 'Last activity',
+    months: {
+      0: 'January',
+      1: 'February',
+      2: 'March',
+      3: 'April',
+      4: 'May',
+      5: 'June',
+      6: 'July',
+      7: 'August',
+      8: 'September',
+      9: 'October',
+      10: 'November',
+      11: 'December'
+    }
+  },
+
+  statuses: {
+    offline: 'Не в сети',
+    online: 'В сети'
+  },
+
+  notification_drop_down: {
+    title: 'Notifications',
+    mark_all_as_read: 'Mark all as read'
+  },
+
+  context_menu: {
+    add_to_media_library: 'Add to media library',
+    add_to_playlist: 'Add to playlist',
+    add_to_playlist_directory: 'Add to playlist directory',
+    to_the_artist: 'To the artist',
+    to_the_album: 'To the album',
+    show_details: 'Show details',
+    share: 'Share',
+    copy_link: 'Copy link',
+    copy_widget_code: 'Copy widget code'
   }
 };

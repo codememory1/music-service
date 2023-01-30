@@ -1,0 +1,17 @@
+@import '@/assets/scss/include/variables';
+
+.context-menu {
+  width: 300px;
+  background-color: $dark-bg;
+  padding: 10px;
+  border-radius: $default-radius;
+  position: absolute;
+  z-index: $z-index-drop-down;
+  box-shadow: 0 9px 20px rgb(0 0 0 / 7%);
+  border: 1px solid $light-for-dark;
+
+  &-groups {
+    display: flex;
+    flex-direction: column;
+  }
+}

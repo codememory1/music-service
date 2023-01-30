@@ -1,0 +1,81 @@
+@import '@/assets/scss/include/variables';
+@import '@/assets/scss/include/mixins';
+
+.notification-drop-down {
+  position: absolute;
+  top: 55px;
+  right: -7px;
+  width: 400px;
+  height: 400px;
+  background-color: $dark-bg;
+  border: 2px solid $light-for-dark;
+  border-radius: $default-radius;
+
+  &-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    padding: 20px;
+    overflow: auto;
+
+    @include scrollbar($weight: 2px);
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+    }
+
+    &:after {
+      border: 8px solid transparent;
+      border-bottom: 8px solid $dark-bg;
+      top: -16px;
+      right: 11px;
+    }
+
+    &:before {
+      border: 10px solid transparent;
+      border-bottom: 10px solid $light-for-dark;
+      top: -20px;
+      right: 9px;
+    }
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  &__title {
+    font-size: 18px;
+    color: $white;
+    font-weight: 500;
+  }
+
+  &__mark-all-as-read-btn {
+    font-size: 12px;
+    color: $gray;
+    background-color: transparent;
+    text-decoration: underline;
+    transition: ease-in color $default-transition;
+
+    &:hover {
+      color: $accent;
+    }
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  &__empty-icon {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+  }
+}

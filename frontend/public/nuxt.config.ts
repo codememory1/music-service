@@ -10,12 +10,18 @@ import sentryConfig from './configs/sentry';
 import nuxtImgConfig from './configs/nuxt-img';
 
 const config: NuxtConfig = {
-  dev: false,
+  dev: true,
 
   server: serverConfig,
 
   router: {
     linkExactActiveClass: 'active-link'
+  },
+
+  render: {
+    static: {
+      maxAge: 1000 * 60 * 60 * 24 * 7
+    }
   },
 
   vue: {

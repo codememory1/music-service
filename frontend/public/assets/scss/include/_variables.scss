@@ -17,6 +17,7 @@ $fa-font-path: "~/assets/fonts/FontAwesome/";
 
 // Z-index
 $z-index-select: 990;
+$z-index-drop-down: 995;
 $z-index-modal: 1000;
 $btn-show-password: 1010;
 
@@ -29,6 +30,8 @@ $gap-between-information-section: 50px;
 
 // Widths / Heights
 $form-el-height: 40px;
+$wp-navigation-width: 300px;
+$wp-header-height: 80px;
 
 // Sizes
 $default-size: 14px;

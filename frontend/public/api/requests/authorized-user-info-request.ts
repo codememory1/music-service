@@ -5,7 +5,7 @@ import ApiSuccessResponseInterface from '~/interfaces/business/api-success-respo
 
 export default class AuthorizedUserInfoRequest {
   private readonly requestService: ApiRequestService;
-  private data: AuthorizedUserInfoResponseInterface | undefined = undefined;
+  private data: AuthorizedUserInfoResponseInterface | null = null;
 
   public constructor(requestService: ApiRequestService) {
     this.requestService = requestService;
@@ -17,7 +17,7 @@ export default class AuthorizedUserInfoRequest {
       .request<AuthorizedUserInfoResponseInterface>(Routes.user.authorized_info);
 
     if (apiResponse.isError) {
-      this.data = undefined;
+      this.data = null;
     } else {
       this.data = (
         apiResponse.response as ApiSuccessResponseInterface<AuthorizedUserInfoResponseInterface>
@@ -25,7 +25,7 @@ export default class AuthorizedUserInfoRequest {
     }
   }
 
-  public getData(): AuthorizedUserInfoResponseInterface | undefined {
+  public getData(): AuthorizedUserInfoResponseInterface | null {
     return this.data;
   }
 }

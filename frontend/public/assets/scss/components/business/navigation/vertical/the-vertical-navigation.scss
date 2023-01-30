@@ -1,0 +1,29 @@
+@import '@/assets/scss/include/variables';
+@import '@/assets/scss/include/mixins';
+
+.vertical-navigation {
+  min-width: $wp-navigation-width;
+  max-width: $wp-navigation-width;
+  width: $wp-navigation-width;
+  height: 100vh;
+  background-color: $dark-bg;
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  border-right: 2px solid $light-for-dark;
+  overflow: auto;
+
+  @include scrollbar($weight: 1px);
+
+  &-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+  }
+
+  &-logo-wrapper {
+    margin-left: 40px;
+  }
+}

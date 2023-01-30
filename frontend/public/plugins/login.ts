@@ -48,7 +48,7 @@ export default async function ({ app, $cookies, $config }: NuxtConfig) {
 
     const userInfo = authorizedUserInfoRequest.getData();
 
-    if (userInfo !== undefined) {
+    if (userInfo !== null) {
       app.store.commit('modules/global-module/authorizedUserInfo', userInfo);
     } else if (refreshToken !== null) {
       await updateTokens(refreshToken, app, $cookies, $config);

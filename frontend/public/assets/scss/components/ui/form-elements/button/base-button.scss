@@ -1,4 +1,4 @@
-@import '../../../../include/variables';
+@import '@/assets/scss/include/variables';
 @import '../../../../include/animations';
 
 .button {
@@ -56,6 +56,36 @@
 
     &:hover {
       outline-color: lighten($light-for-dark, 7%);
+    }
+  }
+
+  &.dark {
+    height: $form-el-height;
+    background-color: $dark-bg;
+    color: $white;
+    transition: ease-in background-color $default-transition;
+
+    &:hover {
+      background-color: lighten($dark-bg, 7%);
+    }
+
+    &:active {
+      background-color: lighten($dark-bg, 14%);
+    }
+  }
+
+  &.light-dark {
+    height: $form-el-height;
+    background-color: $light-for-dark;
+    color: $white;
+    transition: ease-in background-color $default-transition;
+
+    &:hover {
+      background-color: lighten($light-for-dark, 7%);
+    }
+
+    &:active {
+      background-color: lighten($light-for-dark, 14%);
     }
   }
 

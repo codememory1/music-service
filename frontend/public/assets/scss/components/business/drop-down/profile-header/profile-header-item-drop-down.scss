@@ -1,0 +1,23 @@
+@import '@/assets/scss/include/variables';
+
+.profile-header-drop-down__item {
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: $light-for-dark;
+  }
+
+  &-link {
+    display: flex;
+    width: 100%;
+    color: $white;
+    font-size: $default-size;
+    padding: 15px 20px;
+    align-items: center;
+
+    i {
+      width: 30px;
+    }
+  }
+}
