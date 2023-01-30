@@ -297,5 +297,17 @@ export default {
   notification_drop_down: {
     title: 'Notifications',
     mark_all_as_read: 'Mark all as read'
+  },
+
+  context_menu: {
+    add_to_media_library: 'Add to media library',
+    add_to_playlist: 'Add to playlist',
+    add_to_playlist_directory: 'Add to playlist directory',
+    to_the_artist: 'To the artist',
+    to_the_album: 'To the album',
+    show_details: 'Show details',
+    share: 'Share',
+    copy_link: 'Copy link',
+    copy_widget_code: 'Copy widget code'
   }
 };

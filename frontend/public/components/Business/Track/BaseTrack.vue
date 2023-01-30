@@ -1,5 +1,5 @@
 <template>
-  <div class="track" @click="$emit('click')">
+  <div class="track" @click="$emit('play')" @contextmenu.prevent="$emit('openContextMenu', $event)">
     <div class="track-num-or-play-wrapper">
       <div class="track__play">
         <i class="fal fa-play" />
@@ -33,7 +33,7 @@
           <BaseButton class="track__control-btn">
             <i class="fal fa-heart" />
           </BaseButton>
-          <BaseButton class="track__control-btn">
+          <BaseButton class="track__control-btn" @click="$emit('openContextMenu', $event)">
             <i class="fal fa-ellipsis-h-alt" />
           </BaseButton>
         </div>

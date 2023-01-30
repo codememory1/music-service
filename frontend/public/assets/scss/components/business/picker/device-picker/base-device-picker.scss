@@ -4,11 +4,12 @@
 .device-picker {
   background-color: $dark-bg;
   border-radius: $default-radius;
-  width: 400px;
+  width: 350px;
   height: 400px;
+  padding: 10px;
   border: 1px solid $light-for-dark;
   position: absolute;
-  bottom: 50px;
+  bottom: 65px;
   z-index: 12;
   overflow: auto;
 

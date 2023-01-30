@@ -16,7 +16,14 @@
 
 .wp-main-page {
   height: 100vh;
-  overflow: auto;
+
+  &:not(.scroll-allowed) {
+    overflow: hidden;
+  }
+
+  &.scroll-allowed {
+    overflow: auto;
+  }
 }
 
 .wp-main-content {

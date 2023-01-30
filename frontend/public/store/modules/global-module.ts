@@ -11,7 +11,8 @@ export default {
     loaderIsActive: true,
     authorizedUserInfo: null,
     sessions: mocks.authorized_user.sessions, // FIX: Используются мокавые данные - изменить на реальные, которые будут загружаться после авторизации и через какое-то время обновляться или же загружаться с помощью WebSocket
-    notifications: mocks.authorized_user.notifications // FIX: Изменить на реальные уведомления пользователя
+    notifications: mocks.authorized_user.notifications, // FIX: Изменить на реальные уведомления пользователя
+    contentScrollingAllowed: true
   },
 
   getters: {
@@ -29,6 +30,10 @@ export default {
 
     notifications(state: any): ListUserNotificationResponseType {
       return state.notifications;
+    },
+
+    contentScrollingAllowed(state: any): boolean {
+      return state.contentScrollingAllowed;
     }
   },
 
@@ -54,6 +59,10 @@ export default {
 
     notifications(state: any, notifications: ListUserNotificationResponseType): void {
       state.notifications = notifications;
+    },
+
+    contentScrollingAllowed(state: any, is: boolean): void {
+      state.contentScrollingAllowed = is;
     }
   }
 };

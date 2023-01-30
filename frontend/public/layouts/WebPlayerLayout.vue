@@ -16,7 +16,7 @@
         </ItemVerticalNavigation>
       </GroupVerticalNavigation>
       <GroupVerticalNavigation
-        v-show="authorizedUserInfo !== null"
+        v-show="authorizedUserService.getAuthorizedUser() !== null"
         :title="$t('web_player.navigation_groups.my_library')"
       >
         <ItemVerticalNavigation link="/web-player/history">
@@ -40,7 +40,12 @@
       </GroupVerticalNavigation>
     </TheVerticalNavigation>
     <div class="wp-main-wrapper">
-      <div ref="content" class="wp-main-page" @scroll="scrollContent">
+      <div
+        ref="content"
+        class="wp-main-page"
+        :class="{ 'scroll-allowed': contentScrollingAllowed }"
+        @scroll="scrollContent"
+      >
         <TheWebPlayerHeader :active="headerIsActive">
           <TheSearchWebPlayerHeader />
         </TheWebPlayerHeader>
@@ -61,6 +66,7 @@ import ItemVerticalNavigation from '~/components/Business/Navigation/Vertical/It
 import TheWebPlayerHeader from '~/components/Business/Header/TheWebPlayerHeader.vue';
 import TheSearchWebPlayerHeader from '~/components/Business/Header/TheSearchWebPlayerHeader.vue';
 import BasePlayer from '~/components/Business/Player/BasePlayer.vue';
+import AuthorizedUserService from '~/services/business/user/authorized-user-service';
 
 @Component({
   components: {
@@ -73,6 +79,7 @@ import BasePlayer from '~/components/Business/Player/BasePlayer.vue';
   }
 })
 export default class WebPlayerLayout extends Vue {
+  private readonly authorizedUserService: AuthorizedUserService = new AuthorizedUserService(this);
   private headerIsActive: boolean = false;
 
   public mounted(): void {
@@ -83,8 +90,8 @@ export default class WebPlayerLayout extends Vue {
     this.headerIsActive = (event.target as HTMLElement).scrollTop >= 40;
   }
 
-  private get authorizedUserInfo() {
-    return this.$store.getters['modules/global-module/authorizedUserInfo'];
+  private get contentScrollingAllowed(): boolean {
+    return this.$store.getters['modules/global-module/contentScrollingAllowed'];
   }
 }
 </script>

@@ -39,7 +39,12 @@ export default class TopAlbumSection extends Vue {
   private get swiperOptions(): object {
     return {
       slidesPerView: 5,
-      spaceBetween: 15
+      spaceBetween: 15,
+      breakpoints: {
+        1600: {
+          slidesPerView: 7
+        }
+      }
     };
   }
 

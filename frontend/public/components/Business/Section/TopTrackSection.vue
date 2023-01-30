@@ -11,6 +11,7 @@
         :key="track.id"
         :number="index + 1"
         :data="track"
+        @openContextMenu="$emit('openContextMenu', $event, track)"
       />
     </template>
   </WebPlayerInformationSection>
