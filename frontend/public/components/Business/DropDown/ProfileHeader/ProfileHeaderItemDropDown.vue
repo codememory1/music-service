@@ -1,19 +1,14 @@
 <template>
-  <li class="profile-header-drop-down__item">
-    <nuxt-link class="profile-header-drop-down__item-link" :to="link">
-      <slot />
-    </nuxt-link>
+  <li class="profile-header-drop-down__item" @click="$emit('click')">
+    <slot />
   </li>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class ProfileHeaderItemDropDown extends Vue {
-  @Prop({ required: true })
-  private readonly link!: string;
-}
+export default class ProfileHeaderItemDropDown extends Vue {}
 </script>
 
 <style lang="scss">

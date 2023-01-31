@@ -1,16 +1,14 @@
 <template>
-  <transition name="fade">
-    <div
-      v-show="contextMenuService.isOpen()"
-      ref="contextMenu"
-      class="context-menu"
-      :style="contextMenuService.getStyles()"
-    >
-      <div class="context-menu-groups">
-        <slot />
-      </div>
+  <div
+    ref="contextMenu"
+    class="context-menu"
+    :class="{ active: contextMenuService.isOpen() }"
+    :style="contextMenuService.getStyles()"
+  >
+    <div class="context-menu-groups">
+      <slot />
     </div>
-  </transition>
+  </div>
 </template>
 
 <script lang="ts">

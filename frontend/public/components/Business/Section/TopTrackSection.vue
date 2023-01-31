@@ -1,7 +1,10 @@
 <template>
-  <WebPlayerInformationSection class="top-tracks-section see-all" :title="$t('artist.top_tracks')">
+  <WebPlayerInformationSection
+    class="top-tracks-section see-all"
+    :title="$t('section.titles.top_tracks')"
+  >
     <template #top>
-      <nuxt-link class="wp-information-section__see-all-link" to="">
+      <nuxt-link class="wp-information-section__see-all-link" :to="seeAllLink">
         {{ $t('buttons.see_all') }}
       </nuxt-link>
     </template>
@@ -32,6 +35,9 @@ import BaseTrack from '~/components/Business/Track/BaseTrack.vue';
 export default class TopTrackSection extends Vue {
   @Prop({ required: true })
   private readonly tracks!: Array<TrackResponseInterface>;
+
+  @Prop({ required: true })
+  private readonly seeAllLink!: string;
 }
 </script>
 

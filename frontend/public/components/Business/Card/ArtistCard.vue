@@ -11,12 +11,12 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import SimilarArtistType from '~/types/business/similar-artist-type';
+import ArtistCardResponseInterface from '~/interfaces/business/api-responses/artist-card-response-interface';
 
 @Component
 export default class ArtistCard extends Vue {
   @Prop({ required: true })
-  private readonly data!: SimilarArtistType;
+  private readonly data!: ArtistCardResponseInterface;
 }
 </script>
 

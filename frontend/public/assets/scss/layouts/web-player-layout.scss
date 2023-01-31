@@ -23,12 +23,12 @@
 
   &.scroll-allowed {
     overflow: auto;
+
+    @include scrollbar($light-bg, $accent, 3px);
   }
 }
 
 .wp-main-content {
   padding-bottom: 40px;
   overflow: auto;
-
-  @include scrollbar($light-bg, $accent, 6px);
 }

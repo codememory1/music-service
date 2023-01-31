@@ -40,4 +40,8 @@ export default class AuthorizedUserService {
   public get notifications(): ListUserNotificationResponseType {
     return this.app.$store.getters['modules/global-module/notifications'];
   }
+
+  public logout(): void {
+    this.app.$store.commit('modules/global-module/logout', this.app);
+  }
 }

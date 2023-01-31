@@ -12,6 +12,7 @@
           <TrackContextMenu ref="trackContextMenu" />
           <TopTrackSection
             :tracks="artistProfileService.getTopTracks"
+            :see-all-link="`/web-player/artist/${$route.params.id}/tracks/all`"
             @openContextMenu="openTrackContextMenu"
           />
           <SimilarArtistSection :artists="artistProfileService.getSimilarArtists" />
@@ -29,7 +30,8 @@ import TopTrackSection from '~/components/Business/Section/TopTrackSection.vue';
 import ArtistProfileService from '~/services/business/profile/artist-profile-service';
 import SimilarArtistSection from '~/components/Business/Section/SimilarArtistSection.vue';
 import TrackContextMenu from '~/components/Business/ContextMenu/TrackContextMenu.vue';
-import BaseContextMenu from '~/components/Business/ContextMenu/BaseContextMenu.vue';
+import TrackContextMenuService from '~/services/ui/context-menu/track-context-menu-service';
+import TrackResponseInterface from '~/interfaces/business/api-responses/track-response-interface';
 
 @Component({
   validate({ params }) {
@@ -47,13 +49,13 @@ import BaseContextMenu from '~/components/Business/ContextMenu/BaseContextMenu.v
   }
 })
 export default class Artist extends Vue {
-  private readonly artistProfileService: ArtistProfileService = new ArtistProfileService(this); // FIX: Сервис использует mock-данные
+  private readonly artistProfileService: ArtistProfileService = new ArtistProfileService(this);
+  private readonly trackContextMenuService: TrackContextMenuService = new TrackContextMenuService(
+    this
+  );
 
-  private openTrackContextMenu(event: PointerEvent): void {
-    const trackContextMenu = this.$refs.trackContextMenu as TrackContextMenu;
-    const contextMenu = trackContextMenu.$refs.contextMenu as BaseContextMenu;
-
-    contextMenu.contextMenuService.toggle(event, this.$refs.main as HTMLElement);
+  private openTrackContextMenu(event: PointerEvent, track: TrackResponseInterface): void {
+    this.trackContextMenuService.open(event, track);
   }
 }
 </script>

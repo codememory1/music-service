@@ -5,9 +5,15 @@
   flex-direction: column;
   gap: 15px;
   cursor: pointer;
+  border: 2px solid $light-for-dark;
+  border-radius: $default-radius;
+  padding: 10px;
+  height: 180px;
+  justify-content: center;
+  transition: ease-in background-color $default-transition;
 
-  &:hover &__img {
-    border: 3px solid $accent;
+  &:hover {
+    background-color: $light-for-dark;
   }
 
   &-img-wrapper {
@@ -16,11 +22,10 @@
   }
 
   &__img {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     object-fit: cover;
     border-radius: 100%;
-    transition: ease-in border $default-transition;
   }
 
   &-info {
@@ -38,5 +43,16 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: center;
+  }
+}
+
+@media (min-width: 1600px) {
+  .artist-card {
+    height: 200px!important;
+
+    &__img {
+      width: 100px;
+      height: 100px;
+    }
   }
 }

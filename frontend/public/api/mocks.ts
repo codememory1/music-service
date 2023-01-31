@@ -336,10 +336,62 @@ export default {
         },
         type: 'REFERENCE',
         title: 'New release',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aspernatur aut corporis, deserunt enim ex in ipsa iusto, necessitatibus, nulla pariatur quam qui recusandae repellendus sed sint totam vero vitae?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aspernatur aut corporis, deserunt enim ex in ipsa iusto, necessitatibus, nulla pariatur quam qui recusandae repellendus sed sint totam vero vitae?',
+        message:
+          'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aspernatur aut corporis, deserunt enim ex in ipsa iusto, necessitatibus, nulla pariatur quam qui recusandae repellendus sed sint totam vero vitae?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aspernatur aut corporis, deserunt enim ex in ipsa iusto, necessitatibus, nulla pariatur quam qui recusandae repellendus sed sint totam vero vitae?',
         actions: {},
         created_at: '2023-01-23 22:23:24'
       }
     ]
-  }
+  },
+
+  platform_settings: {
+    social_media: {
+      instagram: 'https://instagram.com',
+      twitter: 'https://twitter.com',
+      facebook: 'https://facebook.com'
+    }
+  },
+
+  top_genres_of_month: [
+    {
+      id: 1,
+      title: 'New release',
+      image: '/images/genre.png'
+    },
+    {
+      id: 2,
+      title: 'Pop',
+      image: '/images/genre.png'
+    },
+    {
+      id: 3,
+      title: 'Classic',
+      image: '/images/genre.png'
+    },
+    {
+      id: 4,
+      title: 'Hip-Hop',
+      image: '/images/genre.png'
+    },
+    {
+      id: 5,
+      title: 'Recommended',
+      image: '/images/genre.png'
+    },
+    {
+      id: 6,
+      title: 'For Me',
+      image: '/images/genre.png'
+    },
+    {
+      id: 7,
+      title: 'Rok',
+      image: '/images/genre.png'
+    },
+    {
+      id: 8,
+      title: 'For Home',
+      image: '/images/genre.png'
+    }
+  ]
 };

@@ -162,6 +162,13 @@ export default {
     subscription: {
       title: 'Choose your subscription',
       description: 'Listen without limits on your phone, speaker and other devices'
+    },
+
+    titles: {
+      top_tracks: 'Top Tracks',
+      top_artists_of_month: 'Top artists of the month',
+      top_albums: 'Top albums',
+      top_genres_of_month: 'Top genres of the month'
     }
   },
 
@@ -257,8 +264,6 @@ export default {
       unsubscribe: 'Unsubscribe'
     },
 
-    top_albums: 'Top Albums',
-    top_tracks: 'Top Tracks',
     similar_artists: 'Similar Artists'
   },
 
