@@ -9,6 +9,14 @@
   z-index: $z-index-drop-down;
   box-shadow: 0 9px 20px rgb(0 0 0 / 7%);
   border: 1px solid $light-for-dark;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .5s, visibility .5s;
+
+  &.active {
+    visibility: visible;
+    opacity: 1;
+  }
 
   &-groups {
     display: flex;

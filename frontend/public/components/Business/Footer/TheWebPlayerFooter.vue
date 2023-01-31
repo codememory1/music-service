@@ -1,6 +1,6 @@
 <template>
-  <footer class="main-footer">
-    <div class="container">
+  <footer class="wp-footer">
+    <div class="wp-container">
       <MainContentFooter />
     </div>
   </footer>
@@ -15,9 +15,9 @@ import MainContentFooter from '~/components/Business/Footer/Main/MainContentFoot
     MainContentFooter
   }
 })
-export default class TheMainFooter extends Vue {}
+export default class TheWebPlayerFooter extends Vue {}
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/components/business/footer/main/the-main-footer.scss';
+@import '@/assets/scss/components/business/footer/the-wp-footer.scss';
 </style>

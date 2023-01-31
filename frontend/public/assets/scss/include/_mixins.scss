@@ -22,6 +22,7 @@
     width: $weight;
     height: $weight;
     background-color: lighten($bg, 10%);
+    position: absolute;
   }
 
   &::-webkit-scrollbar-track {

@@ -13,7 +13,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import WebPlayerInformationSection from '~/components/UI/Section/WebPlayerInformationSection.vue';
 import ArtistCard from '~/components/Business/Card/ArtistCard.vue';
-import SimilarArtistType from '~/types/business/similar-artist-type';
+import ArtistCardResponseInterface from '~/interfaces/business/api-responses/artist-card-response-interface';
 
 @Component({
   components: {
@@ -23,7 +23,7 @@ import SimilarArtistType from '~/types/business/similar-artist-type';
 })
 export default class SimilarArtistSection extends Vue {
   @Prop({ required: true })
-  private readonly artists!: Array<SimilarArtistType>;
+  private readonly artists!: Array<ArtistCardResponseInterface>;
 }
 </script>
 

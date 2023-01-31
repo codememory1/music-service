@@ -22,7 +22,7 @@
         <ItemVerticalNavigation link="/web-player/history">
           <i class="fal fa-history" /> {{ $t('web_player.navigation.history') }}
         </ItemVerticalNavigation>
-        <ItemVerticalNavigation link="/web-player">
+        <ItemVerticalNavigation link="/web-player/media-library">
           <i class="fal fa-book-heart" /> {{ $t('web_player.navigation.media_library') }}
         </ItemVerticalNavigation>
         <ItemVerticalNavigation link="/web-player/friends">
@@ -52,6 +52,7 @@
         <div class="wp-main-content">
           <Nuxt />
         </div>
+        <TheWebPlayerFooter />
       </div>
       <BasePlayer />
     </div>
@@ -67,6 +68,7 @@ import TheWebPlayerHeader from '~/components/Business/Header/TheWebPlayerHeader.
 import TheSearchWebPlayerHeader from '~/components/Business/Header/TheSearchWebPlayerHeader.vue';
 import BasePlayer from '~/components/Business/Player/BasePlayer.vue';
 import AuthorizedUserService from '~/services/business/user/authorized-user-service';
+import TheWebPlayerFooter from '~/components/Business/Footer/TheWebPlayerFooter.vue';
 
 @Component({
   components: {
@@ -75,7 +77,8 @@ import AuthorizedUserService from '~/services/business/user/authorized-user-serv
     ItemVerticalNavigation,
     TheWebPlayerHeader,
     TheSearchWebPlayerHeader,
-    BasePlayer
+    BasePlayer,
+    TheWebPlayerFooter
   }
 })
 export default class WebPlayerLayout extends Vue {
