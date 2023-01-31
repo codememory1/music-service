@@ -3,20 +3,20 @@
     <div class="wp-container">
       <div class="wp-mt-of-header">
         <TopGenreOfMonthSection :genres="topGenresOfMonth" />
-        <!--FIX: Изменить топ-жанры за месяц на реальные данные-->
       </div>
       <div class="wp-mt">
         <TrackContextMenu ref="trackContextMenu" />
-        <TopTrackSection :tracks="topTracks" see-all-link="" @openContextMenu="openTrackContextMenu" />
-        <!--FIX: Подставить ссылку на показ всех топовых треков. Изменить топ треки на реальные данные-->
+        <TopTrackSection
+          :tracks="topTracks"
+          see-all-link=""
+          @openContextMenu="openTrackContextMenu"
+        />
       </div>
       <div class="wp-mt">
         <TopAlbumSection :albums="topAlbums" />
-        <!--FIX: Изменить топ альбомы на реальные данные-->
       </div>
       <div class="wp-mt">
         <TopArtistsOfMonthSection :artists="topArtistsOfMonth" />
-        <!--FIX: Изменить топ артисты за месяц на реальные данные-->
       </div>
     </div>
   </main>
@@ -52,19 +52,19 @@ export default class Index extends Vue {
   );
 
   private get topTracks(): Array<TrackResponseInterface> {
-    return mocks.artist_1.top_tracks;
+    return mocks.artist_1.top_tracks; // FIX: Изменить топ-жанры за месяц на реальные данные
   }
 
   private get topGenresOfMonth(): ListGenreResponseType {
-    return mocks.top_genres_of_month;
+    return mocks.top_genres_of_month; // FIX: Подставить ссылку на показ всех топовых треков. Изменить топ треки на реальные данные
   }
 
   private get topAlbums(): ListAlbumResponseType {
-    return mocks.artist_1.top_albums;
+    return mocks.artist_1.top_albums; // FIX: Изменить топ альбомы на реальные данные
   }
 
   private get topArtistsOfMonth(): Array<ArtistCardResponseInterface> {
-    return mocks.artist_1.similar_artists;
+    return mocks.artist_1.similar_artists; // FIX: Изменить топ артисты за месяц на реальные данные
   }
 
   private openTrackContextMenu(event: PointerEvent, track: TrackResponseInterface): void {
