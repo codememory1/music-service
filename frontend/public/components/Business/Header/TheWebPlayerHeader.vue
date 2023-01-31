@@ -12,7 +12,19 @@
       <slot />
     </div>
     <div class="wp-header-right">
-      <div ref="notificationWrapper" class="wp-header-notification-wrapper">
+      <BaseButton
+        v-if="authorizedUser === null"
+        class="blue wp-header__login-btn"
+        @click="$emit('openAuth')"
+      >
+        {{ $t('navigation.main.signIn') }}
+      </BaseButton>
+
+      <div
+        v-if="authorizedUser !== null"
+        ref="notificationWrapper"
+        class="wp-header-notification-wrapper"
+      >
         <BaseButton
           class="wp-header__notification-btn"
           @click="$refs.notificationDropDown.toggleIsOpen()"
@@ -22,19 +34,19 @@
 
         <NotificationDropDown ref="notificationDropDown" />
       </div>
-      <div ref="userWrapper" class="wp-header-user-wrapper">
+      <div v-if="authorizedUser !== null" ref="userWrapper" class="wp-header-user-wrapper">
         <img
           class="wp-header-user__photo"
-          src="/images/user.png"
-          alt="Codememory"
+          :src="authorizedUser.profile.photo"
+          :alt="authorizedUser.profile.pseudonym"
           @click="$refs.profileDropDown.toggleIsOpen()"
         />
 
         <ProfileHeaderDropDown ref="profileDropDown">
-          <ProfileHeaderItemDropDown link="">
+          <ProfileHeaderItemDropDown>
             <i class="fal fa-cog" /> {{ $t('navigation.main.manage_account') }}
           </ProfileHeaderItemDropDown>
-          <ProfileHeaderItemDropDown link="">
+          <ProfileHeaderItemDropDown @click="authorizedUserService.logout()">
             <i class="fal fa-sign-out" /> {{ $t('navigation.main.logout') }}
           </ProfileHeaderItemDropDown>
         </ProfileHeaderDropDown>
@@ -50,6 +62,8 @@ import NotificationDropDown from '~/components/Business/DropDown/Notification/No
 import ProfileHeaderDropDown from '~/components/Business/DropDown/ProfileHeader/ProfileHeaderDropDown.vue';
 import ProfileHeaderItemDropDown from '~/components/Business/DropDown/ProfileHeader/ProfileHeaderItemDropDown.vue';
 import clickOut from '~/utils/click-out';
+import AuthorizedUserService from '~/services/business/user/authorized-user-service';
+import AuthorizedUserInfoResponseInterface from '~/interfaces/business/api-responses/authorized-user-info-response-interface';
 
 @Component({
   components: {
@@ -62,6 +76,12 @@ import clickOut from '~/utils/click-out';
 export default class TheWebPlayerHeader extends Vue {
   @Prop({ required: false, default: false })
   private readonly active!: boolean;
+
+  private readonly authorizedUserService: AuthorizedUserService = new AuthorizedUserService(this);
+
+  private get authorizedUser(): AuthorizedUserInfoResponseInterface | null {
+    return this.authorizedUserService.getAuthorizedUser();
+  }
 
   public mounted(): void {
     this.clickOutUserWrapper();
@@ -76,7 +96,7 @@ export default class TheWebPlayerHeader extends Vue {
   private clickOutUserWrapper(): void {
     clickOut(this.$refs.userWrapper as Node, (is: boolean) => {
       if (is) {
-        (this.$refs.profileDropDown as ProfileHeaderDropDown).setIsOpen(false);
+        (this.$refs.profileDropDown as ProfileHeaderDropDown)?.setIsOpen(false);
       }
     });
   }
@@ -84,7 +104,7 @@ export default class TheWebPlayerHeader extends Vue {
   private clickOutNotificationWrapper(): void {
     clickOut(this.$refs.notificationWrapper as Node, (is: boolean) => {
       if (is) {
-        (this.$refs.notificationDropDown as ProfileHeaderDropDown).setIsOpen(false);
+        (this.$refs.notificationDropDown as ProfileHeaderDropDown)?.setIsOpen(false);
       }
     });
   }

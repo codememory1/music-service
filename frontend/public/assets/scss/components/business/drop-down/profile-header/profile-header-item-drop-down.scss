@@ -3,21 +3,16 @@
 .profile-header-drop-down__item {
   display: flex;
   align-items: center;
+  width: 100%;
+  color: $white;
+  font-size: $default-size;
+  padding: 15px 20px;
+
+  i {
+    width: 30px;
+  }
 
   &:hover {
     background-color: $light-for-dark;
-  }
-
-  &-link {
-    display: flex;
-    width: 100%;
-    color: $white;
-    font-size: $default-size;
-    padding: 15px 20px;
-    align-items: center;
-
-    i {
-      width: 30px;
-    }
   }
 }

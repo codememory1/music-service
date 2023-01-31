@@ -91,4 +91,10 @@
       }
     }
   }
+
+  &__login-btn {
+    padding: 0 20px;
+    height: 30px!important;
+    font-size: $default-size;
+  }
 }
