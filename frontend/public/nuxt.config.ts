@@ -54,7 +54,6 @@ const config: NuxtConfig = {
     '@nuxtjs/i18n',
     '@nuxtjs/sentry',
     '@nuxtjs/axios',
-    'portal-vue/nuxt',
     'cookie-universal-nuxt'
   ],
 

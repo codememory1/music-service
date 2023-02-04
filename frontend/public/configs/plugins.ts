@@ -3,7 +3,6 @@ export default [
     src: '~plugins/vue-slider.ts',
     ssr: false
   },
-  '~plugins/tooltip.ts',
   '~plugins/swiper.ts',
   '~plugins/api.ts',
   '~store/index.ts',

@@ -19,7 +19,7 @@
       <p class="via-social-network-text">{{ $t('or_via_social_network') }}</p>
 
       <div class="auth-from-social-icons">
-        <a href="" class="auth-from-social__item">
+        <a :href="googleAuthUrl" class="auth-from-social__item">
           <i class="fab fa-google" />
         </a>
         <a href="" class="auth-from-social__item">
@@ -56,6 +56,9 @@ import ModalSwitcher from '~/components/Business/Switch/ModalSwitcher.vue';
 import ChangeInputService from '~/services/ui/input/change-input-service';
 import InputService from '~/services/ui/input/input-service';
 import AuthService from '~/services/business/security/auth-service';
+import Routes from '~/api/routes';
+import ApiRequestService from '~/services/business/api-request-service';
+import GoogleAuthUrlRequest from '~/api/requests/google-auth-url-request';
 
 @Component({
   components: {
@@ -64,16 +67,47 @@ import AuthService from '~/services/business/security/auth-service';
     ModalFormInput,
     BaseButton,
     ModalSwitcher
+  },
+
+  async fetch() {
+    const that = this as AuthModal;
+    const request = new ApiRequestService(that, that.$i18n.locale);
+    const googleAuthUrlRequest = new GoogleAuthUrlRequest(request);
+
+    await googleAuthUrlRequest.request();
+
+    that.googleAuthUrl = googleAuthUrlRequest.getData()?.url || null;
   }
 })
 export default class AuthModal extends Vue {
-  private readonly changeInputService: ChangeInputService = new ChangeInputService({
-    email: new InputService('', 'string', undefined, 1),
-    password: new InputService('', 'string', undefined, 1)
-  });
-
-  private readonly authService: AuthService = new AuthService(this);
+  private googleAuthUrl: string | null = null;
+  private changeInputService!: ChangeInputService;
+  private authService!: AuthService;
   private buttonIsLoading: boolean = false;
+
+  public created(): void {
+    this.authService = new AuthService(this);
+    this.changeInputService = new ChangeInputService({
+      email: new InputService('', 'string', undefined, 1),
+      password: new InputService('', 'string', undefined, 1)
+    });
+  }
+
+  private async socialNetworkAuth(): Promise<void> {
+    const query = this.$route.query;
+
+    if ('code' in query && 'state' in query) {
+      const modal = this.$refs.modal as BaseModal;
+
+      modal.open();
+      modal.setIsLoading(true);
+
+      await this.authService.socialNetworkAuth(
+        Routes.social_auth.google.auth,
+        query.code as string
+      );
+    }
+  }
 
   private async auth(): Promise<void> {
     if (this.changeInputService.allFieldsWithoutErrors()) {

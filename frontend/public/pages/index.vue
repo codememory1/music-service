@@ -92,7 +92,11 @@ import AuthorizedUserService from '~/services/business/user/authorized-user-serv
   }
 })
 export default class Index extends Vue {
-  private readonly authorizedUserService: AuthorizedUserService = new AuthorizedUserService(this);
+  private authorizedUserService!: AuthorizedUserService;
+
+  public created(): void {
+    this.authorizedUserService = new AuthorizedUserService(this);
+  }
 
   private get authorizedUserInfo(): AuthorizedUserInfoResponseInterface | null {
     return this.authorizedUserService.getAuthorizedUser();
