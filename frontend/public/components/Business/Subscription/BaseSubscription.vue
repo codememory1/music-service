@@ -45,10 +45,11 @@ export default class BaseSubscription extends Vue {
   @Prop({ required: true })
   private readonly data!: SubscriptionResponseInterface;
 
-  private readonly buySubscriptionService: BuySubscriptionService = new BuySubscriptionService(
-    this,
-    this.data
-  );
+  private buySubscriptionService!: BuySubscriptionService;
+
+  public created(): void {
+    this.buySubscriptionService = new BuySubscriptionService(this, this.data);
+  }
 }
 </script>
 

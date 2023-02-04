@@ -38,9 +38,13 @@ export default class BaseDevicePicker extends Vue {
   @Prop({ required: false, default: null })
   private readonly selectedSession!: number | null;
 
-  private readonly authorizedUserService: AuthorizedUserService = new AuthorizedUserService(this);
+  private authorizedUserService!: AuthorizedUserService;
   private show: boolean = false;
   private syncedSelectedSession: number | null = this.selectedSession;
+
+  public created(): void {
+    this.authorizedUserService = new AuthorizedUserService(this);
+  }
 
   private select(session: UserSessionResponseInterface): void {
     this.syncedSelectedSession = session.id;

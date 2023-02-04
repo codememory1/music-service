@@ -100,18 +100,21 @@ export default class BaseSelect extends Vue {
   @Prop({ required: false, default: false })
   private readonly isLoading!: boolean;
 
-  private selectService: SelectService = new SelectService(this, []);
-  private selectListService: SelectListService = new SelectListService(this.selectService);
-  private selectKeydownService: SelectKeydownService = new SelectKeydownService(
-    this.selectService,
-    this.selectListService
-  );
+  private selectService!: SelectService;
+  private selectListService!: SelectListService;
+  private selectKeydownService!: SelectKeydownService;
 
-  private created(): void {
+  public created(): void {
+    this.selectService = new SelectService(this, []);
+    this.selectListService = new SelectListService(this.selectService);
+    this.selectKeydownService = new SelectKeydownService(
+      this.selectService,
+      this.selectListService
+    );
     this.selectService.setOptions(this.buildOptionsServices());
   }
 
-  private mounted(): void {
+  public mounted(): void {
     clickOut(this.$refs.select as Node, (is) => {
       if (is) {
         this.selectService.close();

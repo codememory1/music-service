@@ -41,9 +41,11 @@ export default class BaseSliderCardSection extends Vue {
   @Prop({ required: true })
   private readonly cards!: Array<object>;
 
-  private readonly sliderNavigationService: SliderNavigationService = new SliderNavigationService(
-    this
-  );
+  private sliderNavigationService!: SliderNavigationService;
+
+  public created(): void {
+    this.sliderNavigationService = new SliderNavigationService(this);
+  }
 
   public mounted() {
     this.sliderNavigationService.setSwiper((this.$refs.swiper as any).$swiper);

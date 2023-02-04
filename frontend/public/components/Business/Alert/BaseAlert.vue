@@ -32,9 +32,13 @@ export default class BaseAlert extends Vue {
   @Prop({ required: true })
   private readonly alert!: AlertInterface;
 
-  private readonly alertService: AlertService = new AlertService(this);
+  private alertService!: AlertService;
 
-  private mounted(): void {
+  public created(): void {
+    this.alertService = new AlertService(this);
+  }
+
+  public mounted(): void {
     setTimeout(() => {
       this.alertService.deleteAlert(this.alert);
     }, this.alertService.getAutoDeleteTime(this.alert) * 1000);

@@ -93,6 +93,10 @@ export default class AuthModal extends Vue {
     });
   }
 
+  public mounted(): void {
+    this.socialNetworkAuth();
+  }
+
   private async socialNetworkAuth(): Promise<void> {
     const query = this.$route.query;
 

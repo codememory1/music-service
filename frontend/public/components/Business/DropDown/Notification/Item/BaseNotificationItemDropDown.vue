@@ -34,7 +34,11 @@ export default class BaseNotificationItemDropDown extends Vue {
   @Prop({ required: true })
   private readonly data!: UserNotificationResponseInterface;
 
-  private readonly dateFromCreated: Date = new Date(this.data.created_at);
+  private dateFromCreated!: Date;
+
+  public created(): void {
+    this.dateFromCreated = new Date(this.data.created_at);
+  }
 
   private get day(): string {
     return this.dateFromCreated.getDay() < 10
