@@ -44,8 +44,11 @@ export default class TheMainHeader extends Vue {
   private selectLanguages: Array<SelectOptionType> = [];
 
   private selectLanguage(option: SelectOptionService): void {
+    const languages = this.selectLanguages;
+
     this.$i18n.setLocale(option.option.value);
     this.$cookies.set(this.$config.langCookieName, option.option.value);
+    this.selectLanguages = languages;
   }
 }
 </script>

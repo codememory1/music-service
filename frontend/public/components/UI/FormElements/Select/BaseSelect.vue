@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import BaseSelectBoxCurrent from '~/components/UI/FormElements/Select/BaseSelectBoxCurrent.vue';
 import BaseSelectPlaceholder from '~/components/UI/FormElements/Select/BaseSelectPlaceholder.vue';
 import BaseSelectSelectedOption from '~/components/UI/FormElements/Select/BaseSelectSelectedOption.vue';
@@ -100,19 +100,14 @@ export default class BaseSelect extends Vue {
   @Prop({ required: false, default: false })
   private readonly isLoading!: boolean;
 
-  private selectService!: SelectService;
-  private selectListService!: SelectListService;
-  private selectKeydownService!: SelectKeydownService;
+  private readonly selectService = Vue.observable(
+    new SelectService(this, this.buildOptionsServices())
+  );
 
-  public created(): void {
-    this.selectService = new SelectService(this, []);
-    this.selectListService = new SelectListService(this.selectService);
-    this.selectKeydownService = new SelectKeydownService(
-      this.selectService,
-      this.selectListService
-    );
-    this.selectService.setOptions(this.buildOptionsServices());
-  }
+  private readonly selectListService = Vue.observable(new SelectListService(this.selectService));
+  private readonly selectKeydownService = Vue.observable(
+    new SelectKeydownService(this.selectService, this.selectListService)
+  );
 
   public mounted(): void {
     clickOut(this.$refs.select as Node, (is) => {
@@ -143,13 +138,8 @@ export default class BaseSelect extends Vue {
   }
 
   @Watch('options')
-  private onOptionsChanged(): void {
-    this.selectService = new SelectService(this, this.buildOptionsServices());
-    this.selectListService = new SelectListService(this.selectService);
-    this.selectKeydownService = new SelectKeydownService(
-      this.selectService,
-      this.selectListService
-    );
+  private watchOptions(): void {
+    this.selectService.setOptions(this.buildOptionsServices());
   }
 }
 </script>

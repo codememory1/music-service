@@ -57,6 +57,7 @@ import ChangeInputService from '~/services/ui/input/change-input-service';
 import InputService from '~/services/ui/input/input-service';
 import AuthService from '~/services/business/security/auth-service';
 import Routes from '~/api/routes';
+import Route from '~/api/route';
 import ApiRequestService from '~/services/business/api-request-service';
 import GoogleAuthUrlRequest from '~/api/requests/google-auth-url-request';
 
@@ -101,15 +102,21 @@ export default class AuthModal extends Vue {
     const query = this.$route.query;
 
     if ('code' in query && 'state' in query) {
+      let route: Route | null = null;
       const modal = this.$refs.modal as BaseModal;
 
-      modal.open();
-      modal.setIsLoading(true);
+      switch (query.state) {
+        case 'google':
+          route = Routes.social_auth.google.auth;
+          break;
+      }
 
-      await this.authService.socialNetworkAuth(
-        Routes.social_auth.google.auth,
-        query.code as string
-      );
+      if (route !== null) {
+        modal.open();
+        modal.setIsLoading(true);
+
+        await this.authService.socialNetworkAuth(route, query.code as string);
+      }
     }
   }
 
