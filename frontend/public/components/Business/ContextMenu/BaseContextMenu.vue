@@ -21,7 +21,7 @@ export default class BaseContextMenu extends Vue {
   public contextMenuService!: ContextMenuService;
 
   public created(): void {
-    this.contextMenuService = new ContextMenuService(this);
+    this.contextMenuService = Vue.observable<ContextMenuService>(new ContextMenuService(this));
   }
 
   public mounted(): void {

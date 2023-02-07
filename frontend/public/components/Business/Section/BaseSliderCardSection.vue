@@ -44,7 +44,7 @@ export default class BaseSliderCardSection extends Vue {
   private sliderNavigationService!: SliderNavigationService;
 
   public created(): void {
-    this.sliderNavigationService = new SliderNavigationService(this);
+    this.sliderNavigationService = Vue.observable(new SliderNavigationService(this));
   }
 
   public mounted() {

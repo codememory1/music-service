@@ -47,9 +47,7 @@ import TrackContextMenuService from '~/services/ui/context-menu/track-context-me
   }
 })
 export default class Index extends Vue {
-  private readonly trackContextMenuService: TrackContextMenuService = new TrackContextMenuService(
-    this
-  );
+  private readonly trackContextMenuService = Vue.observable(new TrackContextMenuService(this));
 
   private get topTracks(): Array<TrackResponseInterface> {
     return mocks.artist_1.top_tracks; // FIX: Изменить топ-жанры за месяц на реальные данные

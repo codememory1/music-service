@@ -3,7 +3,7 @@ import mouseClick from '~/utils/mouse-click';
 
 export default class ContextMenuService {
   private readonly app: Vue;
-  private stateOpen: boolean = false;
+  private opened: boolean = false;
   private styles = {
     top: '0',
     left: '0'
@@ -14,7 +14,7 @@ export default class ContextMenuService {
   }
 
   public isOpen(): boolean {
-    return this.stateOpen;
+    return this.opened;
   }
 
   public getStyles(): object {
@@ -40,13 +40,13 @@ export default class ContextMenuService {
   }
 
   public close(): void {
-    this.stateOpen = false;
+    this.opened = false;
 
     this.app.$store.commit('modules/global-module/contentScrollingAllowed', true);
   }
 
   public open(): void {
-    this.stateOpen = true;
+    this.opened = true;
 
     this.app.$store.commit('modules/global-module/contentScrollingAllowed', false);
   }
