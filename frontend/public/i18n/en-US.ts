@@ -167,8 +167,9 @@ export default {
     titles: {
       top_tracks: 'Top Tracks',
       top_artists_of_month: 'Top artists of the month',
-      top_albums: 'Top albums',
-      top_genres_of_month: 'Top genres of the month'
+      top_albums: 'Top Albums',
+      top_genres_of_month: 'Top genres of the month',
+      all_genres: 'All Genres'
     }
   },
 

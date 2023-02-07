@@ -15,11 +15,13 @@
           :active="headerIsActive"
           @openAuth="$refs.securityModalGroup.openAuthModal()"
         >
-          <TheSearchWebPlayerHeader />
+          <TheSearchWebPlayerHeader @search="$nuxt.$emit('search', $event)" />
         </TheWebPlayerHeader>
 
         <div class="wp-main-content">
-          <Nuxt />
+          <transition name="change-page">
+            <Nuxt />
+          </transition>
         </div>
 
         <TheWebPlayerFooter />

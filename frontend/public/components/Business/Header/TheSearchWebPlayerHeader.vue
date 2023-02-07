@@ -1,7 +1,12 @@
 <template>
   <div class="wp-header-search">
     <i class="wp-header-search__icon fal fa-search" />
-    <input type="text" class="wp-header-search__input" :placeholder="$t('placeholder.search')" />
+    <input
+      type="text"
+      class="wp-header-search__input"
+      :placeholder="$t('placeholder.search')"
+      @input="$emit('search', $event)"
+    />
   </div>
 </template>
 
