@@ -1,0 +1,11 @@
+.genres-section .wp-information-section-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 15px;
+}
+
+@media (min-width: 1600px) {
+  .genres-section .wp-information-section-content {
+    grid-template-columns: repeat(7, 1fr)!important;
+  }
+}

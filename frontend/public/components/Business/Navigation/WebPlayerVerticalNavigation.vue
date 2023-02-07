@@ -7,7 +7,7 @@
       <ItemVerticalNavigation link="/web-player/search">
         <i class="fal fa-search" /> {{ $t('web_player.navigation.search') }}
       </ItemVerticalNavigation>
-      <ItemVerticalNavigation link="/web-player/search">
+      <ItemVerticalNavigation link="/web-player/popular-artists">
         <i class="fal fa-user-music" /> {{ $t('web_player.navigation.popular_artists') }}
       </ItemVerticalNavigation>
       <ItemVerticalNavigation link="/web-player/mix">

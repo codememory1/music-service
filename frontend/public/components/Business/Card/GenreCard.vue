@@ -1,5 +1,5 @@
 <template>
-  <div class="genre-card" :style="styles">
+  <div class="genre-card" :style="styles" @click="$emit('click')">
     <span class="genre-card__title">{{ data.title }}</span>
     <img class="genre-card__img" :src="data.image" :alt="data.title" />
   </div>
