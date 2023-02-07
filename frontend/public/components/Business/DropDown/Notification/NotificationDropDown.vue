@@ -47,9 +47,13 @@ import AuthorizedUserService from '~/services/business/user/authorized-user-serv
   }
 })
 export default class NotificationDropDown extends Vue {
-  private readonly authorizedUserSession: AuthorizedUserService = new AuthorizedUserService(this);
+  private authorizedUserSession!: AuthorizedUserService;
   private activeTab: number = 0;
   private isOpen: boolean = false;
+
+  public created(): void {
+    this.authorizedUserSession = new AuthorizedUserService(this);
+  }
 
   public setIsOpen(is: boolean): void {
     this.isOpen = is;

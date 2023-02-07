@@ -77,7 +77,11 @@ export default class TheWebPlayerHeader extends Vue {
   @Prop({ required: false, default: false })
   private readonly active!: boolean;
 
-  private readonly authorizedUserService: AuthorizedUserService = new AuthorizedUserService(this);
+  private authorizedUserService!: AuthorizedUserService;
+
+  public created(): void {
+    this.authorizedUserService = new AuthorizedUserService(this);
+  }
 
   private get authorizedUser(): AuthorizedUserInfoResponseInterface | null {
     return this.authorizedUserService.getAuthorizedUser();

@@ -53,8 +53,13 @@ export default class ModalNewPasswordFormInput extends Vue {
   private readonly isError!: boolean;
 
   private isShowPassword: boolean = false;
-  private passwordLevelService: PasswordLevelService = new PasswordLevelService();
-  private level: Array<string> = this.passwordLevelService.levels[0];
+  private passwordLevelService!: PasswordLevelService;
+  private level!: Array<string>;
+
+  public created(): void {
+    this.passwordLevelService = new PasswordLevelService();
+    this.level = this.passwordLevelService.levels[0];
+  }
 
   private togglePassword(): void {
     this.isShowPassword = !this.isShowPassword;

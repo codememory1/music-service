@@ -72,16 +72,19 @@ import RegisterService from '~/services/business/security/register-service';
   }
 })
 export default class RegisterModal extends Vue {
-  private readonly changeInputService: ChangeInputService = new ChangeInputService({
-    pseudonym: new InputService('', 'string', undefined, 1),
-    email: new InputService('', 'string', undefined, 1),
-    password: new InputService('', 'string', undefined, 1),
-    confirmPassword: new InputService('', 'string', undefined, 1),
-    isAccept: new InputService(false, 'boolean', true)
-  });
-
+  private changeInputService!: ChangeInputService;
   private registerService: RegisterService = new RegisterService(this);
   private buttonIsLoading: boolean = false;
+
+  public created(): void {
+    this.changeInputService = new ChangeInputService({
+      pseudonym: new InputService('', 'string', undefined, 1),
+      email: new InputService('', 'string', undefined, 1),
+      password: new InputService('', 'string', undefined, 1),
+      confirmPassword: new InputService('', 'string', undefined, 1),
+      isAccept: new InputService(false, 'boolean', true)
+    });
+  }
 
   private async register(): Promise<void> {
     if (this.changeInputService.allFieldsWithoutErrors()) {

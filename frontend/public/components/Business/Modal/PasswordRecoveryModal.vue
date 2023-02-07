@@ -33,15 +33,16 @@ import PasswordRecoveryService from '~/services/business/security/password-recov
   }
 })
 export default class PasswordRecoveryModal extends Vue {
-  private readonly changeInputService: ChangeInputService = new ChangeInputService({
-    email: new InputService('', 'string', undefined, 1)
-  });
-
-  private readonly passwordRecoveryRequest: PasswordRecoveryService = new PasswordRecoveryService(
-    this
-  );
-
+  private changeInputService!: ChangeInputService;
+  private passwordRecoveryRequest!: PasswordRecoveryService;
   private buttonIsLoading: boolean = false;
+
+  public created(): void {
+    this.changeInputService = new ChangeInputService({
+      email: new InputService('', 'string', undefined, 1)
+    });
+    this.passwordRecoveryRequest = new PasswordRecoveryService(this);
+  }
 
   private async passwordRecovery(): Promise<void> {
     if (this.changeInputService.allFieldsWithoutErrors()) {

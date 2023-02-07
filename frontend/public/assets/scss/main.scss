@@ -2,23 +2,18 @@
 @import 'include/normalize';
 @import 'vendor/font-awesome';
 @import 'components/ui/tooltip/tooltip';
-@import 'animate.css';
 @import 'include/bootstrap';
 @import 'include/transitions';
 
 :root {
-  --accent: #{$accent};
-  --accent-second: #{$accent-second};
-  --dark-bg: #{$dark-bg};
-  --light-bg: #{$light-bg};
-  --light-for-dark: #{$light-for-dark};
-  --gray: #{$gray};
-  --white: #{$white};
-  --green: #{$green};
-  --red: #{$red};
+  --accent: $accent;
+  --accent-second: $accent-second;
+  --dark-bg: $dark-bg;
+  --light-bg: $light-bg;
+  --light-for-dark: $light-for-dark;
+  --gray: $gray;
+  --white: $white;
+  --green: $green;
+  --red: $red;
   --animate-duration: 5s;
-}
-
-.wrapper-gradient {
-  background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
 }

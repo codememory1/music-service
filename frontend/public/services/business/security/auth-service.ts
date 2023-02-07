@@ -6,6 +6,7 @@ import ApiFailedResponseInterface from '~/interfaces/business/api-failed-respons
 import ApiSuccessResponseInterface from '~/interfaces/business/api-success-response-interface';
 import AuthorizedUserInfoRequest from '~/api/requests/authorized-user-info-request';
 import AuthFormDataType from '~/types/ui/form-data/auth-form-data-type';
+import Route from '~/api/route';
 
 export default class AuthService {
   private readonly app: Vue;
@@ -32,6 +33,20 @@ export default class AuthService {
 
       this.app.$emit('successAuth');
     }
+  }
+
+  public async socialNetworkAuth(route: Route, code: string): Promise<void> {
+    const apiResponse = await this.requestService
+      .setData({ code })
+      .request<JwtTokenResponse>(route);
+
+    if (apiResponse.isError) {
+      this.failedAuth(apiResponse.response as ApiFailedResponseInterface);
+    } else {
+      await this.successAuth(apiResponse.response as ApiSuccessResponseInterface<JwtTokenResponse>);
+    }
+
+    this.app.$emit('responseSocialNetworkAuth');
   }
 
   private failedAuth(response: ApiFailedResponseInterface): void {

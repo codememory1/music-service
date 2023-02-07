@@ -1,7 +1,11 @@
 <template>
   <div class="modal" :class="{ active: isOpen }">
     <div class="modal__bg" @click="close" />
-    <div class="modal-wrapper">
+    <div class="modal-wrapper" :class="{ loading: isLoading }">
+      <div v-if="isLoading" class="modal-loader">
+        <i class="fal fa-spinner-third" />
+      </div>
+
       <BlockFormElements>
         <BaseButton class="modal__btn-close" @click="close">
           <i class="fal fa-times" />
@@ -32,6 +36,7 @@ export default class BaseModal extends Vue {
   private readonly title!: string;
 
   private isOpen: boolean = false;
+  private isLoading: boolean = false;
 
   @Emit('open')
   public open(): void {
@@ -41,6 +46,10 @@ export default class BaseModal extends Vue {
   @Emit('close')
   public close(): void {
     this.isOpen = false;
+  }
+
+  public setIsLoading(is: boolean): void {
+    this.isLoading = is;
   }
 }
 </script>

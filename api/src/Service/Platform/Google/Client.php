@@ -31,6 +31,7 @@ final class Client implements ClientInterface
         $this->googleClient->setClientSecret($this->secretKey);
         $this->googleClient->setRedirectUri($this->redirectUrl);
         $this->googleClient->setScopes($this->scopes);
+        $this->googleClient->setState('google');
     }
 
     public function createAuthorizationUrl(): ?string

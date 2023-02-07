@@ -1,5 +1,6 @@
 @import '@/assets/scss/include/variables';
-@import '../../../include/mixins';
+@import '@/assets/scss/include/mixins';
+@import '@/assets/scss/include/animations';
 
 .modal {
   position: fixed;
@@ -10,6 +11,27 @@
   z-index: 10;
   transition: background-color 0.3s ease-in-out;
   pointer-events: none;
+
+  &-loader {
+    position: absolute;
+    left: 0;
+    width: 450px;
+    top: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      color: $white;
+      font-size: 35px;
+      transform: translate(-50%, -50%);
+      animation: loadingSpinner 1s infinite linear;
+    }
+  }
 
   &__bg {
     backdrop-filter: saturate(180%) blur(5px);
@@ -48,6 +70,10 @@
     gap: 30px;
 
     @include scrollbar($light-bg, $accent, 0);
+
+    &.loading {
+      overflow: hidden!important;
+    }
   }
 
   &__btn-close {

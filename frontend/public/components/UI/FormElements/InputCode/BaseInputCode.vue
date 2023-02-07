@@ -32,10 +32,11 @@ export default class BaseInputCode extends Vue {
   @Prop({ required: false, default: '.*' })
   private readonly patternValue!: string;
 
-  public readonly inputCodeService: InputCodeService = new InputCodeService(
-    this,
-    this.numberSquares
-  );
+  public inputCodeService!: InputCodeService;
+
+  public created(): void {
+    this.inputCodeService = new InputCodeService(this, this.numberSquares);
+  }
 
   private mounted(): void {
     const squares = this.$refs.square as Array<HTMLInputElement>;

@@ -29,9 +29,13 @@ import InputService from '~/services/ui/input/input-service';
   }
 })
 export default class CreatePlaylistDirectoryModal extends Vue {
-  private readonly changeInputService: ChangeInputService = new ChangeInputService({
-    title: new InputService('', 'string', undefined, 1)
-  });
+  private changeInputService!: ChangeInputService;
+
+  public created(): void {
+    this.changeInputService = new ChangeInputService({
+      title: new InputService('', 'string', undefined, 1)
+    });
+  }
 
   private create(): void {
     if (this.changeInputService.allFieldsWithoutErrors()) {

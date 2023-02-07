@@ -18,7 +18,11 @@ import clickOut from '~/utils/click-out';
 
 @Component
 export default class BaseContextMenu extends Vue {
-  public readonly contextMenuService: ContextMenuService = new ContextMenuService(this);
+  public contextMenuService!: ContextMenuService;
+
+  public created(): void {
+    this.contextMenuService = new ContextMenuService(this);
+  }
 
   public mounted(): void {
     this.clickOutContextMenu();

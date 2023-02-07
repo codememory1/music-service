@@ -33,23 +33,27 @@ import NotificationTabType from '~/types/ui/notification/notification-tab-type';
   }
 })
 export default class NotificationTabDropDown extends Vue {
-  private tabs: Array<NotificationTabType> = [
-    {
-      title: 'All',
-      unread: 0
-    },
-    {
-      title: 'System',
-      unread: 0
-    },
-    {
-      title: 'Friends',
-      unread: 0
-    }
-  ];
+  private tabs: Array<NotificationTabType> = [];
 
   @VModel({ required: true })
   private activeTab!: number;
+
+  public created(): void {
+    this.tabs = [
+      {
+        title: 'All',
+        unread: 0
+      },
+      {
+        title: 'System',
+        unread: 0
+      },
+      {
+        title: 'Friends',
+        unread: 0
+      }
+    ];
+  }
 
   private selectTab(index: number): void {
     this.activeTab = index;

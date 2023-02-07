@@ -37,10 +37,12 @@ import AccountActivationService from '~/services/business/security/account-activ
 })
 export default class AccountActivationModal extends Vue {
   private email: string | null = null;
-  private readonly accountActivationService: AccountActivationService =
-    new AccountActivationService(this);
-
+  private accountActivationService!: AccountActivationService;
   private buttonIsLoading: boolean = false;
+
+  public created(): void {
+    this.accountActivationService = new AccountActivationService(this);
+  }
 
   public setEmail(email: string): void {
     this.email = email;

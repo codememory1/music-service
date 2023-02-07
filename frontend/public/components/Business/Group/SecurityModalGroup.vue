@@ -4,19 +4,20 @@
       ref="authModal"
       @register="
         $refs.authModal.$refs.modal.close();
-        $refs.registerModal.$refs.modal.open();
+        openRegisterModal();
       "
       @restorePassword="
         $refs.authModal.$refs.modal.close();
         $refs.recoveryPasswordModal.$refs.modal.open();
       "
       @successAuth="$refs.authModal.$refs.modal.close()"
+      @responseSocialNetworkAuth="responseSocialNetworkAuth"
     />
     <RegisterModal
       ref="registerModal"
       @auth="
         $refs.registerModal.$refs.modal.close();
-        $refs.authModal.$refs.modal.open();
+        openAuthModal();
       "
       @successRegister="successRegister"
     />
@@ -24,7 +25,7 @@
       ref="accountActivationModal"
       @successActivate="
         $refs.accountActivationModal.$refs.modal.close();
-        $refs.authModal.$refs.modal.open();
+        openAuthModal();
       "
     />
     <PasswordRecoveryModal
@@ -39,7 +40,7 @@
       ref="resetPasswordModal"
       @successPasswordReset="
         $refs.resetPasswordModal.$refs.modal.close();
-        $refs.authModal.$refs.modal.open();
+        openAuthModal();
       "
     />
   </div>
@@ -66,6 +67,16 @@ import PasswordRecoveryResponseInterface from '~/interfaces/business/api-respons
   }
 })
 export default class SecurityModalGroup extends Vue {
+  private responseSocialNetworkAuth(): void {
+    const modal = (this.$refs.authModal as AuthModal).$refs.modal as BaseModal;
+
+    modal.setIsLoading(false);
+
+    this.$router.push({ path: '/' });
+
+    modal.close();
+  }
+
   private successRegister(data: RegisteredUserResponseInterface): void {
     ((this.$refs.registerModal as RegisterModal).$refs as any).modal.close();
 

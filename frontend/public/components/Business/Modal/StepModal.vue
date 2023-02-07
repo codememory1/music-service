@@ -66,10 +66,11 @@ export default class StepModal extends Vue {
   @Prop({ required: true })
   private readonly buttonTitle!: string;
 
-  private readonly stepModalService: StepModalService = new StepModalService(
-    this,
-    this.steepTitles
-  );
+  private stepModalService!: StepModalService;
+
+  public created(): void {
+    this.stepModalService = new StepModalService(this, this.steepTitles);
+  }
 
   private changeActiveStep(index: number): void {
     this.stepModalService.changeTo(index);

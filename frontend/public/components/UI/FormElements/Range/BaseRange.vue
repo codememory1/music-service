@@ -43,10 +43,13 @@ export default class BaseRange extends Vue {
   @Prop({ required: false, default: '{value}' })
   private readonly tooltipFormat!: string;
 
-  private value: Array<number> | number = this.defaultValue;
-  private syncedTooltipPositions: Array<string> = this.tooltipPositions;
+  private value!: Array<number> | number;
+  private syncedTooltipPositions!: Array<string>;
 
-  private created() {
+  public created(): void {
+    this.value = this.defaultValue;
+    this.syncedTooltipPositions = this.tooltipPositions;
+
     if (
       Array.isArray(this.defaultValue) &&
       this.syncedTooltipPositions.length < this.defaultValue.length

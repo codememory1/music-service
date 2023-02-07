@@ -50,14 +50,18 @@ import PasswordResetService from '~/services/business/security/password-reset-se
   }
 })
 export default class PasswordResetModal extends Vue {
-  private readonly changeInputService: ChangeInputService = new ChangeInputService({
-    password: new InputService('', 'string', undefined, 1),
-    confirmPassword: new InputService('', 'string', undefined, 1)
-  });
-
-  private readonly passwordResetService: PasswordResetService = new PasswordResetService(this);
+  private changeInputService!: ChangeInputService;
+  private passwordResetService!: PasswordResetService;
   private buttonIsLoading: boolean = false;
   private email: string | null = null;
+
+  public created(): void {
+    this.changeInputService = new ChangeInputService({
+      password: new InputService('', 'string', undefined, 1),
+      confirmPassword: new InputService('', 'string', undefined, 1)
+    });
+    this.passwordResetService = new PasswordResetService(this);
+  }
 
   public setEmail(email: string): void {
     this.email = email;

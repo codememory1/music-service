@@ -69,11 +69,14 @@ export default class BaseDragAndDrop extends Vue {
   @Prop({ required: false, default: () => [] }) // Empty Array - Any MimeType
   private readonly allowedMimeTypes!: Array<string>;
 
-  private readonly dragAndDropService = new DragAndDropService(this);
-  private readonly dragAndDropValidationService: DragAndDropValidationService =
-    new DragAndDropValidationService(this.dragAndDropService);
-
+  private dragAndDropService!: DragAndDropService;
+  private dragAndDropValidationService!: DragAndDropValidationService;
   private isDragenter: boolean = false;
+
+  public created(): void {
+    this.dragAndDropService = new DragAndDropService(this);
+    this.dragAndDropValidationService = new DragAndDropValidationService(this.dragAndDropService);
+  }
 
   private changeFiles(event: PointerEvent): void {
     const files = (event.target as HTMLInputElement).files;
