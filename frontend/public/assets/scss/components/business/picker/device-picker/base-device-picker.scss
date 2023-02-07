@@ -6,7 +6,7 @@
   border-radius: $default-radius;
   width: 350px;
   height: 400px;
-  padding: 10px;
+  padding: 15px;
   border: 1px solid $light-for-dark;
   position: absolute;
   bottom: 65px;
@@ -18,7 +18,8 @@
   &__header {
     color: $white;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    font-size: 18px;
   }
 
   &-devices {
@@ -29,7 +30,7 @@
 
   &__separator {
     border-bottom: 1px solid $light-for-dark;
-    margin: 20px 0;
+    margin: 15px 0;
     display: block;
   }
 }

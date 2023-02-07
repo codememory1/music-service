@@ -8,7 +8,7 @@
   position: fixed;
   width: calc(100% - $wp-navigation-width);
   transition: linear 0.3s;
-  z-index: 2;
+  z-index: 3;
 
   &.active {
     backdrop-filter: saturate(180%) blur(10px);
