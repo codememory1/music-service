@@ -11,8 +11,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import TopArtistsOfAllTimeSection from '~/components/Business/Section/TopArtistsOfAllTimeSection.vue';
-import ArtistCardResponseInterface from "~/interfaces/business/api-responses/artist-card-response-interface";
-import mocks from "~/api/mocks";
+import ArtistCardResponseInterface from '~/interfaces/business/api-responses/artist-card-response-interface';
+import mocks from '~/api/mocks';
 
 @Component({
   layout: 'WebPlayerLayout',
