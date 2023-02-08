@@ -42,42 +42,4 @@
     text-overflow: ellipsis;
     overflow: hidden;
   }
-
-  &__year-creation {
-    position: relative;
-    padding-right: 5px;
-
-    &:before {
-      content: "•";
-      position: absolute;
-      color: $gray;
-      font-size: $default-size;
-      top: 50%;
-      right: -5px;
-      transform: translateY(-50%);
-    }
-  }
-
-  &-performer-wrapper {
-    font-size: $default-size;
-    color: $gray;
-    font-weight: 300;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  &__performer {
-    &:first-of-type {
-      padding-left: 5px;
-    }
-
-    &-link {
-      color: $gray;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
 }

@@ -393,5 +393,57 @@ export default {
       title: 'For Home',
       image: '/images/genre.png'
     }
+  ],
+
+  mixins: [
+    {
+      id: 1,
+      title: 'Base Mixin',
+      artists: [
+        {
+          id: 1,
+          name: 'Zara Larsson',
+          image: '/images/album2.jpeg'
+        },
+        {
+          id: 2,
+          name: 'Zara Larsson',
+          image: '/images/album3.jpeg'
+        },
+        {
+          id: 3,
+          name: 'Zara Larssoncsdc2131csdc',
+          image: '/images/album4.jpeg'
+        },
+        {
+          id: 4,
+          name: 'Zara Larsson',
+          image: '/images/album2.jpeg'
+        }
+      ],
+      performers: [
+        {
+          id: 1,
+          title: 'Tvbuu'
+        },
+        {
+          id: 2,
+          title: 'Tvbuu'
+        },
+        {
+          id: 3,
+          title: 'Tvbuu'
+        },
+        {
+          id: 4,
+          title: 'Tvbuu'
+        },
+        {
+          id: 5,
+          title: 'Tvbuu'
+        }
+      ],
+      created_at: '2023-01-23 23:23:23'
+    }
   ]
 };

@@ -1,0 +1,73 @@
+@import '@/assets/scss/include/variables';
+
+.mixin-card {
+  width: 198.5px;
+  height: 220px;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 5px;
+  transition: ease-in background-color 0.3s;
+  border: 2px solid $light-for-dark;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  &:hover {
+    background-color: $light-for-dark;
+  }
+
+  &-images {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 100%
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+
+    &:nth-child(1) {
+      border-right: 4px solid $dark-bg;
+      border-radius: 5px 0 0 0;
+    }
+
+    &:nth-child(2) {
+      border-bottom: 4px solid $dark-bg;
+      border-radius: 0 5px 0 0;
+    }
+
+    &:nth-child(3) {
+      border-right: 4px solid $dark-bg;
+      border-radius: 0 0 0 5px;
+    }
+
+    &:nth-child(4) {
+      border-radius: 0 0 5px 0;
+    }
+  }
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 500;
+    color: $white;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &__play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
