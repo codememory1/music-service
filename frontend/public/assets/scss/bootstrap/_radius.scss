@@ -1,9 +1,0 @@
-@for $i from 1 through 15 {
-  .sm-rs-#{$i} {
-    border-radius: #{$i}px;
-  }
-}
-
-.sm-rs-none {
-  border-radius: 0;
-}

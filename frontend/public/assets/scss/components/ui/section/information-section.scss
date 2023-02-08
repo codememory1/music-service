@@ -1,0 +1,24 @@
+@import '@/assets/scss/include/variables';
+
+.information-section {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-between-information-section;
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-between-el;
+    align-items: center;
+  }
+
+  &__title {
+    color: $white;
+    font-size: 32px;
+  }
+
+  &__description {
+    color: $gray;
+    font-size: $default-size;
+  }
+}

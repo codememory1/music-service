@@ -1,37 +1,38 @@
 <template>
-  <div class="album">
-    <div class="album__inner">
-      <img class="album__image" :src="data.image" :alt="data.title" />
-      <div class="album__title">{{ data.title }}</div>
-      <span class="album-artists">
-        <ArtistLink v-for="performer in data.performers" :key="performer.id" href="/">
-          {{ performer.name }}
-        </ArtistLink>
-      </span>
-    </div>
+  <div class="album" @click="goToAlbum">
+    <div class="album-img-wrapper">
+      <img :src="data.image" :alt="data.title" class="album__img" />
 
-    <slot />
+      <slot name="img-wrapper" />
+    </div>
+    <div class="album-info">
+      <h3 class="album__title">{{ data.title }}</h3>
+      <PerformerCardWrapper :card-created-at="data.created_at" :performers="data.performers" />
+      <slot name="info" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import ArtistLink from '~/components/Business/Link/ArtistLink.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import { AlbumType } from '~/types/AlbumType';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import AlbumResponseInterface from '~/interfaces/business/api-responses/album-response-interface';
+import PerformerCardWrapper from '~/components/Business/Wrapper/PerformerCardWrapper.vue';
 
 @Component({
   components: {
-    ArtistLink,
-    BaseButton
+    PerformerCardWrapper
   }
 })
 export default class BaseAlbum extends Vue {
   @Prop({ required: true })
-  private readonly data!: AlbumType;
+  private readonly data!: AlbumResponseInterface;
+
+  private goToAlbum(): void {
+    // TODO: Redirect to route album
+  }
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/album/base-album';
+@import '@/assets/scss/components/business/album/base-album.scss';
 </style>

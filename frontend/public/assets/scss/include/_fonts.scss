@@ -1,5 +1,14 @@
+@import 'mixins';
+
 // Roboto
-@include font('Roboto', 'Thin', 100);
 @include font('Roboto', 'Light', 300);
 @include font('Roboto', 'Regular', 400);
 @include font('Roboto', 'Medium', 500);
+@include font('Roboto', 'Bold', 700);
+
+// NotoSans
+@include font('NotoSans', 'Light', 300);
+@include font('NotoSans', 'Regular', 400);
+@include font('NotoSans', 'Medium', 500);
+@include font('NotoSans', 'SemiBold', 600);
+@include font('NotoSans', 'Bold', 700);

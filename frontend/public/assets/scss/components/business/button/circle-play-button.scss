@@ -1,0 +1,12 @@
+@import '@/assets/scss/include/variables';
+
+.circle-play-button {
+  width: 45px!important;
+  height: 45px!important;
+  border-radius: 100%!important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $default-size;
+  outline: 4px solid $light-for-dark!important;
+}

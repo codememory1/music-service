@@ -1,0 +1,15 @@
+@import '@/assets/scss/include/variables';
+
+.modal-switcher {
+  text-align: center;
+
+  &__text {
+    color: $gray;
+    font-size: $default-size;
+
+    a {
+      color: $accent;
+      cursor: pointer;
+    }
+  }
+}

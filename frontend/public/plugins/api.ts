@@ -7,5 +7,7 @@ export default function ({ $axios }: NuxtApp, inject: (key: string, value: any) 
     }
   });
 
+  axios.defaults.withCredentials = false;
+
   inject('api', axios);
 }

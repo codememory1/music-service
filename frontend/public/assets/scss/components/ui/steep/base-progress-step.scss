@@ -1,0 +1,43 @@
+@import '@/assets/scss/include/variables';
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    font-size: 14px;
+    color: $gray;
+    display: flex;
+    margin-bottom: 10px;
+    transition: ease-in color 0.3s;
+    justify-content: space-between;
+  }
+
+  &__current {
+    color: $white;
+    font-weight: 500;
+  }
+
+  &-items {
+    display: flex;
+    gap: 5px;
+  }
+
+  &__item {
+    width: 100%;
+    border-radius: 1px;
+    height: 5px;
+    margin-top: auto;
+    background-color: $light-for-dark;
+    transition: ease-in background-color 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: lighten($light-for-dark, 7%);
+    }
+
+    &.active {
+      background-color: $accent;
+    }
+  }
+}

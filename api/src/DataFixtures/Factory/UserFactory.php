@@ -9,7 +9,6 @@ use App\Entity\Subscription;
 use App\Entity\User;
 use App\Entity\UserProfile;
 use App\Enum\RoleEnum;
-use App\Enum\SubscriptionEnum;
 use App\Enum\UserProfileStatusEnum;
 use App\Enum\UserStatusEnum;
 use function call_user_func;
@@ -25,7 +24,7 @@ final class UserFactory implements DataFixtureFactoryInterface
         private readonly string $email,
         private readonly string $password,
         private readonly RoleEnum $role,
-        private readonly ?SubscriptionEnum $subscription = null,
+        private readonly ?string $subscriptionTitle = null,
         private readonly ?Closure $callbackEntity = null
     ) {
     }
@@ -36,9 +35,9 @@ final class UserFactory implements DataFixtureFactoryInterface
         $role = $this->referenceRepository->getReference("r-{$this->role->name}");
         $subscription = null;
 
-        if (null !== $this->subscription) {
+        if (null !== $this->subscriptionTitle) {
             /** @var Subscription $subscription */
-            $subscription = $this->referenceRepository->getReference("s-{$this->subscription->name}");
+            $subscription = $this->referenceRepository->getReference("s-{$this->subscriptionTitle}");
         }
 
         $user = new User();

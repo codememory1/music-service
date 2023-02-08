@@ -1,0 +1,20 @@
+@import '@/assets/scss/include/variables';
+
+.main-footer__social-media {
+  &-link {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-color: $light-for-dark;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: ease-in background-color $default-transition;
+    font-size: 20px;
+
+    &:hover {
+      background-color: lighten($light-for-dark, 7%);
+    }
+  }
+}

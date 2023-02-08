@@ -1,0 +1,11 @@
+@import '@/assets/scss/include/variables';
+
+.main-navigation {
+  display: flex;
+  align-items: center;
+
+  &-items {
+    display: flex;
+    gap: 15px;
+  }
+}

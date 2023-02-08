@@ -1,0 +1,8 @@
+@import '@/assets/scss/include/variables';
+
+.select-search__no-matches-found {
+  font-size: $default-size;
+  color: $gray;
+  padding: 10px;
+  text-align: center;
+}

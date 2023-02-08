@@ -1,3 +1,4 @@
+// Colors
 $accent: #E03E10;
 $accent-second: #3C56D6;
 $dark-bg: #070E17;
@@ -7,16 +8,33 @@ $gray: #939393;
 $white: #fff;
 $green: #1BE809;
 $red: #E53737;
-$white-with-hint-blue: rgb(178 192 222);
-$fa-font-path: "~/assets/fonts/FontAwesome/";
-$grid-gap: 25px;
-$column-width: 200px;
-$column-count: 5;
 
-// Z-index variables
+// Radius's
+$default-radius: 5px;
+
+// Paths
+$fa-font-path: "~/assets/fonts/FontAwesome/";
+
+// Z-index
+$z-index-select: 990;
+$z-index-drop-down: 995;
+$z-index-modal: 1000;
+$btn-show-password: 1010;
 
 // indents
+$default-gap: 20px;
+$gap-between-el: $default-gap - 5px;
+$default-padding-container: 40px;
+$form-el-padding: 25px;
+$gap-between-information-section: 50px;
 
-// Widths
+// Widths / Heights
+$form-el-height: 40px;
+$wp-navigation-width: 300px;
+$wp-header-height: 80px;
 
 // Sizes
+$default-size: 14px;
+
+// Transitions
+$default-transition: 0.15s;

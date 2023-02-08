@@ -1,0 +1,13 @@
+.slider-cards-section .wp-information-section-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.slider-cards-section .swiper-slide {
+  width: 198.5px;
+  margin-right: 15px;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}

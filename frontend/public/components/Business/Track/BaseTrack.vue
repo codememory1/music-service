@@ -1,54 +1,70 @@
 <template>
-  <div class="track" @contextmenu.prevent="toggleMenu">
-    <div class="track-left">
-      <img :src="data.image" :alt="data.title" class="track__img" />
-      <div class="track-multimedia-info">
-        <div class="track__name">{{ data.title }}</div>
-        <span class="track__artists">
-          <ArtistLink v-for="performer in data.performers" :key="performer.id" href="/">
-            {{ performer.name }}
-          </ArtistLink>
-        </span>
+  <div class="track" @click="$emit('play')" @contextmenu.prevent="$emit('openContextMenu', $event)">
+    <div class="track-num-or-play-wrapper">
+      <div class="track__play">
+        <i class="fal fa-play" />
       </div>
+      <div class="track__number">{{ getNumber }}</div>
     </div>
-    <div class="track-right">
-      <span class="track__duration-time">{{ data.duration }}</span>
-      <div class="track-control">
-        <BaseButton class="track__btn track__like-btn">
-          <i class="fas fa-thumbs-up" />
-        </BaseButton>
-        <BaseButton class="track__btn track__menu-btn" @click="toggleMenu">
-          <i class="fas fa-ellipsis-v" />
-        </BaseButton>
+    <div class="track-info-wrapper">
+      <div class="track-basic-info">
+        <img class="track__img" :src="data.image" :alt="data.title" />
+        <div class="track-basic-text-info">
+          <h4 class="track__title">{{ data.title }}</h4>
+          <div class="track-performers">
+            <span
+              v-for="(performer, index) in data.performers"
+              :key="index"
+              class="track__performer"
+            >
+              <nuxt-link class="track__performer-link" to="">
+                {{ performer.title }}
+              </nuxt-link>
+              <template v-if="index < data.performers.length - 1">&</template>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="track-right">
+        <div class="track-duration-wrapper">
+          <span class="track__duration">{{ data.duration }}</span>
+        </div>
+        <div class="track-controls">
+          <BaseButton class="track__control-btn">
+            <i class="fal fa-heart" />
+          </BaseButton>
+          <BaseButton class="track__control-btn" @click="$emit('openContextMenu', $event)">
+            <i class="fal fa-ellipsis-h-alt" />
+          </BaseButton>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import ArtistLink from '~/components/Business/Link/ArtistLink.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import { TrackType } from '~/types/TrackType';
-import BaseContextMenu from '~/components/Business/ContextMenu/BaseContextMenu.vue';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import TrackResponseInterface from '~/interfaces/business/api-responses/track-response-interface';
+import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 
 @Component({
   components: {
-    ArtistLink,
-    BaseButton,
-    BaseContextMenu
+    BaseButton
   }
 })
 export default class BaseTrack extends Vue {
   @Prop({ required: true })
-  private readonly data!: TrackType;
+  private readonly number!: number;
 
-  private toggleMenu(event: PointerEvent): void {
-    this.$emit('toggleMenu', event);
+  @Prop({ required: true })
+  private readonly data!: TrackResponseInterface;
+
+  private get getNumber(): string {
+    return this.number < 10 ? `0${this.number}` : String(this.number);
   }
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/track/base-track';
+@import '@/assets/scss/components/business/track/base-track.scss';
 </style>

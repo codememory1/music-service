@@ -1,0 +1,27 @@
+@import '@/assets/scss/include/variables';
+
+.main-footer-row {
+  display: flex;
+  flex-direction: column;
+
+  &.social-media {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  &__title {
+    color: $gray;
+    font-size: 16px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    display: block;
+  }
+
+  &-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

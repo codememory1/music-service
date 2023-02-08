@@ -1,0 +1,7 @@
+@import '@/assets/scss/include/variables';
+
+.select__placeholder {
+  color: $gray;
+  font-size: $default-size;
+  user-select: none;
+}

@@ -1,0 +1,52 @@
+@import '@/assets/scss/include/variables';
+
+.context-menu__item {
+  cursor: pointer;
+  border-radius: $default-radius;
+  transition: ease-in background-color $default-transition;
+  padding: 10px;
+  position: relative;
+  user-select: none;
+
+  &:hover {
+    background-color: $light-for-dark;
+  }
+
+  &:hover > div.context-menu {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &:has(> div.context-menu) {
+    &:before {
+      content: '\f054';
+      font-family: 'Font Awesome 5 Pro';
+      font-weight: 300;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: $default-size;
+      color: $white;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &-title {
+    color: $white;
+    font-size: $default-size;
+  }
+
+  > div.context-menu {
+    position: absolute;
+    right: -110%;
+    top: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: ease-in opacity $default-transition, ease-in visibility $default-transition;
+  }
+}

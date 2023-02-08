@@ -1,34 +1,27 @@
 <template>
-  <transition name="fade">
-    <div class="alert" :style="cssVars">
-      <div class="alert-top">
-        <div class="alert-title">
-          <img
-            v-if="alert.isSuccess"
-            class="alert__status-icon"
-            src="/icons/success-circle.svg"
-            alt="success"
-          />
-          <img v-else class="alert__status-icon" src="/icons/error-circle.svg" alt="error" />
-          <span class="alert-title__text">{{ alert.title }}</span>
-        </div>
-
-        <BaseButton class="alert__close-btn" @click="close">
-          <i class="fal fa-times" />
-        </BaseButton>
-      </div>
+  <div class="alert" :style="{ '--time-remove': alertService.getAutoDeleteTime(alert) + 's' }">
+    <div class="alert-icon-wrapper">
+      <img class="alert__icon" :src="alertService.getIconByStatus(alert)" :alt="alert.status" />
+    </div>
+    <div class="alert-content-wrapper">
       <div class="alert-content">
-        <p class="alert-content__message">{{ alert.message }}</p>
+        <span class="alert__title">{{ alert.title }}</span>
+        <p class="alert__message">{{ alert.message }}</p>
       </div>
     </div>
-  </transition>
+    <div class="alert-close-wrapper">
+      <BaseButton class="alert__btn-close" @click="alertService.deleteAlert(alert)">
+        <i class="fal fa-times" />
+      </BaseButton>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import { AlertType } from '~/types/AlertType';
-import { getAlertModule } from '~/store';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
+import AlertInterface from '~/interfaces/ui/alert-interface';
+import AlertService from '~/services/ui/alert/alert-service';
 
 @Component({
   components: {
@@ -37,27 +30,22 @@ import { getAlertModule } from '~/store';
 })
 export default class BaseAlert extends Vue {
   @Prop({ required: true })
-  private readonly alert!: AlertType;
+  private readonly alert!: AlertInterface;
 
-  private get cssVars(): object {
-    return {
-      '--time-remove': `${this.alert.autoDeleteTime}s`
-    };
+  private alertService!: AlertService;
+
+  public created(): void {
+    this.alertService = new AlertService(this);
   }
 
-  private mounted(): void {
+  public mounted(): void {
     setTimeout(() => {
-      this.close();
-    }, this.alert.autoDeleteTime * 1000);
-  }
-
-  @Emit('close')
-  private close(): void {
-    getAlertModule(this.$store).removeAlert(this.alert);
+      this.alertService.deleteAlert(this.alert);
+    }, this.alertService.getAutoDeleteTime(this.alert) * 1000);
   }
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/alert/base-alert';
+@import '@/assets/scss/components/business/alert/base-alert.scss';
 </style>

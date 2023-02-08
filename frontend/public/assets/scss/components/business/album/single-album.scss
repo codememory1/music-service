@@ -1,0 +1,9 @@
+@import '@/assets/scss/include/variables';
+
+.single-album {
+  &__play-btn {
+    position: absolute;
+    top: 60%;
+    right: -12px;
+  }
+}

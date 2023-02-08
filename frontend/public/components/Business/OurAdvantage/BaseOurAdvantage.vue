@@ -1,15 +1,17 @@
 <template>
-  <div class="our-advantage">
-    <img class="our-advantage__icon" :src="'/icons/our-advantages/' + icon" :alt="title" />
-    <div class="our-advantage-info">
-      <span class="our-advantage__title">{{ title }}</span>
-      <p class="our-advantage__description">{{ description }}</p>
+  <div class="our-advantage-item">
+    <div class="our-advantage-item-icon-wrapper">
+      <nuxt-img class="our-advantage-item__icon" :src="icon" />
+    </div>
+    <div class="our-advantage-item-info-wrapper">
+      <h4 class="our-advantage-item__title">{{ title }}</h4>
+      <p class="our-advantage-item__description">{{ description }}</p>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class BaseOurAdvantage extends Vue {
@@ -25,5 +27,5 @@ export default class BaseOurAdvantage extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/our-advantage/base-our-advantage';
+@import '@/assets/scss/components/business/our-advantage/base-our-advantage.scss';
 </style>

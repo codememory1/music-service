@@ -19,7 +19,7 @@ final class PlatformSettingDataFixture extends AbstractDataFixture
     {
         parent::__construct([
             new PlatformSettingFactory(PlatformSettingEnum::ALLOWED_REGISTRATION_DOMAINS, [
-                'gmail\.com', '/^yandex\.[a-z]{2,3}$/', 'yahoo\.com'
+                '/^gmail\.com$/', '/^yandex\.[a-z]{2,3}$/', 'yahoo\.com'
             ]),
             new PlatformSettingFactory(PlatformSettingEnum::MULTIMEDIA_DURATION_TRACK_KEY, 600),
             new PlatformSettingFactory(PlatformSettingEnum::MULTIMEDIA_DURATION_CLIP_KEY, 240),
@@ -32,6 +32,11 @@ final class PlatformSettingDataFixture extends AbstractDataFixture
                 MultimediaExternalServiceEnum::YOUTUBE->name
             ]),
             new PlatformSettingFactory(PlatformSettingEnum::PAGINATION_MAX_LIMIT, 30),
+            new PlatformSettingFactory(PlatformSettingEnum::SOCIAL_NETWORK, [
+                'instagram' => 'https://instagram.com',
+                'facebook' => 'https://facebook.com',
+                'twitter' => 'https://twiiter.com'
+            ]),
         ]);
     }
 

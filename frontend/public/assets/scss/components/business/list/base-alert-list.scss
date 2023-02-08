@@ -1,0 +1,9 @@
+.alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 99;
+}

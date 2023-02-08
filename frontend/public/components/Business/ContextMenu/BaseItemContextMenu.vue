@@ -1,36 +1,23 @@
 <template>
-  <li
-    class="context-menu__item"
-    :class="{ disabled: item.disabled, border: item.border }"
-    @click="clickByItem"
-  >
-    {{ item.label }} <i v-if="undefined !== item.context_menu" class="far fa-chevron-right" />
-  </li>
+  <div class="context-menu__item" :class="{ disabled }" @click="$emit('click')">
+    <span class="context-menu__item-title">{{ title }}</span>
+    <slot />
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { ContextMenuItemType } from '~/types/ContextMenuItemType';
-import { getContextMenuModule } from '~/store';
 
 @Component
 export default class BaseItemContextMenu extends Vue {
   @Prop({ required: true })
-  private readonly item!: ContextMenuItemType;
+  private readonly title!: string;
 
-  private clickByItem(): void {
-    if (undefined === this.item.context_menu) {
-      this.$emit('clickByItem', this.item);
-    } else {
-      getContextMenuModule(this.$store).setContextMenu(this.item.context_menu);
-      getContextMenuModule(this.$store).setIsShowBackwardButton(true);
-
-      this.$emit('next', this.item);
-    }
-  }
+  @Prop({ required: false, default: false })
+  private readonly disabled!: boolean;
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/context-menu/base-item-context-menu';
+@import '@/assets/scss/components/business/context-menu/base-item-context-menu.scss';
 </style>

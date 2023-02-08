@@ -1,0 +1,156 @@
+@import '@/assets/scss/include/variables';
+
+.track {
+  display: flex;
+  width: 100%;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: ease-in background-color 0.3s;
+
+  &:hover {
+    background-color: $light-for-dark;
+  }
+
+  &:hover &__play {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &:hover &__number {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &.active {
+    background-color: $light-for-dark;
+  }
+
+  &.active &__number {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &.active &__play {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &__play {
+    color: $white;
+    font-size: $default-size;
+    transition: ease-in opacity 0.1s, ease-in visibility 0.1s;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &-num-or-play-wrapper {
+    position: relative;
+    width: 45px;
+  }
+
+  &__number,
+  &__play {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__number {
+    color: lighten($light-for-dark, 10%);
+    font-size: $default-size;
+    font-weight: 500;
+    transition: ease-in opacity 0.1s, ease-in visibility 0.1s;
+  }
+
+  &__img {
+    width: 60px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  &-info-wrapper {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  &-info-wrapper,
+  &-basic-info,
+  &-controls,
+  &-basic-text-info,
+  &-right,
+  &-duration-wrapper {
+    display: flex;
+  }
+
+  &-basic-info {
+    gap: 15px;
+  }
+
+  &-basic-text-info {
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  &__title {
+    color: $white;
+    font-size: $default-size;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-performers {
+    max-width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: $gray;
+  }
+  &__performer {
+    font-size: 12px;
+
+    &-link {
+      color: $gray;
+      font-size: 12px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &-right {
+    gap: 30px;
+  }
+
+  &-duration-wrapper {
+    align-items: center;
+  }
+
+  &__duration {
+    color: $gray;
+    font-size: $default-size;
+  }
+
+  &-controls {
+    gap: 10px;
+    align-items: center;
+  }
+
+  &__control-btn {
+    width: 30px;
+    height: 30px!important;
+    background-color: transparent;
+    color: $gray;
+    transition: ease-in color $default-transition;
+    font-size: 16px;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}

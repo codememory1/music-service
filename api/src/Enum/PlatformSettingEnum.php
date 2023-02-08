@@ -15,4 +15,5 @@ enum PlatformSettingEnum
     case PASSWORD_RESET_CODE_TTL;
     case ALLOWED_MULTIMEDIA_EXTERNAL_SERVICES;
     case PAGINATION_MAX_LIMIT;
+    case SOCIAL_NETWORK;
 }

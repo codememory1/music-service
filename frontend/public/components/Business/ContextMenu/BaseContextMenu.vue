@@ -1,94 +1,47 @@
 <template>
-  <transition name="fade">
-    <div class="context-menu" role="menu">
-      <div v-if="isShowBackwardButton" class="context-menu-top">
-        <BaseButton class="context-menu__backward-btn" @click="backward">
-          <i class="far fa-chevron-left" /> {{ $t('common.back') }}
-        </BaseButton>
-      </div>
-
-      <div class="context-menu-content">
-        <ul class="context-menu-items">
-          <BaseItemContextMenu
-            v-for="item in activeContextMenu.items"
-            :key="item.id"
-            :item="item"
-          />
-        </ul>
-      </div>
+  <div
+    ref="contextMenu"
+    class="context-menu"
+    :class="{ active: contextMenuService.isOpen() }"
+    :style="contextMenuService.getStyles()"
+  >
+    <div class="context-menu-groups">
+      <slot />
     </div>
-  </transition>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import BaseItemContextMenu from '~/components/Business/ContextMenu/BaseItemContextMenu.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import { ContextMenuType } from '~/types/ContextMenuType';
-import { getContextMenuModule } from '~/store';
+import { Component, Vue } from 'vue-property-decorator';
+import ContextMenuService from '~/services/ui/context-menu/context-menu-service';
+import clickOut from '~/utils/click-out';
 
-type FormattedContextMenu = {
-  [key: string]: ContextMenuType;
-};
-
-@Component({
-  components: {
-    BaseItemContextMenu,
-    BaseButton
-  }
-})
+@Component
 export default class BaseContextMenu extends Vue {
-  @Prop({ required: true })
-  private readonly contextMenu!: ContextMenuType;
+  public contextMenuService!: ContextMenuService;
 
-  private formattedContextMenu: FormattedContextMenu = {};
-
-  private created(): void {
-    getContextMenuModule(this.$store).setContextMenu(this.contextMenu);
-
-    this.contextMenuFormatting(this.contextMenu);
+  public created(): void {
+    this.contextMenuService = Vue.observable<ContextMenuService>(new ContextMenuService(this));
   }
 
-  private contextMenuFormatting(
-    currentContextMenu: ContextMenuType,
-    prevContextMenu?: ContextMenuType
-  ): void {
-    currentContextMenu.items.forEach((contextMenu) => {
-      if (undefined !== prevContextMenu) {
-        this.formattedContextMenu[currentContextMenu.id] = prevContextMenu;
-      }
+  public mounted(): void {
+    this.clickOutContextMenu();
+  }
 
-      if (undefined !== contextMenu.context_menu) {
-        this.contextMenuFormatting(contextMenu.context_menu, currentContextMenu);
+  public beforeDestroy(): void {
+    document.removeEventListener('click', this.clickOutContextMenu);
+  }
+
+  private clickOutContextMenu(): void {
+    clickOut(this.$refs.contextMenu as HTMLElement, (is) => {
+      if (is) {
+        this.contextMenuService.close();
       }
     });
-  }
-
-  private get activeContextMenu(): ContextMenuType {
-    return getContextMenuModule(this.$store).contextMenu as ContextMenuType;
-  }
-
-  private get isShowBackwardButton(): boolean {
-    return getContextMenuModule(this.$store).isShowBackwardButton;
-  }
-
-  private backward(): void {
-    let backwardContextMenu: ContextMenuType | undefined;
-
-    if (this.activeContextMenu!.id in this.formattedContextMenu) {
-      backwardContextMenu = this.formattedContextMenu[this.activeContextMenu.id];
-
-      getContextMenuModule(this.$store).setContextMenu(backwardContextMenu!);
-      getContextMenuModule(this.$store).setIsShowBackwardButton(
-        backwardContextMenu!.id in this.formattedContextMenu
-      );
-    }
-
-    this.$emit('backward', this.activeContextMenu, backwardContextMenu);
   }
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/context-menu/base-context-menu';
+@import '@/assets/scss/components/business/context-menu/base-context-menu.scss';
 </style>

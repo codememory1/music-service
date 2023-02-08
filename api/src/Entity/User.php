@@ -11,7 +11,6 @@ use App\Enum\FriendStatusEnum;
 use App\Enum\PlatformCodeEnum;
 use App\Enum\RoleEnum;
 use App\Enum\RolePermissionEnum;
-use App\Enum\SubscriptionEnum;
 use App\Enum\SubscriptionPermissionEnum;
 use App\Enum\UserSessionTypeEnum;
 use App\Enum\UserStatusEnum;
@@ -748,15 +747,6 @@ class User implements EntityInterface
         }
 
         return $subscriptionPermissions->exists(static fn(int $key, SubscriptionPermission $subscriptionPermission): bool => $subscriptionPermission->getPermissionKey()->getKey() === $expectedSubscriptionPermission->name);
-    }
-
-    public function isSubscription(SubscriptionEnum $expectedSubscription): bool
-    {
-        if (null === $subscription = $this->getSubscription()) {
-            return false;
-        }
-
-        return $subscription->getKey() === $expectedSubscription->name;
     }
 
     public function isAlbumBelongs(Album $album): bool

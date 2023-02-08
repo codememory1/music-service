@@ -1,130 +1,109 @@
 <template>
-  <div>
-    <AlertList>
-      <BaseAlert v-for="alert in alerts" :key="alert.id" :alert="alert" />
-    </AlertList>
+  <main class="index-main">
+    <BaseAlertList />
+    <SecurityModalGroup ref="securityModalGroup" />
 
-    <div class="wrapper-gradient">
-      <div class="container">
-        <TheMainHeader />
-        <TheHomeHero />
+    <ListInformationSection>
+      <div class="home-header-wrapper">
+        <div class="container home-header-inner">
+          <ListInformationSection>
+            <TheMainHeader>
+              <TheMainNavigation>
+                <MainItemNavigation link="">{{ $t('navigation.main.premium') }}</MainItemNavigation>
+                <MainItemNavigation link="">{{ $t('navigation.main.support') }}</MainItemNavigation>
+                <MainItemNavigation
+                  v-if="authorizedUserInfo === null"
+                  @click="$refs.securityModalGroup.openRegisterModal()"
+                >
+                  {{ $t('navigation.main.signUp') }}
+                </MainItemNavigation>
+                <MainItemNavigation
+                  v-if="authorizedUserInfo === null"
+                  @click="$refs.securityModalGroup.openAuthModal()"
+                >
+                  {{ $t('navigation.main.signIn') }}
+                </MainItemNavigation>
+                <MainItemNavigation v-if="authorizedUserInfo !== null">
+                  <i class="fal fa-user" /> {{ $t('navigation.main.my_account') }}
+                  <template #drop-down>
+                    <DropDownMainNavigation>
+                      <DropDownItemMainNavigation link="">
+                        <i class="fal fa-user-cog" /> {{ $t('navigation.main.manage_account') }}
+                      </DropDownItemMainNavigation>
+                      <DropDownItemMainNavigation link="">
+                        <i class="fal fa-mp3-player" /> {{ $t('navigation.main.web_player') }}
+                      </DropDownItemMainNavigation>
+                      <DropDownItemMainNavigation @click="authorizedUserService.logout()">
+                        <i class="fal fa-sign-out" /> {{ $t('navigation.main.logout') }}
+                      </DropDownItemMainNavigation>
+                    </DropDownMainNavigation>
+                  </template>
+                </MainItemNavigation>
+              </TheMainNavigation>
+            </TheMainHeader>
+            <TheHomeHero />
+          </ListInformationSection>
+        </div>
       </div>
-    </div>
-    <div class="container">
-      <BaseSection class="our-advantages">
-        <template #header>
-          <BaseSectionHeader :title="$t('our_advantage.title')" class="our-advantages__header" />
-        </template>
 
-        <BaseOurAdvantage
-          :title="$t('our_advantage.items.unique_features.title')"
-          :description="$t('our_advantage.items.unique_features.description')"
-          icon="feature.svg"
-        />
-        <BaseOurAdvantage
-          :title="$t('our_advantage.items.subscription_price.title')"
-          :description="$t('our_advantage.items.subscription_price.description')"
-          icon="best-price.svg"
-        />
-        <BaseOurAdvantage
-          :title="$t('our_advantage.items.more_options_for_free_subscription.title')"
-          :description="$t('our_advantage.items.more_options_for_free_subscription.description')"
-          icon="options.svg"
-        />
-        <BaseOurAdvantage
-          :title="$t('our_advantage.items.listen_to_opinions_users.title')"
-          :description="$t('our_advantage.items.listen_to_opinions_users.description')"
-          icon="community.svg"
-        />
-        <BaseOurAdvantage
-          :title="$t('our_advantage.items.ease_use.title')"
-          :description="$t('our_advantage.items.ease_use.description')"
-          icon="ease-use.svg"
-        />
-        <BaseOurAdvantage
-          :title="$t('our_advantage.items.stream_control.title')"
-          :description="$t('our_advantage.items.stream_control.description')"
-          icon="stream.svg"
-        />
-      </BaseSection>
-      <BaseSection class="subscriptions">
-        <template #header>
-          <BaseSectionHeader
-            :title="$t('choose_subscription.title')"
-            :description="$t('choose_subscription.description')"
-            class="subscriptions__header"
-          />
-        </template>
+      <div class="container">
+        <ListInformationSection>
+          <OurAdvantageSection />
+          <SubscriptionSection />
+        </ListInformationSection>
+      </div>
 
-        <SubscriptionCard
-          v-for="subscription in subscriptions"
-          :key="subscription.id"
-          :title="subscription.title"
-          :description="subscription.description"
-          :old-price="subscription.old_price"
-          :price="subscription.price"
-        >
-          <SubscriptionPermission
-            v-for="(permission, index) in subscription.permissions"
-            :key="index"
-            :title="permission.permission_key.title"
-          />
-        </SubscriptionCard>
-      </BaseSection>
-    </div>
-    <TheMainFooter />
-  </div>
+      <TheMainFooter />
+    </ListInformationSection>
+  </main>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Context } from '@nuxt/types';
-import { getAlertModule } from '~/store';
 import TheMainHeader from '~/components/Business/Header/TheMainHeader.vue';
+import BaseAlertList from '~/components/Business/List/BaseAlertList.vue';
+import SecurityModalGroup from '~/components/Business/Group/SecurityModalGroup.vue';
 import TheHomeHero from '~/components/Business/Hero/TheHomeHero.vue';
-import BaseSectionHeader from '~/components/UI/Section/BaseSectionHeader.vue';
-import BaseSection from '~/components/UI/Section/BaseSection.vue';
-import BaseOurAdvantage from '~/components/Business/OurAdvantage/BaseOurAdvantage.vue';
-import SubscriptionCard from '~/components/Business/Subscription/SubscriptionCard.vue';
-import SubscriptionPermission from '~/components/Business/Subscription/SubscriptionPermission.vue';
-import TheMainFooter from '~/components/Business/Footer/TheMainFooter.vue';
-import AlertList from '~/components/Business/Alert/AlertList.vue';
-import BaseAlert from '~/components/Business/Alert/BaseAlert.vue';
-import { AlertType } from '~/types/AlertType';
-import SubscriptionsRequest from '~/api/requests/SubscriptionsRequest';
-import { SubscriptionType } from '~/api/responses/SubscriptionResponseType';
+import ListInformationSection from '~/components/Business/List/ListInformationSection.vue';
+import TheMainNavigation from '~/components/Business/Navigation/Main/TheMainNavigation.vue';
+import MainItemNavigation from '~/components/Business/Navigation/Main/MainItemNavigation.vue';
+import DropDownMainNavigation from '~/components/Business/Navigation/Main/DropDownMainNavigation.vue';
+import DropDownItemMainNavigation from '~/components/Business/Navigation/Main/DropDownItemMainNavigation.vue';
+import OurAdvantageSection from '~/components/Business/Section/OurAdvantageSection.vue';
+import SubscriptionSection from '~/components/Business/Section/SubscriptionSection.vue';
+import TheMainFooter from '~/components/Business/Footer/Main/TheMainFooter.vue';
+import AuthorizedUserInfoResponseInterface from '~/interfaces/business/api-responses/authorized-user-info-response-interface';
+import AuthorizedUserService from '~/services/business/user/authorized-user-service';
 
 @Component({
   components: {
     TheMainHeader,
+    BaseAlertList,
+    SecurityModalGroup,
     TheHomeHero,
-    BaseSectionHeader,
-    BaseSection,
-    BaseOurAdvantage,
-    SubscriptionCard,
-    SubscriptionPermission,
-    TheMainFooter,
-    AlertList,
-    BaseAlert
-  },
-  async asyncData({ $api }: Context) {
-    const request = new SubscriptionsRequest($api);
-    const response = await request.send(process.env.API_SERVER_HOST as string);
-
-    return {
-      subscriptions: response
-    };
+    ListInformationSection,
+    TheMainNavigation,
+    MainItemNavigation,
+    DropDownMainNavigation,
+    DropDownItemMainNavigation,
+    OurAdvantageSection,
+    SubscriptionSection,
+    TheMainFooter
   }
 })
 export default class Index extends Vue {
-  private subscriptions: Array<SubscriptionType> = [];
+  private authorizedUserService!: AuthorizedUserService;
 
-  private get alerts(): Array<AlertType> {
-    return getAlertModule(this.$store).alerts;
+  public created(): void {
+    this.authorizedUserService = new AuthorizedUserService(this);
+  }
+
+  private get authorizedUserInfo(): AuthorizedUserInfoResponseInterface | null {
+    return this.authorizedUserService.getAuthorizedUser();
   }
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/pages/home';
+@import '@/assets/scss/pages/index.scss';
 </style>

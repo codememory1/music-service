@@ -1,0 +1,66 @@
+@import '@/assets/scss/include/variables';
+
+.main-footer {
+  background-color: $dark-bg;
+  padding-top: 50px;
+  padding-bottom: 50px;
+
+  &-rows {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 15px;
+    padding-top: 50px;
+  }
+
+  &__separator {
+    width: 100%;
+    height: 2px;
+    background-color: $light-for-dark;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: block;
+  }
+
+  &-bottom {
+    display: flex;
+  }
+
+  &-copyright {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &__logo {
+      width: 27px;
+      height: 27px;
+      filter: grayscale(1);
+      transition: ease-in filter $default-transition;
+
+      &:hover {
+        filter: grayscale(0);
+      }
+    }
+
+    &__text {
+      font-size: 12px;
+      color: $gray;
+    }
+  }
+
+  &-bottom-links {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    align-items: center;
+  }
+
+  &__bottom-link {
+    font-size: 12px;
+    color: $gray;
+    transition: ease-in color $default-transition;
+
+    &:hover {
+      color: $accent;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+@import '@/assets/scss/include/variables';
+
+.slider-navigation {
+  display: flex;
+  gap: 10px;
+
+  &__btn {
+    width: 35px!important;
+    height: 35px!important;
+    font-size: $default-size;
+  }
+}

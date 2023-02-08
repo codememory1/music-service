@@ -1,33 +1,29 @@
 <template>
   <BaseAlbum :data="data" class="single-album">
-    <BaseButton class="single-album__play-btn">
-      <i v-if="!isPlay" class="fas fa-play"></i>
-      <i v-else class="fas fa-pause"></i>
-    </BaseButton>
+    <template #img-wrapper>
+      <CirclePlayButton class="single-album__play-btn" @click.stop="$emit('play', data)" />
+    </template>
   </BaseAlbum>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import BaseAlbum from '~/components/Business/Album/BaseAlbum.vue';
-import BaseButton from '~/components/UI/Button/BaseButton.vue';
-import { AlbumType } from '~/types/AlbumType';
+import AlbumResponseInterface from '~/interfaces/business/api-responses/album-response-interface';
+import CirclePlayButton from '~/components/Business/Button/CirclePlayButton.vue';
 
 @Component({
   components: {
-    BaseAlbum,
-    BaseButton
+    CirclePlayButton,
+    BaseAlbum
   }
 })
 export default class SingleAlbum extends Vue {
   @Prop({ required: true })
-  private readonly data!: AlbumType;
-
-  @Prop({ required: false, default: false })
-  private readonly isPlay!: boolean;
+  private readonly data!: AlbumResponseInterface;
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/business/album/single-album';
+@import '@/assets/scss/components/business/album/single-album.scss';
 </style>

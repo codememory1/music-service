@@ -1,0 +1,36 @@
+@import '@/assets/scss/include/variables';
+@import '@/assets/scss/include/mixins';
+
+.device-picker {
+  background-color: $dark-bg;
+  border-radius: $default-radius;
+  width: 350px;
+  height: 400px;
+  padding: 15px;
+  border: 1px solid $light-for-dark;
+  position: absolute;
+  bottom: 65px;
+  z-index: 12;
+  overflow: auto;
+
+  @include scrollbar();
+
+  &__header {
+    color: $white;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+
+  &-devices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__separator {
+    border-bottom: 1px solid $light-for-dark;
+    margin: 15px 0;
+    display: block;
+  }
+}

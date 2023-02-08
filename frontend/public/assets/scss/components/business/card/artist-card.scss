@@ -1,0 +1,58 @@
+@import '@/assets/scss/include/variables';
+
+.artist-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  cursor: pointer;
+  border: 2px solid $light-for-dark;
+  border-radius: $default-radius;
+  padding: 10px;
+  height: 180px;
+  justify-content: center;
+  transition: ease-in background-color $default-transition;
+
+  &:hover {
+    background-color: $light-for-dark;
+  }
+
+  &-img-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 100%;
+  }
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+
+  &__name {
+    font-size: $default-size;
+    color: $white;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+}
+
+@media (min-width: 1600px) {
+  .artist-card {
+    height: 200px!important;
+
+    &__img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}

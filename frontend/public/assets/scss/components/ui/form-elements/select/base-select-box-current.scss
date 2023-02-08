@@ -1,0 +1,24 @@
+@import '@/assets/scss/include/variables';
+
+.select-box-current {
+  display: flex;
+  align-items: center;
+  height: $form-el-height;
+  cursor: pointer;
+  border: 2px solid $light-for-dark;
+  padding: 0 10px;
+  border-radius: $default-radius;
+  background-color: $dark-bg;
+  user-select: none;
+
+  &__chevron {
+    margin-left: auto;
+    color: $white;
+    font-size: $default-size;
+    transition: ease-in transform $default-transition;
+
+    &.active {
+      transform: rotate(-180deg);
+    }
+  }
+}

@@ -1,0 +1,12 @@
+@use 'sass:math';
+@import '@/assets/scss/include/variables';
+
+.subscription-permission {
+  display: flex;
+  gap: math.div($gap-between-el, 2);
+
+  &__title {
+    color: $white;
+    font-size: $default-size;
+  }
+}

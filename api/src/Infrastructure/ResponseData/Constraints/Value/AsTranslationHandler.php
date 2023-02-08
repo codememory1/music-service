@@ -12,8 +12,8 @@ use App\Service\Translation;
 final class AsTranslationHandler extends AbstractConstraintHandler implements ConstraintValueHandlerInterface
 {
     public function __construct(
-        private Translation $translation,
-        private Request $request
+        private readonly Translation $translation,
+        private readonly Request $request
     ) {
     }
 

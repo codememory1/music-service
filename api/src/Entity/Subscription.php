@@ -28,11 +28,6 @@ class Subscription implements EntityInterface
     use TimestampTrait;
     use ComparisonTrait;
 
-    #[ORM\Column(type: Types::STRING, length: 255, unique: true, options: [
-        'comment' => 'Unique subscription key for identification'
-    ])]
-    private ?string $key = null;
-
     #[ORM\Column(type: Types::STRING, length: 255, options: [
         'comment' => 'Name in the form of a translation key'
     ])]
@@ -66,26 +61,22 @@ class Subscription implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPermission::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $permissions;
 
+    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionUiPermission::class, cascade: ['persist', 'remove'])]
+    private Collection $uiPermissions;
+
     #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionPayment::class, cascade: ['remove'])]
     private Collection $payments;
+
+    #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: SubscriptionExtender::class, cascade: ['persist', 'remove'])]
+    private Collection $extenders;
 
     #[Pure]
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
+        $this->uiPermissions = new ArrayCollection();
         $this->payments = new ArrayCollection();
-    }
-
-    public function getKey(): ?string
-    {
-        return $this->key;
-    }
-
-    public function setKey(?string $key): self
-    {
-        $this->key = $key;
-
-        return $this;
+        $this->extenders = new ArrayCollection();
     }
 
     public function getTitle(): ?string
@@ -196,6 +187,30 @@ class Subscription implements EntityInterface
         return $this->permissions;
     }
 
+    public function getUniquePermissions(): Collection
+    {
+        if ($this->extenders->isEmpty()) {
+            return $this->permissions;
+        }
+
+        $uniquePermissions = new ArrayCollection();
+
+        foreach ($this->getPermissions() as $permission) {
+            foreach ($this->getExtenders() as $extender) {
+                $extenderHasPermission = $extender
+                    ->getBasicSubscription()
+                    ->getPermissions()
+                    ->exists(static fn(int $key, SubscriptionPermission $permissionFromBasic) => $permissionFromBasic->getPermissionKey()->isCompare($permission->getPermissionKey()));
+
+                if (!$extenderHasPermission) {
+                    $uniquePermissions->add($permission);
+                }
+            }
+        }
+
+        return $uniquePermissions;
+    }
+
     public function getPermission(SubscriptionPermissionEnum $subscriptionPermission): ?SubscriptionPermission
     {
         foreach ($this->getPermissions() as $permission) {
@@ -251,10 +266,70 @@ class Subscription implements EntityInterface
     }
 
     /**
+     * @return Collection<int, SubscriptionUiPermission>
+     */
+    public function getUiPermissions(): Collection
+    {
+        return $this->uiPermissions;
+    }
+
+    public function addUiPermissions(SubscriptionUiPermission $uiPermissions): self
+    {
+        if (!$this->uiPermissions->contains($uiPermissions)) {
+            $this->uiPermissions[] = $uiPermissions;
+            $uiPermissions->setSubscription($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUiPermissions2(SubscriptionUiPermission $uiPermissions): self
+    {
+        if ($this->uiPermissions->removeElement($uiPermissions)) {
+            // set the owning side to null (unless already changed)
+            if ($uiPermissions->getSubscription() === $this) {
+                $uiPermissions->setSubscription(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection<int, SubscriptionPayment>
      */
     public function getPayments(): Collection
     {
         return $this->payments;
+    }
+
+    /**
+     * @return Collection<int, SubscriptionExtender>
+     */
+    public function getExtenders(): Collection
+    {
+        return $this->extenders;
+    }
+
+    public function addExtender(SubscriptionExtender $extender): self
+    {
+        if (!$this->extenders->contains($extender)) {
+            $this->extenders[] = $extender;
+            $extender->setSubscription($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExtender(SubscriptionExtender $extender): self
+    {
+        if ($this->extenders->removeElement($extender)) {
+            // set the owning side to null (unless already changed)
+            if ($extender->getSubscription() === $this) {
+                $extender->setSubscription(null);
+            }
+        }
+
+        return $this;
     }
 }

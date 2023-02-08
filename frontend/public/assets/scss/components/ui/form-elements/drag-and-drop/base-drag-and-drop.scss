@@ -1,0 +1,56 @@
+@import '@/assets/scss/include/variables';
+
+.uploader {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &-drag-and-drop {
+    border: 3px dashed $light-for-dark;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 20px;
+
+    &.dragenter {
+      border-color: $accent;
+    }
+
+    &__input-file {
+      display: none;
+    }
+
+    &-inner {
+      min-height: inherit;
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: inherit;
+      justify-content: center;
+
+      &__icon {
+        font-size: 35px;
+        color: $accent-second;
+      }
+
+      &__text {
+        color: $gray;
+        font-size: $default-size;
+        margin-top: 10px;
+      }
+
+      &__click-link {
+        font-weight: 500;
+        border-bottom: 1px solid $gray;
+      }
+    }
+  }
+
+  &-uploaded-files {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

@@ -1,0 +1,9 @@
+@import '@/assets/scss/include/variables';
+
+.subscription-section {
+  > div.information-section-content {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: $gap-between-el;
+  }
+}

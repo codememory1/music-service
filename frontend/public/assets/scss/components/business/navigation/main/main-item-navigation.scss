@@ -1,0 +1,26 @@
+@import '@/assets/scss/include/variables';
+
+.main-navigation__item {
+  position: relative;
+
+  &:hover .main-navigation-drop-down {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &-link {
+    font-size: 16px;
+    color: $white;
+    padding: 10px 15px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: linear background-color $default-transition;
+
+    &:hover {
+      background-color: rgba($dark-bg, 0.3);
+    }
+  }
+}

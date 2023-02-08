@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Command\Traits\DeleteByInvalidTtlTrait;
 use App\Entity\PasswordReset;
+use App\Repository\PasswordResetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -30,8 +31,9 @@ class DeleteInvalidPasswordResetCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        /** @var PasswordResetRepository $passwordResetRepository */
         $passwordResetRepository = $this->em->getRepository(PasswordReset::class);
+        $io = new SymfonyStyle($input, $output);
 
         $io->info('Worker started successfully');
 

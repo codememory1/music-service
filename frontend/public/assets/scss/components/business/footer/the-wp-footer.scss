@@ -1,0 +1,16 @@
+@import '@/assets/scss/include/variables';
+
+.wp-footer {
+  background-color: $light-bg!important;
+  margin-top: 40px;
+  padding-bottom: 40px;
+
+  .main-footer__separator {
+    margin-top: 40px!important;
+    margin-bottom: 40px!important;
+  }
+
+  .main-footer-rows {
+    padding-top: 40px!important;
+  }
+}
