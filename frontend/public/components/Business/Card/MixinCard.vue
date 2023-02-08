@@ -1,18 +1,18 @@
 <template>
-  <div class="mixin-card" @click="$emit('click', $event)">
-    <div class="mixin-card-images">
+  <div class="mix-card" @click="$emit('click', $event)">
+    <div class="mix-card-images">
       <img
         v-for="artist in data.artists"
         :key="artist.id"
-        class="mixin-card__img"
+        class="mix-card__img"
         :src="artist.image"
         :alt="artist.name"
       />
 
-      <CirclePlayButton class="mixin-card__play-btn" @click.stop="$emit('play', data)" />
+      <CirclePlayButton class="mix-card__play-btn" @click.stop="$emit('play', data)" />
     </div>
-    <div class="mixin-card-info">
-      <h3 class="mixin-card__title">{{ data.title }}</h3>
+    <div class="mix-card-info">
+      <h3 class="mix-card__title">{{ data.title }}</h3>
       <PerformerCardWrapper :card-created-at="data.created_at" :performers="data.performers" />
     </div>
   </div>
@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CirclePlayButton from '~/components/Business/Button/CirclePlayButton.vue';
-import MixinCardResponseInterface from '~/interfaces/business/api-responses/mixin-card-response-interface';
+import MixCardResponseInterface from '~/interfaces/business/api-responses/mix-card-response-interface';
 import PerformerCardWrapper from '~/components/Business/Wrapper/PerformerCardWrapper.vue';
 
 @Component({
@@ -32,10 +32,10 @@ import PerformerCardWrapper from '~/components/Business/Wrapper/PerformerCardWra
 })
 export default class MixinCard extends Vue {
   @Prop({ required: true })
-  private readonly data!: MixinCardResponseInterface;
+  private readonly data!: MixCardResponseInterface;
 }
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/components/business/card/mixin-card.scss';
+@import '@/assets/scss/components/business/card/mix-card.scss';
 </style>

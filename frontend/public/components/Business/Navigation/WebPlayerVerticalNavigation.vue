@@ -10,8 +10,8 @@
       <ItemVerticalNavigation link="/web-player/artists">
         <i class="fal fa-user-music" /> {{ $t('web_player.navigation.artists') }}
       </ItemVerticalNavigation>
-      <ItemVerticalNavigation link="/web-player/mix">
-        <i class="fab fa-mixcloud" /> {{ $t('web_player.navigation.mix') }}
+      <ItemVerticalNavigation link="/web-player/mixes">
+        <i class="fab fa-mixcloud" /> {{ $t('web_player.navigation.mixes') }}
       </ItemVerticalNavigation>
     </GroupVerticalNavigation>
     <GroupVerticalNavigation
