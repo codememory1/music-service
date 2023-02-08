@@ -169,7 +169,8 @@ export default {
       top_artists_of_month: 'Top artists of the month',
       top_albums: 'Top Albums',
       top_genres_of_month: 'Top genres of the month',
-      all_genres: 'All Genres'
+      all_genres: 'All Genres',
+      top_artists_of_all_time: 'Top Artist of all time'
     }
   },
 
@@ -248,7 +249,7 @@ export default {
     navigation: {
       home: 'Home',
       search: 'Search',
-      popular_artists: 'Popular artists',
+      artists: 'Artists',
       media_library: 'Media library',
       friends: 'Friends',
       history: 'Listening history',
