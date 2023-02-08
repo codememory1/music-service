@@ -170,7 +170,10 @@ export default {
       top_albums: 'Top Albums',
       top_genres_of_month: 'Top genres of the month',
       all_genres: 'All Genres',
-      top_artists_of_all_time: 'Top Artist of all time'
+      top_artists_of_all_time: 'Top Artist of all time',
+      top_mixes_from_platform: 'Top mixes from the {platform_name}',
+      top_mixes_from_top_artists: 'Top Mixes from the Top Artists',
+      top_mixes_from_users: 'Top Mixes from the Users'
     }
   },
 
@@ -253,7 +256,7 @@ export default {
       media_library: 'Media library',
       friends: 'Friends',
       history: 'Listening history',
-      mix: 'Mix',
+      mixes: 'Mixes',
       favorite_artists: 'Favorite artists',
       playlists: 'Playlists',
       my_best_musics: 'My best musics'

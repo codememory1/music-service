@@ -7,16 +7,7 @@
     </div>
     <div class="album-info">
       <h3 class="album__title">{{ data.title }}</h3>
-      <div class="album-performer-wrapper">
-        <time class="album__year-creation" :datetime="data.created_at">{{ data.created_at }}</time>
-        <span v-for="(performer, index) in data.performers" :key="index" class="album__performer">
-          <nuxt-link class="album__performer-link" to="">
-            {{ performer.title }}
-          </nuxt-link>
-          <template v-if="index < data.performers.length - 1">&</template>
-        </span>
-      </div>
-
+      <PerformerCardWrapper :card-created-at="data.created_at" :performers="data.performers" />
       <slot name="info" />
     </div>
   </div>
@@ -25,8 +16,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import AlbumResponseInterface from '~/interfaces/business/api-responses/album-response-interface';
+import PerformerCardWrapper from '~/components/Business/Wrapper/PerformerCardWrapper.vue';
 
-@Component
+@Component({
+  components: {
+    PerformerCardWrapper
+  }
+})
 export default class BaseAlbum extends Vue {
   @Prop({ required: true })
   private readonly data!: AlbumResponseInterface;
