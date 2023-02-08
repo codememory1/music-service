@@ -30,7 +30,7 @@ import PerformerCardWrapper from '~/components/Business/Wrapper/PerformerCardWra
     PerformerCardWrapper
   }
 })
-export default class MixinCard extends Vue {
+export default class MixCard extends Vue {
   @Prop({ required: true })
   private readonly data!: MixCardResponseInterface;
 }
