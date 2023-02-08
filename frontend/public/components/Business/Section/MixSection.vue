@@ -1,7 +1,7 @@
 <template>
   <BaseSliderCardSection :title="title" :cards="mixes">
     <template #card="{ item }">
-      <MixinCard :data="item" />
+      <MixCard :data="item" />
     </template>
   </BaseSliderCardSection>
 </template>
@@ -10,12 +10,12 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import BaseSliderCardSection from '~/components/Business/Section/BaseSliderCardSection.vue';
 import MixCardResponseInterface from '~/interfaces/business/api-responses/mix-card-response-interface';
-import MixinCard from '~/components/Business/Card/MixinCard.vue';
+import MixCard from '~/components/Business/Card/MixCard.vue';
 
 @Component({
   components: {
     BaseSliderCardSection,
-    MixinCard
+    MixCard
   }
 })
 export default class MixSection extends Vue {
