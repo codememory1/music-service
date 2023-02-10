@@ -13,7 +13,7 @@
     </div>
     <div class="mix-card-info">
       <h3 class="mix-card__title">{{ data.title }}</h3>
-      <PerformerCardWrapper :card-created-at="data.created_at" :performers="data.performers" />
+      <MediaPerformersPart :card-created-at="data.created_at" :performers="data.performers" />
     </div>
   </div>
 </template>
@@ -22,12 +22,12 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CirclePlayButton from '~/components/Business/Button/CirclePlayButton.vue';
 import MixCardResponseInterface from '~/interfaces/business/api-responses/mix-card-response-interface';
-import PerformerCardWrapper from '~/components/Business/Wrapper/PerformerCardWrapper.vue';
+import MediaPerformersPart from '~/components/Business/MediaPart/MediaPerformersPart.vue';
 
 @Component({
   components: {
     CirclePlayButton,
-    PerformerCardWrapper
+    MediaPerformersPart
   }
 })
 export default class MixCard extends Vue {

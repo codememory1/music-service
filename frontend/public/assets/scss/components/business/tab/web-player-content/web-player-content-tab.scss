@@ -1,0 +1,11 @@
+@import '@/assets/scss/include/variables';
+
+.wp-content-tab {
+  border-bottom: 2px solid $light-for-dark;
+  padding-bottom: 15px;
+
+  &-items {
+    display: flex;
+    gap: 15px;
+  }
+}

@@ -94,6 +94,12 @@
     gap: 5px;
   }
 
+  &-basic-text-info-down {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
   &__title {
     color: $white;
     font-size: $default-size;
@@ -105,22 +111,6 @@
 
   &-performers {
     max-width: 180px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: $gray;
-  }
-  &__performer {
-    font-size: 12px;
-
-    &-link {
-      color: $gray;
-      font-size: 12px;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
 
   &-right {

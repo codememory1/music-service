@@ -1,0 +1,22 @@
+@import '@/assets/scss/include/variables';
+
+.data-representation-setting-wrapper {
+  display: flex;
+  gap: 15px;
+}
+
+.section-top {
+  &__filters-btn {
+    height: 35px!important;
+    padding: 0 12.5px;
+    font-size: $default-size;
+
+    i {
+      margin-right: 7px;
+    }
+  }
+
+  &__sort-select {
+    width: 170px;
+  }
+}

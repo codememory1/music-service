@@ -1,35 +1,23 @@
 <template>
-  <WebPlayerInformationSection
-    class="top-tracks-section see-all"
-    :title="$t('section.titles.top_tracks')"
-  >
+  <TracksSection class="see-all" :title="$t('section.titles.top_tracks')" :tracks="tracks">
     <template #top>
       <nuxt-link class="wp-information-section__see-all-link" :to="seeAllLink">
         {{ $t('buttons.see_all') }}
       </nuxt-link>
     </template>
-    <template #content>
-      <BaseTrack
-        v-for="(track, index) in tracks"
-        :key="track.id"
-        :number="index + 1"
-        :data="track"
-        @openContextMenu="$emit('openContextMenu', $event, track)"
-      />
-    </template>
-  </WebPlayerInformationSection>
+  </TracksSection>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import WebPlayerInformationSection from '~/components/UI/Section/WebPlayerInformationSection.vue';
 import TrackResponseInterface from '~/interfaces/business/api-responses/track-response-interface';
 import BaseTrack from '~/components/Business/Track/BaseTrack.vue';
+import TracksSection from '~/components/Business/Section/TracksSection.vue';
 
 @Component({
   components: {
     BaseTrack,
-    WebPlayerInformationSection
+    TracksSection
   }
 })
 export default class TopTrackSection extends Vue {
@@ -40,7 +28,3 @@ export default class TopTrackSection extends Vue {
   private readonly seeAllLink!: string;
 }
 </script>
-
-<style lang="scss">
-@import '@/assets/scss/components/business/section/top-track-section.scss';
-</style>

@@ -59,6 +59,7 @@ export default {
         title: "I'm Good (Blue)",
         image: '/images/track1.png',
         duration: '03:33',
+        is_obscene_words: true,
         performers: [
           {
             id: 1,
@@ -84,13 +85,15 @@ export default {
             id: 6,
             title: 'Steve lacy'
           }
-        ]
+        ],
+        created_at: '2023-12-23 23:23:23'
       },
       {
         id: 2,
         title: "I'm Good (Blue)",
         image: '/images/track2.png',
         duration: '03:33',
+        is_obscene_words: false,
         performers: [
           {
             id: 1,
@@ -100,13 +103,15 @@ export default {
             id: 2,
             title: 'Steve lacy'
           }
-        ]
+        ],
+        created_at: '2023-12-23 23:23:23'
       },
       {
         id: 3,
         title: "I'm Good (Blue)",
         image: '/images/track3.png',
         duration: '03:33',
+        is_obscene_words: true,
         performers: [
           {
             id: 1,
@@ -116,13 +121,15 @@ export default {
             id: 2,
             title: 'Steve lacy'
           }
-        ]
+        ],
+        created_at: '2023-12-23 23:23:23'
       },
       {
         id: 4,
         title: "I'm Good (Blue)",
         image: '/images/track4.png',
         duration: '03:33',
+        is_obscene_words: true,
         performers: [
           {
             id: 1,
@@ -132,7 +139,8 @@ export default {
             id: 2,
             title: 'Steve lacy'
           }
-        ]
+        ],
+        created_at: '2023-12-23 23:23:23'
       }
     ],
     similar_artists: [

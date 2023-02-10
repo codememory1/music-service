@@ -6,13 +6,18 @@
         <i class="fal fa-spinner-third" />
       </div>
 
-      <BlockFormElements>
-        <BaseButton class="modal__btn-close" @click="close">
+      <BlockFormElements class="modal-close-wrapper" :class="{ mt: titleOppositeClose }">
+        <h3 v-if="titleOppositeClose" class="modal__title">{{ $t(title) }}</h3>
+        <BaseButton
+          class="modal__btn-close"
+          :class="{ 'with-title': titleOppositeClose }"
+          @click="close"
+        >
           <i class="fal fa-times" />
         </BaseButton>
       </BlockFormElements>
-      <BlockFormElements>
-        <h3 class="modal__title">{{ $t(title) }}</h3>
+      <BlockFormElements v-if="!titleOppositeClose">
+        <h3 class="modal__title center">{{ $t(title) }}</h3>
       </BlockFormElements>
 
       <slot />
@@ -34,6 +39,9 @@ import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 export default class BaseModal extends Vue {
   @Prop({ required: true })
   private readonly title!: string;
+
+  @Prop({ required: false, default: false })
+  private readonly titleOppositeClose!: boolean;
 
   private isOpen: boolean = false;
   private isLoading: boolean = false;

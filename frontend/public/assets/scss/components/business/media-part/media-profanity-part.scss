@@ -1,0 +1,14 @@
+@import '@/assets/scss/include/variables';
+
+.media-part-profanity {
+  background: $gray;
+  color: #000;
+  font-size: 10px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  padding-top: 1px;
+}

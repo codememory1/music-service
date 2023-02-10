@@ -12,7 +12,8 @@ export default {
     buy_subscription: 'Buy a subscription',
     restore_password: 'Restore password',
     activate_account: 'Activate account',
-    see_all: 'See all'
+    see_all: 'See all',
+    apply: 'Apply'
   },
 
   placeholder: {
@@ -173,7 +174,8 @@ export default {
       top_artists_of_all_time: 'Top Artist of all time',
       top_mixes_from_platform: 'Top mixes from the {platform_name}',
       top_mixes_from_top_artists: 'Top Mixes from the Top Artists',
-      top_mixes_from_users: 'Top Mixes from the Users'
+      top_mixes_from_users: 'Top Mixes from the Users',
+      your_tracks: 'Your Tracks'
     }
   },
 
@@ -260,6 +262,16 @@ export default {
       favorite_artists: 'Favorite artists',
       playlists: 'Playlists',
       my_best_musics: 'My best musics'
+    },
+    tab: {
+      titles: {
+        tracks: 'Tracks',
+        clips: 'Clips',
+        playlists: 'Playlists',
+        podcasts: 'Podcasts',
+        performers: 'Performers',
+        events: 'Events'
+      }
     }
   },
 
@@ -296,7 +308,9 @@ export default {
       9: 'October',
       10: 'November',
       11: 'December'
-    }
+    },
+    filters: 'Filters',
+    sort_by: 'Sort By'
   },
 
   statuses: {

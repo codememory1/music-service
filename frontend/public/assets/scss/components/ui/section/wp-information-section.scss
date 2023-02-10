@@ -27,4 +27,9 @@
       color: $accent;
     }
   }
+
+  &.top-jc-sb &-top {
+    display: flex;
+    justify-content: space-between;
+  }
 }

@@ -7,7 +7,7 @@
     </div>
     <div class="album-info">
       <h3 class="album__title">{{ data.title }}</h3>
-      <PerformerCardWrapper :card-created-at="data.created_at" :performers="data.performers" />
+      <MediaPerformersPart :card-created-at="data.created_at" :performers="data.performers" />
       <slot name="info" />
     </div>
   </div>
@@ -16,11 +16,11 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import AlbumResponseInterface from '~/interfaces/business/api-responses/album-response-interface';
-import PerformerCardWrapper from '~/components/Business/Wrapper/PerformerCardWrapper.vue';
+import MediaPerformersPart from '~/components/Business/MediaPart/MediaPerformersPart.vue';
 
 @Component({
   components: {
-    PerformerCardWrapper
+    MediaPerformersPart
   }
 })
 export default class BaseAlbum extends Vue {
