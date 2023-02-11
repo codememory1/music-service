@@ -1,0 +1,111 @@
+@import '@/assets/scss/include/variables';
+
+.clip {
+  height: 100%;
+
+  &-preview-wrapper {
+    position: relative;
+    height: 190px;
+    cursor: pointer;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      z-index: 1;
+      transition: linear background-color $default-transition;
+      border-radius: $default-radius;
+    }
+
+    &:hover:before {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &__preview {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    object-fit: cover;
+    border-radius: $default-radius;
+  }
+
+  &-absolute-info-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+
+  &-absolute-info-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45px!important;
+    height: 45px!important;
+    font-size: 16px!important;
+    border-radius: 100%!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__duration {
+    font-size: 12px;
+    color: $white;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 5px;
+    border-radius: $default-radius;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  }
+
+  &-down-info {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    color: $white;
+    font-size: $default-size;
+    max-width: 85%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__menu-btn {
+    background-color: transparent;
+    color: $white;
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    transition: ease-in background-color $default-transition;
+
+    &:hover {
+      background-color: lighten($light-for-dark, 7%);
+    }
+  }
+}

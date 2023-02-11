@@ -4,6 +4,9 @@
       <slot name="top" />
     </template>
     <template #content>
+      <EmptyContentSection v-if="tracks.length === 0">
+        <slot name="empty" />
+      </EmptyContentSection>
       <BaseTrack
         v-for="(track, index) in tracks"
         :key="track.id"
@@ -18,6 +21,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import WebPlayerInformationSection from '~/components/UI/Section/WebPlayerInformationSection.vue';
+import EmptyContentSection from '~/components/Business/Section/Parts/EmptyContentSection.vue';
 import BaseTrack from '~/components/Business/Track/BaseTrack.vue';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import BaseSelect from '~/components/UI/FormElements/Select/BaseSelect.vue';
@@ -26,6 +30,7 @@ import TrackResponseInterface from '~/interfaces/business/api-responses/track-re
 @Component({
   components: {
     WebPlayerInformationSection,
+    EmptyContentSection,
     BaseTrack,
     BaseButton,
     BaseSelect

@@ -32,4 +32,8 @@
     display: flex;
     justify-content: space-between;
   }
+
+  &-content {
+    position: relative;
+  }
 }

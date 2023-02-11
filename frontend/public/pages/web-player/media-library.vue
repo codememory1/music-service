@@ -1,13 +1,7 @@
 <template>
   <main>
-    <FiltersModal ref="filterModal">
-      <FilterItem title="Artist">
-        <BaseSelect placeholder="Select artist" :options="[]" />
-      </FilterItem>
-      <FilterItem title="Album">
-        <BaseSelect placeholder="Select album" :options="[]" />
-      </FilterItem>
-    </FiltersModal>
+    <MediaLibraryTrackFiltersModal ref="trackFiltersModal" />
+    <MediaLibraryClipFiltersModal ref="clipFiltersModal" />
     <div class="wp-container wp-mt-of-header">
       <WebPlayerContentTab
         v-model="activeTab"
@@ -26,11 +20,35 @@
         <template #top>
           <RepresentationSettingSectionTop
             :sorts="[]"
-            @openFilters="$refs.filterModal.$refs.modal.open()"
+            @openFilters="$refs.trackFiltersModal.open()"
           />
           <!-- FIX: Добавить виды сортировок -->
         </template>
+        <template #empty>
+          {{ $t('section.empty_content.no_added_tracks') }}
+        </template>
       </TracksSection>
+    </div>
+    <div v-if="activeTab === CLIPS_TAB_INDEX" class="wp-container wp-mt">
+      <ClipsSection class="top-jc-sb" :title="$t('section.titles.your_clips')" :clips="clips">
+        <template #top>
+          <RepresentationSettingSectionTop
+            :sorts="[]"
+            @openFilters="$refs.clipFiltersModal.open()"
+          />
+          <!-- FIX: Добавить виды сортировок -->
+        </template>
+        <template #empty>
+          {{ $t('section.empty_content.no_added_clips') }}
+        </template>
+      </ClipsSection>
+    </div>
+    <div v-if="activeTab === PERFORMERS_TAB_INDEX" class="wp-container wp-mt">
+      <ArtistsSection :title="$t('section.titles.your_favorite_performers')" :artists="performers">
+        <template #empty>
+          {{ $t('section.empty_content.empty_media_library_no_performers') }}
+        </template>
+      </ArtistsSection>
     </div>
   </main>
 </template>
@@ -39,13 +57,16 @@
 import { Component, Vue } from 'vue-property-decorator';
 import WebPlayerContentTab from '~/components/Business/Tab/WebPlayerContent/WebPlayerContentTab.vue';
 import TracksSection from '~/components/Business/Section/TracksSection.vue';
+import ClipsSection from '~/components/Business/Section/ClipsSection.vue';
+import ArtistsSection from '~/components/Business/Section/ArtistsSection.vue';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import RepresentationSettingSectionTop from '~/components/Business/Section/Parts/RepresentationSettingSectionTop.vue';
-import FiltersModal from '~/components/Business/Modal/FiltersModal.vue';
-import FilterItem from '~/components/Business/Item/FilterItem.vue';
-import BaseSelect from '~/components/UI/FormElements/Select/BaseSelect.vue';
+import MediaLibraryTrackFiltersModal from '~/components/Business/Modal/Filters/MediaLibraryTrackFiltersModal.vue';
+import MediaLibraryClipFiltersModal from '~/components/Business/Modal/Filters/MediaLibraryClipFiltersModal.vue';
 import TrackResponseInterface from '~/interfaces/business/api-responses/track-response-interface';
 import mocks from '~/api/mocks';
+import ClipResponseInterface from '~/interfaces/business/api-responses/clip-response-interface';
+import ArtistCardResponseInterface from '~/interfaces/business/api-responses/artist-card-response-interface';
 
 @Component({
   layout: 'WebPlayerLayout',
@@ -53,10 +74,11 @@ import mocks from '~/api/mocks';
     WebPlayerContentTab,
     BaseButton,
     TracksSection,
+    ClipsSection,
+    ArtistsSection,
     RepresentationSettingSectionTop,
-    FiltersModal,
-    FilterItem,
-    BaseSelect
+    MediaLibraryTrackFiltersModal,
+    MediaLibraryClipFiltersModal
   }
 })
 export default class MediaLibrary extends Vue {
@@ -70,6 +92,14 @@ export default class MediaLibrary extends Vue {
 
   private get tracks(): Array<TrackResponseInterface> {
     return mocks.artist_1.top_tracks; // FIX: Исправить на реальные данные с возвратом треков которые в медиатеке
+  }
+
+  private get clips(): Array<ClipResponseInterface> {
+    return mocks.artist_1.top_clips; // FIX: Исправить на реальные данные с возвратом клипов которые в медиатеке
+  }
+
+  private get performers(): Array<ArtistCardResponseInterface> {
+    return mocks.artist_1.similar_artists; // FIX: Исправить на реальные данные с возвратом исполнителей, которые в медиатеке
   }
 }
 </script>

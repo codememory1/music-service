@@ -29,6 +29,7 @@ export default {
     enter_multimedia_producer: 'Enter media producer',
     select_multimedia_genre: 'Select multimedia genre',
     select_album: 'Select album',
+    select_artist: 'Select artist',
     select_multimedia_performers: 'Select media contributors',
     choose_media_file: 'Choose a media file',
     choose_image_file: 'Choose image file',
@@ -175,7 +176,17 @@ export default {
       top_mixes_from_platform: 'Top mixes from the {platform_name}',
       top_mixes_from_top_artists: 'Top Mixes from the Top Artists',
       top_mixes_from_users: 'Top Mixes from the Users',
-      your_tracks: 'Your Tracks'
+      your_tracks: 'Your Tracks',
+      your_clips: 'Your Clips',
+      top_clips: 'Top Clips',
+      your_favorite_performers: 'Your Favorite Performers'
+    },
+
+    empty_content: {
+      no_added_tracks: 'You have no added tracks',
+      no_added_clips: 'You have no added clips',
+      empty_media_library_no_performers:
+        'Library is empty, add something to library to display list of performers'
     }
   },
 
@@ -333,5 +344,10 @@ export default {
     share: 'Share',
     copy_link: 'Copy link',
     copy_widget_code: 'Copy widget code'
+  },
+
+  filter_names: {
+    album: 'Album',
+    artist: 'Artist'
   }
 };

@@ -1,0 +1,20 @@
+.clips-section .wp-information-section-content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 15px;
+  grid-row-gap: 30px;
+
+  > .clip {
+    width: 253px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .clips-section .wp-information-section-content {
+    grid-template-columns: repeat(6, 1fr)!important;
+
+    > .clip {
+      width: 243px;
+    }
+  }
+}

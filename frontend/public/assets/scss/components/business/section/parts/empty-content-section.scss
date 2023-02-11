@@ -1,0 +1,9 @@
+@import '@/assets/scss/include/variables';
+
+.section__empty {
+  color: $gray;
+  font-size: $default-size;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+}

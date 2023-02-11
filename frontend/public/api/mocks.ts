@@ -53,6 +53,246 @@ export default {
         image: '/images/album3.jpeg'
       }
     ],
+    top_clips: [
+      {
+        id: 1,
+        title: "I'm Good (Blue)",
+        image: '/images/clip-img.jpg',
+        duration: '03:33',
+        is_obscene_words: true,
+        performers: [
+          {
+            id: 1,
+            title: 'Tvbuu'
+          },
+          {
+            id: 2,
+            title: 'Steve lacy'
+          },
+          {
+            id: 3,
+            title: 'Steve lacy'
+          },
+          {
+            id: 4,
+            title: 'Steve lacy'
+          },
+          {
+            id: 5,
+            title: 'Steve lacy'
+          },
+          {
+            id: 6,
+            title: 'Steve lacy'
+          }
+        ],
+        created_at: '2023-12-23 23:23:23'
+      },
+      {
+        id: 2,
+        title: "I'm Good (Blue)",
+        image: '/images/clip-img.jpg',
+        duration: '03:33',
+        is_obscene_words: true,
+        performers: [
+          {
+            id: 1,
+            title: 'Tvbuu'
+          },
+          {
+            id: 2,
+            title: 'Steve lacy'
+          },
+          {
+            id: 3,
+            title: 'Steve lacy'
+          },
+          {
+            id: 4,
+            title: 'Steve lacy'
+          },
+          {
+            id: 5,
+            title: 'Steve lacy'
+          },
+          {
+            id: 6,
+            title: 'Steve lacy'
+          }
+        ],
+        created_at: '2023-12-23 23:23:23'
+      },
+      {
+        id: 3,
+        title: "I'm Good (Blue)",
+        image: '/images/clip-img.jpg',
+        duration: '03:33',
+        is_obscene_words: true,
+        performers: [
+          {
+            id: 1,
+            title: 'Tvbuu'
+          },
+          {
+            id: 2,
+            title: 'Steve lacy'
+          },
+          {
+            id: 3,
+            title: 'Steve lacy'
+          },
+          {
+            id: 4,
+            title: 'Steve lacy'
+          },
+          {
+            id: 5,
+            title: 'Steve lacy'
+          },
+          {
+            id: 6,
+            title: 'Steve lacy'
+          }
+        ],
+        created_at: '2023-12-23 23:23:23'
+      },
+      {
+        id: 4,
+        title: "I'm Good (Blue)",
+        image: '/images/clip-img.jpg',
+        duration: '03:33',
+        is_obscene_words: true,
+        performers: [
+          {
+            id: 1,
+            title: 'Tvbuu'
+          },
+          {
+            id: 2,
+            title: 'Steve lacy'
+          },
+          {
+            id: 3,
+            title: 'Steve lacy'
+          },
+          {
+            id: 4,
+            title: 'Steve lacy'
+          },
+          {
+            id: 5,
+            title: 'Steve lacy'
+          },
+          {
+            id: 6,
+            title: 'Steve lacy'
+          }
+        ],
+        created_at: '2023-12-23 23:23:23'
+      },
+      {
+        id: 5,
+        title: "I'm Good (Blue)",
+        image: '/images/clip-img.jpg',
+        duration: '03:33',
+        is_obscene_words: true,
+        performers: [
+          {
+            id: 1,
+            title: 'Tvbuu'
+          },
+          {
+            id: 2,
+            title: 'Steve lacy'
+          },
+          {
+            id: 3,
+            title: 'Steve lacy'
+          },
+          {
+            id: 4,
+            title: 'Steve lacy'
+          },
+          {
+            id: 5,
+            title: 'Steve lacy'
+          },
+          {
+            id: 6,
+            title: 'Steve lacy'
+          }
+        ],
+        created_at: '2023-12-23 23:23:23'
+      },
+      {
+        id: 6,
+        title: "I'm Good (Blue)",
+        image: '/images/clip-img.jpg',
+        duration: '03:33',
+        is_obscene_words: true,
+        performers: [
+          {
+            id: 1,
+            title: 'Tvbuu'
+          },
+          {
+            id: 2,
+            title: 'Steve lacy'
+          },
+          {
+            id: 3,
+            title: 'Steve lacy'
+          },
+          {
+            id: 4,
+            title: 'Steve lacy'
+          },
+          {
+            id: 5,
+            title: 'Steve lacy'
+          },
+          {
+            id: 6,
+            title: 'Steve lacy'
+          }
+        ],
+        created_at: '2023-12-23 23:23:23'
+      },
+      {
+        id: 7,
+        title: "I'm Good (Blue)",
+        image: '/images/clip-img.jpg',
+        duration: '03:33',
+        is_obscene_words: true,
+        performers: [
+          {
+            id: 1,
+            title: 'Tvbuu'
+          },
+          {
+            id: 2,
+            title: 'Steve lacy'
+          },
+          {
+            id: 3,
+            title: 'Steve lacy'
+          },
+          {
+            id: 4,
+            title: 'Steve lacy'
+          },
+          {
+            id: 5,
+            title: 'Steve lacy'
+          },
+          {
+            id: 6,
+            title: 'Steve lacy'
+          }
+        ],
+        created_at: '2023-12-23 23:23:23'
+      }
+    ],
     top_tracks: [
       {
         id: 1,

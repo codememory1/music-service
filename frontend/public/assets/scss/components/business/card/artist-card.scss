@@ -11,6 +11,7 @@
   height: 180px;
   justify-content: center;
   transition: ease-in background-color $default-transition;
+  min-width: 100%;
 
   &:hover {
     background-color: $light-for-dark;
@@ -38,7 +39,7 @@
   &__name {
     font-size: $default-size;
     color: $white;
-    max-width: 100px;
+    width: 70%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
