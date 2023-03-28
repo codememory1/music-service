@@ -1,0 +1,17 @@
+@import '@/assets/scss/include/variables';
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  &-wrapper {
+    border: 1px solid $light-for-dark;
+    border-radius: $default-radius;
+  }
+
+  &-head {
+    &__header {
+      background-color: $light-for-dark;
+    }
+  }
+}

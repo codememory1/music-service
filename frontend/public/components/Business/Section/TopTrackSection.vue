@@ -1,5 +1,10 @@
 <template>
-  <TracksSection class="see-all" :title="$t('section.titles.top_tracks')" :tracks="tracks">
+  <TracksSection
+    class="see-all"
+    :title="$t('section.titles.top_tracks')"
+    :tracks="tracks"
+    @openContextMenu="openContextMenu"
+  >
     <template #top>
       <nuxt-link class="wp-information-section__see-all-link" :to="seeAllLink">
         {{ $t('buttons.see_all') }}
@@ -26,5 +31,9 @@ export default class TopTrackSection extends Vue {
 
   @Prop({ required: true })
   private readonly seeAllLink!: string;
+
+  private openContextMenu(event: PointerEvent, track: TrackResponseInterface): void {
+    this.$emit('openContextMenu', event, track);
+  }
 }
 </script>

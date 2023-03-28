@@ -57,10 +57,8 @@ import TrackResponseInterface from '~/interfaces/business/api-responses/track-re
   }
 })
 export default class Artist extends Vue {
-  private readonly artistProfileService: ArtistProfileService = new ArtistProfileService(this);
-  private readonly trackContextMenuService: TrackContextMenuService = new TrackContextMenuService(
-    this
-  );
+  private readonly artistProfileService = Vue.observable(new ArtistProfileService(this));
+  private readonly trackContextMenuService = Vue.observable(new TrackContextMenuService(this));
 
   private openTrackContextMenu(event: PointerEvent, track: TrackResponseInterface): void {
     this.trackContextMenuService.open(event, track);
