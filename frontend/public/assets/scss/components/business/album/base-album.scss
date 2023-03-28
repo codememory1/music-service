@@ -35,8 +35,7 @@
   }
 
   &__title {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: $default-size;
     color: $white;
     white-space: nowrap;
     text-overflow: ellipsis;

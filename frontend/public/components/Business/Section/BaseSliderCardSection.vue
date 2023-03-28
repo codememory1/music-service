@@ -9,7 +9,11 @@
       />
     </template>
     <template #content>
+      <EmptyContentSection v-if="cards.length === 0">
+        <slot name="empty" />
+      </EmptyContentSection>
       <core-swiper
+        v-else
         ref="swiper"
         :options="swiperOptions"
         @slideChange="sliderNavigationService.onSlideChange()"
@@ -26,15 +30,20 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import WebPlayerInformationSection from '~/components/UI/Section/WebPlayerInformationSection.vue';
 import BaseSliderNavigation from '~/components/Business/Navigation/Slider/BaseSliderNavigation.vue';
+import EmptyContentSection from '~/components/Business/Section/Parts/EmptyContentSection.vue';
 import SliderNavigationService from '~/services/ui/slider/slider-navigation-service';
 
 @Component({
   components: {
     WebPlayerInformationSection,
-    BaseSliderNavigation
+    BaseSliderNavigation,
+    EmptyContentSection
   }
 })
 export default class BaseSliderCardSection extends Vue {
+  @Prop({ required: false, default: () => ({ slidesPerView: 'auto' }) })
+  private readonly options!: object;
+
   @Prop({ required: true })
   private readonly title!: string;
 
@@ -53,9 +62,7 @@ export default class BaseSliderCardSection extends Vue {
   }
 
   private get swiperOptions(): object {
-    return {
-      slidesPerView: 'auto'
-    };
+    return this.options;
   }
 }
 </script>

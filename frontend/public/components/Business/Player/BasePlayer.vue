@@ -58,7 +58,6 @@ import { Component, Vue } from 'vue-property-decorator';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
 import BaseRange from '~/components/UI/FormElements/Range/BaseRange.vue';
 import BaseDevicePicker from '~/components/Business/Picker/DevicePicker/BaseDevicePicker.vue';
-import ListUserSessionResponseType from '~/types/business/api-responses/list-user-session-response-type';
 import clickOut from '~/utils/click-out';
 
 @Component({

@@ -5,7 +5,9 @@ interface TrackResponseInterface {
   title: string;
   image: string;
   duration: string;
+  is_obscene_words: boolean;
   performers: Array<PerformerType>;
+  created_at: string;
 }
 
 export default TrackResponseInterface;

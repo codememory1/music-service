@@ -3,6 +3,7 @@ import AlbumResponseInterface from '~/interfaces/business/api-responses/album-re
 import mocks from '~/api/mocks';
 import TrackResponseInterface from '~/interfaces/business/api-responses/track-response-interface';
 import ArtistCardResponseInterface from '~/interfaces/business/api-responses/artist-card-response-interface';
+import ClipResponseInterface from '~/interfaces/business/api-responses/clip-response-interface';
 
 export default class ArtistProfileService {
   private readonly app: Vue;
@@ -21,6 +22,10 @@ export default class ArtistProfileService {
 
   public get getTopTracks(): Array<TrackResponseInterface> {
     return mocks.artist_1.top_tracks; // FIX: Изменить на реальные данные (Топ треки артиста)
+  }
+
+  public get getTopClips(): Array<ClipResponseInterface> {
+    return mocks.artist_1.top_clips; // FIX: Изменить на реальные данные (Топ клипы артиста)
   }
 
   public get getPseudonym(): string {

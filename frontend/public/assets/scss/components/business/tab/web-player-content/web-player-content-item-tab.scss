@@ -1,0 +1,18 @@
+@import '@/assets/scss/include/variables';
+
+.wp-content-tab__item {
+  height: 35px !important;
+  padding: 0 12px;
+  font-size: $default-size;
+  background: transparent;
+  color: $white;
+  transition: linear background-color $default-transition;
+
+  &:hover {
+    background: $light-for-dark;
+  }
+
+  &.active {
+    background: $accent-second;
+  }
+}

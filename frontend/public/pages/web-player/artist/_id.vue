@@ -8,6 +8,12 @@
     <div class="wp-container wp-mt">
       <TopAlbumSection :albums="artistProfileService.getTopAlbums" />
       <div class="wp-mt">
+        <ClipsSliderSection
+          :title="$t('section.titles.top_clips')"
+          :clips="artistProfileService.getTopClips"
+        />
+      </div>
+      <div class="wp-mt">
         <div class="wp-half-container">
           <TrackContextMenu ref="trackContextMenu" />
           <TopTrackSection
@@ -26,6 +32,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import TheArtistProfile from '~/components/Business/Profile/Artist/TheArtistProfile.vue';
 import TopAlbumSection from '~/components/Business/Section/TopAlbumSection.vue';
+import ClipsSliderSection from '~/components/Business/Section/ClipsSliderSection.vue';
 import TopTrackSection from '~/components/Business/Section/TopTrackSection.vue';
 import ArtistProfileService from '~/services/business/profile/artist-profile-service';
 import SimilarArtistSection from '~/components/Business/Section/SimilarArtistSection.vue';
@@ -43,16 +50,15 @@ import TrackResponseInterface from '~/interfaces/business/api-responses/track-re
   components: {
     TheArtistProfile,
     TopAlbumSection,
+    ClipsSliderSection,
     TopTrackSection,
     SimilarArtistSection,
     TrackContextMenu
   }
 })
 export default class Artist extends Vue {
-  private readonly artistProfileService: ArtistProfileService = new ArtistProfileService(this);
-  private readonly trackContextMenuService: TrackContextMenuService = new TrackContextMenuService(
-    this
-  );
+  private readonly artistProfileService = Vue.observable(new ArtistProfileService(this));
+  private readonly trackContextMenuService = Vue.observable(new TrackContextMenuService(this));
 
   private openTrackContextMenu(event: PointerEvent, track: TrackResponseInterface): void {
     this.trackContextMenuService.open(event, track);

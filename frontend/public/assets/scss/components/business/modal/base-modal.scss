@@ -49,7 +49,10 @@
     color: $white;
     font-size: 22px;
     font-weight: 400;
-    text-align: center;
+
+    &.center {
+      text-align: center;
+    }
   }
 
   &-wrapper {
@@ -82,13 +85,26 @@
     color: lighten($light-for-dark, 7%);
     cursor: pointer;
     transition: ease-in color 0.15s;
-    margin-left: auto;
-    margin-top: $default-padding-container;
     width: 25px;
     height: 25px;
 
+    &:not(.with-title) {
+      margin-left: auto;
+      margin-top: $default-padding-container;
+    }
+
     &:hover {
       color: lighten($light-for-dark, 14%);
+    }
+  }
+
+  &-close-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row!important;
+
+    &.mt {
+      margin-top: $default-padding-container;
     }
   }
 }

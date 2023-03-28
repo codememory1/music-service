@@ -1,10 +1,14 @@
 <template>
-  <div class="performer-wrapper">
-    <time class="card__year-creation" :datetime="createdAtDate">
+  <div class="media-part-performers-wrapper">
+    <time class="media-part__year-creation" :datetime="createdAtDate">
       {{ createdAtDate.getFullYear() }}
     </time>
-    <span v-for="(performer, index) in performers" :key="performer.id" class="performer">
-      <nuxt-link class="performer__link" :to="`/web-player/artist/${performer.id}`">
+    <span
+      v-for="(performer, index) in performers"
+      :key="performer.id"
+      class="media-part__performer"
+    >
+      <nuxt-link class="media-part__performer-link" :to="`/web-player/artist/${performer.id}`">
         {{ performer.title }}
       </nuxt-link>
       <template v-if="index < performers.length - 1">&</template>
@@ -17,7 +21,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import PerformerType from '~/types/business/performer-type';
 
 @Component
-export default class PerformerCardWrapper extends Vue {
+export default class MediaPerformersPart extends Vue {
   @Prop({ required: true })
   private readonly cardCreatedAt!: string;
 
@@ -29,5 +33,5 @@ export default class PerformerCardWrapper extends Vue {
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/components/business/wrapper/performer-card-wrapper.scss';
+@import '@/assets/scss/components/business/media-part/media-performers-part.scss';
 </style>

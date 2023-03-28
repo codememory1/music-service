@@ -11,17 +11,13 @@
         <img class="track__img" :src="data.image" :alt="data.title" />
         <div class="track-basic-text-info">
           <h4 class="track__title">{{ data.title }}</h4>
-          <div class="track-performers">
-            <span
-              v-for="(performer, index) in data.performers"
-              :key="index"
-              class="track__performer"
-            >
-              <nuxt-link class="track__performer-link" to="">
-                {{ performer.title }}
-              </nuxt-link>
-              <template v-if="index < data.performers.length - 1">&</template>
-            </span>
+          <div class="track-basic-text-info-down">
+            <MediaProfanityPart v-if="data.is_obscene_words" />
+            <MediaPerformersPart
+              class="track-performers"
+              :card-created-at="data.created_at"
+              :performers="data.performers"
+            />
           </div>
         </div>
       </div>
@@ -46,10 +42,14 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import TrackResponseInterface from '~/interfaces/business/api-responses/track-response-interface';
 import BaseButton from '~/components/UI/FormElements/Button/BaseButton.vue';
+import MediaProfanityPart from '~/components/Business/MediaPart/MediaProfanityPart.vue';
+import MediaPerformersPart from '~/components/Business/MediaPart/MediaPerformersPart.vue';
 
 @Component({
   components: {
-    BaseButton
+    BaseButton,
+    MediaProfanityPart,
+    MediaPerformersPart
   }
 })
 export default class BaseTrack extends Vue {

@@ -59,7 +59,7 @@ export default class WebPlayerLayout extends Vue {
   private headerIsActive: boolean = false;
 
   public mounted(): void {
-    this.headerIsActive = (this.$refs.content as HTMLElement).scrollTop >= 40;
+    this.headerIsActive = (this.$refs.content as HTMLElement).scrollTop >= 10;
   }
 
   private scrollContent(event: Event): void {

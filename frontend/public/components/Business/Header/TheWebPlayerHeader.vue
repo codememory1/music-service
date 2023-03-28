@@ -98,19 +98,23 @@ export default class TheWebPlayerHeader extends Vue {
   }
 
   private clickOutUserWrapper(): void {
-    clickOut(this.$refs.userWrapper as Node, (is: boolean) => {
-      if (is) {
-        (this.$refs.profileDropDown as ProfileHeaderDropDown)?.setIsOpen(false);
-      }
-    });
+    if (undefined !== this.$refs.userWrapper) {
+      clickOut(this.$refs.userWrapper as Node, (is: boolean) => {
+        if (is) {
+          (this.$refs.profileDropDown as ProfileHeaderDropDown)?.setIsOpen(false);
+        }
+      });
+    }
   }
 
   private clickOutNotificationWrapper(): void {
-    clickOut(this.$refs.notificationWrapper as Node, (is: boolean) => {
-      if (is) {
-        (this.$refs.notificationDropDown as ProfileHeaderDropDown)?.setIsOpen(false);
-      }
-    });
+    if (undefined !== this.$refs.notificationWrapper) {
+      clickOut(this.$refs.notificationWrapper as Node, (is: boolean) => {
+        if (is) {
+          (this.$refs.notificationDropDown as ProfileHeaderDropDown)?.setIsOpen(false);
+        }
+      });
+    }
   }
 }
 </script>

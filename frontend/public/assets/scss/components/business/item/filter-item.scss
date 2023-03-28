@@ -1,0 +1,46 @@
+@import '@/assets/scss/include/variables';
+
+.filter-item {
+  border-radius: $default-radius;
+  padding: 10px;
+  transition: ease-in background-color $default-transition;
+
+  &:hover {
+    background-color: $light-for-dark;
+  }
+
+  &.disabled {
+    pointer-events: none;
+  }
+
+  &.active {
+    background-color: $light-for-dark;
+  }
+
+  &-visible-part {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  &__title, &__icon {
+    font-size: $default-size;
+  }
+
+  &__title {
+    color: $gray;
+
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  &__icon {
+    color: $accent;
+  }
+
+  &-content {
+    margin-top: 10px;
+  }
+}

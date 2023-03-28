@@ -1,0 +1,17 @@
+@import '@/assets/scss/include/variables';
+
+.table-body__item {
+  &-wrapper {
+    border-bottom: 1px solid $light-for-dark;
+
+    &:last-of-type {
+      border-bottom: 0;
+    }
+  }
+
+  &-value {
+    font-size: $default-size;
+    color: $white;
+    padding: 15px;
+  }
+}

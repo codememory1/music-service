@@ -1,8 +1,9 @@
 @import '@/assets/scss/include/variables';
 
-.card__year-creation {
+.media-part__year-creation {
   position: relative;
   padding-right: 5px;
+  font-size: 13px;
 
   &:before {
     content: "•";
@@ -15,8 +16,8 @@
   }
 }
 
-.performer-wrapper {
-  font-size: $default-size;
+.media-part-performers-wrapper {
+  font-size: 13px;
   color: $gray;
   font-weight: 300;
   overflow: hidden;
@@ -24,13 +25,14 @@
   white-space: nowrap;
 }
 
-.performer {
+.media-part__performer {
   &:first-of-type {
     padding-left: 5px;
   }
 
-  &__link {
+  &-link {
     color: $gray;
+    font-size: 13px;
 
     &:hover {
       text-decoration: underline;

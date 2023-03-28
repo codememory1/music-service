@@ -20,13 +20,13 @@
   color: $white;
   padding: 12px 20px 12px 12px;
   border-radius: $default-radius;
-  border: 2px solid $light-for-dark;
+  border: 1px solid $light-for-dark;
   outline: none;
   font-size: $default-size;
   height: $form-el-height;
   transition: ease-in border $default-transition;
 
-  @include autocomplete(2, $light-for-dark, $white, $dark-bg);
+  @include autocomplete(1, $light-for-dark, $white, $dark-bg);
 
   &:focus {
     border-color: $accent;
@@ -37,7 +37,7 @@
   }
 
   &:-webkit-autofill:focus {
-    border: 2px solid $accent;
+    border: 1px solid $accent;
   }
 
   &:-webkit-autofill {
@@ -49,6 +49,6 @@
   }
 
   &.error {
-    border: 2px solid $red;
+    border: 1px solid $red;
   }
 }
