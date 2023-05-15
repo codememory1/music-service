@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  nginx:
+    container_name: ${MICROSERVICE_NAME}-nginx
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ${MICROSERVICE_DOCKER_PATH}/${MICROSERVICE_ENV}/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ${MICROSERVICE_SOURCE_PATH}:${MICROSERVICE_WORKDIR}
+    depends_on:
+      - php
+
+  php:
+    container_name: ${MICROSERVICE_NAME}-php
+    build:
+      context: ./
+      dockerfile: ${MICROSERVICE_DOCKER_PATH}/${MICROSERVICE_ENV}/php-fpm/Dockerfile
+      args:
+        workdir: ${MICROSERVICE_WORKDIR}
+    env_file:
+      - .env
+      - ${MICROSERVICE_SHARED_ENV_PATH}
+    expose:
+      - 9000
+    volumes:
+      - ${MICROSERVICE_SOURCE_PATH}:${MICROSERVICE_WORKDIR}
+      - ${MICROSERVICE_DOCKER_PATH}/${MICROSERVICE_ENV}/php-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini
+    depends_on:
+      - db
+
+  db:
+    container_name: ${MICROSERVICE_NAME}-db
+    image: postgres:14.2
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: "${MICROSERVICE_DB_USER}"
+      POSTGRES_PASSWORD: "${MICROSERVICE_DB_PASSWORD}"
+      POSTGRES_DB: "${MICROSERVICE_DB_NAME}"
+    ports:
+      - "5430:5432"
+    volumes:
+      - ${MICROSERVICE_DATA_PATH}/postgres/data:/var/lib/postgresql/data

@@ -6,7 +6,7 @@ use App\Dto\Transfer\MultimediaDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\Multimedia;
 use App\Infrastructure\Dto\AbstractDataTransformer;
-use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
+use Codememory\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 
@@ -26,7 +26,7 @@ final class MultimediaTransformer extends AbstractDataTransformer
     public function transformFromRequest(?EntityInterface $entity = null): DataTransferInterface
     {
         return $this->multimediaDto
-            ->setEntity($entity ?: new Multimedia())
+            ->setObject($entity ?: new Multimedia())
             ->collect([
                 ...$this->request->all(),
                 'image' => $this->request->getRequest()->files->get('image'),

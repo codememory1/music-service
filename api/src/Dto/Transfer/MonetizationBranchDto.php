@@ -2,32 +2,19 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\User;
 use App\Exception\Http\EntityNotFoundException;
-use App\Infrastructure\Dto\AbstractDataTransfer;
-use Doctrine\ORM\EntityManagerInterface;
+use Codememory\Dto\DataTransfer;
 
-final class MonetizationBranchDto extends AbstractDataTransfer
+final class MonetizationBranchDto extends DataTransfer
 {
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ToEntityCallbackConstraint('callbackIgnoredArtistEntity')]
+    #[DC\ToType]
+    #[DC\ToEntityList(User::class, 'id', unique: true, entityNotFoundCallback: 'throwArtistNotFound')]
     public array $ignoredArtists = [];
 
-    public function callbackIgnoredArtistEntity(EntityManagerInterface $manager, mixed $value): array
+    public function throwArtistNotFound(mixed $value): array
     {
-        $userRepository = $manager->getRepository(User::class);
-
-        foreach ($value as $id) {
-            if (0 === preg_match('/^\d+$/', $id)) {
-                throw EntityNotFoundException::user(['id' => $id]);
-            }
-
-            if (null === $userRepository->find($id)) {
-                throw EntityNotFoundException::user(['id' => $id]);
-            }
-        }
-
-        return $value;
+        throw EntityNotFoundException::user(['id' => $value]);
     }
 }

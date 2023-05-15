@@ -2,25 +2,21 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\User;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class AccountActivationDto extends AbstractDataTransfer
+final class AccountActivationDto extends DataTransfer
 {
-    protected array $propertyNameToData = [
-        'user' => 'email'
-    ];
-
-    #[DtoConstraints\ToEntityConstraint('email')]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToEntity(byKey: 'email')]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'user@failedToIdentify')
     ])]
-    public ?User $user = null;
+    public ?User $email = null;
 
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'common@invalidCode')
     ])]
     public ?string $code = null;

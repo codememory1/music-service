@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum NotificationTypeEnum
+enum NotificationTypeEnum: string
 {
-    case INFORMATIONAL;
-    case REFERENTIAL;
+    case INFORMATIONAL = 'type.informational';
+    case REFERENTIAL = 'type.referential';
 }

@@ -2,14 +2,14 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\Constraints as DC;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class RefreshTokenDto extends AbstractDataTransfer
+final class RefreshTokenDto extends DataTransfer
 {
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'common@refreshTokenIsRequired')
     ])]
     public ?string $refreshToken = null;

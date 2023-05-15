@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum AlbumStatusEnum
+enum AlbumStatusEnum: string
 {
-    case PUBLISHED;
-    case UNPUBLISHED;
+    case PUBLISHED = 'status.published';
+    case UNPUBLISHED = 'status.unpublished';
 }

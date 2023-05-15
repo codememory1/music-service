@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum MediaLibraryStatusEnum
+enum MediaLibraryStatusEnum: string
 {
-    case SHOW;
-    case HIDE;
+    case SHOW = 'status.show';
+    case HIDE = 'status.hide';
 }

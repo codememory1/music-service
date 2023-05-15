@@ -9,6 +9,8 @@
         "ext-iconv": "*",
         "aws/aws-sdk-php": "^3.209",
         "captioning/captioning": "^2.6",
+        "codememory/dto": "3.0.1",
+        "codememory/entity-response-control": "2.0.1",
         "dama/doctrine-test-bundle": "^7.0",
         "doctrine/annotations": "^1.13",
         "doctrine/doctrine-bundle": "^2.5",
@@ -28,30 +30,31 @@
         "snc/redis-bundle": "^4.2",
         "starkbank/ecdsa": "^0.0.5",
         "symfony/amqp-messenger": "6.0.*",
-        "symfony/asset": "6.0.*",
-        "symfony/console": "6.0.*",
-        "symfony/doctrine-messenger": "6.0.*",
-        "symfony/dotenv": "6.0.*",
-        "symfony/expression-language": "6.0.*",
+        "symfony/asset": "6.1.*",
+        "symfony/console": "6.1.*",
+        "symfony/doctrine-messenger": "6.1.*",
+        "symfony/dotenv": "6.1.*",
+        "symfony/expression-language": "6.1.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.0.*",
-        "symfony/google-mailer": "6.0.*",
-        "symfony/mailer": "6.0.*",
-        "symfony/messenger": "6.0.*",
+        "symfony/framework-bundle": "6.1.*",
+        "symfony/google-mailer": "6.1.*",
+        "symfony/mailer": "6.1.*",
+        "symfony/messenger": "6.1.*",
         "symfony/monolog-bundle": "^3.0",
-        "symfony/property-access": "6.0.*",
-        "symfony/proxy-manager-bridge": "6.0.*",
-        "symfony/runtime": "6.0.*",
-        "symfony/sendgrid-mailer": "6.0.*",
-        "symfony/twig-bundle": "6.0.*",
-        "symfony/validator": "6.0.*",
-        "symfony/yaml": "6.0.*"
+        "symfony/property-access": "6.1.*",
+        "symfony/proxy-manager-bridge": "6.1.*",
+        "symfony/runtime": "6.1.*",
+        "symfony/sendgrid-mailer": "6.1.*",
+        "symfony/twig-bundle": "6.1.*",
+        "symfony/validator": "6.1.*",
+        "symfony/yaml": "6.1.*"
     },
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "php-http/discovery": true
         },
         "optimize-autoloader": true,
         "preferred-install": {
@@ -97,7 +100,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.0.*"
+            "require": "6.1.*"
         }
     },
     "require-dev": {
@@ -106,13 +109,12 @@
         "friendsofphp/php-cs-fixer": "^3.8",
         "hautelook/alice-bundle": "^2.10",
         "phpunit/phpunit": "^9.5",
-        "symfony/browser-kit": "6.0.*",
-        "symfony/css-selector": "6.0.*",
-        "symfony/debug-bundle": "6.0.*",
-        "symfony/http-client": "6.0.*",
+        "symfony/browser-kit": "6.1.*",
+        "symfony/css-selector": "6.1.*",
+        "symfony/debug-bundle": "6.1.*",
+        "symfony/http-client": "6.1.*",
         "symfony/maker-bundle": "^1.36",
-        "symfony/phpunit-bridge": "^6.0",
-        "symfony/stopwatch": "6.0.*",
-        "symfony/web-profiler-bundle": "6.0.*"
+        "symfony/stopwatch": "6.1.*",
+        "symfony/web-profiler-bundle": "6.1.*"
     }
 }

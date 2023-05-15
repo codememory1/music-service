@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Dto\Interfaces;
 
 use App\Entity\Interfaces\EntityInterface;
+use Codememory\Dto\Interfaces\DataTransferInterface;
 
 interface DataTransformerInterface
 {

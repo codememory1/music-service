@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum LogicBranchEnum
+enum LogicBranchEnum: string
 {
-    case SUBSCRIPTION_PERMISSION;
-    case ARTIST_MONETIZATION;
+    case SUBSCRIPTION_PERMISSION = 'logic_branch.subscription_permission';
+    case ARTIST_MONETIZATION = 'logic_branch.artist_monetization';
 }

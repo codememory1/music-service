@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum PaymentTypeEnum
+enum PaymentTypeEnum: string
 {
-    case MANUAL;
-    case AUTO;
+    case MANUAL = 'type.manual';
+    case AUTO = 'type.auto';
 }

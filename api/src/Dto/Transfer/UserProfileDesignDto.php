@@ -2,20 +2,20 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\UserProfileDesign;
-use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Validator\Constraints as AppAssert;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @template-extends AbstractDataTransfer<UserProfileDesign>
+ * @template-extends DataTransfer<UserProfileDesign>
  */
-final class UserProfileDesignDto extends AbstractDataTransfer
+final class UserProfileDesignDto extends DataTransfer
 {
-    #[DtoConstraints\IgnoreCallSetterConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\IgnoreSetterCall]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'userProfileDesign@coverImageIsRequired'),
         new Assert\File(
             maxSize: '10M',
@@ -26,8 +26,8 @@ final class UserProfileDesignDto extends AbstractDataTransfer
     ])]
     public ?UploadedFile $coverImage = null;
 
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new AppAssert\JsonSchema('user_profile_design', message: 'userProfileDesign@invalidDesignComponents')
     ])]
     public array $designComponents = [];

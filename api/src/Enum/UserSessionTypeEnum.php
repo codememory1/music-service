@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum UserSessionTypeEnum
+enum UserSessionTypeEnum: string
 {
-    case TEMP;
-    case REGISTRATION;
+    case TEMP = 'type.temp';
+    case REGISTRATION = 'type.registration';
 }

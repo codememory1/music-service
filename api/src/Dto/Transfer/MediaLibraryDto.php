@@ -2,19 +2,19 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\MediaLibrary;
 use App\Enum\MediaLibraryStatusEnum;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @template-extends AbstractDataTransfer<MediaLibrary>
+ * @template-extends DataTransfer<MediaLibrary>
  */
-final class MediaLibraryDto extends AbstractDataTransfer
+final class MediaLibraryDto extends DataTransfer
 {
-    #[DtoConstraints\ToEnumConstraint(MediaLibraryStatusEnum::class)]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToEnum]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'mediaLibrary@invalidStatus')
     ])]
     public ?MediaLibraryStatusEnum $status = null;

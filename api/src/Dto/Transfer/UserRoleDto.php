@@ -2,31 +2,30 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\Role;
 use App\Entity\RolePermissionKey;
 use App\Entity\TranslationKey;
 use App\Enum\PlatformCodeEnum;
 use App\Exception\Http\EntityNotFoundException;
-use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Infrastructure\Validator\Validator;
 use App\Validator\Constraints as AppAssert;
-use Doctrine\ORM\EntityManagerInterface;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @template-extends AbstractDataTransfer<Role>
+ * @template-extends DataTransfer<Role>
  */
-final class UserRoleDto extends AbstractDataTransfer
+final class UserRoleDto extends DataTransfer
 {
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'role@keyIsRequired')
     ])]
     public ?string $key = null;
 
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'role@titleIsRequired'),
         new AppAssert\Exist(
             TranslationKey::class,
@@ -37,8 +36,8 @@ final class UserRoleDto extends AbstractDataTransfer
     ])]
     public ?string $title = null;
 
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new AppAssert\Exist(
             TranslationKey::class,
             'key',
@@ -48,24 +47,12 @@ final class UserRoleDto extends AbstractDataTransfer
     ])]
     public ?string $shortDescription = null;
 
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ToEntityCallbackConstraint('callbackPermissionsEntity')]
+    #[DC\ToType]
+    #[DC\ToEntityList(RolePermissionKey::class, 'key', unique: true, entityNotFoundCallback: 'throwPermissionNotFound')]
     public array $permissions = [];
 
-    public function callbackPermissionsEntity(EntityManagerInterface $manager, array $value): array
+    public function throwPermissionNotFound(mixed $value): void
     {
-        $rolePermissionKeyRepository = $manager->getRepository(RolePermissionKey::class);
-
-        foreach ($value as &$permissionKey) {
-            $rolePermissionKey = $rolePermissionKeyRepository->findByKey($permissionKey);
-
-            if (null === $rolePermissionKey) {
-                throw EntityNotFoundException::rolePermissionKey();
-            }
-
-            $permissionKey = $rolePermissionKey;
-        }
-
-        return $value;
+        throw EntityNotFoundException::rolePermissionKey();
     }
 }

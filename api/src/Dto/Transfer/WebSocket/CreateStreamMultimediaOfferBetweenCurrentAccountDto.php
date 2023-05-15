@@ -2,17 +2,21 @@
 
 namespace App\Dto\Transfer\WebSocket;
 
-use App\Dto\Constraints as DtoConstraints;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\Constraints as DC;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class CreateStreamMultimediaOfferBetweenCurrentAccountDto extends AbstractDataTransfer
+final class CreateStreamMultimediaOfferBetweenCurrentAccountDto extends DataTransfer
 {
-    #[Assert\NotBlank(message: 'streamMultimedia@multimediaIsRequired')]
-    #[DtoConstraints\ToTypeConstraint]
+    #[DC\ToType]
+    #[DC\Validation([
+        new Assert\NotBlank(message: 'streamMultimedia@multimediaIsRequired')
+    ])]
     public ?int $runningMultimedia = null;
 
-    #[Assert\NotBlank(message: 'streamMultimedia@toUserSessionIsRequired')]
-    #[DtoConstraints\ToTypeConstraint]
+    #[DC\ToType]
+    #[DC\Validation([
+        new Assert\NotBlank(message: 'streamMultimedia@toUserSessionIsRequired')
+    ])]
     public ?int $toUserSession = null;
 }

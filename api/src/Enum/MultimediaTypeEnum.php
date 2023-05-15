@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum MultimediaTypeEnum
+enum MultimediaTypeEnum: string
 {
-    case TRACK;
-    case CLIP;
+    case TRACK = 'type.track';
+    case CLIP = 'type.clip';
 }

@@ -2,28 +2,29 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
+use App\Infrastructure\Dto\Constraints as ADC;
 use App\Entity\Playlist;
 use App\Enum\PlaylistStatusEnum;
 use App\Enum\RequestTypeEnum;
-use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Validator\Constraints as AppAssert;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @template-extends AbstractDataTransfer<Playlist>
+ * @template-extends DataTransfer<Playlist>
  */
-final class PlaylistDto extends AbstractDataTransfer
+final class PlaylistDto extends DataTransfer
 {
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'playlist@titleIsRequired'),
         new Assert\Length(max: 50, maxMessage: 'playlist@titleMaxLength')
     ])]
     public ?string $title = null;
 
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\Validation([
         new AppAssert\Condition('callbackImage', [
             new Assert\File(
                 maxSize: '5M',
@@ -33,12 +34,12 @@ final class PlaylistDto extends AbstractDataTransfer
             )
         ])
     ])]
-    #[DtoConstraints\IgnoreCallSetterConstraint]
+    #[DC\IgnoreSetterCall]
     public ?UploadedFile $image = null;
 
-    #[DtoConstraints\ToEnumConstraint(PlaylistStatusEnum::class)]
-    #[DtoConstraints\AllowedCallSetterByRequestTypeConstraint(RequestTypeEnum::ADMIN)]
-    #[DtoConstraints\ValidationByRequestTypeConstraint(RequestTypeEnum::ADMIN, [
+    #[DC\ToEnum]
+    #[ADC\SetterCallByRequestType(RequestTypeEnum::ADMIN)]
+    #[ADC\ValidationByRequestType(RequestTypeEnum::ADMIN, [
         new Assert\NotBlank(message: 'common@invalidStatus')
     ])]
     public ?PlaylistStatusEnum $status = null;

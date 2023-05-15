@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum UserStatusEnum
+enum UserStatusEnum: string
 {
-    case ACTIVE;
-    case NOT_ACTIVE;
+    case ACTIVE = 'status.active';
+    case NOT_ACTIVE = 'status.not_active';
 }

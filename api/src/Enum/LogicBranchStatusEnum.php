@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum LogicBranchStatusEnum
+enum LogicBranchStatusEnum: string
 {
-    case ENABLED;
-    case DISABLED;
+    case ENABLED = 'status.enabled';
+    case DISABLED = 'status.disabled';
 }

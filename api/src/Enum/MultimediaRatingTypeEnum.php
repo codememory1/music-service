@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum MultimediaRatingTypeEnum
+enum MultimediaRatingTypeEnum: string
 {
-    case LIKE;
-    case DISLIKE;
+    case LIKE = 'type.like';
+    case DISLIKE = 'type.dislike';
 }

@@ -2,14 +2,16 @@
 
 namespace App\Dto\Transfer\WebSocket;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\StreamRunningMultimedia;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class AcceptOfferedStreamingDto extends AbstractDataTransfer
+final class AcceptOfferedStreamingDto extends DataTransfer
 {
-    #[Assert\NotBlank(message: 'entityNotFound@streamRunningMultimedia')]
-    #[DtoConstraints\ToEntityConstraint('id')]
+    #[DC\ToEntity(byKey: 'id')]
+    #[DC\Validation([
+        new Assert\NotBlank(message: 'entityNotFound@streamRunningMultimedia')
+    ])]
     public ?StreamRunningMultimedia $streamRunningMultimedia = null;
 }

@@ -2,23 +2,22 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Dto\Transfer\Traits\EventPayloadTrait;
 use App\Entity\MultimediaMediaLibraryEvent;
 use App\Enum\Interfaces\EventInterface;
-use App\Enum\MultimediaMediaLibraryEventEnum;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @template-extends AbstractDataTransfer<MultimediaMediaLibraryEvent>
+ * @template-extends DataTransfer<MultimediaMediaLibraryEvent>
  */
-final class MultimediaMediaLibraryEventDto extends AbstractDataTransfer
+final class MultimediaMediaLibraryEventDto extends DataTransfer
 {
     use EventPayloadTrait;
 
-    #[DtoConstraints\ToEnumConstraint(MultimediaMediaLibraryEventEnum::class)]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToEnum]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'event@keyIsRequired')
     ])]
     public ?EventInterface $key = null;

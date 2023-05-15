@@ -1,0 +1,74 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "key": {
+                "type": "string",
+                "enum": ["LOCKED_EMAIL_DOMAINS", "TTL_ACCOUNT_ACTIVATION_CODE", "MAIL_CONFIG"]
+            }
+        },
+        "required": ["key", "value"],
+        "if": {
+            "properties": {
+                "key": {
+                    "const": "LOCKED_EMAIL_DOMAINS"
+                }
+            }
+        },
+        "then": {
+            "properties": {
+                "value": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "else": {
+            "if": {
+                "properties": {
+                    "key": {
+                        "const": "TTL_ACCOUNT_ACTIVATION_CODE"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "value": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "else": {
+                "if": {
+                    "properties": {
+                        "key": {
+                            "const": "MAIL_CONFIG"
+                        }
+                    }
+                },
+                "then": {
+                    "properties": {
+                        "value": {
+                            "type": "object",
+                            "properties": {
+                                "platform": {
+                                    "type": "string"
+                                },
+                                "login": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["platform", "login", "password"]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

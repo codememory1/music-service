@@ -2,15 +2,15 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Dto\Interfaces\ServiceAuthorizationDtoInterface;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class GoogleAuthDto extends AbstractDataTransfer implements ServiceAuthorizationDtoInterface
+final class GoogleAuthDto extends DataTransfer implements ServiceAuthorizationDtoInterface
 {
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'serviceAuth@authorizationCodeIsRequired')
     ])]
     public ?string $code = null;

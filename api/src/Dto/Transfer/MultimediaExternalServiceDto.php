@@ -2,27 +2,27 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\MultimediaExternalService;
 use App\Enum\MultimediaExternalServiceEnum;
-use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Validator\Constraints as AppAssert;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @template-extends AbstractDataTransfer<MultimediaExternalService>
+ * @template-extends DataTransfer<MultimediaExternalService>
  */
-final class MultimediaExternalServiceDto extends AbstractDataTransfer
+final class MultimediaExternalServiceDto extends DataTransfer
 {
-    #[DtoConstraints\ToEnumConstraint(MultimediaExternalServiceEnum::class)]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToEnum]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'multimedia_external_service.service_name.is_required')
     ])]
     public ?MultimediaExternalServiceEnum $serviceName = null;
 
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new AppAssert\Callback('callbackParameters')
     ])]
     public array $parameters = [];

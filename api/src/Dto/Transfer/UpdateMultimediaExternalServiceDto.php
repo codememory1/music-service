@@ -2,20 +2,20 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\MultimediaExternalService;
 use App\Enum\MultimediaExternalServiceEnum;
-use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Validator\Constraints as AppAssert;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @template-extends AbstractDataTransfer<MultimediaExternalService>
+ * @template-extends DataTransfer<MultimediaExternalService>
  */
-final class UpdateMultimediaExternalServiceDto extends AbstractDataTransfer
+final class UpdateMultimediaExternalServiceDto extends DataTransfer
 {
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new AppAssert\Callback('callbackParameters')
     ])]
     public array $parameters = [];
@@ -29,7 +29,7 @@ final class UpdateMultimediaExternalServiceDto extends AbstractDataTransfer
             ->validate(
                 $this->parameters,
                 new AppAssert\JsonSchema(
-                    MultimediaExternalServiceEnum::fromName($this->getEntity()->getServiceName()),
+                    MultimediaExternalServiceEnum::fromName($this->getObject()->getServiceName()),
                     'multimedia_external_service.invalid_parameters'
                 )
             );

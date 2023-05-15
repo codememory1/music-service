@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum StreamMultimediaStatusEnum
+enum StreamMultimediaStatusEnum: string
 {
-    case PENDING;
-    case ACCEPTED;
+    case PENDING = 'status.pending';
+    case ACCEPTED = 'status.accepted';
 }
