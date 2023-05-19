@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Dto;
 
 use App\Entity\Interfaces\EntityInterface;
-use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
+use Codememory\Dto\Interfaces\DataTransferInterface;
 use App\Infrastructure\Dto\Interfaces\DataTransformerInterface;
 use App\Rest\Http\Request;
 use LogicException;
@@ -21,7 +21,7 @@ abstract class AbstractDataTransformer implements DataTransformerInterface
     protected function baseTransformFromRequest(DataTransferInterface $transfer, ?EntityInterface $entity = null): DataTransferInterface
     {
         if (null !== $entity) {
-            $transfer->setEntity($entity);
+            $transfer->setObject($entity);
         }
 
         return $transfer->collect($this->request->all());

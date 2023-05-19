@@ -1,0 +1,32 @@
+parameters: []
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+        bind:
+          $accessControlHost: '%env(ACCESS_CONTROL_HOST)%'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Service\:
+      resource: '../src/Service/'
+
+    App\UseCase\:
+      resource: '../src/UseCase/'
+
+    App\DTO\:
+      resource: '../src/DTO/'
+      tags:
+        - { name: codememory.dto.object }
+
+    App\ResponseControl\:
+      resource: '../src/ResponseControl/'
+      tags:
+        - { name: codememory.response_control.object }

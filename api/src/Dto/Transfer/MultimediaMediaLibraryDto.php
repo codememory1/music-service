@@ -2,25 +2,25 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\MultimediaMediaLibrary;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @template-extends AbstractDataTransfer<MultimediaMediaLibrary>
+ * @template-extends DataTransfer<MultimediaMediaLibrary>
  */
-final class MultimediaMediaLibraryDto extends AbstractDataTransfer
+final class MultimediaMediaLibraryDto extends DataTransfer
 {
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\Length(max: 50, maxMessage: 'multimedia@titleMaxLength')
     ])]
     public ?string $title = null;
 
-    #[DtoConstraints\IgnoreCallSetterConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\IgnoreSetterCall]
+    #[DC\Validation([
         new Assert\AtLeastOneOf([
             new Assert\IsNull(),
             new Assert\File(

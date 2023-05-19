@@ -2,9 +2,9 @@
 
 namespace App\Enum;
 
-enum PaymentStatusEnum
+enum PaymentStatusEnum: string
 {
-    case PAID;
-    case NOT_PAID;
-    case PENDING;
+    case PAID = 'status.paid';
+    case NOT_PAID = 'status.not_paid';
+    case PENDING = 'status.pending';
 }

@@ -1,0 +1,54 @@
+{
+    "general": {
+        "last_ports": {
+            "nginx": 8006,
+            "db": 5436,
+            "redis": 6379
+        }
+    },
+    "microservices": {
+        "user-management": {
+            "ports": {
+                "nginx": 8000,
+                "db": 5430
+            }
+        },
+        "access-control": {
+            "ports": {
+                "nginx": 8001,
+                "db": 5431
+            }
+        },
+        "app-preferences": {
+            "ports": {
+                "nginx": 8002,
+                "db": 5432
+            }
+        },
+        "user-role": {
+            "ports": {
+                "nginx": 8003,
+                "db": 5433
+            }
+        },
+        "ip-locator": {
+            "ports": {
+                "nginx": 8004,
+                "db": 5434,
+                "redis": 6379
+            }
+        },
+        "geo-locator": {
+            "ports": {
+                "nginx": 8005,
+                "db": 5435
+            }
+        },
+        "translation": {
+            "ports": {
+                "nginx": 8006,
+                "db": 5436
+            }
+        }
+    }
+}

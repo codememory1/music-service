@@ -2,18 +2,18 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\PlaylistDirectory;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @template-extends AbstractDataTransfer<PlaylistDirectory>
+ * @template-extends DataTransfer<PlaylistDirectory>
  */
-final class PlaylistDirectoryDto extends AbstractDataTransfer
+final class PlaylistDirectoryDto extends DataTransfer
 {
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'playlistDirectory@titleIsRequired'),
         new Assert\Length(max: 50, maxMessage: 'playlistDirectory@titleMaxLength')
     ])]

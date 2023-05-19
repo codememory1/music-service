@@ -2,22 +2,22 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\MultimediaCategory;
 use App\Entity\TranslationKey;
 use App\Enum\PlatformCodeEnum;
-use App\Infrastructure\Dto\AbstractDataTransfer;
 use App\Infrastructure\Validator\Validator;
 use App\Validator\Constraints as AppAssert;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @template-extends AbstractDataTransfer<MultimediaCategory>
+ * @template-extends DataTransfer<MultimediaCategory>
  */
-final class MultimediaCategoryDto extends AbstractDataTransfer
+final class MultimediaCategoryDto extends DataTransfer
 {
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'multimediaCategory@titleIsRequired'),
         new AppAssert\Exist(
             TranslationKey::class,

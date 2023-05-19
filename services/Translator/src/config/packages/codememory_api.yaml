@@ -1,0 +1,10 @@
+codememory_api:
+  http_error_handler:
+    403:
+      message: 'http_code.access_is_denied'
+    404:
+      message: 'http_code.page_not_found'
+    405:
+      message: 'http_code.method_not_allowed'
+    500:
+      message: 'http_code.server_error'

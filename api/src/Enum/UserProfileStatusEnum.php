@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum UserProfileStatusEnum
+enum UserProfileStatusEnum: string
 {
-    case HIDE;
-    case SHOW;
+    case HIDE = 'status.hide';
+    case SHOW = 'status.show';
 }

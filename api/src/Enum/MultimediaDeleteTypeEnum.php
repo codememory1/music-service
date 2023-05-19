@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum MultimediaDeleteTypeEnum
+enum MultimediaDeleteTypeEnum: string
 {
-    case COMPLETE;
-    case NOT_COMPLETE;
+    case COMPLETE = 'type.complete';
+    case NOT_COMPLETE = 'type.not_complete';
 }

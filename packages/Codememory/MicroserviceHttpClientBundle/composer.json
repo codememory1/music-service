@@ -1,0 +1,21 @@
+{
+    "name": "codememory/microservice-http-client-bundle",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Codememory\\MicroserviceHttpClientBundle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Codememory",
+            "email": "kostynd1@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "symfony/http-client": "6.2.*",
+        "predis/predis": ">=2.1.2"
+    }
+}

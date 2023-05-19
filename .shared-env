@@ -1,0 +1,6 @@
+USER_MANAGEMENT_HOST="http://user-management-nginx"
+ACCESS_CONTROL_HOST="http://access-control-nginx"
+APP_PREFERENCES_HOST="http://app-preferences-nginx"
+USER_ROLE_HOST="http://user-role-nginx"
+IP_LOCATOR_HOST="http://ip-locator-nginx"
+GEO_LOCATOR_HOST="http://geo-locator-nginx"

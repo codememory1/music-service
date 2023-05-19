@@ -2,15 +2,15 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\RolePermission;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\DataTransfer;
 
 /**
- * @template-extends AbstractDataTransfer<RolePermission>
+ * @template-extends DataTransfer<RolePermission>
  */
-final class UserRolePermissionDto extends AbstractDataTransfer
+final class UserRolePermissionDto extends DataTransfer
 {
-    #[DtoConstraints\ToTypeConstraint]
+    #[DC\ToType]
     public array $permissions = [];
 }

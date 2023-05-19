@@ -2,9 +2,9 @@
 
 namespace App\Enum;
 
-enum NotificationStatusEnum
+enum NotificationStatusEnum: string
 {
-    case PENDING;
-    case IN_PROCESS_SENDING;
-    case SENT_OUT;
+    case PENDING = 'status.pending';
+    case IN_PROCESS_SENDING = 'status.in_process_sending';
+    case SENT_OUT = 'status.sent_out';
 }

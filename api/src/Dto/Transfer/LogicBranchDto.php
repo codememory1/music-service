@@ -2,19 +2,19 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
+use Codememory\Dto\Constraints as DC;
 use App\Entity\LogicBranch;
 use App\Enum\LogicBranchStatusEnum;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @template-extends AbstractDataTransfer<LogicBranch>
+ * @template-extends DataTransfer<LogicBranch>
  */
-final class LogicBranchDto extends AbstractDataTransfer
+final class LogicBranchDto extends DataTransfer
 {
-    #[DtoConstraints\ToEnumConstraint(LogicBranchStatusEnum::class)]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToEnum]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'logicBranch@invalidStatus')
     ])]
     public ?LogicBranchStatusEnum $status = null;

@@ -1,0 +1,32 @@
+parameters: []
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Constraints\DTO\:
+      resource: '../src/Constraints/DTO/*Handler.php'
+      tags:
+        - { name: codememory.dto.constraint }
+
+    App\DTO\:
+      resource: '../src/DTO/'
+      public: true
+      tags:
+        - { name: codememory.dto.object }
+
+    App\ResponseControl\:
+      resource: '../src/ResponseControl/'
+      tags:
+        - { name: codememory.response_control.object }
+
+    App\UseCase\:
+      resource: '../src/UseCase/'

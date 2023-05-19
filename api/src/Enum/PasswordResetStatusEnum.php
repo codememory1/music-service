@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum PasswordResetStatusEnum
+enum PasswordResetStatusEnum: string
 {
-    case IN_PROCESS;
-    case COMPLETED;
+    case IN_PROCESS = 'status.in_process';
+    case COMPLETED = 'status.completed';
 }

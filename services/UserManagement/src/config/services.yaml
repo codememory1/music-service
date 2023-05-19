@@ -1,0 +1,36 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Service\:
+      resource: '../src/Service/'
+
+    App\UseCase\:
+      resource: '../src/UseCase/'
+
+    App\DTO\:
+      resource: '../src/DTO/'
+      tags:
+        - { name: codememory.dto.object }
+
+    App\ResponseControl\:
+      resource: '../src/ResponseControl/'
+      tags:
+        - { name: codememory.response_control.object }
+
+    App\Adapter\JWT\AccessTokenJWT:
+      tags:
+        - { name: codememory.jwt.adapter, private: '%kernel.project_dir%/config/secrets/%kernel.environment%/access_token_private_key.pem', public: '%kernel.project_dir%/config/secrets/%kernel.environment%/access_token_public_key.pem', ttl: 600 }
+
+    App\Adapter\JWT\RefreshTokenJWT:
+      tags:
+        - { name: codememory.jwt.adapter, private: '%kernel.project_dir%/config/secrets/%kernel.environment%/refresh_token_private_key.pem', public: '%kernel.project_dir%/config/secrets/%kernel.environment%/refresh_token_public_key.pem', ttl: 600 }

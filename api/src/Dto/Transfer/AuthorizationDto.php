@@ -2,20 +2,20 @@
 
 namespace App\Dto\Transfer;
 
-use App\Dto\Constraints as DtoConstraints;
-use App\Infrastructure\Dto\AbstractDataTransfer;
+use Codememory\Dto\Constraints as DC;
+use Codememory\Dto\DataTransfer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class AuthorizationDto extends AbstractDataTransfer
+final class AuthorizationDto extends DataTransfer
 {
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'common@incorrectEmail')
     ])]
     public ?string $email = null;
 
-    #[DtoConstraints\ToTypeConstraint]
-    #[DtoConstraints\ValidationConstraint([
+    #[DC\ToType]
+    #[DC\Validation([
         new Assert\NotBlank(message: 'common@passwordIsRequired')
     ])]
     public ?string $password = null;

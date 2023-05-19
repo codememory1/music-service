@@ -1,0 +1,26 @@
+parameters: []
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\DTO\:
+      resource: '../src/DTO/'
+      tags:
+        - { name: codememory.dto.object }
+
+    App\ResponseControl\:
+      resource: '../src/ResponseControl/'
+      tags:
+        - { name: codememory.response_control.object }
+
+    App\UseCase\:
+      resource: '../src/UseCase/'

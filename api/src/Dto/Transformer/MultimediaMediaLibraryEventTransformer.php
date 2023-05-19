@@ -6,7 +6,7 @@ use App\Dto\Transfer\MultimediaMediaLibraryEventDto;
 use App\Entity\Interfaces\EntityInterface;
 use App\Entity\MultimediaMediaLibraryEvent;
 use App\Infrastructure\Dto\AbstractDataTransformer;
-use App\Infrastructure\Dto\Interfaces\DataTransferInterface;
+use Codememory\Dto\Interfaces\DataTransferInterface;
 use App\Rest\Http\Request;
 use JetBrains\PhpStorm\Pure;
 

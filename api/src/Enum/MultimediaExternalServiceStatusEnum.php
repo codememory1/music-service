@@ -2,9 +2,9 @@
 
 namespace App\Enum;
 
-enum MultimediaExternalServiceStatusEnum
+enum MultimediaExternalServiceStatusEnum: string
 {
-    case PUBLISHED;
-    case UNPUBLISHED;
-    case BLOCKED;
+    case PUBLISHED = 'status.published';
+    case UNPUBLISHED = 'status.unpublished';
+    case BLOCKED = 'status.blocked';
 }
