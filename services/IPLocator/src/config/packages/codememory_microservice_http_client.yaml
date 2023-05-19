@@ -1,0 +1,3 @@
+codememory_microservice_http_client:
+  cache:
+    adapter: Codememory\MicroserviceHttpClientBundle\Adapter\Cache\RedisCacheAdapter

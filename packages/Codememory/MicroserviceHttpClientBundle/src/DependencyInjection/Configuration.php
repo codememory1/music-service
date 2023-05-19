@@ -2,7 +2,6 @@
 
 namespace Codememory\MicroserviceHttpClientBundle\DependencyInjection;
 
-use Codememory\MicroserviceHttpClientBundle\MicroserviceHttpClientBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -11,7 +10,7 @@ final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $builder = new TreeBuilder('microservice_http_client');
+        $builder = new TreeBuilder('codememory_microservice_http_client');
         $rootNode = $builder->getRootNode();
 
         $this->addCacheAdapter($rootNode);
@@ -23,10 +22,19 @@ final class Configuration implements ConfigurationInterface
     {
         $node
             ->children()
-                ->scalarNode('cache')
-                    ->cannotBeEmpty()
-                    ->defaultValue(MicroserviceHttpClientBundle::DEFAULT_CACHE_SERVICE_ID)
-                    ->info('Name of the microservice response cache service')
+                ->arrayNode('cache')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('adapter')
+                            ->cannotBeEmpty()
+                            ->isRequired()
+                            ->info('Name of the microservice response cache service')
+                        ->end()
+                        ->integerNode('expire')
+                            ->defaultValue(86400)
+                            ->info('Cache lifetime after which the cache should be deleted')
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
     }

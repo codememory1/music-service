@@ -1,0 +1,26 @@
+parameters: []
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    Predis\Client:
+      arguments:
+        - {
+          scheme: 'tcp',
+          host: 'redis',
+          port: 6379,
+          password: 'admin'
+        }
+
+    Codememory\MicroserviceHttpClientBundle\Adapter\Cache\RedisCacheAdapter:
+      arguments:
+        $client: '@Predis\Client'

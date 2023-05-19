@@ -7,6 +7,8 @@ use Predis\Client;
 
 final class RedisCacheAdapter implements CacheInterface
 {
+    private const CACHE_KEY = 'codememory:http:cache:*';
+
     private ?int $expire = null;
 
     public function __construct(
@@ -26,9 +28,9 @@ final class RedisCacheAdapter implements CacheInterface
         return (bool) $this->client->exists($this->key($host, $path));
     }
 
-    public function get(string $host, string $path): array
+    public function get(string $host, string $path): string
     {
-        return json_decode($this->client->get($this->key($host, $path)), true);
+        return $this->client->get($this->key($host, $path));
     }
 
     public function save(string $host, string $path, array $data): bool
@@ -37,15 +39,25 @@ final class RedisCacheAdapter implements CacheInterface
             return false;
         }
 
-        $this->client->set($this->key($host, $path), json_encode($data), expireTTL: $this->expire);
+        $this->client->set($this->key($host, $path), json_encode($data), 'EX', $this->expire);
 
         return true;
     }
 
+    public function delete(string $host, string $path): void
+    {
+        if ($this->has($host, $path)) {
+            $this->client->del($this->key($host, $path));
+        }
+    }
+
+    public function deleteAll(): void
+    {
+        $this->client->del($this->client->keys(self::CACHE_KEY));
+    }
+
     private function key(string $host, string $path): string
     {
-        $hash = hash('sha256', rtrim($host, '/').'/'.trim($path, '/'));
-
-        return "codememory:http:cache:$hash";
+        return str_replace('*', hash('sha256', rtrim($host, '/').'/'.trim($path, '/')), self::CACHE_KEY);
     }
 }

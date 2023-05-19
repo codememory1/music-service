@@ -12,6 +12,8 @@ services:
       - ${MICROSERVICE_SOURCE_PATH}:${MICROSERVICE_WORKDIR}
     depends_on:
       - php
+    networks:
+      - microservice_network
 
   php:
     container_name: ${MICROSERVICE_NAME}-php
@@ -30,6 +32,8 @@ services:
       - ${MICROSERVICE_DOCKER_PATH}/${MICROSERVICE_ENV}/php-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini
     depends_on:
       - db
+    networks:
+      - microservice_network
 
   db:
     container_name: ${MICROSERVICE_NAME}-db
@@ -43,3 +47,10 @@ services:
       - "5433:5432"
     volumes:
       - ${MICROSERVICE_DATA_PATH}/postgres/data:/var/lib/postgresql/data
+    networks:
+      - microservice_network
+
+networks:
+  microservice_network:
+    name: www_app
+    external: true
